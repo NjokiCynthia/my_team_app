@@ -2,9 +2,9 @@
 
 The new Chamasoft app
 
-## You should know
+## You should know:
 
-There two flavors available: dev & prod:
+There are two flavors available: dev & prod:
 
 a) flutter run --flavor dev
 
