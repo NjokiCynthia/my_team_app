@@ -25,9 +25,9 @@ class Login extends StatelessWidget {
                     height: 100.0,
                   ),
                 ),
-                heading1(text: "Chamasoft"),
-                subtitle1(text: "Let's verify your identity first"),
-                subtitle2(text: "Enter your phone number or email address below"),
+                heading1(text: "Chamasoft", color: Colors.blueGrey),
+                subtitle1(text: "Let's verify your identity first", color: Colors.blueGrey),
+                subtitle2(text: "Enter your phone number or email address below", color: Colors.blueGrey),
                 TextFormField(
                   decoration: InputDecoration(
                     hasFloatingPlaceholder: true,

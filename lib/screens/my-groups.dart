@@ -21,8 +21,8 @@ class MyGroups extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    heading1(text: "My Groups"),
-                    subtitle1(text: "All groups I belong to"),
+                    heading1(text: "My Groups", color: Colors.blueGrey),
+                    subtitle1(text: "All groups I belong to", color: Colors.blueGrey),
                     SizedBox(height: 32,),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
@@ -31,8 +31,8 @@ class MyGroups extends StatelessWidget {
                         height: 80.0,
                       ),
                     ),
-                    heading2(text: "Edwin Kapkei"),
-                    subtitle1(text: "+254 701 234 567"),
+                    heading2(text: "Edwin Kapkei", color: Colors.blueGrey),
+                    subtitle1(text: "+254 701 234 567", color: Colors.blueGrey[400]),
                     SizedBox(height: 20,),
                     groupInfoButton(
                       context: context,
@@ -43,7 +43,7 @@ class MyGroups extends StatelessWidget {
                       subtitle: "Chairperson",
                       textColor: Colors.blue,
                       borderColor: Colors.blue,
-                      action: (){},
+                      action: () => Navigator.pushReplacementNamed(context, '/create-group'),
                     ),
                     SizedBox(height: 32,),
                     groupInfoButton(

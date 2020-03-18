@@ -29,11 +29,11 @@ class Verification extends StatelessWidget {
                         height: 100.0,
                       ),
                     ),
-                    heading1(text: "Verification"),
-                    subtitle1(text: "A verification code has been sent to"),
-                    subtitle1(text: "+254 701 234 567"),
+                    heading1(text: "Verification", color: Colors.blueGrey),
+                    subtitle1(text: "A verification code has been sent to", color: Colors.blueGrey),
+                    subtitle1(text: "+254 701 234 567", color: Colors.blueGrey),
                     SizedBox(height: 12,),
-                    subtitle2(text: "Enter your code here"),
+                    subtitle2(text: "Enter your code here", color: Colors.blueGrey),
                     Padding(
                       padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                       child: PinInputTextField(

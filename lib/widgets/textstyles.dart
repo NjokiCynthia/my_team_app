@@ -1,46 +1,46 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-Widget heading1({String text}) {
+Widget heading1({String text, Color color}) {
   return Text(
     text,
     style: TextStyle(
       fontWeight: FontWeight.w900,
       fontSize: 24.0,
-      // color: ,
+      color: color,
     ),
   );
 }
 
-Widget heading2({String text}) {
+Widget heading2({String text, Color color}) {
   return Text(
     text,
     style: TextStyle(
       fontWeight: FontWeight.w900,
       fontSize: 18.0,
-      // color: ,
+      color: color,
     ),
   );
 }
 
-Widget subtitle1({String text}) {
+Widget subtitle1({String text, Color color}) {
   return Text(
     text,
     style: TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 16.0,
-      // color: ,
+      color: color,
     ),
   );
 }
 
-Widget subtitle2({String text}) {
+Widget subtitle2({String text, Color color}) {
   return Text(
     text,
     style: TextStyle(
       fontWeight: FontWeight.w400,
       fontSize: 12.0,
-      // color: ,
+      color: color,
     ),
   );
 }
@@ -74,6 +74,6 @@ Widget textWithExternalLinks({Map<String, Map<String, dynamic>> textData, Color 
       ),
     );
   } else {
-    return subtitle2(text: "");
+    return subtitle2(text: "", color: Colors.blueGrey);
   }
 }
