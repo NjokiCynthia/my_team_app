@@ -29,6 +29,7 @@ class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return ThemeData(
       primarySwatch: Colors.blue,
+      
     );
   }
 }

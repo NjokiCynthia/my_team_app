@@ -12,6 +12,17 @@ Widget heading1({String text}) {
   );
 }
 
+Widget heading2({String text}) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontWeight: FontWeight.w900,
+      fontSize: 18.0,
+      // color: ,
+    ),
+  );
+}
+
 Widget subtitle1({String text}) {
   return Text(
     text,
