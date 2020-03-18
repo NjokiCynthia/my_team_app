@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
+import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => Login(),
           '/verification': (context) => Verification(),
+          '/my-groups': (context) => MyGroups(),
           '/home': (context) => ChamasoftDashboard(),
         },
       ),
