@@ -25,15 +25,20 @@ class Verification extends StatelessWidget {
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                       child: Image(
-                        image:  AssetImage('assets/cs.png'),
+                        image: AssetImage('assets/cs.png'),
                         height: 100.0,
                       ),
                     ),
                     heading1(text: "Verification", color: Colors.blueGrey),
-                    subtitle1(text: "A verification code has been sent to", color: Colors.blueGrey),
+                    subtitle1(
+                        text: "A verification code has been sent to",
+                        color: Colors.blueGrey),
                     subtitle1(text: "+254 701 234 567", color: Colors.blueGrey),
-                    SizedBox(height: 12,),
-                    subtitle2(text: "Enter your code here", color: Colors.blueGrey),
+                    SizedBox(
+                      height: 12,
+                    ),
+                    subtitle2(
+                        text: "Enter your code here", color: Colors.blueGrey),
                     Padding(
                       padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                       child: PinInputTextField(
@@ -64,25 +69,29 @@ class Verification extends StatelessWidget {
                         },
                       ),
                     ),
-                    SizedBox(height: 24,),
+                    SizedBox(
+                      height: 24,
+                    ),
                     defaultButton(
                       context: context,
                       text: "Verify Phone",
-                      onPressed: () => Navigator.pushReplacementNamed(context, '/my-groups'),
+                      onPressed: () =>
+                          Navigator.pushReplacementNamed(context, '/signup'),
                     ),
-                    SizedBox(height: 24,),
+                    SizedBox(
+                      height: 24,
+                    ),
                     textWithExternalLinks(
-                      color: Colors.blueGrey,
-                      size: 12.0,
-                      textData: {
-                        "Didn't receive verification code?": {},
-                        'Resend': {
-                          "url": () => print("Resending now..."),
-                          "color": Colors.blue,
-                          "weight": FontWeight.w700
-                        },
-                      }
-                    ),
+                        color: Colors.blueGrey,
+                        size: 12.0,
+                        textData: {
+                          "Didn't receive verification code?": {},
+                          'Resend': {
+                            "url": () => print("Resending now..."),
+                            "color": Colors.blue,
+                            "weight": FontWeight.w700
+                          },
+                        }),
                   ],
                 ),
               ),

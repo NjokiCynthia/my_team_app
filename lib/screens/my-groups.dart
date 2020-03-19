@@ -82,7 +82,7 @@ class MyGroups extends StatelessWidget {
                 icon: LineAwesomeIcons.arrow_left,
                 backgroundColor: Colors.blue.withOpacity(0.2),
                 textColor: Colors.blue,
-                action: () => Navigator.pushReplacementNamed(context, '/verification'),
+                action: () => Navigator.pushReplacementNamed(context, '/signup'),
               ),
             )
           ],
