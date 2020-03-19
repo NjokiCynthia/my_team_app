@@ -38,6 +38,7 @@ class MyGroups extends StatelessWidget {
                       context: context,
                       leadingIcon: LineAwesomeIcons.plus,
                       trailingIcon: LineAwesomeIcons.angle_right,
+                      hideTrailingIcon: true,
                       backgroundColor: Colors.blue.withOpacity(0.2),
                       title: "ADD NEW GROUP",
                       subtitle: "Chairperson",

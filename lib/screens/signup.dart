@@ -21,9 +21,7 @@ class SignUp extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   heading1(text: "Profile", color: Colors.blueGrey),
-                  subtitle2(
-                      text: "Fill details to complete account setup",
-                      color: Colors.blueGrey),
+                  subtitle1(text: "Fill details to complete\naccount setup", color: Colors.blueGrey),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
                     child: Stack(
@@ -37,11 +35,11 @@ class SignUp extends StatelessWidget {
                           height: 32,
                           width: 32,
                           child: screenActionButton(
-                              icon: LineAwesomeIcons.camera,
-                              backgroundColor: Colors.blue,
-                              textColor: Colors.white,
-                              action: () => Navigator.pushReplacementNamed(
-                                  context, '/verification')),
+                            icon: Icons.camera_alt,
+                            backgroundColor: Colors.white.withOpacity(0.5),
+                            textColor: Colors.blueGrey,
+                            action: (){}
+                          ),
                         )
                       ],
                     ),

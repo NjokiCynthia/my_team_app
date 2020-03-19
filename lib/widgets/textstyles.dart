@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-Widget heading1({String text, Color color}) {
+Widget heading1({String text, Color color, TextAlign align = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -9,10 +9,11 @@ Widget heading1({String text, Color color}) {
       fontSize: 24.0,
       color: color,
     ),
+    textAlign: align,
   );
 }
 
-Widget heading2({String text, Color color}) {
+Widget heading2({String text, Color color, TextAlign align = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -20,10 +21,11 @@ Widget heading2({String text, Color color}) {
       fontSize: 18.0,
       color: color,
     ),
+    textAlign: align,
   );
 }
 
-Widget subtitle1({String text, Color color}) {
+Widget subtitle1({String text, Color color, TextAlign align = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -31,10 +33,11 @@ Widget subtitle1({String text, Color color}) {
       fontSize: 16.0,
       color: color,
     ),
+    textAlign: align,
   );
 }
 
-Widget subtitle2({String text, Color color}) {
+Widget subtitle2({String text, Color color, TextAlign align = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -42,6 +45,7 @@ Widget subtitle2({String text, Color color}) {
       fontSize: 12.0,
       color: color,
     ),
+    textAlign: align,
   );
 }
 

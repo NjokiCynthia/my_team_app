@@ -17,19 +17,19 @@ Widget screenActionButton({IconData icon, Color backgroundColor, Color textColor
     width: 42.0,
     height: 42.0,
     child: FlatButton(
-        padding: EdgeInsets.all(0.0),
-        child: Icon(
-          icon,
-        ),
-        onPressed: action,
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-        textColor: textColor,
-        color: backgroundColor,
+      padding: EdgeInsets.all(0.0),
+      child: Icon(
+        icon,
       ),
+      onPressed: action,
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+      textColor: textColor,
+      color: backgroundColor,
+    ),
   );
 }
 
-Widget groupInfoButton({BuildContext context, IconData leadingIcon, IconData trailingIcon, Color backgroundColor, Color textColor, String title, String subtitle, String description = "", Color borderColor, Function action}) {
+Widget groupInfoButton({BuildContext context, IconData leadingIcon, IconData trailingIcon, bool hideTrailingIcon = false, Color backgroundColor, Color textColor, String title, String subtitle, String description = "", Color borderColor, Function action}) {
   return Container(
     width: MediaQuery.of(context).size.width,
     // height: 42.0,
@@ -83,7 +83,7 @@ Widget groupInfoButton({BuildContext context, IconData leadingIcon, IconData tra
               SizedBox(height: 10,),
             ],
           ),
-          trailing: Icon(
+          trailing: hideTrailingIcon ? SizedBox() : Icon(
             trailingIcon,
             color: textColor.withOpacity(0.8),
             size: 16.0,
