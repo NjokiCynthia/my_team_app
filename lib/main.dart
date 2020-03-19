@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         theme: Styles.themeData(themeChangeProvider.darkTheme, context),
         initialRoute: '/',
         routes: {
-          '/': (context) => SignUp(),
+          '/': (context) => Login(),
           '/verification': (context) => Verification(),
           '/signup': (context) => SignUp(),
           '/my-groups': (context) => MyGroups(),
