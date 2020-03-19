@@ -26,9 +26,24 @@ class SignUp extends StatelessWidget {
                       color: Colors.blueGrey),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
-                    child: Image(
-                      image: AssetImage('assets/no-user.png'),
-                      height: 100,
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: <Widget>[
+                        Image(
+                          image: AssetImage('assets/no-user.png'),
+                          height: 100,
+                        ),
+                        Positioned(
+                          height: 32,
+                          width: 32,
+                          child: screenActionButton(
+                              icon: LineAwesomeIcons.camera,
+                              backgroundColor: Colors.blue,
+                              textColor: Colors.white,
+                              action: () => Navigator.pushReplacementNamed(
+                                  context, '/verification')),
+                        )
+                      ],
                     ),
                   ),
                   TextFormField(
@@ -58,7 +73,8 @@ class SignUp extends StatelessWidget {
                 icon: LineAwesomeIcons.arrow_left,
                 backgroundColor: Colors.blue.withOpacity(0.2),
                 textColor: Colors.blue,
-                action: () => Navigator.pushReplacementNamed(context, '/verification')),
+                action: () =>
+                    Navigator.pushReplacementNamed(context, '/verification')),
           )
         ],
       )),
