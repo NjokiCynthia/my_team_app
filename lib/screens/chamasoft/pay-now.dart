@@ -27,6 +27,7 @@ class PayNowState extends State<PayNow> {
     final TextEditingController _controller = new TextEditingController();
     return Scaffold(
       appBar: AppBar(
+        leading: Icon(LineAwesomeIcons.arrow_left),
         title: Text("Contribution Payment"),
       ),
       backgroundColor: Colors.transparent,
