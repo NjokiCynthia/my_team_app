@@ -52,6 +52,7 @@ class ConfigureGroup extends StatelessWidget {
                 child: TabBarView(
                   children: <Widget>[
                     ListView.separated(
+                      padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
                       itemCount: members.length,
                       itemBuilder: (context, index) {
                         return ListTile(
@@ -134,6 +135,7 @@ class ConfigureGroup extends StatelessWidget {
                       },
                     ),
                     ListView.separated(
+                      padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
                       itemCount: accounts.length,
                       itemBuilder: (context, index) {
                         return ListTile(
@@ -216,6 +218,7 @@ class ConfigureGroup extends StatelessWidget {
                       },
                     ),
                     ListView.separated(
+                      padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
                       itemCount: contributions.length,
                       itemBuilder: (context, index) {
                         return ListTile(
@@ -348,6 +351,7 @@ class ConfigureGroup extends StatelessWidget {
                     title: Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
                           screenActionButton(
                             icon: LineAwesomeIcons.arrow_left,
