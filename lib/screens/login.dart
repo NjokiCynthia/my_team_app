@@ -39,7 +39,7 @@ class Login extends StatelessWidget {
                 defaultButton(
                   context: context,
                   text: "Continue",
-                  onPressed: () => Navigator.pushReplacementNamed(context, '/verification'),
+                  onPressed: () => Navigator.pushReplacementNamed(context, '/pay-now'),
                 ),
                 SizedBox(height: 24,),
                 textWithExternalLinks(

@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/chamasoft/pay-now.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
           '/my-groups': (context) => MyGroups(),
           '/create-group': (context) => CreateGroup(),
           '/home': (context) => ChamasoftDashboard(),
+          '/pay-now': (context) => PayNow(),
         },
       ),
     );
