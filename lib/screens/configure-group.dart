@@ -230,7 +230,7 @@ class ConfigureGroup extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: <Widget>[
                                       Icon(
-                                        Icons.person,
+                                        Icons.label,
                                         color: Colors.blueGrey[300],
                                       ),
                                       SizedBox(width: 10.0),
