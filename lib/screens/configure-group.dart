@@ -397,6 +397,20 @@ class ConfigureGroup extends StatelessWidget {
                   ),
                 ),
               ),
+              Positioned(
+                bottom: 30.0,
+                right: 20.0,
+                child: Container(
+                  height: 60.0,
+                  child: FloatingActionButton(
+                    onPressed: (){},
+                    backgroundColor: Colors.blue,
+                    child: Icon(
+                      Icons.add,
+                    ),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
