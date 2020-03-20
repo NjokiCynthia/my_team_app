@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Chamasoft',
         theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-        initialRoute: '/',
+        initialRoute: '/chamasoft-home',
         routes: {
           '/': (context) => Login(),
           '/verification': (context) => Verification(),
@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
           '/my-groups': (context) => MyGroups(),
           '/create-group': (context) => CreateGroup(),
           '/configure-group': (context) => ConfigureGroup(),
-          '/home': (context) => ChamasoftDashboard(),
+          '/chamasoft-home': (context) => ChamasoftDashboard(),
         },
       ),
     );

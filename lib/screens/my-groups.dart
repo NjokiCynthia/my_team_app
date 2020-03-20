@@ -57,7 +57,7 @@ class MyGroups extends StatelessWidget {
                       description: "Chairperson",
                       textColor: Colors.blueGrey,
                       borderColor: Colors.blueGrey.withOpacity(0.2),
-                      action: (){},
+                      action: () => Navigator.pushReplacementNamed(context, '/chamasoft-home'),
                     ),
                     SizedBox(height: 12,),
                     groupInfoButton(
@@ -70,7 +70,7 @@ class MyGroups extends StatelessWidget {
                       description: "Member",
                       textColor: Colors.blueGrey,
                       borderColor: Colors.blueGrey.withOpacity(0.2),
-                      action: (){},
+                      action: () => Navigator.pushReplacementNamed(context, '/chamasoft-home'),
                     ),
                   ],
                 ),
