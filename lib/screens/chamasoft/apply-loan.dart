@@ -68,6 +68,8 @@ class ApplyLoanState extends State<ApplyLoan> {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(LineAwesomeIcons.arrow_left),
+        //backgroundColor: Colors.transparent,
+        elevation: 0.0,
         title: Text("Apply Loan"),
       ),
       backgroundColor: Colors.transparent,

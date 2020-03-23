@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
@@ -8,7 +7,13 @@ Widget primaryPageAppBar({String title}) {
     centerTitle: false,
     title: Padding(
       padding: EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
-      child: Text(title, style: TextStyle(color: Colors.blueGrey, fontWeight: FontWeight.w900, fontSize: 22.0),),
+      child: Text(
+        title,
+        style: TextStyle(
+            color: Colors.blueGrey,
+            fontWeight: FontWeight.w900,
+            fontSize: 22.0),
+      ),
     ),
     elevation: 0.5,
     automaticallyImplyLeading: false,
@@ -18,12 +23,19 @@ Widget primaryPageAppBar({String title}) {
         child: IconButton(
           icon: Icon(LineAwesomeIcons.close, color: Colors.blue),
           iconSize: 22.0,
-          onPressed: (){},
+          onPressed: () {},
         ),
       )
     ],
     flexibleSpace: Container(
       height: 100,
     ),
+  );
+}
+
+Widget levelOneAppbar({String title}) {
+  return AppBar(
+    title: Text(title),
+
   );
 }
