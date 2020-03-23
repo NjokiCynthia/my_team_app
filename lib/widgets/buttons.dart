@@ -12,24 +12,25 @@ Widget defaultButton({ BuildContext context, String text, Function onPressed}) {
   );
 }
 
-Widget screenActionButton({IconData icon, Color backgroundColor, Color textColor, Function action}) {
+Widget screenActionButton({IconData icon, Color backgroundColor, Color textColor, Function action, double buttonSize = 42.0, double iconSize = 22.0}) {
   return Container(
-    width: 42.0,
-    height: 42.0,
+    width: buttonSize,
+    height: buttonSize,
     child: FlatButton(
-        padding: EdgeInsets.all(0.0),
-        child: Icon(
-          icon,
-        ),
-        onPressed: action,
-        shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-        textColor: textColor,
-        color: backgroundColor,
+      padding: EdgeInsets.all(0.0),
+      child: Icon(
+        icon,
+        size: iconSize,
       ),
+      onPressed: action,
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+      textColor: textColor,
+      color: backgroundColor,
+    ),
   );
 }
 
-Widget groupInfoButton({BuildContext context, IconData leadingIcon, IconData trailingIcon, Color backgroundColor, Color textColor, String title, String subtitle, String description = "", Color borderColor, Function action}) {
+Widget groupInfoButton({BuildContext context, IconData leadingIcon, IconData trailingIcon, bool hideTrailingIcon = false, Color backgroundColor, Color textColor, String title, String subtitle, String description = "", Color borderColor, Function action}) {
   return Container(
     width: MediaQuery.of(context).size.width,
     // height: 42.0,
@@ -83,7 +84,7 @@ Widget groupInfoButton({BuildContext context, IconData leadingIcon, IconData tra
               SizedBox(height: 10,),
             ],
           ),
-          trailing: Icon(
+          trailing: hideTrailingIcon ? SizedBox() : Icon(
             trailingIcon,
             color: textColor.withOpacity(0.8),
             size: 16.0,
@@ -100,5 +101,26 @@ Widget groupInfoButton({BuildContext context, IconData leadingIcon, IconData tra
         color: backgroundColor,
         highlightedBorderColor: borderColor,
       ),
+  );
+}
+
+Widget smallBadgeButton({Color backgroundColor, String text, Color textColor, Function action, double buttonHeight = 24.0, double textSize = 12.0}) {
+  return Container(
+    height: buttonHeight,
+    child: FlatButton(
+      padding: EdgeInsets.symmetric(horizontal: 6.0),
+      child: Text(
+        text,
+        style: TextStyle(
+          color: textColor,
+          fontWeight: FontWeight.w400,
+          fontSize: textSize,
+        ),
+      ),
+      onPressed: action,
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+      textColor: textColor,
+      color: backgroundColor,
+    ),
   );
 }

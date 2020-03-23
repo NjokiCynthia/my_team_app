@@ -17,6 +17,7 @@ dependencies:
   provider: ^4.0.4
   url_launcher: ^5.4.1
   pin_input_text_field: ^3.0.1
+  md2_tab_indicator: ^1.0.2
 
 dev_dependencies:
   flutter_test:
