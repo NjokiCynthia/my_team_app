@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 Widget defaultButton({ BuildContext context, String text, Function onPressed}) {
   return RaisedButton(
@@ -122,5 +123,123 @@ Widget smallBadgeButton({Color backgroundColor, String text, Color textColor, Fu
       textColor: textColor,
       color: backgroundColor,
     ),
+  );
+}
+
+Widget groupSwitcherButton({String title, String role}) {
+  return Padding(
+    padding: EdgeInsets.only(top: 10.0),
+    child: FlatButton(
+      padding: EdgeInsets.fromLTRB(20.0, 0.0, 3.0, 0.0),
+      child: Column(
+        children: <Widget>[
+          Container(
+            // width: 220,
+            child: ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
+              dense: true,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  Text(
+                    title,
+                    style: TextStyle(
+                      color: Colors.blueGrey[700],
+                      fontWeight: FontWeight.w900,
+                      fontSize: 16.0,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Icon(
+                        Icons.person,
+                        size: 14.0,
+                      ),
+                      SizedBox(width: 4.0),
+                      Text(
+                        role,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 14.0,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.fade,
+                        softWrap: false,
+                        textAlign: TextAlign.end,
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              trailing: Container(
+                height: 42.0,
+                width: 42.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40.0),
+                  color: Colors.blueGrey[200],
+                ),
+                child: Icon(
+                  Feather.users,
+                  color: Colors.white,
+                  size: 26.0,
+                ),
+                // ** If group image is available, replace above child with this: **
+                // =================================================================
+                // child: Image(
+                //   image:  AssetImage('assets/no-user.png'),
+                //   height: 42.0,
+                // ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      onPressed: (){},
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+      textColor: Colors.blue,
+      color: Colors.white,
+    ),
+  );
+}
+
+Widget cardAmountButton({String currency, String amount, Function action, double size, Color color}) {
+  return FlatButton(
+    padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Text(
+          "$currency ",
+          style: TextStyle(
+            color: color,
+            fontSize: (size - 2.0),
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        Text(
+          amount,
+          style: TextStyle(
+            color: color,
+            fontSize: size,
+            fontWeight: FontWeight.w800,
+          ),
+          textAlign: TextAlign.end,
+        ),
+        SizedBox(width: 10.0,),
+        Icon(
+          Feather.chevron_right,
+          size: (size - 4.0),
+          color: color.withOpacity(0.4),
+        )
+      ],
+    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    onPressed: action,
+    highlightColor: Colors.blueGrey[50],
   );
 }

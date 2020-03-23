@@ -81,3 +81,200 @@ Widget textWithExternalLinks({Map<String, Map<String, dynamic>> textData, Color 
     return subtitle2(text: "", color: Colors.blueGrey);
   }
 }
+
+List<Widget> contributionSummary({Color color, IconData cardIcon, String currency, String cardAmount, String amountDue, String dueDate, String contributionName}){
+  List<Widget> _data = [];
+  List<String> _name = contributionName.split(" ");
+  _data.clear();
+  if (_name.length == 1) {
+    _data.add(
+      Stack(
+        children: <Widget>[
+          Icon(
+            cardIcon,
+            color: color.withOpacity(0.6),
+            size: 38.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(height: 12.0,),
+                  Container(
+                    width: 90.0,
+                    child: Text(
+                      contributionName,
+                      style: TextStyle(
+                        color: color,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.end,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      )
+    );
+  }
+  if (_name.length == 2) {
+    _data.add(
+      Stack(
+        children: <Widget>[
+          Icon(
+            cardIcon,
+            color: color.withOpacity(0.6),
+            size: 38.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(height: 4.0,),
+                  Text(
+                    _name[0],
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                  Text(
+                    _name[1],
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      )
+    );
+  }
+  if (_name.length > 2) {
+    _data.add(
+      Stack(
+        children: <Widget>[
+          Icon(
+            cardIcon,
+            color: color.withOpacity(0.6),
+            size: 38.0,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  SizedBox(height: 6.0,),
+                  Container(
+                    width: 90.0,
+                    child: Text(
+                      contributionName,
+                      style: TextStyle(
+                        color: color,
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      textAlign: TextAlign.end,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      )
+    );
+  }
+  _data.add(SizedBox(height: 20.0,));
+  _data.add(
+    Row(
+      children: <Widget>[
+        Text(
+          "$currency ",
+          style: TextStyle(
+            color: color.withOpacity(0.6),
+            fontSize: 18.0,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        Text(
+          cardAmount,
+          style: TextStyle(
+            color: color,
+            fontSize: 20.0,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
+      ],
+    ),
+  );
+  _data.add(SizedBox(height: 10.0,));
+  _data.add(
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Amount Due",
+              style: TextStyle(
+                color: color.withOpacity(0.6),
+                fontSize: 11.0,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+            Row(
+              children: <Widget>[
+                Text(
+                  "$currency ",
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Text(
+                  amountDue,
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                )
+              ],
+            ),
+            Text(
+              dueDate,
+              style: TextStyle(
+                color: color.withOpacity(0.6),
+                fontSize: 10.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ],
+    )
+  );
+  return _data;
+}
