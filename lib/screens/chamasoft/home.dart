@@ -152,7 +152,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           Padding(
             padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
             child: Container(
-              height: 175.0,
+              height: 180.0,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
@@ -280,7 +280,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           Padding(
             padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
             child: Container(
-              height: 175.0,
+              height: 180.0,
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.only(top: 5.0, bottom: 10.0),

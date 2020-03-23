@@ -139,7 +139,7 @@ List<Widget> contributionSummary({Color color, IconData cardIcon, String currenc
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  SizedBox(height: 4.0,),
+                  SizedBox(height: 0.0,),
                   Container(
                     width: 90.0,
                     child: Text(
