@@ -140,23 +140,33 @@ List<Widget> contributionSummary({Color color, IconData cardIcon, String currenc
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
                   SizedBox(height: 4.0,),
-                  Text(
-                    _name[0],
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w800,
+                  Container(
+                    width: 90.0,
+                    child: Text(
+                      _name[0],
+                      style: TextStyle(
+                        color: color,
+                        fontSize: 14.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      textAlign: TextAlign.end,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textAlign: TextAlign.end,
                   ),
-                  Text(
-                    _name[1],
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w400,
+                  Container(
+                    width: 90.0,
+                    child: Text(
+                       _name[1],
+                      style: TextStyle(
+                        color: color,
+                        fontSize: 22.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                      textAlign: TextAlign.end,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    textAlign: TextAlign.end,
                   ),
                 ],
               ),
@@ -204,7 +214,7 @@ List<Widget> contributionSummary({Color color, IconData cardIcon, String currenc
       )
     );
   }
-  _data.add(SizedBox(height: 20.0,));
+  _data.add(SizedBox(height: 14.0,));
   _data.add(
     Row(
       children: <Widget>[
@@ -228,53 +238,55 @@ List<Widget> contributionSummary({Color color, IconData cardIcon, String currenc
     ),
   );
   _data.add(SizedBox(height: 10.0,));
-  _data.add(
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Text(
-              "Amount Due",
-              style: TextStyle(
-                color: color.withOpacity(0.6),
-                fontSize: 11.0,
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  "$currency ",
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
-                  ),
+  if(amountDue != ""){
+    _data.add(
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                "Amount Due",
+                style: TextStyle(
+                  color: color.withOpacity(0.6),
+                  fontSize: 11.0,
+                  fontWeight: FontWeight.w400,
                 ),
-                Text(
-                  amountDue,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                )
-              ],
-            ),
-            Text(
-              dueDate,
-              style: TextStyle(
-                color: color.withOpacity(0.6),
-                fontSize: 10.0,
-                fontWeight: FontWeight.w600,
               ),
-            ),
-          ],
-        ),
-      ],
-    )
-  );
+              Row(
+                children: <Widget>[
+                  Text(
+                    "$currency ",
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    amountDue,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
+                ],
+              ),
+              Text(
+                dueDate,
+                style: TextStyle(
+                  color: color.withOpacity(0.6),
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+        ],
+      )
+    );
+  }
   return _data;
 }

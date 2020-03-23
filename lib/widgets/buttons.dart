@@ -243,3 +243,56 @@ Widget cardAmountButton({String currency, String amount, Function action, double
     highlightColor: Colors.blueGrey[50],
   );
 }
+
+Widget paymentActionButton({bool isFlat = false, String text, IconData icon, double iconSize = 12.0, Color color, Function action, Color textColor}) {
+  return (!isFlat) ? OutlineButton(
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.w700,
+            fontSize: 18.0,
+          ),
+        ),
+        SizedBox(width: 10.0,),
+        Icon(
+          icon,
+          color: textColor,
+          size: iconSize,
+        ),
+      ],
+    ),
+    borderSide: BorderSide(
+      width: 3.0,
+      color: color,
+    ),
+    highlightColor: color.withOpacity(0.1),
+    onPressed: action,
+  ) : FlatButton(
+    padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.w700,
+            fontSize: 18.0,
+          ),
+        ),
+        SizedBox(width: 10.0,),
+        Icon(
+          icon,
+          color: textColor,
+          size: iconSize,
+        ),
+      ],
+    ),
+    color: color,
+    onPressed: action,
+  );
+}
