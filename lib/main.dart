@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/pay-now.dart';
 import 'package:chamasoft/screens/configure-group.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
           '/configure-group': (context) => ConfigureGroup(),
           '/chamasoft-home': (context) => ChamasoftDashboard(),
           '/pay-now': (context) => PayNow(),
+          '/apply-loan': (context) => ApplyLoan(),
         },
       ),
     );

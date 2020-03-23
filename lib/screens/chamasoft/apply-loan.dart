@@ -5,18 +5,18 @@ import 'package:flutter/services.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-class PayNow extends StatefulWidget {
+class ApplyLoan extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return PayNowState();
+    return ApplyLoanState();
   }
 }
 
-class PayNowState extends State<PayNow> {
+class ApplyLoanState extends State<ApplyLoan> {
   static final List<String> _dropdownItems = <String>[
-    'Monthly Savings',
-    'Welfare'
+    'Emergency Loan',
+    'Education Loan'
   ];
   final formKey = new GlobalKey<FormState>();
   String _dropdownValue;
@@ -32,10 +32,10 @@ class PayNowState extends State<PayNow> {
               new InputDecorator(
                 decoration: InputDecoration(
                   filled: false,
-                  hintText: 'Select Contribution',
+                  hintText: 'Select Loan Type',
                   labelText: _dropdownValue == null
-                      ? 'Select Contribution'
-                      : 'Select Contribution',
+                      ? 'Select Loan Type'
+                      : 'Select Loan Type',
                   errorText: _errorText,
                 ),
                 isEmpty: _dropdownValue == null,
@@ -68,7 +68,7 @@ class PayNowState extends State<PayNow> {
     return Scaffold(
       appBar: AppBar(
         leading: Icon(LineAwesomeIcons.arrow_left),
-        title: Text("Contribution Payment"),
+        title: Text("Apply Loan"),
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -77,7 +77,7 @@ class PayNowState extends State<PayNow> {
             toolTip(
                 title: "Note that...",
                 message:
-                    "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
+                    "Loan application process is totally depended on your group's constitution and your group\'s management."),
             Container(
               padding: EdgeInsets.all(40.0),
               height: MediaQuery.of(context).size.height,
@@ -93,7 +93,7 @@ class PayNowState extends State<PayNow> {
                     decoration: InputDecoration(
                       hasFloatingPlaceholder: true,
                       // hintText: 'Phone Number or Email Address',
-                      labelText: 'Amount to Pay',
+                      labelText: 'Amount applying for',
                     ),
                   ),
                   SizedBox(
@@ -105,9 +105,9 @@ class PayNowState extends State<PayNow> {
                         color: Colors.blueGrey,
                         size: 12.0,
                         textData: {
-                          'Additional charges may be applied where necessary.':
+                          'By applying for this loan you agree to the ':
                               {},
-                          'Learn More': {
+                          'terms and conditions': {
                             "url": () => launchURL(
                                 'https://chamasoft.com/terms-and-conditions/'),
                             "color": Colors.blue,
@@ -120,7 +120,7 @@ class PayNowState extends State<PayNow> {
                   ),
                   defaultButton(
                       context: context,
-                      text: "Pay Now",
+                      text: "Apply Now",
                       onPressed: () =>
                           Navigator.pushReplacementNamed(context, '/'))
                 ],
