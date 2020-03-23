@@ -84,7 +84,7 @@ class PayNowState extends State<PayNow> {
                   //mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Icon(
-                      Icons.info_outline,
+                      Icons.lightbulb_outline,
                       color: Colors.blueGrey,
                       size: 24.0,
                       semanticLabel: 'Text to announce in accessibility modes',
