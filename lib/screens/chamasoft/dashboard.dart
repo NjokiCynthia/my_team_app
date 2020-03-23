@@ -83,7 +83,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             Align(
               alignment: Alignment.bottomLeft,
               child: BottomNavigationBar(
-                backgroundColor: Colors.blue[50].withOpacity(0.8),
+                backgroundColor: Colors.blue[50].withOpacity(0.89),
                 elevation: 0,
                 currentIndex: _currentPage,
                 type: BottomNavigationBarType.fixed,
