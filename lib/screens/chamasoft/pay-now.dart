@@ -17,7 +17,7 @@ class PayNow extends StatefulWidget {
 
 class PayNowState extends State<PayNow> {
   var _currentSelectedValue;
-  var _currencies = [
+  var contributions = [
     "Monthly Savings",
     "Welfare",
   ];
@@ -77,13 +77,13 @@ class PayNowState extends State<PayNow> {
                     builder: (FormFieldState<String> state) {
                       return InputDecorator(
                         decoration: InputDecoration(
-                          hasFloatingPlaceholder: true,
-                          labelText: "Select Contribution",
-//                          errorStyle: TextStyle(
-//                              color: Colors.redAccent, fontSize: 16.0),
-                          hintText: 'Please select expense',
-                        ),
-                        isEmpty: _currentSelectedValue == '',
+                            //labelStyle: textStyle,
+                            errorStyle: TextStyle(
+                                color: Colors.redAccent, fontSize: 16.0),
+                            //hintText: 'Please select expense',
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0))),
+                        isEmpty: true,
                         child: DropdownButtonHideUnderline(
                           child: DropdownButton<String>(
                             value: _currentSelectedValue,
@@ -94,11 +94,9 @@ class PayNowState extends State<PayNow> {
                                 state.didChange(newValue);
                               });
                             },
-                            items: _currencies.map((String value) {
+                            items: contributions.map((String value) {
                               return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
+                                  value: value, child: Text(value));
                             }).toList(),
                           ),
                         ),
