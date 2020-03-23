@@ -16,11 +16,53 @@ class PayNow extends StatefulWidget {
 }
 
 class PayNowState extends State<PayNow> {
-  var _currentSelectedValue;
-  var contributions = [
-    "Monthly Savings",
-    "Welfare",
+  static final List<String> _dropdownItems = <String>[
+    'Monthly Savings',
+    'Welfare'
   ];
+  final formKey = new GlobalKey<FormState>();
+  String _dropdownValue;
+  String _errorText;
+
+  Widget buildDropDown() {
+    return FormField(
+      builder: (FormFieldState state) {
+        return DropdownButtonHideUnderline(
+          child: new Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              new InputDecorator(
+                decoration: InputDecoration(
+                  filled: false,
+                  hintText: 'Select Contribution',
+                  labelText: _dropdownValue == null
+                      ? 'Select Contribution'
+                      : 'Select Contribution',
+                  errorText: _errorText,
+                ),
+                isEmpty: _dropdownValue == null,
+                child: new DropdownButton<String>(
+                  value: _dropdownValue,
+                  isDense: true,
+                  onChanged: (String newValue) {
+                    setState(() {
+                      _dropdownValue = newValue;
+                    });
+                  },
+                  items: _dropdownItems.map((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +88,9 @@ class PayNowState extends State<PayNow> {
                       color: Colors.blueGrey,
                       size: 24.0,
                       semanticLabel: 'Text to announce in accessibility modes',
+                    ),
+                    SizedBox(
+                      width: 10,
                     ),
                     Expanded(
                       child: Column(
@@ -73,36 +118,7 @@ class PayNowState extends State<PayNow> {
               color: Colors.white,
               child: Column(
                 children: <Widget>[
-                  FormField<String>(
-                    builder: (FormFieldState<String> state) {
-                      return InputDecorator(
-                        decoration: InputDecoration(
-                            //labelStyle: textStyle,
-                            errorStyle: TextStyle(
-                                color: Colors.redAccent, fontSize: 16.0),
-                            //hintText: 'Please select expense',
-                            border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(5.0))),
-                        isEmpty: true,
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: _currentSelectedValue,
-                            isDense: true,
-                            onChanged: (String newValue) {
-                              setState(() {
-                                _currentSelectedValue = newValue;
-                                state.didChange(newValue);
-                              });
-                            },
-                            items: contributions.map((String value) {
-                              return DropdownMenuItem<String>(
-                                  value: value, child: Text(value));
-                            }).toList(),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  buildDropDown(),
                   TextFormField(
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
