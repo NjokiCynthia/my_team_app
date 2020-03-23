@@ -219,6 +219,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             ),
           ),
           Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+            child: Container(
+              height: 50.0,
+              color: Colors.white,
+              child: Row(),
+            ),
+          ),
+          Padding(
             padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
