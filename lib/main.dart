@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Chamasoft',
         theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-        initialRoute: '/chamasoft-home',
+        initialRoute: '/configure-group',
         routes: {
           '/': (context) => Login(),
           '/verification': (context) => Verification(),
