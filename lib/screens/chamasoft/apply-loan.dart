@@ -67,10 +67,13 @@ class ApplyLoanState extends State<ApplyLoan> {
     final TextEditingController _controller = new TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(LineAwesomeIcons.arrow_left),
-        //backgroundColor: Colors.transparent,
+        leading: Icon(LineAwesomeIcons.arrow_left, color: Colors.blueGrey,),
+        backgroundColor: Colors.white,
         elevation: 0.0,
-        title: Text("Apply Loan"),
+        title: Text(
+          "Apply Loan",
+          style: TextStyle(color: Colors.blueGrey),
+        ),
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -107,8 +110,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                         color: Colors.blueGrey,
                         size: 12.0,
                         textData: {
-                          'By applying for this loan you agree to the ':
-                              {},
+                          'By applying for this loan you agree to the ': {},
                           'terms and conditions': {
                             "url": () => launchURL(
                                 'https://chamasoft.com/terms-and-conditions/'),
