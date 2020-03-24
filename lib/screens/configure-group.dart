@@ -45,7 +45,7 @@ class ConfigureGroup extends StatelessWidget {
           child: Stack(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.only(top: 130.0),
+                padding: EdgeInsets.only(top: 120.0),
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
                 decoration: primaryGradient(),
@@ -345,11 +345,10 @@ class ConfigureGroup extends StatelessWidget {
                 left: 0.0,
                 right: 0.0,
                 child: Container(
-                  width: 200.0,
-                  height: 130.0,
+                  height: 120.0,
                   child: AppBar(
                     title: Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 0.0),
+                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -366,6 +365,7 @@ class ConfigureGroup extends StatelessWidget {
                     ),
                     elevation: 0.0,
                     backgroundColor: Colors.white54,
+                    automaticallyImplyLeading: false,
                     bottom: TabBar(
                       indicator: MD2Indicator(
                         indicatorHeight: 3,
