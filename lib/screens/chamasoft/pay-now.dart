@@ -1,5 +1,3 @@
-import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +7,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class PayNow extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return PayNowState();
-  }
+  PayNowState createState() => PayNowState();
 }
 
 class PayNowState extends State<PayNow> {
@@ -120,6 +115,7 @@ class PayNowState extends State<PayNow> {
                 children: <Widget>[
                   buildDropDown(),
                   TextFormField(
+                    controller: _controller,
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
                       WhitelistingTextInputFormatter.digitsOnly

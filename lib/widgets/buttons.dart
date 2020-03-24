@@ -127,58 +127,60 @@ Widget smallBadgeButton({Color backgroundColor, String text, Color textColor, Fu
 }
 
 Widget groupSwitcherButton({String title, String role}) {
-  return Padding(
-    padding: EdgeInsets.only(top: 10.0),
-    child: FlatButton(
-      padding: EdgeInsets.fromLTRB(20.0, 0.0, 3.0, 0.0),
-      child: Column(
-        children: <Widget>[
-          Container(
-            // width: 220,
-            child: ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 0.0),
-              dense: true,
-              title: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  Text(
-                    title,
-                    style: TextStyle(
-                      color: Colors.blueGrey[700],
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16.0,
+  return FlatButton(
+    padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
+    child: Column(
+      children: <Widget>[
+        Container(
+          height: 32.0,
+          constraints: BoxConstraints(maxWidth: 320),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.blueGrey[700],
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16.0,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.fade,
+                      softWrap: false,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Icon(
-                        Icons.person,
-                        size: 14.0,
-                      ),
-                      SizedBox(width: 4.0),
-                      Text(
-                        role,
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.w900,
-                          fontSize: 14.0,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Icon(
+                          Icons.person,
+                          size: 12.0,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.fade,
-                        softWrap: false,
-                        textAlign: TextAlign.end,
-                      ),
-                    ],
-                  )
-                ],
+                        SizedBox(width: 4.0),
+                        Text(
+                          role,
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14.0,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
-              trailing: Container(
-                height: 42.0,
-                width: 42.0,
+              Container(
+                height: 32.0,
+                width: 32.0,
+                margin: EdgeInsets.only(left: 5.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40.0),
                   color: Colors.blueGrey[200],
@@ -186,24 +188,24 @@ Widget groupSwitcherButton({String title, String role}) {
                 child: Icon(
                   Feather.users,
                   color: Colors.white,
-                  size: 26.0,
+                  size: 18.0,
                 ),
                 // ** If group image is available, replace above child with this: **
                 // =================================================================
                 // child: Image(
                 //   image:  AssetImage('assets/no-user.png'),
-                //   height: 42.0,
+                //   height: 32.0,
                 // ),
               ),
-            ),
+            ]
           ),
-        ],
-      ),
-      onPressed: (){},
-      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
-      textColor: Colors.blue,
-      color: Colors.white,
+        ),
+      ],
     ),
+    onPressed: (){},
+    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+    textColor: Colors.blue,
+    color: Colors.white,
   );
 }
 

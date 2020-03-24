@@ -53,18 +53,15 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   elevation: 0,
                   automaticallyImplyLeading: false,
                   actions: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.notifications,
-                          color: Colors.blueGrey[700],
-                        ), 
-                        onPressed: (){}
-                      ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.notifications,
+                        color: Colors.blueGrey[700],
+                      ), 
+                      onPressed: (){}
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0, right: 20.0),
+                      padding: EdgeInsets.only(right: 20.0),
                       child: IconButton(
                         icon: Icon(
                           Icons.settings,
@@ -74,9 +71,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       ),
                     ),
                   ],
-                  flexibleSpace: Container(
-                    height: 90,
-                  ),
+                  // flexibleSpace: Container(
+                  //   height: 90,
+                  // ),
                 )
               )
             ),
