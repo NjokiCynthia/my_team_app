@@ -31,7 +31,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             padding: EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 0.0),
             child: Container(
               padding: EdgeInsets.all(16.0),
-              decoration: cardDecoration(gradient: plainCardGradient()),
+              decoration: cardDecoration(gradient: plainCardGradient(context)),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -180,7 +180,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
@@ -198,7 +198,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
@@ -290,7 +290,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
@@ -308,7 +308,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
@@ -326,7 +326,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context)),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(

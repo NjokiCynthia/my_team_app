@@ -10,9 +10,9 @@ BoxDecoration primaryGradient(BuildContext context) {
   );
 }
 
-Gradient plainCardGradient() {
+Gradient plainCardGradient(BuildContext context) {
   return LinearGradient(
-    colors: [Colors.white, Color(0xFFF8F8FF)],
+    colors: [Theme.of(context).backgroundColor, Theme.of(context).selectedRowColor], //[Colors.white, Color(0xFFF8F8FF)],
     stops: [0.0, 1.0],
     begin: FractionalOffset.topCenter,
     end: FractionalOffset.bottomCenter,

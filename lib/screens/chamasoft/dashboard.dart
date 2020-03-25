@@ -46,11 +46,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                 child: AppBar(
-                  backgroundColor: Colors.blue[50],
+                  backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900] : Colors.blue[50],
                   centerTitle: false,
                   title: groupSwitcherButton(
                     title: "Witcher Welfare Association",
                     role: "Chairperson",
+                    context: context,
                   ),
                   elevation: 0,
                   automaticallyImplyLeading: false,
@@ -58,7 +59,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                     IconButton(
                       icon: Icon(
                         Icons.notifications,
-                        color: Colors.blueGrey[700],
+                        color: Theme.of(context).textSelectionHandleColor,
                       ), 
                       onPressed: (){}
                     ),
@@ -67,7 +68,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       child: IconButton(
                         icon: Icon(
                           Icons.settings,
-                          color: Colors.blueGrey[700],
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
                         onPressed: (){}
                       ),
@@ -82,7 +83,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             Align(
               alignment: Alignment.bottomLeft,
               child: BottomNavigationBar(
-                backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900].withOpacity(0.89) : Colors.blue[50].withOpacity(0.89),
+                backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900].withOpacity(0.95) : Colors.blue[50].withOpacity(0.89),
                 elevation: 0,
                 currentIndex: _currentPage,
                 type: BottomNavigationBarType.fixed,

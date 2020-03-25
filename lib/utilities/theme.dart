@@ -14,7 +14,7 @@ class DarkThemePreference {
 
 class DarkThemeProvider with ChangeNotifier {
   DarkThemePreference darkThemePreference = DarkThemePreference();
-  bool _darkTheme = false;
+  bool _darkTheme = true;
 
   bool get darkTheme => _darkTheme;
 
@@ -32,7 +32,7 @@ class Styles {
       backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white, //in use
       primaryColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blue, //in use
       indicatorColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blue[600], //in use
-      buttonColor: isDarkTheme ? Color(0xff3B3B3B) : Color(0xffF1F5FB),
+      buttonColor: isDarkTheme ? Colors.blueGrey[800].withOpacity(0.7) : Colors.white, //in use
       hintColor: isDarkTheme ? Colors.blueGrey[400]: Colors.blueGrey, //in use
       highlightColor: isDarkTheme ? Colors.blueGrey[800] : Colors.grey[300],
       hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
