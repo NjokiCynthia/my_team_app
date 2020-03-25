@@ -36,10 +36,11 @@ class Styles {
       hintColor: isDarkTheme ? Colors.blueGrey[400]: Colors.blueGrey, //in use
       highlightColor: isDarkTheme ? Colors.blueGrey[800] : Colors.grey[300],
       hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
-      focusColor: isDarkTheme ? Color(0xff0B2512) : Color(0xffA8DAB5),
+      focusColor: isDarkTheme ? Colors.blueGrey[800]: Color(0xFFF8F8FF), //in use
       selectedRowColor: isDarkTheme ? Colors.blueGrey[800] : Colors.blue[100], //in use
       textSelectionHandleColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey, //in use
       disabledColor: Colors.grey, //in use
+      unselectedWidgetColor: isDarkTheme ? Colors.black38 : Colors.blueGrey[100], //in use
       textSelectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800], //in use
       cardColor: isDarkTheme ? Colors.blueGrey : Colors.white, //in use
       canvasColor: isDarkTheme ? Colors.black : Colors.grey[50], //in use

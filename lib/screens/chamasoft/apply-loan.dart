@@ -8,7 +8,6 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 class ApplyLoan extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return ApplyLoanState();
   }
 }
@@ -91,6 +90,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                 children: <Widget>[
                   buildDropDown(),
                   TextFormField(
+                    controller: _controller,
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
                       WhitelistingTextInputFormatter.digitsOnly
