@@ -56,44 +56,6 @@ Widget subtitle2(
   );
 }
 
-Widget toolTip({String title, String message}) {
-  return Container(
-      padding: EdgeInsets.all(20.0),
-      color: Color(0xffededfe),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-//mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Icon(
-            Icons.lightbulb_outline,
-            color: Colors.blueGrey,
-            size: 24.0,
-            semanticLabel: 'Text to announce in accessibility modes',
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                subtitle1(text: title, color: Colors.blueGrey),
-                subtitle2(
-                    text: message,
-                    color: Colors.blueGrey,
-                    align: TextAlign.start)
-              ],
-            ),
-          ),
-          screenActionButton(
-              icon: LineAwesomeIcons.close,
-//backgroundColor: Colors.blue.withOpacity(0.2),
-              textColor: Colors.blueGrey,
-              action: null),
-        ],
-      ));
-}
-
 Widget textWithExternalLinks(
     {Map<String, Map<String, dynamic>> textData, Color color, double size}) {
   if (textData.isNotEmpty) {
@@ -190,25 +152,35 @@ List<Widget> contributionSummary(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 SizedBox(
-                  height: 4.0,
+                  height: 0.0,
                 ),
-                Text(
-                  _name[0],
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w800,
+                Container(
+                  width: 90.0,
+                  child: Text(
+                    _name[0],
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w800,
+                    ),
+                    textAlign: TextAlign.end,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.end,
                 ),
-                Text(
-                  _name[1],
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 22.0,
-                    fontWeight: FontWeight.w400,
+                Container(
+                  width: 90.0,
+                  child: Text(
+                    _name[1],
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 22.0,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.end,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                  textAlign: TextAlign.end,
                 ),
               ],
             ),
@@ -256,7 +228,7 @@ List<Widget> contributionSummary(
     ));
   }
   _data.add(SizedBox(
-    height: 20.0,
+    height: 14.0,
   ));
   _data.add(
     Row(
@@ -283,51 +255,91 @@ List<Widget> contributionSummary(
   _data.add(SizedBox(
     height: 10.0,
   ));
-  _data.add(Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            "Amount Due",
-            style: TextStyle(
-              color: color.withOpacity(0.6),
-              fontSize: 11.0,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          Row(
-            children: <Widget>[
-              Text(
-                "$currency ",
-                style: TextStyle(
-                  color: color,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w400,
-                ),
+  if (amountDue != "") {
+    _data.add(Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              "Amount Due",
+              style: TextStyle(
+                color: color.withOpacity(0.6),
+                fontSize: 11.0,
+                fontWeight: FontWeight.w400,
               ),
-              Text(
-                amountDue,
-                style: TextStyle(
-                  color: color,
-                  fontSize: 14.0,
-                  fontWeight: FontWeight.w700,
+            ),
+            Row(
+              children: <Widget>[
+                Text(
+                  "$currency ",
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              )
-            ],
+                Text(
+                  amountDue,
+                  style: TextStyle(
+                    color: color,
+                    fontSize: 14.0,
+                    fontWeight: FontWeight.w700,
+                  ),
+                )
+              ],
+            ),
+            Text(
+              dueDate,
+              style: TextStyle(
+                color: color.withOpacity(0.6),
+                fontSize: 10.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ],
+        ),
+      ],
+    ));
+  }
+  return _data;
+}
+
+Widget toolTip({String title, String message}) {
+  return Container(
+      padding: EdgeInsets.all(20.0),
+      color: Color(0xffededfe),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+//mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Icon(
+            Icons.lightbulb_outline,
+            color: Colors.blueGrey,
+            size: 24.0,
+            semanticLabel: 'Text to announce in accessibility modes',
           ),
-          Text(
-            dueDate,
-            style: TextStyle(
-              color: color.withOpacity(0.6),
-              fontSize: 10.0,
-              fontWeight: FontWeight.w600,
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                subtitle1(text: title, color: Colors.blueGrey),
+                subtitle2(
+                    text: message,
+                    color: Colors.blueGrey,
+                    align: TextAlign.start)
+              ],
             ),
           ),
+          screenActionButton(
+              icon: LineAwesomeIcons.close,
+//backgroundColor: Colors.blue.withOpacity(0.2),
+              textColor: Colors.blueGrey,
+              action: null),
         ],
-      ),
-    ],
-  ));
-  return _data;
+      ));
 }

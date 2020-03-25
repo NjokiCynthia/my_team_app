@@ -2,12 +2,14 @@ import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 
 final GlobalKey<ScaffoldState> dashboardScaffoldKey = new GlobalKey<ScaffoldState>();
+DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 class ChamasoftDashboard extends StatefulWidget {
   @override
@@ -33,7 +35,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       key: dashboardScaffoldKey,
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: primaryGradient(),
+        decoration: primaryGradient(context),
         child: Stack(
           children: <Widget>[
             getPage(_currentPage),
@@ -53,18 +55,15 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   elevation: 0,
                   automaticallyImplyLeading: false,
                   actions: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.only(top: 10.0),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.notifications,
-                          color: Colors.blueGrey[700],
-                        ), 
-                        onPressed: (){}
-                      ),
+                    IconButton(
+                      icon: Icon(
+                        Icons.notifications,
+                        color: Colors.blueGrey[700],
+                      ), 
+                      onPressed: (){}
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 10.0, right: 20.0),
+                      padding: EdgeInsets.only(right: 20.0),
                       child: IconButton(
                         icon: Icon(
                           Icons.settings,
@@ -74,16 +73,16 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       ),
                     ),
                   ],
-                  flexibleSpace: Container(
-                    height: 90,
-                  ),
+                  // flexibleSpace: Container(
+                  //   height: 90,
+                  // ),
                 )
               )
             ),
             Align(
               alignment: Alignment.bottomLeft,
               child: BottomNavigationBar(
-                backgroundColor: Colors.blue[50].withOpacity(0.8),
+                backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900].withOpacity(0.89) : Colors.blue[50].withOpacity(0.89),
                 elevation: 0,
                 currentIndex: _currentPage,
                 type: BottomNavigationBarType.fixed,
@@ -111,7 +110,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   });
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

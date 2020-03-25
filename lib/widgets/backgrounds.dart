@@ -1,10 +1,10 @@
 
 import 'package:flutter/material.dart';
 
-BoxDecoration primaryGradient() {
+BoxDecoration primaryGradient(BuildContext context) {
   return BoxDecoration(
     gradient: RadialGradient(
-      colors: [Colors.white, Colors.blue[100]],
+      colors: [Theme.of(context).backgroundColor, Theme.of(context).selectedRowColor],
       radius: 2.0,
     )
   );
