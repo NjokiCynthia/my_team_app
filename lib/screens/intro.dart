@@ -47,8 +47,8 @@ class IntroScreenState extends State<IntroScreen> {
     
     PageDecoration _pageDeco({Color pageColor}) {
       return PageDecoration(
-        titleTextStyle: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w900),
-        bodyTextStyle: TextStyle(fontSize: 16.0),
+        titleTextStyle: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w900, color: Colors.white),
+        bodyTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
         descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
         titlePadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 10.0),
         pageColor: pageColor,
@@ -96,8 +96,8 @@ class IntroScreenState extends State<IntroScreen> {
       skipFlex: 0,
       nextFlex: 0,
       skip: Text("Skip", style: TextStyle(fontSize: 16.0, color: Colors.blue[200])),
-      next: Text("Next", style: TextStyle(fontSize: 16.0,)),
-      done: Text("Continue", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800)),
+      next: Text("Next", style: TextStyle(fontSize: 16.0, color: Colors.white)),
+      done: Text("Continue", style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w800, color: Colors.white)),
       dotsDecorator: DotsDecorator(
         size: Size(10.0, 10.0),
         color: Colors.blue[200],
