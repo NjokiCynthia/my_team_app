@@ -24,11 +24,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 60.0),
+      padding: EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 60.0),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 0.0),
+            padding: EdgeInsets.fromLTRB(16.0, 5.0, 16.0, 0.0),
             child: Container(
               padding: EdgeInsets.all(16.0),
               decoration: cardDecoration(gradient: plainCardGradient()),
@@ -127,7 +127,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 16.0, 0.0),
+            padding: EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -155,7 +155,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
               height: 180.0,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                padding: EdgeInsets.only(top: 0.0, bottom: 10.0),
                 physics: BouncingScrollPhysics(),
                 children: <Widget>[
                   SizedBox(width: 16.0,),
@@ -224,10 +224,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
               padding: EdgeInsets.symmetric(vertical: 10.0),
               color: Colors.white54,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0,),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0,),
                     child: paymentActionButton(
                       color: Colors.blue,
                       textColor: Colors.blue,
@@ -239,7 +239,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     ),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0,),
+                    padding: EdgeInsets.symmetric(horizontal: 16.0,),
                     child: paymentActionButton(
                       color: Colors.blue,
                       textColor: Colors.white,
@@ -283,7 +283,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
               height: 180.0,
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                padding: EdgeInsets.only(top: 0.0, bottom: 10.0),
                 physics: BouncingScrollPhysics(),
                 children: <Widget>[
                   SizedBox(width: 16.0,),

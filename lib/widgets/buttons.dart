@@ -132,7 +132,7 @@ Widget groupSwitcherButton({String title, String role}) {
     child: Column(
       children: <Widget>[
         Container(
-          height: 32.0,
+          // height: 32.0,
           constraints: BoxConstraints(maxWidth: 320),
           child: Row(
             mainAxisSize: MainAxisSize.min,

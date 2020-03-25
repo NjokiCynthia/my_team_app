@@ -1,3 +1,5 @@
+import 'package:chamasoft/screens/my-groups.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -33,7 +35,25 @@ List<dynamic> contributions = [
   {"id": 3, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
 ];
 
-class ConfigureGroup extends StatelessWidget {
+DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+class ConfigureGroup extends StatefulWidget {
+  @override
+  _ConfigureGroupState createState() => _ConfigureGroupState();
+}
+
+class _ConfigureGroupState extends State<ConfigureGroup> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -48,7 +68,7 @@ class ConfigureGroup extends StatelessWidget {
                 padding: EdgeInsets.only(top: 120.0),
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                decoration: primaryGradient(),
+                decoration: primaryGradient(context),
                 child: TabBarView(
                   children: <Widget>[
                     ListView.separated(
@@ -68,7 +88,7 @@ class ConfigureGroup extends StatelessWidget {
                                     children: <Widget>[
                                       Icon(
                                         Icons.person,
-                                        color: Colors.blueGrey[300],
+                                        color: Colors.blueGrey,
                                       ),
                                       SizedBox(width: 10.0),
                                       Column(
@@ -77,7 +97,7 @@ class ConfigureGroup extends StatelessWidget {
                                           Text(
                                             '${members[index]['name']}',
                                             style: TextStyle(
-                                              color: Colors.blueGrey,
+                                              color: Theme.of(context).textSelectionHandleColor,
                                               fontWeight: FontWeight.w800,
                                               fontSize: 18.0,
                                             ),
@@ -86,7 +106,7 @@ class ConfigureGroup extends StatelessWidget {
                                             '${members[index]['phone']}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
-                                              color: Colors.blueGrey,
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                               fontSize: 12.0,
                                             ),
                                           ),
@@ -129,7 +149,7 @@ class ConfigureGroup extends StatelessWidget {
                       },
                       separatorBuilder: (context, index) {
                         return Divider(
-                          color: Colors.blueGrey[100],
+                          color: Theme.of(context).dividerColor,
                           height: 6.0,
                         );
                       },
@@ -151,7 +171,7 @@ class ConfigureGroup extends StatelessWidget {
                                     children: <Widget>[
                                       Icon(
                                         Icons.credit_card,
-                                        color: Colors.blueGrey[300],
+                                        color: Colors.blueGrey,
                                       ),
                                       SizedBox(width: 10.0),
                                       Column(
@@ -160,7 +180,7 @@ class ConfigureGroup extends StatelessWidget {
                                           Text(
                                             '${accounts[index]['bank']}, ${accounts[index]['branch']}',
                                             style: TextStyle(
-                                              color: Colors.blueGrey,
+                                              color: Theme.of(context).textSelectionHandleColor,
                                               fontWeight: FontWeight.w800,
                                               fontSize: 18.0,
                                             ),
@@ -169,7 +189,7 @@ class ConfigureGroup extends StatelessWidget {
                                             '${accounts[index]['account']}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
-                                              color: Colors.blueGrey,
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                               fontSize: 12.0,
                                             ),
                                           ),
@@ -234,7 +254,7 @@ class ConfigureGroup extends StatelessWidget {
                                     children: <Widget>[
                                       Icon(
                                         Icons.label,
-                                        color: Colors.blueGrey[300],
+                                        color: Colors.blueGrey,
                                       ),
                                       SizedBox(width: 10.0),
                                       Column(
@@ -243,7 +263,7 @@ class ConfigureGroup extends StatelessWidget {
                                           Text(
                                             '${contributions[index]['name']}',
                                             style: TextStyle(
-                                              color: Colors.blueGrey,
+                                              color: Theme.of(context).textSelectionHandleColor,
                                               fontWeight: FontWeight.w800,
                                               fontSize: 18.0,
                                             ),
@@ -257,7 +277,7 @@ class ConfigureGroup extends StatelessWidget {
                                                     'Contribution Type: ',
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w600,
-                                                      color: Colors.blueGrey,
+                                                      color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                       fontSize: 12.0,
                                                     ),
                                                   ),
@@ -265,7 +285,7 @@ class ConfigureGroup extends StatelessWidget {
                                                     '${contributions[index]['type']}',
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w900,
-                                                      color: Colors.blueGrey,
+                                                      color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                       fontSize: 12.0,
                                                     ),
                                                   ),
@@ -277,7 +297,7 @@ class ConfigureGroup extends StatelessWidget {
                                                     'Frequency: ',
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w600,
-                                                      color: Colors.blueGrey,
+                                                      color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                       fontSize: 12.0,
                                                     ),
                                                   ),
@@ -285,7 +305,7 @@ class ConfigureGroup extends StatelessWidget {
                                                     '${contributions[index]['frequency']}',
                                                     style: TextStyle(
                                                       fontWeight: FontWeight.w900,
-                                                      color: Colors.blueGrey,
+                                                      color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                       fontSize: 12.0,
                                                     ),
                                                   ),
@@ -356,7 +376,7 @@ class ConfigureGroup extends StatelessWidget {
                             icon: LineAwesomeIcons.arrow_left,
                             backgroundColor: Colors.blue.withOpacity(0.1),
                             textColor: Colors.blue,
-                            action: () => Navigator.pushReplacementNamed(context, '/my-groups'),
+                            action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyGroups(),),),
                           ),
                           SizedBox(width: 20.0),
                           heading2(color: Colors.blue, text: "Staff Welfare Group"),
@@ -364,7 +384,7 @@ class ConfigureGroup extends StatelessWidget {
                       ),
                     ),
                     elevation: 0.0,
-                    backgroundColor: Colors.white54,
+                    backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900] : Colors.white54,
                     automaticallyImplyLeading: false,
                     bottom: TabBar(
                       indicator: MD2Indicator(
@@ -373,7 +393,7 @@ class ConfigureGroup extends StatelessWidget {
                         indicatorSize: MD2IndicatorSize.normal,
                       ),
                       labelColor: Colors.blue,
-                      unselectedLabelColor: Colors.blueGrey.shade300,
+                      unselectedLabelColor: Colors.blueGrey,
                       labelPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                       isScrollable: false,
                       labelStyle: TextStyle(
