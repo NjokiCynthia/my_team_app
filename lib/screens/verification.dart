@@ -1,14 +1,12 @@
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/signup.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
-
-DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 class Verification extends StatefulWidget {
   @override

@@ -1,12 +1,9 @@
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-
-DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 class Login extends StatefulWidget {
   @override

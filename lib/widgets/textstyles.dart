@@ -88,14 +88,7 @@ Widget textWithExternalLinks(
   }
 }
 
-List<Widget> contributionSummary(
-    {Color color,
-    IconData cardIcon,
-    String currency,
-    String cardAmount,
-    String amountDue,
-    String dueDate,
-    String contributionName}) {
+List<Widget> contributionSummary({Color color, IconData cardIcon, String currency, String cardAmount, String amountDue, String dueDate, String contributionName}) {
   List<Widget> _data = [];
   List<String> _name = contributionName.split(" ");
   _data.clear();

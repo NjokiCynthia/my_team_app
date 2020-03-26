@@ -1,5 +1,5 @@
 import 'package:chamasoft/screens/my-groups.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -34,8 +34,6 @@ List<dynamic> contributions = [
   {"id": 2, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
   {"id": 3, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
 ];
-
-DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 class ConfigureGroup extends StatefulWidget {
   @override

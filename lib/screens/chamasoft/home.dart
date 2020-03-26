@@ -5,30 +5,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 class ChamasoftHome extends StatefulWidget {
+  ChamasoftHome({
+    this.appBarElevation,
+  });
+  final ValueChanged<double> appBarElevation;
   @override
   _ChamasoftHomeState createState() => _ChamasoftHomeState();
 }
 
 class _ChamasoftHomeState extends State<ChamasoftHome> {
+  ScrollController _scrollController;
+  void _scrollListener() {
+    widget.appBarElevation(_scrollController.offset);
+  }
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   @override
   void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
+      controller: _scrollController,
       padding: EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 60.0),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 0.0),
+            padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
             child: Container(
               padding: EdgeInsets.all(16.0),
               decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
