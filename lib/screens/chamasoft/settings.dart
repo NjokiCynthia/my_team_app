@@ -5,7 +5,6 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -231,10 +230,10 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Icon(MaterialCommunityIcons.weather_sunny, color: Theme.of(context).indicatorColor),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0)
-                      ),
+                      // Icon(MaterialCommunityIcons.weather_sunny, color: Theme.of(context).indicatorColor),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 10.0)
+                      // ),
                       Text("Light", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
                     ],
                   )
@@ -244,10 +243,10 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
-                      Icon(MaterialCommunityIcons.weather_night, color: Theme.of(context).indicatorColor),
-                      Padding(
-                        padding: EdgeInsets.only(left: 10.0)
-                      ),
+                      // Icon(MaterialCommunityIcons.weather_night, color: Theme.of(context).indicatorColor),
+                      // Padding(
+                      //   padding: EdgeInsets.only(left: 10.0)
+                      // ),
                       Text("Dark", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
                     ],
                   )
