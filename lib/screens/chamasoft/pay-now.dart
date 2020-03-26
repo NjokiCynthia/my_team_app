@@ -2,16 +2,45 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import '../configure-group.dart';
+import 'dashboard.dart';
 
 class PayNow extends StatefulWidget {
   @override
-  PayNowState createState() => PayNowState();
+  State<StatefulWidget> createState() {
+    return PayNowState();
+  }
 }
 
 class PayNowState extends State<PayNow> {
+  double _appBarElevation = 0;
+  ScrollController _scrollController;
+
+  void _scrollListener() {
+    double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
+    super.dispose();
+  }
+
   static final List<String> _dropdownItems = <String>[
     'Monthly Savings',
     'Welfare'
@@ -29,28 +58,37 @@ class PayNowState extends State<PayNow> {
             children: <Widget>[
               new InputDecorator(
                 decoration: InputDecoration(
-                  filled: false,
-                  hintText: 'Select contribution',
-                  labelText: _dropdownValue == null
-                      ? 'Select Contribution'
-                      : 'Select Contribution',
-                  errorText: _errorText,
-                ),
+                    filled: false,
+                    hintText: 'Select Contribution',
+                    labelText: _dropdownValue == null
+                        ? 'Select Contribution'
+                        : 'Select Contribution',
+                    errorText: _errorText,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).hintColor, width: 2.0))),
                 isEmpty: _dropdownValue == null,
-                child: new DropdownButton<String>(
-                  value: _dropdownValue,
-                  isDense: true,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      _dropdownValue = newValue;
-                    });
-                  },
-                  items: _dropdownItems.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                child: new Theme(
+                  data: Theme.of(context).copyWith(
+                    canvasColor: (themeChangeProvider.darkTheme)
+                        ? Colors.blueGrey[800]
+                        : Colors.white,
+                  ),
+                  child: new DropdownButton<String>(
+                    value: _dropdownValue,
+                    isDense: true,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _dropdownValue = newValue;
+                      });
+                    },
+                    items: _dropdownItems.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ],
@@ -65,11 +103,30 @@ class PayNowState extends State<PayNow> {
     final TextEditingController controller = new TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(LineAwesomeIcons.arrow_left),
-        title: Text("Contribution Payment"),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            screenActionButton(
+              icon: LineAwesomeIcons.arrow_left,
+              backgroundColor: Colors.blue.withOpacity(0.1),
+              textColor: Colors.blue,
+              action: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => ChamasoftDashboard(),
+                ),
+              ),
+            ),
+            SizedBox(width: 20.0),
+            heading2(color: Colors.blue, text: "Contribution Payment"),
+          ],
+        ),
+        elevation: _appBarElevation,
+        backgroundColor: Theme.of(context).backgroundColor,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: <Widget>[
             toolTip(
@@ -78,9 +135,9 @@ class PayNowState extends State<PayNow> {
                 message:
                     "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
             Container(
-              padding: EdgeInsets.all(40.0),
+              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
               height: MediaQuery.of(context).size.height,
-              color: Colors.white,
+              color: Theme.of(context).backgroundColor,
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
@@ -110,8 +167,12 @@ class PayNowState extends State<PayNow> {
                   defaultButton(
                       context: context,
                       text: "Pay Now",
-                      onPressed: () =>
-                          Navigator.pushReplacementNamed(context, '/'))
+                      onPressed: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ConfigureGroup(),
+                            ),
+                          ))
                 ],
               ),
             )
