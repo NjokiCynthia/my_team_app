@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -20,6 +21,31 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   String theme = "Light";
   String language = "English";
   bool pushNotifications = true;
+
+  void _logoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: new Text("Logout"),
+          content: new Text("Are you sure you want to log out? You'll have to login again to continue."),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text("Cancel", style: TextStyle(color: Theme.of(context).textSelectionHandleColor),),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text("Logout",style: new TextStyle(color: Colors.red),),
+              onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login(),),),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -73,7 +99,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
       ),
       body: SingleChildScrollView(
         controller: _scrollController,
-        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 60.0),
+        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
         child: Column(
           children: <Widget>[
             Row(
@@ -100,7 +126,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                           buttonHeight: 30.0,
                           textSize: 12.0,
                           action: (){},),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -315,6 +341,21 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               ),
               dense: true,
               onTap: () => launchURL("https://chamasoft.com/"),
+            ),
+
+            Padding(
+              padding: EdgeInsets.only(top: 20.0,),
+              child: Align(
+                alignment: Alignment.center,
+                child: smallBadgeButton(
+                  text: "Logout",
+                  backgroundColor: Colors.red,
+                  textColor: Colors.white,
+                  buttonHeight: 32.0,
+                  textSize: 12.0,
+                  action: () => _logoutDialog(),
+                ),
+              ),
             ),
 
           ],
