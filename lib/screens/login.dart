@@ -6,6 +6,8 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 
+import 'chamasoft/apply-loan.dart';
+
 DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 class Login extends StatefulWidget {
@@ -67,7 +69,7 @@ class _LoginState extends State<Login> {
                 defaultButton(
                   context: context,
                   text: "Continue",
-                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Verification(),),),
+                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ApplyLoan(),),),
                 ),
                 SizedBox(height: 24,),
                 textWithExternalLinks(

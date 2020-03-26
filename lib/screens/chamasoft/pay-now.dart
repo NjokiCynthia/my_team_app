@@ -72,6 +72,7 @@ class PayNowState extends State<PayNow> {
         child: Column(
           children: <Widget>[
             toolTip(
+                context: context,
                 title: "Note that...",
                 message:
                     "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),

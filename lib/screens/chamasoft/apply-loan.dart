@@ -1,9 +1,15 @@
+import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+
+import '../configure-group.dart';
+
+DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 class ApplyLoan extends StatefulWidget {
   @override
@@ -13,6 +19,16 @@ class ApplyLoan extends StatefulWidget {
 }
 
 class ApplyLoanState extends State<ApplyLoan> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   static final List<String> _dropdownItems = <String>[
     'Emergency Loan',
     'Education Loan'
@@ -66,26 +82,29 @@ class ApplyLoanState extends State<ApplyLoan> {
     final TextEditingController _controller = new TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(LineAwesomeIcons.arrow_left, color: Colors.blueGrey,),
-        backgroundColor: Colors.white,
+        leading: Icon(
+          LineAwesomeIcons.arrow_left,
+          color: Colors.blue.withOpacity(0.1),
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
         elevation: 0.0,
         title: Text(
           "Apply Loan",
-          style: TextStyle(color: Colors.blueGrey),
+          style: TextStyle(color: Colors.blue),
         ),
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            toolTip(
+            toolTip(context: context,
                 title: "Note that...",
                 message:
                     "Loan application process is totally depended on your group's constitution and your group\'s management."),
             Container(
               padding: EdgeInsets.all(40.0),
               height: MediaQuery.of(context).size.height,
-              color: Colors.white,
+              decoration: primaryGradient(context),
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
@@ -126,7 +145,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                       context: context,
                       text: "Apply Now",
                       onPressed: () =>
-                          Navigator.pushReplacementNamed(context, '/'))
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ConfigureGroup(),),))
                 ],
               ),
             )
