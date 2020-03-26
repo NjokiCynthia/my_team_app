@@ -14,7 +14,7 @@ class DarkThemePreference {
 
 class DarkThemeProvider with ChangeNotifier {
   DarkThemePreference darkThemePreference = DarkThemePreference();
-  bool _darkTheme = true;
+  bool _darkTheme = false;
 
   bool get darkTheme => _darkTheme;
 

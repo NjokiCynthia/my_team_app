@@ -57,20 +57,25 @@ class ApplyLoanState extends State<ApplyLoan> {
                         borderSide: BorderSide(
                             color: Theme.of(context).hintColor, width: 2.0))),
                 isEmpty: _dropdownValue == null,
-                child: new DropdownButton<String>(
-                  value: _dropdownValue,
-                  isDense: true,
-                  onChanged: (String newValue) {
-                    setState(() {
-                      _dropdownValue = newValue;
-                    });
-                  },
-                  items: _dropdownItems.map((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
+                child: new Theme(
+                  data: Theme.of(context).copyWith(
+                    canvasColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Colors.white,
+                  ),
+                  child: new DropdownButton<String>(
+                    value: _dropdownValue,
+                    isDense: true,
+                    onChanged: (String newValue) {
+                      setState(() {
+                        _dropdownValue = newValue;
+                      });
+                    },
+                    items: _dropdownItems.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
                 ),
               ),
             ],
@@ -113,11 +118,11 @@ class ApplyLoanState extends State<ApplyLoan> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-//            toolTip(
-//                context: context,
-//                title: "Note that...",
-//                message:
-//                    "Loan application process is totally depended on your group's constitution and your group\'s management."),
+            toolTip(
+                context: context,
+                title: "Note that...",
+                message:
+                    "Loan application process is totally depended on your group's constitution and your group\'s management."),
             Container(
               padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
               height: MediaQuery.of(context).size.height,
