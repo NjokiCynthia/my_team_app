@@ -3,6 +3,7 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import '../configure-group.dart';
 import 'dashboard.dart';
@@ -70,9 +71,7 @@ class PayNowState extends State<PayNow> {
                 isEmpty: _dropdownValue == null,
                 child: new Theme(
                   data: Theme.of(context).copyWith(
-                    canvasColor: (themeChangeProvider.darkTheme)
-                        ? Colors.blueGrey[800]
-                        : Colors.white,
+                    canvasColor: Theme.of(context).cardColor,
                   ),
                   child: new DropdownButton<String>(
                     value: _dropdownValue,
@@ -93,6 +92,57 @@ class PayNowState extends State<PayNow> {
               ),
             ],
           ),
+        );
+      },
+    );
+  }
+
+  void _numberToPrompt() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: new Text("Confirm Mpesa Number"),
+          content: TextFormField(
+            //controller: controller,
+            initialValue: "254712233344",
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              WhitelistingTextInputFormatter.digitsOnly
+            ],
+            decoration: InputDecoration(
+              hasFloatingPlaceholder: true,
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                color: Theme.of(context).hintColor,
+                width: 2.0,
+              )),
+              // hintText: 'Phone Number or Email Address',
+              labelText: "Mpesa Number",
+            ),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(
+                "Cancel",
+                style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text(
+                "Pay Now",
+                style: new TextStyle(color: Colors.blue),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
       },
     );
@@ -167,12 +217,7 @@ class PayNowState extends State<PayNow> {
                   defaultButton(
                       context: context,
                       text: "Pay Now",
-                      onPressed: () => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ConfigureGroup(),
-                            ),
-                          ))
+                      onPressed: () => _numberToPrompt())
                 ],
               ),
             )
