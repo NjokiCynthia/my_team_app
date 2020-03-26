@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -46,13 +47,15 @@ class ApplyLoanState extends State<ApplyLoan> {
             children: <Widget>[
               new InputDecorator(
                 decoration: InputDecoration(
-                  filled: false,
-                  hintText: 'Select Loan Type',
-                  labelText: _dropdownValue == null
-                      ? 'Select Loan Type'
-                      : 'Select Loan Type',
-                  errorText: _errorText,
-                ),
+                    filled: false,
+                    hintText: 'Select Loan Type',
+                    labelText: _dropdownValue == null
+                        ? 'Select Loan Type'
+                        : 'Select Loan Type',
+                    errorText: _errorText,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).hintColor, width: 2.0))),
                 isEmpty: _dropdownValue == null,
                 child: new DropdownButton<String>(
                   value: _dropdownValue,
@@ -82,29 +85,43 @@ class ApplyLoanState extends State<ApplyLoan> {
     final TextEditingController _controller = new TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(
-          LineAwesomeIcons.arrow_left,
-          color: Colors.blue.withOpacity(0.1),
+        title: Padding(
+          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              screenActionButton(
+                icon: LineAwesomeIcons.arrow_left,
+                backgroundColor: Colors.blue.withOpacity(0.1),
+                textColor: Colors.blue,
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Login(),
+                  ),
+                ),
+              ),
+              SizedBox(width: 20.0),
+              heading2(color: Colors.blue, text: "Apply Loan"),
+            ],
+          ),
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         elevation: 0.0,
-        title: Text(
-          "Apply Loan",
-          style: TextStyle(color: Colors.blue),
-        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            toolTip(context: context,
-                title: "Note that...",
-                message:
-                    "Loan application process is totally depended on your group's constitution and your group\'s management."),
+//            toolTip(
+//                context: context,
+//                title: "Note that...",
+//                message:
+//                    "Loan application process is totally depended on your group's constitution and your group\'s management."),
             Container(
-              padding: EdgeInsets.all(40.0),
+              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
               height: MediaQuery.of(context).size.height,
-              decoration: primaryGradient(context),
+              color: Theme.of(context).backgroundColor,
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
@@ -116,6 +133,11 @@ class ApplyLoanState extends State<ApplyLoan> {
                     ],
                     decoration: InputDecoration(
                       hasFloatingPlaceholder: true,
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                        color: Theme.of(context).hintColor,
+                        width: 2.0,
+                      )),
                       // hintText: 'Phone Number or Email Address',
                       labelText: 'Amount applying for',
                     ),
@@ -144,8 +166,12 @@ class ApplyLoanState extends State<ApplyLoan> {
                   defaultButton(
                       context: context,
                       text: "Apply Now",
-                      onPressed: () =>
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ConfigureGroup(),),))
+                      onPressed: () => Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ConfigureGroup(),
+                            ),
+                          ))
                 ],
               ),
             )

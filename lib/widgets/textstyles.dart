@@ -1,3 +1,4 @@
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -306,10 +307,12 @@ List<Widget> contributionSummary(
   return _data;
 }
 
+DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
 Widget toolTip({BuildContext context, String title, String message}) {
   return Container(
       padding: EdgeInsets.all(20.0),
-      color: Theme.of(context).backgroundColor,
+      color:  (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
 //mainAxisAlignment: MainAxisAlignment.start,
