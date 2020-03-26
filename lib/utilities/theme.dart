@@ -34,6 +34,7 @@ class Styles {
     return ThemeData(
       primarySwatch: Colors.blue, //in use
       backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white, //in use
+      splashColor:  isDarkTheme ? Colors.blueGrey[900] : Colors.white, //in use,
       primaryColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blue, //in use
       indicatorColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blue[600], //in use
       buttonColor: isDarkTheme ? Colors.blueGrey[800].withOpacity(0.7) : Colors.white, //in use
