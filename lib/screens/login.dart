@@ -1,15 +1,9 @@
-import 'package:chamasoft/screens/chamasoft/pay-now.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-
-import 'chamasoft/apply-loan.dart';
-
-DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 class Login extends StatefulWidget {
   @override
@@ -70,7 +64,7 @@ class _LoginState extends State<Login> {
                 defaultButton(
                   context: context,
                   text: "Continue",
-                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => PayNow(),),),
+                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Verification(),),),
                 ),
                 SizedBox(height: 24,),
                 textWithExternalLinks(

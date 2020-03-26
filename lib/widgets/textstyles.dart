@@ -1,3 +1,4 @@
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -89,14 +90,7 @@ Widget textWithExternalLinks(
   }
 }
 
-List<Widget> contributionSummary(
-    {Color color,
-    IconData cardIcon,
-    String currency,
-    String cardAmount,
-    String amountDue,
-    String dueDate,
-    String contributionName}) {
+List<Widget> contributionSummary({Color color, IconData cardIcon, String currency, String cardAmount, String amountDue, String dueDate, String contributionName}) {
   List<Widget> _data = [];
   List<String> _name = contributionName.split(" ");
   _data.clear();
@@ -306,8 +300,6 @@ List<Widget> contributionSummary(
   }
   return _data;
 }
-
-DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 Widget toolTip({BuildContext context, String title, String message}) {
   return Container(

@@ -1,22 +1,31 @@
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
+import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-
-final GlobalKey<ScaffoldState> dashboardScaffoldKey = new GlobalKey<ScaffoldState>();
-DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 class ChamasoftDashboard extends StatefulWidget {
   @override
   _ChamasoftDashboardState createState() => _ChamasoftDashboardState();
 }
 class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
+  final GlobalKey<ScaffoldState> dashboardScaffoldKey = new GlobalKey<ScaffoldState>();
   int _currentPage;
+  double _appBarElevation = 0;
+
+  _setElevation(double elevation){
+    double newElevation = elevation > 1 ? appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -53,7 +62,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                     role: "Chairperson",
                     context: context,
                   ),
-                  elevation: 0,
+                  elevation: _appBarElevation,
                   automaticallyImplyLeading: false,
                   actions: <Widget>[
                     IconButton(
@@ -70,7 +79,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                           Icons.settings,
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
-                        onPressed: (){}
+                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ChamasoftSettings(),),)
                       ),
                     ),
                   ],
@@ -121,7 +130,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   getPage(int page) {
     switch(page) {
       case 0:
-        return ChamasoftHome();
+        return ChamasoftHome(
+          appBarElevation: (elevation) =>  _setElevation(elevation),
+        );
       case 1:
         return ChamasoftGroup();
       case 2:

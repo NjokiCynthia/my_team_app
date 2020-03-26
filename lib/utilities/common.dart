@@ -1,6 +1,11 @@
 
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+double appBarElevation = 2.5;
 
 //launch any url through default browser
 launchURL(String url) async{

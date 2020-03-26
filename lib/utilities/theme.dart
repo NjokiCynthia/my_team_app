@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DarkThemePreference {
 
   setDarkTheme(bool value) async {
-    print(value);
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("theme", value ? "dark" : "light");
   }
 
   Future<bool> getTheme() async {
-    bool resp = true;
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString("theme") ?? 'dark';
+    bool resp = (value == 'dark') ? true : false;
     return resp;
   }
 }
@@ -30,6 +34,7 @@ class Styles {
     return ThemeData(
       primarySwatch: Colors.blue, //in use
       backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white, //in use
+      splashColor:  isDarkTheme ? Colors.blueGrey[900] : Colors.white, //in use,
       primaryColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blue, //in use
       indicatorColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blue[600], //in use
       buttonColor: isDarkTheme ? Colors.blueGrey[800].withOpacity(0.7) : Colors.white, //in use
