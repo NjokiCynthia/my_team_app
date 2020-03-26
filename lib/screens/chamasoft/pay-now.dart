@@ -1,4 +1,5 @@
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -29,7 +30,7 @@ class PayNowState extends State<PayNow> {
               new InputDecorator(
                 decoration: InputDecoration(
                   filled: false,
-                  hintText: 'Select Contribution',
+                  hintText: 'Select contribution',
                   labelText: _dropdownValue == null
                       ? 'Select Contribution'
                       : 'Select Contribution',
@@ -61,7 +62,7 @@ class PayNowState extends State<PayNow> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = new TextEditingController();
+    final TextEditingController controller = new TextEditingController();
     return Scaffold(
       appBar: AppBar(
         leading: Icon(LineAwesomeIcons.arrow_left),
@@ -83,18 +84,7 @@ class PayNowState extends State<PayNow> {
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
-                  TextFormField(
-                    controller: _controller,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      WhitelistingTextInputFormatter.digitsOnly
-                    ],
-                    decoration: InputDecoration(
-                      hasFloatingPlaceholder: true,
-                      // hintText: 'Phone Number or Email Address',
-                      labelText: 'Amount to Pay',
-                    ),
-                  ),
+                  amountInputField(context, 'Amount to pay', controller),
                   SizedBox(
                     height: 24,
                   ),

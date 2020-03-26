@@ -2,6 +2,7 @@ import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,7 +60,9 @@ class ApplyLoanState extends State<ApplyLoan> {
                 isEmpty: _dropdownValue == null,
                 child: new Theme(
                   data: Theme.of(context).copyWith(
-                    canvasColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Colors.white,
+                    canvasColor: (themeChangeProvider.darkTheme)
+                        ? Colors.blueGrey[800]
+                        : Colors.white,
                   ),
                   child: new DropdownButton<String>(
                     value: _dropdownValue,
@@ -87,7 +90,7 @@ class ApplyLoanState extends State<ApplyLoan> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController _controller = new TextEditingController();
+    final TextEditingController controller = new TextEditingController();
     return Scaffold(
       appBar: AppBar(
         title: Padding(
@@ -130,23 +133,7 @@ class ApplyLoanState extends State<ApplyLoan> {
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
-                  TextFormField(
-                    controller: _controller,
-                    keyboardType: TextInputType.number,
-                    inputFormatters: <TextInputFormatter>[
-                      WhitelistingTextInputFormatter.digitsOnly
-                    ],
-                    decoration: InputDecoration(
-                      hasFloatingPlaceholder: true,
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Theme.of(context).hintColor,
-                        width: 2.0,
-                      )),
-                      // hintText: 'Phone Number or Email Address',
-                      labelText: 'Amount applying for',
-                    ),
-                  ),
+                  amountInputField(context, 'Amount appling for', controller),
                   SizedBox(
                     height: 24,
                   ),

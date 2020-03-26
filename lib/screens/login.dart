@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/pay-now.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -69,7 +70,7 @@ class _LoginState extends State<Login> {
                 defaultButton(
                   context: context,
                   text: "Continue",
-                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ApplyLoan(),),),
+                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => PayNow(),),),
                 ),
                 SizedBox(height: 24,),
                 textWithExternalLinks(
