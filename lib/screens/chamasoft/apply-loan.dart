@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/loan-amortization.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
@@ -154,8 +155,12 @@ class ApplyLoanState extends State<ApplyLoan> {
                         textData: {
                           'By applying for this loan you agree to the ': {},
                           'terms and conditions': {
-                            "url": () => launchURL(
-                                'https://chamasoft.com/terms-and-conditions/'),
+                            "url": () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        LoanAmortization(),
+                                  ),
+                                ),
                             "color": Colors.blue,
                             "weight": FontWeight.w500
                           },
@@ -165,14 +170,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                     height: 24,
                   ),
                   defaultButton(
-                      context: context,
-                      text: "Apply Now",
-                      onPressed: () => Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ConfigureGroup(),
-                            ),
-                          ))
+                      context: context, text: "Apply Now", onPressed: () {})
                 ],
               ),
             )
