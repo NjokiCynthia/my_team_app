@@ -5,13 +5,10 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
 import '../configure-group.dart';
-
-DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+import 'dashboard.dart';
 
 class ApplyLoan extends StatefulWidget {
   @override
@@ -21,13 +18,29 @@ class ApplyLoan extends StatefulWidget {
 }
 
 class ApplyLoanState extends State<ApplyLoan> {
+  double _appBarElevation = 0;
+  ScrollController _scrollController;
+
+  void _scrollListener() {
+    double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
+  }
+
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   @override
   void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
     super.dispose();
   }
 
@@ -93,32 +106,30 @@ class ApplyLoanState extends State<ApplyLoan> {
     final TextEditingController controller = new TextEditingController();
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              screenActionButton(
-                icon: LineAwesomeIcons.arrow_left,
-                backgroundColor: Colors.blue.withOpacity(0.1),
-                textColor: Colors.blue,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => Login(),
-                  ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            screenActionButton(
+              icon: LineAwesomeIcons.arrow_left,
+              backgroundColor: Colors.blue.withOpacity(0.1),
+              textColor: Colors.blue,
+              action: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => ChamasoftDashboard(),
                 ),
               ),
-              SizedBox(width: 20.0),
-              heading2(color: Colors.blue, text: "Apply Loan"),
-            ],
-          ),
+            ),
+            SizedBox(width: 20.0),
+            heading2(color: Colors.blue, text: "Apply Loan"),
+          ],
         ),
-        elevation: 0.0,
+        elevation: _appBarElevation,
         backgroundColor: Theme.of(context).backgroundColor,
         automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
+        controller: _scrollController,
         child: Column(
           children: <Widget>[
             toolTip(
@@ -133,7 +144,7 @@ class ApplyLoanState extends State<ApplyLoan> {
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
-                  amountInputField(context, 'Amount appling for', controller),
+                  amountInputField(context, 'Amount applying for', controller),
                   SizedBox(
                     height: 24,
                   ),
