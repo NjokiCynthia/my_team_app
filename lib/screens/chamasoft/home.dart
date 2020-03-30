@@ -1,3 +1,5 @@
+import 'package:chamasoft/screens/chamasoft/apply-loan.dart';
+import 'package:chamasoft/screens/chamasoft/pay-now.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -5,33 +7,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 class ChamasoftHome extends StatefulWidget {
+  ChamasoftHome({
+    this.appBarElevation,
+  });
+  final ValueChanged<double> appBarElevation;
   @override
   _ChamasoftHomeState createState() => _ChamasoftHomeState();
 }
 
 class _ChamasoftHomeState extends State<ChamasoftHome> {
+  ScrollController _scrollController;
+  void _scrollListener() {
+    widget.appBarElevation(_scrollController.offset);
+  }
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   @override
   void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: EdgeInsets.fromLTRB(0.0, 90.0, 0.0, 60.0),
+      controller: _scrollController,
+      padding: EdgeInsets.fromLTRB(0.0, 80.0, 0.0, 60.0),
       child: Column(
         children: <Widget>[
           Padding(
-            padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 0.0),
+            padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
             child: Container(
               padding: EdgeInsets.all(16.0),
-              decoration: cardDecoration(gradient: plainCardGradient()),
+              decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
@@ -48,7 +63,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     ],
                   ),
                   Divider(
-                    color: Colors.blueGrey[50],
+                    color: Theme.of(context).hintColor.withOpacity(0.1),
                     thickness: 2.0,
                   ),
                   Row(
@@ -57,14 +72,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       Text(
                         "Contributions",
                         style: TextStyle(
-                          color: Colors.blueGrey[500],
+                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                           fontSize: 18.0,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       SizedBox(
                         height: 22,
-                        child: cardAmountButton(currency: "Ksh", amount: "21,000", size: 18.0,color: Colors.blueGrey[700], action: (){}),
+                        child: cardAmountButton(currency: "Ksh", amount: "21,000", size: 18.0,color: Theme.of(context).textSelectionHandleColor, action: (){}),
                       ),
                     ],
                   ),
@@ -75,7 +90,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       Text(
                         "Fines",
                         style: TextStyle(
-                          color: Colors.red[300],
+                          color: Colors.red[400],
                           fontSize: 16.0,
                           fontWeight: FontWeight.w800,
                         ),
@@ -93,14 +108,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       Text(
                         "Loans",
                         style: TextStyle(
-                          color: Colors.blueGrey[500],
+                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                           fontSize: 16.0,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       SizedBox(
                         height: 22,
-                        child: cardAmountButton(currency: "Ksh", amount: "13,500", size: 16.0,color: Colors.blueGrey[700], action: (){}),
+                        child: cardAmountButton(currency: "Ksh", amount: "13,500", size: 16.0,color: Theme.of(context).textSelectionHandleColor, action: (){}),
                       ),
                     ],
                   ),
@@ -111,14 +126,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       Text(
                         "Pending Loan Balance",
                         style: TextStyle(
-                          color: Colors.blueGrey[500],
+                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                           fontSize: 16.0,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       SizedBox(
                         height: 22,
-                        child: cardAmountButton(currency: "Ksh", amount: "5,500", size: 16.0,color: Colors.blueGrey[700], action: (){}),
+                        child: cardAmountButton(currency: "Ksh", amount: "5,500", size: 16.0,color: Theme.of(context).textSelectionHandleColor, action: (){}),
                       ),
                     ],
                   ),
@@ -127,7 +142,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             ),
           ),
           Padding(
-            padding: EdgeInsets.fromLTRB(20.0, 20.0, 16.0, 0.0),
+            padding: EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
@@ -162,7 +177,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: csCardGradient()),
+                    decoration: cardDecoration(gradient: csCardGradient(), context: context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
@@ -180,7 +195,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
@@ -198,11 +213,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
-                        color: Colors.blue,
+                        color: Colors.blueGrey,
                         cardIcon: Feather.bar_chart_2,
                         amountDue: "7,500",
                         cardAmount: "10,050",
@@ -222,32 +237,36 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10.0),
-              color: Colors.white54,
+              color: Theme.of(context).cardColor.withOpacity(0.1),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0,),
-                    child: paymentActionButton(
-                      color: Colors.blue,
-                      textColor: Colors.blue,
-                      icon: FontAwesome.chevron_right,
-                      isFlat: false,
-                      text: "PAY NOW",
-                      iconSize: 12.0,
-                      action: (){},
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0,),
+                      child: paymentActionButton(
+                        color: Colors.blue,
+                        textColor: Colors.blue,
+                        icon: FontAwesome.chevron_right,
+                        isFlat: false,
+                        text: "PAY NOW",
+                        iconSize: 12.0,
+                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PayNow(),),),
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0,),
-                    child: paymentActionButton(
-                      color: Colors.blue,
-                      textColor: Colors.white,
-                      icon: FontAwesome.chevron_right,
-                      isFlat: true,
-                      text: "APPLY LOAN",
-                      iconSize: 12.0,
-                      action: (){},
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0,),
+                      child: paymentActionButton(
+                        color: Colors.blue,
+                        textColor: Colors.white,
+                        icon: FontAwesome.chevron_right,
+                        isFlat: true,
+                        text: "APPLY LOAN",
+                        iconSize: 12.0,
+                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ApplyLoan(),),),
+                      ),
                     ),
                   ),
                 ],
@@ -290,7 +309,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
@@ -308,7 +327,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
@@ -326,11 +345,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Container(
                     width: 160.0,
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(gradient: plainCardGradient()),
+                    decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: contributionSummary(
-                        color: Colors.blue,
+                        color: Colors.blueGrey,
                         cardIcon: Feather.bar_chart_2,
                         amountDue: "10,050",
                         cardAmount: "4,050",

@@ -1,20 +1,31 @@
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
+import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-
-final GlobalKey<ScaffoldState> dashboardScaffoldKey = new GlobalKey<ScaffoldState>();
 
 class ChamasoftDashboard extends StatefulWidget {
   @override
   _ChamasoftDashboardState createState() => _ChamasoftDashboardState();
 }
 class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
+  final GlobalKey<ScaffoldState> dashboardScaffoldKey = new GlobalKey<ScaffoldState>();
   int _currentPage;
+  double _appBarElevation = 0;
+
+  _setElevation(double elevation){
+    double newElevation = elevation > 1 ? appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -33,7 +44,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       key: dashboardScaffoldKey,
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: primaryGradient(),
+        decoration: primaryGradient(context),
         child: Stack(
           children: <Widget>[
             getPage(_currentPage),
@@ -44,19 +55,20 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               child: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                 child: AppBar(
-                  backgroundColor: Colors.blue[50],
+                  backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900] : Colors.blue[50],
                   centerTitle: false,
                   title: groupSwitcherButton(
                     title: "Witcher Welfare Association",
                     role: "Chairperson",
+                    context: context,
                   ),
-                  elevation: 0,
+                  elevation: _appBarElevation,
                   automaticallyImplyLeading: false,
                   actions: <Widget>[
                     IconButton(
                       icon: Icon(
                         Icons.notifications,
-                        color: Colors.blueGrey[700],
+                        color: Theme.of(context).textSelectionHandleColor,
                       ), 
                       onPressed: (){}
                     ),
@@ -65,9 +77,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       child: IconButton(
                         icon: Icon(
                           Icons.settings,
-                          color: Colors.blueGrey[700],
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
-                        onPressed: (){}
+                        onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ChamasoftSettings(),),)
                       ),
                     ),
                   ],
@@ -80,7 +92,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             Align(
               alignment: Alignment.bottomLeft,
               child: BottomNavigationBar(
-                backgroundColor: Colors.blue[50].withOpacity(0.89),
+                backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900].withOpacity(0.95) : Colors.blue[50].withOpacity(0.89),
                 elevation: 0,
                 currentIndex: _currentPage,
                 type: BottomNavigationBarType.fixed,
@@ -108,7 +120,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   });
                 },
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -118,7 +130,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   getPage(int page) {
     switch(page) {
       case 0:
-        return ChamasoftHome();
+        return ChamasoftHome(
+          appBarElevation: (elevation) =>  _setElevation(elevation),
+        );
       case 1:
         return ChamasoftGroup();
       case 2:

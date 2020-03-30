@@ -126,13 +126,13 @@ Widget smallBadgeButton({Color backgroundColor, String text, Color textColor, Fu
   );
 }
 
-Widget groupSwitcherButton({String title, String role}) {
+Widget groupSwitcherButton({BuildContext context, String title, String role}) {
   return FlatButton(
     padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
     child: Column(
       children: <Widget>[
         Container(
-          height: 32.0,
+          // height: 32.0,
           constraints: BoxConstraints(maxWidth: 320),
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -144,7 +144,7 @@ Widget groupSwitcherButton({String title, String role}) {
                     Text(
                       title,
                       style: TextStyle(
-                        color: Colors.blueGrey[700],
+                        color: Colors.blueGrey[400],
                         fontWeight: FontWeight.w900,
                         fontSize: 16.0,
                       ),
@@ -183,11 +183,11 @@ Widget groupSwitcherButton({String title, String role}) {
                 margin: EdgeInsets.only(left: 5.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(40.0),
-                  color: Colors.blueGrey[200],
+                  color: Theme.of(context).hintColor.withOpacity(0.4),
                 ),
                 child: Icon(
                   Feather.users,
-                  color: Colors.white,
+                  color: Colors.white70,
                   size: 18.0,
                 ),
                 // ** If group image is available, replace above child with this: **
@@ -205,7 +205,7 @@ Widget groupSwitcherButton({String title, String role}) {
     onPressed: (){},
     shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
     textColor: Colors.blue,
-    color: Colors.white,
+    color: Theme.of(context).buttonColor,
   );
 }
 
@@ -242,7 +242,7 @@ Widget cardAmountButton({String currency, String amount, Function action, double
     ),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     onPressed: action,
-    highlightColor: Colors.blueGrey[50],
+    highlightColor: Colors.blueGrey.withOpacity(0.1),
   );
 }
 
@@ -272,6 +272,7 @@ Widget paymentActionButton({bool isFlat = false, String text, IconData icon, dou
       color: color,
     ),
     highlightColor: color.withOpacity(0.1),
+    highlightedBorderColor: color,
     onPressed: action,
   ) : FlatButton(
     padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),

@@ -1,3 +1,6 @@
+import 'package:chamasoft/screens/login.dart';
+import 'package:chamasoft/screens/signup.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -5,7 +8,26 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 
-class Verification extends StatelessWidget {
+class Verification extends StatefulWidget {
+  @override
+  _VerificationState createState() => _VerificationState();
+}
+
+class _VerificationState extends State<Verification> {
+
+  String _logo = "cs.png";
+
+  @override
+  void initState() {
+    (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     TextEditingController _pinEditingController = TextEditingController();
@@ -18,34 +40,31 @@ class Verification extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.all(40.0),
                 height: MediaQuery.of(context).size.height,
-                decoration: primaryGradient(),
+                decoration: primaryGradient(context),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                       child: Image(
-                        image: AssetImage('assets/cs.png'),
+                        image: AssetImage('assets/$_logo'),
                         height: 100.0,
                       ),
                     ),
-                    heading1(text: "Verification", color: Colors.blueGrey),
-                    subtitle1(
-                        text: "A verification code has been sent to",
-                        color: Colors.blueGrey),
-                    subtitle1(text: "+254 701 234 567", color: Colors.blueGrey),
+                    heading1(text: "Verification", color: Theme.of(context).textSelectionHandleColor),
+                    subtitle1(text: "A verification code has been sent to", color: Theme.of(context).textSelectionHandleColor),
+                    subtitle1(text: "+254 701 234 567", color: Theme.of(context).textSelectionHandleColor),
                     SizedBox(
                       height: 12,
                     ),
-                    subtitle2(
-                        text: "Enter your code here", color: Colors.blueGrey),
+                    subtitle2(text: "Enter your code here", color: Theme.of(context).textSelectionHandleColor),
                     Padding(
                       padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                       child: PinInputTextField(
                         pinLength: 4,
                         decoration: UnderlineDecoration(
                           enteredColor: Colors.blue,
-                          color: Colors.grey,
+                          color: Theme.of(context).textSelectionHandleColor,
                           lineHeight: 2.0,
                           textStyle: TextStyle(
                             color: Colors.blue,
@@ -75,14 +94,13 @@ class Verification extends StatelessWidget {
                     defaultButton(
                       context: context,
                       text: "Verify Phone",
-                      onPressed: () =>
-                          Navigator.pushReplacementNamed(context, '/signup'),
+                      onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => SignUp(),),),
                     ),
                     SizedBox(
                       height: 24,
                     ),
                     textWithExternalLinks(
-                        color: Colors.blueGrey,
+                        color: Theme.of(context).textSelectionHandleColor,
                         size: 12.0,
                         textData: {
                           "Didn't receive verification code?": {},
@@ -103,7 +121,7 @@ class Verification extends StatelessWidget {
                 icon: LineAwesomeIcons.arrow_left,
                 backgroundColor: Colors.blue.withOpacity(0.2),
                 textColor: Colors.blue,
-                action: () => Navigator.pushReplacementNamed(context, '/'),
+                action: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login(),),),
               ),
             )
           ],

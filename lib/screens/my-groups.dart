@@ -1,10 +1,29 @@
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/create-group.dart';
+import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-class MyGroups extends StatelessWidget {
+class MyGroups extends StatefulWidget {
+  @override
+  _MyGroupsState createState() => _MyGroupsState();
+}
+
+class _MyGroupsState extends State<MyGroups> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,12 +36,12 @@ class MyGroups extends StatelessWidget {
                 padding: EdgeInsets.all(40.0),
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
-                decoration: primaryGradient(),
+                decoration: primaryGradient(context),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    heading1(text: "My Groups", color: Colors.blueGrey),
-                    subtitle1(text: "All groups I belong to", color: Colors.blueGrey),
+                    heading1(text: "My Groups", color: Theme.of(context).textSelectionHandleColor),
+                    subtitle1(text: "All groups I belong to", color: Theme.of(context).textSelectionHandleColor),
                     SizedBox(height: 32,),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
@@ -31,8 +50,8 @@ class MyGroups extends StatelessWidget {
                         height: 80.0,
                       ),
                     ),
-                    heading2(text: "Edwin Kapkei", color: Colors.blueGrey),
-                    subtitle1(text: "+254 701 234 567", color: Colors.blueGrey[400]),
+                    heading2(text: "Edwin Kapkei", color: Theme.of(context).textSelectionHandleColor),
+                    subtitle1(text: "+254 701 234 567", color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
                     SizedBox(height: 20,),
                     groupInfoButton(
                       context: context,
@@ -44,7 +63,7 @@ class MyGroups extends StatelessWidget {
                       subtitle: "Chairperson",
                       textColor: Colors.blue,
                       borderColor: Colors.blue,
-                      action: () => Navigator.pushReplacementNamed(context, '/create-group'),
+                      action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CreateGroup(),),),
                     ),
                     SizedBox(height: 32,),
                     groupInfoButton(
@@ -57,7 +76,7 @@ class MyGroups extends StatelessWidget {
                       description: "Chairperson",
                       textColor: Colors.blueGrey,
                       borderColor: Colors.blueGrey.withOpacity(0.2),
-                      action: () => Navigator.pushReplacementNamed(context, '/chamasoft-home'),
+                      action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ChamasoftDashboard(),),),
                     ),
                     SizedBox(height: 12,),
                     groupInfoButton(
@@ -70,7 +89,7 @@ class MyGroups extends StatelessWidget {
                       description: "Member",
                       textColor: Colors.blueGrey,
                       borderColor: Colors.blueGrey.withOpacity(0.2),
-                      action: () => Navigator.pushReplacementNamed(context, '/chamasoft-home'),
+                      action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ChamasoftDashboard(),),),
                     ),
                   ],
                 ),
@@ -83,7 +102,7 @@ class MyGroups extends StatelessWidget {
                 icon: LineAwesomeIcons.arrow_left,
                 backgroundColor: Colors.blue.withOpacity(0.2),
                 textColor: Colors.blue,
-                action: () => Navigator.pushReplacementNamed(context, '/signup'),
+                action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignUp(),),),
               ),
             )
           ],

@@ -1,44 +1,50 @@
-import 'package:chamasoft/screens/chamasoft/dashboard.dart';
-import 'package:chamasoft/screens/chamasoft/pay-now.dart';
-import 'package:chamasoft/screens/configure-group.dart';
-import 'package:chamasoft/screens/create-group.dart';
-import 'package:chamasoft/screens/login.dart';
-import 'package:chamasoft/screens/my-groups.dart';
-import 'package:chamasoft/screens/signup.dart';
-import 'package:chamasoft/screens/verification.dart';
+import 'package:chamasoft/screens/intro.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+
+  void getCurrentAppTheme() async {
+    themeChangeProvider.darkTheme = await themeChangeProvider.darkThemePreference.getTheme();
+  }
+
+  @override
+  void initState() {
+    getCurrentAppTheme();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) {
         return themeChangeProvider;
       },
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Chamasoft',
-        theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-        initialRoute: '/chamasoft-home',
-        routes: {
-          '/': (context) => Login(),
-          '/verification': (context) => Verification(),
-          '/signup': (context) => SignUp(),
-          '/my-groups': (context) => MyGroups(),
-          '/create-group': (context) => CreateGroup(),
-          '/home': (context) => ChamasoftDashboard(),
-          '/configure-group': (context) => ConfigureGroup(),
-          '/chamasoft-home': (context) => ChamasoftDashboard(),
-          '/pay-now': (context) => PayNow(),
-        },
+      child: Consumer<DarkThemeProvider>(
+        builder: (BuildContext context, value, Widget child) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Chamasoft',
+            theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+            home: IntroScreen(),
+          );
+        }
       ),
     );
   }
