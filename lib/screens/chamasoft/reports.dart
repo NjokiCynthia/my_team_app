@@ -4,8 +4,8 @@ class ChamasoftReports extends StatefulWidget {
   @override
   _ChamasoftReportsState createState() => _ChamasoftReportsState();
 }
-class _ChamasoftReportsState extends State<ChamasoftReports> {
 
+class _ChamasoftReportsState extends State<ChamasoftReports> {
   @override
   void initState() {
     super.initState();
@@ -19,10 +19,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text(
-        "Reports"
-      ),
+      child: Text("Reports"),
     );
   }
-
 }
