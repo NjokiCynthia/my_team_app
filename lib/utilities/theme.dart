@@ -10,7 +10,7 @@ class DarkThemePreference {
 
   Future<bool> getTheme() async {
     final prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString("theme") ?? 'dark';
+    final value = prefs.getString("theme") ?? 'light'; //set default to 'light'
     bool resp = (value == 'dark') ? true : false;
     return resp;
   }
@@ -41,7 +41,7 @@ class Styles {
       hintColor: isDarkTheme ? Colors.blueGrey[400]: Colors.blueGrey, //in use
       highlightColor: isDarkTheme ? Colors.blueGrey[800] : Colors.grey[300],
       hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
-      focusColor: isDarkTheme ? Colors.blueGrey[800]: Color(0xFFF8F8FF), //in use
+      focusColor: isDarkTheme ? Colors.blueGrey[900]: Color(0xFFF8F8FF), //in use
       selectedRowColor: isDarkTheme ? Colors.blueGrey[800] : Colors.blue[100], //in use
       textSelectionHandleColor: isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey, //in use
       disabledColor: Colors.grey, //in use

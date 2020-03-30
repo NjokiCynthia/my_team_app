@@ -155,11 +155,11 @@ Widget groupSwitcherButton({BuildContext context, String title, String role}) {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Icon(
-                          Icons.person,
-                          size: 12.0,
-                        ),
-                        SizedBox(width: 4.0),
+                        // Icon(
+                        //   Icons.person,
+                        //   size: 12.0,
+                        // ),
+                        // SizedBox(width: 4.0),
                         Text(
                           role,
                           style: TextStyle(
@@ -186,7 +186,7 @@ Widget groupSwitcherButton({BuildContext context, String title, String role}) {
                   color: Theme.of(context).hintColor.withOpacity(0.4),
                 ),
                 child: Icon(
-                  Feather.users,
+                  Feather.plus,//users,
                   color: Colors.white70,
                   size: 18.0,
                 ),
@@ -299,3 +299,4 @@ Widget paymentActionButton({bool isFlat = false, String text, IconData icon, dou
     onPressed: action,
   );
 }
+
