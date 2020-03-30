@@ -1,5 +1,6 @@
 
 import 'package:chamasoft/utilities/theme.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -28,3 +29,5 @@ Future setPreference(String key, dynamic data) async{
   final prefs = await SharedPreferences.getInstance();
   prefs.setString(key, data);
 }
+
+final currencyFormat = new NumberFormat("#,##0", "en_US");

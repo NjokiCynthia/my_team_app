@@ -1,6 +1,7 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-installments.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -138,52 +139,9 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     child: ListView.builder(
                       itemBuilder: (context, index) {
                         LoanInstallments installment = installments[index];
-                        return Padding(
-                          padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
-                          child: Card(
-                            elevation: 0,
-                            color: Theme.of(context).backgroundColor,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    subtitle1(
-                                        text: DateFormat.yMMMMd()
-                                            .format(installment.date),
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                        align: TextAlign.start),
-                                    subtitle2(
-                                        text: "Installment",
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                        align: TextAlign.start),
-                                  ],
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-                                    subtitle1(
-                                        text: "Ksh " + installment.amount,
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                        align: TextAlign.end),
-                                    subtitle2(
-                                        text:
-                                            "Balance: Ksh " + installment.balance,
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                        align: TextAlign.end),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ),
-                        );
+                        return AmortizationBody(installment: installment);
                       },
-                      itemCount: 6,
+                      itemCount: installments.length,
                     ),
                   ))
             ],
