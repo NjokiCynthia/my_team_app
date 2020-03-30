@@ -72,20 +72,29 @@ class _ContributionStatementState extends State<ContributionStatement> {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            screenActionButton(
-              icon: LineAwesomeIcons.arrow_left,
-              backgroundColor: Colors.blue.withOpacity(0.1),
-              textColor: Colors.blue,
-              action: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => ChamasoftDashboard(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                screenActionButton(
+                  icon: LineAwesomeIcons.arrow_left,
+                  backgroundColor: Colors.blue.withOpacity(0.1),
+                  textColor: Colors.blue,
+                  action: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => ChamasoftDashboard(),
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(width: 20.0),
+                heading2(color: Colors.blue, text: "Contribution Statement"),
+              ],
             ),
-            SizedBox(width: 20.0),
-            heading2(color: Colors.blue, text: "Contribution Statement"),
+            RightActionButton(
+              icon: LineAwesomeIcons.filter,
+              textColor: Colors.blueGrey,
+            ),
           ],
         ),
         elevation: _appBarElevation,
@@ -102,7 +111,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(16.0),
                 color: (themeChangeProvider.darkTheme)
                     ? Colors.blueGrey[800]
                     : Color(0xffededfe),
@@ -122,14 +131,39 @@ class _ContributionStatementState extends State<ContributionStatement> {
                           SizedBox(
                             height: 10,
                           ),
-                          subtitle1(
-                              text: "Total Due: Ksh 60,000",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
-                          subtitle1(
-                              text: "Balance: Ksh 10,000",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              subtitle2(
+                                  text: "Total amount due ",
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  align: TextAlign.start),
+                              subtitle1(
+                                  text: "Ksh 60,000",
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  align: TextAlign.start),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 4,
+                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              subtitle2(
+                                  text: "Balance ",
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  align: TextAlign.start),
+                              subtitle1(
+                                  text: "Ksh 10,000",
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  align: TextAlign.start),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -158,6 +192,40 @@ class _ContributionStatementState extends State<ContributionStatement> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class RightActionButton extends StatelessWidget {
+  const RightActionButton(
+      {Key key, @required this.icon, @required this.textColor})
+      : super(key: key);
+  final IconData icon;
+  final Color textColor;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 42.0,
+      height: 22.0,
+      child: FlatButton(
+        padding: EdgeInsets.all(0.0),
+        child: Icon(
+          icon,
+          size: 22.0,
+        ),
+        onPressed: () {
+          showBottomSheet(
+              context: context,
+              builder: (context) => Container(
+                    height: 200,
+                    color: Colors.deepOrange,
+                  ));
+        },
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(30.0)),
+        textColor: textColor,
       ),
     );
   }

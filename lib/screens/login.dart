@@ -65,7 +65,7 @@ class _LoginState extends State<Login> {
                 defaultButton(
                   context: context,
                   text: "Continue",
-                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ContributionStatement(),),),
+                  onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Verification(),),),
                 ),
                 SizedBox(height: 24,),
                 textWithExternalLinks(
