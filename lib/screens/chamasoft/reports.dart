@@ -37,7 +37,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                       icon: Feather.file_text,
                       text1: "CONTRIBUTION",
                       text2: "STATEMENT",
-                      onPressed: () => Navigator.of(context).pushReplacement(
+                      onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 ContributionStatement(),
@@ -53,7 +53,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                       icon: LineAwesomeIcons.fax,
                       text1: "FINE",
                       text2: "STATEMENT",
-                      onPressed: () => Navigator.of(context).pushReplacement(
+                      onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(
                             builder: (BuildContext context) =>
                                 ContributionStatement(),

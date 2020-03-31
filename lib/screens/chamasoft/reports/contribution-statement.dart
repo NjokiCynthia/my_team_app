@@ -8,10 +8,6 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import '../dashboard.dart';
 
-String appbarTitle = "Contribution Statement";
-String defaultTitle = "Contributions";
-String single = "Contribution";
-
 class ContributionStatement extends StatefulWidget {
   @override
   _ContributionStatementState createState() => _ContributionStatementState();
@@ -70,10 +66,12 @@ class _ContributionStatementState extends State<ContributionStatement> {
   @override
   Widget build(BuildContext context) {
     final statementFlag = ModalRoute.of(context).settings.arguments;
+    String appbarTitle = "Contribution Statement";
+    String defaultTitle = "Contributions";
+
     if (statementFlag == 2) {
       appbarTitle = "Fine Statement";
       defaultTitle = "Fines";
-      single = "Fine";
     }
 
     return Scaffold(
@@ -85,15 +83,10 @@ class _ContributionStatementState extends State<ContributionStatement> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 screenActionButton(
-                  icon: LineAwesomeIcons.arrow_left,
-                  backgroundColor: Colors.blue.withOpacity(0.1),
-                  textColor: Colors.blue,
-                  action: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => ChamasoftDashboard(),
-                    ),
-                  ),
-                ),
+                    icon: LineAwesomeIcons.arrow_left,
+                    backgroundColor: Colors.blue.withOpacity(0.1),
+                    textColor: Colors.blue,
+                    action: () => Navigator.of(context).pop()),
                 SizedBox(width: 20.0),
                 heading2(color: Colors.blue, text: appbarTitle),
               ],
@@ -213,6 +206,15 @@ class RightActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final statementFlag = ModalRoute.of(context).settings.arguments;
+    String defaultTitle = "Contributions";
+    String single = "Contribution";
+
+    if (statementFlag == 2) {
+      defaultTitle = "Fines";
+      single = "Fine";
+    }
+
     return Container(
       width: 42.0,
       height: 22.0,

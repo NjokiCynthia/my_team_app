@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/transactions/review-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/withdrawal-purpose.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -46,6 +47,23 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                 ),
               ],
             ),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                ReportButton(
+                  icon: Feather.file_text,
+                  text: "CREATE WITHDRAWAL\n REQUEST",
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) =>
+                            WithdrawalPurpose()));
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ),
@@ -57,6 +75,7 @@ class ReportButton extends StatelessWidget {
   final IconData icon;
   final String text;
   final Function onPressed;
+
   const ReportButton({this.icon, this.text, this.onPressed});
 
   @override
