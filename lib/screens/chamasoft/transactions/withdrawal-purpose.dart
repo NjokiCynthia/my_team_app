@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/reports/contribution-statement.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -46,41 +47,60 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
           crossAxisCount: 2,
           children: List.generate(4, (index) {
             String title = "Expense Payment";
-
+            IconData icon = Feather.shopping_cart;
             if (index == 1) {
               title = "Contribution Refund";
+              icon = Feather.git_pull_request;
             } else if (index == 2) {
-              title = "Loan DisbursementDisbursement ";
+              title = "Loan Disbursement";
+              icon = Feather.credit_card;
             } else if (index == 3) {
               title = "Miscellanous Payment";
             }
 
-            return InkWell(
-              child: Container(
-                margin: EdgeInsets.all(16),
-                height: 150,
-                decoration: cardDecoration(
-                    gradient: plainCardGradient(context), context: context),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Feather.credit_card,
-                      size: 35.0,
-                      color: Colors.blue,
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    subtitle1(
-                        text: title,
-                        color: Colors.blue,
-                        align: TextAlign.center),
-                  ],
-                ),
-              ),
+            return GridItem(
+              title: title,
+              icon: icon,
+              onTapped: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => ContributionStatement())),
             );
           }),
+        ),
+      ),
+    );
+  }
+}
+
+class GridItem extends StatelessWidget {
+  const GridItem({Key key, @required this.title, this.icon, this.onTapped})
+      : super(key: key);
+
+  final String title;
+  final IconData icon;
+  final Function onTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTapped,
+      child: Container(
+        margin: EdgeInsets.all(16),
+        height: 150,
+        decoration: cardDecoration(
+            gradient: plainCardGradient(context), context: context),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              icon,
+              size: 35.0,
+              color: Colors.blue,
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            subtitle1(text: title, color: Colors.blue, align: TextAlign.center),
+          ],
         ),
       ),
     );
