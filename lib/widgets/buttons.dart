@@ -177,6 +177,10 @@ Widget groupSwitcherButton({BuildContext context, String title, String role}) {
                       fontWeight: FontWeight.w900,
                       fontSize: 16.0,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                    textAlign: TextAlign.end,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,

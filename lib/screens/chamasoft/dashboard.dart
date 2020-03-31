@@ -84,8 +84,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[900].withOpacity(0.95)
-            : Colors.blue[50].withOpacity(0.89),
+            ? Colors.blueGrey[900] //.withOpacity(0.95)
+            : Colors.blue[50],//.withOpacity(0.89),
         elevation: 0,
         currentIndex: _currentPage,
         type: BottomNavigationBarType.fixed,
