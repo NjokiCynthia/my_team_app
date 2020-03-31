@@ -69,7 +69,7 @@ class _SignUpState extends State<SignUp> {
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Theme.of(context).hintColor,
-                          width: 2.0,
+                          width: 1.0,
                         ),
                       ),
                     ),
@@ -81,7 +81,7 @@ class _SignUpState extends State<SignUp> {
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                           color: Theme.of(context).hintColor,
-                          width: 2.0,
+                          width: 1.0,
                         ),
                       ),
                     ),

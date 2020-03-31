@@ -177,18 +177,15 @@ Widget groupSwitcherButton({BuildContext context, String title, String role}) {
                       fontWeight: FontWeight.w900,
                       fontSize: 16.0,
                     ),
-                    maxLines: 1,
-                    overflow: TextOverflow.fade,
-                    softWrap: false,
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      Icon(
-                        Icons.person,
-                        size: 12.0,
-                      ),
-                      SizedBox(width: 4.0),
+                      // Icon(
+                      //   Icons.person,
+                      //   size: 12.0,
+                      // ),
+                      // SizedBox(width: 4.0),
                       Text(
                         role,
                         style: TextStyle(
@@ -202,7 +199,7 @@ Widget groupSwitcherButton({BuildContext context, String title, String role}) {
                         textAlign: TextAlign.end,
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),

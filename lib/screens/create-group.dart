@@ -59,7 +59,7 @@ class _CreateGroupState extends State<CreateGroup> {
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
                             color: Theme.of(context).hintColor,
-                            width: 2.0,
+                            width: 1.0,
                           ),
                         ),
                       ),

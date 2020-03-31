@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import '../../configure-group.dart';
 import '../dashboard.dart';
 
 class PayNow extends StatefulWidget {

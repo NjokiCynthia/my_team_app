@@ -1,4 +1,3 @@
-import 'package:chamasoft/screens/chamasoft/reports/contribution-statement.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -56,7 +55,7 @@ class _LoginState extends State<Login> {
                     enabledBorder: UnderlineInputBorder(
                       borderSide: BorderSide(
                         color: Theme.of(context).hintColor,
-                        width: 2.0,
+                        width: 1.0,
                       ),
                     ),
                   ),

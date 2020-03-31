@@ -5,8 +5,6 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
-import '../../configure-group.dart';
 import '../dashboard.dart';
 
 class ApplyLoan extends StatefulWidget {
