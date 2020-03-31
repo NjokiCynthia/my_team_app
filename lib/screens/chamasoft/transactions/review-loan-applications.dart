@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/review-loan.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -6,8 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
-import '../dashboard.dart';
 
 List<LoanApplication> loanApplications = [
   LoanApplication(
@@ -64,11 +63,7 @@ class ReviewLoanApplicationsState extends State<ReviewLoanApplications> {
               icon: LineAwesomeIcons.arrow_left,
               backgroundColor: Colors.blue.withOpacity(0.1),
               textColor: Colors.blue,
-              action: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => ChamasoftDashboard(),
-                ),
-              ),
+              action: () => Navigator.of(context).pop(),
             ),
             SizedBox(width: 20.0),
             heading2(color: Colors.blue, text: "Review Loan Applications"),
@@ -79,23 +74,32 @@ class ReviewLoanApplicationsState extends State<ReviewLoanApplications> {
       ),
       backgroundColor: Colors.transparent,
       body: Container(
-        padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+        decoration: primaryGradient(context),
+        padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
         height: MediaQuery.of(context).size.height,
-        color: Theme.of(context).backgroundColor,
-        child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
-            itemCount: loanApplications.length,
-            itemBuilder: (context, int index) {
-              LoanApplication loanApplication = loanApplications[index];
-              return LoanApplicationCard(
-                loanName: loanApplication.loanName,
-                amount: numberFormat.format(loanApplication.amount),
-                borrowerName: loanApplication.borrowerName,
-                requestDate: dateFormat.format(loanApplication.requestDate),
-                onPressed: () {},
-              );
-            }),
+        child: loanApplications.length > 0
+            ? ListView.separated(
+                separatorBuilder: (BuildContext context, int index) =>
+                    const Divider(),
+                itemCount: loanApplications.length,
+                itemBuilder: (context, int index) {
+                  LoanApplication loanApplication = loanApplications[index];
+                  return LoanApplicationCard(
+                    loanName: loanApplication.loanName,
+                    amount: numberFormat.format(loanApplication.amount),
+                    borrowerName: loanApplication.borrowerName,
+                    requestDate: dateFormat.format(loanApplication.requestDate),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              ReviewLoan(loanApplication: loanApplication),
+                        ),
+                      );
+                    },
+                  );
+                })
+            : Center(child: Text('No Loans at the moment')),
       ),
     );
   }
@@ -136,7 +140,7 @@ class LoanApplicationCard extends StatelessWidget {
                   style: TextStyle(
                     color: Theme.of(context)
                         .textSelectionHandleColor
-                        .withOpacity(0.5),
+                        .withOpacity(0.8),
                     fontSize: 16.0,
                     fontWeight: FontWeight.w800,
                   ),
@@ -178,7 +182,7 @@ class LoanApplicationCard extends StatelessWidget {
                   style: TextStyle(
                     color: Theme.of(context)
                         .textSelectionHandleColor
-                        .withOpacity(0.5),
+                        .withOpacity(0.8),
                     fontSize: 12.0,
                     fontWeight: FontWeight.w800,
                   ),
@@ -189,7 +193,7 @@ class LoanApplicationCard extends StatelessWidget {
                   style: TextStyle(
                     color: Theme.of(context)
                         .textSelectionHandleColor
-                        .withOpacity(0.5),
+                        .withOpacity(0.8),
                     fontSize: 12.0,
                     fontWeight: FontWeight.w800,
                   ),
@@ -204,7 +208,7 @@ class LoanApplicationCard extends StatelessWidget {
                   style: TextStyle(
                     color: Theme.of(context)
                         .textSelectionHandleColor
-                        .withOpacity(0.5),
+                        .withOpacity(0.8),
                     fontSize: 16.0,
                     fontWeight: FontWeight.w800,
                   ),
@@ -215,7 +219,7 @@ class LoanApplicationCard extends StatelessWidget {
                   style: TextStyle(
                     color: Theme.of(context)
                         .textSelectionHandleColor
-                        .withOpacity(0.5),
+                        .withOpacity(0.8),
                     fontSize: 16.0,
                     fontWeight: FontWeight.w800,
                   ),
@@ -237,7 +241,7 @@ class LoanApplicationCard extends StatelessWidget {
                     spacing: 2.0,
                     color: Theme.of(context)
                         .textSelectionHandleColor
-                        .withOpacity(.5),
+                        .withOpacity(.8),
                     action: onPressed),
               ],
             ),
