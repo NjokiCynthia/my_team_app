@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class IntroScreenState extends State<IntroScreen> {
   bool _loading = true;
 
   _isFirstTime() async {
-    (await getPreference("isFirstTime") != '') ? Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login(),),).whenComplete((){ _loading = false; }) : setState(() { _loading = false; });
+    (await getPreference("isFirstTime") != '') ? Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ChamasoftDashboard(),),).whenComplete((){ _loading = false; }) : setState(() { _loading = false; });
   }
 
   @override

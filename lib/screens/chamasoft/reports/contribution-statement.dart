@@ -8,6 +8,10 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import '../dashboard.dart';
 
+String appbarTitle = "Contribution Statement";
+String defaultTitle = "Contributions";
+String single = "Contribution";
+
 class ContributionStatement extends StatefulWidget {
   @override
   _ContributionStatementState createState() => _ContributionStatementState();
@@ -65,6 +69,13 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
   @override
   Widget build(BuildContext context) {
+    final statementFlag = ModalRoute.of(context).settings.arguments;
+    if (statementFlag == 2) {
+      appbarTitle = "Fine Statement";
+      defaultTitle = "Fines";
+      single = "Fine";
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -84,7 +95,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                   ),
                 ),
                 SizedBox(width: 20.0),
-                heading2(color: Colors.blue, text: "Contribution Statement"),
+                heading2(color: Colors.blue, text: appbarTitle),
               ],
             ),
             RightActionButton(
@@ -121,7 +132,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           heading2(
-                              text: "Total Contributions",
+                              text: "Total " + defaultTitle,
                               color: Theme.of(context).textSelectionHandleColor,
                               align: TextAlign.start),
                           SizedBox(
@@ -214,9 +225,77 @@ class RightActionButton extends StatelessWidget {
         onPressed: () {
           showBottomSheet(
               context: context,
+              elevation: 10,
               builder: (context) => Container(
-                    height: 200,
-                    color: Colors.deepOrange,
+                    height: 250,
+                    padding: EdgeInsets.all(10.0),
+                    width: double.infinity,
+                    color: Theme.of(context).backgroundColor,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Container(
+                            height: 10,
+                            width: 100,
+                            decoration: BoxDecoration(
+                                color: Color(0xffededfe),
+                                shape: BoxShape.rectangle,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(5)))),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        subtitle1(
+                            text: "Filter " + defaultTitle,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            align: TextAlign.start),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        subtitle2(
+                            text: "Select " + single,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            align: TextAlign.start),
+                        FilterButton(
+                          text: "All " + defaultTitle,
+                        ),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        subtitle2(
+                            text: "Statement Period",
+                            color: Theme.of(context).textSelectionHandleColor,
+                            align: TextAlign.start),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            FilterButton(
+                              text: "12/03/2020",
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(left: 10.0, right: 10.0),
+                              child: subtitle2(
+                                  text: "to",
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  align: TextAlign.start),
+                            ),
+                            FilterButton(
+                              text: "12/04/2020",
+                            ),
+                          ],
+                        ),
+                        RaisedButton(
+                          color: Colors.blue,
+                          child: Padding(
+                            padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                            child: Text("Apply Filter"),
+                          ),
+                          textColor: Colors.white,
+                          onPressed: () {},
+                        )
+                      ],
+                    ),
                   ));
         },
         shape: new RoundedRectangleBorder(
@@ -224,5 +303,28 @@ class RightActionButton extends StatelessWidget {
         textColor: textColor,
       ),
     );
+  }
+}
+
+class FilterButton extends StatelessWidget {
+  const FilterButton({Key key, this.text}) : super(key: key);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    return new OutlineButton(
+        child:
+            subtitle1(text: text, color: Colors.blue, align: TextAlign.center),
+        onPressed: null,
+        color: Colors.blue,
+        highlightedBorderColor: Colors.blue.withOpacity(0.5),
+        disabledBorderColor: Colors.blue.withOpacity(0.5),
+        borderSide: BorderSide(
+          width: 2.0,
+          color: Colors.blue.withOpacity(0.5),
+        ),
+        shape: new RoundedRectangleBorder(
+            borderRadius: new BorderRadius.circular(5.0)));
   }
 }
