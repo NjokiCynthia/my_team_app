@@ -30,12 +30,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           children: List.generate(2, (index) {
             String title1 = "CONTRIBUTION";
             String title2 = "STATEMENT";
-            IconData icon = LineAwesomeIcons.file_text;
+            IconData icon = Feather.file_text;
             int statementFlag = 0;
             if (index == 1) {
               title1 = "FINE";
-              icon = LineAwesomeIcons.fax;
-              statementFlag = 1;
+              icon = Feather.file_minus;
+              statementFlag = 2;
             }
 
             return GridItem(
