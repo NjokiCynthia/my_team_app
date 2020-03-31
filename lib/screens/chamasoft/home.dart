@@ -1,3 +1,5 @@
+import 'package:chamasoft/screens/chamasoft/apply-loan.dart';
+import 'package:chamasoft/screens/chamasoft/pay-now.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -249,7 +251,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         isFlat: false,
                         text: "PAY NOW",
                         iconSize: 12.0,
-                        action: (){},
+                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => PayNow(),),),
                       ),
                     ),
                   ),
@@ -263,7 +265,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         isFlat: true,
                         text: "APPLY LOAN",
                         iconSize: 12.0,
-                        action: (){},
+                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ApplyLoan(),),),
                       ),
                     ),
                   ),

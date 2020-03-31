@@ -1,3 +1,4 @@
+import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -299,17 +300,17 @@ List<Widget> contributionSummary({Color color, IconData cardIcon, String currenc
   return _data;
 }
 
-Widget toolTip({String title, String message}) {
+Widget toolTip({BuildContext context, String title, String message}) {
   return Container(
       padding: EdgeInsets.all(20.0),
-      color: Color(0xffededfe),
+      color:  (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
 //mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Icon(
             Icons.lightbulb_outline,
-            color: Colors.blueGrey,
+            color: Theme.of(context).textSelectionHandleColor,
             size: 24.0,
             semanticLabel: 'Text to announce in accessibility modes',
           ),
@@ -320,10 +321,12 @@ Widget toolTip({String title, String message}) {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                subtitle1(text: title, color: Colors.blueGrey),
+                subtitle1(
+                    text: title,
+                    color: Theme.of(context).textSelectionHandleColor),
                 subtitle2(
                     text: message,
-                    color: Colors.blueGrey,
+                    color: Theme.of(context).textSelectionHandleColor,
                     align: TextAlign.start)
               ],
             ),
@@ -331,7 +334,7 @@ Widget toolTip({String title, String message}) {
           screenActionButton(
               icon: LineAwesomeIcons.close,
 //backgroundColor: Colors.blue.withOpacity(0.2),
-              textColor: Colors.blueGrey,
+              textColor: Theme.of(context).textSelectionHandleColor,
               action: null),
         ],
       ));
