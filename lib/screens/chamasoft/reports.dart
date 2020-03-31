@@ -53,7 +53,12 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                       icon: LineAwesomeIcons.fax,
                       text1: "FINE",
                       text2: "STATEMENT",
-                      onPressed: () {},
+                      onPressed: () => Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ContributionStatement(),
+                            settings: RouteSettings(arguments: 2)),
+                      ),
                     ),
                   ),
                 ],

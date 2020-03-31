@@ -12,6 +12,10 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import '../dashboard.dart';
 
+String appbarTitle = "Contribution Statement";
+String defaultTitle = "Contributions";
+String single = "Contribution";
+
 class ContributionStatement extends StatefulWidget {
   @override
   _ContributionStatementState createState() => _ContributionStatementState();
@@ -69,10 +73,11 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
   @override
   Widget build(BuildContext context) {
-    final flag = ModalRoute.of(context).settings.arguments;
-
-    if (flag == 1) {
-      print("Flag is 1");
+    final statementFlag = ModalRoute.of(context).settings.arguments;
+    if (statementFlag == 2) {
+      appbarTitle = "Fine Statement";
+      defaultTitle = "Fines";
+      single = "Fine";
     }
 
     return Scaffold(
@@ -94,7 +99,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                   ),
                 ),
                 SizedBox(width: 20.0),
-                heading2(color: Colors.blue, text: "Contribution Statement"),
+                heading2(color: Colors.blue, text: appbarTitle),
               ],
             ),
             RightActionButton(
@@ -131,7 +136,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           heading2(
-                              text: "Total Contributions",
+                              text: "Total " + defaultTitle,
                               color: Theme.of(context).textSelectionHandleColor,
                               align: TextAlign.start),
                           SizedBox(
@@ -245,18 +250,18 @@ class RightActionButton extends StatelessWidget {
                           height: 5,
                         ),
                         subtitle1(
-                            text: "Filter Contributions",
+                            text: "Filter " + defaultTitle,
                             color: Theme.of(context).textSelectionHandleColor,
                             align: TextAlign.start),
                         SizedBox(
                           height: 5,
                         ),
                         subtitle2(
-                            text: "Select Contribution",
+                            text: "Select " + single,
                             color: Theme.of(context).textSelectionHandleColor,
                             align: TextAlign.start),
                         FilterButton(
-                          text: "All Contributions",
+                          text: "All " + defaultTitle,
                         ),
                         SizedBox(
                           height: 5,
