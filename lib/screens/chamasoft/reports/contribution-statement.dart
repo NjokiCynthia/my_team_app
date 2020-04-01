@@ -5,12 +5,7 @@ import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
 import '../dashboard.dart';
-
-String appbarTitle = "Contribution Statement";
-String defaultTitle = "Contributions";
-String single = "Contribution";
 
 class ContributionStatement extends StatefulWidget {
   @override
@@ -70,10 +65,12 @@ class _ContributionStatementState extends State<ContributionStatement> {
   @override
   Widget build(BuildContext context) {
     final statementFlag = ModalRoute.of(context).settings.arguments;
+    String appbarTitle = "Contribution Statement";
+    String defaultTitle = "Contributions";
+
     if (statementFlag == 2) {
       appbarTitle = "Fine Statement";
       defaultTitle = "Fines";
-      single = "Fine";
     }
 
     return Scaffold(
@@ -186,6 +183,15 @@ class RightActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final statementFlag = ModalRoute.of(context).settings.arguments;
+    String defaultTitle = "Contributions";
+    String single = "Contribution";
+
+    if (statementFlag == 2) {
+      defaultTitle = "Fines";
+      single = "Fine";
+    }
+
     return Container(
       width: 42.0,
       height: 22.0,
