@@ -1,66 +1,31 @@
-import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
+import 'package:chamasoft/screens/chamasoft/models/bank.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/withdrawal-option.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-class ExpenseCategoriesList extends StatefulWidget {
+class BankList extends StatefulWidget {
   @override
-  _ExpenseCategoriesListState createState() => _ExpenseCategoriesListState();
+  _BankListState createState() => _BankListState();
 }
 
-class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
-  double _appBarElevation = 0;
-  ScrollController _scrollController;
-
-  void _scrollListener() {
-    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
-    if (_appBarElevation != newElevation) {
-      setState(() {
-        _appBarElevation = newElevation;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
-    super.dispose();
-  }
-
-  final List<ExpenseCategory> list = [
-    ExpenseCategory("1", "Audit Fees"),
-    ExpenseCategory("1", "Annual Tax"),
-    ExpenseCategory("1", "Subscription Fees"),
-    ExpenseCategory("1", "Monthly Meeting Expenses"),
-    ExpenseCategory("1", "Audit Fees"),
-    ExpenseCategory("1", "Annual Tax"),
-    ExpenseCategory("1", "Subscription Fees"),
-    ExpenseCategory("1", "Monthly Meeting Expenses"),
-    ExpenseCategory("1", "Audit Fees"),
-    ExpenseCategory("1", "Annual Tax"),
-    ExpenseCategory("1", "Subscription Fees"),
-    ExpenseCategory("1", "Monthly Meeting Expenses"),
+class _BankListState extends State<BankList> {
+  final List<Bank> list = [
+    Bank("1", "NCBA Bank", LineAwesomeIcons.bank),
+    Bank("1", "KCB Bank", LineAwesomeIcons.bank),
+    Bank("1", "Cooperative Bank", LineAwesomeIcons.bank),
+    Bank("1", "ABSA Bank", LineAwesomeIcons.bank),
   ];
 
-  void description() {
+  void bankAccount() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Expense Summary"),
+          title: new Text("Acoount Number"),
           content: TextFormField(
             //controller: controller,
             keyboardType: TextInputType.text,
@@ -72,7 +37,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
                 width: 2.0,
               )),
               // hintText: 'Phone Number or Email Address',
-              labelText: "A short description(optional)",
+              labelText: "Bank account number",
             ),
           ),
           actions: <Widget>[
@@ -91,14 +56,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
                 "Proceed",
                 style: new TextStyle(color: Colors.blue),
               ),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                        builder: (BuildContext context) => WithdrawalOption()))
-                    .then((result) {
-                  Navigator.of(context).pop();
-                });
-              },
+              onPressed: () {},
             ),
           ],
         );
@@ -114,7 +72,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
         action: () => Navigator.of(context).pop(),
         elevation: 1,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Select Expense Category",
+        title: "Select Your Bank",
       ),
       body: Container(
         //decoration: primaryGradient(context),
@@ -129,7 +87,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
               child: TextField(
                 autocorrect: true,
                 decoration: InputDecoration(
-                  hintText: 'Search Category',
+                  hintText: 'Search Bank',
                   hintStyle: TextStyle(color: Colors.blueGrey),
                   filled: false,
                   prefixIcon: Icon(
@@ -143,10 +101,9 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
             ),
             Expanded(
               child: ListView.builder(
-                controller: _scrollController,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  ExpenseCategory category = list[index];
+                  Bank bank = list[index];
                   return Material(
                     color: Theme.of(context).backgroundColor,
                     shape: RoundedRectangleBorder(
@@ -157,7 +114,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
                         child: Row(
                           children: <Widget>[
                             Icon(
-                              LineAwesomeIcons.file_text,
+                              LineAwesomeIcons.bank,
                               color: Colors.blueGrey,
                               size: 32,
                             ),
@@ -165,14 +122,14 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
                               width: 10,
                             ),
                             subtitle1(
-                                text: category.name,
+                                text: bank.name,
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
                                 align: TextAlign.start),
                           ],
                         ),
                       ),
-                      onTap: description,
+                      onTap: bankAccount,
                     ),
                   );
                 },
