@@ -3,7 +3,6 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class ChamasoftReports extends StatefulWidget {
   @override
@@ -23,48 +22,35 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Padding(
-          padding: EdgeInsets.all(20.0),
-          child: Column(
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Expanded(
-                    child: ReportButton(
-                      icon: Feather.file_text,
-                      text1: "CONTRIBUTION",
-                      text2: "STATEMENT",
-                      onPressed: () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                ContributionStatement(),
-                            settings: RouteSettings(arguments: 1)),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20,
-                  ),
-                  Expanded(
-                    child: ReportButton(
-                      icon: LineAwesomeIcons.fax,
-                      text1: "FINE",
-                      text2: "STATEMENT",
-                      onPressed: () => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                ContributionStatement(),
-                            settings: RouteSettings(arguments: 2)),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          )),
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return GridView.count(
+          padding: EdgeInsets.all(16.0),
+          crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+          children: List.generate(2, (index) {
+            String title1 = "CONTRIBUTION";
+            String title2 = "STATEMENT";
+            IconData icon = Feather.file_text;
+            int statementFlag = 0;
+            if (index == 1) {
+              title1 = "FINE";
+              icon = Feather.file_minus;
+              statementFlag = 2;
+            }
+
+            return GridItem(
+                title1: title1,
+                title2: title2,
+                icon: icon,
+                onTapped: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              ContributionStatement(),
+                          settings: RouteSettings(arguments: statementFlag)),
+                    ));
+          }),
+        );
+      },
     );
   }
 }
@@ -99,6 +85,50 @@ class ReportButton extends StatelessWidget {
             ),
             subtitle1(text: text1, color: Colors.blue, align: TextAlign.center),
             subtitle2(text: text2, color: Colors.blue, align: TextAlign.center)
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GridItem extends StatelessWidget {
+  const GridItem(
+      {Key key,
+      @required this.title1,
+      @required this.title2,
+      @required this.icon,
+      @required this.onTapped})
+      : super(key: key);
+
+  final String title1;
+  final String title2;
+  final IconData icon;
+  final Function onTapped;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onTapped,
+      child: Container(
+        margin: EdgeInsets.all(16),
+        height: 150,
+        decoration: cardDecoration(
+            gradient: plainCardGradient(context), context: context),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              icon,
+              size: 35.0,
+              color: Colors.blue,
+            ),
+            SizedBox(
+              height: 15.0,
+            ),
+            subtitle1(
+                text: title1, color: Colors.blue, align: TextAlign.center),
+            subtitle2(text: title2, color: Colors.blue, align: TextAlign.center)
           ],
         ),
       ),

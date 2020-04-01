@@ -1,7 +1,7 @@
-import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -78,23 +78,12 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            screenActionButton(
-              icon: LineAwesomeIcons.arrow_left,
-              backgroundColor: Colors.blue.withOpacity(0.1),
-              textColor: Colors.blue,
-              action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ChamasoftDashboard(),),),
-            ),
-            SizedBox(width: 20.0),
-            heading2(color: Colors.blue, text: "Settings"),
-          ],
-        ),
+      appBar: secondaryPageAppbar(
+        context: context,
+        action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        backgroundColor: Theme.of(context).backgroundColor,
-        automaticallyImplyLeading: false,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: "Settings",
       ),
       body: SingleChildScrollView(
         controller: _scrollController,

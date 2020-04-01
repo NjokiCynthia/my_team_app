@@ -1,6 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-installments.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -54,27 +54,16 @@ class _LoanAmortizationState extends State<LoanAmortization> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            screenActionButton(
-              icon: LineAwesomeIcons.close,
-              backgroundColor: Colors.blue.withOpacity(0.1),
-              textColor: Colors.blue,
-              action: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => ApplyLoan(),
-                ),
-              ),
-            ),
-            SizedBox(width: 20.0),
-            heading2(color: Colors.blue, text: "Loan Terms & Amortization"),
-          ],
+      appBar: secondaryPageAppbar(
+        context: context,
+        action: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => ApplyLoan(),
+          ),
         ),
         elevation: _appBarElevation,
-        backgroundColor: Theme.of(context).backgroundColor,
-        automaticallyImplyLeading: false,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: "Loan Terms & Amortization",
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(

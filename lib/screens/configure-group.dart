@@ -1,4 +1,3 @@
-import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -230,7 +229,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                       },
                       separatorBuilder: (context, index) {
                         return Divider(
-                          color: Colors.blueGrey[100],
+                          color: Theme.of(context).dividerColor,
                           height: 6.0,
                         );
                       },
@@ -350,7 +349,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                       },
                       separatorBuilder: (context, index) {
                         return Divider(
-                          color: Colors.blueGrey[100],
+                          color: Theme.of(context).dividerColor,
                           height: 6.0,
                         );
                       },
@@ -374,7 +373,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                             icon: LineAwesomeIcons.arrow_left,
                             backgroundColor: Colors.blue.withOpacity(0.1),
                             textColor: Colors.blue,
-                            action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyGroups(),),),
+                            action: () => Navigator.of(context).pop(),
                           ),
                           SizedBox(width: 20.0),
                           heading2(color: Colors.blue, text: "Staff Welfare Group"),

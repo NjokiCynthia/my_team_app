@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/my-groups.dart';
-import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -27,14 +26,13 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-          child: Stack(
+      body: Stack(
         children: <Widget>[
-          Center(
-            child: Container(
+          Container(
+            alignment: Alignment.center,
+            decoration: primaryGradient(context),
+            child: SingleChildScrollView(
               padding: EdgeInsets.all(40.0),
-              height: MediaQuery.of(context).size.height,
-              decoration: primaryGradient(context),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -101,11 +99,11 @@ class _SignUpState extends State<SignUp> {
               icon: LineAwesomeIcons.arrow_left,
               backgroundColor: Colors.blue.withOpacity(0.2),
               textColor: Colors.blue,
-              action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Verification(),),)
+              action: () => Navigator.of(context).pop(),
             ),
           )
         ],
-      )),
+      ),
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/review-loan.dart';
+import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -49,28 +49,19 @@ class ReviewLoanApplications extends StatefulWidget {
 }
 
 class ReviewLoanApplicationsState extends State<ReviewLoanApplications> {
+  double _appBarElevation = 0;
   var numberFormat = new NumberFormat("#,###.00");
   var dateFormat = new DateFormat("d MMMM y");
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            screenActionButton(
-              icon: LineAwesomeIcons.arrow_left,
-              backgroundColor: Colors.blue.withOpacity(0.1),
-              textColor: Colors.blue,
-              action: () => Navigator.of(context).pop(),
-            ),
-            SizedBox(width: 20.0),
-            heading2(color: Colors.blue, text: "Review Loan Applications"),
-          ],
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        automaticallyImplyLeading: false,
+      appBar: secondaryPageAppbar(
+        context: context,
+        action: () => Navigator.of(context).pop(),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: "Review Loan Applications",
       ),
       backgroundColor: Colors.transparent,
       body: Container(
