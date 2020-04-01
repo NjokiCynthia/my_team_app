@@ -138,7 +138,7 @@ class ReviewLoanState extends State<ReviewLoan> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Expanded(
-                  flex: 15,
+                  flex: 30,
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
@@ -326,7 +326,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                   ),
                 ),
                 Expanded(
-                  flex: 50,
+                  flex: 40,
                   child: Container(
                     padding: EdgeInsets.all(8.0),
                     color: Theme.of(context).backgroundColor,
