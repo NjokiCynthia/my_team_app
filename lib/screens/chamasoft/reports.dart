@@ -22,31 +22,35 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
 
   @override
   Widget build(BuildContext context) {
-    return GridView.count(
-      padding: EdgeInsets.all(16.0),
-      crossAxisCount: 2,
-      children: List.generate(2, (index) {
-        String title1 = "CONTRIBUTION";
-        String title2 = "STATEMENT";
-        IconData icon = Feather.file_text;
-        int statementFlag = 0;
-        if (index == 1) {
-          title1 = "FINE";
-          icon = Feather.file_minus;
-          statementFlag = 2;
-        }
+    return OrientationBuilder(
+      builder: (context, orientation) {
+        return GridView.count(
+          padding: EdgeInsets.all(16.0),
+          crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+          children: List.generate(2, (index) {
+            String title1 = "CONTRIBUTION";
+            String title2 = "STATEMENT";
+            IconData icon = Feather.file_text;
+            int statementFlag = 0;
+            if (index == 1) {
+              title1 = "FINE";
+              icon = Feather.file_minus;
+              statementFlag = 2;
+            }
 
-        return GridItem(
-            title1: title1,
-            title2: title2,
-            icon: icon,
-            onTapped: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          ContributionStatement(),
-                      settings: RouteSettings(arguments: statementFlag)),
-                ));
-      }),
+            return GridItem(
+                title1: title1,
+                title2: title2,
+                icon: icon,
+                onTapped: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              ContributionStatement(),
+                          settings: RouteSettings(arguments: statementFlag)),
+                    ));
+          }),
+        );
+      },
     );
   }
 }
