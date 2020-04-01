@@ -1,4 +1,4 @@
-import 'package:chamasoft/screens/chamasoft/models/loan-installments.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
@@ -40,15 +40,15 @@ class _LoanAmortizationState extends State<LoanAmortization> {
     super.dispose();
   }
 
-  final List<LoanInstallments> installments = [
-    LoanInstallments(
+  final List<LoanInstallment> installments = [
+    LoanInstallment(
         date: DateTime.now(), amount: '30,000', balance: '150,000'),
-    LoanInstallments(
+    LoanInstallment(
         date: DateTime.now(), amount: '30,000', balance: '120,000'),
-    LoanInstallments(date: DateTime.now(), amount: '30,000', balance: '90,000'),
-    LoanInstallments(date: DateTime.now(), amount: '30,000', balance: '60,000'),
-    LoanInstallments(date: DateTime.now(), amount: '30,000', balance: '30,000'),
-    LoanInstallments(date: DateTime.now(), amount: '30,000', balance: '0'),
+    LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '90,000'),
+    LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '60,000'),
+    LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '30,000'),
+    LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '0'),
   ];
 
   @override
@@ -126,7 +126,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     height: 300,
                     child: ListView.builder(
                       itemBuilder: (context, index) {
-                        LoanInstallments installment = installments[index];
+                        LoanInstallment installment = installments[index];
                         return AmortizationBody(installment: installment);
                       },
                       itemCount: installments.length,

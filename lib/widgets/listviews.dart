@@ -1,4 +1,4 @@
-import 'package:chamasoft/screens/chamasoft/models/loan-installments.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
@@ -101,7 +101,7 @@ class AmortizationBody extends StatelessWidget {
     @required this.installment,
   }) : super(key: key);
 
-  final LoanInstallments installment;
+  final LoanInstallment installment;
 
   @override
   Widget build(BuildContext context) {
