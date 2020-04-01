@@ -216,7 +216,7 @@ Widget groupSwitcherButton({BuildContext context, String title, String role}) {
                 color: Theme.of(context).hintColor.withOpacity(0.4),
               ),
               child: Icon(
-                Feather.users,
+                Feather.plus,
                 color: Colors.white70,
                 size: 18.0,
               ),
