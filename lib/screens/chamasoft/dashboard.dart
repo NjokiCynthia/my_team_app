@@ -84,8 +84,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[900].withOpacity(0.95)
-            : Colors.blue[50].withOpacity(0.19),
+            ? Colors.blueGrey[900] //.withOpacity(0.95)
+            : Colors.blue[50], //.withOpacity(0.89),
         elevation: 0,
         currentIndex: _currentPage,
         type: BottomNavigationBarType.fixed,
@@ -98,8 +98,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             title: Text(
               "Home",
               style: TextStyle(
-                  color:
-                      _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
+                  color: _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
                   fontWeight: FontWeight.w700),
             ),
           ),
@@ -111,9 +110,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               title: Text(
                 "My Group",
                 style: TextStyle(
-                    color: _currentPage == 1
-                        ? Colors.blue
-                        : Colors.blueGrey[300],
+                    color:
+                        _currentPage == 1 ? Colors.blue : Colors.blueGrey[300],
                     fontWeight: FontWeight.w700),
               )),
           BottomNavigationBarItem(
@@ -124,9 +122,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               title: Text(
                 "Transactions",
                 style: TextStyle(
-                    color: _currentPage == 2
-                        ? Colors.blue
-                        : Colors.blueGrey[300],
+                    color:
+                        _currentPage == 2 ? Colors.blue : Colors.blueGrey[300],
                     fontWeight: FontWeight.w700),
               )),
           BottomNavigationBarItem(
@@ -137,9 +134,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               title: Text(
                 "Reports",
                 style: TextStyle(
-                    color: _currentPage == 3
-                        ? Colors.blue
-                        : Colors.blueGrey[300],
+                    color:
+                        _currentPage == 3 ? Colors.blue : Colors.blueGrey[300],
                     fontWeight: FontWeight.w700),
               )),
         ],
