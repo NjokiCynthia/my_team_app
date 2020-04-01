@@ -1,6 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -77,128 +77,101 @@ class _ContributionStatementState extends State<ContributionStatement> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                screenActionButton(
-                  icon: LineAwesomeIcons.arrow_left,
-                  backgroundColor: Colors.blue.withOpacity(0.1),
-                  textColor: Colors.blue,
-                  action: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => ChamasoftDashboard(),
-                    ),
-                  ),
-                ),
-                SizedBox(width: 20.0),
-                heading2(color: Colors.blue, text: appbarTitle),
-              ],
-            ),
-            RightActionButton(
-              icon: LineAwesomeIcons.filter,
-              textColor: Colors.blueGrey,
-            ),
-          ],
-        ),
-        elevation: _appBarElevation,
-        backgroundColor: Theme.of(context).backgroundColor,
-        automaticallyImplyLeading: false,
-      ),
-      backgroundColor: Colors.transparent,
-      body: Container(
-        color: Theme.of(context).backgroundColor,
-        width: double.infinity,
-        height: double.infinity,
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(16.0),
-                color: (themeChangeProvider.darkTheme)
-                    ? Colors.blueGrey[800]
-                    : Color(0xffededfe),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          heading2(
-                              text: "Total " + defaultTitle,
-                              color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              subtitle2(
-                                  text: "Total amount due ",
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  align: TextAlign.start),
-                              subtitle1(
-                                  text: "Ksh 60,000",
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  align: TextAlign.start),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 4,
-                          ),
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              subtitle2(
-                                  text: "Balance ",
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  align: TextAlign.start),
-                              subtitle1(
-                                  text: "Ksh 10,000",
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  align: TextAlign.start),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    heading2(
-                        text: "Ksh 50,000",
-                        color: Theme.of(context).textSelectionHandleColor,
-                        align: TextAlign.start)
-                  ],
-                ),
-              ),
-              Container(
-                height: 500,
-                //margin: EdgeInsets.only(top: 8.0),
-                child: ListView.builder(
-                  itemBuilder: (context, index) {
-                    StatementRow row = list[index];
-                    if (row.isHeader) {
-                      return StatementHeader(row: row);
-                    } else {
-                      return StatementBody(row: row);
-                    }
-                  },
-                  itemCount: list.length,
-                ),
-              )
-            ],
+      appBar: secondaryPageAppbar(
+        context: context,
+        action: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => ChamasoftDashboard(),
           ),
         ),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: appbarTitle,
+        actions: [
+          RightActionButton(
+            icon: LineAwesomeIcons.filter,
+            textColor: Colors.blueGrey,
+          ),
+        ]
+      ),
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: Column(
+        children: <Widget>[ 
+          Container(
+            padding: EdgeInsets.all(16.0),
+            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  width: MediaQuery.of(context).size.width / 2,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      heading2(
+                          text: "Total " + defaultTitle,
+                          color: Theme.of(context).textSelectionHandleColor,
+                          align: TextAlign.start),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          subtitle2(
+                              text: "Total amount due ",
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor,
+                              align: TextAlign.start),
+                          subtitle1(
+                              text: "Ksh 60,000",
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor,
+                              align: TextAlign.start),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 4,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          subtitle2(
+                              text: "Balance ",
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor,
+                              align: TextAlign.start),
+                          subtitle1(
+                              text: "Ksh 10,000",
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor,
+                              align: TextAlign.start),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                heading2(text: "Ksh 50,000", color: Theme.of(context).textSelectionHandleColor, align: TextAlign.start)
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              controller: _scrollController,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                StatementRow row = list[index];
+                if (row.isHeader) {
+                  return StatementHeader(row: row);
+                } else {
+                  return StatementBody(row: row);
+                }
+              },
+              itemCount: list.length,
+            ),
+          ),
+        ],
       ),
     );
   }

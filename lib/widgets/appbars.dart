@@ -1,5 +1,8 @@
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+
+import 'buttons.dart';
 
 Widget primaryPageAppBar({String title}) {
   return AppBar(
@@ -33,9 +36,24 @@ Widget primaryPageAppBar({String title}) {
   );
 }
 
-Widget levelOneAppbar({String title}) {
+Widget secondaryPageAppbar({BuildContext context, String title, Function action, double elevation, IconData leadingIcon, List<Widget> actions}) {
   return AppBar(
-    title: Text(title),
-
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        screenActionButton(
+          icon: leadingIcon,
+          backgroundColor: Colors.blue.withOpacity(0.1),
+          textColor: Colors.blue,
+          action: action,
+        ),
+        SizedBox(width: 20.0),
+        heading2(color: Colors.blue, text: title),
+      ],
+    ),
+    elevation: elevation,
+    backgroundColor: Theme.of(context).backgroundColor,
+    automaticallyImplyLeading: false,
+    actions: actions,
   );
 }

@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/configure-group.dart';
-import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -27,15 +26,14 @@ class _CreateGroupState extends State<CreateGroup> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        child: Stack(
-          children: <Widget>[
-            Center(
-              child: Container(
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: Container(
+              alignment: Alignment.center,
+              decoration: primaryGradient(context),
+              child: SingleChildScrollView(
                 padding: EdgeInsets.all(40.0),
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: primaryGradient(context),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -74,18 +72,18 @@ class _CreateGroupState extends State<CreateGroup> {
                 ),
               ),
             ),
-            Positioned(
-              top: 50.0,
-              left: 20.0,
-              child: screenActionButton(
-                icon: LineAwesomeIcons.close,
-                backgroundColor: Colors.blue.withOpacity(0.2),
-                textColor: Colors.blue,
-                action: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyGroups(),),),
-              ),
-            )
-          ],
-        ),
+          ),
+          Positioned(
+            top: 50.0,
+            left: 20.0,
+            child: screenActionButton(
+              icon: LineAwesomeIcons.close,
+              backgroundColor: Colors.blue.withOpacity(0.2),
+              textColor: Colors.blue,
+              action: () => Navigator.of(context).pop(),
+            ),
+          )
+        ],
       ),
     );
   }
