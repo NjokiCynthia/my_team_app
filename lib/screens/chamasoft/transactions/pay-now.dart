@@ -154,11 +154,7 @@ class PayNowState extends State<PayNow> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        action: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ChamasoftDashboard(),
-          ),
-        ),
+        action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Contribution Payment",

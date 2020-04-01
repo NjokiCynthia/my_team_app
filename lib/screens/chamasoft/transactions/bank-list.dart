@@ -1,5 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/bank.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/withdrawal-option.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-option.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
