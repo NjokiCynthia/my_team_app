@@ -75,28 +75,25 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
     return Scaffold(
       appBar: secondaryPageAppbar(
-        context: context,
-        action: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ChamasoftDashboard(),
-          ),
-        ),
-        elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.arrow_left,
-        title: appbarTitle,
-        actions: [
-          RightActionButton(
-            icon: LineAwesomeIcons.filter,
-            textColor: Colors.blueGrey,
-          ),
-        ]
-      ),
+          context: context,
+          action: () => Navigator.of(context).pop(),
+          elevation: _appBarElevation,
+          leadingIcon: LineAwesomeIcons.arrow_left,
+          title: appbarTitle,
+          actions: [
+            RightActionButton(
+              icon: LineAwesomeIcons.filter,
+              textColor: Colors.blueGrey,
+            ),
+          ]),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
-        children: <Widget>[ 
+        children: <Widget>[
           Container(
             padding: EdgeInsets.all(16.0),
-            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+            color: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Color(0xffededfe),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -118,13 +115,11 @@ class _ContributionStatementState extends State<ContributionStatement> {
                         children: <Widget>[
                           subtitle2(
                               text: "Total amount due ",
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionHandleColor,
                               align: TextAlign.start),
                           subtitle1(
                               text: "Ksh 60,000",
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionHandleColor,
                               align: TextAlign.start),
                         ],
                       ),
@@ -136,20 +131,21 @@ class _ContributionStatementState extends State<ContributionStatement> {
                         children: <Widget>[
                           subtitle2(
                               text: "Balance ",
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionHandleColor,
                               align: TextAlign.start),
                           subtitle1(
                               text: "Ksh 10,000",
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor,
+                              color: Theme.of(context).textSelectionHandleColor,
                               align: TextAlign.start),
                         ],
                       ),
                     ],
                   ),
                 ),
-                heading2(text: "Ksh 50,000", color: Theme.of(context).textSelectionHandleColor, align: TextAlign.start)
+                heading2(
+                    text: "Ksh 50,000",
+                    color: Theme.of(context).textSelectionHandleColor,
+                    align: TextAlign.start)
               ],
             ),
           ),
