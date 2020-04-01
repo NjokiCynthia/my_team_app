@@ -3,7 +3,6 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class ChamasoftReports extends StatefulWidget {
   @override
@@ -23,33 +22,32 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: EdgeInsets.all(16.0),
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(2, (index) {
-            String title1 = "CONTRIBUTION";
-            String title2 = "STATEMENT";
-            IconData icon = Feather.file_text;
-            int statementFlag = 0;
-            if (index == 1) {
-              title1 = "FINE";
-              icon = Feather.file_minus;
-              statementFlag = 2;
-            }
+    return GridView.count(
+      padding: EdgeInsets.all(16.0),
+      crossAxisCount: 2,
+      children: List.generate(2, (index) {
+        String title1 = "CONTRIBUTION";
+        String title2 = "STATEMENT";
+        IconData icon = Feather.file_text;
+        int statementFlag = 0;
+        if (index == 1) {
+          title1 = "FINE";
+          icon = Feather.file_minus;
+          statementFlag = 2;
+        }
 
-            return GridItem(
-                title1: title1,
-                title2: title2,
-                icon: icon,
-                onTapped: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              ContributionStatement(),
-                          settings: RouteSettings(arguments: statementFlag)),
-                    ));
-          }),
-        ));
+        return GridItem(
+            title1: title1,
+            title2: title2,
+            icon: icon,
+            onTapped: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          ContributionStatement(),
+                      settings: RouteSettings(arguments: statementFlag)),
+                ));
+      }),
+    );
   }
 }
 
