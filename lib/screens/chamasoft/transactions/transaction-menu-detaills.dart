@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/transaction-menu.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/review-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
@@ -73,7 +74,10 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         if (index == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) => WithdrawalPurpose()));
-        } else if (index == 1) {}
+        } else if (index == 1) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => ReviewWithdrawalRequests()));
+        }
         break;
       case 2:
         if (index == 0) {

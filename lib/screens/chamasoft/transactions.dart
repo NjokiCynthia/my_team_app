@@ -1,5 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/transaction-menu.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/review-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/transaction-menu-detaills.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:flutter/material.dart';
