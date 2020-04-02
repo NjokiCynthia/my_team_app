@@ -17,16 +17,18 @@ class ChamasoftDashboard extends StatefulWidget {
 
 class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   StreamController _eventDispatcher = new StreamController.broadcast();
-  List<String> _overlayItems = [
-    'Item 01',
-    'Item 02',
-    'Item 03',
+  List<dynamic> _overlayItems = [
+    {"id": 1, "title": "DVEA Staff Welfare", "role": "Member"},
+    {"id": 2, "title": "La Casa De Papel", "role": "Organizer"},
+    {"id": 3, "title": "Witcher Welfare Association", "role": "Chairperson"},
+    {"id": 4, "title": "Kejodu Investments", "role": "Secretary"},
   ];
   Stream get _stream => _eventDispatcher.stream;
 
   final GlobalKey<ScaffoldState> dashboardScaffoldKey = new GlobalKey<ScaffoldState>();
   int _currentPage;
   double _appBarElevation = 0;
+  int _selectedGroupIndex = 3;
 
   _setElevation(double elevation) {
     double newElevation = elevation > 1 ? appBarElevation : 0;
@@ -37,9 +39,27 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     }
   }
 
+  _handleSelectedOption(int option) {
+    // print(option);
+    if(option == 0) {
+      // CREATE NEW Selected, handle it!
+
+    } else {
+      // Group Selected, handle it!
+      _overlayItems.asMap().forEach((index, value){
+        if(value["id"] == option) {
+          setState(() {
+            _selectedGroupIndex = index;
+          });
+        }
+      });
+    }
+  }
+
   @override
   void initState() {
     _currentPage = 0;
+    _overlayItems.insert(0, {"id": 0, "title": "Create New", "role": "Group, Merry-go-round, fundraiser"});
     super.initState();
   }
 
@@ -52,7 +72,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP_UP'),
+      onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP'),
       child: Scaffold(
         key: dashboardScaffoldKey,
         backgroundColor: Colors.transparent,
@@ -61,37 +81,40 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               ? Colors.blueGrey[900]
               : Colors.blue[50],
           centerTitle: false,
-          title: new AppSwitcher(
-            key: new ObjectKey('$_overlayItems'),
+          title: AppSwitcher(
+            key: ObjectKey('$_overlayItems'),
             listItems: _overlayItems,
             parentStream: _stream,
+            currentGroup: _overlayItems[_selectedGroupIndex],
+            selectedOption: (selected) {
+              _handleSelectedOption(selected);
+            },
           ),
           elevation: _appBarElevation,
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
-                icon: Icon(
-                  Icons.notifications,
-                  color: Theme.of(context).textSelectionHandleColor,
-                ),
-                onPressed: () {}),
+              icon: Icon(
+                Icons.notifications,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              onPressed: () {},
+            ),
             Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: IconButton(
-                  icon: Icon(
-                    Icons.settings,
-                    color: Theme.of(context).textSelectionHandleColor,
+                icon: Icon(
+                  Icons.settings,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ChamasoftSettings(),
                   ),
-                  onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => ChamasoftSettings(),
-                        ),
-                      )),
+                ),
+              ),
             ),
           ],
-          // flexibleSpace: Container(
-          //   height: 90,
-          // ),
         ),
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: (themeChangeProvider.darkTheme)
@@ -156,11 +179,16 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             });
           },
         ),
-        body: SafeArea(
-          child: Container(
-            decoration: primaryGradient(context),
-            child: getPage(_currentPage),
-          ),
+        body: OrientationBuilder(
+          builder: (context, orientation) {
+            _eventDispatcher.add('ORIENTATION');
+            return SafeArea(
+              child: Container(
+                decoration: primaryGradient(context),
+                child: getPage(_currentPage),
+              ),
+            );
+          },
         ),
       ),
     );

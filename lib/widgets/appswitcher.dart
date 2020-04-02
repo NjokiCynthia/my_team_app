@@ -35,11 +35,13 @@ class _CustomDelegate extends SingleChildLayoutDelegate {
 class _CustomOverlay extends StatelessWidget {
   final Widget child;
   final Offset target;
+  final double width;
 
   const _CustomOverlay({
     Key key,
     this.child,
     this.target,
+    this.width,
   }) : super(key: key);
 
   @override
@@ -54,19 +56,22 @@ class _CustomOverlay extends StatelessWidget {
             verticalOffset: -5.0,
           ),
           child: new Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: new ConstrainedBox(
-              constraints: new BoxConstraints(
-                maxHeight: 100.0,
-              ),
-              child: new Container(
-                decoration: new BoxDecoration(
-                  color: Colors.white,
-                  boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0,),
+            child: new Row(
+              children: <Widget>[
+                new Container(
+                  width: width,
+                  constraints: BoxConstraints(maxHeight: 210),
+                  alignment: Alignment.topLeft,
+                  decoration: new BoxDecoration(
+                    color: Theme.of(context).backgroundColor,
+                    boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
+                    // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
+                  ),
+                  child: child,
                 ),
-                child: child,
-              ),
-            ),
+              ],
+            )
           ),
         ),
       ),
@@ -75,25 +80,32 @@ class _CustomOverlay extends StatelessWidget {
 }
 
 class _AppSwitcherState extends State<AppSwitcher> {
-  List<String> _listItems;
+  List<dynamic> _listItems;
   OverlayState _overlay;
   OverlayEntry _entry;
   bool _entryIsVisible = false;
   StreamSubscription _sub;
+  double width = 200;
 
   void _toggleEntry(show) {
     if(_overlay.mounted && _entry != null){
       if(show){
         _overlay.insert(_entry);
-        _entryIsVisible = true;
+        setState(() {
+          _entryIsVisible = true;
+        });
       }
       else{
         _entry.remove();
-        _entryIsVisible = false;
+        setState(() {
+          _entryIsVisible = false;
+        });
       }
     }
     else {
-      _entryIsVisible = false;
+      setState(() {
+        _entryIsVisible = false;
+      });
     }
   }
 
@@ -105,21 +117,66 @@ class _AppSwitcherState extends State<AppSwitcher> {
     if(_overlay == null){
       final RenderBox bounds = context.findRenderObject();
       final Offset target = bounds.localToGlobal(bounds.size.bottomCenter(Offset.zero));
-
+      
       _entry = new OverlayEntry(builder: (BuildContext context){
         return new _CustomOverlay(
           target: target,
+          width: width,
           child: new Material(
+            color: Colors.transparent,
             child: new ListView.builder(
               padding: const EdgeInsets.all(0.0),
               itemBuilder: (BuildContext context, int ndx) {
-                String label = _listItems[ndx];
-                return new ListTile(
-                  title: new Text(label),
-                  onTap: () {
-                    print('Chose: $label');
-                    _handleSubmit(label);
-                  },
+                return new Container(
+                  color: (_listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue[200].withOpacity(0.2) : Colors.transparent,
+                  child: new ListTile(
+                    dense: true,
+                    title: Row(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(right: 10.0,),
+                          child: Icon(
+                            _listItems[ndx]["id"] == widget.currentGroup["id"] ? Feather.check : Feather.plus,
+                            color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue : (_listItems[ndx]["id"] != widget.currentGroup["id"]) ? Colors.transparent : Colors.blueGrey[300],
+                            size: 20.0,
+                          ),
+                        ),
+                        Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              _listItems[ndx]["title"],//.toString().toUpperCase(),
+                              style: TextStyle(
+                                color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue : Colors.blueGrey[400],//Theme.of(context).textSelectionHandleColor,
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w800
+                              ),
+                              softWrap: false,
+                              maxLines: 1,
+                              overflow: TextOverflow.fade,
+                            ),
+                            Text(
+                              _listItems[ndx]["role"],
+                              style: TextStyle(
+                                color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue.withOpacity(0.7) : Colors.blueGrey[300],//Theme.of(context).indicatorColor,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w600
+                              ),
+                              softWrap: false,
+                              maxLines: 1,
+                              overflow: TextOverflow.fade,
+                            )
+                          ],
+                        ),
+                        ),
+                      ],
+                    ), 
+                    onTap: () {
+                      // print('Chose: ${_listItems[ndx]["title"]}');
+                      _handleSelection(_listItems[ndx]["id"]);
+                    },
+                  ),
                 );
               },
               itemCount: _listItems.length,
@@ -129,7 +186,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
       });
       _overlay = Overlay.of(context, debugRequiredFor: widget);
     }
-
+    
     setState(() {
       // Can be used if the listItems get updated
       if(!_entryIsVisible && _listItems.length > 0){
@@ -148,7 +205,6 @@ class _AppSwitcherState extends State<AppSwitcher> {
       child: Column(
         children: <Widget>[
           Container(
-            // height: 32.0,
             constraints: BoxConstraints(maxWidth: 320),
             child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
               Expanded(
@@ -197,7 +253,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                 width: 32.0,
                 margin: EdgeInsets.only(left: 5.0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40.0),
+                  borderRadius: _entryIsVisible ? BorderRadius.only(topRight: Radius.circular(20.0), topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)) : BorderRadius.circular(40.0),
                   color: Theme.of(context).hintColor.withOpacity(0.4),
                 ),
                 child: Icon(
@@ -217,10 +273,12 @@ class _AppSwitcherState extends State<AppSwitcher> {
         ],
       ),
       onPressed: () {
-        _handleSwitch();
+        setState(() {
+          width = this.context.size.width;
+        });
+        _entryIsVisible ? _exitSwitcher() : _handleSwitch();
       },
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
+      shape: _entryIsVisible ? new RoundedRectangleBorder(borderRadius: new BorderRadius.only(topRight: Radius.circular(19.0), topLeft: Radius.circular(20.0),)) :  new RoundedRectangleBorder(borderRadius: new BorderRadius.all(Radius.circular(30.0))),
       textColor: Colors.blue,
       color: Theme.of(context).buttonColor,
     );
@@ -230,23 +288,24 @@ class _AppSwitcherState extends State<AppSwitcher> {
     if(_sub != null){
       _sub.cancel();
       _sub = null;
-      print('Removed stream listener');
+      // print('Removed stream listener');
     }
-    // Blur the input
-    FocusScope.of(context).requestFocus(new FocusNode());
-    // hide the list
     _toggleEntry(false);
 
   }
 
-  void _handleSubmit(newVal) {
+  void _handleSelection(selectedOption) {
+    widget.selectedOption(selectedOption);
     _exitSwitcher();
   }
 
   void _handleStream(ev) {
-    print('Input Stream : $ev');
+    // print('Input Stream : $ev');
     switch(ev){
-      case 'TAP_UP':
+      case 'TAP':
+        _exitSwitcher();
+        break;
+      case 'ORIENTATION':
         _exitSwitcher();
         break;
     }
@@ -266,7 +325,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
         _entry.remove();
         _entryIsVisible = false;
       }
-      if(_overlay != null && _overlay.mounted) _overlay.dispose();
+      // if(_overlay != null && _overlay.mounted) _overlay.dispose();
     }
     super.dispose();
   }
@@ -274,21 +333,25 @@ class _AppSwitcherState extends State<AppSwitcher> {
   @override
   Widget build(BuildContext ctx) {
     return groupSwitcherButton(
-      title: "Witcher Welfare Association",
-      role: "Chairperson",
+      title: widget.currentGroup["title"],
+      role: widget.currentGroup["role"],
       context: context,
     );
   }
 }
 
 class AppSwitcher extends StatefulWidget {
-  final List<String> listItems;
+  final List<dynamic> listItems;
   final Stream parentStream;
+  final dynamic currentGroup;
+  final ValueChanged<dynamic> selectedOption;
 
   AppSwitcher({
     Key key,
     this.listItems,
     this.parentStream,
+    this.currentGroup,
+    this.selectedOption,
   }): super(key: key);
 
   @override
