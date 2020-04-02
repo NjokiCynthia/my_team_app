@@ -1,7 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-option.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -116,6 +115,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Select Expense Category",
       ),
+      backgroundColor: Colors.transparent,
       body: Container(
         //decoration: primaryGradient(context),
         color: Theme.of(context).backgroundColor,

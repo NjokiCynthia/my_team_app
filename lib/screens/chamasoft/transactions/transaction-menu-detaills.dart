@@ -3,6 +3,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-appli
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
@@ -49,21 +50,25 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: title,
       ),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          return GridView.count(
-            padding: EdgeInsets.all(16.0),
-            crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
-            children: List.generate(list.length, (index) {
-              return GridItem(
-                  title: list[index].title,
-                  icon: list[index].icon,
-                  onTapped: () {
-                    handleClickEvents(originFlag, index);
-                  });
-            }),
-          );
-        },
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: primaryGradient(context),
+        child: OrientationBuilder(
+          builder: (context, orientation) {
+            return GridView.count(
+              padding: EdgeInsets.all(16.0),
+              crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+              children: List.generate(list.length, (index) {
+                return GridItem(
+                    title: list[index].title,
+                    icon: list[index].icon,
+                    onTapped: () {
+                      handleClickEvents(originFlag, index);
+                    });
+              }),
+            );
+          },
+        ),
       ),
     );
   }

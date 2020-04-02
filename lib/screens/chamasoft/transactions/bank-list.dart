@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/chamasoft/models/bank.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-option.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -74,6 +73,7 @@ class _BankListState extends State<BankList> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Select Your Bank",
       ),
+      backgroundColor: Colors.transparent,
       body: Container(
         //decoration: primaryGradient(context),
         color: Theme.of(context).backgroundColor,

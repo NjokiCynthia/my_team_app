@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -53,6 +54,7 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
           backgroundColor: Theme.of(context).backgroundColor,
           automaticallyImplyLeading: false,
         ),
+        backgroundColor: Colors.transparent,
         body: Container(
           decoration: primaryGradient(context),
           width: double.infinity,
@@ -186,7 +188,12 @@ class WithdrawalRequestCard extends StatelessWidget {
                         color: Theme.of(context)
                             .textSelectionHandleColor
                             .withOpacity(.8),
-                        action: () {}),
+                        action: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    ReviewWithdrawal(
+                                      withdrawalRequest: request,
+                                    )))),
                   ],
                 ),
               ],

@@ -1,12 +1,8 @@
 import 'package:chamasoft/screens/chamasoft/transactions/bank-list.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
-import '../expense-categories-list.dart';
 
 class WithdrawalOption extends StatefulWidget {
   @override
@@ -24,6 +20,7 @@ class _WithdrawalOptionState extends State<WithdrawalOption> {
           leadingIcon: LineAwesomeIcons.close,
           title: "Select Withdrawal Option",
         ),
+        backgroundColor: Colors.transparent,
         body: Container(
           //decoration: primaryGradient(context),
           color: Theme.of(context).backgroundColor,
