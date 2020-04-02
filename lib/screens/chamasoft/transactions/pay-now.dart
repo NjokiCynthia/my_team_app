@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import '../dashboard.dart';
 
 class PayNow extends StatefulWidget {
   @override
@@ -154,11 +153,7 @@ class PayNowState extends State<PayNow> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        action: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ChamasoftDashboard(),
-          ),
-        ),
+        action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Contribution Payment",

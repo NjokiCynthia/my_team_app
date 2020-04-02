@@ -1,4 +1,4 @@
-import 'package:chamasoft/screens/chamasoft/reports/contribution-statement.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/expense-categories-list.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -39,7 +39,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
         automaticallyImplyLeading: false,
       ),
       body: Container(
-        color: Theme.of(context).backgroundColor,
+        decoration: primaryGradient(context),
         width: double.infinity,
         height: double.infinity,
         padding: EdgeInsets.all(16.0),
@@ -62,7 +62,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
               title: title,
               icon: icon,
               onTapped: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => ContributionStatement())),
+                  builder: (BuildContext context) => ExpenseCategoriesList())),
             );
           }),
         ),

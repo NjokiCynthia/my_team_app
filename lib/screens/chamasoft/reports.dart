@@ -55,43 +55,6 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
   }
 }
 
-class ReportButton extends StatelessWidget {
-  final IconData icon;
-  final String text1, text2;
-  final Function onPressed;
-
-  const ReportButton({this.icon, this.text1, this.text2, this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: cardDecoration(
-          gradient: plainCardGradient(context), context: context),
-      padding: const EdgeInsets.all(30.0),
-      child: InkWell(
-        onTap: onPressed,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Icon(
-              this.icon,
-              size: 35.0,
-              color: Colors.blue,
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            subtitle1(text: text1, color: Colors.blue, align: TextAlign.center),
-            subtitle2(text: text2, color: Colors.blue, align: TextAlign.center)
-          ],
-        ),
-      ),
-    );
-  }
-}
-
 class GridItem extends StatelessWidget {
   const GridItem(
       {Key key,
