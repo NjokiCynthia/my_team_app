@@ -73,6 +73,7 @@ class _BankListState extends State<BankList> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Select Your Bank",
       ),
+      backgroundColor: Colors.transparent,
       body: Container(
         //decoration: primaryGradient(context),
         color: Theme.of(context).backgroundColor,

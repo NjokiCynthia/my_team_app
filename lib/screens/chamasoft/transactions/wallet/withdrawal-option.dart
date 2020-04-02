@@ -20,6 +20,7 @@ class _WithdrawalOptionState extends State<WithdrawalOption> {
           leadingIcon: LineAwesomeIcons.close,
           title: "Select Withdrawal Option",
         ),
+        backgroundColor: Colors.transparent,
         body: Container(
           //decoration: primaryGradient(context),
           color: Theme.of(context).backgroundColor,

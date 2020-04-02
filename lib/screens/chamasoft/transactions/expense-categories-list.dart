@@ -115,6 +115,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Select Expense Category",
       ),
+      backgroundColor: Colors.transparent,
       body: Container(
         //decoration: primaryGradient(context),
         color: Theme.of(context).backgroundColor,

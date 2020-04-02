@@ -43,6 +43,7 @@ List<LoanSignatory> loanSignatories = [
 
 class ReviewLoan extends StatefulWidget {
   final LoanApplication loanApplication;
+
   ReviewLoan({this.loanApplication});
 
   @override
@@ -57,6 +58,7 @@ class ReviewLoanState extends State<ReviewLoan> {
   var dateFormat = new DateFormat("d MMMM y");
   String rejectReason = "";
   TextEditingController controller;
+
   void _rejectActionPrompt() {
     showDialog(
       context: context,
@@ -411,20 +413,37 @@ class LoanSignatoryCard extends StatelessWidget {
           SizedBox(
             width: 10,
           ),
-          Container(
-            padding: EdgeInsets.all(10.0),
+          FlatButton(
             color: Theme.of(context).hintColor.withOpacity(0.1),
-            child: Text(
-              "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
-              style: TextStyle(
-                fontSize: 16.0,
-                color: approvalStatus == 2
-                    ? Colors.blue
-                    : Theme.of(context).textSelectionHandleColor,
-                fontWeight: FontWeight.w400,
+            onPressed: () {
+              //_rejectActionPrompt();
+            },
+            child: Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Text(
+                "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
+                style: TextStyle(
+                    fontSize: 12,
+                    color: approvalStatus == 2
+                        ? Colors.blue
+                        : Theme.of(context).textSelectionHandleColor),
               ),
             ),
           ),
+//          Container(
+//            padding: EdgeInsets.all(10.0),
+//            color: Theme.of(context).hintColor.withOpacity(0.1),
+//            child: Text(
+//              "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
+//              style: TextStyle(
+//                fontSize: 16.0,
+//                color: approvalStatus == 2
+//                    ? Colors.blue
+//                    : Theme.of(context).textSelectionHandleColor,
+//                fontWeight: FontWeight.w400,
+//              ),
+//            ),
+//          ),
         ],
       ),
     );

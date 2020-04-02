@@ -38,6 +38,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
         backgroundColor: Theme.of(context).backgroundColor,
         automaticallyImplyLeading: false,
       ),
+      backgroundColor: Colors.transparent,
       body: Container(
         decoration: primaryGradient(context),
         width: double.infinity,
