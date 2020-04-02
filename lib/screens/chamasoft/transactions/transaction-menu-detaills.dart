@@ -46,7 +46,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         action: () => Navigator.of(context).pop(),
         elevation: 1,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "E-Wallet Transactions",
+        title: title,
       ),
       body: OrientationBuilder(
         builder: (context, orientation) {
