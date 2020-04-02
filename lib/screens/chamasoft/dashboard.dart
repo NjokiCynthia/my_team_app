@@ -4,6 +4,7 @@ import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
+import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -40,10 +41,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   }
 
   _handleSelectedOption(int option) {
-    // print(option);
     if(option == 0) {
       // CREATE NEW Selected, handle it!
-
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CreateGroup(),),);
     } else {
       // Group Selected, handle it!
       _overlayItems.asMap().forEach((index, value){
@@ -52,6 +52,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             _selectedGroupIndex = index;
           });
         }
+        //switch to selected group.
       });
     }
   }
