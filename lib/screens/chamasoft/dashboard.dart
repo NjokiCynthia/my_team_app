@@ -1,11 +1,12 @@
+import 'dart:async';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/widgets/appswitcher.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
@@ -15,8 +16,15 @@ class ChamasoftDashboard extends StatefulWidget {
 }
 
 class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
-  final GlobalKey<ScaffoldState> dashboardScaffoldKey =
-      new GlobalKey<ScaffoldState>();
+  StreamController _eventDispatcher = new StreamController.broadcast();
+  List<String> _overlayItems = [
+    'Item 01',
+    'Item 02',
+    'Item 03',
+  ];
+  Stream get _stream => _eventDispatcher.stream;
+
+  final GlobalKey<ScaffoldState> dashboardScaffoldKey = new GlobalKey<ScaffoldState>();
   int _currentPage;
   double _appBarElevation = 0;
 
@@ -37,118 +45,122 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
 
   @override
   void dispose() {
+    _eventDispatcher.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: dashboardScaffoldKey,
-      backgroundColor: Colors.transparent,
-      appBar: AppBar(
-        backgroundColor: (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[900]
-            : Colors.blue[50],
-        centerTitle: false,
-        title: groupSwitcherButton(
-          title: "Witcher Welfare Association",
-          role: "Chairperson",
-          context: context,
-        ),
-        elevation: _appBarElevation,
-        automaticallyImplyLeading: false,
-        actions: <Widget>[
-          IconButton(
-              icon: Icon(
-                Icons.notifications,
-                color: Theme.of(context).textSelectionHandleColor,
-              ),
-              onPressed: () {}),
-          Padding(
-            padding: EdgeInsets.only(right: 20.0),
-            child: IconButton(
+    return GestureDetector(
+      onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP_UP'),
+      child: Scaffold(
+        key: dashboardScaffoldKey,
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          backgroundColor: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[900]
+              : Colors.blue[50],
+          centerTitle: false,
+          title: new AppSwitcher(
+            key: new ObjectKey('$_overlayItems'),
+            listItems: _overlayItems,
+            parentStream: _stream,
+          ),
+          elevation: _appBarElevation,
+          automaticallyImplyLeading: false,
+          actions: <Widget>[
+            IconButton(
                 icon: Icon(
-                  Icons.settings,
+                  Icons.notifications,
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
-                onPressed: () => Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ChamasoftSettings(),
-                      ),
-                    )),
-          ),
-        ],
-        // flexibleSpace: Container(
-        //   height: 90,
-        // ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[900] //.withOpacity(0.95)
-            : Colors.blue[50],//.withOpacity(0.89),
-        elevation: 0,
-        currentIndex: _currentPage,
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(
-              AntDesign.home,
-              color: _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
+                onPressed: () {}),
+            Padding(
+              padding: EdgeInsets.only(right: 20.0),
+              child: IconButton(
+                  icon: Icon(
+                    Icons.settings,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  ),
+                  onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => ChamasoftSettings(),
+                        ),
+                      )),
             ),
-            title: Text(
-              "Home",
-              style: TextStyle(
-                  color: _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
-                  fontWeight: FontWeight.w700),
+          ],
+          // flexibleSpace: Container(
+          //   height: 90,
+          // ),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[900] //.withOpacity(0.95)
+              : Colors.blue[50],//.withOpacity(0.89),
+          elevation: 0,
+          currentIndex: _currentPage,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(
+                AntDesign.home,
+                color: _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
+              ),
+              title: Text(
+                "Home",
+                style: TextStyle(
+                    color: _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
+                    fontWeight: FontWeight.w700),
+              ),
             ),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Feather.users,
+                  color: _currentPage == 1 ? Colors.blue : Colors.blueGrey[300],
+                ),
+                title: Text(
+                  "My Group",
+                  style: TextStyle(
+                      color:
+                          _currentPage == 1 ? Colors.blue : Colors.blueGrey[300],
+                      fontWeight: FontWeight.w700),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Feather.credit_card,
+                  color: _currentPage == 2 ? Colors.blue : Colors.blueGrey[300],
+                ),
+                title: Text(
+                  "Transactions",
+                  style: TextStyle(
+                      color:
+                          _currentPage == 2 ? Colors.blue : Colors.blueGrey[300],
+                      fontWeight: FontWeight.w700),
+                )),
+            BottomNavigationBarItem(
+                icon: Icon(
+                  Feather.copy,
+                  color: _currentPage == 3 ? Colors.blue : Colors.blueGrey[300],
+                ),
+                title: Text(
+                  "Reports",
+                  style: TextStyle(
+                      color:
+                          _currentPage == 3 ? Colors.blue : Colors.blueGrey[300],
+                      fontWeight: FontWeight.w700),
+                )),
+          ],
+          onTap: (index) {
+            setState(() {
+              _currentPage = index;
+            });
+          },
+        ),
+        body: SafeArea(
+          child: Container(
+            decoration: primaryGradient(context),
+            child: getPage(_currentPage),
           ),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Feather.users,
-                color: _currentPage == 1 ? Colors.blue : Colors.blueGrey[300],
-              ),
-              title: Text(
-                "My Group",
-                style: TextStyle(
-                    color:
-                        _currentPage == 1 ? Colors.blue : Colors.blueGrey[300],
-                    fontWeight: FontWeight.w700),
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Feather.credit_card,
-                color: _currentPage == 2 ? Colors.blue : Colors.blueGrey[300],
-              ),
-              title: Text(
-                "Transactions",
-                style: TextStyle(
-                    color:
-                        _currentPage == 2 ? Colors.blue : Colors.blueGrey[300],
-                    fontWeight: FontWeight.w700),
-              )),
-          BottomNavigationBarItem(
-              icon: Icon(
-                Feather.copy,
-                color: _currentPage == 3 ? Colors.blue : Colors.blueGrey[300],
-              ),
-              title: Text(
-                "Reports",
-                style: TextStyle(
-                    color:
-                        _currentPage == 3 ? Colors.blue : Colors.blueGrey[300],
-                    fontWeight: FontWeight.w700),
-              )),
-        ],
-        onTap: (index) {
-          setState(() {
-            _currentPage = index;
-          });
-        },
-      ),
-      body: SafeArea(
-        child: Container(
-          decoration: primaryGradient(context),
-          child: getPage(_currentPage),
         ),
       ),
     );

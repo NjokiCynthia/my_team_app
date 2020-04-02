@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 class _CustomDelegate extends SingleChildLayoutDelegate {
   final Offset target;
@@ -42,8 +44,6 @@ class _CustomOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double borderWidth = 2.0;
-    Color borderColor = Theme.of(context).accentColor;
 
     return new Positioned.fill(
       child: new IgnorePointer(
@@ -54,7 +54,7 @@ class _CustomOverlay extends StatelessWidget {
             verticalOffset: -5.0,
           ),
           child: new Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: new ConstrainedBox(
               constraints: new BoxConstraints(
                 maxHeight: 100.0,
@@ -62,11 +62,7 @@ class _CustomOverlay extends StatelessWidget {
               child: new Container(
                 decoration: new BoxDecoration(
                   color: Colors.white,
-                  border: new Border(
-                    right: new BorderSide(color: borderColor, width: borderWidth),
-                    bottom: new BorderSide(color: borderColor, width: borderWidth),
-                    left: new BorderSide(color: borderColor, width: borderWidth),
-                  ),
+                  boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
                 ),
                 child: child,
               ),
@@ -78,9 +74,7 @@ class _CustomOverlay extends StatelessWidget {
   }
 }
 
-class _CustomInputState extends State<_CustomInput> {
-  TextEditingController _inputController = new TextEditingController();
-  FocusNode _focus = new FocusNode();
+class _AppSwitcherState extends State<AppSwitcher> {
   List<String> _listItems;
   OverlayState _overlay;
   OverlayEntry _entry;
@@ -103,24 +97,9 @@ class _CustomInputState extends State<_CustomInput> {
     }
   }
 
-  void _handleFocus(){
-    if(_focus.hasFocus){
-      _inputController.addListener(_handleInput);
-      print('Added input handler');
-      _handleInput();
-    }
-    else{
-      _inputController.removeListener(_handleInput);
-      print('Removed input handler');
-    }
-  }
-
-  void _handleInput() {
-    // String newVal = _inputController.text;
-
+  void _handleSwitch() {
     if(widget.parentStream != null && _sub == null){
       _sub = widget.parentStream.listen(_handleStream);
-      print('Added stream listener');
     }
 
     if(_overlay == null){
@@ -152,8 +131,7 @@ class _CustomInputState extends State<_CustomInput> {
     }
 
     setState(() {
-      // This can be used if the listItems get updated, which won't happen in
-      // this example, but I figured it was useful info.
+      // Can be used if the listItems get updated
       if(!_entryIsVisible && _listItems.length > 0){
         _toggleEntry(true);
       }else if(_entryIsVisible && _listItems.length == 0){
@@ -164,7 +142,91 @@ class _CustomInputState extends State<_CustomInput> {
     });
   }
 
-  void _exitInput(){
+  Widget groupSwitcherButton({BuildContext context, String title, String role}) {
+    return FlatButton(
+      padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
+      child: Column(
+        children: <Widget>[
+          Container(
+            // height: 32.0,
+            constraints: BoxConstraints(maxWidth: 320),
+            child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    Text(
+                      title,
+                      style: TextStyle(
+                        color: Colors.blueGrey[400],
+                        fontWeight: FontWeight.w900,
+                        fontSize: 16.0,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.fade,
+                      softWrap: false,
+                      textAlign: TextAlign.end,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        // Icon(
+                        //   Icons.person,
+                        //   size: 12.0,
+                        // ),
+                        // SizedBox(width: 4.0),
+                        Text(
+                          role,
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.w900,
+                            fontSize: 14.0,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.fade,
+                          softWrap: false,
+                          textAlign: TextAlign.end,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: 32.0,
+                width: 32.0,
+                margin: EdgeInsets.only(left: 5.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(40.0),
+                  color: Theme.of(context).hintColor.withOpacity(0.4),
+                ),
+                child: Icon(
+                  Feather.plus,
+                  color: Colors.white70,
+                  size: 18.0,
+                ),
+                // ** If group image is available, replace above child with this: **
+                // =================================================================
+                // child: Image(
+                //   image:  AssetImage('assets/no-user.png'),
+                //   height: 32.0,
+                // ),
+              ),
+            ]),
+          ),
+        ],
+      ),
+      onPressed: () {
+        _handleSwitch();
+      },
+      shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(30.0)),
+      textColor: Colors.blue,
+      color: Theme.of(context).buttonColor,
+    );
+  }
+
+  void _exitSwitcher(){
     if(_sub != null){
       _sub.cancel();
       _sub = null;
@@ -178,16 +240,14 @@ class _CustomInputState extends State<_CustomInput> {
   }
 
   void _handleSubmit(newVal) {
-    // Set to selected value
-    _inputController.text = newVal;
-    _exitInput();
+    _exitSwitcher();
   }
 
   void _handleStream(ev) {
     print('Input Stream : $ev');
     switch(ev){
       case 'TAP_UP':
-        _exitInput();
+        _exitSwitcher();
         break;
     }
   }
@@ -195,15 +255,11 @@ class _CustomInputState extends State<_CustomInput> {
   @override
   void initState() {
     super.initState();
-    _focus.addListener(_handleFocus);
     _listItems = widget.listItems;
   }
 
   @override
   void dispose() {
-    _inputController.removeListener(_handleInput);
-    _inputController.dispose();
-
     if(mounted){
       if(_sub != null) _sub.cancel();
       if(_entryIsVisible){
@@ -212,120 +268,29 @@ class _CustomInputState extends State<_CustomInput> {
       }
       if(_overlay != null && _overlay.mounted) _overlay.dispose();
     }
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext ctx) {
-    return new Row(
-      children: <Widget>[
-        new Expanded(
-          child: new TextField(
-            autocorrect: true,
-            focusNode: _focus,
-            controller: _inputController,
-            decoration: new InputDecoration(
-              border: new OutlineInputBorder(
-                borderRadius: const BorderRadius.all(
-                  const Radius.circular(5.0),
-                ),
-                borderSide: new BorderSide(
-                  color: Colors.black,
-                  width: 1.0,
-                ),
-              ),
-              contentPadding: new EdgeInsets.all(10.0),
-              filled: true,
-              fillColor: Colors.white,
-            ),
-            onSubmitted: _handleSubmit,
-          ),
-        ),
-      ]
+    return groupSwitcherButton(
+      title: "Witcher Welfare Association",
+      role: "Chairperson",
+      context: context,
     );
   }
 }
 
-class _CustomInput extends StatefulWidget {
+class AppSwitcher extends StatefulWidget {
   final List<String> listItems;
   final Stream parentStream;
 
-  _CustomInput({
+  AppSwitcher({
     Key key,
     this.listItems,
     this.parentStream,
   }): super(key: key);
 
   @override
-  State createState() => new _CustomInputState();
-}
-
-class HomeState extends State<Home> {
-  List<String> _overlayItems = [
-    'Item 01',
-    'Item 02',
-    'Item 03',
-  ];
-  StreamController _eventDispatcher = new StreamController.broadcast();
-
-  Stream get _stream => _eventDispatcher.stream;
-
-  _onTapUp(TapUpDetails details) {
-    _eventDispatcher.add('TAP_UP');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose(){
-    super.dispose();
-    _eventDispatcher.close();
-  }
-
-  @override
-  Widget build(BuildContext context){
-    return new GestureDetector(
-      onTapUp: _onTapUp,
-      child: new Scaffold(
-        appBar: new AppBar(
-          title: new Row(
-            children: <Widget>[
-              new Padding(
-                padding: new EdgeInsets.only(
-                  right: 10.0,
-                ),
-                child: new Icon(Icons.layers),
-              ),
-              new Text("appTitle")
-            ],
-          ),
-          bottom: new PreferredSize(
-            preferredSize: const Size.fromHeight(30.0),
-            child: new Padding(
-              padding: new EdgeInsets.only(
-                bottom: 10.0,
-                left: 10.0,
-                right: 10.0,
-              ),
-              child: new _CustomInput(
-                key: new ObjectKey('$_overlayItems'),
-                listItems: _overlayItems,
-                parentStream: _stream,
-              ),
-            ),
-          ),
-        ),
-        body: const Text('Body content'),
-      ),
-    );
-  }
-}
-
-class Home extends StatefulWidget {
-  @override
-  State createState() => new HomeState();
+  State createState() => new _AppSwitcherState();
 }
