@@ -28,18 +28,47 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
     final originFlag = ModalRoute.of(context).settings.arguments;
     final List<TransactionMenu> list = [];
     String title = "Transaction";
-    if (originFlag == 1) {
-      title = "E-Wallet Transactions";
-      list.add(TransactionMenu(
-          "CREATE WITHDRAWAL REQUEST", LineAwesomeIcons.google_wallet));
-      list.add(TransactionMenu(
-          "REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file_text));
-    } else if (originFlag == 2) {
-      title = "Loan Transactions";
-      list.add(TransactionMenu(
-          "REVIEW LOAN APPLICATIONS", LineAwesomeIcons.file_text));
-      list.add(TransactionMenu(
-          "RECORD LOAN REPAYMENTS", LineAwesomeIcons.file_text));
+
+    switch (originFlag) {
+      case 0:
+        title = "E-Wallet Transactions";
+        list.add(TransactionMenu(
+            "CREATE WITHDRAWAL REQUEST", LineAwesomeIcons.google_wallet));
+        list.add(TransactionMenu(
+            "REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file_text));
+        break;
+      case 1:
+        title = "Loan Transactions";
+        list.add(TransactionMenu(
+            "REVIEW LOAN APPLICATIONS", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "RECORD LOAN REPAYMENTS", LineAwesomeIcons.file_text));
+        break;
+      case 2:
+        title = "Record Payments";
+        list.add(TransactionMenu("CONTRIBUTIONS", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("FINES", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("INCOME", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("MISCELLANEOUS", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("BANK LOANS", LineAwesomeIcons.file_text));
+        break;
+      case 3:
+        title = "Record Expenditure";
+        list.add(TransactionMenu("EXPENSES", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "BANK LOAN REPAYMENTS", LineAwesomeIcons.file_text));
+        list.add(
+            TransactionMenu("CONTRIBUTION REFUND", LineAwesomeIcons.file_text));
+        break;
+      case 4:
+        title = "Invoicing and Transfer";
+        list.add(TransactionMenu("CREATE INVOICE", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("FINE MEMBER", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "CONTRIBUTION TRANSFER", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "ACCOUNT TO ACCOUNT TRANSFER", LineAwesomeIcons.file_text));
+        break;
     }
 
     return Scaffold(
@@ -75,7 +104,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
 
   handleClickEvents(int origin, int index) {
     switch (origin) {
-      case 1:
+      case 0:
         if (index == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) => WithdrawalPurpose()));
@@ -84,7 +113,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
               builder: (BuildContext context) => ReviewWithdrawalRequests()));
         }
         break;
-      case 2:
+      case 1:
         if (index == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) => ReviewLoanApplications()));

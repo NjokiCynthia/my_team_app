@@ -25,6 +25,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     final List<TransactionMenu> list = [
       TransactionMenu("E-WALLET", LineAwesomeIcons.google_wallet),
       TransactionMenu("LOANS", LineAwesomeIcons.money),
+      TransactionMenu("RECORD PAYMENTS", LineAwesomeIcons.money),
+      TransactionMenu("RECORD EXPENDITURE", LineAwesomeIcons.money),
+      TransactionMenu("INVOICING AND TRANSFER", LineAwesomeIcons.send),
     ];
 
     return OrientationBuilder(
@@ -37,21 +40,17 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                 title: list[index].title,
                 icon: list[index].icon,
                 onTapped: () {
-                  if (index == 0) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            TransactionMenuDetails(),
-                        settings: RouteSettings(arguments: 1)));
-                  } else if (index == 1) {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            TransactionMenuDetails(),
-                        settings: RouteSettings(arguments: 2)));
-                  }
+                  navigate(index);
                 });
           }),
         );
       },
     );
+  }
+
+  void navigate(int index) {
+    Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => TransactionMenuDetails(),
+        settings: RouteSettings(arguments: index)));
   }
 }
