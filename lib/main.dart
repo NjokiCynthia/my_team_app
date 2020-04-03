@@ -40,6 +40,7 @@ class _MyAppState extends State<MyApp> {
         builder: (BuildContext context, value, Widget child) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
+            color: themeChangeProvider.darkTheme ? Colors.blueGrey : Colors.blue,
             title: 'Chamasoft',
             theme: Styles.themeData(themeChangeProvider.darkTheme, context),
             home: IntroScreen(),
