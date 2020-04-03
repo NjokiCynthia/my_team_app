@@ -48,11 +48,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   ];
 
   final formKey = new GlobalKey<FormState>();
-  String selectedContributionValue;
-  String selectedAccountValue;
 
   @override
   Widget build(BuildContext context) {
+    String selectedContributionValue;
+    String selectedAccountValue;
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,

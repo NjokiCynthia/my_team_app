@@ -5,6 +5,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawa
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
@@ -89,12 +90,14 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
               padding: EdgeInsets.all(16.0),
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
               children: List.generate(list.length, (index) {
-                return GridItem(
-                    title: list[index].title,
-                    icon: list[index].icon,
-                    onTapped: () {
-                      handleClickEvents(originFlag, index);
-                    });
+                return gridButton(
+                  context: context,
+                  icon: list[index].icon,
+                  title: list[index].title,
+                  color: (index == 0) ? Colors.white : Colors.blueGrey[400],
+                  isHighlighted: (index == 0) ? true : false,
+                  action: () => handleClickEvents(originFlag, index),
+                );
               }),
             );
           },
