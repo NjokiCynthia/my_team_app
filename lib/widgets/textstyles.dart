@@ -89,7 +89,14 @@ Widget textWithExternalLinks(
   }
 }
 
-List<Widget> contributionSummary({Color color, IconData cardIcon, String currency, String cardAmount, String amountDue, String dueDate, String contributionName}) {
+List<Widget> contributionSummary(
+    {Color color,
+    IconData cardIcon,
+    String currency,
+    String cardAmount,
+    String amountDue,
+    String dueDate,
+    String contributionName}) {
   List<Widget> _data = [];
   List<String> _name = contributionName.split(" ");
   _data.clear();
@@ -300,42 +307,86 @@ List<Widget> contributionSummary({Color color, IconData cardIcon, String currenc
   return _data;
 }
 
-Widget toolTip({BuildContext context, String title, String message}) {
-  return Container(
-      padding: EdgeInsets.all(20.0),
-      color:  (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
+Widget toolTip(
+    {BuildContext context,
+    String title,
+    String message,
+    bool showTitle = true}) {
+  if (showTitle) {
+    return Container(
+        padding: EdgeInsets.all(20.0),
+        color: (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Color(0xffededfe),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
 //mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Icon(
-            Icons.lightbulb_outline,
-            color: Theme.of(context).textSelectionHandleColor,
-            size: 24.0,
-            semanticLabel: 'Text to announce in accessibility modes',
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                subtitle1(
-                    text: title,
-                    color: Theme.of(context).textSelectionHandleColor),
-                subtitle2(
-                    text: message,
-                    color: Theme.of(context).textSelectionHandleColor,
-                    align: TextAlign.start)
-              ],
+          children: <Widget>[
+            Icon(
+              Icons.lightbulb_outline,
+              color: Theme.of(context).textSelectionHandleColor,
+              size: 24.0,
+              semanticLabel: 'Text to announce in accessibility modes',
             ),
-          ),
-          screenActionButton(
-              icon: LineAwesomeIcons.close,
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  subtitle1(
+                      text: title,
+                      color: Theme.of(context).textSelectionHandleColor),
+                  subtitle2(
+                      text: message,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      align: TextAlign.start)
+                ],
+              ),
+            ),
+            screenActionButton(
+                icon: LineAwesomeIcons.close,
 //backgroundColor: Colors.blue.withOpacity(0.2),
-              textColor: Theme.of(context).textSelectionHandleColor,
-              action: null),
-        ],
-      ));
+                textColor: Theme.of(context).textSelectionHandleColor,
+                action: null),
+          ],
+        ));
+  } else {
+    return Container(
+        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+        color: (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Color(0xffededfe),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.lightbulb_outline,
+              color: Theme.of(context).textSelectionHandleColor,
+              size: 24.0,
+              semanticLabel: 'Text to announce in accessibility modes',
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  subtitle2(
+                      text: message,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      align: TextAlign.start)
+                ],
+              ),
+            ),
+            screenActionButton(
+                icon: LineAwesomeIcons.close,
+//backgroundColor: Colors.blue.withOpacity(0.2),
+                textColor: Theme.of(context).textSelectionHandleColor,
+                action: null),
+          ],
+        ));
+  }
 }
