@@ -1,21 +1,21 @@
+import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import '../dashboard.dart';
+import '../../dashboard.dart';
 
-class PayNow extends StatefulWidget {
+class ApplyLoan extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return PayNowState();
+    return ApplyLoanState();
   }
 }
 
-class PayNowState extends State<PayNow> {
+class ApplyLoanState extends State<ApplyLoan> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -43,8 +43,8 @@ class PayNowState extends State<PayNow> {
   }
 
   static final List<String> _dropdownItems = <String>[
-    'Monthly Savings',
-    'Welfare'
+    'Emergency Loan',
+    'Education Loan'
   ];
   final formKey = new GlobalKey<FormState>();
   String _dropdownValue;
@@ -60,10 +60,10 @@ class PayNowState extends State<PayNow> {
               new InputDecorator(
                 decoration: InputDecoration(
                     filled: false,
-                    hintText: 'Select Contribution',
+                    hintText: 'Select Loan Type',
                     labelText: _dropdownValue == null
-                        ? 'Select Contribution'
-                        : 'Select Contribution',
+                        ? 'Select Loan Type'
+                        : 'Select Loan Type',
                     errorText: _errorText,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -71,7 +71,9 @@ class PayNowState extends State<PayNow> {
                 isEmpty: _dropdownValue == null,
                 child: new Theme(
                   data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context).cardColor,
+                    canvasColor: (themeChangeProvider.darkTheme)
+                        ? Colors.blueGrey[800]
+                        : Colors.white,
                   ),
                   child: new DropdownButton<String>(
                     value: _dropdownValue,
@@ -97,67 +99,20 @@ class PayNowState extends State<PayNow> {
     );
   }
 
-  void _numberToPrompt() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Confirm Mpesa Number"),
-          content: TextFormField(
-            //controller: controller,
-            initialValue: "254712233344",
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
-            decoration: InputDecoration(
-              hasFloatingPlaceholder: true,
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                color: Theme.of(context).hintColor,
-                width: 2.0,
-              )),
-              // hintText: 'Phone Number or Email Address',
-              labelText: "Mpesa Number",
-            ),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Pay Now",
-                style: new TextStyle(color: Colors.blue),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final TextEditingController controller = new TextEditingController();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        action: () => Navigator.of(context).pop(),
+        action: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => ChamasoftDashboard(),
+          ),
+        ),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Contribution Payment",
+        title: "Apply Loan",
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -168,7 +123,7 @@ class PayNowState extends State<PayNow> {
                 context: context,
                 title: "Note that...",
                 message:
-                    "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
+                    "Loan application process is totally depended on your group's constitution and your group\'s management."),
             Container(
               padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
               height: MediaQuery.of(context).size.height,
@@ -176,7 +131,7 @@ class PayNowState extends State<PayNow> {
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
-                  amountInputField(context, 'Amount to pay', controller),
+                  amountInputField(context, 'Amount applying for', controller),
                   SizedBox(
                     height: 24,
                   ),
@@ -186,11 +141,14 @@ class PayNowState extends State<PayNow> {
                         color: Colors.blueGrey,
                         size: 12.0,
                         textData: {
-                          'Additional charges may be applied where necessary.':
-                              {},
-                          'Learn More': {
-                            "url": () => launchURL(
-                                'https://chamasoft.com/terms-and-conditions/'),
+                          'By applying for this loan you agree to the ': {},
+                          'terms and conditions': {
+                            "url": () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        LoanAmortization(),
+                                  ),
+                                ),
                             "color": Colors.blue,
                             "weight": FontWeight.w500
                           },
@@ -200,9 +158,7 @@ class PayNowState extends State<PayNow> {
                     height: 24,
                   ),
                   defaultButton(
-                      context: context,
-                      text: "Pay Now",
-                      onPressed: () => _numberToPrompt())
+                      context: context, text: "Apply Now", onPressed: () {})
                 ],
               ),
             )

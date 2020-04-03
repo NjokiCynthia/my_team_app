@@ -1,4 +1,3 @@
-import 'package:chamasoft/screens/chamasoft/reports/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expense-categories-list.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -39,6 +38,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
         backgroundColor: Theme.of(context).backgroundColor,
         automaticallyImplyLeading: false,
       ),
+      backgroundColor: Colors.transparent,
       body: Container(
         decoration: primaryGradient(context),
         width: double.infinity,

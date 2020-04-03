@@ -1,8 +1,9 @@
-import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+
+import 'chamasoft/dashboard.dart';
 
 class IntroScreen extends StatefulWidget {
   IntroScreen({Key key}) : super(key: key);
@@ -45,7 +46,7 @@ class IntroScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
+
     PageDecoration _pageDeco({Color pageColor}) {
       return PageDecoration(
         titleTextStyle: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w900, color: Colors.white),

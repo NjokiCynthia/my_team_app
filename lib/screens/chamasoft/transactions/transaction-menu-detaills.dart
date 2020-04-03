@@ -1,7 +1,9 @@
 import 'package:chamasoft/screens/chamasoft/models/transaction-menu.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/review-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-applications.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
@@ -46,23 +48,27 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         action: () => Navigator.of(context).pop(),
         elevation: 1,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "E-Wallet Transactions",
+        title: title,
       ),
-      body: OrientationBuilder(
-        builder: (context, orientation) {
-          return GridView.count(
-            padding: EdgeInsets.all(16.0),
-            crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
-            children: List.generate(list.length, (index) {
-              return GridItem(
-                  title: list[index].title,
-                  icon: list[index].icon,
-                  onTapped: () {
-                    handleClickEvents(originFlag, index);
-                  });
-            }),
-          );
-        },
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: primaryGradient(context),
+        child: OrientationBuilder(
+          builder: (context, orientation) {
+            return GridView.count(
+              padding: EdgeInsets.all(16.0),
+              crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
+              children: List.generate(list.length, (index) {
+                return GridItem(
+                    title: list[index].title,
+                    icon: list[index].icon,
+                    onTapped: () {
+                      handleClickEvents(originFlag, index);
+                    });
+              }),
+            );
+          },
+        ),
       ),
     );
   }
@@ -73,7 +79,10 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         if (index == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) => WithdrawalPurpose()));
-        } else if (index == 1) {}
+        } else if (index == 1) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => ReviewWithdrawalRequests()));
+        }
         break;
       case 2:
         if (index == 0) {
