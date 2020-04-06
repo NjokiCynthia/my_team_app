@@ -130,7 +130,7 @@ class ReviewLoanState extends State<ReviewLoan> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Expanded(
-                  flex: 30,
+                  flex: 20,
                   child: Container(
                     padding:
                         EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),

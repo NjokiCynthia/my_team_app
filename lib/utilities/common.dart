@@ -1,4 +1,3 @@
-
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -9,7 +8,7 @@ DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 double appBarElevation = 2.5;
 
 //launch any url through default browser
-launchURL(String url) async{
+launchURL(String url) async {
   if (await canLaunch(url)) {
     await launch(url);
   } else {
@@ -18,16 +17,17 @@ launchURL(String url) async{
 }
 
 //get from shared preferences
-Future getPreference(String key) async{
+Future getPreference(String key) async {
   final prefs = await SharedPreferences.getInstance();
   final value = prefs.getString(key) ?? '';
   return value;
 }
 
 //save to shared preferences
-Future setPreference(String key, dynamic data) async{
+Future setPreference(String key, dynamic data) async {
   final prefs = await SharedPreferences.getInstance();
   prefs.setString(key, data);
 }
 
 final currencyFormat = new NumberFormat("#,##0", "en_US");
+final defaultDateFormat = new DateFormat("d MMM y");

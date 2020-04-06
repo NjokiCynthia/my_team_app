@@ -309,18 +309,21 @@ List<Widget> contributionSummary(
 
 Widget toolTip(
     {BuildContext context,
-    String title,
-    String message,
-    bool showTitle = true}) {
-  if (showTitle) {
-    return Container(
+
+    @required String title,
+    @required String message,
+    bool showTitle = true,
+    bool visible = true,
+    Function toggleToolTip}) {
+    return Visibility(
+    visible: visible,
+    child: Container(
         padding: EdgeInsets.all(20.0),
         color: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[800]
             : Color(0xffededfe),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-//mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Icon(
               Icons.lightbulb_outline,
@@ -335,58 +338,25 @@ Widget toolTip(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  subtitle1(
+                  (showTitle)?subtitle1(
                       text: title,
-                      color: Theme.of(context).textSelectionHandleColor),
-                  subtitle2(
-                      text: message,
-                      color: Theme.of(context).textSelectionHandleColor,
-                      align: TextAlign.start)
+                      color: Theme.of(context).textSelectionHandleColor)
+                      :Container(),
+                  (message.length > 0)
+                      ? subtitle2(
+                          text: message,
+                          color: Theme.of(context).textSelectionHandleColor,
+                          align: TextAlign.start)
+                      :Container(),
                 ],
               ),
             ),
             screenActionButton(
                 icon: LineAwesomeIcons.close,
-//backgroundColor: Colors.blue.withOpacity(0.2),
                 textColor: Theme.of(context).textSelectionHandleColor,
-                action: null),
+
+                action: toggleToolTip),
           ],
-        ));
-  } else {
-    return Container(
-        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-        color: (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[800]
-            : Color(0xffededfe),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              Icons.lightbulb_outline,
-              color: Theme.of(context).textSelectionHandleColor,
-              size: 24.0,
-              semanticLabel: 'Text to announce in accessibility modes',
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  subtitle2(
-                      text: message,
-                      color: Theme.of(context).textSelectionHandleColor,
-                      align: TextAlign.start)
-                ],
-              ),
-            ),
-            screenActionButton(
-                icon: LineAwesomeIcons.close,
-//backgroundColor: Colors.blue.withOpacity(0.2),
-                textColor: Theme.of(context).textSelectionHandleColor,
-                action: null),
-          ],
-        ));
-  }
+        )),
+  );
 }
