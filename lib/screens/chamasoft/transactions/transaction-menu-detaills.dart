@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/transaction-menu.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
@@ -127,6 +128,9 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         if (index == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) => RecordContributionPayment()));
+        }else if(index == 1){
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => RecordFinePayment()));
         }
         break;
     }
