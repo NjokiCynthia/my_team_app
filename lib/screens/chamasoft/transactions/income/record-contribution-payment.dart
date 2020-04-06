@@ -1,7 +1,9 @@
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class RecordContributionPayment extends StatefulWidget {
@@ -9,6 +11,10 @@ class RecordContributionPayment extends StatefulWidget {
   _RecordContributionPaymentState createState() =>
       _RecordContributionPaymentState();
 }
+
+String selectedContributionValue;
+String selectedAccountValue;
+String selectedMemberType;
 
 class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   double _appBarElevation = 0;
@@ -46,14 +52,22 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     'Equity Bank - 123123100292',
     'ABSA Bank - 1212111111',
   ];
+  static final List<String> memberSelection = <String>[
+    'All Members',
+    'Individual Members',
+  ];
+  static final List<String> depositType = <String>[
+    'Cash',
+    'Mobile Money',
+    'Cheque',
+  ];
 
   final formKey = new GlobalKey<FormState>();
+  DateTime _selectedDate;
+  var selectDateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    String selectedContributionValue;
-    String selectedAccountValue;
-
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -79,10 +93,28 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                 child: Column(
                   children: <Widget>[
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         Expanded(
-                          flex: 1,
+                          flex: 2,
                           child: TextFormField(
+                            controller: selectDateController,
+                            onTap: () => showDatePicker(
+                              context: context,
+                              initialDate: DateTime.now(),
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime.now(),
+                            ).then((date) {
+                              setState(() {
+                                _selectedDate = date;
+                                print(_selectedDate.toIso8601String());
+                                selectDateController.text = _selectedDate ==
+                                        null
+                                    ? ""
+                                    : DateFormat.yMMMMd().format(_selectedDate);
+                              });
+                            }),
+                            readOnly: true,
                             decoration: InputDecoration(
                               hasFloatingPlaceholder: true,
                               labelText: 'Select Date',
@@ -99,18 +131,11 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                           width: 16,
                         ),
                         Expanded(
-                          flex: 1,
-                          child: TextFormField(
-                            decoration: InputDecoration(
-                              hasFloatingPlaceholder: true,
-                              labelText: 'Select Date',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).hintColor,
-                                  width: 2.0,
-                                ),
-                              ),
-                            ),
+                          flex: 3,
+                          child: DropDownTextField(
+                            hintText: "Select Deposit Method",
+                            selectedValue: selectedContributionValue,
+                            items: depositType,
                           ),
                         ),
                       ],
@@ -132,15 +157,31 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       items: accountList,
                     ),
                     SizedBox(
+                      height: 10,
+                    ),
+                    DropDownTextField(
+                      hintText: "Select Members",
+                      selectedValue: selectedMemberType,
+                      items: memberSelection,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    amountInputField(
+                        context, "Enter Amount(for each member)", null),
+                    SizedBox(
                       height: 20,
                     ),
-                    defaultButton(
-                      context: context,
-                      text: "Save",
-                      onPressed: () {
-                        print("Contribution: " + selectedContributionValue);
-                        print("Account: " + selectedAccountValue);
-                      },
+                    SizedBox(
+                      width: 200,
+                      child: defaultButton(
+                        context: context,
+                        text: "Save",
+                        onPressed: () {
+                          print("Contribution: " + selectedContributionValue);
+                          print("Account: " + selectedAccountValue);
+                        },
+                      ),
                     ),
                   ],
                 ))
