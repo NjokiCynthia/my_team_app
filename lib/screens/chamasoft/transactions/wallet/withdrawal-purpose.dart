@@ -82,26 +82,32 @@ class GridItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onTapped,
-      child: Container(
-        margin: EdgeInsets.all(16),
-        height: 150,
-        decoration: cardDecoration(
-            gradient: plainCardGradient(context), context: context),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Icon(
-              icon,
-              size: 35.0,
-              color: Colors.blue,
-            ),
-            SizedBox(
-              height: 15.0,
-            ),
-            subtitle1(text: title, color: Colors.blue, align: TextAlign.center),
-          ],
+    return Container(
+      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(4.0),
+      height: 150,
+      decoration: cardDecoration(
+          gradient: plainCardGradient(context), context: context),
+      child: Material(
+        type: MaterialType.transparency,
+        child: InkWell(
+          borderRadius: BorderRadius.all(Radius.circular(16.0)),
+          onTap: onTapped,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                icon,
+                size: 35.0,
+                color: Colors.blue,
+              ),
+              SizedBox(
+                height: 15.0,
+              ),
+              subtitle2(
+                  text: title, color: Colors.blue, align: TextAlign.center),
+            ],
+          ),
         ),
       ),
     );

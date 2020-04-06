@@ -1,3 +1,4 @@
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
@@ -302,4 +303,70 @@ Widget paymentActionButton(
           color: color,
           onPressed: action,
         );
+}
+
+Widget gridButton({BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted}) {
+  return Container(
+    margin: EdgeInsets.all(16),
+    height: 150,
+    decoration: cardDecoration(gradient: isHighlighted ? csCardGradient() : plainCardGradient(context), context: context),
+    child: FlatButton(
+      padding: EdgeInsets.all(0),
+      child: Stack(
+        fit: StackFit.expand,
+        alignment: Alignment.center,
+        children: <Widget> [
+          Positioned(
+            top: 0.0,
+            right: 40.0,
+            child: Icon(
+              icon,
+              size: 120.0,
+              color: color.withOpacity(0.04),
+            ),
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Icon(
+                icon,
+                size: 38.0,
+                color: color.withOpacity(0.7),
+              ),
+              SizedBox(
+                height: 10.0,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color: color,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 14.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10.0),
+                child: Text(
+                  subtitle,
+                  style: TextStyle(
+                  color: color.withOpacity(0.6),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.0,
+                ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
+          ),
+        ]
+      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      highlightColor: Colors.blue.withOpacity(0.1),
+      onPressed: action,
+    ),
+  );
 }

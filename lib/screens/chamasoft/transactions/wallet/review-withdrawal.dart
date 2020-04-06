@@ -43,6 +43,53 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
     ),
   ];
 
+  void rejectDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: new Text("Reason for Rejecting"),
+          content: TextFormField(
+            //controller: controller,
+            keyboardType: TextInputType.text,
+            decoration: InputDecoration(
+              hasFloatingPlaceholder: true,
+              enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                color: Theme.of(context).hintColor,
+                width: 2.0,
+              )),
+              // hintText: 'Phone Number or Email Address',
+              labelText: "Enter Reason",
+            ),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(
+                "Cancel",
+                style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text(
+                "Proceed",
+                style: new TextStyle(color: Colors.blue),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -300,7 +347,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           FlatButton(
                             color: Colors.redAccent.withOpacity(.2),
                             onPressed: () {
-                              //_rejectActionPrompt();
+                              rejectDialog();
                             },
                             child: Padding(
                               padding: EdgeInsets.all(12.0),
