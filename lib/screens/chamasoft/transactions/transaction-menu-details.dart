@@ -7,6 +7,8 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
+import 'loans/record-loan-payment.dart';
+
 class TransactionMenuDetails extends StatefulWidget {
   @override
   _TransactionMenuDetailsState createState() => _TransactionMenuDetailsState();
@@ -88,7 +90,10 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         if (index == 0) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (BuildContext context) => ReviewLoanApplications()));
-        } else if (index == 1) {}
+        } else if (index == 1) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (BuildContext context) => RecordLoanPayment()));
+        }
         break;
     }
   }
