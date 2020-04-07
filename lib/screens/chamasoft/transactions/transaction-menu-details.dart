@@ -101,7 +101,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
                     isHighlighted: (index == 0) ? true : false,
                     action: () => Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
-                          return handleClickEvents(originFlag, index);
+                          return navigate(originFlag, index);
                         })));
               }),
             );
@@ -111,7 +111,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
     );
   }
 
-  Widget handleClickEvents(int origin, int index) {
+  Widget navigate(int origin, int index) {
     Widget target = WithdrawalPurpose();
     switch (origin) {
       case 0:
