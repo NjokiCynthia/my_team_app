@@ -4,10 +4,10 @@ import 'package:flutter/services.dart';
 Widget amountInputField(
     BuildContext context, String labelText, TextEditingController controller) {
   return TextFormField(
-    //controller: controller,
+    controller: controller,
     keyboardType: TextInputType.number,
     inputFormatters: <TextInputFormatter>[
-      WhitelistingTextInputFormatter.digitsOnly
+      WhitelistingTextInputFormatter.digitsOnly,
     ],
     decoration: InputDecoration(
       hasFloatingPlaceholder: true,

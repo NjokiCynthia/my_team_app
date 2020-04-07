@@ -68,14 +68,9 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
     super.dispose();
   }
 
-  static final List<String> _dropdownItems = <String>[
-    'Monthly Savings',
-    'Welfare'
-  ];
-
   final formKey = new GlobalKey<FormState>();
   bool toolTipIsVisible = true;
-  DateTime depositDate;
+  DateTime depositDate = DateTime.now();
   int depositMethod;
   NamesListItem depositMethodValue;
   int groupMemberId;
@@ -93,7 +88,8 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = new TextEditingController();
+    final TextEditingController amountTextController =
+        TextEditingController(text: '');
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -145,9 +141,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                       ),
                       Expanded(
                         child: CustomDropDownButton(
-                          label: 'Select Deposit Method',
                           labelText: 'Select Deposit Method',
-                          errorText: 'Invalid Deposit Method',
                           listItems: depositMethods,
                           dropdownItems: buildDropDownMenus(depositMethods),
                           selectedItem: depositMethod,
@@ -161,9 +155,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                     ],
                   ),
                   CustomDropDownButton(
-                    label: 'Select Member',
                     labelText: 'Select Member',
-                    errorText: 'Invalid Member',
                     listItems: groupMembers,
                     dropdownItems: buildDropDownMenus(groupMembers),
                     selectedItem: groupMemberId,
@@ -174,9 +166,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                     },
                   ),
                   CustomDropDownButton(
-                    label: 'Select Loan',
                     labelText: 'Select Loan',
-                    errorText: 'Invalid Loan',
                     listItems: loans,
                     dropdownItems: buildDropDownMenus(loans),
                     selectedItem: loanId,
@@ -187,9 +177,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                     },
                   ),
                   CustomDropDownButton(
-                    label: 'Select Account',
                     labelText: 'Select Account',
-                    errorText: 'Invalid Account',
                     listItems: accounts,
                     dropdownItems: buildDropDownMenus(accounts),
                     selectedItem: accountId,
@@ -199,14 +187,22 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                       });
                     },
                   ),
-                  amountInputField(context, 'Amount to pay', controller),
+                  amountInputField(
+                      context, 'Amount to pay', amountTextController),
                   SizedBox(
                     height: 24,
                   ),
                   defaultButton(
                     context: context,
                     text: "SAVE",
-                    onPressed: () {},
+                    onPressed: () {
+                      print('Deposit date: $depositDate');
+                      print('Deposit Method: $depositMethod');
+                      print('Member: $groupMemberId');
+                      print('Loan: $loanId');
+                      print('Account: $accountId');
+                      print('Amount: ${amountTextController.text}');
+                    },
                   ),
                 ],
               ),
@@ -221,16 +217,12 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
 class CustomDropDownButton extends StatelessWidget {
   final int selectedItem;
   final String labelText;
-  final String errorText;
-  final String label;
   final Function onChanged;
   final List<NamesListItem> listItems;
   final List<DropdownMenuItem> dropdownItems;
   const CustomDropDownButton({
     this.selectedItem,
     this.labelText,
-    this.errorText,
-    this.label,
     this.onChanged,
     this.listItems,
     this.dropdownItems,
@@ -256,7 +248,6 @@ class CustomDropDownButton extends StatelessWidget {
                         ),
                   ),
                 ),
-                isEmpty: errorText == null,
                 child: new Theme(
                   data: Theme.of(context).copyWith(
                     canvasColor: Theme.of(context).cardColor,
