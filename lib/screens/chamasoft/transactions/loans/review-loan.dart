@@ -121,29 +121,78 @@ class ReviewLoanState extends State<ReviewLoan> {
       ),
       backgroundColor: Colors.transparent,
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Container(
-            decoration: primaryGradient(context),
-            padding: EdgeInsets.only(top: 10.0),
-            height: MediaQuery.of(context).size.height,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Expanded(
-                  flex: 20,
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Container(
+          decoration: primaryGradient(context),
+//            padding: EdgeInsets.only(top: 10.0),
+          height: MediaQuery.of(context).size.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Expanded(
+                flex: 60,
+                child: Flex(
+                  direction:
+                      MediaQuery.of(context).orientation == Orientation.portrait
+                          ? Axis.vertical
+                          : Axis.horizontal,
+                  children: <Widget>[
+                    Expanded(
+                      flex: MediaQuery.of(context).orientation ==
+                              Orientation.portrait
+                          ? 10
+                          : 30,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 10.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "${widget.loanApplication.loanName}",
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor
+                                        .withOpacity(0.8),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                                Row(
+                                  children: <Widget>[
+                                    Text(
+                                      "Ksh ",
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${numberFormat.format(widget.loanApplication.amount)}",
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                      textAlign: TextAlign.end,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 8.0,
+                            ),
                             Text(
-                              "${widget.loanApplication.loanName}",
+                              "Applied By ${widget.loanApplication.borrowerName}",
+                              textAlign: TextAlign.start,
                               style: TextStyle(
                                 color: Theme.of(context)
                                     .textSelectionHandleColor
@@ -153,209 +202,174 @@ class ReviewLoanState extends State<ReviewLoan> {
                               ),
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  "Ksh ",
+                                  "Interest  Rate: ",
                                   style: TextStyle(
-                                    fontSize: 18.0,
                                     color: Theme.of(context)
-                                        .textSelectionHandleColor,
+                                        .textSelectionHandleColor
+                                        .withOpacity(0.8),
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
                                 Text(
-                                  "${numberFormat.format(widget.loanApplication.amount)}",
+                                  "12%",
                                   style: TextStyle(
                                     color: Theme.of(context)
-                                        .textSelectionHandleColor,
-                                    fontSize: 18.0,
+                                        .textSelectionHandleColor
+                                        .withOpacity(0.8),
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.w800,
                                   ),
-                                  textAlign: TextAlign.end,
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Repayment Period: ",
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor
+                                        .withOpacity(0.8),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Text(
+                                  "1 Month",
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor
+                                        .withOpacity(0.8),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  "Applied On: ",
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor
+                                        .withOpacity(0.8),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                Text(
+                                  "${dateFormat.format(widget.loanApplication.requestDate)}",
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor
+                                        .withOpacity(0.8),
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w800,
+                                  ),
                                 ),
                               ],
                             ),
                           ],
                         ),
-                        SizedBox(
-                          height: 8.0,
-                        ),
-                        Text(
-                          "Applied By ${widget.loanApplication.borrowerName}",
-                          textAlign: TextAlign.start,
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Interest  Rate: ",
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              "12%",
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Repayment Period: ",
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              "1 Month",
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Applied On: ",
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              "${dateFormat.format(widget.loanApplication.requestDate)}",
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    Expanded(
+                      flex: 30,
+                      child: Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 10.0),
+                        color: Theme.of(context).backgroundColor,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.only(bottom: 16.0),
+                              child: Text(
+                                'Signatories',
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor
+                                      .withOpacity(0.8),
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: ListView.separated(
+                                  scrollDirection: Axis.vertical,
+                                  shrinkWrap: true,
+                                  separatorBuilder:
+                                      (BuildContext context, int index) =>
+                                          const Divider(),
+                                  itemCount: loanSignatories.length,
+                                  itemBuilder: (context, int index) {
+                                    LoanSignatory loanSignatory =
+                                        loanSignatories[index];
+                                    return LoanSignatoryCard(
+                                      userName: loanSignatory.userName,
+                                      userRole: loanSignatory.userRole,
+                                      approvalStatus:
+                                          loanSignatory.approvalStatus,
+                                      isCurrentUser:
+                                          loanSignatory.isCurrentUser,
+                                      onPressed: () {},
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-                Expanded(
-                  flex: 30,
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-                    color: Theme.of(context).backgroundColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(bottom: 16.0),
+              ),
+              Expanded(
+                flex: 20,
+                child: Container(
+//                    padding: EdgeInsets.all(8.0),
+                  color: Theme.of(context).backgroundColor,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      FlatButton(
+                        color: Colors.blueAccent.withOpacity(.2),
+                        onPressed: () {},
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
                           child: Text(
-                            'Signatories',
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor
-                                  .withOpacity(0.8),
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w800,
-                            ),
+                            'APPROVE',
+                            style: TextStyle(color: Colors.blue),
                           ),
                         ),
-                        Expanded(
-                          child: ListView.separated(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
-                              itemCount: loanSignatories.length,
-                              itemBuilder: (context, int index) {
-                                LoanSignatory loanSignatory =
-                                    loanSignatories[index];
-                                return LoanSignatoryCard(
-                                  userName: loanSignatory.userName,
-                                  userRole: loanSignatory.userRole,
-                                  approvalStatus: loanSignatory.approvalStatus,
-                                  isCurrentUser: loanSignatory.isCurrentUser,
-                                  onPressed: () {},
-                                );
-                              }),
+                      ),
+                      FlatButton(
+                        color: Colors.redAccent.withOpacity(.2),
+                        onPressed: () {
+                          _rejectActionPrompt();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child: Text(
+                            'REJECT',
+                            style: TextStyle(color: Colors.red),
+                          ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-                Expanded(
-                  flex: 40,
-                  child: Container(
-                    padding: EdgeInsets.all(8.0),
-                    color: Theme.of(context).backgroundColor,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: <Widget>[
-                        FlatButton(
-                          color: Colors.blueAccent.withOpacity(.2),
-                          onPressed: () {},
-                          child: Padding(
-                            padding: EdgeInsets.all(18.0),
-                            child: Text(
-                              'APPROVE',
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                          ),
-                        ),
-                        FlatButton(
-                          color: Colors.redAccent.withOpacity(.2),
-                          onPressed: () {
-                            _rejectActionPrompt();
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.all(18.0),
-                            child: Text(
-                              'REJECT',
-                              style: TextStyle(color: Colors.red),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
