@@ -42,17 +42,13 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               title: list[index].title,
               color: (index == 0) ? Colors.white : Colors.blueGrey[400],
               isHighlighted: (index == 0) ? true : false,
-              action: () => navigate(index),
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => TransactionMenuDetails(),
+                  settings: RouteSettings(arguments: index))),
             );
           }),
         );
       },
     );
-  }
-
-  void navigate(int index) {
-    Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => TransactionMenuDetails(),
-        settings: RouteSettings(arguments: index)));
   }
 }
