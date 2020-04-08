@@ -309,13 +309,12 @@ List<Widget> contributionSummary(
 
 Widget toolTip(
     {BuildContext context,
-
     @required String title,
     @required String message,
     bool showTitle = true,
     bool visible = true,
     Function toggleToolTip}) {
-    return Visibility(
+  return Visibility(
     visible: visible,
     child: Container(
         padding: EdgeInsets.all(20.0),
@@ -338,23 +337,23 @@ Widget toolTip(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  (showTitle)?subtitle1(
-                      text: title,
-                      color: Theme.of(context).textSelectionHandleColor)
-                      :Container(),
+                  (showTitle)
+                      ? subtitle1(
+                          text: title,
+                          color: Theme.of(context).textSelectionHandleColor)
+                      : Container(),
                   (message.length > 0)
                       ? subtitle2(
                           text: message,
                           color: Theme.of(context).textSelectionHandleColor,
                           align: TextAlign.start)
-                      :Container(),
+                      : Container(),
                 ],
               ),
             ),
             screenActionButton(
                 icon: LineAwesomeIcons.close,
                 textColor: Theme.of(context).textSelectionHandleColor,
-
                 action: toggleToolTip),
           ],
         )),
