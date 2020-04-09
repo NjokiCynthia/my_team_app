@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -90,7 +91,19 @@ class _LoanApplicationsState extends State<LoanApplications> {
         child: ListView.builder(
             itemBuilder: (context, index) {
               LoanApplication application = list[index];
-              return MyLoansCard(application: application);
+              return MyLoansCard(
+                application: application,
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          ReviewLoan(loanApplication: application),
+                      settings:
+                          RouteSettings(arguments: VIEW_APPLICATION_STATUS),
+                    ),
+                  );
+                },
+              );
             },
             itemCount: list.length),
       ),
@@ -99,105 +112,111 @@ class _LoanApplicationsState extends State<LoanApplications> {
 }
 
 class MyLoansCard extends StatelessWidget {
-  const MyLoansCard({
-    Key key,
-    @required this.application,
-  }) : super(key: key);
+  const MyLoansCard({Key key, @required this.application, this.onPressed})
+      : super(key: key);
 
   final LoanApplication application;
+  final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-      child: Card(
-        elevation: 0.0,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        borderOnForeground: false,
-        child: Container(
-            padding: EdgeInsets.all(12.0),
-            decoration: cardDecoration(
-                gradient: plainCardGradient(context), context: context),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Text(
-                        application.loanName,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        textAlign: TextAlign.start,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    getStatus()
-                  ],
-                ),
-                Divider(
-                  color: Theme.of(context).dividerColor,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Row(
+      child: InkWell(
+        onTap: onPressed,
+        child: Card(
+          elevation: 0.0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          borderOnForeground: false,
+          child: Container(
+              padding: EdgeInsets.all(12.0),
+              decoration: cardDecoration(
+                  gradient: plainCardGradient(context), context: context),
+              child: Column(
+                children: <Widget>[
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          subtitle2(
-                              text: "Applied On",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
-                          subtitle1(
-                              text: DateFormat.yMMMMd()
-                                  .format(application.requestDate),
-                              color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start)
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            "Ksh ",
-                            style: TextStyle(
-                              fontSize: 16.0,
-                              color: Theme.of(context).textSelectionHandleColor,
-                              fontWeight: FontWeight.w400,
-                            ),
+                      Expanded(
+                        flex: 1,
+                        child: Text(
+                          application.loanName,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16.0,
+                            color: Theme.of(context).textSelectionHandleColor,
                           ),
-                          Text(
-                            currencyFormat.format(application.amount),
-                            textAlign: TextAlign.end,
-                            style: TextStyle(
-                              fontSize: 20.0,
-                              color: Theme.of(context).textSelectionHandleColor,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                        ],
+                          textAlign: TextAlign.start,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                    ]),
-                SizedBox(
-                  height: 10,
-                ),
-              ],
-            )),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      getStatus()
+                    ],
+                  ),
+                  Divider(
+                    color: Theme.of(context).dividerColor,
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Applied On",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                align: TextAlign.start),
+                            subtitle1(
+                                text: DateFormat.yMMMMd()
+                                    .format(application.requestDate),
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                align: TextAlign.start)
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              "Ksh ",
+                              style: TextStyle(
+                                fontSize: 16.0,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            Text(
+                              currencyFormat.format(application.amount),
+                              textAlign: TextAlign.end,
+                              style: TextStyle(
+                                fontSize: 20.0,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ]),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              )),
+        ),
       ),
     );
   }

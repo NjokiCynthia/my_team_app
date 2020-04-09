@@ -113,13 +113,18 @@ class ReviewLoanState extends State<ReviewLoan> {
 
   @override
   Widget build(BuildContext context) {
+    int flag = ModalRoute.of(context).settings.arguments;
+    String appbarTitle = "Review Loan";
+    if (flag == VIEW_APPLICATION_STATUS) {
+      appbarTitle = "Loan Application Status";
+    }
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Review Loan",
+        title: appbarTitle,
       ),
       backgroundColor: Colors.transparent,
       body: SafeArea(
@@ -167,13 +172,16 @@ class ReviewLoanState extends State<ReviewLoan> {
                                         fontWeight: FontWeight.w800,
                                       ),
                                     ),
-                                    Text(
-                                      "Applied By ${widget.loanApplication.borrowerName}",
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        color: Colors.blue,
-                                        fontSize: 12.0,
-                                        fontWeight: FontWeight.w800,
+                                    Visibility(
+                                      visible: flag == REVIEW_LOAN,
+                                      child: Text(
+                                        "Applied By ${widget.loanApplication.borrowerName}",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.w800,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -328,35 +336,56 @@ class ReviewLoanState extends State<ReviewLoan> {
                   ],
                 ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  FlatButton(
-                    color: Colors.blueAccent.withOpacity(.2),
-                    onPressed: () {},
-                    child: Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: Text(
-                        'APPROVE',
-                        style: TextStyle(color: Colors.blue),
+              Visibility(
+                visible: flag == REVIEW_LOAN,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    FlatButton(
+                      color: Colors.blueAccent.withOpacity(.2),
+                      onPressed: () {},
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Text(
+                          'APPROVE',
+                          style: TextStyle(color: Colors.blue),
+                        ),
                       ),
                     ),
-                  ),
-                  FlatButton(
+                    FlatButton(
+                      color: Colors.redAccent.withOpacity(.2),
+                      onPressed: () {
+                        _rejectActionPrompt();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Text(
+                          'REJECT',
+                          style: TextStyle(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: flag == VIEW_APPLICATION_STATUS,
+                child: Center(
+                  child: FlatButton(
                     color: Colors.redAccent.withOpacity(.2),
                     onPressed: () {
-                      _rejectActionPrompt();
+                      //_rejectActionPrompt();
                     },
                     child: Padding(
                       padding: EdgeInsets.all(12.0),
                       child: Text(
-                        'REJECT',
+                        'CANCEL APPLICATION',
                         style: TextStyle(color: Colors.red),
                       ),
                     ),
                   ),
-                ],
+                ),
               ),
               SizedBox(
                 height: 16,
