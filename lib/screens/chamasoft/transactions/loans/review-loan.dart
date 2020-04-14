@@ -281,7 +281,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                       ),
                     ),
                     Expanded(
-                      flex: 30,
+                      flex: 30, 
                       child: Container(
                         padding: EdgeInsets.symmetric(
                             horizontal: 16.0, vertical: 10.0),
