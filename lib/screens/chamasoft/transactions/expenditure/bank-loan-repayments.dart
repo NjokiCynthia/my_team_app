@@ -30,14 +30,14 @@ List<NamesListItem> accounts = [
   NamesListItem(id: 3, name: "NCBA Loop Account"),
 ];
 
-class RecordLoanPayment extends StatefulWidget {
+class BankLoanRepayment extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return RecordLoanPaymentState();
+    return BankLoanRepaymentState();
   }
 }
 
-class RecordLoanPaymentState extends State<RecordLoanPayment> {
+class BankLoanRepaymentState extends State<BankLoanRepayment> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -92,7 +92,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Record Loan Payment",
+        title: "Record Loan Repayment",
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -101,7 +101,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
           children: <Widget>[
             toolTip(
                 context: context,
-                title: "Maually record loan payments",
+                title: "Maually record loan repayments",
                 message: "",
                 visible: toolTipIsVisible,
                 toggleToolTip: () {
@@ -236,7 +236,7 @@ class CustomDropDownButton extends StatelessWidget {
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              new InputDecorator(
+              InputDecorator(
                 decoration: InputDecoration(
                   filled: false,
                   hintText: labelText,

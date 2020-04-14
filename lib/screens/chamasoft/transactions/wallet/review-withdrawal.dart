@@ -1,7 +1,7 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
-import 'package:chamasoft/utilities/CustomScrollBehaviour.dart';
+import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';

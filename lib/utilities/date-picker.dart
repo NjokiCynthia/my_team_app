@@ -57,23 +57,22 @@ class _InputDropdown extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new InkWell(
+    return new GestureDetector(
       onTap: onPressed,
-      child: new InputDecorator(
-        decoration: new InputDecoration(
+      child: InputDecorator(
+        decoration: InputDecoration(
           labelText: labelText,
+          hasFloatingPlaceholder: true,
+          enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+            color: Theme.of(context).hintColor,
+            width: 2.0,
+          )),
         ),
-        baseStyle: valueStyle,
-        child: new Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            new Text(valueText, style: valueStyle),
-            new Icon(Icons.arrow_drop_down,
-                color: Theme.of(context).brightness == Brightness.light
-                    ? Colors.grey.shade700
-                    : Colors.white70),
-          ],
+//        baseStyle: valueStyle,
+        child: Text(
+          valueText,
+//                style: valueStyle,
         ),
       ),
     );
