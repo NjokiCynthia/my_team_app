@@ -1,4 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/loan-statement.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/repay-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -48,18 +50,24 @@ class _LoanSummaryState extends State<LoanSummary> {
           status: 1,
           name: "Emergency Loan",
           amount: 2000,
+          repaid: 1000,
+          balance: 1000,
           applicationDate: DateTime.now()),
       ActiveLoan(
           id: 1,
           status: 3,
           name: "Education Loan",
           amount: 15000,
+          repaid: 1000,
+          balance: 1000,
           applicationDate: DateTime.now()),
       ActiveLoan(
           id: 1,
           status: 2,
           name: "Quick Loan",
           amount: 7000,
+          repaid: 1000,
+          balance: 1000,
           applicationDate: DateTime.now())
     ];
     return Scaffold(
@@ -79,15 +87,23 @@ class _LoanSummaryState extends State<LoanSummary> {
                 ActiveLoan loan = list[index];
                 return ActiveLoanCard(
                   loan: loan,
-                  onPressed: () {
-//                    Navigator.of(context).push(
-//                      MaterialPageRoute(
-//                        builder: (BuildContext context) =>
-//                            ReviewLoan(loanApplication: application),
-//                        settings:
-//                        RouteSettings(arguments: VIEW_APPLICATION_STATUS),
-//                      ),
-//                    );
+                  repay: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => RepayLoan(
+                          loan: loan,
+                        ),
+                      ),
+                    );
+                  },
+                  statement: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => LoanStatement(
+                          loan: loan,
+                        ),
+                      ),
+                    );
                   },
                 );
               },
@@ -97,11 +113,12 @@ class _LoanSummaryState extends State<LoanSummary> {
 }
 
 class ActiveLoanCard extends StatelessWidget {
-  const ActiveLoanCard({Key key, @required this.loan, this.onPressed})
+  const ActiveLoanCard(
+      {Key key, @required this.loan, this.repay, this.statement})
       : super(key: key);
 
   final ActiveLoan loan;
-  final Function onPressed;
+  final Function repay, statement;
 
   @override
   Widget build(BuildContext context) {
@@ -206,20 +223,22 @@ class ActiveLoanCard extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: plainButton(
-                          text: "Respond",
+                          text: "REPAY NOW",
                           size: 16.0,
                           spacing: 2.0,
-                          color: Theme.of(context).primaryColor.withOpacity(.8),
-                          action: onPressed),
+                          color: loan.status == 2
+                              ? Theme.of(context).primaryColor.withOpacity(0.5)
+                              : Theme.of(context).primaryColor,
+                          action: loan.status == 2 ? null : repay),
                     ),
                     Expanded(
                       flex: 1,
                       child: plainButton(
-                          text: "Respond",
+                          text: "STATEMENT",
                           size: 16.0,
                           spacing: 2.0,
-                          color: Colors.blue,
-                          action: onPressed),
+                          color: Colors.blueGrey,
+                          action: statement),
                     ),
                   ],
                 )

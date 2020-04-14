@@ -6,8 +6,6 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-import 'apply-loan.dart';
-
 class LoanAmortization extends StatefulWidget {
   @override
   _LoanAmortizationState createState() => _LoanAmortizationState();
@@ -41,10 +39,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
   }
 
   final List<LoanInstallment> installments = [
-    LoanInstallment(
-        date: DateTime.now(), amount: '30,000', balance: '150,000'),
-    LoanInstallment(
-        date: DateTime.now(), amount: '30,000', balance: '120,000'),
+    LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '150,000'),
+    LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '120,000'),
     LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '90,000'),
     LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '60,000'),
     LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '30,000'),
@@ -56,11 +52,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        action: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ApplyLoan(),
-          ),
-        ),
+        action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Loan Terms & Amortization",

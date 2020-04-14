@@ -203,7 +203,7 @@ Widget cardAmountButton(
   );
 }
 
-Widget plainButton(
+Widget plainButtonWithArrow(
     {String text,
     Function action,
     double size,
@@ -231,6 +231,37 @@ Widget plainButton(
           size: (size - 4.0),
           color: color.withOpacity(0.4),
         )
+      ],
+    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    onPressed: action,
+    highlightColor: Colors.blueGrey.withOpacity(0.1),
+  );
+}
+
+Widget plainButton(
+    {String text,
+    Function action,
+    double size,
+    Color color,
+    double spacing = 4.0}) {
+  return FlatButton(
+    padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text(
+          text,
+          style: TextStyle(
+            color: color,
+            fontSize: size,
+            fontWeight: FontWeight.w800,
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(
+          width: spacing,
+        ),
       ],
     ),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),

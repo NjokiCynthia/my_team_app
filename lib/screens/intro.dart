@@ -17,6 +17,8 @@ class IntroScreenState extends State<IntroScreen> {
   bool _loading = true;
 
   _isFirstTime() async {
+    setPreference("currency", "Ksh");
+
     (await getPreference("isFirstTime") != '')
         ? Navigator.of(context)
             .pushReplacement(MaterialPageRoute(
