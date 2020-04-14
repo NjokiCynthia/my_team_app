@@ -10,6 +10,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
+import 'expenditure/bank-loan-repayments.dart';
 import 'loans/record-loan-payment.dart';
 
 class TransactionMenuDetails extends StatefulWidget {
@@ -127,6 +128,15 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         } else if (index == 1) {
           target = RecordFinePayment();
         }
+
+        break;
+      case 3:
+        if (index == 0) {
+          target = RecordContributionPayment();
+        } else if (index == 1) {
+          target = BankLoanRepayment();
+        }
+
         break;
     }
 
