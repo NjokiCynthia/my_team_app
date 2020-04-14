@@ -181,7 +181,7 @@ class WithdrawalRequestCard extends StatelessWidget {
                     Text(
                       "",
                     ),
-                    plainButton(
+                    plainButtonWithArrow(
                         text: "Respond",
                         size: 16.0,
                         spacing: 2.0,

@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/repay-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -48,18 +49,24 @@ class _LoanSummaryState extends State<LoanSummary> {
           status: 1,
           name: "Emergency Loan",
           amount: 2000,
+          repaid: 1000,
+          balance: 1000,
           applicationDate: DateTime.now()),
       ActiveLoan(
           id: 1,
           status: 3,
           name: "Education Loan",
           amount: 15000,
+          repaid: 1000,
+          balance: 1000,
           applicationDate: DateTime.now()),
       ActiveLoan(
           id: 1,
           status: 2,
           name: "Quick Loan",
           amount: 7000,
+          repaid: 1000,
+          balance: 1000,
           applicationDate: DateTime.now())
     ];
     return Scaffold(
@@ -80,14 +87,13 @@ class _LoanSummaryState extends State<LoanSummary> {
                 return ActiveLoanCard(
                   loan: loan,
                   onPressed: () {
-//                    Navigator.of(context).push(
-//                      MaterialPageRoute(
-//                        builder: (BuildContext context) =>
-//                            ReviewLoan(loanApplication: application),
-//                        settings:
-//                        RouteSettings(arguments: VIEW_APPLICATION_STATUS),
-//                      ),
-//                    );
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => RepayLoan(
+                          loan: loan,
+                        ),
+                      ),
+                    );
                   },
                 );
               },
@@ -206,19 +212,19 @@ class ActiveLoanCard extends StatelessWidget {
                     Expanded(
                       flex: 1,
                       child: plainButton(
-                          text: "Respond",
+                          text: "REPAY NOW",
                           size: 16.0,
                           spacing: 2.0,
-                          color: Theme.of(context).primaryColor.withOpacity(.8),
+                          color: Theme.of(context).primaryColor,
                           action: onPressed),
                     ),
                     Expanded(
                       flex: 1,
                       child: plainButton(
-                          text: "Respond",
+                          text: "STATEMENT",
                           size: 16.0,
                           spacing: 2.0,
-                          color: Colors.blue,
+                          color: Colors.blueGrey,
                           action: onPressed),
                     ),
                   ],
