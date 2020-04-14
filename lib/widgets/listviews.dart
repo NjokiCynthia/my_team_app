@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
@@ -141,6 +142,48 @@ class AmortizationBody extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+class LoanStatementBody extends StatelessWidget {
+  const LoanStatementBody({this.row});
+
+  final LoanStatementRow row;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0,
+      color: Theme.of(context).backgroundColor,
+      child: Row(
+        children: <Widget>[
+          Column(
+            children: <Widget>[
+              subtitle1(
+                  text: row.type,
+                  color: Theme.of(context).textSelectionHandleColor,
+                  align: TextAlign.start),
+              subtitle2(
+                  text: DateFormat.yMMMMd().format(row.date),
+                  color: Theme.of(context).textSelectionHandleColor,
+                  align: TextAlign.start),
+            ],
+          ),
+          subtitle1(
+              text: "Ksh " + currencyFormat.format(row.amountDue),
+              color: Theme.of(context).textSelectionHandleColor,
+              align: TextAlign.start),
+          subtitle1(
+              text: "Ksh " + currencyFormat.format(row.paid),
+              color: Theme.of(context).textSelectionHandleColor,
+              align: TextAlign.start),
+          subtitle1(
+              text: "Ksh " + currencyFormat.format(row.balance),
+              color: Theme.of(context).textSelectionHandleColor,
+              align: TextAlign.start),
+        ],
       ),
     );
   }
