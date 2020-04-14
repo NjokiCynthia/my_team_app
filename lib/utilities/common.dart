@@ -31,3 +31,8 @@ Future setPreference(String key, dynamic data) async {
 
 final currencyFormat = new NumberFormat("#,##0", "en_US");
 final defaultDateFormat = new DateFormat("d MMM y");
+
+const int CONTRIBUTION_STATEMENT = 1;
+const int FINE_STATEMENT = 2;
+const int REVIEW_LOAN = 1;
+const int VIEW_APPLICATION_STATUS = 2;

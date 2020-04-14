@@ -165,12 +165,16 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
-                            heading2(
-                                text:
-                                    "${currencyFormat.format(widget.withdrawalRequest.amount)}",
+                            Text(
+                              "${currencyFormat.format(widget.withdrawalRequest.amount)}",
+                              style: TextStyle(
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.end),
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w800,
+                              ),
+                              textAlign: TextAlign.end,
+                            ),
                           ],
                         ),
                       ],

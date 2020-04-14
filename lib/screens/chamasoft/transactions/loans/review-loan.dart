@@ -1,7 +1,9 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -111,197 +113,199 @@ class ReviewLoanState extends State<ReviewLoan> {
 
   @override
   Widget build(BuildContext context) {
+    int flag = ModalRoute.of(context).settings.arguments;
+    String appbarTitle = "Review Loan";
+    if (flag == VIEW_APPLICATION_STATUS) {
+      appbarTitle = "Loan Application Status";
+    }
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Review Loan",
+        title: appbarTitle,
       ),
       backgroundColor: Colors.transparent,
       body: SafeArea(
         child: Container(
-          decoration: primaryGradient(context),
-//            padding: EdgeInsets.only(top: 10.0),
-          height: MediaQuery.of(context).size.height,
+          color: Theme.of(context).backgroundColor,
+          width: double.infinity,
+          height: double.infinity,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Expanded(
-                flex: 60,
                 child: Flex(
                   direction:
                       MediaQuery.of(context).orientation == Orientation.portrait
                           ? Axis.vertical
                           : Axis.horizontal,
                   children: <Widget>[
-                    Expanded(
-                      flex: MediaQuery.of(context).orientation ==
-                              Orientation.portrait
-                          ? 10
-                          : 30,
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 10.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Text(
-                                  "${widget.loanApplication.loanName}",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.8),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                                Row(
+                    Container(
+                      padding: EdgeInsets.all(16.0),
+                      width: double.infinity,
+                      color: (themeChangeProvider.darkTheme)
+                          ? Colors.blueGrey[800]
+                          : Color(0xffededfe),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      "Ksh ",
-                                      style: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                    ),
-                                    Text(
-                                      "${numberFormat.format(widget.loanApplication.amount)}",
+                                      "${widget.loanApplication.loanName}",
                                       style: TextStyle(
                                         color: Theme.of(context)
-                                            .textSelectionHandleColor,
+                                            .textSelectionHandleColor
+                                            .withOpacity(0.8),
                                         fontSize: 18.0,
                                         fontWeight: FontWeight.w800,
                                       ),
-                                      textAlign: TextAlign.end,
+                                    ),
+                                    Visibility(
+                                      visible: flag == REVIEW_LOAN,
+                                      child: Text(
+                                        "Applied By ${widget.loanApplication.borrowerName}",
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 12.0,
+                                          fontWeight: FontWeight.w800,
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
-                              ],
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            Text(
-                              "Applied By ${widget.loanApplication.borrowerName}",
-                              textAlign: TextAlign.start,
-                              style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w800,
                               ),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Interest  Rate: ",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.8),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400,
+                              Row(
+                                children: <Widget>[
+                                  Text(
+                                    "Ksh ",
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
+                                      fontWeight: FontWeight.w400,
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  "12%",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.8),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w800,
+                                  Text(
+                                    "${numberFormat.format(widget.loanApplication.amount)}",
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                    textAlign: TextAlign.end,
                                   ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Repayment Period: ",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.8),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Text(
-                                  "1 Month",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.8),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  "Applied On: ",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.8),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                ),
-                                Text(
-                                  "${dateFormat.format(widget.loanApplication.requestDate)}",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor
-                                        .withOpacity(0.8),
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w800,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 30, 
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            horizontal: 16.0, vertical: 10.0),
-                        color: Theme.of(context).backgroundColor,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.only(bottom: 16.0),
-                              child: Text(
-                                'Signatories',
-                                textAlign: TextAlign.start,
+                                ],
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Interest Rate: ",
                                 style: TextStyle(
                                   color: Theme.of(context)
                                       .textSelectionHandleColor
                                       .withOpacity(0.8),
-                                  fontSize: 20.0,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                "12%",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor
+                                      .withOpacity(0.8),
+                                  fontSize: 16.0,
                                   fontWeight: FontWeight.w800,
                                 ),
                               ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Repayment Period: ",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor
+                                      .withOpacity(0.8),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                "1 Month",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor
+                                      .withOpacity(0.8),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Applied On: ",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor
+                                      .withOpacity(0.8),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                "${dateFormat.format(widget.loanApplication.requestDate)}",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor
+                                      .withOpacity(0.8),
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            heading2(
+                                text: "Signatories",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                align: TextAlign.start),
+                            SizedBox(
+                              height: 10,
                             ),
                             Expanded(
                               child: ListView.separated(
@@ -332,42 +336,59 @@ class ReviewLoanState extends State<ReviewLoan> {
                   ],
                 ),
               ),
-              Expanded(
-                flex: 20,
-                child: Container(
-//                    padding: EdgeInsets.all(8.0),
-                  color: Theme.of(context).backgroundColor,
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      FlatButton(
-                        color: Colors.blueAccent.withOpacity(.2),
-                        onPressed: () {},
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'APPROVE',
-                            style: TextStyle(color: Colors.blue),
-                          ),
+              Visibility(
+                visible: flag == REVIEW_LOAN,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    FlatButton(
+                      color: Colors.blueAccent.withOpacity(.2),
+                      onPressed: () {},
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Text(
+                          'APPROVE',
+                          style: TextStyle(color: Colors.blue),
                         ),
                       ),
-                      FlatButton(
-                        color: Colors.redAccent.withOpacity(.2),
-                        onPressed: () {
-                          _rejectActionPrompt();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(10.0),
-                          child: Text(
-                            'REJECT',
-                            style: TextStyle(color: Colors.red),
-                          ),
+                    ),
+                    FlatButton(
+                      color: Colors.redAccent.withOpacity(.2),
+                      onPressed: () {
+                        _rejectActionPrompt();
+                      },
+                      child: Padding(
+                        padding: EdgeInsets.all(12.0),
+                        child: Text(
+                          'REJECT',
+                          style: TextStyle(color: Colors.red),
                         ),
                       ),
-                    ],
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                visible: flag == VIEW_APPLICATION_STATUS,
+                child: Center(
+                  child: FlatButton(
+                    color: Colors.redAccent.withOpacity(.2),
+                    onPressed: () {
+                      //_rejectActionPrompt();
+                    },
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Text(
+                        'CANCEL APPLICATION',
+                        style: TextStyle(color: Colors.red),
+                      ),
+                    ),
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 16,
               ),
             ],
           ),
@@ -427,37 +448,13 @@ class LoanSignatoryCard extends StatelessWidget {
           SizedBox(
             width: 10,
           ),
-          FlatButton(
-            color: Theme.of(context).hintColor.withOpacity(0.1),
-            onPressed: () {
-              //_rejectActionPrompt();
-            },
-            child: Padding(
-              padding: EdgeInsets.all(4.0),
-              child: Text(
-                "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
-                style: TextStyle(
-                    fontSize: 12,
-                    color: approvalStatus == 2
-                        ? Colors.blue
-                        : Theme.of(context).textSelectionHandleColor),
-              ),
-            ),
-          ),
-//          Container(
-//            padding: EdgeInsets.all(10.0),
-//            color: Theme.of(context).hintColor.withOpacity(0.1),
-//            child: Text(
-//              "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
-//              style: TextStyle(
-//                fontSize: 16.0,
-//                color: approvalStatus == 2
-//                    ? Colors.blue
-//                    : Theme.of(context).textSelectionHandleColor,
-//                fontWeight: FontWeight.w400,
-//              ),
-//            ),
-//          ),
+          statusChip(
+              text:
+                  "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
+              textColor: approvalStatus == 2
+                  ? Colors.blue
+                  : Theme.of(context).textSelectionHandleColor,
+              backgroundColor: Theme.of(context).hintColor.withOpacity(0.1)),
         ],
       ),
     );

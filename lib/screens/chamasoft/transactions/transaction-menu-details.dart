@@ -94,13 +94,15 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
               children: List.generate(list.length, (index) {
                 return gridButton(
-                  context: context,
-                  icon: list[index].icon,
-                  title: list[index].title,
-                  color: (index == 0) ? Colors.white : Colors.blueGrey[400],
-                  isHighlighted: (index == 0) ? true : false,
-                  action: () => handleClickEvents(originFlag, index),
-                );
+                    context: context,
+                    icon: list[index].icon,
+                    title: list[index].title,
+                    color: (index == 0) ? Colors.white : Colors.blueGrey[400],
+                    isHighlighted: (index == 0) ? true : false,
+                    action: () => Navigator.of(context).push(
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return navigate(originFlag, index);
+                        })));
               }),
             );
           },
@@ -109,35 +111,25 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
     );
   }
 
-  handleClickEvents(int origin, int index) {
+  Widget navigate(int origin, int index) {
+    Widget target = WithdrawalPurpose();
     switch (origin) {
       case 0:
-        if (index == 0) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => WithdrawalPurpose()));
-        } else if (index == 1) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => ReviewWithdrawalRequests()));
-        }
+        target =
+            (index == 0) ? WithdrawalPurpose() : ReviewWithdrawalRequests();
         break;
       case 1:
-        if (index == 0) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => ReviewLoanApplications()));
-        } else if (index == 1) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => RecordLoanPayment()));
-        }
+        target = (index == 0) ? ReviewLoanApplications() : RecordLoanPayment();
         break;
       case 2:
         if (index == 0) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => RecordContributionPayment()));
-        }else if(index == 1){
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => RecordFinePayment()));
+          target = RecordContributionPayment();
+        } else if (index == 1) {
+          target = RecordFinePayment();
         }
         break;
     }
+
+    return target;
   }
 }

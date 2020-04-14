@@ -67,7 +67,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
     String appbarTitle = "Contribution Statement";
     String defaultTitle = "Contributions";
 
-    if (statementFlag == 2) {
+    if (statementFlag == FINE_STATEMENT) {
       appbarTitle = "Fine Statement";
       defaultTitle = "Fines";
     }
