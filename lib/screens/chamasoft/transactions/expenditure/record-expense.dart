@@ -3,6 +3,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -65,15 +66,8 @@ class RecordExpenseState extends State<RecordExpense> {
   NamesListItem depositMethodValue;
   int expenseCategoryId;
   int accountId;
-
-  List<DropdownMenuItem> buildDropDownMenus(List<NamesListItem> listItems) {
-    List<DropdownMenuItem> dropdownItems = [];
-    for (NamesListItem menu in listItems) {
-      dropdownItems
-          .add(new DropdownMenuItem(value: menu.id, child: Text(menu.name)));
-    }
-    return dropdownItems;
-  }
+  String description;
+  double amount;
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +127,6 @@ class RecordExpenseState extends State<RecordExpense> {
                         child: CustomDropDownButton(
                           labelText: 'Select Withdrawal Method',
                           listItems: withdrawalMethods,
-                          dropdownItems: buildDropDownMenus(withdrawalMethods),
                           selectedItem: withdrawalMethod,
                           onChanged: (value) {
                             setState(() {
@@ -147,7 +140,6 @@ class RecordExpenseState extends State<RecordExpense> {
                   CustomDropDownButton(
                     labelText: 'Select Expense Category',
                     listItems: expenseCategories,
-                    dropdownItems: buildDropDownMenus(expenseCategories),
                     selectedItem: expenseCategoryId,
                     onChanged: (value) {
                       setState(() {
@@ -158,7 +150,6 @@ class RecordExpenseState extends State<RecordExpense> {
                   CustomDropDownButton(
                     labelText: 'Select Account',
                     listItems: accounts,
-                    dropdownItems: buildDropDownMenus(accounts),
                     selectedItem: accountId,
                     onChanged: (value) {
                       setState(() {
@@ -166,25 +157,22 @@ class RecordExpenseState extends State<RecordExpense> {
                       });
                     },
                   ),
-                  amountInputField(
-                    context,
-                    'Enter Amount',
-                    amountTextController,
-                  ),
-                  TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      hasFloatingPlaceholder: true,
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Theme.of(context).hintColor,
-                        width: 2.0,
-                      )),
-                      // hintText: 'Phone Number or Email Address',
-                      labelText: 'Short Description (optional)',
-                    ),
-                  ),
+                  amountTextInputField(
+                      context: context,
+                      labelText: 'Enter Amount refunded',
+                      onChanged: (value) {
+                        setState(() {
+                          amount = double.parse(value);
+                        });
+                      }),
+                  multilineTextField(
+                      context: context,
+                      labelText: 'Short Description (Optional)',
+                      onChanged: (value) {
+                        setState(() {
+                          description = value;
+                        });
+                      }),
                   SizedBox(
                     height: 24,
                   ),
@@ -196,7 +184,8 @@ class RecordExpenseState extends State<RecordExpense> {
                       print('Withdrawal Method: $withdrawalMethod');
                       print('Member: $expenseCategoryId');
                       print('Account: $accountId');
-                      print('Amount: ${amountTextController.text}');
+                      print('Amount: $amount');
+                      print('Description: $description');
                     },
                   ),
                 ],
@@ -205,62 +194,6 @@ class RecordExpenseState extends State<RecordExpense> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CustomDropDownButton extends StatelessWidget {
-  final int selectedItem;
-  final String labelText;
-  final Function onChanged;
-  final List<NamesListItem> listItems;
-  final List<DropdownMenuItem> dropdownItems;
-  const CustomDropDownButton({
-    this.selectedItem,
-    this.labelText,
-    this.onChanged,
-    this.listItems,
-    this.dropdownItems,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FormField(
-      builder: (FormFieldState state) {
-        return DropdownButtonHideUnderline(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              InputDecorator(
-                decoration: InputDecoration(
-                  filled: false,
-                  hintText: labelText,
-                  labelText: selectedItem == 0 ? labelText : labelText,
-//                  errorText: errorText,
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).hintColor,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-                isEmpty: selectedItem == null,
-                child: new Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context).cardColor,
-                  ),
-                  child: new DropdownButton(
-                    value: selectedItem,
-                    isDense: true,
-                    onChanged: onChanged,
-                    items: dropdownItems,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

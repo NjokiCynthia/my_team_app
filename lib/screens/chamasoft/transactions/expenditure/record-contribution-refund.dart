@@ -72,6 +72,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
   int contributionId;
   int groupMemberId;
   int accountId;
+  double amount;
+  String description;
 
   List<DropdownMenuItem> buildDropDownMenus(List<NamesListItem> listItems) {
     List<DropdownMenuItem> dropdownItems = [];
@@ -84,8 +86,6 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController amountTextController =
-        TextEditingController(text: '');
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -183,24 +183,23 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       });
                     },
                   ),
-                  amountInputField(
-                    context,
-                    'Enter Amount refunded',
-                    amountTextController,
+                  amountTextInputField(
+                    context: context,
+                    labelText:'Enter Amount refunded',
+                    onChanged: (value){
+                      setState(() {
+                        amount = double.parse(value);
+                      });
+                    }
                   ),
-                  TextFormField(
-                    keyboardType: TextInputType.multiline,
-                    maxLines: 4,
-                    decoration: InputDecoration(
-                      hasFloatingPlaceholder: true,
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                        color: Theme.of(context).hintColor,
-                        width: 2.0,
-                      )),
-                      // hintText: 'Phone Number or Email Address',
-                      labelText: 'Short Description (optional)',
-                    ),
+                  multilineTextField(
+                      context: context,
+                      labelText: 'Short Description (Optional)',
+                      onChanged: (value){
+                        setState(() {
+                          description = value;
+                        });
+                      }
                   ),
                   SizedBox(
                     height: 24,
@@ -213,7 +212,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       print('Refund Method: $refundMethod');
                       print('Member: $contributionId');
                       print('Account: $accountId');
-                      print('Amount: ${amountTextController.text}');
+                      print('Amount: $amount');
+                      print('Description: $description');
                     },
                   ),
                 ],
