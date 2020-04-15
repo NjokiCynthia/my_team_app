@@ -81,7 +81,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
   }
 
   final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
-    const MembersFilterEntry('Peter Kimutai', 'Pk'),
+    const MembersFilterEntry('Peter Kimutai', 'PK'),
     const MembersFilterEntry('Samuel Wahome', 'SW'),
     const MembersFilterEntry('Edwin Kapkei', 'EK'),
     const MembersFilterEntry('Geoffrey Githaiga', 'GG'),
@@ -93,19 +93,14 @@ class CreateInvoiceState extends State<CreateInvoice> {
     for (MembersFilterEntry member in _membersList) {
       yield Padding(
         padding: const EdgeInsets.all(4.0),
-        child: FilterChip(
+        child: Chip(
           avatar: CircleAvatar(child: Text(member.initials)),
           label: Text(member.name),
-          selected: _filters.contains(member.name),
-          onSelected: (bool value) {
+          onDeleted: () {
             setState(() {
-              if (value) {
-                _filters.add(member.name);
-              } else {
-                _filters.removeWhere((String name) {
-                  return name == member.name;
-                });
-              }
+              _membersList.removeWhere((MembersFilterEntry entry) {
+                return entry.name == member.name;
+              });
             });
           },
         ),
