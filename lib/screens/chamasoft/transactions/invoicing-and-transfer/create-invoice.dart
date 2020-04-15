@@ -258,6 +258,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
                       print('Member type: $memberTypeId');
                       print('Amount: $amount');
                       print('Description: $description');
+                      print('Members: ${selectedMembersList.length}');
                       selectedMembersList.map((MembersFilterEntry mem) {
                         return print(mem.name);
                       }).toList();
