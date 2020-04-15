@@ -66,7 +66,7 @@ class SelectMemberState extends State<SelectMember> {
         title: "Select Members",
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
-          if (selectedMembersList != null) {
+          if (selectedMembersList.length > 0) {
             Navigator.pop(context, selectedMembersList);
           } else {
             Alert(
@@ -140,23 +140,28 @@ class SelectMemberState extends State<SelectMember> {
                                 .toLowerCase()
                                 .contains(filter.toLowerCase())
                             ? Card(
-                                child: ListTile(
-                                  leading: Checkbox(
-                                    value: selectedMembersList
-                                        .contains(_membersList[index]),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (value) {
-                                          selectedMembersList
-                                              .add(_membersList[index]);
-                                        } else {
-                                          selectedMembersList
-                                              .remove(_membersList[index]);
-                                        }
-                                      });
-                                    },
+                                child: CheckboxListTile(
+                                  secondary: const Icon(Icons.person),
+                                  value: selectedMembersList
+                                      .contains(_membersList[index]),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        selectedMembersList
+                                            .add(_membersList[index]);
+                                      } else {
+                                        selectedMembersList
+                                            .remove(_membersList[index]);
+                                      }
+                                    });
+                                  },
+                                  title: Text(
+                                    _membersList[index].name,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w800),
                                   ),
-                                  title: Text(_membersList[index].name),
+                                  subtitle:
+                                      Text(_membersList[index].phoneNumber),
                                 ),
                               )
                             : new Container();
