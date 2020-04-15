@@ -41,6 +41,14 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   Widget build(BuildContext context) {
+    final summaryFlag = ModalRoute.of(context).settings.arguments;
+    String appbarTitle = "Contribution Statement";
+    String defaultTitle = "Contributions";
+
+    if (summaryFlag == FINE_STATEMENT) {
+      appbarTitle = "Fine Statement";
+      defaultTitle = "Fines";
+    }
     final List<SummaryRow> list = [
       SummaryRow(
           id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
@@ -71,13 +79,15 @@ class _ContributionSummaryState extends State<ContributionSummary> {
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Contribution Summary",
-          actions: [
-            FilterActionButton(
-              icon: LineAwesomeIcons.filter,
-              textColor: Colors.blueGrey,
-            ),
-          ]),
+          title: appbarTitle,
+          actions: summaryFlag == CONTRIBUTION_STATEMENT
+              ? [
+                  FilterActionButton(
+                    icon: LineAwesomeIcons.filter,
+                    textColor: Colors.blueGrey,
+                  ),
+                ]
+              : null),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
@@ -102,7 +112,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            "Total Contributions",
+                            "Total " + defaultTitle,
                             style: TextStyle(
                               color: Theme.of(context)
                                   .textSelectionHandleColor
