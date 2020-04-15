@@ -9,6 +9,12 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
+class MembersFilterEntry {
+  const MembersFilterEntry(this.name, this.initials);
+  final String name;
+  final String initials;
+}
+
 List<NamesListItem> refundMethods = [
   NamesListItem(id: 1, name: "Cash"),
   NamesListItem(id: 2, name: "Cheque"),
@@ -72,6 +78,39 @@ class CreateInvoiceState extends State<CreateInvoice> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
+    const MembersFilterEntry('Peter Kimutai', 'Pk'),
+    const MembersFilterEntry('Samuel Wahome', 'SW'),
+    const MembersFilterEntry('Edwin Kapkei', 'EK'),
+    const MembersFilterEntry('Geoffrey Githaiga', 'GG'),
+  ];
+
+  List<String> _filters = <String>[];
+
+  Iterable<Widget> get memberWidgets sync* {
+    for (MembersFilterEntry member in _membersList) {
+      yield Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: FilterChip(
+          avatar: CircleAvatar(child: Text(member.initials)),
+          label: Text(member.name),
+          selected: _filters.contains(member.name),
+          onSelected: (bool value) {
+            setState(() {
+              if (value) {
+                _filters.add(member.name);
+              } else {
+                _filters.removeWhere((String name) {
+                  return name == member.name;
+                });
+              }
+            });
+          },
+        ),
+      );
+    }
   }
 
   final formKey = new GlobalKey<FormState>();
@@ -179,6 +218,30 @@ class CreateInvoiceState extends State<CreateInvoice> {
                         memberTypeId = value;
                       });
                     },
+                  ),
+                  Visibility(
+                    visible: memberTypeId == 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Wrap(
+                          children: memberWidgets.toList(),
+                        ),
+                        FlatButton(
+                          onPressed: () {
+                            //open select members dialog
+                            print('Select members and list them');
+                          },
+                          child: Text(
+                            'Select more members',
+                            style: TextStyle(
+                              color: Colors.blueAccent,
+                              fontSize: 15.0,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                   amountTextInputField(
                       context: context,
