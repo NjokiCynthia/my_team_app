@@ -1,6 +1,9 @@
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/listviews.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -43,6 +46,86 @@ class _LoanStatementState extends State<LoanStatement> {
 
   @override
   Widget build(BuildContext context) {
+    final List<LoanStatementRow> list = [
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+      LoanStatementRow(
+          id: 1,
+          type: "Payment",
+          date: DateTime.now(),
+          paid: 1000,
+          balance: 14000),
+    ];
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -51,161 +134,183 @@ class _LoanStatementState extends State<LoanStatement> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Loan Statement",
       ),
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(16.0),
-                width: double.infinity,
-                color: (themeChangeProvider.darkTheme)
-                    ? Colors.blueGrey[800]
-                    : Color(0xffededfe),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(16.0),
+            width: double.infinity,
+            color: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Color(0xffededfe),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "${widget.loan.name}",
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor
-                                  .withOpacity(0.8),
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "${widget.loan.name}",
+                        style: TextStyle(
+                          color: Theme.of(context)
+                              .textSelectionHandleColor
+                              .withOpacity(0.8),
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w800,
                         ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Ksh ",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            Text(
-                              "${currencyFormat.format(widget.loan.amount)}",
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              textAlign: TextAlign.end,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8.0,
+                      ),
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Amount Repaid: ",
+                          "Ksh ",
                           style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
+                            fontSize: 18.0,
+                            color: Theme.of(context).textSelectionHandleColor,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
                         Text(
-                          "Ksh ${currencyFormat.format(widget.loan.repaid)}",
+                          "${currencyFormat.format(widget.loan.amount)}",
                           style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.w800,
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Balance: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          "Ksh ${currencyFormat.format(widget.loan.balance)}",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Applied On: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          "${DateFormat.yMMMMd().format(widget.loan.applicationDate)}",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
+                          textAlign: TextAlign.end,
                         ),
                       ],
                     ),
                   ],
                 ),
-              ),
-              Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: double.infinity,
-                  color: Theme.of(context).backgroundColor,
-                  child: Container(
-                    height: 300,
-//                    child: ListView.builder(
-//                      itemBuilder: (context, index) {
-//                        LoanInstallment installment = installments[index];
-//                        return AmortizationBody(installment: installment);
-//                      },
-//                      itemCount: installments.length,
-//                    ),
-                  ))
-            ],
-          )),
+                SizedBox(
+                  height: 8.0,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Amount Repaid: ",
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .textSelectionHandleColor
+                            .withOpacity(0.8),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      "Ksh ${currencyFormat.format(widget.loan.repaid)}",
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .textSelectionHandleColor
+                            .withOpacity(0.8),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Balance: ",
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .textSelectionHandleColor
+                            .withOpacity(0.8),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      "Ksh ${currencyFormat.format(widget.loan.balance)}",
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .textSelectionHandleColor
+                            .withOpacity(0.8),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Applied On: ",
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .textSelectionHandleColor
+                            .withOpacity(0.8),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    Text(
+                      "${DateFormat.yMMMMd().format(widget.loan.applicationDate)}",
+                      style: TextStyle(
+                        color: Theme.of(context)
+                            .textSelectionHandleColor
+                            .withOpacity(0.8),
+                        fontSize: 16.0,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Container(),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: subtitle1(
+                      text: "Paid",
+                      color: Theme.of(context).primaryColor,
+                      align: TextAlign.end),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: subtitle1(
+                      text: "Balance",
+                      color: Theme.of(context).primaryColor,
+                      align: TextAlign.end),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: ListView.builder(
+              controller: _scrollController,
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                LoanStatementRow row = list[index];
+                return LoanStatementBody(
+                  row: row,
+                  position: index % 2 == 0,
+                );
+              },
+              itemCount: list.length,
+            ),
+          )
+        ],
+      ),
     );
   }
 }

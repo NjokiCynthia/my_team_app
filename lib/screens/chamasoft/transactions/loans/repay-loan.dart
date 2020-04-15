@@ -108,185 +108,187 @@ class _RepayLoanState extends State<RepayLoan> {
           leadingIcon: LineAwesomeIcons.close,
           title: "Repay Loan",
         ),
-        backgroundColor: Colors.transparent,
-        body: Container(
-          color: Theme.of(context).backgroundColor,
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(16.0),
-                width: double.infinity,
-                color: (themeChangeProvider.darkTheme)
-                    ? Colors.blueGrey[800]
-                    : Color(0xffededfe),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Expanded(
-                          flex: 1,
-                          child: Text(
-                            "${widget.loan.name}",
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: SingleChildScrollView(
+          controller: _scrollController,
+          child: Container(
+            color: Theme.of(context).backgroundColor,
+            width: double.infinity,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  width: double.infinity,
+                  color: (themeChangeProvider.darkTheme)
+                      ? Colors.blueGrey[800]
+                      : Color(0xffededfe),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Text(
+                              "${widget.loan.name}",
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .textSelectionHandleColor
+                                    .withOpacity(0.8),
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "Ksh ",
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                              Text(
+                                "${currencyFormat.format(widget.loan.amount)}",
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                                textAlign: TextAlign.end,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 8.0,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Amount Repaid: ",
                             style: TextStyle(
                               color: Theme.of(context)
                                   .textSelectionHandleColor
                                   .withOpacity(0.8),
-                              fontSize: 18.0,
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          Text(
+                            "Ksh ${currencyFormat.format(widget.loan.repaid)}",
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor
+                                  .withOpacity(0.8),
+                              fontSize: 16.0,
                               fontWeight: FontWeight.w800,
                             ),
                           ),
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "Ksh ",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                fontWeight: FontWeight.w400,
-                              ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Balance: ",
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor
+                                  .withOpacity(0.8),
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400,
                             ),
-                            Text(
-                              "${currencyFormat.format(widget.loan.amount)}",
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              textAlign: TextAlign.end,
+                          ),
+                          Text(
+                            "Ksh ${currencyFormat.format(widget.loan.balance)}",
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor
+                                  .withOpacity(0.8),
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w800,
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 8.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Amount Repaid: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
                           ),
-                        ),
-                        Text(
-                          "Ksh ${currencyFormat.format(widget.loan.repaid)}",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            "Applied On: ",
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor
+                                  .withOpacity(0.8),
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Balance: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
+                          Text(
+                            "${DateFormat.yMMMMd().format(widget.loan.applicationDate)}",
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor
+                                  .withOpacity(0.8),
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w800,
+                            ),
                           ),
-                        ),
-                        Text(
-                          "Ksh ${currencyFormat.format(widget.loan.balance)}",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Applied On: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          "${DateFormat.yMMMMd().format(widget.loan.applicationDate)}",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    amountInputField(context, 'Amount to repay', controller),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                      child: textWithExternalLinks(
-                          color: Colors.blueGrey,
-                          size: 12.0,
-                          textData: {
-                            'Additional charges may be applied where necessary.':
-                                {},
-                            'Learn More': {
-                              "url": () => launchURL(
-                                  'https://chamasoft.com/terms-and-conditions/'),
-                              "color": Colors.blue,
-                              "weight": FontWeight.w500
-                            },
-                          }),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      child: defaultButton(
-                          context: context,
-                          text: "Pay Now",
-                          onPressed: () => _numberToPrompt()),
-                    )
-                  ],
-                ),
-              )
-            ],
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      amountInputField(context, 'Amount to repay', controller),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                        child: textWithExternalLinks(
+                            color: Colors.blueGrey,
+                            size: 12.0,
+                            textData: {
+                              'Additional charges may be applied where necessary.':
+                                  {},
+                              'Learn More': {
+                                "url": () => launchURL(
+                                    'https://chamasoft.com/terms-and-conditions/'),
+                                "color": Colors.blue,
+                                "weight": FontWeight.w500
+                              },
+                            }),
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Container(
+                        width: double.infinity,
+                        child: defaultButton(
+                            context: context,
+                            text: "Pay Now",
+                            onPressed: () => _numberToPrompt()),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ));
   }
