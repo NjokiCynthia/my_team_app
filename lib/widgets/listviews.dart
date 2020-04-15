@@ -256,3 +256,76 @@ class ContributionSummaryBody extends StatelessWidget {
     );
   }
 }
+
+class AccountBody extends StatelessWidget {
+  const AccountBody({
+    Key key,
+    @required this.row,
+  }) : super(key: key);
+
+  final StatementRow row;
+
+  @override
+  Widget build(BuildContext context) {
+    final amount = int.tryParse(row.amount) ?? 0;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
+      child: Card(
+        elevation: 0,
+        color: Theme.of(context).backgroundColor,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    Icons.credit_card,
+                    color: Theme.of(context).hintColor,
+                    size: 24.0,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        customTitle(
+                            text: row.title,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            align: TextAlign.start),
+                        subtitle2(
+                            text: row.description,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            align: TextAlign.start)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                customTitle(
+                  text: "Ksh ",
+                  color: Theme.of(context).primaryColor,
+                  align: TextAlign.start,
+                  fontWeight: FontWeight.w400,
+                ),
+                customTitle(
+                    text: currencyFormat.format(amount),
+                    color: Theme.of(context).primaryColor,
+                    align: TextAlign.start,
+                    fontSize: 18),
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}

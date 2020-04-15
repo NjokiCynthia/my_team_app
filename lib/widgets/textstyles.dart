@@ -57,6 +57,24 @@ Widget subtitle2(
   );
 }
 
+Widget customTitle(
+    {String text,
+    Color color,
+    TextAlign align = TextAlign.center,
+    double fontSize = 16.0,
+    FontWeight fontWeight = FontWeight.w500}) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontWeight: fontWeight,
+      fontSize: fontSize,
+      color: color,
+    ),
+    textAlign: align,
+    overflow: TextOverflow.ellipsis,
+  );
+}
+
 Widget textWithExternalLinks(
     {Map<String, Map<String, dynamic>> textData, Color color, double size}) {
   if (textData.isNotEmpty) {
