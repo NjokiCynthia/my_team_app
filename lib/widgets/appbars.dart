@@ -1,6 +1,8 @@
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+
 import 'buttons.dart';
 
 Widget primaryPageAppBar({String title}) {
@@ -35,7 +37,13 @@ Widget primaryPageAppBar({String title}) {
   );
 }
 
-Widget secondaryPageAppbar({BuildContext context, String title, Function action, double elevation, IconData leadingIcon, List<Widget> actions}) {
+Widget secondaryPageAppbar(
+    {BuildContext context,
+    String title,
+    Function action,
+    double elevation,
+    IconData leadingIcon,
+    List<Widget> actions}) {
   return AppBar(
     title: Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -57,10 +65,19 @@ Widget secondaryPageAppbar({BuildContext context, String title, Function action,
   );
 }
 
-Widget tertiaryPageAppbar({BuildContext context, String title, Function action, double elevation, IconData leadingIcon, IconData trailingIcon, Function trailingAction,List<Widget> actions}) {
+Widget tertiaryPageAppbar(
+    {BuildContext context,
+    String title,
+    Function action,
+    double elevation,
+    IconData leadingIcon,
+    IconData trailingIcon,
+    Function trailingAction,
+    List<Widget> actions}) {
   return AppBar(
     title: Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         screenActionButton(
           icon: leadingIcon,
@@ -68,9 +85,7 @@ Widget tertiaryPageAppbar({BuildContext context, String title, Function action, 
           textColor: Colors.blue,
           action: action,
         ),
-        SizedBox(width: 20.0),
         heading2(color: Colors.blue, text: title),
-        SizedBox(width: 20.0),
         screenActionButton(
           icon: trailingIcon,
           backgroundColor: Colors.blue.withOpacity(0.1),

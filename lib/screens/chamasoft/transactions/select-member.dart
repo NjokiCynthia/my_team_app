@@ -6,13 +6,16 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
-  const MembersFilterEntry('Peter Kimutai', 'PK'),
-  const MembersFilterEntry('Samuel Wahome', 'SW'),
-  const MembersFilterEntry('Edwin Kapkei', 'EK'),
-  const MembersFilterEntry('Geoffrey Githaiga', 'GG'),
+  const MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025'),
+  const MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025'),
+  const MembersFilterEntry('Edwin Kapkei', 'EK', '+254 725 854 025'),
+  const MembersFilterEntry('Geoffrey Githaiga', 'GG', '+254 725 854 025'),
 ];
 
 class SelectMember extends StatefulWidget {
+  final List<MembersFilterEntry> initialMembersList;
+
+  SelectMember({this.initialMembersList});
   @override
   State<StatefulWidget> createState() => new SelectMemberState();
 }
@@ -37,7 +40,12 @@ class SelectMemberState extends State<SelectMember> {
 
   @override
   void initState() {
-    selectedMembersList = [];
+    selectedMembersList = widget.initialMembersList;
+    controller.addListener(() {
+      setState(() {
+        filter = controller.text;
+      });
+    });
     super.initState();
   }
 
@@ -52,13 +60,13 @@ class SelectMemberState extends State<SelectMember> {
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,
-        action: () => Navigator.of(context).pop(),
+        action: () => Navigator.pop(context, selectedMembersList),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
         title: "Select Members",
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
-          if (selectedMembersList != null) {
+          if (selectedMembersList.length > 0) {
             Navigator.pop(context, selectedMembersList);
           } else {
             Alert(
@@ -106,24 +114,57 @@ class SelectMemberState extends State<SelectMember> {
                 child: ListView.builder(
                   itemCount: _membersList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      child: ListTile(
-                        leading: Checkbox(
-                          value:
-                              selectedMembersList.contains(_membersList[index]),
-                          onChanged: (value) {
-                            setState(() {
-                              if (value) {
-                                selectedMembersList.add(_membersList[index]);
-                              } else {
-                                selectedMembersList.remove(_membersList[index]);
-                              }
-                            });
-                          },
-                        ),
-                        title: Text(_membersList[index].name),
-                      ),
-                    );
+                    return filter == null || filter == ""
+                        ? Card(
+                            child: CheckboxListTile(
+                              secondary: const Icon(Icons.person),
+                              value: selectedMembersList
+                                  .contains(_membersList[index]),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value) {
+                                    selectedMembersList
+                                        .add(_membersList[index]);
+                                  } else {
+                                    selectedMembersList
+                                        .remove(_membersList[index]);
+                                  }
+                                });
+                              },
+                              title: Text(_membersList[index].name),
+                              subtitle: Text(_membersList[index].phoneNumber),
+                            ),
+                          )
+                        : _membersList[index]
+                                .name
+                                .toLowerCase()
+                                .contains(filter.toLowerCase())
+                            ? Card(
+                                child: CheckboxListTile(
+                                  secondary: const Icon(Icons.person),
+                                  value: selectedMembersList
+                                      .contains(_membersList[index]),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (value) {
+                                        selectedMembersList
+                                            .add(_membersList[index]);
+                                      } else {
+                                        selectedMembersList
+                                            .remove(_membersList[index]);
+                                      }
+                                    });
+                                  },
+                                  title: Text(
+                                    _membersList[index].name,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w800),
+                                  ),
+                                  subtitle:
+                                      Text(_membersList[index].phoneNumber),
+                                ),
+                              )
+                            : new Container();
                   },
                 ),
               ),

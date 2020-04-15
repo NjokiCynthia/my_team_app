@@ -217,7 +217,10 @@ class CreateInvoiceState extends State<CreateInvoice> {
                             selectedMembersList = await Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SelectMember()));
+                                    builder: (context) => SelectMember(
+                                          initialMembersList:
+                                              selectedMembersList,
+                                        )));
                           },
                           child: Text(
                             'Select more members',
