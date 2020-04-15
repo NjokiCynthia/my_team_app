@@ -13,6 +13,9 @@ final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
 ];
 
 class SelectMember extends StatefulWidget {
+  final List<MembersFilterEntry> initialMembersList;
+
+  SelectMember({this.initialMembersList});
   @override
   State<StatefulWidget> createState() => new SelectMemberState();
 }
@@ -37,7 +40,12 @@ class SelectMemberState extends State<SelectMember> {
 
   @override
   void initState() {
-    selectedMembersList = [];
+    selectedMembersList = widget.initialMembersList;
+    controller.addListener(() {
+      setState(() {
+        filter = controller.text;
+      });
+    });
     super.initState();
   }
 
@@ -106,24 +114,52 @@ class SelectMemberState extends State<SelectMember> {
                 child: ListView.builder(
                   itemCount: _membersList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return Card(
-                      child: ListTile(
-                        leading: Checkbox(
-                          value:
-                              selectedMembersList.contains(_membersList[index]),
-                          onChanged: (value) {
-                            setState(() {
-                              if (value) {
-                                selectedMembersList.add(_membersList[index]);
-                              } else {
-                                selectedMembersList.remove(_membersList[index]);
-                              }
-                            });
-                          },
-                        ),
-                        title: Text(_membersList[index].name),
-                      ),
-                    );
+                    return filter == null || filter == ""
+                        ? Card(
+                            child: ListTile(
+                              leading: Checkbox(
+                                value: selectedMembersList
+                                    .contains(_membersList[index]),
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value) {
+                                      selectedMembersList
+                                          .add(_membersList[index]);
+                                    } else {
+                                      selectedMembersList
+                                          .remove(_membersList[index]);
+                                    }
+                                  });
+                                },
+                              ),
+                              title: Text(_membersList[index].name),
+                            ),
+                          )
+                        : _membersList[index]
+                                .name
+                                .toLowerCase()
+                                .contains(filter.toLowerCase())
+                            ? Card(
+                                child: ListTile(
+                                  leading: Checkbox(
+                                    value: selectedMembersList
+                                        .contains(_membersList[index]),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        if (value) {
+                                          selectedMembersList
+                                              .add(_membersList[index]);
+                                        } else {
+                                          selectedMembersList
+                                              .remove(_membersList[index]);
+                                        }
+                                      });
+                                    },
+                                  ),
+                                  title: Text(_membersList[index].name),
+                                ),
+                              )
+                            : new Container();
                   },
                 ),
               ),
