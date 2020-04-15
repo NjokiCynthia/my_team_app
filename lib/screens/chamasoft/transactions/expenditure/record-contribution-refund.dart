@@ -3,6 +3,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -75,15 +76,6 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
   double amount;
   String description;
 
-  List<DropdownMenuItem> buildDropDownMenus(List<NamesListItem> listItems) {
-    List<DropdownMenuItem> dropdownItems = [];
-    for (NamesListItem menu in listItems) {
-      dropdownItems
-          .add(new DropdownMenuItem(value: menu.id, child: Text(menu.name)));
-    }
-    return dropdownItems;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,11 +131,10 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                         child: CustomDropDownButton(
                           labelText: 'Select Refund Method',
                           listItems: refundMethods,
-                          dropdownItems: buildDropDownMenus(refundMethods),
                           selectedItem: refundMethod,
                           onChanged: (value) {
                             setState(() {
-                              refundMethod = refundMethods[value].id;
+                              refundMethod = value;
                             });
                           },
                         ),
@@ -153,54 +144,49 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                   CustomDropDownButton(
                     labelText: 'Select Contribution to refund from',
                     listItems: contributions,
-                    dropdownItems: buildDropDownMenus(contributions),
                     selectedItem: contributionId,
                     onChanged: (value) {
                       setState(() {
-                        contributionId = contributions[value].id;
+                        contributionId = value;
                       });
                     },
                   ),
                   CustomDropDownButton(
                     labelText: 'Select account to refund from',
                     listItems: accounts,
-                    dropdownItems: buildDropDownMenus(accounts),
                     selectedItem: accountId,
                     onChanged: (value) {
                       setState(() {
-                        accountId = accounts[value].id;
+                        accountId = value;
                       });
                     },
                   ),
                   CustomDropDownButton(
                     labelText: 'Select Member to refund',
                     listItems: groupMembers,
-                    dropdownItems: buildDropDownMenus(groupMembers),
                     selectedItem: groupMemberId,
                     onChanged: (value) {
                       setState(() {
-                        groupMemberId = groupMembers[value].id;
+                        groupMemberId = value;
                       });
                     },
                   ),
                   amountTextInputField(
-                    context: context,
-                    labelText:'Enter Amount refunded',
-                    onChanged: (value){
-                      setState(() {
-                        amount = double.parse(value);
-                      });
-                    }
-                  ),
+                      context: context,
+                      labelText: 'Enter Amount refunded',
+                      onChanged: (value) {
+                        setState(() {
+                          amount = double.parse(value);
+                        });
+                      }),
                   multilineTextField(
                       context: context,
                       labelText: 'Short Description (Optional)',
-                      onChanged: (value){
+                      onChanged: (value) {
                         setState(() {
                           description = value;
                         });
-                      }
-                  ),
+                      }),
                   SizedBox(
                     height: 24,
                   ),
@@ -222,62 +208,6 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CustomDropDownButton extends StatelessWidget {
-  final int selectedItem;
-  final String labelText;
-  final Function onChanged;
-  final List<NamesListItem> listItems;
-  final List<DropdownMenuItem> dropdownItems;
-  const CustomDropDownButton({
-    this.selectedItem,
-    this.labelText,
-    this.onChanged,
-    this.listItems,
-    this.dropdownItems,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FormField(
-      builder: (FormFieldState state) {
-        return DropdownButtonHideUnderline(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              InputDecorator(
-                decoration: InputDecoration(
-                  filled: false,
-                  hintText: labelText,
-                  labelText: selectedItem == 0 ? labelText : labelText,
-//                  errorText: errorText,
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).hintColor,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-                isEmpty: selectedItem == null,
-                child: new Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context).cardColor,
-                  ),
-                  child: new DropdownButton(
-                    value: selectedItem,
-                    isDense: true,
-                    onChanged: onChanged,
-                    items: dropdownItems,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }

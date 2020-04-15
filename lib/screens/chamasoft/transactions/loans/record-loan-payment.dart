@@ -136,7 +136,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                           selectedItem: depositMethod,
                           onChanged: (value) {
                             setState(() {
-                              depositMethod = depositMethods[value].id;
+                              depositMethod = value;
                             });
                           },
                         ),
@@ -149,7 +149,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                     selectedItem: groupMemberId,
                     onChanged: (value) {
                       setState(() {
-                        groupMemberId = groupMembers[value].id;
+                        groupMemberId = value;
                       });
                     },
                   ),
@@ -159,7 +159,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                     selectedItem: loanId,
                     onChanged: (value) {
                       setState(() {
-                        loanId = loans[value].id;
+                        loanId = value;
                       });
                     },
                   ),
@@ -169,7 +169,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                     selectedItem: accountId,
                     onChanged: (value) {
                       setState(() {
-                        accountId = accounts[value].id;
+                        accountId = value;
                       });
                     },
                   ),
