@@ -213,32 +213,51 @@ class ActiveLoanCard extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Divider(
-                  color: Theme.of(context).bottomAppBarColor,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
                       flex: 1,
-                      child: plainButton(
-                          text: "REPAY NOW",
-                          size: 16.0,
-                          spacing: 2.0,
-                          color: loan.status == 2
-                              ? Theme.of(context).primaryColor.withOpacity(0.5)
-                              : Theme.of(context).primaryColor,
-                          action: loan.status == 2 ? null : repay),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                                    color: Theme.of(context).bottomAppBarColor,
+                                    width: 1.0),
+                                right: BorderSide(
+                                    color: Theme.of(context).bottomAppBarColor,
+                                    width: 0.5))),
+                        child: plainButton(
+                            text: "REPAY NOW",
+                            size: 16.0,
+                            spacing: 2.0,
+                            color: loan.status == 2
+                                ? Theme.of(context)
+                                    .primaryColor
+                                    .withOpacity(0.5)
+                                : Theme.of(context).primaryColor,
+                            action: loan.status == 2 ? null : repay),
+                      ),
                     ),
                     Expanded(
                       flex: 1,
-                      child: plainButton(
-                          text: "STATEMENT",
-                          size: 16.0,
-                          spacing: 2.0,
-                          color: Colors.blueGrey,
-                          action: statement),
+                      child: Container(
+                        decoration: BoxDecoration(
+                            border: Border(
+                                top: BorderSide(
+                                    color: Theme.of(context).bottomAppBarColor,
+                                    width: 1.0),
+                                left: BorderSide(
+                                    color: Theme.of(context).bottomAppBarColor,
+                                    width: 0.5))),
+                        child: plainButton(
+                            text: "STATEMENT",
+                            size: 16.0,
+                            spacing: 2.0,
+                            color: Colors.blueGrey,
+                            action: statement),
+                      ),
                     ),
                   ],
                 )

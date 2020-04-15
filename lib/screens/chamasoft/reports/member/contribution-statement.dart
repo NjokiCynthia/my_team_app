@@ -80,7 +80,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: appbarTitle,
           actions: [
-            RightActionButton(
+            FilterActionButton(
               icon: LineAwesomeIcons.filter,
               textColor: Colors.blueGrey,
             ),
@@ -169,8 +169,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
   }
 }
 
-class RightActionButton extends StatelessWidget {
-  const RightActionButton(
+class FilterActionButton extends StatelessWidget {
+  const FilterActionButton(
       {Key key, @required this.icon, @required this.textColor})
       : super(key: key);
   final IconData icon;
