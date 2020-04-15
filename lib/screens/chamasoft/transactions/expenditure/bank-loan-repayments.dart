@@ -3,6 +3,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -72,15 +73,7 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
   int groupMemberId;
   int loanId;
   int accountId;
-
-  List<DropdownMenuItem> buildDropDownMenus(List<NamesListItem> listItems) {
-    List<DropdownMenuItem> dropdownItems = [];
-    for (NamesListItem menu in listItems) {
-      dropdownItems
-          .add(new DropdownMenuItem(value: menu.id, child: Text(menu.name)));
-    }
-    return dropdownItems;
-  }
+  double amount;
 
   @override
   Widget build(BuildContext context) {
@@ -140,11 +133,10 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                         child: CustomDropDownButton(
                           labelText: 'Select Deposit Method',
                           listItems: depositMethods,
-                          dropdownItems: buildDropDownMenus(depositMethods),
                           selectedItem: depositMethod,
                           onChanged: (value) {
                             setState(() {
-                              depositMethod = depositMethods[value].id;
+                              depositMethod = value;
                             });
                           },
                         ),
@@ -154,41 +146,41 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                   CustomDropDownButton(
                     labelText: 'Select Member',
                     listItems: groupMembers,
-                    dropdownItems: buildDropDownMenus(groupMembers),
                     selectedItem: groupMemberId,
                     onChanged: (value) {
                       setState(() {
-                        groupMemberId = groupMembers[value].id;
+                        groupMemberId = value;
                       });
                     },
                   ),
                   CustomDropDownButton(
                     labelText: 'Select Loan',
                     listItems: loans,
-                    dropdownItems: buildDropDownMenus(loans),
                     selectedItem: loanId,
                     onChanged: (value) {
                       setState(() {
-                        loanId = loans[value].id;
+                        loanId = value;
                       });
                     },
                   ),
                   CustomDropDownButton(
                     labelText: 'Select Account',
                     listItems: accounts,
-                    dropdownItems: buildDropDownMenus(accounts),
                     selectedItem: accountId,
                     onChanged: (value) {
                       setState(() {
-                        accountId = accounts[value].id;
+                        accountId = value;
                       });
                     },
                   ),
-                  amountInputField(
-                    context,
-                    'Amount to pay',
-                    amountTextController,
-                  ),
+                  amountTextInputField(
+                      context: context,
+                      labelText: 'Enter Amount refunded',
+                      onChanged: (value) {
+                        setState(() {
+                          amount = double.parse(value);
+                        });
+                      }),
                   SizedBox(
                     height: 24,
                   ),
@@ -201,7 +193,7 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                       print('Member: $groupMemberId');
                       print('Loan: $loanId');
                       print('Account: $accountId');
-                      print('Amount: ${amountTextController.text}');
+                      print('Amount: $amount');
                     },
                   ),
                 ],
@@ -210,62 +202,6 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
           ],
         ),
       ),
-    );
-  }
-}
-
-class CustomDropDownButton extends StatelessWidget {
-  final int selectedItem;
-  final String labelText;
-  final Function onChanged;
-  final List<NamesListItem> listItems;
-  final List<DropdownMenuItem> dropdownItems;
-  const CustomDropDownButton({
-    this.selectedItem,
-    this.labelText,
-    this.onChanged,
-    this.listItems,
-    this.dropdownItems,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FormField(
-      builder: (FormFieldState state) {
-        return DropdownButtonHideUnderline(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              InputDecorator(
-                decoration: InputDecoration(
-                  filled: false,
-                  hintText: labelText,
-                  labelText: selectedItem == 0 ? labelText : labelText,
-//                  errorText: errorText,
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).hintColor,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-                isEmpty: selectedItem == null,
-                child: new Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context).cardColor,
-                  ),
-                  child: new DropdownButton(
-                    value: selectedItem,
-                    isDense: true,
-                    onChanged: onChanged,
-                    items: dropdownItems,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
