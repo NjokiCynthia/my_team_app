@@ -60,7 +60,7 @@ class SelectMemberState extends State<SelectMember> {
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,
-        action: () => Navigator.of(context).pop(),
+        action: () => Navigator.pop(context, selectedMembersList),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
         title: "Select Members",
