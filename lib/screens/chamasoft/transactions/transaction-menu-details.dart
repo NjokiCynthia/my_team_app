@@ -11,6 +11,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import 'expenditure/bank-loan-repayments.dart';
+import 'expenditure/record-contribution-refund.dart';
+import 'expenditure/record-expense.dart';
 import 'loans/record-loan-payment.dart';
 
 class TransactionMenuDetails extends StatefulWidget {
@@ -132,9 +134,11 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         break;
       case 3:
         if (index == 0) {
-          target = RecordContributionPayment();
+          target = RecordExpense();
         } else if (index == 1) {
           target = BankLoanRepayment();
+        } else if (index == 2) {
+          target = RecordContributionRefund();
         }
 
         break;
