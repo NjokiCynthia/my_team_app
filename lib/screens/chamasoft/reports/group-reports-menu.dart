@@ -56,7 +56,7 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
                   icon: menu.icon,
                   title: menu.title,
                   subtitle: menu.subtitle,
-                  color: Colors.blueGrey[400],
+                  color: Colors.blue[400],
                   isHighlighted: false,
                   action: () => navigate(index),
                 );

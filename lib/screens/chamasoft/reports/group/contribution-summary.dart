@@ -111,15 +111,9 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Text(
-                            "Total " + defaultTitle,
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor
-                                  .withOpacity(0.8),
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          heading2(
+                            text: "Total " + defaultTitle,
+                            color: Theme.of(context).textSelectionHandleColor,
                           ),
                           Text(
                             "31 Members",
@@ -135,22 +129,18 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                     ),
                     Row(
                       children: <Widget>[
-                        Text(
-                          "Ksh ",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        customTitle(
+                          text: "Ksh ",
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18.0,
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
-                        Text(
-                          currencyFormat.format(2000000),
-                          style: TextStyle(
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                          textAlign: TextAlign.end,
+                        customTitle(
+                          text: currencyFormat.format(2000000),
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontSize: 18.0,
+                          fontWeight: FontWeight.w800,
+                          align: TextAlign.end,
                         ),
                       ],
                     ),
@@ -159,25 +149,15 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                 SizedBox(
                   height: 8.0,
                 ),
-                Text(
-                  "Statement Period",
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(0.8),
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w400,
-                  ),
+                subtitle2(
+                  text: "Statement Period",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  align: TextAlign.start,
                 ),
-                Text(
-                  "12 October 2019 to 20 February 2021",
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(0.8),
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w800,
-                  ),
+                subtitle1(
+                  text: "12 October 2019 to 20 February 2021",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  align: TextAlign.start,
                 ),
               ],
             ),

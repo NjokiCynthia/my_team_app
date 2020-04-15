@@ -47,7 +47,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               icon: menu.icon,
               title: menu.title,
               subtitle: menu.subtitle,
-              color: (index == 5) ? Colors.white : Colors.blueGrey[400],
+              color: (index == 5) ? Colors.white : Colors.blue[400],
               isHighlighted: (index == 5) ? true : false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) {
