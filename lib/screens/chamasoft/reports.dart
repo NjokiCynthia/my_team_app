@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group-reports-menu.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
@@ -72,6 +73,9 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
         break;
       case 3:
         target = LoanSummary();
+        break;
+      case 4:
+        target = ContributionSummary();
         break;
       case 5:
         target = GroupReportsMenu();
