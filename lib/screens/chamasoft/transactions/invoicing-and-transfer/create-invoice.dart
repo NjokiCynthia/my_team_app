@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -9,11 +10,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-class MembersFilterEntry {
-  const MembersFilterEntry(this.name, this.initials);
-  final String name;
-  final String initials;
-}
+import '../select-member.dart';
 
 List<NamesListItem> refundMethods = [
   NamesListItem(id: 1, name: "Cash"),
@@ -56,6 +53,7 @@ class CreateInvoice extends StatefulWidget {
 class CreateInvoiceState extends State<CreateInvoice> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  List<MembersFilterEntry> selectedMembersList = [];
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -80,17 +78,8 @@ class CreateInvoiceState extends State<CreateInvoice> {
     super.dispose();
   }
 
-  final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
-    const MembersFilterEntry('Peter Kimutai', 'PK'),
-    const MembersFilterEntry('Samuel Wahome', 'SW'),
-    const MembersFilterEntry('Edwin Kapkei', 'EK'),
-    const MembersFilterEntry('Geoffrey Githaiga', 'GG'),
-  ];
-
-  List<String> _filters = <String>[];
-
   Iterable<Widget> get memberWidgets sync* {
-    for (MembersFilterEntry member in _membersList) {
+    for (MembersFilterEntry member in selectedMembersList) {
       yield Padding(
         padding: const EdgeInsets.all(4.0),
         child: Chip(
@@ -98,7 +87,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
           label: Text(member.name),
           onDeleted: () {
             setState(() {
-              _membersList.removeWhere((MembersFilterEntry entry) {
+              selectedMembersList.removeWhere((MembersFilterEntry entry) {
                 return entry.name == member.name;
               });
             });
@@ -223,9 +212,12 @@ class CreateInvoiceState extends State<CreateInvoice> {
                           children: memberWidgets.toList(),
                         ),
                         FlatButton(
-                          onPressed: () {
+                          onPressed: () async {
                             //open select members dialog
-                            print('Select members and list them');
+                            selectedMembersList = await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SelectMember()));
                           },
                           child: Text(
                             'Select more members',

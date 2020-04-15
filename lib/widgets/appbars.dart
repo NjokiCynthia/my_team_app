@@ -56,3 +56,32 @@ Widget secondaryPageAppbar({BuildContext context, String title, Function action,
     actions: actions,
   );
 }
+
+Widget tertiaryPageAppbar({BuildContext context, String title, Function action, double elevation, IconData leadingIcon, IconData trailingIcon, Function trailingAction,List<Widget> actions}) {
+  return AppBar(
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        screenActionButton(
+          icon: leadingIcon,
+          backgroundColor: Colors.blue.withOpacity(0.1),
+          textColor: Colors.blue,
+          action: action,
+        ),
+        SizedBox(width: 20.0),
+        heading2(color: Colors.blue, text: title),
+        SizedBox(width: 20.0),
+        screenActionButton(
+          icon: trailingIcon,
+          backgroundColor: Colors.blue.withOpacity(0.1),
+          textColor: Colors.blue,
+          action: trailingAction,
+        ),
+      ],
+    ),
+    elevation: elevation,
+    backgroundColor: Theme.of(context).backgroundColor,
+    automaticallyImplyLeading: false,
+    actions: actions,
+  );
+}
