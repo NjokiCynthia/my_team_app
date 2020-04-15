@@ -148,42 +148,52 @@ class AmortizationBody extends StatelessWidget {
 }
 
 class LoanStatementBody extends StatelessWidget {
-  const LoanStatementBody({this.row});
+  const LoanStatementBody({this.row, this.position});
 
   final LoanStatementRow row;
+  final bool position;
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0,
-      color: Theme.of(context).backgroundColor,
-      child: Row(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              subtitle1(
-                  text: row.type,
+    return Container(
+      color: position ? Color(0xffF6F6FE) : Theme.of(context).backgroundColor,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              flex: 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  subtitle1(
+                      text: row.type,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      align: TextAlign.start),
+                  subtitle2(
+                      text: DateFormat.yMMMMd().format(row.date),
+                      color: Theme.of(context).textSelectionHandleColor,
+                      align: TextAlign.start),
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 1,
+              child: subtitle1(
+                  text: "Ksh " + currencyFormat.format(row.paid),
                   color: Theme.of(context).textSelectionHandleColor,
-                  align: TextAlign.start),
-              subtitle2(
-                  text: DateFormat.yMMMMd().format(row.date),
+                  align: TextAlign.end),
+            ),
+            Expanded(
+              flex: 1,
+              child: subtitle1(
+                  text: "Ksh " + currencyFormat.format(row.balance),
                   color: Theme.of(context).textSelectionHandleColor,
-                  align: TextAlign.start),
-            ],
-          ),
-          subtitle1(
-              text: "Ksh " + currencyFormat.format(row.amountDue),
-              color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
-          subtitle1(
-              text: "Ksh " + currencyFormat.format(row.paid),
-              color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
-          subtitle1(
-              text: "Ksh " + currencyFormat.format(row.balance),
-              color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
-        ],
+                  align: TextAlign.end),
+            ),
+          ],
+        ),
       ),
     );
   }
