@@ -102,7 +102,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
                     context: context,
                     icon: list[index].icon,
                     title: list[index].title,
-                    color: (index == 0) ? Colors.white : Colors.blueGrey[400],
+                    color: (index == 0) ? Colors.white : Colors.blue[400],
                     isHighlighted: (index == 0) ? true : false,
                     action: () => Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {

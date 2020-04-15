@@ -1,6 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group-reports-menu.dart';
-import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
 import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
@@ -31,7 +31,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
       ReportMenu("FINE", "STATEMENT", LineAwesomeIcons.file),
       ReportMenu("LOAN", "APPLICATIONS", LineAwesomeIcons.bar_chart_o),
       ReportMenu("LOAN", "SUMMARY", LineAwesomeIcons.pie_chart),
-      ReportMenu("CONTRIBUTION", "SUMMARY", LineAwesomeIcons.list),
+      ReportMenu("ACCOUNT", "BALANCES", LineAwesomeIcons.list),
       ReportMenu("MORE GROUP", "REPORTS", LineAwesomeIcons.arrow_right),
     ];
 
@@ -47,7 +47,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               icon: menu.icon,
               title: menu.title,
               subtitle: menu.subtitle,
-              color: (index == 5) ? Colors.white : Colors.blueGrey[400],
+              color: (index == 5) ? Colors.white : Colors.blue[400],
               isHighlighted: (index == 5) ? true : false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) {
@@ -75,7 +75,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
         target = LoanSummary();
         break;
       case 4:
-        target = ContributionSummary();
+        target = AccountBalances();
         break;
       case 5:
         target = GroupReportsMenu();

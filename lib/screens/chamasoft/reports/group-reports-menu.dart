@@ -1,4 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -24,7 +26,7 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
   @override
   Widget build(BuildContext context) {
     final List<ReportMenu> list = [
-      ReportMenu("ACCOUNT", "BALANCES", LineAwesomeIcons.file_text),
+      ReportMenu("CONTRIBUTION", "SUMMARY", LineAwesomeIcons.file_text),
       ReportMenu("FINE", "SUMMARY", LineAwesomeIcons.file),
       ReportMenu("LOAN", "SUMMARY", LineAwesomeIcons.bar_chart),
       ReportMenu("LOAN", "APPLICATIONS", LineAwesomeIcons.list),
@@ -50,14 +52,14 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
               children: List.generate(list.length, (index) {
                 ReportMenu menu = list[index];
                 return gridButton(
-                    context: context,
-                    icon: menu.icon,
-                    title: menu.title,
-                    subtitle: menu.subtitle,
-                    color: Colors.blueGrey[400],
-                    isHighlighted: false,
-                    action: () {} //=> navigate(index),
-                    );
+                  context: context,
+                  icon: menu.icon,
+                  title: menu.title,
+                  subtitle: menu.subtitle,
+                  color: Colors.blue[400],
+                  isHighlighted: false,
+                  action: () => navigate(index),
+                );
               }),
             );
           },
@@ -66,11 +68,22 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
     );
   }
 
-  Widget navigate(int index) {
-    Widget target;
+  void navigate(int index) {
     switch (index) {
+      case 0:
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ContributionSummary();
+            },
+            settings: RouteSettings(arguments: CONTRIBUTION_STATEMENT)));
+        break;
+      case 1:
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) {
+              return ContributionSummary();
+            },
+            settings: RouteSettings(arguments: FINE_STATEMENT)));
+        break;
     }
-
-    return target;
   }
 }
