@@ -6,10 +6,10 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
-  const MembersFilterEntry('Peter Kimutai', 'PK'),
-  const MembersFilterEntry('Samuel Wahome', 'SW'),
-  const MembersFilterEntry('Edwin Kapkei', 'EK'),
-  const MembersFilterEntry('Geoffrey Githaiga', 'GG'),
+  const MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025'),
+  const MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025'),
+  const MembersFilterEntry('Edwin Kapkei', 'EK', '+254 725 854 025'),
+  const MembersFilterEntry('Geoffrey Githaiga', 'GG', '+254 725 854 025'),
 ];
 
 class SelectMember extends StatefulWidget {
@@ -116,23 +116,23 @@ class SelectMemberState extends State<SelectMember> {
                   itemBuilder: (BuildContext context, int index) {
                     return filter == null || filter == ""
                         ? Card(
-                            child: ListTile(
-                              leading: Checkbox(
-                                value: selectedMembersList
-                                    .contains(_membersList[index]),
-                                onChanged: (value) {
-                                  setState(() {
-                                    if (value) {
-                                      selectedMembersList
-                                          .add(_membersList[index]);
-                                    } else {
-                                      selectedMembersList
-                                          .remove(_membersList[index]);
-                                    }
-                                  });
-                                },
-                              ),
+                            child: CheckboxListTile(
+                              secondary: const Icon(Icons.person),
+                              value: selectedMembersList
+                                  .contains(_membersList[index]),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value) {
+                                    selectedMembersList
+                                        .add(_membersList[index]);
+                                  } else {
+                                    selectedMembersList
+                                        .remove(_membersList[index]);
+                                  }
+                                });
+                              },
                               title: Text(_membersList[index].name),
+                              subtitle: Text(_membersList[index].phoneNumber),
                             ),
                           )
                         : _membersList[index]
