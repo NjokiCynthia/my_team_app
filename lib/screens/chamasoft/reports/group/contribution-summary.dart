@@ -42,11 +42,11 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   @override
   Widget build(BuildContext context) {
     final summaryFlag = ModalRoute.of(context).settings.arguments;
-    String appbarTitle = "Contribution Statement";
+    String appbarTitle = "Contribution Summary";
     String defaultTitle = "Contributions";
 
     if (summaryFlag == FINE_STATEMENT) {
-      appbarTitle = "Fine Statement";
+      appbarTitle = "Fine Summary";
       defaultTitle = "Fines";
     }
     final List<SummaryRow> list = [

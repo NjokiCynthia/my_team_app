@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -323,6 +324,71 @@ class AccountBody extends StatelessWidget {
                     fontSize: 18),
               ],
             )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class LoanSummaryBody extends StatelessWidget {
+  const LoanSummaryBody({this.row, this.position});
+
+  final LoanSummaryRow row;
+  final bool position;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: position ? Color(0xffF6F6FE) : Theme.of(context).backgroundColor,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              flex: 3,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  customTitle(
+                      text: row.name,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontSize: 13,
+                      align: TextAlign.start),
+                  customTitle(
+                      text: DateFormat.yMMMMd().format(row.date),
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w400,
+                      align: TextAlign.start)
+                ],
+              ),
+            ),
+            Expanded(
+              flex: 2,
+              child: customTitle(
+                  text: "Ksh " + currencyFormat.format(row.amountDue),
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontSize: 13,
+                  align: TextAlign.center),
+            ),
+            Expanded(
+              flex: 2,
+              child: customTitle(
+                  text: "Ksh " + currencyFormat.format(row.paid),
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontSize: 13,
+                  align: TextAlign.center),
+            ),
+            Expanded(
+              flex: 2,
+              child: customTitle(
+                  text: "Ksh " + currencyFormat.format(row.balance),
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontSize: 13,
+                  align: TextAlign.center),
+            ),
           ],
         ),
       ),

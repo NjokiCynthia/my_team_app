@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -83,6 +84,12 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
               return ContributionSummary();
             },
             settings: RouteSettings(arguments: FINE_STATEMENT)));
+        break;
+      case 2:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return GroupLoansSummary();
+        }));
         break;
     }
   }
