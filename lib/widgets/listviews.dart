@@ -394,3 +394,57 @@ class LoanSummaryBody extends StatelessWidget {
     );
   }
 }
+
+class ExpenseBody extends StatelessWidget {
+  const ExpenseBody({this.row, this.position});
+
+  final SummaryRow row;
+  final bool position;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: position ? Color(0xffF6F6FE) : Theme.of(context).backgroundColor,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Expanded(
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Feather.user,
+                    color: Colors.blueGrey,
+                    size: 32,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  subtitle1(
+                      text: row.name,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      align: TextAlign.start),
+                ],
+              ),
+            ),
+            Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  customTitle(
+                      text: "Ksh ",
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontWeight: FontWeight.w400,
+                      align: TextAlign.end),
+                  subtitle1(
+                      text: " " + currencyFormat.format(row.paid),
+                      color: Theme.of(context).textSelectionHandleColor,
+                      align: TextAlign.end),
+                ]),
+          ],
+        ),
+      ),
+    );
+  }
+}
