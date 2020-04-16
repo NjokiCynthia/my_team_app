@@ -3,6 +3,7 @@ import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/transaction-statement-row.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -442,6 +443,82 @@ class ExpenseBody extends StatelessWidget {
                       color: Theme.of(context).textSelectionHandleColor,
                       align: TextAlign.end),
                 ]),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TransactionStatementBody extends StatelessWidget {
+  const TransactionStatementBody({this.row, this.position});
+
+  final TransactionStatementRow row;
+  final bool position;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: position ? Color(0xffF6F6FE) : Theme.of(context).backgroundColor,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisSize: MainAxisSize.max,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: customTitle(
+                      text: defaultDateFormat.format(row.date),
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontSize: 13,
+                      align: TextAlign.start),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: customTitle(
+                      text: "Ksh " + currencyFormat.format(row.deposit),
+                      color: row.deposit == 0
+                          ? Theme.of(context).textSelectionHandleColor
+                          : Colors.green,
+                      fontSize: 13,
+                      align: TextAlign.center),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: customTitle(
+                      text: "Ksh " + currencyFormat.format(row.withdrawal),
+                      color: row.withdrawal == 0
+                          ? Theme.of(context).textSelectionHandleColor
+                          : Colors.red,
+                      fontSize: 13,
+                      align: TextAlign.center),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: customTitle(
+                      text: "Ksh " + currencyFormat.format(row.balance),
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 13,
+                      align: TextAlign.center),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              row.description,
+              style: TextStyle(
+                fontWeight: FontWeight.w400,
+                fontSize: 12,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              textAlign: TextAlign.start,
+            )
           ],
         ),
       ),
