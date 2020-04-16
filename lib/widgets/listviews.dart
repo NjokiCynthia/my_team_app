@@ -6,7 +6,6 @@ import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:intl/intl.dart';
 
 import 'textstyles.dart';
 
@@ -63,7 +62,7 @@ class StatementBody extends StatelessWidget {
                     color: Theme.of(context).textSelectionHandleColor,
                     align: TextAlign.start),
                 subtitle2(
-                    text: DateFormat.yMMMMd().format(row.date),
+                    text: defaultDateFormat.format(row.date),
                     color: Theme.of(context).textSelectionHandleColor,
                     align: TextAlign.start),
               ],
@@ -121,7 +120,7 @@ class AmortizationBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 subtitle1(
-                    text: DateFormat.yMMMMd().format(installment.date),
+                    text: defaultDateFormat.format(installment.date),
                     color: Theme.of(context).textSelectionHandleColor,
                     align: TextAlign.start),
                 subtitle2(
@@ -175,7 +174,7 @@ class LoanStatementBody extends StatelessWidget {
                       color: Theme.of(context).textSelectionHandleColor,
                       align: TextAlign.start),
                   subtitle2(
-                      text: DateFormat.yMMMMd().format(row.date),
+                      text: defaultDateFormat.format(row.date),
                       color: Theme.of(context).textSelectionHandleColor,
                       align: TextAlign.start),
                 ],
@@ -357,7 +356,7 @@ class LoanSummaryBody extends StatelessWidget {
                       fontSize: 13,
                       align: TextAlign.start),
                   customTitle(
-                      text: DateFormat.yMMMMd().format(row.date),
+                      text: defaultDateFormat.format(row.date),
                       color: Theme.of(context).textSelectionHandleColor,
                       fontSize: 10,
                       fontWeight: FontWeight.w400,

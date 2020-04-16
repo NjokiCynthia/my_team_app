@@ -7,7 +7,6 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class LoanSummary extends StatefulWidget {
@@ -176,7 +175,7 @@ class ActiveLoanCard extends StatelessWidget {
                                     Theme.of(context).textSelectionHandleColor,
                                 align: TextAlign.start),
                             subtitle1(
-                                text: DateFormat.yMMMMd()
+                                text: defaultDateFormat
                                     .format(loan.applicationDate),
                                 color:
                                     Theme.of(context).textSelectionHandleColor,

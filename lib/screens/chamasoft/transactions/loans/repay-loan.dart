@@ -6,7 +6,6 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class RepayLoan extends StatefulWidget {
@@ -236,7 +235,7 @@ class _RepayLoanState extends State<RepayLoan> {
                             ),
                           ),
                           Text(
-                            "${DateFormat.yMMMMd().format(widget.loan.applicationDate)}",
+                            "${defaultDateFormat.format(widget.loan.applicationDate)}",
                             style: TextStyle(
                               color: Theme.of(context)
                                   .textSelectionHandleColor
