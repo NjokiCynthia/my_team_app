@@ -17,7 +17,7 @@ List<NamesListItem> refundMethods = [
   NamesListItem(id: 2, name: "Cheque"),
   NamesListItem(id: 3, name: "MPesa"),
 ];
-List<NamesListItem> invoiceTypes = [
+List<NamesListItem> fineTypes = [
   NamesListItem(id: 1, name: "Contribution Invoice"),
   NamesListItem(id: 2, name: "Loan Invoice"),
   NamesListItem(id: 3, name: "Goods Invoice"),
@@ -38,14 +38,14 @@ List<NamesListItem> groupMembers = [
   NamesListItem(id: 4, name: "Edwin Kapkei"),
 ];
 
-class CreateInvoice extends StatefulWidget {
+class FineMember extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return CreateInvoiceState();
+    return FineMemberState();
   }
 }
 
-class CreateInvoiceState extends State<CreateInvoice> {
+class FineMemberState extends State<FineMember> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   List<MembersFilterEntry> selectedMembersList = [];
@@ -94,11 +94,9 @@ class CreateInvoiceState extends State<CreateInvoice> {
 
   final formKey = new GlobalKey<FormState>();
   bool toolTipIsVisible = true;
-  DateTime invoiceDate = DateTime.now();
-  DateTime dueDate = DateTime.now();
-  int invoiceTypeId;
+  DateTime fineDate = DateTime.now();
+  int fineTypeId;
   int memberTypeId;
-  int contributionId;
   double amount;
   String description;
 
@@ -110,7 +108,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Create Invoice",
+        title: "Fine Member",
       ),
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
@@ -119,7 +117,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
           children: <Widget>[
             toolTip(
                 context: context,
-                title: "Create and send custom invoices",
+                title: "Create custom fines",
                 message: "",
                 visible: toolTipIsVisible,
                 toggleToolTip: () {
@@ -135,56 +133,22 @@ class CreateInvoiceState extends State<CreateInvoice> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        child: DatePicker(
-                          labelText: 'Select Invoice Date',
-                          selectedDate: invoiceDate == null
-                              ? DateTime.now()
-                              : invoiceDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              invoiceDate = selectedDate;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Expanded(
-                        child: DatePicker(
-                          labelText: 'Select Due Date',
-                          selectedDate:
-                              dueDate == null ? DateTime.now() : dueDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              dueDate = selectedDate;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select invoice type',
-                    listItems: invoiceTypes,
-                    selectedItem: invoiceTypeId,
-                    onChanged: (value) {
+                  DatePicker(
+                    labelText: 'Select Fine Date',
+                    selectedDate: fineDate == null ? DateTime.now() : fineDate,
+                    selectDate: (selectedDate) {
                       setState(() {
-                        invoiceTypeId = value;
+                        fineDate = selectedDate;
                       });
                     },
                   ),
                   CustomDropDownButton(
-                    labelText: 'Select Contribution ',
-                    listItems: contributions,
-                    selectedItem: contributionId,
+                    labelText: 'Select Fine type',
+                    listItems: fineTypes,
+                    selectedItem: fineTypeId,
                     onChanged: (value) {
                       setState(() {
-                        contributionId = value;
+                        fineTypeId = value;
                       });
                     },
                   ),
@@ -230,7 +194,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
                   ),
                   amountTextInputField(
                       context: context,
-                      labelText: 'Enter Amount to invoice',
+                      labelText: 'Enter Amount to fine',
                       onChanged: (value) {
                         setState(() {
                           amount = double.parse(value);
@@ -251,10 +215,8 @@ class CreateInvoiceState extends State<CreateInvoice> {
                     context: context,
                     text: "SAVE",
                     onPressed: () {
-                      print('Invoice date: $invoiceDate');
-                      print('Due date: $dueDate');
-                      print('Invoice Type: $invoiceTypeId');
-                      print('Contribution: $contributionId');
+                      print('Fine date: $fineDate');
+                      print('Fine Type: $fineTypeId');
                       print('Member type: $memberTypeId');
                       print('Amount: $amount');
                       print('Description: $description');

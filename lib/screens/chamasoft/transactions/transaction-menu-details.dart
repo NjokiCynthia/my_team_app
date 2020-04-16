@@ -14,6 +14,7 @@ import 'expenditure/bank-loan-repayments.dart';
 import 'expenditure/record-contribution-refund.dart';
 import 'expenditure/record-expense.dart';
 import 'invoicing-and-transfer/create-invoice.dart';
+import 'invoicing-and-transfer/fine-member.dart';
 import 'loans/record-loan-payment.dart';
 
 class TransactionMenuDetails extends StatefulWidget {
@@ -147,6 +148,8 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
       case 4:
         if (index == 0) {
           target = CreateInvoice();
+        } else if (index == 1) {
+          target = FineMember();
         }
 
         break;
