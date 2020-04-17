@@ -1,6 +1,7 @@
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -38,13 +39,13 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
                 children: <Widget>[
                   screenActionButton(
                     icon: LineAwesomeIcons.arrow_left,
-                    backgroundColor: Colors.blue.withOpacity(0.1),
-                    textColor: Colors.blue,
+                    backgroundColor: primaryColor.withOpacity(0.1),
+                    textColor: primaryColor,
                     action: () => Navigator.of(context).pop(),
                   ),
                   SizedBox(width: 20.0),
                   heading2(
-                      color: Colors.blue, text: "Review Withdrawal Requests"),
+                      color: primaryColor, text: "Review Withdrawal Requests"),
                 ],
               ),
             ],

@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -11,7 +12,6 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   String _logo = "cs.png";
 
   @override
@@ -34,19 +34,28 @@ class _LoginState extends State<Login> {
         decoration: primaryGradient(context),
         child: SingleChildScrollView(
           padding: EdgeInsets.all(40.0),
-            child: Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                 child: Image(
-                  image:  AssetImage('assets/$_logo'),
+                  image: AssetImage('assets/$_logo'),
                   height: 100.0,
                 ),
               ),
-              heading1(text: "Chamasoft", color: Theme.of(context).textSelectionHandleColor),
-              subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
-              subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
+              heading1(
+                  text: "Chamasoft",
+                  color: Theme.of(context).textSelectionHandleColor),
+              SizedBox(
+                height: 10,
+              ),
+              subtitle1(
+                  text: "Let's verify your identity first",
+                  color: Theme.of(context).textSelectionHandleColor),
+              subtitle2(
+                  text: "Enter your phone number or email address below",
+                  color: Theme.of(context).textSelectionHandleColor),
               TextFormField(
                 decoration: InputDecoration(
                   hasFloatingPlaceholder: true,
@@ -59,31 +68,40 @@ class _LoginState extends State<Login> {
                   ),
                 ),
               ),
-              SizedBox(height: 24,),
+              SizedBox(
+                height: 24,
+              ),
               defaultButton(
                 context: context,
                 text: "Continue",
-                onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Verification(),),),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => Verification(),
+                  ),
+                ),
               ),
-              SizedBox(height: 24,),
+              SizedBox(
+                height: 24,
+              ),
               textWithExternalLinks(
-                color: Theme.of(context).textSelectionHandleColor,
-                size: 12.0,
-                textData: {
-                  'By continuing you agree to our': {},
-                  'terms & conditions': {
-                    "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-                    "color": Colors.blue,
-                    "weight": FontWeight.w500
-                  },
-                  'and': {},
-                  'privacy policy.': {
-                    "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-                    "color": Colors.blue,
-                    "weight": FontWeight.w500
-                  },
-                }
-              ),
+                  color: Theme.of(context).textSelectionHandleColor,
+                  size: 12.0,
+                  textData: {
+                    'By continuing you agree to our': {},
+                    'terms & conditions': {
+                      "url": () => launchURL(
+                          'https://chamasoft.com/terms-and-conditions/'),
+                      "color": primaryColor,
+                      "weight": FontWeight.w500
+                    },
+                    'and': {},
+                    'privacy policy.': {
+                      "url": () => launchURL(
+                          'https://chamasoft.com/terms-and-conditions/'),
+                      "color": primaryColor,
+                      "weight": FontWeight.w500
+                    },
+                  }),
             ],
           ),
         ),

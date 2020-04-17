@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
@@ -83,7 +84,7 @@ class _RepayLoanState extends State<RepayLoan> {
             new FlatButton(
               child: new Text(
                 "Pay Now",
-                style: new TextStyle(color: Colors.blue),
+                style: new TextStyle(color: primaryColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -268,7 +269,7 @@ class _RepayLoanState extends State<RepayLoan> {
                               'Learn More': {
                                 "url": () => launchURL(
                                     'https://chamasoft.com/terms-and-conditions/'),
-                                "color": Colors.blue,
+                                "color": primaryColor,
                                 "weight": FontWeight.w500
                               },
                             }),

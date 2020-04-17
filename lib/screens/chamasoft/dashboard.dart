@@ -7,6 +7,7 @@ import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     {"id": 3, "title": "Witcher Welfare Association", "role": "Chairperson"},
     {"id": 4, "title": "Kejodu Investments", "role": "Secretary"},
   ];
+
   Stream get _stream => _eventDispatcher.stream;
 
   final GlobalKey<ScaffoldState> dashboardScaffoldKey =
@@ -130,7 +132,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[900] //.withOpacity(0.95)
-              : Colors.blue[50], //.withOpacity(0.89),
+              : Colors.blue[50],
+          //.withOpacity(0.89),
           elevation: 0,
           currentIndex: _currentPage,
           type: BottomNavigationBarType.fixed,
@@ -138,13 +141,13 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             BottomNavigationBarItem(
               icon: Icon(
                 AntDesign.home,
-                color: _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
+                color: _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
               ),
               title: Text(
                 "Home",
                 style: TextStyle(
                     color:
-                        _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
+                        _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
                     fontFamily: 'SegoeUI',
                     fontWeight: FontWeight.w700),
               ),
@@ -152,43 +155,47 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             BottomNavigationBarItem(
                 icon: Icon(
                   Feather.users,
-                  color: _currentPage == 1 ? Colors.blue : Colors.blueGrey[300],
+                  color:
+                      _currentPage == 1 ? primaryColor : Colors.blueGrey[300],
                 ),
                 title: Text(
                   "My Group",
                   style: TextStyle(
                       color: _currentPage == 1
-                          ? Colors.blue
-                          : Colors.blueGrey[300],
+                  ? primaryColor
+                      : Colors.blueGrey[300],
                       fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
             BottomNavigationBarItem(
                 icon: Icon(
                   Feather.credit_card,
-                  color: _currentPage == 2 ? Colors.blue : Colors.blueGrey[300],
+                  color:
+                      _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
                 ),
                 title: Text(
                   "Transactions",
                   style: TextStyle(
                       color: _currentPage == 2
-                          ? Colors.blue
-                          : Colors.blueGrey[300],
+                  ? primaryColor
+                      : Colors.blueGrey[300],
                       fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
             BottomNavigationBarItem(
                 icon: Icon(
                   Feather.copy,
-                  color: _currentPage == 3 ? Colors.blue : Colors.blueGrey[300],
+                  color:
+                      _currentPage == 3 ? primaryColor : Colors.blueGrey[300],
                 ),
                 title: Text(
                   "Reports",
                   style: TextStyle(
                       color: _currentPage == 3
-                          ? Colors.blue
+                          ? primaryColor
                           : Colors.blueGrey[300],
-                      fontFamily: 'SegoeUI',
+                  fontFamily: 'SegoeUI',
+
                       fontWeight: FontWeight.w700),
                 )),
           ],

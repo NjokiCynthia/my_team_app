@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
@@ -164,7 +166,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                                     color: (_listItems[ndx]["id"] == 0 ||
                                             _listItems[ndx]["id"] ==
                                                 widget.currentGroup["id"])
-                                        ? Colors.blue
+                                        ? primaryColor
                                         : (_listItems[ndx]["id"] !=
                                                 widget.currentGroup["id"])
                                             ? Colors.transparent
@@ -185,7 +187,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                                           color: (_listItems[ndx]["id"] == 0 ||
                                                   _listItems[ndx]["id"] ==
                                                       widget.currentGroup["id"])
-                                              ? Colors.blue
+                                              ? primaryColor
                                               : Colors.blueGrey[
                                                   400], //Theme.of(context).textSelectionHandleColor,
                                           fontSize: 16.0,
@@ -202,7 +204,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                                           color: (_listItems[ndx]["id"] == 0 ||
                                                   _listItems[ndx]["id"] ==
                                                       widget.currentGroup["id"])
-                                              ? Colors.blue.withOpacity(0.7)
+                                              ? primaryColor.withOpacity(0.7)
                                               : Colors.blueGrey[
                                                   300], //Theme.of(context).indicatorColor,
                                           fontSize: 12.0,
@@ -255,13 +257,13 @@ class _AppSwitcherState extends State<AppSwitcher> {
                                 fontFamily: 'SegoeUI',
                                 fontWeight: FontWeight.w200,
                                 fontSize: 10.0,
-                                color: Colors.blue,
+                                color: primaryColor,
                               ),
                             ),
                             Icon(
                               Icons.chevron_right,
                               size: 10.0,
-                              color: Colors.blue,
+                              color: primaryColor,
                             ),
                           ],
                         ),
@@ -280,13 +282,13 @@ class _AppSwitcherState extends State<AppSwitcher> {
                                 fontFamily: 'SegoeUI',
                                 fontWeight: FontWeight.w200,
                                 fontSize: 10.0,
-                                color: Colors.blue,
+                                color: primaryColor,
                               ),
                             ),
                             Icon(
                               Icons.chevron_right,
                               size: 10.0,
-                              color: Colors.blue,
+                              color: primaryColor,
                             ),
                           ],
                         ),
@@ -351,7 +353,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                         Text(
                           role.toUpperCase(),
                           style: TextStyle(
-                            color: Colors.blue,
+                            color: primaryColor,
                             fontWeight: FontWeight.w700,
                             fontSize: 11.0,
                             fontFamily: 'SegoeUI',
@@ -409,7 +411,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
             ))
           : new RoundedRectangleBorder(
               borderRadius: new BorderRadius.all(Radius.circular(30.0))),
-      textColor: Colors.blue,
+      textColor: primaryColor,
       color: Theme.of(context).buttonColor,
     );
   }

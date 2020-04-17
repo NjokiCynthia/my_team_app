@@ -3,6 +3,7 @@ import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +78,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             new FlatButton(
               child: new Text(
                 "Proceed",
-                style: new TextStyle(color: Colors.blue),
+                style: new TextStyle(color: primaryColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -143,7 +144,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12.0,
-                                  color: Colors.blue,
+                                  color: primaryColor,
                                 ),
                                 textAlign: TextAlign.start,
                                 maxLines: 1,
@@ -343,7 +344,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               padding: EdgeInsets.all(12.0),
                               child: Text(
                                 'APPROVE',
-                                style: TextStyle(color: Colors.blue),
+                                style: TextStyle(color: primaryColor),
                               ),
                             ),
                           ),

@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -244,7 +245,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: contributionSummary(
-                          color: Colors.blue,
+                          color: primaryColor,
                           cardIcon: Feather.bar_chart,
                           amountDue: "4,050",
                           cardAmount: "4,050",
@@ -298,8 +299,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           horizontal: 16.0,
                         ),
                         child: paymentActionButton(
-                          color: Colors.blue,
-                          textColor: Colors.blue,
+                          color: primaryColor,
+                          textColor: primaryColor,
                           icon: FontAwesome.chevron_right,
                           isFlat: false,
                           text: "PAY NOW",
@@ -318,7 +319,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           horizontal: 16.0,
                         ),
                         child: paymentActionButton(
-                          color: Colors.blue,
+                          color: primaryColor,
                           textColor: Colors.white,
                           icon: FontAwesome.chevron_right,
                           isFlat: true,
@@ -401,7 +402,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: contributionSummary(
-                          color: Colors.blue,
+                          color: primaryColor,
                           cardIcon: Feather.bar_chart_2,
                           amountDue: "10,050",
                           cardAmount: "4,050",

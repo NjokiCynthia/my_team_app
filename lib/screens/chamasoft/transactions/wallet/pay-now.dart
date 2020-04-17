@@ -1,9 +1,10 @@
+import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
@@ -135,7 +136,7 @@ class PayNowState extends State<PayNow> {
             new FlatButton(
               child: new Text(
                 "Pay Now",
-                style: new TextStyle(color: Colors.blue),
+                style: new TextStyle(color: primaryColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -190,7 +191,7 @@ class PayNowState extends State<PayNow> {
                           'Learn More': {
                             "url": () => launchURL(
                                 'https://chamasoft.com/terms-and-conditions/'),
-                            "color": Colors.blue,
+                            "color": primaryColor,
                             "weight": FontWeight.w500
                           },
                         }),

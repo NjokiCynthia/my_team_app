@@ -32,6 +32,11 @@ Future setPreference(String key, dynamic data) async {
 final currencyFormat = new NumberFormat("#,##0", "en_US");
 final defaultDateFormat = new DateFormat("d MMM y");
 
+//Padding and margin
+const double SPACING_NORMAL = 16.0;
+const double SPACING_LARGE = 20.0;
+const double SPACING_HUGE = 24.0;
+
 const int CONTRIBUTION_STATEMENT = 1;
 const int FINE_STATEMENT = 2;
 const int REVIEW_LOAN = 1;

@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/my-groups.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -11,7 +12,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-
   @override
   void initState() {
     super.initState();
@@ -21,7 +21,7 @@ class _SignUpState extends State<SignUp> {
   void dispose() {
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,8 +36,12 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  heading1(text: "Profile", color: Theme.of(context).textSelectionHandleColor),
-                  subtitle1(text: "Fill details to complete\naccount setup", color: Theme.of(context).textSelectionHandleColor),
+                  heading1(
+                      text: "Profile",
+                      color: Theme.of(context).textSelectionHandleColor),
+                  subtitle1(
+                      text: "Fill details to complete\naccount setup",
+                      color: Theme.of(context).textSelectionHandleColor),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
                     child: Stack(
@@ -51,18 +55,17 @@ class _SignUpState extends State<SignUp> {
                           height: 32,
                           width: 32,
                           child: screenActionButton(
-                            icon: Icons.camera_alt,
-                            backgroundColor: Colors.white.withOpacity(0.5),
-                            textColor: Colors.blueGrey,
-                            action: (){}
-                          ),
+                              icon: Icons.camera_alt,
+                              backgroundColor: Colors.white.withOpacity(0.5),
+                              textColor: Colors.blueGrey,
+                              action: () {}),
                         )
                       ],
                     ),
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      hasFloatingPlaceholder: true, 
+                      hasFloatingPlaceholder: true,
                       labelText: "First Name",
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -74,7 +77,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(
-                      hasFloatingPlaceholder: true, 
+                      hasFloatingPlaceholder: true,
                       labelText: "Last Name",
                       enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
@@ -87,7 +90,14 @@ class _SignUpState extends State<SignUp> {
                   SizedBox(
                     height: 24,
                   ),
-                  defaultButton(context: context, text: "Finish", onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => MyGroups(),),))
+                  defaultButton(
+                      context: context,
+                      text: "Finish",
+                      onPressed: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) => MyGroups(),
+                            ),
+                          ))
                 ],
               ),
             ),
@@ -97,8 +107,8 @@ class _SignUpState extends State<SignUp> {
             left: 20,
             child: screenActionButton(
               icon: LineAwesomeIcons.arrow_left,
-              backgroundColor: Colors.blue.withOpacity(0.2),
-              textColor: Colors.blue,
+              backgroundColor: primaryColor.withOpacity(0.2),
+              textColor: primaryColor,
               action: () => Navigator.of(context).pop(),
             ),
           )
