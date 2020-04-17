@@ -1,7 +1,9 @@
 import 'dart:async';
-import 'package:chamasoft/widgets/backgrounds.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+
+import 'backgrounds.dart';
 
 class _CustomDelegate extends SingleChildLayoutDelegate {
   final Offset target;
@@ -10,10 +12,12 @@ class _CustomDelegate extends SingleChildLayoutDelegate {
   _CustomDelegate({
     @required this.target,
     @required this.verticalOffset,
-  }) : assert(target != null), assert(verticalOffset != null);
+  })  : assert(target != null),
+        assert(verticalOffset != null);
 
   @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) => constraints.loosen();
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
+      constraints.loosen();
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
@@ -28,7 +32,8 @@ class _CustomDelegate extends SingleChildLayoutDelegate {
 
   @override
   bool shouldRelayout(_CustomDelegate oldDelegate) {
-    return target != oldDelegate.target || verticalOffset != oldDelegate.verticalOffset;
+    return target != oldDelegate.target ||
+        verticalOffset != oldDelegate.verticalOffset;
   }
 }
 
@@ -46,7 +51,6 @@ class _CustomOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return new Positioned.fill(
       child: new IgnorePointer(
         ignoring: false,
@@ -56,23 +60,26 @@ class _CustomOverlay extends StatelessWidget {
             verticalOffset: -5.0,
           ),
           child: new Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0,),
-            child: new Row(
-              children: <Widget>[
-                new Container(
-                  width: width,
-                  constraints: BoxConstraints(maxHeight: 210),
-                  alignment: Alignment.topLeft,
-                  decoration: new BoxDecoration(
-                    color: Theme.of(context).backgroundColor,
-                    boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
-                    // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+              ),
+              child: new Row(
+                children: <Widget>[
+                  new Container(
+                    width: width,
+                    constraints: BoxConstraints(maxHeight: 210),
+                    alignment: Alignment.topLeft,
+                    color: Colors.transparent,
+//                    decoration: new BoxDecoration(
+//                      color: Theme.of(context).backgroundColor,
+//                      boxShadow:
+//                          mildShadow(Theme.of(context).unselectedWidgetColor),
+//                      // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
+//                    ),
+                    child: child,
                   ),
-                  child: child,
-                ),
-              ],
-            )
-          ),
+                ],
+              )),
         ),
       ),
     );
@@ -88,21 +95,19 @@ class _AppSwitcherState extends State<AppSwitcher> {
   double width = 200;
 
   void _toggleEntry(show) {
-    if(_overlay.mounted && _entry != null){
-      if(show){
+    if (_overlay.mounted && _entry != null) {
+      if (show) {
         _overlay.insert(_entry);
         setState(() {
           _entryIsVisible = true;
         });
-      }
-      else{
+      } else {
         _entry.remove();
         setState(() {
           _entryIsVisible = false;
         });
       }
-    }
-    else {
+    } else {
       setState(() {
         _entryIsVisible = false;
       });
@@ -110,96 +115,207 @@ class _AppSwitcherState extends State<AppSwitcher> {
   }
 
   void _handleSwitch() {
-    if(widget.parentStream != null && _sub == null){
+    if (widget.parentStream != null && _sub == null) {
       _sub = widget.parentStream.listen(_handleStream);
     }
 
-    if(_overlay == null){
+    if (_overlay == null) {
       final RenderBox bounds = context.findRenderObject();
-      final Offset target = bounds.localToGlobal(bounds.size.bottomCenter(Offset.zero));
-      
-      _entry = new OverlayEntry(builder: (BuildContext context){
+      final Offset target =
+          bounds.localToGlobal(bounds.size.bottomCenter(Offset.zero));
+
+      _entry = new OverlayEntry(builder: (BuildContext context) {
         return new _CustomOverlay(
           target: target,
           width: width,
           child: new Material(
             color: Colors.transparent,
-            child: new ListView.builder(
-              padding: const EdgeInsets.all(0.0),
-              itemBuilder: (BuildContext context, int ndx) {
-                return new Container(
-                  color: (_listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue[200].withOpacity(0.2) : Colors.transparent,
-                  child: new ListTile(
-                    dense: true,
-                    title: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(right: 10.0,),
-                          child: Icon(
-                            _listItems[ndx]["id"] == widget.currentGroup["id"] ? Feather.check : Feather.plus,
-                            color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue : (_listItems[ndx]["id"] != widget.currentGroup["id"]) ? Colors.transparent : Colors.blueGrey[300],
-                            size: 20.0,
+            child: Column(
+              children: <Widget>[
+                Expanded(
+                  child: Container(
+                    decoration: new BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                      boxShadow:
+                          mildShadow(Theme.of(context).unselectedWidgetColor),
+                      // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
+                    ),
+                    child: ListView.builder(
+                      padding: const EdgeInsets.all(0.0),
+                      itemBuilder: (BuildContext context, int ndx) {
+                        return new Container(
+                          color: (_listItems[ndx]["id"] ==
+                                  widget.currentGroup["id"])
+                              ? Colors.blue[200].withOpacity(0.2)
+                              : Colors.transparent,
+                          child: new ListTile(
+                            dense: true,
+                            title: Row(
+                              children: <Widget>[
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                    right: 10.0,
+                                  ),
+                                  child: Icon(
+                                    _listItems[ndx]["id"] ==
+                                            widget.currentGroup["id"]
+                                        ? Feather.check
+                                        : Feather.plus,
+                                    color: (_listItems[ndx]["id"] == 0 ||
+                                            _listItems[ndx]["id"] ==
+                                                widget.currentGroup["id"])
+                                        ? Colors.blue
+                                        : (_listItems[ndx]["id"] !=
+                                                widget.currentGroup["id"])
+                                            ? Colors.transparent
+                                            : Colors.blueGrey[300],
+                                    size: 20.0,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Text(
+                                        _listItems[ndx]["title"]
+                                            .toString()
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                          color: (_listItems[ndx]["id"] == 0 ||
+                                                  _listItems[ndx]["id"] ==
+                                                      widget.currentGroup["id"])
+                                              ? Colors.blue
+                                              : Colors.blueGrey[
+                                                  400], //Theme.of(context).textSelectionHandleColor,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'SegoeUI',
+                                        ),
+                                        softWrap: false,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.fade,
+                                      ),
+                                      Text(
+                                        _listItems[ndx]["role"],
+                                        style: TextStyle(
+                                          color: (_listItems[ndx]["id"] == 0 ||
+                                                  _listItems[ndx]["id"] ==
+                                                      widget.currentGroup["id"])
+                                              ? Colors.blue.withOpacity(0.7)
+                                              : Colors.blueGrey[
+                                                  300], //Theme.of(context).indicatorColor,
+                                          fontSize: 12.0,
+                                          fontFamily: 'SegoeUI',
+//                                    fontWeight: FontWeight.w600,
+                                        ),
+                                        softWrap: false,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.fade,
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () {
+                              // print('Chose: ${_listItems[ndx]["title"]}');
+                              _handleSelection(_listItems[ndx]["id"]);
+                            },
                           ),
-                        ),
-                        Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        );
+                      },
+                      itemCount: _listItems.length,
+                    ),
+                  ),
+                ),
+                Container(
+                  color: null,
+                  decoration: BoxDecoration(
+                    boxShadow:
+                        mildShadow(Theme.of(context).unselectedWidgetColor),
+                    color: Theme.of(context).buttonColor,
+                    borderRadius: new BorderRadius.only(
+                      bottomRight: Radius.circular(20.0),
+                      bottomLeft: Radius.circular(20.0),
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: () {},
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              _listItems[ndx]["title"],//.toString().toUpperCase(),
+                              'Learn more about groups',
                               style: TextStyle(
-                                color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue : Colors.blueGrey[400],//Theme.of(context).textSelectionHandleColor,
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w800
+                                fontFamily: 'SegoeUI',
+                                fontWeight: FontWeight.w200,
+                                fontSize: 10.0,
+                                color: Colors.blue,
                               ),
-                              softWrap: false,
-                              maxLines: 1,
-                              overflow: TextOverflow.fade,
                             ),
-                            Text(
-                              _listItems[ndx]["role"],
-                              style: TextStyle(
-                                color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue.withOpacity(0.7) : Colors.blueGrey[300],//Theme.of(context).indicatorColor,
-                                fontSize: 12.0,
-                                fontWeight: FontWeight.w600
-                              ),
-                              softWrap: false,
-                              maxLines: 1,
-                              overflow: TextOverflow.fade,
-                            )
+                            Icon(
+                              Icons.chevron_right,
+                              size: 10.0,
+                              color: Colors.blue,
+                            ),
                           ],
                         ),
+                      ),
+                      SizedBox(
+                        width: 2.0,
+                      ),
+                      FlatButton(
+                        onPressed: () {},
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              'Pricing',
+                              style: TextStyle(
+                                fontFamily: 'SegoeUI',
+                                fontWeight: FontWeight.w200,
+                                fontSize: 10.0,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            Icon(
+                              Icons.chevron_right,
+                              size: 10.0,
+                              color: Colors.blue,
+                            ),
+                          ],
                         ),
-                      ],
-                    ), 
-                    onTap: () {
-                      // print('Chose: ${_listItems[ndx]["title"]}');
-                      _handleSelection(_listItems[ndx]["id"]);
-                    },
+                      ),
+                    ],
                   ),
-                );
-              },
-              itemCount: _listItems.length,
+                ),
+              ],
             ),
           ),
         );
       });
       _overlay = Overlay.of(context, debugRequiredFor: widget);
     }
-    
+
     setState(() {
       // Can be used if the listItems get updated
-      if(!_entryIsVisible && _listItems.length > 0){
+      if (!_entryIsVisible && _listItems.length > 0) {
         _toggleEntry(true);
-      }else if(_entryIsVisible && _listItems.length == 0){
+      } else if (_entryIsVisible && _listItems.length == 0) {
         _toggleEntry(false);
-      }else{
+      } else {
         _entry.markNeedsBuild();
       }
     });
   }
 
-  Widget groupSwitcherButton({BuildContext context, String title, String role}) {
+  Widget groupSwitcherButton(
+      {BuildContext context, String title, String role}) {
     return FlatButton(
       padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
       child: Column(
@@ -212,31 +328,33 @@ class _AppSwitcherState extends State<AppSwitcher> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     Text(
-                      title,
+                      title.toUpperCase(),
                       style: TextStyle(
                         color: Colors.blueGrey[400],
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w600,
                         fontSize: 16.0,
+                        fontFamily: 'SegoeUI',
                       ),
                       maxLines: 1,
-                      overflow: TextOverflow.fade,
+                      overflow: TextOverflow.ellipsis,
                       softWrap: false,
                       textAlign: TextAlign.end,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        // Icon(
-                        //   Icons.person,
-                        //   size: 12.0,
-                        // ),
-                        // SizedBox(width: 4.0),
+                        Icon(
+                          Icons.beenhere,
+                          size: 12.0,
+                        ),
+                        SizedBox(width: 4.0),
                         Text(
-                          role,
+                          role.toUpperCase(),
                           style: TextStyle(
                             color: Colors.blue,
-                            fontWeight: FontWeight.w900,
-                            fontSize: 14.0,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 11.0,
+                            fontFamily: 'SegoeUI',
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.fade,
@@ -253,7 +371,12 @@ class _AppSwitcherState extends State<AppSwitcher> {
                 width: 32.0,
                 margin: EdgeInsets.only(left: 5.0),
                 decoration: BoxDecoration(
-                  borderRadius: _entryIsVisible ? BorderRadius.only(topRight: Radius.circular(20.0), topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)) : BorderRadius.circular(40.0),
+                  borderRadius: _entryIsVisible
+                      ? BorderRadius.only(
+                          topRight: Radius.circular(20.0),
+                          topLeft: Radius.circular(20.0),
+                          bottomLeft: Radius.circular(20.0))
+                      : BorderRadius.circular(40.0),
                   color: Theme.of(context).hintColor.withOpacity(0.4),
                 ),
                 child: Icon(
@@ -278,20 +401,26 @@ class _AppSwitcherState extends State<AppSwitcher> {
         });
         _entryIsVisible ? _exitSwitcher() : _handleSwitch();
       },
-      shape: _entryIsVisible ? new RoundedRectangleBorder(borderRadius: new BorderRadius.only(topRight: Radius.circular(19.0), topLeft: Radius.circular(20.0),)) :  new RoundedRectangleBorder(borderRadius: new BorderRadius.all(Radius.circular(30.0))),
+      shape: _entryIsVisible
+          ? new RoundedRectangleBorder(
+              borderRadius: new BorderRadius.only(
+              topRight: Radius.circular(19.0),
+              topLeft: Radius.circular(20.0),
+            ))
+          : new RoundedRectangleBorder(
+              borderRadius: new BorderRadius.all(Radius.circular(30.0))),
       textColor: Colors.blue,
       color: Theme.of(context).buttonColor,
     );
   }
 
-  void _exitSwitcher(){
-    if(_sub != null){
+  void _exitSwitcher() {
+    if (_sub != null) {
       _sub.cancel();
       _sub = null;
       // print('Removed stream listener');
     }
     _toggleEntry(false);
-
   }
 
   void _handleSelection(selectedOption) {
@@ -301,7 +430,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
 
   void _handleStream(ev) {
     // print('Input Stream : $ev');
-    switch(ev){
+    switch (ev) {
       case 'TAP':
         _exitSwitcher();
         break;
@@ -319,9 +448,9 @@ class _AppSwitcherState extends State<AppSwitcher> {
 
   @override
   void dispose() {
-    if(mounted){
-      if(_sub != null) _sub.cancel();
-      if(_entryIsVisible){
+    if (mounted) {
+      if (_sub != null) _sub.cancel();
+      if (_entryIsVisible) {
         _entry.remove();
         _entryIsVisible = false;
       }
@@ -352,7 +481,7 @@ class AppSwitcher extends StatefulWidget {
     this.parentStream,
     this.currentGroup,
     this.selectedOption,
-  }): super(key: key);
+  }) : super(key: key);
 
   @override
   State createState() => new _AppSwitcherState();

@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
@@ -26,7 +27,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   ];
   Stream get _stream => _eventDispatcher.stream;
 
-  final GlobalKey<ScaffoldState> dashboardScaffoldKey = new GlobalKey<ScaffoldState>();
+  final GlobalKey<ScaffoldState> dashboardScaffoldKey =
+      new GlobalKey<ScaffoldState>();
   int _currentPage;
   double _appBarElevation = 0;
   int _selectedGroupIndex = 3;
@@ -41,13 +43,17 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   }
 
   _handleSelectedOption(int option) {
-    if(option == 0) {
+    if (option == 0) {
       // CREATE NEW Selected, handle it!
-      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => CreateGroup(),),);
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => CreateGroup(),
+        ),
+      );
     } else {
       // Group Selected, handle it!
-      _overlayItems.asMap().forEach((index, value){
-        if(value["id"] == option) {
+      _overlayItems.asMap().forEach((index, value) {
+        if (value["id"] == option) {
           setState(() {
             _selectedGroupIndex = index;
           });
@@ -60,7 +66,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   void initState() {
     _currentPage = 0;
-    _overlayItems.insert(0, {"id": 0, "title": "Create New", "role": "Group, Merry-go-round, fundraiser"});
+    _overlayItems.insert(0, {
+      "id": 0,
+      "title": "Create New",
+      "role": "Group, Merry-go-round, fundraiser"
+    });
     super.initState();
   }
 
@@ -120,7 +130,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[900] //.withOpacity(0.95)
-              : Colors.blue[50],//.withOpacity(0.89),
+              : Colors.blue[50], //.withOpacity(0.89),
           elevation: 0,
           currentIndex: _currentPage,
           type: BottomNavigationBarType.fixed,
@@ -133,7 +143,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               title: Text(
                 "Home",
                 style: TextStyle(
-                    color: _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
+                    color:
+                        _currentPage == 0 ? Colors.blue : Colors.blueGrey[300],
+                    fontFamily: 'SegoeUI',
                     fontWeight: FontWeight.w700),
               ),
             ),
@@ -145,8 +157,10 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 title: Text(
                   "My Group",
                   style: TextStyle(
-                      color:
-                          _currentPage == 1 ? Colors.blue : Colors.blueGrey[300],
+                      color: _currentPage == 1
+                          ? Colors.blue
+                          : Colors.blueGrey[300],
+                      fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
             BottomNavigationBarItem(
@@ -157,8 +171,10 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 title: Text(
                   "Transactions",
                   style: TextStyle(
-                      color:
-                          _currentPage == 2 ? Colors.blue : Colors.blueGrey[300],
+                      color: _currentPage == 2
+                          ? Colors.blue
+                          : Colors.blueGrey[300],
+                      fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
             BottomNavigationBarItem(
@@ -169,8 +185,10 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 title: Text(
                   "Reports",
                   style: TextStyle(
-                      color:
-                          _currentPage == 3 ? Colors.blue : Colors.blueGrey[300],
+                      color: _currentPage == 3
+                          ? Colors.blue
+                          : Colors.blueGrey[300],
+                      fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
           ],

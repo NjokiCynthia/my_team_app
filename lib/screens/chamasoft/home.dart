@@ -57,8 +57,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           "Total Balances",
                           style: TextStyle(
                             color: Colors.blueGrey[400],
+                            fontFamily: 'SegoeUI',
                             fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -77,7 +78,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 .textSelectionHandleColor
                                 .withOpacity(0.8),
                             fontSize: 18.0,
-                            fontWeight: FontWeight.w800,
+                            fontFamily: 'SegoeUI',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
@@ -101,8 +103,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           "Fines",
                           style: TextStyle(
                             color: Colors.red[400],
+                            fontFamily: 'SegoeUI',
                             fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
@@ -129,7 +132,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 .textSelectionHandleColor
                                 .withOpacity(0.8),
                             fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
+                            fontFamily: 'SegoeUI',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
@@ -156,7 +160,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 .textSelectionHandleColor
                                 .withOpacity(0.8),
                             fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
+                            fontFamily: 'SegoeUI',
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         SizedBox(
@@ -183,8 +188,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     "Contribution Summary",
                     style: TextStyle(
                       color: Colors.blueGrey[400],
+                      fontFamily: 'SegoeUI',
                       fontSize: 16.0,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   IconButton(
