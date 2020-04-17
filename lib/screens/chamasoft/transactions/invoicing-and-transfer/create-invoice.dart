@@ -78,7 +78,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
       yield Padding(
         padding: const EdgeInsets.all(4.0),
         child: Chip(
-          avatar: CircleAvatar(child: Text(member.initials)),
+//          avatar: CircleAvatar(child: Text(member.initials)),
           label: Text(member.name),
           onDeleted: () {
             setState(() {

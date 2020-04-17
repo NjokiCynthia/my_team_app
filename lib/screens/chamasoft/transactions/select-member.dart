@@ -3,7 +3,6 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
 final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
   const MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025'),
@@ -69,25 +68,27 @@ class SelectMemberState extends State<SelectMember> {
           if (selectedMembersList.length > 0) {
             Navigator.pop(context, selectedMembersList);
           } else {
-            Alert(
+            showDialog(
               context: context,
-              style: AlertStyle(
-                backgroundColor: Colors.white,
-              ),
-              type: AlertType.error,
-              title: "ERROR",
-              desc: "Please select members",
-              buttons: [
-                DialogButton(
-                  child: Text(
-                    "Close",
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                  onPressed: () => Navigator.pop(context),
-                  width: 120,
-                )
-              ],
-            ).show();
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  backgroundColor: Theme.of(context).backgroundColor,
+                  title: new Text("Please select a member"),
+                  actions: <Widget>[
+                    new FlatButton(
+                      child: new Text(
+                        "OK",
+                        style: TextStyle(
+                            color: Colors.blue),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
           }
         },
       ),

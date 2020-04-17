@@ -21,7 +21,6 @@ dependencies:
   md2_tab_indicator: ^1.0.2
   shared_preferences: ^0.5.6+1
   intl: ^0.16.1
-  rflutter_alert: ^1.0.3
 
 dev_dependencies:
   flutter_test:
@@ -38,3 +37,34 @@ flutter:
 
   assets:
    - assets/
+  fonts:
+    - family: SegoeUI
+      fonts:
+        - asset: assets/fonts/segoeui.ttf
+        - asset: assets/fonts/segoeuii.ttf
+          style: italic
+        - asset: assets/fonts/segoeuib.ttf
+          weight: 700
+        - asset: assets/fonts/segoeuiz.ttf
+          weight: 700
+          style: italic
+        - asset: assets/fonts/segoeuil.ttf
+          weight: 200
+        - asset: assets/fonts/seguili.ttf
+          weight: 200
+          style: italic
+        - asset: assets/fonts/segoeuisl.ttf
+          weight: 300
+        - asset: assets/fonts/seguisli.ttf
+          weight: 300
+          style: italic
+        - asset: assets/fonts/seguisb.ttf
+          weight: 600
+        - asset: assets/fonts/seguisbi.ttf
+          weight: 600
+          style: italic
+        - asset: assets/fonts/seguibl.ttf
+          weight: 900
+        - asset: assets/fonts/seguibli.ttf
+          weight: 900
+          style: italic
