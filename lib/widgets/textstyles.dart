@@ -86,7 +86,9 @@ Widget textWithExternalLinks(
                 text: text.trim() + ' ',
                 recognizer: TapGestureRecognizer()..onTap = options['url'],
                 style: TextStyle(
-                    color: options['color'], fontWeight: options['weight']))
+                    decoration: TextDecoration.underline,
+                    color: options['color'],
+                    fontWeight: options['weight']))
             : TextSpan(
                 text: text.trim() + ' ',
               ),
@@ -335,7 +337,7 @@ Widget toolTip(
   return Visibility(
     visible: visible,
     child: Container(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
         color: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[800]
             : Color(0xffededfe),

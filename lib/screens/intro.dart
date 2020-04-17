@@ -3,8 +3,6 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
-import 'chamasoft/dashboard.dart';
-
 class IntroScreen extends StatefulWidget {
   IntroScreen({Key key}) : super(key: key);
 
@@ -21,8 +19,8 @@ class IntroScreenState extends State<IntroScreen> {
 
     (await getPreference("isFirstTime") != '')
         ? Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => ChamasoftDashboard()))
+            .pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) => Login()))
             .whenComplete(() {
             _loading = false;
           })

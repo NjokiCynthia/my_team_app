@@ -86,7 +86,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                 message: "Manually record contribution payments",
                 showTitle: false),
             Container(
-                padding: EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(SPACING_NORMAL),
                 height: MediaQuery.of(context).size.height,
                 width: double.infinity,
                 color: Theme.of(context).backgroundColor,
@@ -121,7 +121,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
                                   color: Theme.of(context).hintColor,
-                                  width: 2.0,
+                                  width: 1.0,
                                 ),
                               ),
                             ),
@@ -220,7 +220,7 @@ class _DropDownTextFieldState extends State<DropDownTextField> {
                         : widget.hintText,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Theme.of(context).hintColor, width: 2.0))),
+                            color: Theme.of(context).hintColor, width: 1.0))),
                 isEmpty: widget.selectedValue == null,
                 child: new Theme(
                   data: Theme.of(context).copyWith(
