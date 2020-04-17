@@ -1,3 +1,4 @@
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ Widget primaryPageAppBar({String title}) {
       Padding(
         padding: EdgeInsets.only(top: 15.0, right: 12.0),
         child: IconButton(
-          icon: Icon(LineAwesomeIcons.close, color: Colors.blue),
+          icon: Icon(LineAwesomeIcons.close, color: primaryColor),
           iconSize: 22.0,
           onPressed: () {},
         ),
@@ -50,12 +51,12 @@ Widget secondaryPageAppbar(
       children: <Widget>[
         screenActionButton(
           icon: leadingIcon,
-          backgroundColor: Colors.blue.withOpacity(0.1),
-          textColor: Colors.blue,
+          backgroundColor: primaryColor.withOpacity(0.1),
+          textColor: primaryColor,
           action: action,
         ),
         SizedBox(width: 20.0),
-        heading2(color: Colors.blue, text: title),
+        heading2(color: primaryColor, text: title),
       ],
     ),
     elevation: elevation,
@@ -81,15 +82,15 @@ Widget tertiaryPageAppbar(
       children: <Widget>[
         screenActionButton(
           icon: leadingIcon,
-          backgroundColor: Colors.blue.withOpacity(0.1),
-          textColor: Colors.blue,
+          backgroundColor: primaryColor.withOpacity(0.1),
+          textColor: primaryColor,
           action: action,
         ),
-        heading2(color: Colors.blue, text: title),
+        heading2(color: primaryColor, text: title),
         screenActionButton(
           icon: trailingIcon,
-          backgroundColor: Colors.blue.withOpacity(0.1),
-          textColor: Colors.blue,
+          backgroundColor: primaryColor.withOpacity(0.1),
+          textColor: primaryColor,
           action: trailingAction,
         ),
       ],

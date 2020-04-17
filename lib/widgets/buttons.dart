@@ -1,3 +1,4 @@
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 Widget defaultButton({BuildContext context, String text, Function onPressed}) {
   return RaisedButton(
-    color: Colors.blue,
+    color: primaryColor,
     child: Padding(
       padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       child: Text(text),
@@ -405,7 +406,7 @@ Widget gridButton(
             ),
           ]),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      highlightColor: Colors.blue.withOpacity(0.1),
+      highlightColor: primaryColor.withOpacity(0.1),
       onPressed: action,
     ),
   );

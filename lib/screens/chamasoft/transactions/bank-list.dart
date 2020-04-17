@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/bank.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class _BankListState extends State<BankList> {
             new FlatButton(
               child: new Text(
                 "Proceed",
-                style: new TextStyle(color: Colors.blue),
+                style: new TextStyle(color: primaryColor),
               ),
               onPressed: () {},
             ),

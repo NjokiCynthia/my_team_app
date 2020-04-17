@@ -28,17 +28,29 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Logout"),
-          content: new Text("Are you sure you want to log out? You'll have to login again to continue."),
+          content: new Text(
+              "Are you sure you want to log out? You'll have to login again to continue."),
           actions: <Widget>[
             new FlatButton(
-              child: new Text("Cancel", style: TextStyle(color: Theme.of(context).textSelectionHandleColor),),
+              child: new Text(
+                "Cancel",
+                style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             new FlatButton(
-              child: new Text("Logout",style: new TextStyle(color: Colors.red),),
-              onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login(),),),
+              child: new Text(
+                "Logout",
+                style: new TextStyle(color: Colors.red),
+              ),
+              onPressed: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => Login(),
+                ),
+              ),
             ),
           ],
         );
@@ -68,7 +80,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
     _scrollController?.dispose();
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
@@ -103,17 +115,24 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      heading2(text: "Edwin Kapkei", color: Theme.of(context).textSelectionHandleColor),
-                      subtitle2(text: "+254 701 234 567", color: Theme.of(context).textSelectionHandleColor),
+                      heading2(
+                          text: "Edwin Kapkei",
+                          color: Theme.of(context).textSelectionHandleColor),
+                      subtitle2(
+                          text: "+254 701 234 567",
+                          color: Theme.of(context).textSelectionHandleColor),
                       Padding(
-                        padding: EdgeInsets.only(top: 10.0,),
+                        padding: EdgeInsets.only(
+                          top: 10.0,
+                        ),
                         child: smallBadgeButton(
                           text: "Update Profile",
-                          backgroundColor: Colors.blue,
+                          backgroundColor: primaryColor,
                           textColor: Colors.white,
                           buttonHeight: 30.0,
                           textSize: 12.0,
-                          action: (){},),
+                          action: () {},
+                        ),
                       ),
                     ],
                   ),
@@ -121,8 +140,16 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               ],
             ),
             ListTile(
-              title: Text("Group Settings", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16.0, color: Theme.of(context).textSelectionHandleColor,)),
-              subtitle: Text("Witcher Welfare Association", style: TextStyle(color: Theme.of(context).bottomAppBarColor),),
+              title: Text("Group Settings",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16.0,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  )),
+              subtitle: Text(
+                "Witcher Welfare Association",
+                style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+              ),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                 child: Icon(
@@ -133,18 +160,28 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               dense: true,
               onTap: () {},
             ),
-            
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: heading2(text: "Preferences", color: Colors.blueGrey,),
+                child: heading2(
+                  text: "Preferences",
+                  color: Colors.blueGrey,
+                ),
               ),
             ),
             SwitchListTile(
-              title: Text("Push Notifications", style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),),
-              subtitle: Text(pushNotifications ? "Enabled":"Disabled", style: TextStyle(color: Theme.of(context).bottomAppBarColor),),
-              value: pushNotifications ? true:false,
+              title: Text(
+                "Push Notifications",
+                style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor,
+                    fontWeight: FontWeight.w500),
+              ),
+              subtitle: Text(
+                pushNotifications ? "Enabled" : "Disabled",
+                style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+              ),
+              value: pushNotifications ? true : false,
               onChanged: (bool value) {
                 setState(() {
                   pushNotifications = value;
@@ -154,8 +191,18 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
             PopupMenuButton(
               child: ListTile(
                 dense: true,
-                title: Text("Language", style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500, fontSize: 16.0,),),
-                subtitle: Text(language, style: TextStyle(color: Theme.of(context).bottomAppBarColor),),
+                title: Text(
+                  "Language",
+                  style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16.0,
+                  ),
+                ),
+                subtitle: Text(
+                  language,
+                  style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+                ),
                 trailing: Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                   child: Icon(
@@ -164,7 +211,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   ),
                 ),
               ),
-              onSelected: (value){
+              onSelected: (value) {
                 setState(() {
                   language = value;
                 });
@@ -173,30 +220,44 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               offset: Offset.fromDirection(1.0),
               itemBuilder: (context) => [
                 PopupMenuItem(
-                  value: "English",
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text("English", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
-                    ],
-                  )
-                ),
+                    value: "English",
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text("English",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).indicatorColor)),
+                      ],
+                    )),
                 PopupMenuItem(
-                  value: "Swahili",
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Swahili", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
-                    ],
-                  )
-                ),
+                    value: "Swahili",
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        Text("Swahili",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).indicatorColor)),
+                      ],
+                    )),
               ],
             ),
             PopupMenuButton(
               child: ListTile(
                 dense: true,
-                title: Text("Theme", style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500, fontSize: 16.0,),),
-                subtitle: Text(theme, style: TextStyle(color: Theme.of(context).bottomAppBarColor),),
+                title: Text(
+                  "Theme",
+                  style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16.0,
+                  ),
+                ),
+                subtitle: Text(
+                  theme,
+                  style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+                ),
                 trailing: Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                   child: Icon(
@@ -205,53 +266,66 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   ),
                 ),
               ),
-              onSelected: (value){
+              onSelected: (value) {
                 setState(() {
                   theme = value;
-                  (theme == "Dark") ? themeChange.darkTheme = true : themeChange.darkTheme = false;
+                  (theme == "Dark")
+                      ? themeChange.darkTheme = true
+                      : themeChange.darkTheme = false;
                 });
               },
               tooltip: "Change theme",
               offset: Offset.fromDirection(1.0),
               itemBuilder: (context) => [
                 PopupMenuItem(
-                  value: "Light",
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      // Icon(MaterialCommunityIcons.weather_sunny, color: Theme.of(context).indicatorColor),
-                      // Padding(
-                      //   padding: EdgeInsets.only(left: 10.0)
-                      // ),
-                      Text("Light", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
-                    ],
-                  )
-                ),
+                    value: "Light",
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        // Icon(MaterialCommunityIcons.weather_sunny, color: Theme.of(context).indicatorColor),
+                        // Padding(
+                        //   padding: EdgeInsets.only(left: 10.0)
+                        // ),
+                        Text("Light",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).indicatorColor)),
+                      ],
+                    )),
                 PopupMenuItem(
-                  value: "Dark",
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      // Icon(MaterialCommunityIcons.weather_night, color: Theme.of(context).indicatorColor),
-                      // Padding(
-                      //   padding: EdgeInsets.only(left: 10.0)
-                      // ),
-                      Text("Dark", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
-                    ],
-                  )
-                ),
+                    value: "Dark",
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        // Icon(MaterialCommunityIcons.weather_night, color: Theme.of(context).indicatorColor),
+                        // Padding(
+                        //   padding: EdgeInsets.only(left: 10.0)
+                        // ),
+                        Text("Dark",
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).indicatorColor)),
+                      ],
+                    )),
               ],
             ),
-
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: heading2(text: "Help & Assistance", color: Colors.blueGrey,),
+                child: heading2(
+                  text: "Help & Assistance",
+                  color: Colors.blueGrey,
+                ),
               ),
             ),
             ListTile(
-              title: Text("Documentation & FAQ", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).textSelectionHandleColor,)),
+              title: Text("Documentation & FAQ",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                 child: Icon(
@@ -263,7 +337,12 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               onTap: () => launchURL("https://help.chamasoft.com/"),
             ),
             ListTile(
-              title: Text("Chat Support", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).textSelectionHandleColor,)),
+              title: Text("Chat Support",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                 child: Icon(
@@ -275,7 +354,12 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               onTap: () {},
             ),
             ListTile(
-              title: Text("Call Support", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).textSelectionHandleColor,)),
+              title: Text("Call Support",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                 child: Icon(
@@ -286,16 +370,23 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               dense: true,
               onTap: () {},
             ),
-
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
               child: Align(
                 alignment: Alignment.centerLeft,
-                child: heading2(text: "About & Terms", color: Colors.blueGrey,),
+                child: heading2(
+                  text: "About & Terms",
+                  color: Colors.blueGrey,
+                ),
               ),
             ),
             ListTile(
-              title: Text("About Chamasoft", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).textSelectionHandleColor,)),
+              title: Text("About Chamasoft",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                 child: Icon(
@@ -304,10 +395,16 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => launchURL("https://chamasoft.com/company/about-chamasoft"),
+              onTap: () =>
+                  launchURL("https://chamasoft.com/company/about-chamasoft"),
             ),
             ListTile(
-              title: Text("Terms & Conditions", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).textSelectionHandleColor,)),
+              title: Text("Terms & Conditions",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                 child: Icon(
@@ -316,10 +413,16 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => launchURL("https://chamasoft.com/terms-and-conditions"),
+              onTap: () =>
+                  launchURL("https://chamasoft.com/terms-and-conditions"),
             ),
             ListTile(
-              title: Text("E-Wallet Charges", style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16, color: Theme.of(context).textSelectionHandleColor,)),
+              title: Text("E-Wallet Charges",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  )),
               trailing: Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
                 child: Icon(
@@ -330,9 +433,10 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               dense: true,
               onTap: () => launchURL("https://chamasoft.com/"),
             ),
-
             Padding(
-              padding: EdgeInsets.only(top: 20.0,),
+              padding: EdgeInsets.only(
+                top: 20.0,
+              ),
               child: Align(
                 alignment: Alignment.center,
                 child: smallBadgeButton(
@@ -345,7 +449,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
             ),
-
           ],
         ),
       ),

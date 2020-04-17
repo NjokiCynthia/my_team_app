@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -90,14 +91,14 @@ class _LoginState extends State<Login> {
                     'terms & conditions': {
                       "url": () => launchURL(
                           'https://chamasoft.com/terms-and-conditions/'),
-                      "color": Colors.blue,
+                      "color": primaryColor,
                       "weight": FontWeight.w500
                     },
                     'and': {},
                     'privacy policy.': {
                       "url": () => launchURL(
                           'https://chamasoft.com/terms-and-conditions/'),
-                      "color": Colors.blue,
+                      "color": primaryColor,
                       "weight": FontWeight.w500
                     },
                   }),

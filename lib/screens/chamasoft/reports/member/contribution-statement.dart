@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -260,7 +261,7 @@ class FilterActionButton extends StatelessWidget {
                           ],
                         ),
                         RaisedButton(
-                          color: Colors.blue,
+                          color: primaryColor,
                           child: Padding(
                             padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                             child: Text("Apply Filter"),
@@ -289,14 +290,14 @@ class FilterButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return new OutlineButton(
         child:
-            subtitle1(text: text, color: Colors.blue, align: TextAlign.center),
+            subtitle1(text: text, color: primaryColor, align: TextAlign.center),
         onPressed: null,
-        color: Colors.blue,
-        highlightedBorderColor: Colors.blue.withOpacity(0.5),
-        disabledBorderColor: Colors.blue.withOpacity(0.5),
+        color: primaryColor,
+        highlightedBorderColor: primaryColor.withOpacity(0.5),
+        disabledBorderColor: primaryColor.withOpacity(0.5),
         borderSide: BorderSide(
           width: 2.0,
-          color: Colors.blue.withOpacity(0.5),
+          color: primaryColor.withOpacity(0.5),
         ),
         shape: new RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(5.0)));

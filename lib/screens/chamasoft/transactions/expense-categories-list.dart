@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-option.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -88,7 +89,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
             new FlatButton(
               child: new Text(
                 "Proceed",
-                style: new TextStyle(color: Colors.blue),
+                style: new TextStyle(color: primaryColor),
               ),
               onPressed: () {
                 Navigator.of(context)

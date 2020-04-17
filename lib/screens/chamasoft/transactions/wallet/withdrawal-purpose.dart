@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/transactions/expense-categories-list.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -24,12 +25,12 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
               children: <Widget>[
                 screenActionButton(
                   icon: LineAwesomeIcons.arrow_left,
-                  backgroundColor: Colors.blue.withOpacity(0.1),
-                  textColor: Colors.blue,
+                  backgroundColor: primaryColor.withOpacity(0.1),
+                  textColor: primaryColor,
                   action: () => Navigator.of(context).pop(),
                 ),
                 SizedBox(width: 20.0),
-                heading2(color: Colors.blue, text: "Purpose of Withdrawal"),
+                heading2(color: primaryColor, text: "Purpose of Withdrawal"),
               ],
             ),
           ],
@@ -99,13 +100,13 @@ class GridItem extends StatelessWidget {
               Icon(
                 icon,
                 size: 35.0,
-                color: Colors.blue,
+                color: primaryColor,
               ),
               SizedBox(
                 height: 15.0,
               ),
               subtitle2(
-                  text: title, color: Colors.blue, align: TextAlign.center),
+                  text: title, color: primaryColor, align: TextAlign.center),
             ],
           ),
         ),

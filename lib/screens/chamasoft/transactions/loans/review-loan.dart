@@ -1,6 +1,7 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -99,7 +100,7 @@ class ReviewLoanState extends State<ReviewLoan> {
             new FlatButton(
               child: new Text(
                 "Save",
-                style: new TextStyle(color: Colors.blue),
+                style: new TextStyle(color: primaryColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -178,7 +179,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                         "Applied By ${widget.loanApplication.borrowerName}",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
-                                          color: Colors.blue,
+                                          color: primaryColor,
                                           fontSize: 12.0,
                                           fontWeight: FontWeight.w800,
                                         ),
@@ -349,7 +350,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                         padding: EdgeInsets.all(12.0),
                         child: Text(
                           'APPROVE',
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(color: primaryColor),
                         ),
                       ),
                     ),
@@ -452,7 +453,7 @@ class LoanSignatoryCard extends StatelessWidget {
               text:
                   "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
               textColor: approvalStatus == 2
-                  ? Colors.blue
+                  ? primaryColor
                   : Theme.of(context).textSelectionHandleColor,
               backgroundColor: Theme.of(context).hintColor.withOpacity(0.1)),
         ],

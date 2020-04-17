@@ -1,6 +1,7 @@
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -119,7 +120,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                             "31 Members",
                             textAlign: TextAlign.start,
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: primaryColor,
                               fontSize: 12.0,
                               fontWeight: FontWeight.w800,
                             ),

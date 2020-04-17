@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -68,11 +69,11 @@ class _VerificationState extends State<Verification> {
                     child: PinInputTextField(
                       pinLength: 4,
                       decoration: UnderlineDecoration(
-                        enteredColor: Colors.blue,
+                        enteredColor: primaryColor,
                         color: Theme.of(context).textSelectionHandleColor,
                         lineHeight: 2.0,
                         textStyle: TextStyle(
-                          color: Colors.blue,
+                          color: primaryColor,
                           fontSize: 20.0,
                           fontWeight: FontWeight.w800,
                         ),
@@ -115,7 +116,7 @@ class _VerificationState extends State<Verification> {
                         "Didn't receive verification code?": {},
                         'Resend': {
                           "url": () => print("Resending now..."),
-                          "color": Colors.blue,
+                          "color": primaryColor,
                           "weight": FontWeight.w700
                         },
                       }),
@@ -128,8 +129,8 @@ class _VerificationState extends State<Verification> {
             left: 20.0,
             child: screenActionButton(
               icon: LineAwesomeIcons.arrow_left,
-              backgroundColor: Colors.blue.withOpacity(0.2),
-              textColor: Colors.blue,
+              backgroundColor: primaryColor.withOpacity(0.2),
+              textColor: primaryColor,
               action: () => Navigator.of(context).pop(),
             ),
           )

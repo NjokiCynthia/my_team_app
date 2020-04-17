@@ -1,11 +1,13 @@
 import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+
 import '../../dashboard.dart';
 
 class ApplyLoan extends StatefulWidget {
@@ -149,7 +151,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                                         LoanAmortization(),
                                   ),
                                 ),
-                            "color": Colors.blue,
+                            "color": primaryColor,
                             "weight": FontWeight.w500
                           },
                         }),
