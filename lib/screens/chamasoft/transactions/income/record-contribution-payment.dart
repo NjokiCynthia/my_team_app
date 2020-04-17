@@ -1,9 +1,9 @@
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class RecordContributionPayment extends StatefulWidget {
@@ -111,7 +111,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 selectDateController.text = _selectedDate ==
                                         null
                                     ? ""
-                                    : DateFormat.yMMMMd().format(_selectedDate);
+                                    : defaultDateFormat.format(_selectedDate);
                               });
                             }),
                             readOnly: true,

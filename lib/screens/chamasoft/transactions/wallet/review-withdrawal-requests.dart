@@ -5,7 +5,6 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class ReviewWithdrawalRequests extends StatefulWidget {
@@ -166,8 +165,8 @@ class WithdrawalRequestCard extends StatelessWidget {
                               color: Theme.of(context).textSelectionHandleColor,
                               align: TextAlign.end),
                           subtitle1(
-                              text: DateFormat.yMMMMd()
-                                  .format(request.requestDate),
+                              text:
+                                  defaultDateFormat.format(request.requestDate),
                               color: Theme.of(context).textSelectionHandleColor,
                               align: TextAlign.end),
                         ],

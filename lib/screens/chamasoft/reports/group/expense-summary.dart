@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
@@ -7,12 +6,12 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-class ContributionSummary extends StatefulWidget {
+class ExpenseSummary extends StatefulWidget {
   @override
-  _ContributionSummaryState createState() => _ContributionSummaryState();
+  _ExpenseSummaryState createState() => _ExpenseSummaryState();
 }
 
-class _ContributionSummaryState extends State<ContributionSummary> {
+class _ExpenseSummaryState extends State<ExpenseSummary> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -41,53 +40,32 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   Widget build(BuildContext context) {
-    final summaryFlag = ModalRoute.of(context).settings.arguments;
-    String appbarTitle = "Contribution Summary";
-    String defaultTitle = "Contributions";
-
-    if (summaryFlag == FINE_STATEMENT) {
-      appbarTitle = "Fine Summary";
-      defaultTitle = "Fines";
-    }
     final List<SummaryRow> list = [
+      SummaryRow(id: 1, name: "Audit Fees", paid: 1000),
       SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
+        id: 1,
+        name: "Tax Man Edits",
+        paid: 1000,
+      ),
       SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
+        id: 1,
+        name: "Annual Subscription",
+        paid: 1000,
+      ),
       SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
+        id: 1,
+        name: "Benovelent Support",
+        paid: 1000,
+      ),
     ];
     return Scaffold(
       appBar: secondaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context).pop(),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          title: appbarTitle,
-          actions: summaryFlag == CONTRIBUTION_STATEMENT
-              ? [
-                  FilterActionButton(
-                    icon: LineAwesomeIcons.filter,
-                    textColor: Colors.blueGrey,
-                  ),
-                ]
-              : null),
+        context: context,
+        action: () => Navigator.of(context).pop(),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: "Expense Summary",
+      ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
@@ -112,17 +90,13 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           heading2(
-                            text: "Total " + defaultTitle,
+                            text: "Total Expenses",
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
-                          Text(
-                            "31 Members",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: Colors.blue,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          subtitle2(
+                            text: "41 Expenses",
+                            color: Theme.of(context).textSelectionHandleColor,
+                            align: TextAlign.start,
                           ),
                         ],
                       ),
@@ -135,29 +109,14 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                           fontSize: 18.0,
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
-                        customTitle(
+                        heading2(
                           text: currencyFormat.format(2000000),
                           color: Theme.of(context).textSelectionHandleColor,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w800,
                           align: TextAlign.end,
                         ),
                       ],
                     ),
                   ],
-                ),
-                SizedBox(
-                  height: 8.0,
-                ),
-                subtitle2(
-                  text: "Statement Period",
-                  color: Theme.of(context).textSelectionHandleColor,
-                  align: TextAlign.start,
-                ),
-                subtitle1(
-                  text: "12 October 2019 to 20 February 2021",
-                  color: Theme.of(context).textSelectionHandleColor,
-                  align: TextAlign.start,
                 ),
               ],
             ),
@@ -168,23 +127,12 @@ class _ContributionSummaryState extends State<ContributionSummary> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Expanded(
-                  flex: 2,
                   child: Container(),
                 ),
-                Expanded(
-                  flex: 1,
-                  child: subtitle1(
-                      text: "Paid",
-                      color: Theme.of(context).primaryColor,
-                      align: TextAlign.end),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: subtitle1(
-                      text: "Balance",
-                      color: Theme.of(context).primaryColor,
-                      align: TextAlign.end),
-                ),
+                subtitle1(
+                    text: "Paid",
+                    color: Theme.of(context).primaryColor,
+                    align: TextAlign.end),
               ],
             ),
           ),
@@ -194,7 +142,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 SummaryRow row = list[index];
-                return ContributionSummaryBody(
+                return ExpenseBody(
                   row: row,
                   position: index % 2 == 0,
                 );

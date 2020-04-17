@@ -1,11 +1,11 @@
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
+import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 
 class RecordFinePayment extends StatefulWidget {
   @override
@@ -13,7 +13,6 @@ class RecordFinePayment extends StatefulWidget {
 }
 
 class _RecordFinePaymentState extends State<RecordFinePayment> {
-
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -39,6 +38,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     _scrollController?.dispose();
     super.dispose();
   }
+
   static final List<String> depositType = <String>[
     'Cash',
     'Mobile Money',
@@ -61,7 +61,10 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     'Individual Members',
   ];
 
-  String selectedFineValue,selectedDepositValue,selectedAccountValue,selectedMemberValue;
+  String selectedFineValue,
+      selectedDepositValue,
+      selectedAccountValue,
+      selectedMemberValue;
   DateTime _selectedDate;
   var selectDateController = TextEditingController();
   var amountInputValue = TextEditingController();
@@ -86,104 +89,102 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                 title: "Note that...",
                 message: "Manually record fine payments",
                 showTitle: false),
-                Container(
-                  padding: EdgeInsets.all(20.0),
-                  height: MediaQuery.of(context).size.height,
-                  width: double.infinity,
-                  color: Theme.of(context).backgroundColor,
-                  child: Column(
+            Container(
+              padding: EdgeInsets.all(20.0),
+              height: MediaQuery.of(context).size.height,
+              width: double.infinity,
+              color: Theme.of(context).backgroundColor,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: TextFormField(
-                              controller: selectDateController,
-                              onTap: () => showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime.now(),
-                              ).then((date) {
-                              setState(() {
-                                _selectedDate = date;
-                                selectDateController.text = _selectedDate ==null? "": DateFormat.yMMMMd().format(_selectedDate);
-                              });
-                              }),
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                hasFloatingPlaceholder: true,
-                                labelText: 'Select Date',
-                                enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Theme.of(context).hintColor,
-                                    width: 2.0,
-                                  ),
-                                ),
+                      Expanded(
+                        flex: 2,
+                        child: TextFormField(
+                          controller: selectDateController,
+                          onTap: () => showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime.now(),
+                          ).then((date) {
+                            setState(() {
+                              _selectedDate = date;
+                              selectDateController.text = _selectedDate == null
+                                  ? ""
+                                  : defaultDateFormat.format(_selectedDate);
+                            });
+                          }),
+                          readOnly: true,
+                          decoration: InputDecoration(
+                            hasFloatingPlaceholder: true,
+                            labelText: 'Select Date',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Theme.of(context).hintColor,
+                                width: 2.0,
                               ),
                             ),
                           ),
-                          SizedBox(
-                            width: 16,
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: DropDownTextField(
-                              hintText: "Select Deposit Method",
-                              items: depositType,
-                              selectedValue: selectedDepositValue,
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                       SizedBox(
-                        height: 10,
+                        width: 16,
                       ),
-                      DropDownTextField(
-                        hintText: "Select Fine",
-                        items: finesList,
-                        selectedValue: selectedFineValue,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      DropDownTextField(
-                        hintText: "Select Deposit Account",
-                        items: accountsList,
-                        selectedValue: selectedAccountValue,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      DropDownTextField(
-                        hintText: "Select Members",
-                        items: memberSelection,
-                        selectedValue: selectedMemberValue,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      amountInputField(
-                        context,
-                         "Enter Amount(for each member)", 
-                         amountInputValue
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      SizedBox(
-                        width: 200,
-                        child: defaultButton(
-                          context: context,
-                          text: "Save",
-                          onPressed: () {},
+                      Expanded(
+                        flex: 2,
+                        child: DropDownTextField(
+                          hintText: "Select Deposit Method",
+                          items: depositType,
+                          selectedValue: selectedDepositValue,
                         ),
                       ),
                     ],
                   ),
-                ),
-
+                  SizedBox(
+                    height: 10,
+                  ),
+                  DropDownTextField(
+                    hintText: "Select Fine",
+                    items: finesList,
+                    selectedValue: selectedFineValue,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  DropDownTextField(
+                    hintText: "Select Deposit Account",
+                    items: accountsList,
+                    selectedValue: selectedAccountValue,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  DropDownTextField(
+                    hintText: "Select Members",
+                    items: memberSelection,
+                    selectedValue: selectedMemberValue,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  amountInputField(context, "Enter Amount(for each member)",
+                      amountInputValue),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: 200,
+                    child: defaultButton(
+                      context: context,
+                      text: "Save",
+                      onPressed: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

@@ -1,12 +1,11 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
-import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class ReviewWithdrawal extends StatefulWidget {
@@ -250,7 +249,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           ),
                         ),
                         Text(
-                          "${DateFormat.yMMMMd().format(widget.withdrawalRequest.requestDate)}",
+                          "${defaultDateFormat.format(widget.withdrawalRequest.requestDate)}",
                           style: TextStyle(
                             color: Theme.of(context)
                                 .textSelectionHandleColor
