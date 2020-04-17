@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'settings/update-profile.dart';
+
 class ChamasoftSettings extends StatefulWidget {
   @override
   _ChamasoftSettingsState createState() => _ChamasoftSettingsState();
@@ -113,7 +115,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                           textColor: Colors.white,
                           buttonHeight: 30.0,
                           textSize: 12.0,
-                          action: (){},),
+                          action: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => UpdateProfile(),),),
+                        ),
                       ),
                     ],
                   ),
