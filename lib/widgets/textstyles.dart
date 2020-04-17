@@ -10,7 +10,7 @@ Widget heading1(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w900,
+      fontWeight: FontWeight.w700,
       fontSize: 24.0,
       color: color,
     ),
@@ -23,7 +23,7 @@ Widget heading2(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w900,
+      fontWeight: FontWeight.w700,
       fontSize: 18.0,
       color: color,
     ),

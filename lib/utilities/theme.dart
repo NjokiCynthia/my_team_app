@@ -50,7 +50,7 @@ class Styles {
       hoverColor: isDarkTheme ? Color(0xff3A3A3B) : Color(0xff4285F4),
       focusColor: isDarkTheme ? Colors.blueGrey[900] : Color(0xFFF8F8FF),
       //in use
-      selectedRowColor: isDarkTheme ? Colors.blueGrey[800] : Colors.blue[100],
+      selectedRowColor: isDarkTheme ? Colors.blueGrey[800] : backgroundColor,
       //in use
       textSelectionHandleColor:
           isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
@@ -85,3 +85,4 @@ class Styles {
 }
 
 const primaryColor = Color(0xff00a9f0);
+const backgroundColor = Color(0xffEDEDFE);
