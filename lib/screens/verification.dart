@@ -13,7 +13,6 @@ class Verification extends StatefulWidget {
 }
 
 class _VerificationState extends State<Verification> {
-
   String _logo = "cs.png";
 
   @override
@@ -26,7 +25,7 @@ class _VerificationState extends State<Verification> {
   void dispose() {
     super.dispose();
   }
-  
+
   @override
   Widget build(BuildContext context) {
     TextEditingController _pinEditingController = TextEditingController();
@@ -49,13 +48,21 @@ class _VerificationState extends State<Verification> {
                       height: 100.0,
                     ),
                   ),
-                  heading1(text: "Verification", color: Theme.of(context).textSelectionHandleColor),
-                  subtitle1(text: "A verification code has been sent to", color: Theme.of(context).textSelectionHandleColor),
-                  subtitle1(text: "+254 701 234 567", color: Theme.of(context).textSelectionHandleColor),
+                  heading1(
+                      text: "Verification",
+                      color: Theme.of(context).textSelectionHandleColor),
+                  subtitle1(
+                      text: "A verification code has been sent to",
+                      color: Theme.of(context).textSelectionHandleColor),
+                  subtitle1(
+                      text: "+254 701 234 567",
+                      color: Theme.of(context).textSelectionHandleColor),
                   SizedBox(
                     height: 12,
                   ),
-                  subtitle2(text: "Enter your code here", color: Theme.of(context).textSelectionHandleColor),
+                  subtitle2(
+                      text: "Enter your code here",
+                      color: Theme.of(context).textSelectionHandleColor),
                   Padding(
                     padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                     child: PinInputTextField(
@@ -92,7 +99,11 @@ class _VerificationState extends State<Verification> {
                   defaultButton(
                     context: context,
                     text: "Verify Phone",
-                    onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => SignUp(),),),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SignUp(),
+                      ),
+                    ),
                   ),
                   SizedBox(
                     height: 24,

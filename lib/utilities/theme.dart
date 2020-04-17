@@ -47,14 +47,14 @@ class Styles {
       focusColor:
           isDarkTheme ? Colors.blueGrey[900] : Color(0xFFF8F8FF), //in use
       selectedRowColor:
-          isDarkTheme ? Colors.blueGrey[800] : Color(0xFFEDEDFE), //in use
+          isDarkTheme ? Colors.blueGrey[800] : Colors.blue[100], //in use
       textSelectionHandleColor:
-          isDarkTheme ? Colors.blueGrey[100] : Color(0xff707070), //in use
+          isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey, //in use
       disabledColor: Colors.grey, //in use
       unselectedWidgetColor:
           isDarkTheme ? Colors.black38 : Colors.blueGrey[100], //in use
       textSelectionColor:
-          isDarkTheme ? Colors.white : Color(0xFFEDEDFE), //in use
+          isDarkTheme ? Colors.white : Colors.blueGrey[800], //in use
       cardColor: isDarkTheme ? Colors.blueGrey : Colors.white, //in use
       canvasColor: isDarkTheme ? Colors.black : Colors.grey[50], //in use
       brightness: isDarkTheme ? Brightness.dark : Brightness.light, //in use
@@ -73,3 +73,5 @@ class Styles {
     );
   }
 }
+
+const primaryColor = Color(0xff00a9f0);
