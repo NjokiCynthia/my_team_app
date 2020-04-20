@@ -1,6 +1,7 @@
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
@@ -80,25 +81,34 @@ class IntroScreenState extends State<IntroScreen> {
             key: introKey,
             pages: [
               PageViewModel(
-                  title: "A fix for your Chama",
-                  body:
-                      "A leading book keeping tool for investment groups that handles all your Chama's financial administration as you focus on your investments.",
+                  titleWidget: heading1(
+                      text: "A fix for your Chama", color: Colors.white),
+                  bodyWidget: subtitle1(
+                      text:
+                          "A leading book keeping tool for investment groups that handles all your Chama's financial administration as you focus on your investments.",
+                      color: Colors.white),
                   image: _buildImage('onboarding_1'),
                   decoration: _pageDeco(
                     pageColor: Colors.blue[900],
                   )),
               PageViewModel(
-                  title: "...merry-go-rounds too",
-                  body:
-                      "Send your contributions, manage members, make withdrawals straight to your M-Pesa, and more. It's never been this easy.",
+                  titleWidget: heading1(
+                      text: "...merry-go-rounds too", color: Colors.white),
+                  bodyWidget: subtitle1(
+                      text:
+                          "Send your contributions, manage members, make withdrawals straight to your M-Pesa, and more. It's never been this easy.",
+                      color: Colors.white),
                   image: _buildImage('onboarding_2'),
                   decoration: _pageDeco(
                     pageColor: Colors.blue[800],
                   )),
               PageViewModel(
-                  title: "...or even a fundraiser!",
-                  body:
-                      "Running a fundraiser & in need of a solution for processing contributions? Give your contributors a great experience & hit your target faster.",
+                  titleWidget: heading1(
+                      text: "...or even a fundraiser!", color: Colors.white),
+                  bodyWidget: subtitle1(
+                      text:
+                          "Running a fundraiser & in need of a solution for processing contributions? Give your contributors a great experience & hit your target faster.",
+                      color: Colors.white),
                   image: _buildImage('onboarding_3'),
                   decoration: _pageDeco(
                     pageColor: Colors.blue[900],
@@ -111,12 +121,19 @@ class IntroScreenState extends State<IntroScreen> {
             skipFlex: 0,
             nextFlex: 0,
             skip: Text("Skip",
-                style: TextStyle(fontSize: 16.0, color: Colors.blue[200])),
+                style: TextStyle(
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    color: Colors.blue[200])),
             next: Text("Next",
-                style: TextStyle(fontSize: 16.0, color: Colors.white)),
+                style: TextStyle(
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    color: Colors.white)),
             done: Text("Continue",
                 style: TextStyle(
                     fontSize: 16.0,
+                    fontFamily: 'SegoeUI',
                     fontWeight: FontWeight.w800,
                     color: Colors.white)),
             dotsDecorator: DotsDecorator(

@@ -10,7 +10,7 @@ Widget defaultButton({BuildContext context, String text, Function onPressed}) {
     child: Padding(
       padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
       child: Text(
-        text.toUpperCase(),
+        text,
         style: TextStyle(fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
       ),
     ),
