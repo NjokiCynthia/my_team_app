@@ -4,6 +4,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -67,12 +68,10 @@ class ReviewLoanApplicationsState extends State<ReviewLoanApplications> {
       backgroundColor: Colors.transparent,
       body: Container(
         decoration: primaryGradient(context),
-        padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
-        height: MediaQuery.of(context).size.height,
+        width: double.infinity,
+        height: double.infinity,
         child: loanApplications.length > 0
-            ? ListView.separated(
-                separatorBuilder: (BuildContext context, int index) =>
-                    const Divider(),
+            ? ListView.builder(
                 itemCount: loanApplications.length,
                 itemBuilder: (context, int index) {
                   LoanApplication loanApplication = loanApplications[index];
@@ -115,130 +114,104 @@ class LoanApplicationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 3.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      borderOnForeground: false,
-      child: Container(
-        padding: EdgeInsets.all(16.0),
-        decoration: cardDecoration(
-            gradient: plainCardGradient(context), context: context),
-        child: Column(
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "$loanName",
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(0.8),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+      child: Card(
+        elevation: 3.0,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        borderOnForeground: false,
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          decoration: cardDecoration(
+              gradient: plainCardGradient(context), context: context),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "$loanName",
+                    fontWeight: FontWeight.w700,
                     fontSize: 16.0,
-                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).textSelectionHandleColor,
+                    align: TextAlign.start,
                   ),
-                ),
-                SizedBox(
-                  height: 22,
-                ),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      "Ksh ",
-                      style: TextStyle(
-                        fontSize: 18.0,
+                  SizedBox(
+                    height: 22,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      customTitle(
+                        text: "Ksh ",
+                        fontSize: 16.0,
                         color: Theme.of(context).textSelectionHandleColor,
-                        fontWeight: FontWeight.w400,
                       ),
-                    ),
-                    Text(
-                      "$amount",
-                      style: TextStyle(
+                      customTitle(
+                        text: "$amount",
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16.0,
                         color: Theme.of(context).textSelectionHandleColor,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w800,
+                        align: TextAlign.start,
                       ),
-                      textAlign: TextAlign.end,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "Applied By",
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(0.8),
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w800,
+                    ],
                   ),
-                ),
-                SizedBox(height: 22),
-                Text(
-                  "Applied On",
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(0.8),
-                    fontSize: 12.0,
-                    fontWeight: FontWeight.w800,
+                ],
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  subtitle2(
+                      text: "Applied By",
+                      color: Theme.of(context).textSelectionHandleColor,
+                      align: TextAlign.start),
+                  SizedBox(height: 22),
+                  subtitle2(
+                      text: "Applied On",
+                      color: Theme.of(context).textSelectionHandleColor,
+                      align: TextAlign.start),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "$borrowerName",
+                    color: Theme.of(context).textSelectionHandleColor,
+                    align: TextAlign.start,
                   ),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "$borrowerName",
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(0.8),
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w800,
+                  SizedBox(height: 22),
+                  customTitle(
+                    text: "$requestDate",
+                    color: Theme.of(context).textSelectionHandleColor,
+                    align: TextAlign.start,
                   ),
-                ),
-                SizedBox(height: 22),
-                Text(
-                  "$requestDate",
-                  style: TextStyle(
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(0.8),
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w800,
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "",
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 4.0,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text(
-                  "",
-                ),
-                plainButtonWithArrow(
-                    text: "Respond",
-                    size: 16.0,
-                    spacing: 2.0,
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(.8),
-                    action: onPressed),
-              ],
-            ),
-          ],
+                  plainButtonWithArrow(
+                      text: "Respond",
+                      size: 16.0,
+                      spacing: 2.0,
+                      color: Theme.of(context)
+                          .textSelectionHandleColor
+                          .withOpacity(.8),
+                      action: onPressed),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

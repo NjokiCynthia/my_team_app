@@ -163,51 +163,40 @@ class ReviewLoanState extends State<ReviewLoan> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    Text(
-                                      "${widget.loanApplication.loanName}",
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor
-                                            .withOpacity(0.8),
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.w800,
-                                      ),
+                                    heading2(
+                                      text:
+                                          "${widget.loanApplication.loanName}",
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
+                                      align: TextAlign.start,
                                     ),
                                     Visibility(
-                                      visible: flag == REVIEW_LOAN,
-                                      child: Text(
-                                        "Applied By ${widget.loanApplication.borrowerName}",
-                                        textAlign: TextAlign.start,
-                                        style: TextStyle(
-                                          color: primaryColor,
+                                        visible: flag == REVIEW_LOAN,
+                                        child: customTitle(
+                                          text:
+                                              "Applied By ${widget.loanApplication.borrowerName}",
                                           fontSize: 12.0,
-                                          fontWeight: FontWeight.w800,
-                                        ),
-                                      ),
-                                    ),
+                                          color: primaryColor,
+                                          align: TextAlign.start,
+                                        )),
                                   ],
                                 ),
                               ),
                               Row(
                                 children: <Widget>[
-                                  Text(
-                                    "Ksh ",
-                                    style: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Theme.of(context)
-                                          .textSelectionHandleColor,
-                                      fontWeight: FontWeight.w400,
-                                    ),
+                                  customTitle(
+                                    text: "Ksh ",
+                                    fontSize: 18.0,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
+                                    fontWeight: FontWeight.w400,
                                   ),
-                                  Text(
-                                    "${numberFormat.format(widget.loanApplication.amount)}",
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textSelectionHandleColor,
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                    textAlign: TextAlign.end,
+                                  heading2(
+                                    text:
+                                        "${numberFormat.format(widget.loanApplication.amount)}",
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
+                                    align: TextAlign.end,
                                   ),
                                 ],
                               ),
@@ -219,75 +208,52 @@ class ReviewLoanState extends State<ReviewLoan> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                "Interest Rate: ",
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.8),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                              subtitle1(
+                                text: "Interest Rate: ",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                               ),
-                              Text(
-                                "12%",
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.8),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                              customTitle(
+                                align: TextAlign.start,
+                                text: "12%",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                fontWeight: FontWeight.w600,
                               ),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                "Repayment Period: ",
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.8),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                              subtitle1(
+                                text: "Repayment Period: ",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                               ),
-                              Text(
-                                "1 Month",
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.8),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                              customTitle(
+                                align: TextAlign.start,
+                                text: "1 Month",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                fontWeight: FontWeight.w600,
                               ),
                             ],
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                "Applied On: ",
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.8),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w400,
-                                ),
+                              subtitle1(
+                                text: "Applied On: ",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                               ),
-                              Text(
-                                "${dateFormat.format(widget.loanApplication.requestDate)}",
-                                style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.8),
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
+                              customTitle(
+                                align: TextAlign.start,
+                                text:
+                                    "${dateFormat.format(widget.loanApplication.requestDate)}",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                fontWeight: FontWeight.w600,
                               ),
                             ],
                           ),
@@ -350,7 +316,10 @@ class ReviewLoanState extends State<ReviewLoan> {
                         padding: EdgeInsets.all(12.0),
                         child: Text(
                           'APPROVE',
-                          style: TextStyle(color: primaryColor),
+                          style: TextStyle(
+                              color: primaryColor,
+                              fontFamily: 'SegoeUI',
+                              fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
@@ -363,7 +332,10 @@ class ReviewLoanState extends State<ReviewLoan> {
                         padding: EdgeInsets.all(12.0),
                         child: Text(
                           'REJECT',
-                          style: TextStyle(color: Colors.red),
+                          style: TextStyle(
+                              color: Colors.red,
+                              fontFamily: 'SegoeUI',
+                              fontWeight: FontWeight.w700),
                         ),
                       ),
                     ),
@@ -382,7 +354,8 @@ class ReviewLoanState extends State<ReviewLoan> {
                       padding: EdgeInsets.all(12.0),
                       child: Text(
                         'CANCEL APPLICATION',
-                        style: TextStyle(color: Colors.red),
+                        style:
+                            TextStyle(color: Colors.red, fontFamily: 'SegoeUI'),
                       ),
                     ),
                   ),

@@ -115,13 +115,16 @@ class WithdrawalRequestCard extends StatelessWidget {
                       children: <Widget>[
                         customTitle(
                           text: "Ksh ",
-                          fontSize: 18.0,
+                          fontSize: 16.0,
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
-                        heading2(
-                            text: currencyFormat.format(request.amount),
-                            color: Theme.of(context).textSelectionHandleColor,
-                            align: TextAlign.end),
+                        customTitle(
+                          text: currencyFormat.format(request.amount),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16.0,
+                          color: Theme.of(context).textSelectionHandleColor,
+                          align: TextAlign.start,
+                        ),
                       ],
                     ),
                   ],
