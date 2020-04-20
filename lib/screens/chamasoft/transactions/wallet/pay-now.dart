@@ -59,6 +59,9 @@ class PayNowState extends State<PayNow> {
             children: <Widget>[
               new InputDecorator(
                 decoration: InputDecoration(
+                    labelStyle: inputTextStyle(),
+                    hintStyle: inputTextStyle(),
+                    errorStyle: inputTextStyle(),
                     filled: false,
                     hintText: 'Select Contribution',
                     labelText: _dropdownValue == null
@@ -67,7 +70,7 @@ class PayNowState extends State<PayNow> {
                     errorText: _errorText,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Theme.of(context).hintColor, width: 2.0))),
+                            color: Theme.of(context).hintColor, width: 1.0))),
                 isEmpty: _dropdownValue == null,
                 child: new Theme(
                   data: Theme.of(context).copyWith(
@@ -84,7 +87,10 @@ class PayNowState extends State<PayNow> {
                     items: _dropdownItems.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: inputTextStyle(),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -103,9 +109,13 @@ class PayNowState extends State<PayNow> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Confirm Mpesa Number"),
+          title: heading2(
+              text: "Confirm Mpesa Number",
+              color: Theme.of(context).textSelectionHandleColor,
+              align: TextAlign.start),
           content: TextFormField(
             //controller: controller,
+            style: inputTextStyle(),
             initialValue: "254712233344",
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
@@ -116,7 +126,7 @@ class PayNowState extends State<PayNow> {
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                 color: Theme.of(context).hintColor,
-                width: 2.0,
+                width: 1.0,
               )),
               // hintText: 'Phone Number or Email Address',
               labelText: "Mpesa Number",
@@ -127,7 +137,8 @@ class PayNowState extends State<PayNow> {
               child: new Text(
                 "Cancel",
                 style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                    color: Theme.of(context).textSelectionHandleColor,
+                    fontFamily: 'SegoeUI'),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -136,7 +147,8 @@ class PayNowState extends State<PayNow> {
             new FlatButton(
               child: new Text(
                 "Pay Now",
-                style: new TextStyle(color: primaryColor),
+                style:
+                    new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
