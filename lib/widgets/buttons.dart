@@ -9,7 +9,10 @@ Widget defaultButton({BuildContext context, String text, Function onPressed}) {
     color: primaryColor,
     child: Padding(
       padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-      child: Text(text),
+      child: Text(
+        text.toUpperCase(),
+        style: TextStyle(fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+      ),
     ),
     textColor: Colors.white,
     onPressed: onPressed,
@@ -264,7 +267,7 @@ Widget plainButton(
             color: color,
             fontSize: size,
             fontFamily: 'SegoeUI',
-            fontWeight: FontWeight.w800,
+            fontWeight: FontWeight.w700,
           ),
           textAlign: TextAlign.center,
         ),

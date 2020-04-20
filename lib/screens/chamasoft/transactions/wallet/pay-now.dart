@@ -182,7 +182,7 @@ class PayNowState extends State<PayNow> {
                 message:
                     "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
             Container(
-              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+              padding: EdgeInsets.all(16.0),
               height: MediaQuery.of(context).size.height,
               color: Theme.of(context).backgroundColor,
               child: Column(

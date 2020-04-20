@@ -116,14 +116,12 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                             text: "Total " + defaultTitle,
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
-                          Text(
-                            "31 Members",
-                            textAlign: TextAlign.start,
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontSize: 12.0,
-                              fontWeight: FontWeight.w800,
-                            ),
+                          customTitle(
+                            text: "31 Members",
+                            align: TextAlign.start,
+                            color: primaryColor,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w700,
                           ),
                         ],
                       ),
@@ -136,11 +134,9 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                           fontSize: 18.0,
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
-                        customTitle(
+                        heading2(
                           text: currencyFormat.format(2000000),
                           color: Theme.of(context).textSelectionHandleColor,
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w800,
                           align: TextAlign.end,
                         ),
                       ],

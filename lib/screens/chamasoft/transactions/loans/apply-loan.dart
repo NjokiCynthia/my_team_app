@@ -133,7 +133,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                 message:
                     "Loan application process is totally depended on your group's constitution and your group\'s management."),
             Container(
-              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+              padding: EdgeInsets.all(16.0),
               height: MediaQuery.of(context).size.height,
               color: Theme.of(context).backgroundColor,
               child: Column(

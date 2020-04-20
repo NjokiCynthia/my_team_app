@@ -186,24 +186,16 @@ class ActiveLoanCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            Text(
-                              "Ksh ",
-                              style: TextStyle(
-                                fontSize: 16.0,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                fontWeight: FontWeight.w400,
-                              ),
+                            customTitle(
+                              text: "Ksh ",
+                              fontSize: 18.0,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              fontWeight: FontWeight.w400,
                             ),
-                            Text(
-                              currencyFormat.format(loan.amount),
-                              textAlign: TextAlign.end,
-                              style: TextStyle(
-                                fontSize: 20.0,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                fontWeight: FontWeight.w700,
-                              ),
+                            heading2(
+                              text: currencyFormat.format(loan.amount),
+                              color: Theme.of(context).textSelectionHandleColor,
+                              align: TextAlign.end,
                             ),
                           ],
                         ),

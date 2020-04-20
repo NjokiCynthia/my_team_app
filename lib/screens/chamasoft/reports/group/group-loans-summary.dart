@@ -313,21 +313,21 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                 ),
                 Expanded(
                   flex: 2,
-                  child: subtitle2(
+                  child: subtitle1(
                       text: "Due",
                       color: Theme.of(context).primaryColor,
                       align: TextAlign.center),
                 ),
                 Expanded(
                   flex: 2,
-                  child: subtitle2(
+                  child: subtitle1(
                       text: "Paid",
                       color: Theme.of(context).primaryColor,
                       align: TextAlign.center),
                 ),
                 Expanded(
                   flex: 2,
-                  child: subtitle2(
+                  child: subtitle1(
                       text: "Balance",
                       color: Theme.of(context).primaryColor,
                       align: TextAlign.center),

@@ -83,7 +83,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.arrow_left,
+        leadingIcon: LineAwesomeIcons.close,
         title: "Transaction Statement",
       ),
       backgroundColor: Theme.of(context).backgroundColor,

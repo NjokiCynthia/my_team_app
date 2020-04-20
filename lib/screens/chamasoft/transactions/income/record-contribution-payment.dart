@@ -172,8 +172,9 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                     SizedBox(
                       height: 20,
                     ),
-                    SizedBox(
+                    Container(
                       width: 200,
+                      height: 44,
                       child: defaultButton(
                         context: context,
                         text: "Save",
@@ -214,6 +215,9 @@ class _DropDownTextFieldState extends State<DropDownTextField> {
               new InputDecorator(
                 decoration: InputDecoration(
                     filled: false,
+                    labelStyle: inputTextStyle(),
+                    hintStyle: inputTextStyle(),
+                    errorStyle: inputTextStyle(),
                     hintText: widget.hintText,
                     labelText: widget.selectedValue == null
                         ? widget.hintText
@@ -237,7 +241,10 @@ class _DropDownTextFieldState extends State<DropDownTextField> {
                     items: widget.items.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: inputTextStyle(),
+                        ),
                       );
                     }).toList(),
                   ),
