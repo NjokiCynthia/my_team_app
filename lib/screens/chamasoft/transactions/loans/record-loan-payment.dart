@@ -77,8 +77,6 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController amountTextController =
-        TextEditingController(text: '');
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
