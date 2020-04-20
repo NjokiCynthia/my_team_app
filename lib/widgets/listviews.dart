@@ -510,14 +510,12 @@ class TransactionStatementBody extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            Text(
-              row.description,
-              style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 12,
-                color: Theme.of(context).textSelectionHandleColor,
-              ),
-              textAlign: TextAlign.start,
+            customTitle(
+              text: row.description,
+              fontWeight: FontWeight.w400,
+              fontSize: 12,
+              color: Theme.of(context).textSelectionHandleColor,
+              align: TextAlign.start,
             )
           ],
         ),

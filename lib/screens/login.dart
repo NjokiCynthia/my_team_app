@@ -59,7 +59,7 @@ class _LoginState extends State<Login> {
               TextFormField(
                 decoration: InputDecoration(
                   hasFloatingPlaceholder: true,
-                  labelText: 'Phone or Email',
+                  labelText: 'Phone number or Email',
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Theme.of(context).hintColor,

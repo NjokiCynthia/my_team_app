@@ -71,16 +71,22 @@ Widget groupInfoButton(
             SizedBox(
               height: 10,
             ),
-            Text(
-              title,
-              style: TextStyle(
+            customTitle(
+                text: title,
                 color: textColor,
+                //fontSize: 16,
                 fontWeight: FontWeight.w700,
-                fontSize: 18.0,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+                align: TextAlign.start),
+//            Text(
+//              title,
+//              style: TextStyle(
+//                color: textColor,
+//                fontWeight: FontWeight.w700,
+//                fontSize: 18.0,
+//              ),
+//              maxLines: 1,
+//              overflow: TextOverflow.ellipsis,
+//            ),
             Row(
               children: <Widget>[
                 Text(
@@ -220,7 +226,8 @@ Widget plainButtonWithArrow(
           style: TextStyle(
             color: color,
             fontSize: size,
-            fontWeight: FontWeight.w800,
+            fontFamily: 'SegoeUI',
+            fontWeight: FontWeight.w700,
           ),
           textAlign: TextAlign.end,
         ),
@@ -256,6 +263,7 @@ Widget plainButton(
           style: TextStyle(
             color: color,
             fontSize: size,
+            fontFamily: 'SegoeUI',
             fontWeight: FontWeight.w800,
           ),
           textAlign: TextAlign.center,
@@ -281,19 +289,19 @@ Widget paymentActionButton(
     Color textColor}) {
   return (!isFlat)
       ? OutlineButton(
+          color: Colors.white,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                text,
-                style: TextStyle(
+              Expanded(
+                child: customTitle(
+                  text: text,
                   color: textColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 18.0,
+                  fontSize: 15.0,
                 ),
               ),
               SizedBox(
-                width: 10.0,
+                width: 5.0,
               ),
               Icon(
                 icon,
@@ -315,16 +323,16 @@ Widget paymentActionButton(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                text,
-                style: TextStyle(
+              Expanded(
+                child: customTitle(
+                  text: text,
                   color: textColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 18.0,
+                  fontSize: 15.0,
                 ),
               ),
               SizedBox(
-                width: 10.0,
+                width: 5.0,
               ),
               Icon(
                 icon,
@@ -386,6 +394,7 @@ Widget gridButton(
                       color: color,
                       fontWeight: FontWeight.w800,
                       fontSize: 14.0,
+                      fontFamily: 'SegoeUI',
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -397,6 +406,7 @@ Widget gridButton(
                     style: TextStyle(
                       color: color.withOpacity(0.6),
                       fontWeight: FontWeight.w600,
+                      fontFamily: 'SegoeUI',
                       fontSize: 12.0,
                     ),
                     textAlign: TextAlign.center,
@@ -414,7 +424,11 @@ Widget gridButton(
 
 Widget statusChip({String text, Color textColor, Color backgroundColor}) {
   return Chip(
-    label: subtitle2(text: text, color: textColor),
+    label: customTitle(
+      text: text,
+      color: textColor,
+      fontSize: 12.0,
+    ),
     backgroundColor: backgroundColor,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
   );

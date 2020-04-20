@@ -52,10 +52,13 @@ class _VerificationState extends State<Verification> {
                   heading1(
                       text: "Verification",
                       color: Theme.of(context).textSelectionHandleColor),
+                  SizedBox(
+                    height: 10,
+                  ),
                   subtitle1(
                       text: "A verification code has been sent to",
                       color: Theme.of(context).textSelectionHandleColor),
-                  subtitle1(
+                  customTitle(
                       text: "+254 701 234 567",
                       color: Theme.of(context).textSelectionHandleColor),
                   SizedBox(

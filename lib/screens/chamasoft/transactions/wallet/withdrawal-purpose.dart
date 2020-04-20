@@ -105,7 +105,7 @@ class GridItem extends StatelessWidget {
               SizedBox(
                 height: 15.0,
               ),
-              subtitle2(
+              subtitle1(
                   text: title, color: primaryColor, align: TextAlign.center),
             ],
           ),

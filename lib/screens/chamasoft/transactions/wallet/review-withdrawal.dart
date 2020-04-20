@@ -49,16 +49,21 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Reason for Rejecting"),
+          title: heading2(
+            text: "Reason for Rejecting",
+            align: TextAlign.start,
+            color: Theme.of(context).textSelectionHandleColor,
+          ),
           content: TextFormField(
             //controller: controller,
             keyboardType: TextInputType.text,
+            style: inputTextStyle(),
             decoration: InputDecoration(
               hasFloatingPlaceholder: true,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                 color: Theme.of(context).hintColor,
-                width: 2.0,
+                width: 1.0,
               )),
               // hintText: 'Phone Number or Email Address',
               labelText: "Enter Reason",
@@ -69,6 +74,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
               child: new Text(
                 "Cancel",
                 style: TextStyle(
+                    fontFamily: 'SegoeUI',
                     color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
@@ -78,7 +84,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             new FlatButton(
               child: new Text(
                 "Proceed",
-                style: new TextStyle(color: primaryColor),
+                style: new TextStyle(
+                  color: primaryColor,
+                  fontFamily: 'SegoeUI',
+                ),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -124,31 +133,17 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(
-                                "${widget.withdrawalRequest.purpose}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16.0,
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                ),
-                                textAlign: TextAlign.start,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              heading2(
+                                text: "${widget.withdrawalRequest.purpose}",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                align: TextAlign.start,
                               ),
-//                            SizedBox(
-//                              height: 10,
-//                            ),
-                              Text(
-                                "Requested by Peter Parker",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12.0,
-                                  color: primaryColor,
-                                ),
-                                textAlign: TextAlign.start,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                              customTitle(
+                                text: "Requested by Peter Parker",
+                                fontSize: 12.0,
+                                color: primaryColor,
+                                align: TextAlign.start,
                               ),
                             ],
                           ),
@@ -156,24 +151,17 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
-                            Text(
-                              "Ksh ",
-                              style: TextStyle(
-                                fontSize: 18.0,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                fontWeight: FontWeight.w400,
-                              ),
+                            customTitle(
+                              text: "Ksh ",
+                              fontSize: 18.0,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              fontWeight: FontWeight.w400,
                             ),
-                            Text(
-                              "${currencyFormat.format(widget.withdrawalRequest.amount)}",
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                fontSize: 18.0,
-                                fontWeight: FontWeight.w800,
-                              ),
-                              textAlign: TextAlign.end,
+                            heading2(
+                              text:
+                                  "${currencyFormat.format(widget.withdrawalRequest.amount)}",
+                              color: Theme.of(context).textSelectionHandleColor,
+                              align: TextAlign.end,
                             ),
                           ],
                         ),
@@ -185,107 +173,65 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Particulars: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        subtitle1(
+                          text: "Particulars: ",
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
-                        Text(
-                          "${widget.withdrawalRequest.particulars}",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        customTitle(
+                          align: TextAlign.start,
+                          text: "${widget.withdrawalRequest.particulars}",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w600,
                         ),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Recipient: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        subtitle1(
+                          text: "Recipient: ",
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
                         Expanded(
-                          child: Text(
-                            "Peter Parker - 0712000111",
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor
-                                  .withOpacity(0.8),
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w800,
-                            ),
-                          ),
-                        ),
+                            child: customTitle(
+                          align: TextAlign.start,
+                          text: "Peter Parker - 0712000111",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w600,
+                        )),
                       ],
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "Requested On: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        Text(
-                          "${defaultDateFormat.format(widget.withdrawalRequest.requestDate)}",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Description: ",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        subtitle1(
+                          text: "Requested On: ",
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
                         Expanded(
-                          child: Text(
-                            "Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum",
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor
-                                  .withOpacity(0.8),
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w800,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
+                            child: customTitle(
+                          align: TextAlign.start,
+                          text:
+                              "${defaultDateFormat.format(widget.withdrawalRequest.requestDate)}",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w600,
+                        )),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        subtitle1(
+                          text: "Description: ",
+                          color: Theme.of(context).textSelectionHandleColor,
+                        ),
+                        Expanded(
+                          child: customTitle(
+                            align: TextAlign.start,
+                            text:
+                                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum",
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -344,7 +290,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               padding: EdgeInsets.all(12.0),
                               child: Text(
                                 'APPROVE',
-                                style: TextStyle(color: primaryColor),
+                                style: TextStyle(
+                                    color: primaryColor,
+                                    fontFamily: 'SegoeUI',
+                                    fontWeight: FontWeight.w700),
                               ),
                             ),
                           ),
@@ -357,7 +306,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               padding: EdgeInsets.all(12.0),
                               child: Text(
                                 'REJECT',
-                                style: TextStyle(color: Colors.red),
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontFamily: 'SegoeUI',
+                                    fontWeight: FontWeight.w700),
                               ),
                             ),
                           ),

@@ -10,7 +10,7 @@ Widget heading1(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w900,
+      fontWeight: FontWeight.w700,
       fontSize: 24.0,
       color: color,
     ),
@@ -23,10 +23,10 @@ Widget heading2(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w900,
-      fontSize: 18.0,
-      color: color,
-    ),
+        fontWeight: FontWeight.w700,
+        fontSize: 18.0,
+        color: color,
+        fontFamily: 'SegoeUI'),
     textAlign: align,
   );
 }
@@ -36,10 +36,10 @@ Widget subtitle1(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w500,
-      fontSize: 16.0,
-      color: color,
-    ),
+        fontWeight: FontWeight.w400,
+        fontSize: 16.0,
+        color: color,
+        fontFamily: 'SegoeUI'),
     textAlign: align,
   );
 }
@@ -49,10 +49,10 @@ Widget subtitle2(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w400,
-      fontSize: 12.0,
-      color: color,
-    ),
+        fontWeight: FontWeight.w300,
+        fontSize: 13.0,
+        color: color,
+        fontFamily: 'SegoeUI'),
     textAlign: align,
   );
 }
@@ -62,12 +62,14 @@ Widget customTitle(
     Color color,
     TextAlign align = TextAlign.center,
     double fontSize = 16.0,
-    FontWeight fontWeight = FontWeight.w500}) {
+    FontWeight fontWeight = FontWeight.w400,
+    String fontFamily = 'SegoeUI'}) {
   return Text(
     text,
     style: TextStyle(
       fontWeight: fontWeight,
       fontSize: fontSize,
+      fontFamily: fontFamily,
       color: color,
     ),
     textAlign: align,
@@ -139,16 +141,12 @@ List<Widget> contributionSummary(
                 ),
                 Container(
                   width: 90.0,
-                  child: Text(
-                    contributionName,
-                    style: TextStyle(
-                      color: color,
-                      fontSize: 22.0,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.end,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  child: customTitle(
+                    text: contributionName,
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.w500,
+                    align: TextAlign.end,
+                    color: color,
                   ),
                 ),
               ],
@@ -182,7 +180,7 @@ List<Widget> contributionSummary(
                     style: TextStyle(
                       color: color,
                       fontSize: 14.0,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w700,
                     ),
                     textAlign: TextAlign.end,
                     maxLines: 1,
@@ -195,7 +193,7 @@ List<Widget> contributionSummary(
                     _name[1],
                     style: TextStyle(
                       color: color,
-                      fontSize: 22.0,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.end,

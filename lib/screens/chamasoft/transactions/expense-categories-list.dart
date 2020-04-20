@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-option.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -60,16 +61,21 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Expense Summary"),
+          title: heading2(
+            text: "Expense Summary",
+            align: TextAlign.start,
+            color: Theme.of(context).textSelectionHandleColor,
+          ),
           content: TextFormField(
             //controller: controller,
             keyboardType: TextInputType.text,
+            style: inputTextStyle(),
             decoration: InputDecoration(
               hasFloatingPlaceholder: true,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                 color: Theme.of(context).hintColor,
-                width: 2.0,
+                width: 1.0,
               )),
               // hintText: 'Phone Number or Email Address',
               labelText: "A short description(optional)",
@@ -80,6 +86,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
               child: new Text(
                 "Cancel",
                 style: TextStyle(
+                    fontFamily: 'SegoeUI',
                     color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
@@ -89,7 +96,10 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
             new FlatButton(
               child: new Text(
                 "Proceed",
-                style: new TextStyle(color: primaryColor),
+                style: new TextStyle(
+                  color: primaryColor,
+                  fontFamily: 'SegoeUI',
+                ),
               ),
               onPressed: () {
                 Navigator.of(context)

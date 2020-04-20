@@ -85,3 +85,4 @@ class Styles {
 }
 
 const primaryColor = Color(0xff00a9f0);
+const backgroundColor = Color(0xffEDEDFE);

@@ -11,13 +11,16 @@ class ChamasoftHome extends StatefulWidget {
   ChamasoftHome({
     this.appBarElevation,
   });
+
   final ValueChanged<double> appBarElevation;
+
   @override
   _ChamasoftHomeState createState() => _ChamasoftHomeState();
 }
 
 class _ChamasoftHomeState extends State<ChamasoftHome> {
   ScrollController _scrollController;
+
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
   }
@@ -72,23 +75,29 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Contributions",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 18.0,
-                            fontFamily: 'SegoeUI',
-                            fontWeight: FontWeight.w400,
-                          ),
+                        customTitle(
+                          text: "Contributions",
+                          align: TextAlign.start,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
+//                        Text(
+//                          "Contributions",
+//                          style: TextStyle(
+//                            color: Theme.of(context)
+//                                .textSelectionHandleColor
+//                                .withOpacity(0.8),
+//                            fontSize: 18.0,
+//                            fontWeight: FontWeight.w800,
+//                          ),
+//                        ),
                         SizedBox(
                           height: 22,
                           child: cardAmountButton(
                               currency: "Ksh",
                               amount: "21,000",
-                              size: 18.0,
+                              size: 16.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               action: () {}),
                         ),
@@ -100,49 +109,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Fines",
-                          style: TextStyle(
-                            color: Colors.red[400],
-                            fontFamily: 'SegoeUI',
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        customTitle(
+                          text: "Fines",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
                         SizedBox(
                           height: 22,
                           child: cardAmountButton(
                               currency: "Ksh",
                               amount: "2,350",
-                              size: 16.0,
-                              color: Colors.red[700],
-                              action: () {}),
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 4.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Loans",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontFamily: 'SegoeUI',
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 22,
-                          child: cardAmountButton(
-                              currency: "Ksh",
-                              amount: "13,500",
-                              size: 16.0,
+                              size: 14.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               action: () {}),
                         ),
@@ -154,23 +132,41 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          "Pending Loan Balance",
-                          style: TextStyle(
-                            color: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.8),
-                            fontSize: 16.0,
-                            fontFamily: 'SegoeUI',
-                            fontWeight: FontWeight.w400,
-                          ),
+                        customTitle(
+                          text: "Loans",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).textSelectionHandleColor,
+                        ),
+                        SizedBox(
+                          height: 22,
+                          child: cardAmountButton(
+                              currency: "Ksh",
+                              amount: "13,500",
+                              size: 14.0,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              action: () {}),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 4.0,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        customTitle(
+                          text: "Pending Loan Balance",
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
                         SizedBox(
                           height: 22,
                           child: cardAmountButton(
                               currency: "Ksh",
                               amount: "5,500",
-                              size: 16.0,
+                              size: 14.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               action: () {}),
                         ),
@@ -251,8 +247,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           cardAmount: "4,050",
                           currency: "Ksh",
                           dueDate: "4 Apr 20",
-                          contributionName:
-                              "DVEA Welfare Contribution monthly group",
+                          contributionName: "Welfare",
                         ),
                       ),
                     ),
@@ -274,7 +269,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           cardAmount: "10,050",
                           currency: "Ksh",
                           dueDate: "14 Apr 20",
-                          contributionName: "Insuranceghhghgh",
+                          contributionName: "Insurance",
                         ),
                       ),
                     ),
@@ -408,7 +403,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           cardAmount: "4,050",
                           currency: "Ksh",
                           dueDate: "4 Apr 20",
-                          contributionName: "Loan Repaymentfhghgh",
+                          contributionName: "Loan Repayment",
                         ),
                       ),
                     ),

@@ -15,20 +15,21 @@ class ReviewWithdrawalRequests extends StatefulWidget {
 }
 
 class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
-  final List<WithdrawalRequest> list = [
-    WithdrawalRequest(
-        1, DateTime.now(), "Expense Payment", "Audit Fees", 12000),
-    WithdrawalRequest(
-        1, DateTime.now(), "Contribution Refund", "Peter Kimutai", 16000),
-    WithdrawalRequest(
-        1, DateTime.now(), "Merry Go Round", "Geoffrey Githaiga", 1000),
-    WithdrawalRequest(
-        1, DateTime.now(), "Loan Disbursement", "Aggrey Koros", 22000),
-    WithdrawalRequest(1, DateTime.now(), "Expense Payment", "Audit Fees", 4210),
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final List<WithdrawalRequest> list = [
+      WithdrawalRequest(
+          1, DateTime.now(), "Expense Payment", "Audit Fees", 12000),
+      WithdrawalRequest(
+          1, DateTime.now(), "Contribution Refund", "Peter Kimutai", 16000),
+      WithdrawalRequest(
+          1, DateTime.now(), "Merry Go Round", "Geoffrey Githaiga", 1000),
+      WithdrawalRequest(
+          1, DateTime.now(), "Loan Disbursement", "Aggrey Koros", 22000),
+      WithdrawalRequest(
+          1, DateTime.now(), "Expense Payment", "Audit Fees", 4210),
+    ];
+
     return Scaffold(
         appBar: AppBar(
           title: Row(
@@ -94,87 +95,88 @@ class WithdrawalRequestCard extends StatelessWidget {
             child: Column(
               children: <Widget>[
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Expanded(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            request.purpose,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16.0,
-                              color: Theme.of(context).textSelectionHandleColor,
-                            ),
-                            textAlign: TextAlign.start,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          subtitle2(
-                              text: "Particulars",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
-                          Text(
-                            request.particulars,
-                            style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16.0,
-                              color: Theme.of(context).textSelectionHandleColor,
-                            ),
-                            textAlign: TextAlign.start,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          )
-                        ],
+                      child: customTitle(
+                        text: request.purpose,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16.0,
+                        color: Theme.of(context).textSelectionHandleColor,
+                        align: TextAlign.start,
                       ),
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                "Ksh ",
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                              heading2(
-                                  text: currencyFormat.format(request.amount),
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  align: TextAlign.end),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          subtitle2(
-                              text: "Requested On",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.end),
-                          subtitle1(
-                              text:
-                                  defaultDateFormat.format(request.requestDate),
-                              color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.end),
-                        ],
-                      ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        customTitle(
+                          text: "Ksh ",
+                          fontSize: 16.0,
+                          color: Theme.of(context).textSelectionHandleColor,
+                        ),
+                        customTitle(
+                          text: currencyFormat.format(request.amount),
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16.0,
+                          color: Theme.of(context).textSelectionHandleColor,
+                          align: TextAlign.start,
+                        ),
+                      ],
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Particulars",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                align: TextAlign.start),
+                            customTitle(
+                              text: request.particulars,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              align: TextAlign.start,
+                            )
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Requested On",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                align: TextAlign.end),
+                            customTitle(
+                              text:
+                                  defaultDateFormat.format(request.requestDate),
+                              color: Theme.of(context).textSelectionHandleColor,
+                              align: TextAlign.start,
+                            )
+                          ],
+                        ),
+                      ),
+                    ]),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
