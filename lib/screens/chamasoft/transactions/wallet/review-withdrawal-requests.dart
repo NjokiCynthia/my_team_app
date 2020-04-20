@@ -99,16 +99,12 @@ class WithdrawalRequestCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Expanded(
-                      child: Text(
-                        request.purpose,
-                        style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 16.0,
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        textAlign: TextAlign.start,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                      child: customTitle(
+                        text: request.purpose,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16.0,
+                        color: Theme.of(context).textSelectionHandleColor,
+                        align: TextAlign.start,
                       ),
                     ),
                     SizedBox(
@@ -117,13 +113,10 @@ class WithdrawalRequestCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Text(
-                          "Ksh ",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        customTitle(
+                          text: "Ksh ",
+                          fontSize: 18.0,
+                          color: Theme.of(context).textSelectionHandleColor,
                         ),
                         heading2(
                             text: currencyFormat.format(request.amount),
@@ -150,17 +143,10 @@ class WithdrawalRequestCard extends StatelessWidget {
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
                                 align: TextAlign.start),
-                            Text(
-                              request.particulars,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16.0,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                              ),
-                              textAlign: TextAlign.start,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            customTitle(
+                              text: request.particulars,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              align: TextAlign.start,
                             )
                           ],
                         ),
@@ -178,17 +164,11 @@ class WithdrawalRequestCard extends StatelessWidget {
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
                                 align: TextAlign.end),
-                            Text(
-                              defaultDateFormat.format(request.requestDate),
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16.0,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                              ),
-                              textAlign: TextAlign.end,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
+                            customTitle(
+                              text:
+                                  defaultDateFormat.format(request.requestDate),
+                              color: Theme.of(context).textSelectionHandleColor,
+                              align: TextAlign.start,
                             )
                           ],
                         ),

@@ -226,7 +226,8 @@ Widget plainButtonWithArrow(
           style: TextStyle(
             color: color,
             fontSize: size,
-            fontWeight: FontWeight.w800,
+            fontFamily: 'SegoeUI',
+            fontWeight: FontWeight.w700,
           ),
           textAlign: TextAlign.end,
         ),
@@ -262,6 +263,7 @@ Widget plainButton(
           style: TextStyle(
             color: color,
             fontSize: size,
+            fontFamily: 'SegoeUI',
             fontWeight: FontWeight.w800,
           ),
           textAlign: TextAlign.center,
@@ -392,6 +394,7 @@ Widget gridButton(
                       color: color,
                       fontWeight: FontWeight.w800,
                       fontSize: 14.0,
+                      fontFamily: 'SegoeUI',
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -403,6 +406,7 @@ Widget gridButton(
                     style: TextStyle(
                       color: color.withOpacity(0.6),
                       fontWeight: FontWeight.w600,
+                      fontFamily: 'SegoeUI',
                       fontSize: 12.0,
                     ),
                     textAlign: TextAlign.center,
@@ -420,7 +424,11 @@ Widget gridButton(
 
 Widget statusChip({String text, Color textColor, Color backgroundColor}) {
   return Chip(
-    label: subtitle2(text: text, color: textColor),
+    label: customTitle(
+      text: text,
+      color: textColor,
+      fontSize: 12.0,
+    ),
     backgroundColor: backgroundColor,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
   );

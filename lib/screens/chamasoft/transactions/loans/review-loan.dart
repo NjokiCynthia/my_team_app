@@ -424,25 +424,14 @@ class LoanSignatoryCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                isCurrentUser ? "$userName (You)" : "$userName",
-                style: TextStyle(
-                  color: Theme.of(context)
-                      .textSelectionHandleColor
-                      .withOpacity(0.8),
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w800,
-                ),
+              subtitle1(
+                text: isCurrentUser ? "$userName (You)" : "$userName",
+                color: Theme.of(context).textSelectionHandleColor,
               ),
-              Text(
-                "$userRole",
-                style: TextStyle(
-                  color: Theme.of(context)
-                      .textSelectionHandleColor
-                      .withOpacity(0.5),
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w500,
-                ),
+              subtitle2(
+                text: "$userRole",
+                color:
+                    Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
               ),
             ],
           ),
