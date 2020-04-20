@@ -36,7 +36,7 @@ Widget subtitle1(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w500,
+      fontWeight: FontWeight.w400,
       fontSize: 16.0,
       color: color,
     ),

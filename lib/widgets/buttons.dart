@@ -71,16 +71,22 @@ Widget groupInfoButton(
             SizedBox(
               height: 10,
             ),
-            Text(
-              title,
-              style: TextStyle(
+            customTitle(
+                text: title,
                 color: textColor,
+                //fontSize: 16,
                 fontWeight: FontWeight.w700,
-                fontSize: 18.0,
-              ),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
+                align: TextAlign.start),
+//            Text(
+//              title,
+//              style: TextStyle(
+//                color: textColor,
+//                fontWeight: FontWeight.w700,
+//                fontSize: 18.0,
+//              ),
+//              maxLines: 1,
+//              overflow: TextOverflow.ellipsis,
+//            ),
             Row(
               children: <Widget>[
                 Text(
