@@ -1,5 +1,7 @@
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -105,16 +107,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     fontSize: 20.0,
                   ),
                 ),
-                trailing: MaterialButton(
+                trailing: circleIconButton(
+                  icon: Icons.edit,
+                  color: primaryColor,
+                  backgroundColor: primaryColor.withOpacity(.1),
                   onPressed: () {},
-                  color: Colors.blueAccent[100].withOpacity(.2),
-                  textColor: Colors.blue,
-                  child: Icon(
-                    Icons.edit,
-                    size: 20,
-                  ),
-                  padding: EdgeInsets.all(16),
-                  shape: CircleBorder(),
                 ),
                 dense: true,
                 onTap: () {},
@@ -133,16 +130,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     fontSize: 20.0,
                   ),
                 ),
-                trailing: MaterialButton(
+                trailing: circleIconButton(
+                  icon: Icons.edit,
+                  color: primaryColor,
+                  backgroundColor: primaryColor.withOpacity(.1),
                   onPressed: () {},
-                  color: Colors.blueAccent[100].withOpacity(.2),
-                  textColor: Colors.blue,
-                  child: Icon(
-                    Icons.edit,
-                    size: 20,
-                  ),
-                  padding: EdgeInsets.all(16),
-                  shape: CircleBorder(),
                 ),
                 dense: true,
                 onTap: () {},
@@ -161,16 +153,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     fontSize: 20.0,
                   ),
                 ),
-                trailing: MaterialButton(
+                trailing: circleIconButton(
+                  icon: Icons.edit,
+                  color: primaryColor,
+                  backgroundColor: primaryColor.withOpacity(.1),
                   onPressed: () {},
-                  color: Colors.blueAccent[100].withOpacity(.2),
-                  textColor: Colors.blue,
-                  child: Icon(
-                    Icons.edit,
-                    size: 20,
-                  ),
-                  padding: EdgeInsets.all(16),
-                  shape: CircleBorder(),
                 ),
                 dense: true,
                 onTap: () {},

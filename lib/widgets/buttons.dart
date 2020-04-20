@@ -433,3 +433,23 @@ Widget statusChip({String text, Color textColor, Color backgroundColor}) {
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
   );
 }
+
+Widget circleIconButton(
+    {IconData icon,
+    Color color,
+    Color backgroundColor,
+    Function onPressed,
+    double iconSize = 20.0,
+    double padding = 10.0}) {
+  return FlatButton(
+    padding: EdgeInsets.all(padding),
+    child: Icon(
+      icon,
+      size: iconSize,
+    ),
+    onPressed: onPressed,
+    shape: new CircleBorder(),
+    textColor: color,
+    color: backgroundColor,
+  );
+}
