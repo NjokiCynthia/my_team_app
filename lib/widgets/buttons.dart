@@ -287,19 +287,19 @@ Widget paymentActionButton(
     Color textColor}) {
   return (!isFlat)
       ? OutlineButton(
+          color: Colors.white,
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                text,
-                style: TextStyle(
+              Expanded(
+                child: customTitle(
+                  text: text,
                   color: textColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 18.0,
+                  fontSize: 15.0,
                 ),
               ),
               SizedBox(
-                width: 10.0,
+                width: 5.0,
               ),
               Icon(
                 icon,
@@ -321,16 +321,16 @@ Widget paymentActionButton(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
-                text,
-                style: TextStyle(
+              Expanded(
+                child: customTitle(
+                  text: text,
                   color: textColor,
                   fontWeight: FontWeight.w700,
-                  fontSize: 18.0,
+                  fontSize: 15.0,
                 ),
               ),
               SizedBox(
-                width: 10.0,
+                width: 5.0,
               ),
               Icon(
                 icon,
