@@ -23,10 +23,10 @@ Widget heading2(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w700,
-      fontSize: 18.0,
-      color: color,
-    ),
+        fontWeight: FontWeight.w700,
+        fontSize: 18.0,
+        color: color,
+        fontFamily: 'SegoeUI'),
     textAlign: align,
   );
 }
@@ -36,10 +36,10 @@ Widget subtitle1(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w400,
-      fontSize: 16.0,
-      color: color,
-    ),
+        fontWeight: FontWeight.w400,
+        fontSize: 16.0,
+        color: color,
+        fontFamily: 'SegoeUI'),
     textAlign: align,
   );
 }
@@ -49,10 +49,10 @@ Widget subtitle2(
   return Text(
     text,
     style: TextStyle(
-      fontWeight: FontWeight.w400,
-      fontSize: 13.0,
-      color: color,
-    ),
+        fontWeight: FontWeight.w300,
+        fontSize: 13.0,
+        color: color,
+        fontFamily: 'SegoeUI'),
     textAlign: align,
   );
 }
@@ -62,12 +62,14 @@ Widget customTitle(
     Color color,
     TextAlign align = TextAlign.center,
     double fontSize = 16.0,
-    FontWeight fontWeight = FontWeight.w500}) {
+    FontWeight fontWeight = FontWeight.w400,
+    String fontFamily = 'SegoeUI'}) {
   return Text(
     text,
     style: TextStyle(
       fontWeight: fontWeight,
       fontSize: fontSize,
+      fontFamily: fontFamily,
       color: color,
     ),
     textAlign: align,

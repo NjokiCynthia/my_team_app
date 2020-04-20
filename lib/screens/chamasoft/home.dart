@@ -61,8 +61,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           "Total Balances",
                           style: TextStyle(
                             color: Colors.blueGrey[400],
+                            fontFamily: 'SegoeUI',
                             fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
@@ -184,8 +185,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     "Contribution Summary",
                     style: TextStyle(
                       color: Colors.blueGrey[400],
+                      fontFamily: 'SegoeUI',
                       fontSize: 16.0,
-                      fontWeight: FontWeight.w800,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                   IconButton(

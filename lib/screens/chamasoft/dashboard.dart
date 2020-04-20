@@ -148,6 +148,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 style: TextStyle(
                     color:
                         _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
+                    fontFamily: 'SegoeUI',
                     fontWeight: FontWeight.w700),
               ),
             ),
@@ -161,8 +162,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   "My Group",
                   style: TextStyle(
                       color: _currentPage == 1
-                          ? primaryColor
-                          : Colors.blueGrey[300],
+                  ? primaryColor
+                      : Colors.blueGrey[300],
+                      fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
             BottomNavigationBarItem(
@@ -175,8 +177,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   "Transactions",
                   style: TextStyle(
                       color: _currentPage == 2
-                          ? primaryColor
-                          : Colors.blueGrey[300],
+                  ? primaryColor
+                      : Colors.blueGrey[300],
+                      fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
             BottomNavigationBarItem(
@@ -191,6 +194,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       color: _currentPage == 3
                           ? primaryColor
                           : Colors.blueGrey[300],
+                  fontFamily: 'SegoeUI',
+
                       fontWeight: FontWeight.w700),
                 )),
           ],
