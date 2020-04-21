@@ -1,10 +1,13 @@
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
+
 class CustomDropDownButton extends StatelessWidget {
   final int selectedItem;
   final String labelText;
   final Function onChanged;
   final List<NamesListItem> listItems;
+
   const CustomDropDownButton({
     this.selectedItem,
     this.labelText,
@@ -23,12 +26,15 @@ class CustomDropDownButton extends StatelessWidget {
               InputDecorator(
                 decoration: InputDecoration(
                   filled: false,
+                  labelStyle: inputTextStyle(),
+                  hintStyle: inputTextStyle(),
+                  errorStyle: inputTextStyle(),
                   hintText: labelText,
                   labelText: selectedItem == 0 ? labelText : labelText,
                   enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                       color: Theme.of(context).hintColor,
-                      width: 2.0,
+                      width: 1.0,
                     ),
                   ),
                 ),
@@ -46,6 +52,7 @@ class CustomDropDownButton extends StatelessWidget {
                         value: item.id,
                         child: new Text(
                           item.name,
+                          style: inputTextStyle(),
                         ),
                       );
                     }).toList(),

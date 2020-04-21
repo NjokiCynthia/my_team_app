@@ -54,15 +54,18 @@ Widget multilineTextField(
   return TextFormField(
     keyboardType: TextInputType.multiline,
     maxLines: maxLines,
+    minLines: 1,
     onChanged: onChanged,
     decoration: InputDecoration(
       hasFloatingPlaceholder: true,
+      labelStyle: inputTextStyle(),
+      errorStyle: inputTextStyle(),
+      hintStyle: inputTextStyle(),
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
-        width: 2.0,
+        width: 1.0,
       )),
-      // hintText: 'Phone Number or Email Address',
       labelText: labelText,
     ),
   );

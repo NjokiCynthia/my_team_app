@@ -86,7 +86,7 @@ class RecordExpenseState extends State<RecordExpense> {
           children: <Widget>[
             toolTip(
                 context: context,
-                title: "Manually record income payment",
+                title: "Manually record expense payment",
                 message: "",
                 visible: toolTipIsVisible,
                 toggleToolTip: () {
@@ -95,7 +95,7 @@ class RecordExpenseState extends State<RecordExpense> {
                   });
                 }),
             Container(
-              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+              padding: EdgeInsets.all(16.0),
               height: MediaQuery.of(context).size.height,
               color: Theme.of(context).backgroundColor,
               child: Column(
@@ -106,6 +106,7 @@ class RecordExpenseState extends State<RecordExpense> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: <Widget>[
                       Expanded(
+                        flex: 2,
                         child: DatePicker(
                           labelText: 'Select Expense Date',
                           selectedDate: expenseDate == null
@@ -122,6 +123,7 @@ class RecordExpenseState extends State<RecordExpense> {
                         width: 5.0,
                       ),
                       Expanded(
+                        flex: 3,
                         child: CustomDropDownButton(
                           labelText: 'Select Withdrawal Method',
                           listItems: withdrawalMethods,
