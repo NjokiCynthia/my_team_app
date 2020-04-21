@@ -6,6 +6,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
@@ -137,8 +138,10 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
           controller: _scrollController,
-          child: Column(children: <Widget>[
+          child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
             toolTip(
                 context: context,
                 title: "Note that...",
@@ -230,33 +233,37 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                     ),
                     Visibility(
                       visible: memberTypeId == 1,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Column(
-                            children: memberWidgets.toList(),
-                          ),
-                          FlatButton(
-                            onPressed: () async {
-                              //open select members dialog
-                              selectedMembersList = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SelectMember(
-                                            initialMembersList:
-                                                selectedMembersList,
-                                          )));
-                            },
-                            child: Text(
-                              'Select more members',
-                              style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontSize: 15.0,
+                      child: Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Column(
+                                children: memberWidgets.toList(),
                               ),
-                            ),
+                              FlatButton(
+                                onPressed: () async {
+                                  //open select members dialog
+                                  selectedMembersList = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => SelectMember(
+                                                initialMembersList:
+                                                    selectedMembersList,
+                                              )));
+                                },
+                                child: Text(
+                                  'Select more members',
+                                  style: TextStyle(
+                                    color: Colors.blueAccent,
+                                    fontSize: 15.0,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                     SizedBox(
