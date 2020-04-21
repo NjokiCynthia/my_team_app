@@ -71,8 +71,6 @@ class RecordExpenseState extends State<RecordExpense> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController amountTextController =
-        TextEditingController(text: '');
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,

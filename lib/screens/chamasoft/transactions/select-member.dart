@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -27,15 +26,6 @@ class SelectMemberState extends State<SelectMember> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   List<MembersFilterEntry> selectedMembersList = [];
-
-  void _scrollListener() {
-    double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
-    if (_appBarElevation != newElevation) {
-      setState(() {
-        _appBarElevation = newElevation;
-      });
-    }
-  }
 
   @override
   void initState() {
