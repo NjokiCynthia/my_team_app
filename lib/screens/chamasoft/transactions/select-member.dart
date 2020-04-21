@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
-  const MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025'),
-  const MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025'),
-  const MembersFilterEntry('Edwin Kapkei', 'EK', '+254 725 854 025'),
-  const MembersFilterEntry('Geoffrey Githaiga', 'GG', '+254 725 854 025'),
+  MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025', amount: 2500.0),
+  MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025', amount: 5820.0),
+  MembersFilterEntry('Edwin Kapkei', 'EK', '+254 725 854 025', amount: 7800.0),
+  MembersFilterEntry('Geoffrey Githaiga', 'GG', '+254 725 854 025',
+      amount: 6000.0),
 ];
 
 class SelectMember extends StatefulWidget {
@@ -68,8 +69,7 @@ class SelectMemberState extends State<SelectMember> {
                     new FlatButton(
                       child: new Text(
                         "OK",
-                        style: TextStyle(
-                            color: Colors.blue),
+                        style: TextStyle(color: Colors.blue),
                       ),
                       onPressed: () {
                         Navigator.of(context).pop();

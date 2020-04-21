@@ -1,10 +1,20 @@
+import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+
+import '../select-member.dart';
+
+List<NamesListItem> memberTypes = [
+  NamesListItem(id: 1, name: "Individual Members"),
+  NamesListItem(id: 2, name: "All Members"),
+];
 
 class RecordContributionPayment extends StatefulWidget {
   @override
@@ -19,6 +29,8 @@ String selectedMemberType;
 class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  List<MembersFilterEntry> selectedMembersList = [];
+  int memberTypeId;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -34,6 +46,53 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  Iterable<Widget> get memberWidgets sync* {
+    for (MembersFilterEntry member in selectedMembersList) {
+      yield ListTile(
+//          avatar: CircleAvatar(child: Text(member.initials)),
+        title: Text(member.name,
+            style: TextStyle(
+                color: Color(0xFFB3C7D9), fontWeight: FontWeight.w700)),
+        contentPadding: EdgeInsets.all(4.0),
+        subtitle: Text(
+          member.phoneNumber,
+          style: TextStyle(color: Color(0xFFB3C7D9)),
+        ),
+        trailing: Container(
+          width: 250.0,
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                flex: 5,
+                child: amountTextInputField(
+                    context: context,
+                    labelText: 'Enter Amount',
+                    onChanged: (value) {
+                      member.amount = value;
+                    }),
+              ),
+              Expanded(
+                child: circleIconButton(
+                    backgroundColor: Color(0xFFFFF2F2),
+                    color: Color(0xFFE40000),
+                    icon: Icons.close,
+                    iconSize: 18,
+                    onPressed: () {
+                      setState(() {
+                        selectedMembersList
+                            .removeWhere((MembersFilterEntry entry) {
+                          return entry.name == member.name;
+                        });
+                      });
+                    }),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
   }
 
   @override
@@ -159,18 +218,49 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                     SizedBox(
                       height: 10,
                     ),
-                    DropDownTextField(
-                      hintText: "Select Members",
-                      selectedValue: selectedMemberType,
-                      items: memberSelection,
+                    CustomDropDownButton(
+                      labelText: 'Select Member',
+                      listItems: memberTypes,
+                      selectedItem: memberTypeId,
+                      onChanged: (value) {
+                        setState(() {
+                          memberTypeId = value;
+                        });
+                      },
+                    ),
+                    Visibility(
+                      visible: memberTypeId == 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Column(
+                            children: memberWidgets.toList(),
+                          ),
+                          FlatButton(
+                            onPressed: () async {
+                              //open select members dialog
+                              selectedMembersList = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectMember(
+                                            initialMembersList:
+                                                selectedMembersList,
+                                          )));
+                            },
+                            child: Text(
+                              'Select more members',
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 15.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(
                       height: 10,
-                    ),
-                    amountInputField(
-                        context, "Enter Amount(for each member)", null),
-                    SizedBox(
-                      height: 20,
                     ),
                     SizedBox(
                       width: 200,
