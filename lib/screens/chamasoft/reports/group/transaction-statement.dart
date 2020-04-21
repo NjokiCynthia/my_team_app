@@ -219,15 +219,17 @@ class _TransactionStatementState extends State<TransactionStatement> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: subtitle1(
+                  child: customTitle(
                       text: "Withdrawals",
+                      fontSize: 13.0,
                       color: Theme.of(context).textSelectionHandleColor,
                       align: TextAlign.center),
                 ),
                 Expanded(
                   flex: 1,
-                  child: subtitle1(
+                  child: customTitle(
                       text: "Balance",
+                      fontSize: 13.0,
                       color: Theme.of(context).textSelectionHandleColor,
                       align: TextAlign.center),
                 ),
