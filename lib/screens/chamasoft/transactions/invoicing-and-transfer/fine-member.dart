@@ -126,7 +126,7 @@ class FineMemberState extends State<FineMember> {
                   });
                 }),
             Container(
-              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+              padding: inputPagePadding,
               height: MediaQuery.of(context).size.height,
               color: Theme.of(context).backgroundColor,
               child: Column(

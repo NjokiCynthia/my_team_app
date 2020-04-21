@@ -86,7 +86,7 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Record Contribution Refund",
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
@@ -102,7 +102,7 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                   });
                 }),
             Container(
-              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+              padding: inputPagePadding,
               height: MediaQuery.of(context).size.height,
               color: Theme.of(context).backgroundColor,
               child: Column(
