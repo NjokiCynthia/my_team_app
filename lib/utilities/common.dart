@@ -35,6 +35,9 @@ TextStyle inputTextStyle() {
   return TextStyle(fontFamily: 'SegoeUI');
 }
 
+//Edge insets for scrolling input pages
+const inputPagePadding = EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0);
+
 final currencyFormat = new NumberFormat("#,##0", "en_US");
 final defaultDateFormat = new DateFormat("d MMM y");
 

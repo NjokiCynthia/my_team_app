@@ -103,7 +103,7 @@ class RecordExpenseState extends State<RecordExpense> {
                     });
                   }),
               Container(
-                padding: EdgeInsets.all(16.0),
+                padding: inputPagePadding,
                 height: MediaQuery.of(context).size.height,
                 color: Theme.of(context).backgroundColor,
                 child: Column(
