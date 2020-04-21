@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import '../select-member.dart';
+import 'fine-member.dart';
 
 List<NamesListItem> refundMethods = [
   NamesListItem(id: 1, name: "Cash"),
@@ -26,10 +27,6 @@ List<NamesListItem> contributions = [
   NamesListItem(id: 1, name: "Kikopey Land Leasing"),
   NamesListItem(id: 2, name: "Masaai Foreign Advantage"),
   NamesListItem(id: 3, name: "DVEA Properties"),
-];
-List<NamesListItem> memberTypes = [
-  NamesListItem(id: 1, name: "Individual Members"),
-  NamesListItem(id: 2, name: "All Members"),
 ];
 List<NamesListItem> groupMembers = [
   NamesListItem(id: 1, name: "Martin Nzuki"),

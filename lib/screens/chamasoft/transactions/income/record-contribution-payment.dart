@@ -1,6 +1,8 @@
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/date-picker.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -11,11 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import '../select-member.dart';
-
-List<NamesListItem> memberTypes = [
-  NamesListItem(id: 1, name: "Individual Members"),
-  NamesListItem(id: 2, name: "All Members"),
-];
 
 class RecordContributionPayment extends StatefulWidget {
   @override
@@ -103,28 +100,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     super.dispose();
   }
 
-  static final List<String> contributionList = <String>[
-    'Monthly Savings',
-    'Welfare'
-  ];
-  static final List<String> accountList = <String>[
-    'KCB Bank - 10101241241',
-    'Equity Bank - 123123100292',
-    'ABSA Bank - 1212111111',
-  ];
-  static final List<String> memberSelection = <String>[
-    'All Members',
-    'Individual Members',
-  ];
-  static final List<String> depositType = <String>[
-    'Cash',
-    'Mobile Money',
-    'Cheque',
-  ];
-
   final formKey = new GlobalKey<FormState>();
-  DateTime _selectedDate;
-  var selectDateController = TextEditingController();
+  DateTime contributionDate = DateTime.now();
+
+  int depositMethod;
+  int contributionId;
+  int accountId;
 
   @override
   Widget build(BuildContext context) {
@@ -159,64 +140,60 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       children: <Widget>[
                         Expanded(
                           flex: 2,
-                          child: TextFormField(
-                            controller: selectDateController,
-                            onTap: () => showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime.now(),
-                            ).then((date) {
+                          child: DatePicker(
+                            labelText: 'Select Expense Date',
+                            selectedDate: contributionDate == null
+                                ? DateTime.now()
+                                : contributionDate,
+                            selectDate: (selectedDate) {
                               setState(() {
-                                _selectedDate = date;
-                                print(_selectedDate.toIso8601String());
-                                selectDateController.text = _selectedDate ==
-                                        null
-                                    ? ""
-                                    : defaultDateFormat.format(_selectedDate);
+                                contributionDate = selectedDate;
                               });
-                            }),
-                            readOnly: true,
-                            decoration: InputDecoration(
-                              hasFloatingPlaceholder: true,
-                              labelText: 'Select Date',
-                              enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                                  color: Theme.of(context).hintColor,
-                                  width: 1.0,
-                                ),
-                              ),
-                            ),
+                            },
                           ),
                         ),
                         SizedBox(
-                          width: 16,
+                          width: 5,
                         ),
                         Expanded(
-                          flex: 3,
-                          child: DropDownTextField(
-                            hintText: "Select Deposit Method",
-                            selectedValue: selectedContributionValue,
-                            items: depositType,
-                          ),
-                        ),
+                            flex: 3,
+                            child: CustomDropDownButton(
+                              labelText: "Select Deposit Method",
+                              listItems: withdrawalMethods,
+                              selectedItem: depositMethod,
+                              onChanged: (value) {
+                                setState(() {
+                                  depositMethod = value;
+                                });
+                              },
+                            )),
                       ],
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    DropDownTextField(
-                      hintText: "Select Contribution",
-                      selectedValue: selectedContributionValue,
-                      items: contributionList,
+                    CustomDropDownButton(
+                      labelText: "Select Contribution",
+                      listItems: contributions,
+                      selectedItem: contributionId,
+                      onChanged: (value) {
+                        setState(() {
+                          contributionId = value;
+                        });
+                      },
                     ),
                     SizedBox(
                       height: 10,
                     ),
-                    DropDownTextField(
-                      hintText: "Select Account",
-                      selectedValue: selectedContributionValue,
-                      items: accountList,
+                    CustomDropDownButton(
+                      labelText: "Select Account",
+                      listItems: accounts,
+                      selectedItem: accountId,
+                      onChanged: (value) {
+                        setState(() {
+                          accountId = value;
+                        });
+                      },
                     ),
                     SizedBox(
                       height: 10,
@@ -254,7 +231,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                               )));
                                 },
                                 child: Text(
-                                  'Select more members',
+                                  'Select members',
                                   style: TextStyle(
                                     color: Colors.blueAccent,
                                     fontSize: 15.0,
@@ -266,6 +243,17 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Visibility(
+                        visible: memberTypeId == 2,
+                        child: amountTextInputField(
+                            context: context,
+                            labelText: 'Enter Amount',
+                            onChanged: (value) {
+                              //member.amount = value;
+                            })),
                     SizedBox(
                       height: 10,
                     ),
@@ -284,73 +272,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                   ],
                 ))
           ])),
-    );
-  }
-}
-
-// ignore: must_be_immutable
-class DropDownTextField extends StatefulWidget {
-  DropDownTextField({this.hintText, this.selectedValue, this.items});
-
-  final String hintText;
-  String selectedValue;
-  final List<String> items;
-
-  @override
-  _DropDownTextFieldState createState() => _DropDownTextFieldState();
-}
-
-class _DropDownTextFieldState extends State<DropDownTextField> {
-  @override
-  Widget build(BuildContext context) {
-    return FormField(
-      builder: (FormFieldState state) {
-        return DropdownButtonHideUnderline(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              new InputDecorator(
-                decoration: InputDecoration(
-                    filled: false,
-                    labelStyle: inputTextStyle(),
-                    hintStyle: inputTextStyle(),
-                    errorStyle: inputTextStyle(),
-                    hintText: widget.hintText,
-                    labelText: widget.selectedValue == null
-                        ? widget.hintText
-                        : widget.hintText,
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).hintColor, width: 1.0))),
-                isEmpty: widget.selectedValue == null,
-                child: new Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context).cardColor,
-                  ),
-                  child: new DropdownButton<String>(
-                    value: widget.selectedValue,
-                    isDense: true,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        widget.selectedValue = newValue;
-                      });
-                    },
-                    items: widget.items.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: inputTextStyle(),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
     );
   }
 }
