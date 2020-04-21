@@ -79,119 +79,128 @@ class RecordExpenseState extends State<RecordExpense> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Record Expense",
       ),
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Manually record expense payment",
-                message: "",
-                visible: toolTipIsVisible,
-                toggleToolTip: () {
-                  setState(() {
-                    toolTipIsVisible = !toolTipIsVisible;
-                  });
-                }),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: DatePicker(
-                          labelText: 'Select Expense Date',
-                          selectedDate: expenseDate == null
-                              ? DateTime.now()
-                              : expenseDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              expenseDate = selectedDate;
-                            });
-                          },
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: GestureDetector(
+        onTap: () {
+          FocusScopeNode currentFocus = FocusScope.of(context);
+
+          if (!currentFocus.hasPrimaryFocus) {
+            currentFocus.unfocus();
+          }
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Manually record expense payment",
+                  message: "",
+                  visible: toolTipIsVisible,
+                  toggleToolTip: () {
+                    setState(() {
+                      toolTipIsVisible = !toolTipIsVisible;
+                    });
+                  }),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: DatePicker(
+                            labelText: 'Select Expense Date',
+                            selectedDate: expenseDate == null
+                                ? DateTime.now()
+                                : expenseDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                expenseDate = selectedDate;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Expanded(
-                        flex: 3,
-                        child: CustomDropDownButton(
-                          labelText: 'Select Withdrawal Method',
-                          listItems: withdrawalMethods,
-                          selectedItem: withdrawalMethod,
-                          onChanged: (value) {
-                            setState(() {
-                              withdrawalMethod = value;
-                            });
-                          },
+                        SizedBox(
+                          width: 5.0,
                         ),
-                      ),
-                    ],
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Expense Category',
-                    listItems: expenseCategories,
-                    selectedItem: expenseCategoryId,
-                    onChanged: (value) {
-                      setState(() {
-                        expenseCategoryId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Account',
-                    listItems: accounts,
-                    selectedItem: accountId,
-                    onChanged: (value) {
-                      setState(() {
-                        accountId = value;
-                      });
-                    },
-                  ),
-                  amountTextInputField(
-                      context: context,
-                      labelText: 'Enter Amount refunded',
+                        Expanded(
+                          flex: 3,
+                          child: CustomDropDownButton(
+                            labelText: 'Select Withdrawal Method',
+                            listItems: withdrawalMethods,
+                            selectedItem: withdrawalMethod,
+                            onChanged: (value) {
+                              setState(() {
+                                withdrawalMethod = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Expense Category',
+                      listItems: expenseCategories,
+                      selectedItem: expenseCategoryId,
                       onChanged: (value) {
                         setState(() {
-                          amount = double.parse(value);
+                          expenseCategoryId = value;
                         });
-                      }),
-                  multilineTextField(
-                      context: context,
-                      labelText: 'Short Description (Optional)',
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Account',
+                      listItems: accounts,
+                      selectedItem: accountId,
                       onChanged: (value) {
                         setState(() {
-                          description = value;
+                          accountId = value;
                         });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                    context: context,
-                    text: "SAVE",
-                    onPressed: () {
-                      print('Expense date: $expenseDate');
-                      print('Withdrawal Method: $withdrawalMethod');
-                      print('Member: $expenseCategoryId');
-                      print('Account: $accountId');
-                      print('Amount: $amount');
-                      print('Description: $description');
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+                      },
+                    ),
+                    amountTextInputField(
+                        context: context,
+                        labelText: 'Enter Amount refunded',
+                        onChanged: (value) {
+                          setState(() {
+                            amount = double.parse(value);
+                          });
+                        }),
+                    multilineTextField(
+                        context: context,
+                        labelText: 'Short Description (Optional)',
+                        onChanged: (value) {
+                          setState(() {
+                            description = value;
+                          });
+                        }),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    defaultButton(
+                      context: context,
+                      text: "SAVE",
+                      onPressed: () {
+                        print('Expense date: $expenseDate');
+                        print('Withdrawal Method: $withdrawalMethod');
+                        print('Member: $expenseCategoryId');
+                        print('Account: $accountId');
+                        print('Amount: $amount');
+                        print('Description: $description');
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
