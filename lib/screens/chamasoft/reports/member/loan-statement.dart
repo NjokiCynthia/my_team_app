@@ -153,35 +153,24 @@ class _LoanStatementState extends State<LoanStatement> {
                   children: <Widget>[
                     Expanded(
                       flex: 1,
-                      child: Text(
-                        "${widget.loan.name}",
-                        style: TextStyle(
-                          color: Theme.of(context)
-                              .textSelectionHandleColor
-                              .withOpacity(0.8),
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w800,
-                        ),
+                      child: heading2(
+                        text: "${widget.loan.name}",
+                        color: Theme.of(context).textSelectionHandleColor,
+                        align: TextAlign.start,
                       ),
                     ),
                     Row(
                       children: <Widget>[
-                        Text(
-                          "Ksh ",
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        customTitle(
+                          text: "Ksh ",
+                          fontSize: 18.0,
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w400,
                         ),
-                        Text(
-                          "${currencyFormat.format(widget.loan.amount)}",
-                          style: TextStyle(
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                          textAlign: TextAlign.end,
+                        heading2(
+                          text: "${currencyFormat.format(widget.loan.amount)}",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          align: TextAlign.end,
                         ),
                       ],
                     ),
@@ -193,75 +182,46 @@ class _LoanStatementState extends State<LoanStatement> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "Amount Repaid: ",
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .textSelectionHandleColor
-                            .withOpacity(0.8),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    subtitle1(
+                      text: "Amount Repaid: ",
+                      color: Theme.of(context).textSelectionHandleColor,
                     ),
-                    Text(
-                      "Ksh ${currencyFormat.format(widget.loan.repaid)}",
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .textSelectionHandleColor
-                            .withOpacity(0.8),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    customTitle(
+                      align: TextAlign.start,
+                      text: "Ksh ${currencyFormat.format(widget.loan.repaid)}",
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontWeight: FontWeight.w600,
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "Balance: ",
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .textSelectionHandleColor
-                            .withOpacity(0.8),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    subtitle1(
+                      text: "Balance: ",
+                      color: Theme.of(context).textSelectionHandleColor,
                     ),
-                    Text(
-                      "Ksh ${currencyFormat.format(widget.loan.balance)}",
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .textSelectionHandleColor
-                            .withOpacity(0.8),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    customTitle(
+                      align: TextAlign.start,
+                      text: "Ksh ${currencyFormat.format(widget.loan.balance)}",
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontWeight: FontWeight.w600,
                     ),
                   ],
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      "Applied On: ",
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .textSelectionHandleColor
-                            .withOpacity(0.8),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w400,
-                      ),
+                    subtitle1(
+                      text: "Applied On: ",
+                      color: Theme.of(context).textSelectionHandleColor,
                     ),
-                    Text(
-                      "${defaultDateFormat.format(widget.loan.applicationDate)}",
-                      style: TextStyle(
-                        color: Theme.of(context)
-                            .textSelectionHandleColor
-                            .withOpacity(0.8),
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w800,
-                      ),
+                    customTitle(
+                      align: TextAlign.start,
+                      text:
+                          "${defaultDateFormat.format(widget.loan.applicationDate)}",
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontWeight: FontWeight.w600,
                     ),
                   ],
                 ),

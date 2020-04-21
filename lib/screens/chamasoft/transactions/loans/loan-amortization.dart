@@ -77,45 +77,81 @@ class _LoanAmortizationState extends State<LoanAmortization> {
             color: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]
                 : Color(0xffededfe),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      heading2(
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Expanded(
+                      child: heading2(
                           text: "Emergency Loan for Corona Virus",
                           color: Theme.of(context).textSelectionHandleColor,
                           align: TextAlign.start),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      subtitle2(
-                          text: "Interest Rate: 12%",
-                          color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
-                      subtitle2(
-                          text: "Repayment Period: 2 Months",
-                          color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
-                      subtitle2(
-                          text: "Application Date: May 12, 2020",
-                          color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
-                    ],
-                  ),
-                ),
-                Column(
-                  //crossAxisAlignment: CrossAxisAlignment.,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
+                    ),
                     heading2(
                         text: "Ksh 180,000",
                         color: Theme.of(context).textSelectionHandleColor,
                         align: TextAlign.start)
                   ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        subtitle1(
+                          text: "Interest Rate: ",
+                          color: Theme.of(context).textSelectionHandleColor,
+                        ),
+                        customTitle(
+                          align: TextAlign.start,
+                          text: "12%",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        subtitle1(
+                          text: "Repayment Period: ",
+                          color: Theme.of(context).textSelectionHandleColor,
+                        ),
+                        customTitle(
+                          align: TextAlign.start,
+                          text: "1 Month",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        subtitle1(
+                          text: "Application Date: ",
+                          color: Theme.of(context).textSelectionHandleColor,
+                        ),
+                        customTitle(
+                          align: TextAlign.start,
+                          text: "May 12, 2020",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Column(
+                  //crossAxisAlignment: CrossAxisAlignment.,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[],
                 )
               ],
             ),

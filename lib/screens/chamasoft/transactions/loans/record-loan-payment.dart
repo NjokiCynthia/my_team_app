@@ -101,7 +101,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                   });
                 }),
             Container(
-              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+              padding: EdgeInsets.all(16.0),
               height: MediaQuery.of(context).size.height,
               color: Theme.of(context).backgroundColor,
               child: Column(

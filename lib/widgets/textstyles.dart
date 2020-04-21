@@ -90,6 +90,7 @@ Widget textWithExternalLinks(
                 style: TextStyle(
                     decoration: TextDecoration.underline,
                     color: options['color'],
+                    fontFamily: 'SegoeUI',
                     fontWeight: options['weight']))
             : TextSpan(
                 text: text.trim() + ' ',

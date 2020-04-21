@@ -31,7 +31,7 @@ class DatePicker extends StatelessWidget {
     return new _InputDropdown(
       labelText: labelText,
       valueText: defaultDateFormat.format(selectedDate),
-      valueStyle: valueStyle,
+      valueStyle: inputTextStyle(),
       onPressed: () {
         _selectDate(context);
       },
@@ -61,12 +61,13 @@ class _InputDropdown extends StatelessWidget {
       onTap: onPressed,
       child: InputDecorator(
         decoration: InputDecoration(
+          labelStyle: inputTextStyle(),
           labelText: labelText,
           hasFloatingPlaceholder: true,
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
             color: Theme.of(context).hintColor,
-            width: 2.0,
+            width: 1.0,
           )),
         ),
 //        baseStyle: valueStyle,

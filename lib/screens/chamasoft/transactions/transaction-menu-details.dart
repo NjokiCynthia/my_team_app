@@ -10,7 +10,6 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-import 'expenditure/bank-loan-repayments.dart';
 import 'expenditure/record-contribution-refund.dart';
 import 'expenditure/record-expense.dart';
 import 'invoicing-and-transfer/create-invoice.dart';
@@ -104,10 +103,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
                     title: list[index].title,
                     color: (index == 0) ? Colors.white : Colors.blue[400],
                     isHighlighted: (index == 0) ? true : false,
-                    action: () => Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return navigate(originFlag, index);
-                        })));
+                    action: () => navigate(originFlag, index));
               }),
             );
           },
@@ -116,45 +112,72 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
     );
   }
 
-  Widget navigate(int origin, int index) {
-    Widget target = WithdrawalPurpose();
+  void navigate(int origin, int index) {
     switch (origin) {
       case 0:
-        target =
-            (index == 0) ? WithdrawalPurpose() : ReviewWithdrawalRequests();
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return (index == 0)
+              ? WithdrawalPurpose()
+              : ReviewWithdrawalRequests();
+        }));
         break;
       case 1:
-        target = (index == 0) ? ReviewLoanApplications() : RecordLoanPayment();
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return (index == 0) ? ReviewLoanApplications() : RecordLoanPayment();
+        }));
         break;
       case 2:
         if (index == 0) {
-          target = RecordContributionPayment();
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return RecordContributionPayment();
+          }));
         } else if (index == 1) {
-          target = RecordFinePayment();
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return RecordFinePayment();
+          }));
         }
 
         break;
       case 3:
+        Widget target;
         if (index == 0) {
-          target = RecordExpense();
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return RecordExpense();
+          }));
         } else if (index == 1) {
-          target = BankLoanRepayment();
+//          target = BankLoanRepayment();
+//          Navigator.of(context)
+//              .push(MaterialPageRoute(builder: (BuildContext context) {
+//            return target;
+//          }));
         } else if (index == 2) {
-          target = RecordContributionRefund();
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return RecordContributionRefund();
+          }));
         }
-
         break;
 
       case 4:
         if (index == 0) {
-          target = CreateInvoice();
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return CreateInvoice();
+            ;
+          }));
         } else if (index == 1) {
-          target = FineMember();
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return FineMember();
+            ;
+          }));
         }
-
         break;
     }
-
-    return target;
   }
 }

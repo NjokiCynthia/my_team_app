@@ -61,6 +61,9 @@ class ApplyLoanState extends State<ApplyLoan> {
             children: <Widget>[
               new InputDecorator(
                 decoration: InputDecoration(
+                    labelStyle: inputTextStyle(),
+                    hintStyle: inputTextStyle(),
+                    errorStyle: inputTextStyle(),
                     filled: false,
                     hintText: 'Select Loan Type',
                     labelText: _dropdownValue == null
@@ -69,7 +72,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                     errorText: _errorText,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
-                            color: Theme.of(context).hintColor, width: 2.0))),
+                            color: Theme.of(context).hintColor, width: 1.0))),
                 isEmpty: _dropdownValue == null,
                 child: new Theme(
                   data: Theme.of(context).copyWith(
@@ -88,7 +91,10 @@ class ApplyLoanState extends State<ApplyLoan> {
                     items: _dropdownItems.map((String value) {
                       return DropdownMenuItem<String>(
                         value: value,
-                        child: Text(value),
+                        child: Text(
+                          value,
+                          style: inputTextStyle(),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -127,7 +133,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                 message:
                     "Loan application process is totally depended on your group's constitution and your group\'s management."),
             Container(
-              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+              padding: EdgeInsets.all(16.0),
               height: MediaQuery.of(context).size.height,
               color: Theme.of(context).backgroundColor,
               child: Column(

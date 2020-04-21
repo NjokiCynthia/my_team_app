@@ -1,3 +1,4 @@
+import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -5,6 +6,7 @@ Widget amountInputField(
     BuildContext context, String labelText, TextEditingController controller) {
   return TextFormField(
     controller: controller,
+    style: inputTextStyle(),
     keyboardType: TextInputType.number,
     inputFormatters: <TextInputFormatter>[
       WhitelistingTextInputFormatter.digitsOnly,
@@ -14,7 +16,7 @@ Widget amountInputField(
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
-        width: 2.0,
+        width: 1.0,
       )),
       // hintText: 'Phone Number or Email Address',
       labelText: labelText,
@@ -26,6 +28,7 @@ Widget amountTextInputField(
     {BuildContext context, String labelText, Function onChanged}) {
   return TextFormField(
     onChanged: onChanged,
+    style: inputTextStyle(),
     keyboardType: TextInputType.number,
     inputFormatters: <TextInputFormatter>[
       WhitelistingTextInputFormatter.digitsOnly,
@@ -35,7 +38,7 @@ Widget amountTextInputField(
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
-        width: 2.0,
+        width: 1.0,
       )),
       // hintText: 'Phone Number or Email Address',
       labelText: labelText,
