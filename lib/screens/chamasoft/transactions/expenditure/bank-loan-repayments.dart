@@ -74,6 +74,7 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
   int loanId;
   int accountId;
   double amount;
+  String description;
 
   @override
   Widget build(BuildContext context) {
@@ -83,16 +84,16 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Record Loan Repayment",
+        title: "Record Bank Loan Repayment",
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Column(
           children: <Widget>[
             toolTip(
                 context: context,
-                title: "Maually record loan repayments",
+                title: "Manually record bank loan repayments",
                 message: "",
                 visible: toolTipIsVisible,
                 toggleToolTip: () {
@@ -101,58 +102,15 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                   });
                 }),
             Container(
-              padding: EdgeInsets.fromLTRB(40.0, 20.0, 40.0, 20.0),
+              padding: inputPagePadding,
               height: MediaQuery.of(context).size.height,
               color: Theme.of(context).backgroundColor,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        child: DatePicker(
-                          labelText: 'Select Deposit Date',
-                          selectedDate: depositDate == null
-                              ? DateTime.now()
-                              : depositDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              depositDate = selectedDate;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Expanded(
-                        child: CustomDropDownButton(
-                          labelText: 'Select Deposit Method',
-                          listItems: depositMethods,
-                          selectedItem: depositMethod,
-                          onChanged: (value) {
-                            setState(() {
-                              depositMethod = value;
-                            });
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
                   CustomDropDownButton(
-                    labelText: 'Select Member',
-                    listItems: groupMembers,
-                    selectedItem: groupMemberId,
-                    onChanged: (value) {
-                      setState(() {
-                        groupMemberId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Loan',
+                    labelText: 'Select Bank Loan',
                     listItems: loans,
                     selectedItem: loanId,
                     onChanged: (value) {
@@ -161,8 +119,18 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                       });
                     },
                   ),
+                  DatePicker(
+                    labelText: 'Select Repayment Date',
+                    selectedDate:
+                        depositDate == null ? DateTime.now() : depositDate,
+                    selectDate: (selectedDate) {
+                      setState(() {
+                        depositDate = selectedDate;
+                      });
+                    },
+                  ),
                   CustomDropDownButton(
-                    labelText: 'Select Account',
+                    labelText: 'Select Account Withdrawn',
                     listItems: accounts,
                     selectedItem: accountId,
                     onChanged: (value) {
@@ -171,12 +139,30 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                       });
                     },
                   ),
+                  CustomDropDownButton(
+                    labelText: 'Select Repayment Method',
+                    listItems: depositMethods,
+                    selectedItem: depositMethod,
+                    onChanged: (value) {
+                      setState(() {
+                        depositMethod = value;
+                      });
+                    },
+                  ),
                   amountTextInputField(
                       context: context,
-                      labelText: 'Enter Amount refunded',
+                      labelText: 'Enter Amount',
                       onChanged: (value) {
                         setState(() {
                           amount = double.parse(value);
+                        });
+                      }),
+                  multilineTextField(
+                      context: context,
+                      labelText: 'Short Description (Optional)',
+                      onChanged: (value) {
+                        setState(() {
+                          description = value;
                         });
                       }),
                   SizedBox(

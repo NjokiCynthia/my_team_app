@@ -10,6 +10,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
+import 'expenditure/bank-loan-repayments.dart';
 import 'expenditure/record-contribution-refund.dart';
 import 'expenditure/record-expense.dart';
 import 'invoicing-and-transfer/create-invoice.dart';
@@ -150,11 +151,11 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
             return RecordExpense();
           }));
         } else if (index == 1) {
-//          target = BankLoanRepayment();
-//          Navigator.of(context)
-//              .push(MaterialPageRoute(builder: (BuildContext context) {
-//            return target;
-//          }));
+          target = BankLoanRepayment();
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return target;
+          }));
         } else if (index == 2) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
