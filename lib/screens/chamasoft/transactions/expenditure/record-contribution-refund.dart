@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -9,26 +10,17 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-List<NamesListItem> refundMethods = [
-  NamesListItem(id: 1, name: "Cash"),
-  NamesListItem(id: 2, name: "Cheque"),
-  NamesListItem(id: 3, name: "MPesa"),
-];
 List<NamesListItem> contributions = [
   NamesListItem(id: 1, name: "Kikopey Land Leasing"),
   NamesListItem(id: 2, name: "Masaai Foreign Advantage"),
   NamesListItem(id: 3, name: "DVEA Properties"),
 ];
+
 List<NamesListItem> groupMembers = [
   NamesListItem(id: 1, name: "Martin Nzuki"),
   NamesListItem(id: 2, name: "Peter Kimutai"),
   NamesListItem(id: 3, name: "Geoffrey Githaiga"),
   NamesListItem(id: 4, name: "Edwin Kapkei"),
-];
-List<NamesListItem> accounts = [
-  NamesListItem(id: 1, name: "KCB Chama Account"),
-  NamesListItem(id: 2, name: "Equity Investment Account"),
-  NamesListItem(id: 3, name: "NCBA Loop Account"),
 ];
 
 class RecordContributionRefund extends StatefulWidget {
@@ -130,7 +122,7 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       Expanded(
                         child: CustomDropDownButton(
                           labelText: 'Select Refund Method',
-                          listItems: refundMethods,
+                          listItems: depositMethods,
                           selectedItem: refundMethod,
                           onChanged: (value) {
                             setState(() {

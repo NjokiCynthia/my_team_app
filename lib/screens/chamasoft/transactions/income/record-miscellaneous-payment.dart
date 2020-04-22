@@ -10,23 +10,12 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-List<NamesListItem> depositors = [
-  NamesListItem(id: 1, name: "Peter Parker"),
-  NamesListItem(id: 2, name: "Tony Stark"),
-  NamesListItem(id: 3, name: "Stephen Strange"),
-];
-List<NamesListItem> incomeCategories = [
-  NamesListItem(id: 1, name: "Tax Refunds"),
-  NamesListItem(id: 2, name: "Dividends"),
-  NamesListItem(id: 3, name: "Share Profits"),
-];
-
-class RecordIncome extends StatefulWidget {
+class RecordMiscellaneousPayment extends StatefulWidget {
   @override
-  _RecordIncomeState createState() => _RecordIncomeState();
+  _RecordMiscellaneousPayment createState() => _RecordMiscellaneousPayment();
 }
 
-class _RecordIncomeState extends State<RecordIncome> {
+class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -73,7 +62,7 @@ class _RecordIncomeState extends State<RecordIncome> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Record Income",
+        title: "Record Miscellaneous Payment",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
@@ -82,7 +71,7 @@ class _RecordIncomeState extends State<RecordIncome> {
           children: <Widget>[
             toolTip(
                 context: context,
-                title: "Manually record income payments",
+                title: "Manually record miscellanoues payments",
                 message: "",
                 visible: toolTipIsVisible,
                 toggleToolTip: () {
@@ -109,22 +98,12 @@ class _RecordIncomeState extends State<RecordIncome> {
                     },
                   ),
                   CustomDropDownButton(
-                    labelText: 'Select Depositor',
-                    listItems: depositors,
-                    selectedItem: depositorId,
+                    labelText: 'Select Member',
+                    listItems: groupMembers,
+                    selectedItem: groupMemberId,
                     onChanged: (value) {
                       setState(() {
-                        depositorId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Income Category',
-                    listItems: incomeCategories,
-                    selectedItem: incomeCategoryId,
-                    onChanged: (value) {
-                      setState(() {
-                        incomeCategoryId = value;
+                        groupMemberId = value;
                       });
                     },
                   ),

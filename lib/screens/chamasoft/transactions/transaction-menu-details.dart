@@ -2,6 +2,7 @@ import 'package:chamasoft/screens/chamasoft/models/transaction-menu.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
@@ -145,6 +146,11 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return RecordIncome();
+          }));
+        } else if (index == 3) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return RecordMiscellaneousPayment();
           }));
         }
 

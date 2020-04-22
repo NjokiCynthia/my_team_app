@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -8,28 +9,6 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
-List<NamesListItem> depositMethods = [
-  NamesListItem(id: 1, name: "Cash"),
-  NamesListItem(id: 2, name: "Cheque"),
-  NamesListItem(id: 3, name: "MPesa"),
-];
-List<NamesListItem> groupMembers = [
-  NamesListItem(id: 1, name: "Martin Nzuki"),
-  NamesListItem(id: 2, name: "Peter Kimutai"),
-  NamesListItem(id: 3, name: "Geoffrey Githaiga"),
-  NamesListItem(id: 4, name: "Edwin Kapkei"),
-];
-List<NamesListItem> loans = [
-  NamesListItem(id: 1, name: "Emergency Loan"),
-  NamesListItem(id: 2, name: "Chama Loan"),
-  NamesListItem(id: 3, name: "Business Loan"),
-];
-List<NamesListItem> accounts = [
-  NamesListItem(id: 1, name: "KCB Chama Account"),
-  NamesListItem(id: 2, name: "Equity Investment Account"),
-  NamesListItem(id: 3, name: "NCBA Loop Account"),
-];
 
 class BankLoanRepayment extends StatefulWidget {
   @override

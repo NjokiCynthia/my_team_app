@@ -31,12 +31,6 @@ List<NamesListItem> memberTypes = [
   NamesListItem(id: 1, name: "Individual Members"),
   NamesListItem(id: 2, name: "All Members"),
 ];
-List<NamesListItem> groupMembers = [
-  NamesListItem(id: 1, name: "Martin Nzuki"),
-  NamesListItem(id: 2, name: "Peter Kimutai"),
-  NamesListItem(id: 3, name: "Geoffrey Githaiga"),
-  NamesListItem(id: 4, name: "Edwin Kapkei"),
-];
 
 class FineMember extends StatefulWidget {
   @override
