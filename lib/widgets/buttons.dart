@@ -442,17 +442,21 @@ Widget circleIconButton(
     Color color,
     Color backgroundColor,
     Function onPressed,
-    double iconSize = 20.0,
-    double padding = 10.0}) {
-  return FlatButton(
+    double iconSize = 32.0,
+    double padding = 2.0}) {
+  return Container(
     padding: EdgeInsets.all(padding),
-    child: Icon(
-      icon,
-      size: iconSize,
+    decoration: ShapeDecoration(
+      color: backgroundColor,
+      shape: CircleBorder(),
     ),
-    onPressed: onPressed,
-    shape: new CircleBorder(),
-    textColor: color,
-    color: backgroundColor,
+    child: IconButton(
+      icon: Icon(
+        icon,
+        size: iconSize,
+      ),
+      onPressed: onPressed,
+      color: color,
+    ),
   );
 }

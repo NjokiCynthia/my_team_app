@@ -164,7 +164,6 @@ class PayNowState extends State<PayNow> {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController controller = new TextEditingController();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,

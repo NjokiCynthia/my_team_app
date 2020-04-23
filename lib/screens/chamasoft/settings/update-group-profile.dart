@@ -11,18 +11,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-class UpdateProfile extends StatefulWidget {
+class UpdateGroupProfile extends StatefulWidget {
   @override
-  _UpdateProfileState createState() => _UpdateProfileState();
+  _UpdateGroupProfileState createState() => _UpdateGroupProfileState();
 }
 
-class _UpdateProfileState extends State<UpdateProfile> {
+class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   File avatar;
-  String name = 'Jane Doe';
+  String groupName = 'Witcher Welfare';
   String phoneNumber = '+254 701 234 567';
-  String emailAddress = 'jane.doe@gmail.com';
+  String emailAddress = 'official@witcher.com';
+  String currency = 'KES';
+  String country = 'Kenya';
+
   final _formKey = GlobalKey<FormState>();
 
   void _scrollListener() {
@@ -130,20 +133,20 @@ class _UpdateProfileState extends State<UpdateProfile> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Name"),
+          title: new Text("Update Group Name"),
           content: Form(
             key: _formKey,
             child: TextFormField(
-              initialValue: name,
+              initialValue: groupName,
               keyboardType: TextInputType.text,
               onChanged: (value) {
                 setState(() {
-                  name = value;
+                  groupName = value;
                 });
               },
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Your name is required';
+                  return 'Your Group name is required';
                 }
                 return null;
               },
@@ -154,8 +157,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   color: Theme.of(context).hintColor,
                   width: 2.0,
                 )),
-                // hintText: 'Phone Number or Email Address',
-                labelText: "Your Name",
+                labelText: "Your Group  Name",
               ),
             ),
           ),
@@ -193,7 +195,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Email Address"),
+          title: new Text("Update Group Email Address"),
           content: Form(
             key: _formKey,
             child: TextFormField(
@@ -206,7 +208,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               },
               validator: (value) {
                 if (value.isEmpty) {
-                  return 'Your email address is required';
+                  return 'Your Group email address is required';
                 }
                 return null;
               },
@@ -217,8 +219,131 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   color: Theme.of(context).hintColor,
                   width: 2.0,
                 )),
-                // hintText: 'Phone Number or Email Address',
-                labelText: "Your Email Address",
+                labelText: "Your Group Email Address",
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(
+                "Cancel",
+                style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text(
+                "Save",
+                style: new TextStyle(color: primaryColor),
+              ),
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateCurrency() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: new Text("Update Group Currency"),
+          content: Form(
+            key: _formKey,
+            child: TextFormField(
+              initialValue: currency,
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                setState(() {
+                  currency = value;
+                });
+              },
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Your Group Currency is required';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hasFloatingPlaceholder: true,
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                  color: Theme.of(context).hintColor,
+                  width: 2.0,
+                )),
+                labelText: "Your Group Currency",
+              ),
+            ),
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(
+                "Cancel",
+                style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+              child: new Text(
+                "Save",
+                style: new TextStyle(color: primaryColor),
+              ),
+              onPressed: () {
+                if (_formKey.currentState.validate()) {
+                  Navigator.of(context).pop();
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _updateCountry() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: new Text("Update Country"),
+          content: Form(
+            key: _formKey,
+            child: TextFormField(
+              initialValue: country,
+              keyboardType: TextInputType.text,
+              onChanged: (value) {
+                setState(() {
+                  country = value;
+                });
+              },
+              validator: (value) {
+                if (value.isEmpty) {
+                  return 'Your Country';
+                }
+                return null;
+              },
+              decoration: InputDecoration(
+                hasFloatingPlaceholder: true,
+                enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                  color: Theme.of(context).hintColor,
+                  width: 2.0,
+                )),
+                labelText: "Your Country",
               ),
             ),
           ),
@@ -272,10 +397,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 height: 40.0,
               ),
               heading1(
-                  text: "Update Profile",
+                  text: "Update Group Profile",
                   color: Theme.of(context).textSelectionHandleColor),
               subtitle2(
-                  text: "Update your Chamasoft Profile",
+                  text: "Update the profile info for your Group",
                   color: Theme.of(context).textSelectionHandleColor),
               SizedBox(
                 height: 20.0,
@@ -314,15 +439,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 ),
               ),
               InfoUpdateTile(
-                labelText: "Name",
-                updateText: name,
+                labelText: "Group Name",
+                updateText: groupName,
                 icon: Icons.edit,
                 onPressed: () {
                   _updateName();
                 },
               ),
               InfoUpdateTile(
-                labelText: "Phone Number",
+                labelText: "Group Phone Number",
                 updateText: phoneNumber,
                 icon: Icons.edit,
                 onPressed: () {
@@ -330,11 +455,27 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 },
               ),
               InfoUpdateTile(
-                labelText: "Email Address",
+                labelText: "Group Email Address",
                 updateText: emailAddress,
                 icon: Icons.edit,
                 onPressed: () {
                   _updateEmailAddress();
+                },
+              ),
+              InfoUpdateTile(
+                labelText: "Currency",
+                updateText: currency,
+                icon: Icons.edit,
+                onPressed: () {
+                  _updateCurrency();
+                },
+              ),
+              InfoUpdateTile(
+                labelText: "Country",
+                updateText: country,
+                icon: Icons.edit,
+                onPressed: () {
+                  _updateCountry();
                 },
               ),
             ],
