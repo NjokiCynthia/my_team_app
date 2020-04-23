@@ -1,6 +1,7 @@
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -91,6 +92,12 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (BuildContext context) {
           return GroupLoansSummary();
+        }));
+        break;
+      case 3:
+        Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) {
+          return GroupLoanApplications();
         }));
         break;
       case 4:
