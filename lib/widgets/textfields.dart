@@ -2,15 +2,13 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-Widget amountInputField(
-    BuildContext context, String labelText, TextEditingController controller) {
+Widget simpleTextInputField(
+    {BuildContext context, String labelText, Function onChanged}) {
   return TextFormField(
-    controller: controller,
+    onChanged: onChanged,
     style: inputTextStyle(),
-    keyboardType: TextInputType.number,
-    inputFormatters: <TextInputFormatter>[
-      WhitelistingTextInputFormatter.digitsOnly,
-    ],
+    keyboardType: TextInputType.text,
+    textCapitalization: TextCapitalization.sentences,
     decoration: InputDecoration(
       hasFloatingPlaceholder: true,
       enabledBorder: UnderlineInputBorder(

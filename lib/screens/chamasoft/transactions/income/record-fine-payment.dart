@@ -152,7 +152,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
   int accountId;
 
   var selectDateController = TextEditingController();
-  var amountInputValue = TextEditingController();
+  double amountInputValue;
 
   @override
   Widget build(BuildContext context) {
@@ -292,10 +292,15 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                     height: 10,
                   ),
                   Visibility(
-                    visible: memberTypeId == 2,
-                    child: amountInputField(context,
-                        "Enter Amount(for each member)", amountInputValue),
-                  ),
+                      visible: memberTypeId == 2,
+                      child: amountTextInputField(
+                          context: context,
+                          labelText: "Enter Amount(for each member)",
+                          onChanged: (value) {
+                            setState(() {
+                              amountInputValue = double.parse(value);
+                            });
+                          })),
                   SizedBox(
                     height: 10,
                   ),

@@ -19,6 +19,8 @@ class PayNowState extends State<PayNow> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
+  double amountInputValue;
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -188,7 +190,14 @@ class PayNowState extends State<PayNow> {
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
-                  amountInputField(context, 'Amount to pay', controller),
+                  amountTextInputField(
+                      context: context,
+                      labelText: "Amount to pay",
+                      onChanged: (value) {
+                        setState(() {
+                          amountInputValue = double.parse(value);
+                        });
+                      }),
                   SizedBox(
                     height: 24,
                   ),

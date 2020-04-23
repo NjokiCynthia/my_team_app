@@ -21,6 +21,8 @@ class ApplyLoanState extends State<ApplyLoan> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
+  double amountInputValue;
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -139,7 +141,14 @@ class ApplyLoanState extends State<ApplyLoan> {
               child: Column(
                 children: <Widget>[
                   buildDropDown(),
-                  amountInputField(context, 'Amount applying for', controller),
+                  amountTextInputField(
+                      context: context,
+                      labelText: "Amount applying for",
+                      onChanged: (value) {
+                        setState(() {
+                          amountInputValue = double.parse(value);
+                        });
+                      }),
                   SizedBox(
                     height: 24,
                   ),

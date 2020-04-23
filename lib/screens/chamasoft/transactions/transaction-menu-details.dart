@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/transaction-menu.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/record-bank-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.dart';
@@ -152,6 +153,11 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return RecordMiscellaneousPayment();
           }));
+        } else if (index == 4) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return RecordBankLoan();
+          }));
         }
 
         break;
@@ -181,13 +187,11 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return CreateInvoice();
-            ;
           }));
         } else if (index == 1) {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return FineMember();
-            ;
           }));
         }
         break;

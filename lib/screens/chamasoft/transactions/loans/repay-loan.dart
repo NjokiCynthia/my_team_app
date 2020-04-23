@@ -22,6 +22,8 @@ class _RepayLoanState extends State<RepayLoan> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
+  double amountInputValue;
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -254,7 +256,14 @@ class _RepayLoanState extends State<RepayLoan> {
                   padding: EdgeInsets.all(16.0),
                   child: Column(
                     children: <Widget>[
-                      amountInputField(context, 'Amount to repay', controller),
+                      amountTextInputField(
+                          context: context,
+                          labelText: "Amount to repay",
+                          onChanged: (value) {
+                            setState(() {
+                              amountInputValue = double.parse(value);
+                            });
+                          }),
                       SizedBox(
                         height: 24,
                       ),
