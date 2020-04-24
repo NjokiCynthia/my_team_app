@@ -14,6 +14,7 @@ List<NamesListItem> withdrawalMethods = [
   NamesListItem(id: 2, name: "Cheque"),
   NamesListItem(id: 3, name: "MPesa"),
 ];
+
 List<NamesListItem> expenseCategories = [
   NamesListItem(id: 1, name: "Kikopey Land Leasing"),
   NamesListItem(id: 2, name: "Masaai Foreign Advantage"),

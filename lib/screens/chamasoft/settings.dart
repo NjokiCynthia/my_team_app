@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'settings/group-settings.dart';
 import 'settings/update-profile.dart';
 
 class ChamasoftSettings extends StatefulWidget {
@@ -133,7 +134,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                           textColor: Colors.white,
                           buttonHeight: 30.0,
                           textSize: 12.0,
-                          action: () => Navigator.of(context).pushReplacement(
+                          action: () => Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (BuildContext context) =>
                                   UpdateProfile(),
@@ -165,7 +166,11 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () {},
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => GroupSettings(),
+                ),
+              ),
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
@@ -188,7 +193,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 pushNotifications ? "Enabled" : "Disabled",
                 style: TextStyle(color: Theme.of(context).bottomAppBarColor),
               ),
-              value: pushNotifications ? true : false,
+              value: pushNotifications,
               onChanged: (bool value) {
                 setState(() {
                   pushNotifications = value;

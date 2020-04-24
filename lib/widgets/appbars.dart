@@ -66,6 +66,36 @@ Widget secondaryPageAppbar(
   );
 }
 
+Widget secondaryPageTabbedAppbar(
+    {BuildContext context,
+      String title,
+      Function action,
+      double elevation,
+      IconData leadingIcon,
+      List<Widget> actions,
+      Widget bottom}) {
+  return AppBar(
+    title: Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        screenActionButton(
+          icon: leadingIcon,
+          backgroundColor: primaryColor.withOpacity(0.1),
+          textColor: primaryColor,
+          action: action,
+        ),
+        SizedBox(width: 20.0),
+        heading2(color: primaryColor, text: title),
+      ],
+    ),
+    elevation: elevation,
+    backgroundColor: Theme.of(context).backgroundColor,
+    automaticallyImplyLeading: false,
+    actions: actions,
+    bottom: bottom,
+  );
+}
+
 Widget tertiaryPageAppbar(
     {BuildContext context,
     String title,

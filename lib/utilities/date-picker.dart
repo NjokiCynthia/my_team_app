@@ -27,7 +27,6 @@ class DatePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.body1;
     return new _InputDropdown(
       labelText: labelText,
       valueText: defaultDateFormat.format(selectedDate),

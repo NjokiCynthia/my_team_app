@@ -156,17 +156,18 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                             width: 5,
                           ),
                           Expanded(
-                              flex: 3,
-                              child: CustomDropDownButton(
-                                labelText: "Select Deposit Method",
-                                listItems: withdrawalMethods,
-                                selectedItem: depositMethod,
-                                onChanged: (value) {
-                                  setState(() {
-                                    depositMethod = value;
-                                  });
-                                },
-                              )),
+                            flex: 3,
+                            child: CustomDropDownButton(
+                              labelText: "Select Deposit Method",
+                              listItems: withdrawalMethods,
+                              selectedItem: depositMethod,
+                              onChanged: (value) {
+                                setState(() {
+                                  depositMethod = value;
+                                });
+                              },
+                            ),
+                          ),
                         ],
                       ),
                       SizedBox(

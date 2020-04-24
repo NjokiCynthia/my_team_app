@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 Widget simpleTextInputField(
-    {BuildContext context, String labelText, Function onChanged}) {
+    {BuildContext context, String labelText, Function onChanged,String hintText = ''}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
@@ -16,14 +16,14 @@ Widget simpleTextInputField(
         color: Theme.of(context).hintColor,
         width: 1.0,
       )),
-      // hintText: 'Phone Number or Email Address',
+      hintText: hintText,
       labelText: labelText,
     ),
   );
 }
 
 Widget amountTextInputField(
-    {BuildContext context, String labelText, Function onChanged}) {
+    {BuildContext context, String labelText, Function onChanged,String hintText = ''}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
@@ -38,7 +38,7 @@ Widget amountTextInputField(
         color: Theme.of(context).hintColor,
         width: 1.0,
       )),
-      // hintText: 'Phone Number or Email Address',
+      hintText: hintText,
       labelText: labelText,
     ),
   );
