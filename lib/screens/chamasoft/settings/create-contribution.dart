@@ -46,7 +46,7 @@ class _CreateContributionState extends State<CreateContribution>
   void dispose() {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
-    .dispose();
+    _tabController?.dispose();
     super.dispose();
   }
 
