@@ -14,7 +14,7 @@ class DashedDivider extends StatelessWidget {
       builder: (BuildContext context, BoxConstraints constraints) {
         final boxWidth = constraints.constrainWidth();
         final dashWidth = 10.0;
-        final dashHeight = thickness * 2;
+        final dashHeight = thickness;
         final dashCount = (boxWidth / (2 * dashWidth)).floor();
         return Flex(
           children: List.generate(dashCount, (_) {
