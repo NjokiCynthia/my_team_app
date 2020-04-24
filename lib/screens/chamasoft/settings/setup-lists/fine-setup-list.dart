@@ -2,7 +2,6 @@ import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/models/string-named-list-item.dart';
 
 List<StringNamesListItem> fineChargeableOnOptions = [
-  StringNamesListItem(id: "0", name: "Select fine chargeable on"),
   StringNamesListItem(
       id: "1", name: "chargeable 1 day after contribution date"),
   StringNamesListItem(
