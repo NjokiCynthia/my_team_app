@@ -166,6 +166,8 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        scrollDirection: Axis.vertical,
         controller: _scrollController,
         child: Column(
           children: <Widget>[
@@ -174,11 +176,11 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                 title: "Note that...",
                 message: "Manually record fine payments",
                 showTitle: false),
-            Container(
+            Padding(
               padding: inputPagePadding,
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
@@ -255,36 +257,34 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                   ),
                   Visibility(
                     visible: memberTypeId == 1,
-                    child: Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Column(
-                              children: memberWidgets.toList(),
-                            ),
-                            FlatButton(
-                              onPressed: () async {
-                                //open select members dialog
-                                selectedMembersList = await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SelectMember(
-                                              initialMembersList:
-                                                  selectedMembersList,
-                                            )));
-                              },
-                              child: Text(
-                                'Select members',
-                                style: TextStyle(
-                                  color: Colors.blueAccent,
-                                  fontSize: 15.0,
-                                ),
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Column(
+                            children: memberWidgets.toList(),
+                          ),
+                          FlatButton(
+                            onPressed: () async {
+                              //open select members dialog
+                              selectedMembersList = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectMember(
+                                            initialMembersList:
+                                                selectedMembersList,
+                                          )));
+                            },
+                            child: Text(
+                              'Select members',
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 15.0,
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
