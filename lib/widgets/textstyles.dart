@@ -359,6 +359,7 @@ Widget toolTip(
                   (showTitle)
                       ? subtitle1(
                           text: title,
+                          align: TextAlign.start,
                           color: Theme.of(context).textSelectionHandleColor)
                       : Container(),
                   (message.length > 0)

@@ -4,6 +4,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribut
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
@@ -192,6 +193,11 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
           Navigator.of(context)
               .push(MaterialPageRoute(builder: (BuildContext context) {
             return FineMember();
+          }));
+        } else if (index == 3) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return AccountToAccountTransfer();
           }));
         }
         break;
