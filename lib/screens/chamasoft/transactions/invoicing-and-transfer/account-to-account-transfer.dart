@@ -21,7 +21,7 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
   ScrollController _scrollController;
 
   void _scrollListener() {
-    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
+    double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
     if (_appBarElevation != newElevation) {
       setState(() {
         _appBarElevation = newElevation;
