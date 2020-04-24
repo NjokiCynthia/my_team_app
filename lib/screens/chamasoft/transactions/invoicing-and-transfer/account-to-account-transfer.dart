@@ -10,12 +10,13 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-class RecordMiscellaneousPayment extends StatefulWidget {
+class AccountToAccountTransfer extends StatefulWidget {
   @override
-  _RecordMiscellaneousPayment createState() => _RecordMiscellaneousPayment();
+  _AccountToAccountTransferState createState() =>
+      _AccountToAccountTransferState();
 }
 
-class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
+class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -44,13 +45,13 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
 
   final formKey = new GlobalKey<FormState>();
   bool toolTipIsVisible = true;
-  DateTime refundDate = DateTime.now();
-  int refundMethod;
+  DateTime depositDate = DateTime.now();
+  int depositMethod;
   NamesListItem depositMethodValue;
-  int depositorId;
   int groupMemberId;
-  int incomeCategoryId;
-  int accountId;
+  int loanId;
+  int fromAccountId;
+  int toAccountId;
   double amount;
   String description;
 
@@ -62,7 +63,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Record Miscellaneous Payment",
+        title: "Account to Account Transfer",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
@@ -71,7 +72,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
           children: <Widget>[
             toolTip(
                 context: context,
-                title: "Manually record miscellanoues payments",
+                title: "Manually record account to account money transfer",
                 message: "",
                 visible: toolTipIsVisible,
                 toggleToolTip: () {
@@ -88,42 +89,32 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   DatePicker(
-                    labelText: 'Select Deposit Date',
+                    labelText: 'Select Transfer Date',
                     selectedDate:
-                        refundDate == null ? DateTime.now() : refundDate,
+                        depositDate == null ? DateTime.now() : depositDate,
                     selectDate: (selectedDate) {
                       setState(() {
-                        refundDate = selectedDate;
+                        depositDate = selectedDate;
                       });
                     },
                   ),
                   CustomDropDownButton(
-                    labelText: 'Select Member',
-                    listItems: groupMembers,
-                    selectedItem: groupMemberId,
-                    onChanged: (value) {
-                      setState(() {
-                        groupMemberId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Account',
+                    labelText: 'Select account to transfer from',
                     listItems: accounts,
-                    selectedItem: accountId,
+                    selectedItem: fromAccountId,
                     onChanged: (value) {
                       setState(() {
-                        accountId = value;
+                        fromAccountId = value;
                       });
                     },
                   ),
                   CustomDropDownButton(
-                    labelText: 'Select Deposit Method',
-                    listItems: depositMethods,
-                    selectedItem: refundMethod,
+                    labelText: 'Select account to transfer to',
+                    listItems: accounts,
+                    selectedItem: toAccountId,
                     onChanged: (value) {
                       setState(() {
-                        refundMethod = value;
+                        toAccountId = value;
                       });
                     },
                   ),
@@ -150,12 +141,12 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                     context: context,
                     text: "SAVE",
                     onPressed: () {
-                      print('Refund date: $refundDate');
-                      print('Refund Method: $refundMethod');
-                      print('Depositor: $depositorId');
-                      print('Account: $accountId');
+                      print('Deposit date: $depositDate');
+                      print('Deposit Method: $depositMethod');
+                      print('Member: $groupMemberId');
+                      print('Loan: $loanId');
+                      print('Account: $fromAccountId');
                       print('Amount: $amount');
-                      print('Description: $description');
                     },
                   ),
                 ],

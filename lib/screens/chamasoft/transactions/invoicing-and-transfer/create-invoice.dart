@@ -28,12 +28,6 @@ List<NamesListItem> contributions = [
   NamesListItem(id: 2, name: "Masaai Foreign Advantage"),
   NamesListItem(id: 3, name: "DVEA Properties"),
 ];
-List<NamesListItem> groupMembers = [
-  NamesListItem(id: 1, name: "Martin Nzuki"),
-  NamesListItem(id: 2, name: "Peter Kimutai"),
-  NamesListItem(id: 3, name: "Geoffrey Githaiga"),
-  NamesListItem(id: 4, name: "Edwin Kapkei"),
-];
 
 class CreateInvoice extends StatefulWidget {
   @override
