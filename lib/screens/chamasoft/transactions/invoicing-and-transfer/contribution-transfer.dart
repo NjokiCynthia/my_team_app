@@ -24,6 +24,11 @@ List<NamesListItem> transferToOptions = [
   NamesListItem(id: 3, name: "Loan Share"),
   NamesListItem(id: 4, name: "Another Member"),
 ];
+List<NamesListItem> memberTransferToOptions = [
+  NamesListItem(id: 1, name: "Contribution Share"),
+  NamesListItem(id: 2, name: "Fine Payments"),
+  NamesListItem(id: 3, name: "Loan Share"),
+];
 
 class ContributionTransfer extends StatefulWidget {
   @override
@@ -64,13 +69,15 @@ class _ContributionTransferState extends State<ContributionTransfer> {
   NamesListItem depositMethodValue;
   int transferFromOptionId;
   int transferToOptionId;
+  int memberTransferToOptionId;
   int groupMemberId;
+  int receiverMemberId;
   int incomeCategoryId;
   int contributionFromId;
   int contributionToId;
   int loanFromId;
   int loanToId;
-  int accountId;
+  int fineToId;
   double amount;
   String description;
 
@@ -168,38 +175,77 @@ class _ContributionTransferState extends State<ContributionTransfer> {
                     onChanged: (value) {
                       setState(() {
                         transferToOptionId = value;
+                        memberTransferToOptionId = null;
                       });
                     },
                   ),
-                  CustomDropDownButton(
-                    labelText: 'Select Contribution To',
-                    listItems: contributions,
-                    selectedItem: contributionToId,
-                    onChanged: (value) {
-                      setState(() {
-                        contributionToId = value;
-                      });
-                    },
+                  Visibility(
+                    visible: transferToOptionId == 4,
+                    child: CustomDropDownButton(
+                      labelText: 'Select Member to Receive Transfer',
+                      listItems: groupMembers,
+                      selectedItem: receiverMemberId,
+                      onChanged: (value) {
+                        setState(() {
+                          receiverMemberId = value;
+                        });
+                      },
+                    ),
                   ),
-                  CustomDropDownButton(
-                    labelText: 'Select Loan To',
-                    listItems: loans,
-                    selectedItem: loanToId,
-                    onChanged: (value) {
-                      setState(() {
-                        loanFromId = value;
-                      });
-                    },
+                  Visibility(
+                    visible: transferToOptionId == 4,
+                    child: CustomDropDownButton(
+                      labelText: 'Select Transfer To',
+                      listItems: memberTransferToOptions,
+                      selectedItem: memberTransferToOptionId,
+                      onChanged: (value) {
+                        setState(() {
+                          memberTransferToOptionId = value;
+                        });
+                      },
+                    ),
                   ),
-                  CustomDropDownButton(
-                    labelText: 'Select Fine To',
-                    listItems: fineOptions,
-                    selectedItem: loanToId,
-                    onChanged: (value) {
-                      setState(() {
-                        loanFromId = value;
-                      });
-                    },
+                  Visibility(
+                    visible: transferToOptionId == 1 ||
+                        memberTransferToOptionId == 1,
+                    child: CustomDropDownButton(
+                      labelText: 'Select Contribution To',
+                      listItems: contributions,
+                      selectedItem: contributionToId,
+                      onChanged: (value) {
+                        setState(() {
+                          contributionToId = value;
+                        });
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: transferToOptionId == 2 ||
+                        memberTransferToOptionId == 2,
+                    child: CustomDropDownButton(
+                      labelText: 'Select Fine To',
+                      listItems: fineOptions,
+                      selectedItem: fineToId,
+                      onChanged: (value) {
+                        setState(() {
+                          fineToId = value;
+                        });
+                      },
+                    ),
+                  ),
+                  Visibility(
+                    visible: transferToOptionId == 3 ||
+                        memberTransferToOptionId == 3,
+                    child: CustomDropDownButton(
+                      labelText: 'Select Loan To',
+                      listItems: loans,
+                      selectedItem: loanToId,
+                      onChanged: (value) {
+                        setState(() {
+                          loanFromId = value;
+                        });
+                      },
+                    ),
                   ),
                   amountTextInputField(
                       context: context,
@@ -227,7 +273,6 @@ class _ContributionTransferState extends State<ContributionTransfer> {
                       print('Refund date: $refundDate');
                       print('Refund Method: $refundMethod');
                       print('Depositor: $transferFromOptionId');
-                      print('Account: $accountId');
                       print('Amount: $amount');
                       print('Description: $description');
                     },
