@@ -104,8 +104,9 @@ class CreateInvoiceState extends State<CreateInvoice> {
         title: "Create Invoice",
       ),
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        controller: _scrollController,
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        color: Theme.of(context).backgroundColor,
         child: Column(
           children: <Widget>[
             toolTip(
@@ -118,144 +119,147 @@ class CreateInvoiceState extends State<CreateInvoice> {
                     toolTipIsVisible = !toolTipIsVisible;
                   });
                 }),
-            Container(
-              padding: inputPagePadding,
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+            Expanded(
+              child: Container(
+                padding: inputPagePadding,
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Expanded(
-                        child: DatePicker(
-                          labelText: 'Select Invoice Date',
-                          selectedDate: invoiceDate == null
-                              ? DateTime.now()
-                              : invoiceDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              invoiceDate = selectedDate;
-                            });
-                          },
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Expanded(
+                            child: DatePicker(
+                              labelText: 'Select Invoice Date',
+                              selectedDate: invoiceDate == null
+                                  ? DateTime.now()
+                                  : invoiceDate,
+                              selectDate: (selectedDate) {
+                                setState(() {
+                                  invoiceDate = selectedDate;
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5.0,
+                          ),
+                          Expanded(
+                            child: DatePicker(
+                              labelText: 'Select Due Date',
+                              selectedDate:
+                                  dueDate == null ? DateTime.now() : dueDate,
+                              selectDate: (selectedDate) {
+                                setState(() {
+                                  dueDate = selectedDate;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select invoice type',
+                        listItems: invoiceTypes,
+                        selectedItem: invoiceTypeId,
+                        onChanged: (value) {
+                          setState(() {
+                            invoiceTypeId = value;
+                          });
+                        },
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select Contribution ',
+                        listItems: contributions,
+                        selectedItem: contributionId,
+                        onChanged: (value) {
+                          setState(() {
+                            contributionId = value;
+                          });
+                        },
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select Member',
+                        listItems: memberTypes,
+                        selectedItem: memberTypeId,
+                        onChanged: (value) {
+                          setState(() {
+                            memberTypeId = value;
+                          });
+                        },
+                      ),
+                      Visibility(
+                        visible: memberTypeId == 1,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            Wrap(
+                              children: memberWidgets.toList(),
+                            ),
+                            FlatButton(
+                              onPressed: () async {
+                                //open select members dialog
+                                selectedMembersList = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SelectMember(
+                                              initialMembersList:
+                                                  selectedMembersList,
+                                            )));
+                              },
+                              child: Text(
+                                'Select more members',
+                                style: TextStyle(
+                                  color: Colors.blueAccent,
+                                  fontSize: 15.0,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
+                      amountTextInputField(
+                          context: context,
+                          labelText: 'Enter Amount to invoice',
+                          onChanged: (value) {
+                            setState(() {
+                              amount = double.parse(value);
+                            });
+                          }),
+                      multilineTextField(
+                          context: context,
+                          labelText: 'Short Description (Optional)',
+                          onChanged: (value) {
+                            setState(() {
+                              description = value;
+                            });
+                          }),
                       SizedBox(
-                        width: 5.0,
+                        height: 24,
                       ),
-                      Expanded(
-                        child: DatePicker(
-                          labelText: 'Select Due Date',
-                          selectedDate:
-                              dueDate == null ? DateTime.now() : dueDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              dueDate = selectedDate;
-                            });
-                          },
-                        ),
+                      defaultButton(
+                        context: context,
+                        text: "SAVE",
+                        onPressed: () {
+                          print('Invoice date: $invoiceDate');
+                          print('Due date: $dueDate');
+                          print('Invoice Type: $invoiceTypeId');
+                          print('Contribution: $contributionId');
+                          print('Member type: $memberTypeId');
+                          print('Amount: $amount');
+                          print('Description: $description');
+                          print('Members: ${selectedMembersList.length}');
+                          selectedMembersList.map((MembersFilterEntry mem) {
+                            return print(mem.name);
+                          }).toList();
+                        },
                       ),
                     ],
                   ),
-                  CustomDropDownButton(
-                    labelText: 'Select invoice type',
-                    listItems: invoiceTypes,
-                    selectedItem: invoiceTypeId,
-                    onChanged: (value) {
-                      setState(() {
-                        invoiceTypeId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Contribution ',
-                    listItems: contributions,
-                    selectedItem: contributionId,
-                    onChanged: (value) {
-                      setState(() {
-                        contributionId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Member',
-                    listItems: memberTypes,
-                    selectedItem: memberTypeId,
-                    onChanged: (value) {
-                      setState(() {
-                        memberTypeId = value;
-                      });
-                    },
-                  ),
-                  Visibility(
-                    visible: memberTypeId == 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Wrap(
-                          children: memberWidgets.toList(),
-                        ),
-                        FlatButton(
-                          onPressed: () async {
-                            //open select members dialog
-                            selectedMembersList = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SelectMember(
-                                          initialMembersList:
-                                              selectedMembersList,
-                                        )));
-                          },
-                          child: Text(
-                            'Select more members',
-                            style: TextStyle(
-                              color: Colors.blueAccent,
-                              fontSize: 15.0,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  amountTextInputField(
-                      context: context,
-                      labelText: 'Enter Amount to invoice',
-                      onChanged: (value) {
-                        setState(() {
-                          amount = double.parse(value);
-                        });
-                      }),
-                  multilineTextField(
-                      context: context,
-                      labelText: 'Short Description (Optional)',
-                      onChanged: (value) {
-                        setState(() {
-                          description = value;
-                        });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                    context: context,
-                    text: "SAVE",
-                    onPressed: () {
-                      print('Invoice date: $invoiceDate');
-                      print('Due date: $dueDate');
-                      print('Invoice Type: $invoiceTypeId');
-                      print('Contribution: $contributionId');
-                      print('Member type: $memberTypeId');
-                      print('Amount: $amount');
-                      print('Description: $description');
-                      print('Members: ${selectedMembersList.length}');
-                      selectedMembersList.map((MembersFilterEntry mem) {
-                        return print(mem.name);
-                      }).toList();
-                    },
-                  ),
-                ],
+                ),
               ),
             )
           ],

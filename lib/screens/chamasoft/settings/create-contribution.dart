@@ -10,11 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-List<NamesListItem> frequenciesList = [
-  NamesListItem(id: 1, name: "Regular"),
-  NamesListItem(id: 2, name: "One Time"),
-  NamesListItem(id: 3, name: "Irregular"),
-];
+import 'setup-lists/contribution-setup-list.dart';
 
 List<NamesListItem> fineTypesList = [
   NamesListItem(id: 1, name: "Fixed"),
@@ -65,6 +61,28 @@ class _CreateContributionState extends State<CreateContribution>
   int memberTypeId;
   TabController _tabController;
 
+  int selectedTabIndex = 0;
+  int contributionTypeId;
+  int dayOfMonthId;
+  int fineTypeId;
+  int fineFrequencyIid;
+  int fineFrequencyChargedOnId;
+  double contributionAmount = 0;
+  double fineAmount = 0;
+  String contributionName = '';
+  bool selectAll = false;
+  bool fineSettingsEnabled = false;
+  int weekdayId;
+  int contributionFrequencyId;
+
+  int startingMonthId;
+
+  int weekNumberId;
+
+  int twoWeekdayId;
+
+  int dateOfMonthId;
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -104,18 +122,6 @@ class _CreateContributionState extends State<CreateContribution>
     _tabController?.dispose();
     super.dispose();
   }
-
-  int selectedTabIndex = 0;
-  int frequencyId;
-  int dayOfMonthId;
-  int fineTypeId;
-  int fineFrequencyIid;
-  int fineFrequencyChargedOnId;
-  double contributionAmount = 0;
-  double fineAmount = 0;
-  String contributionName = '';
-  bool selectAll = false;
-  bool fineSettingsEnabled = false;
 
   @override
   Widget build(BuildContext context) {
@@ -192,24 +198,120 @@ class _CreateContributionState extends State<CreateContribution>
                           mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             CustomDropDownButton(
-                              labelText: "Select Frequency",
-                              listItems: frequenciesList,
-                              selectedItem: frequencyId,
+                              labelText: "Select Contribution Type",
+                              listItems: contributionTypeOptions,
+                              selectedItem: contributionTypeId,
                               onChanged: (value) {
                                 setState(() {
-                                  frequencyId = value;
+                                  contributionTypeId = value;
                                 });
                               },
                             ),
-                            CustomDropDownButton(
-                              labelText: "Select Day of Month",
-                              listItems: daysOfMonthList,
-                              selectedItem: dayOfMonthId,
-                              onChanged: (value) {
-                                setState(() {
-                                  dayOfMonthId = value;
-                                });
-                              },
+                            Visibility(
+                              visible: contributionTypeId == 1,
+                              child: CustomDropDownButton(
+                                labelText: "Select Frequency",
+                                listItems: getContributionFrequencyOptions,
+                                selectedItem: contributionFrequencyId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    contributionFrequencyId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: contributionFrequencyId == 1 ||
+                                  contributionFrequencyId == 2 ||
+                                  contributionFrequencyId == 3 ||
+                                  contributionFrequencyId == 4 ||
+                                  contributionFrequencyId == 5 ||
+                                  contributionFrequencyId == 9,
+                              child: CustomDropDownButton(
+                                labelText: "Select Day of Month",
+                                listItems: getDaysOfTheMonth,
+                                selectedItem: dateOfMonthId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    dateOfMonthId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: contributionFrequencyId == 7,
+                              child: CustomDropDownButton(
+                                labelText: "Select Day of Week",
+                                listItems: getEveryTwoWeekDays,
+                                selectedItem: twoWeekdayId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    twoWeekdayId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: contributionFrequencyId == 6,
+                              child: CustomDropDownButton(
+                                labelText: "Select Day of Month",
+                                listItems: getWeekDays,
+                                selectedItem: dayOfMonthId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    dayOfMonthId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: (dateOfMonthId != null &&
+                                          dateOfMonthId > 0 &&
+                                          dayOfMonthId <= 4 ||
+                                      dateOfMonthId == 32) &&
+                                  (contributionFrequencyId != 6 &&
+                                      contributionFrequencyId != 7 &&
+                                      contributionFrequencyId != 8),
+                              child: CustomDropDownButton(
+                                labelText: "Select Day of Week",
+                                listItems: getMonthDays,
+                                selectedItem: weekdayId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    weekdayId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: contributionFrequencyId == 2 ||
+                                  contributionFrequencyId == 3 ||
+                                  contributionFrequencyId == 4 ||
+                                  contributionFrequencyId == 5 ||
+                                  contributionFrequencyId == 9,
+                              child: CustomDropDownButton(
+                                labelText: "Starting Month",
+                                listItems: getStartingMonths,
+                                selectedItem: startingMonthId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    startingMonthId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: contributionFrequencyId == 7,
+                              child: CustomDropDownButton(
+                                labelText: "Select Week",
+                                listItems: getWeekNumbers,
+                                selectedItem: weekNumberId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    weekNumberId = value;
+                                  });
+                                },
+                              ),
                             ),
                             simpleTextInputField(
                               context: context,
