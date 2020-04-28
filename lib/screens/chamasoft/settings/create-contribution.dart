@@ -125,416 +125,299 @@ class _CreateContributionState extends State<CreateContribution>
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: secondaryPageTabbedAppbar(
-          context: context,
-          title: "Create Contribution",
-          action: () => Navigator.of(context).pop(),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          bottom: TabBar(
-            controller: _tabController,
-            onTap: (index) {
-              setState(() {
-                selectedTabIndex = index;
-              });
-            },
-            indicatorColor: Colors.transparent,
-            tabs: [
-              Tab(
-                child: Divider(
-                  thickness: 5.0,
-                  color:
-                      selectedTabIndex == 0 ? primaryColor : Color(0xFFAEAEAE),
-                ),
-              ),
-              Tab(
-                child: Divider(
-                  thickness: 5.0,
-                  color:
-                      selectedTabIndex == 1 ? primaryColor : Color(0xFFAEAEAE),
-                ),
-              ),
-              Tab(
-                child: Divider(
-                  thickness: 5.0,
-                  color:
-                      selectedTabIndex == 2 ? primaryColor : Color(0xFFAEAEAE),
-                ),
-              ),
-            ],
-          ),
-        ),
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: TabBarView(
+    return Scaffold(
+      appBar: secondaryPageTabbedAppbar(
+        context: context,
+        title: "Create Contribution",
+        action: () => Navigator.of(context).pop(),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        bottom: TabBar(
           controller: _tabController,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              height: MediaQuery.of(context).size.height,
-              child: Column(
+          onTap: (index) {
+            setState(() {
+              selectedTabIndex = index;
+            });
+          },
+          indicatorColor: Colors.transparent,
+          tabs: [
+            Tab(
+              child: Divider(
+                thickness: 5.0,
+                color:
+                    selectedTabIndex == 0 ? primaryColor : Color(0xFFAEAEAE),
+              ),
+            ),
+            Tab(
+              child: Divider(
+                thickness: 5.0,
+                color:
+                    selectedTabIndex == 1 ? primaryColor : Color(0xFFAEAEAE),
+              ),
+            ),
+            Tab(
+              child: Divider(
+                thickness: 5.0,
+                color:
+                    selectedTabIndex == 2 ? primaryColor : Color(0xFFAEAEAE),
+              ),
+            ),
+          ],
+        ),
+      ),
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    "Settings",
+                    style: TextStyle(
+                        color: Theme.of(context).textSelectionHandleColor,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  subtitle: Text(
+                    "Configure the behaviour of your contribution",
+                    style:
+                        TextStyle(color: Theme.of(context).bottomAppBarColor),
+                  ),
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+//                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          CustomDropDownButton(
+                            labelText: "Select Contribution Type",
+                            listItems: contributionTypeOptions,
+                            selectedItem: contributionTypeId,
+                            onChanged: (value) {
+                              setState(() {
+                                contributionTypeId = value;
+                              });
+                            },
+                          ),
+                          Visibility(
+                            visible: contributionTypeId == 1,
+                            child: CustomDropDownButton(
+                              labelText: "Select Frequency",
+                              listItems: getContributionFrequencyOptions,
+                              selectedItem: contributionFrequencyId,
+                              onChanged: (value) {
+                                setState(() {
+                                  contributionFrequencyId = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Visibility(
+                            visible: contributionFrequencyId == 1 ||
+                                contributionFrequencyId == 2 ||
+                                contributionFrequencyId == 3 ||
+                                contributionFrequencyId == 4 ||
+                                contributionFrequencyId == 5 ||
+                                contributionFrequencyId == 9,
+                            child: CustomDropDownButton(
+                              labelText: "Select Day of Month",
+                              listItems: getDaysOfTheMonth,
+                              selectedItem: dateOfMonthId,
+                              onChanged: (value) {
+                                setState(() {
+                                  dateOfMonthId = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Visibility(
+                            visible: contributionFrequencyId == 7,
+                            child: CustomDropDownButton(
+                              labelText: "Select Day of Week",
+                              listItems: getEveryTwoWeekDays,
+                              selectedItem: twoWeekdayId,
+                              onChanged: (value) {
+                                setState(() {
+                                  twoWeekdayId = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Visibility(
+                            visible: contributionFrequencyId == 6,
+                            child: CustomDropDownButton(
+                              labelText: "Select Day of Month",
+                              listItems: getWeekDays,
+                              selectedItem: dayOfMonthId,
+                              onChanged: (value) {
+                                setState(() {
+                                  dayOfMonthId = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Visibility(
+                            visible: (dateOfMonthId != null &&
+                                        (dateOfMonthId == 1 ||
+                                            dateOfMonthId == 2 ||
+                                            dateOfMonthId == 3 ||
+                                            dayOfMonthId == 4) ||
+                                    dateOfMonthId == 32) &&
+                                (contributionFrequencyId != 6 &&
+                                    contributionFrequencyId != 7 &&
+                                    contributionFrequencyId != 8),
+                            child: CustomDropDownButton(
+                              labelText: "Select Day of the Month",
+                              listItems: getMonthDays,
+                              selectedItem: weekdayId,
+                              onChanged: (value) {
+                                setState(() {
+                                  weekdayId = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Visibility(
+                            visible: contributionFrequencyId == 2 ||
+                                contributionFrequencyId == 3 ||
+                                contributionFrequencyId == 4 ||
+                                contributionFrequencyId == 5 ||
+                                contributionFrequencyId == 9,
+                            child: CustomDropDownButton(
+                              labelText: "Starting Month",
+                              listItems: getStartingMonths,
+                              selectedItem: startingMonthId,
+                              onChanged: (value) {
+                                setState(() {
+                                  startingMonthId = value;
+                                });
+                              },
+                            ),
+                          ),
+                          Visibility(
+                            visible: contributionFrequencyId == 7,
+                            child: CustomDropDownButton(
+                              labelText: "Select Week",
+                              listItems: getWeekNumbers,
+                              selectedItem: weekNumberId,
+                              onChanged: (value) {
+                                setState(() {
+                                  weekNumberId = value;
+                                });
+                              },
+                            ),
+                          ),
+                          simpleTextInputField(
+                            context: context,
+                            labelText: 'Contribution Name',
+                            hintText: 'Monthly Contributions'.toUpperCase(),
+                            onChanged: (value) {
+                              setState(() {
+                                contributionName = value;
+                              });
+                            },
+                          ),
+                          amountTextInputField(
+                            context: context,
+                            labelText: 'Contribution Amount',
+                            hintText: '1,500',
+                            onChanged: (value) {
+                              setState(() {
+                                contributionAmount = double.parse(value);
+                              });
+                            },
+                          ),
+                        ]),
+                  ),
+                ),
+                RaisedButton(
+                  onPressed: () {},
+                  color: primaryColor,
+                  child: Text(
+                    'Save & Continue',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   ListTile(
                     title: Text(
-                      "Settings",
+                      "Members",
                       style: TextStyle(
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w500),
                     ),
                     subtitle: Text(
-                      "Configure the behaviour of your contribution",
-                      style:
-                          TextStyle(color: Theme.of(context).bottomAppBarColor),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-//                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            CustomDropDownButton(
-                              labelText: "Select Contribution Type",
-                              listItems: contributionTypeOptions,
-                              selectedItem: contributionTypeId,
-                              onChanged: (value) {
-                                setState(() {
-                                  contributionTypeId = value;
-                                });
-                              },
-                            ),
-                            Visibility(
-                              visible: contributionTypeId == 1,
-                              child: CustomDropDownButton(
-                                labelText: "Select Frequency",
-                                listItems: getContributionFrequencyOptions,
-                                selectedItem: contributionFrequencyId,
-                                onChanged: (value) {
-                                  setState(() {
-                                    contributionFrequencyId = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: contributionFrequencyId == 1 ||
-                                  contributionFrequencyId == 2 ||
-                                  contributionFrequencyId == 3 ||
-                                  contributionFrequencyId == 4 ||
-                                  contributionFrequencyId == 5 ||
-                                  contributionFrequencyId == 9,
-                              child: CustomDropDownButton(
-                                labelText: "Select Day of Month",
-                                listItems: getDaysOfTheMonth,
-                                selectedItem: dateOfMonthId,
-                                onChanged: (value) {
-                                  setState(() {
-                                    dateOfMonthId = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: contributionFrequencyId == 7,
-                              child: CustomDropDownButton(
-                                labelText: "Select Day of Week",
-                                listItems: getEveryTwoWeekDays,
-                                selectedItem: twoWeekdayId,
-                                onChanged: (value) {
-                                  setState(() {
-                                    twoWeekdayId = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: contributionFrequencyId == 6,
-                              child: CustomDropDownButton(
-                                labelText: "Select Day of Month",
-                                listItems: getWeekDays,
-                                selectedItem: dayOfMonthId,
-                                onChanged: (value) {
-                                  setState(() {
-                                    dayOfMonthId = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: (dateOfMonthId != null &&
-                                          (dateOfMonthId == 1 ||
-                                              dateOfMonthId == 2 ||
-                                              dateOfMonthId == 3 ||
-                                              dayOfMonthId == 4) ||
-                                      dateOfMonthId == 32) &&
-                                  (contributionFrequencyId != 6 &&
-                                      contributionFrequencyId != 7 &&
-                                      contributionFrequencyId != 8),
-                              child: CustomDropDownButton(
-                                labelText: "Select Day of the Month",
-                                listItems: getMonthDays,
-                                selectedItem: weekdayId,
-                                onChanged: (value) {
-                                  setState(() {
-                                    weekdayId = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: contributionFrequencyId == 2 ||
-                                  contributionFrequencyId == 3 ||
-                                  contributionFrequencyId == 4 ||
-                                  contributionFrequencyId == 5 ||
-                                  contributionFrequencyId == 9,
-                              child: CustomDropDownButton(
-                                labelText: "Starting Month",
-                                listItems: getStartingMonths,
-                                selectedItem: startingMonthId,
-                                onChanged: (value) {
-                                  setState(() {
-                                    startingMonthId = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            Visibility(
-                              visible: contributionFrequencyId == 7,
-                              child: CustomDropDownButton(
-                                labelText: "Select Week",
-                                listItems: getWeekNumbers,
-                                selectedItem: weekNumberId,
-                                onChanged: (value) {
-                                  setState(() {
-                                    weekNumberId = value;
-                                  });
-                                },
-                              ),
-                            ),
-                            simpleTextInputField(
-                              context: context,
-                              labelText: 'Contribution Name',
-                              hintText: 'Monthly Contributions'.toUpperCase(),
-                              onChanged: (value) {
-                                setState(() {
-                                  contributionName = value;
-                                });
-                              },
-                            ),
-                            amountTextInputField(
-                              context: context,
-                              labelText: 'Contribution Amount',
-                              hintText: '1,500',
-                              onChanged: (value) {
-                                setState(() {
-                                  contributionAmount = double.parse(value);
-                                });
-                              },
-                            ),
-                          ]),
-                    ),
-                  ),
-                  RaisedButton(
-                    onPressed: () {},
-                    color: primaryColor,
-                    child: Text(
-                      'Save & Continue',
+                      "Select members who will contribute",
                       style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
+                          color: Theme.of(context).bottomAppBarColor),
                     ),
                   ),
-                ],
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(
-                        "Members",
-                        style: TextStyle(
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      subtitle: Text(
-                        "Select members who will contribute",
-                        style: TextStyle(
-                            color: Theme.of(context).bottomAppBarColor),
-                      ),
-                    ),
-                    CheckboxListTile(
-                      title: Text(
-                        "Select All",
-                        style: TextStyle(
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      value: selectAll,
-                      onChanged: (value) {
-                        setState(() {
-                          selectAll = value;
-                          if (selectAll) {
-                            selectedMembersList.clear();
-                            selectedMembersList.addAll(_membersList);
-                          } else {
-                            selectedMembersList.clear();
-                          }
-                        });
-                      },
-                    ),
-                    Expanded(
-                      child: ListView.separated(
-                        itemCount: _membersList.length,
-                        separatorBuilder: (context, index) => DashedDivider(
-                          thickness: 1.0,
-                          color: Color(0xFFD4D4D4),
-                        ),
-                        itemBuilder: (BuildContext context, int index) {
-                          return CheckboxListTile(
-                            secondary: const Icon(Icons.person),
-                            value: selectedMembersList
-                                .contains(_membersList[index]),
-                            onChanged: (value) {
-                              setState(() {
-                                if (value) {
-                                  selectedMembersList.add(_membersList[index]);
-                                } else {
-                                  selectedMembersList
-                                      .remove(_membersList[index]);
-                                }
-                              });
-                            },
-                            title: Text(_membersList[index].name),
-                            subtitle: Text(_membersList[index].phoneNumber),
-                          );
-                        },
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        RaisedButton(
-                          onPressed: () {},
-                          color: primaryColor,
-                          child: Text(
-                            'Back',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.0),
-                          ),
-                        ),
-                        RaisedButton(
-                          onPressed: () {},
-                          color: primaryColor,
-                          child: Text(
-                            'Next',
-                            style: TextStyle(
-                              color: Colors.white,
-                            ),
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.0),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ]),
-            ),
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              height: MediaQuery.of(context).size.height,
-              child: Column(
-                children: <Widget>[
-                  ListTile(
+                  CheckboxListTile(
                     title: Text(
-                      "Fines",
+                      "Select All",
                       style: TextStyle(
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w500),
                     ),
-                    subtitle: Text(
-                      "Select Fines for Late Members",
-                      style:
-                          TextStyle(color: Theme.of(context).bottomAppBarColor),
-                    ),
-                  ),
-                  SwitchListTile(
-                    title: Text(
-                      "Activate Fine Settings",
-                      style: TextStyle(
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w500),
-                    ),
-                    value: fineSettingsEnabled,
-                    onChanged: (bool value) {
+                    value: selectAll,
+                    onChanged: (value) {
                       setState(() {
-                        fineSettingsEnabled = value;
+                        selectAll = value;
+                        if (selectAll) {
+                          selectedMembersList.clear();
+                          selectedMembersList.addAll(_membersList);
+                        } else {
+                          selectedMembersList.clear();
+                        }
                       });
                     },
                   ),
                   Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            CustomDropDownButton(
-                              labelText: "Select Fine Type",
-                              listItems: fineTypesList,
-                              selectedItem: fineTypeId,
-                              onChanged: (value) {
-                                setState(() {
-                                  fineTypeId = value;
-                                });
-                              },
-                            ),
-                            CustomDropDownButton(
-                              labelText: "Select Fine Frequency",
-                              listItems: fineFrequenciesList,
-                              selectedItem: fineFrequencyIid,
-                              onChanged: (value) {
-                                setState(() {
-                                  fineFrequencyIid = value;
-                                });
-                              },
-                            ),
-                            CustomDropDownButton(
-                              labelText: "Select Fine Frequency Charged On",
-                              listItems: fineFrequencyChargedOnList,
-                              selectedItem: fineFrequencyChargedOnId,
-                              onChanged: (value) {
-                                setState(() {
-                                  fineFrequencyChargedOnId = value;
-                                });
-                              },
-                            ),
-                            amountTextInputField(
-                              context: context,
-                              labelText: 'Fine Amount',
-                              hintText: '1,500',
-                              onChanged: (value) {
-                                setState(() {
-                                  fineAmount = double.parse(value);
-                                });
-                              },
-                            ),
-                          ]),
+                    child: ListView.separated(
+                      itemCount: _membersList.length,
+                      separatorBuilder: (context, index) => DashedDivider(
+                        thickness: 1.0,
+                        color: Color(0xFFD4D4D4),
+                      ),
+                      itemBuilder: (BuildContext context, int index) {
+                        return CheckboxListTile(
+                          secondary: const Icon(Icons.person),
+                          value: selectedMembersList
+                              .contains(_membersList[index]),
+                          onChanged: (value) {
+                            setState(() {
+                              if (value) {
+                                selectedMembersList.add(_membersList[index]);
+                              } else {
+                                selectedMembersList
+                                    .remove(_membersList[index]);
+                              }
+                            });
+                          },
+                          title: Text(_membersList[index].name),
+                          subtitle: Text(_membersList[index].phoneNumber),
+                        );
+                      },
                     ),
                   ),
                   Row(
@@ -557,7 +440,7 @@ class _CreateContributionState extends State<CreateContribution>
                         onPressed: () {},
                         color: primaryColor,
                         child: Text(
-                          'Save',
+                          'Next',
                           style: TextStyle(
                             color: Colors.white,
                           ),
@@ -568,11 +451,125 @@ class _CreateContributionState extends State<CreateContribution>
                       ),
                     ],
                   ),
-                ],
-              ),
+                ]),
+          ),
+          Container(
+            padding: const EdgeInsets.all(16.0),
+            height: MediaQuery.of(context).size.height,
+            child: Column(
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    "Fines",
+                    style: TextStyle(
+                        color: Theme.of(context).textSelectionHandleColor,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  subtitle: Text(
+                    "Select Fines for Late Members",
+                    style:
+                        TextStyle(color: Theme.of(context).bottomAppBarColor),
+                  ),
+                ),
+                SwitchListTile(
+                  title: Text(
+                    "Activate Fine Settings",
+                    style: TextStyle(
+                        color: Theme.of(context).textSelectionHandleColor,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  value: fineSettingsEnabled,
+                  onChanged: (bool value) {
+                    setState(() {
+                      fineSettingsEnabled = value;
+                    });
+                  },
+                ),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          CustomDropDownButton(
+                            labelText: "Select Fine Type",
+                            listItems: fineTypesList,
+                            selectedItem: fineTypeId,
+                            onChanged: (value) {
+                              setState(() {
+                                fineTypeId = value;
+                              });
+                            },
+                          ),
+                          CustomDropDownButton(
+                            labelText: "Select Fine Frequency",
+                            listItems: fineFrequenciesList,
+                            selectedItem: fineFrequencyIid,
+                            onChanged: (value) {
+                              setState(() {
+                                fineFrequencyIid = value;
+                              });
+                            },
+                          ),
+                          CustomDropDownButton(
+                            labelText: "Select Fine Frequency Charged On",
+                            listItems: fineFrequencyChargedOnList,
+                            selectedItem: fineFrequencyChargedOnId,
+                            onChanged: (value) {
+                              setState(() {
+                                fineFrequencyChargedOnId = value;
+                              });
+                            },
+                          ),
+                          amountTextInputField(
+                            context: context,
+                            labelText: 'Fine Amount',
+                            hintText: '1,500',
+                            onChanged: (value) {
+                              setState(() {
+                                fineAmount = double.parse(value);
+                              });
+                            },
+                          ),
+                        ]),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    RaisedButton(
+                      onPressed: () {},
+                      color: primaryColor,
+                      child: Text(
+                        'Back',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
+                    RaisedButton(
+                      onPressed: () {},
+                      color: primaryColor,
+                      child: Text(
+                        'Save',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
