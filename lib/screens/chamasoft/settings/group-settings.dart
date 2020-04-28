@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
+import 'package:chamasoft/screens/chamasoft/settings/list-contribution.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -9,7 +10,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'create-contribution.dart';
 import 'update-group-profile.dart';
 
 class GroupSettings extends StatefulWidget {
@@ -208,7 +208,7 @@ class _GroupSettingsState extends State<GroupSettings> {
               dense: true,
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => CreateContribution()));
+                    builder: (context) => ListContributions()));
               },
             ),
             DashedDivider(

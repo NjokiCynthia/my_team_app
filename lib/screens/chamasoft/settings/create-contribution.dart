@@ -266,14 +266,16 @@ class _CreateContributionState extends State<CreateContribution>
                             ),
                             Visibility(
                               visible: (dateOfMonthId != null &&
-                                          dateOfMonthId > 0 &&
-                                          dayOfMonthId <= 4 ||
+                                          (dateOfMonthId == 1 ||
+                                              dateOfMonthId == 2 ||
+                                              dateOfMonthId == 3 ||
+                                              dayOfMonthId == 4) ||
                                       dateOfMonthId == 32) &&
                                   (contributionFrequencyId != 6 &&
                                       contributionFrequencyId != 7 &&
                                       contributionFrequencyId != 8),
                               child: CustomDropDownButton(
-                                labelText: "Select Day of Week",
+                                labelText: "Select Day of the Month",
                                 listItems: getMonthDays,
                                 selectedItem: weekdayId,
                                 onChanged: (value) {
