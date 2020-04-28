@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -509,7 +510,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 child: Container(
                   height: 60.0,
                   child: FloatingActionButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(
+                          MaterialPageRoute(builder: (BuildContext context) {
+                        return ListContacts();
+                      }));
+                    },
                     backgroundColor: primaryColor,
                     child: Icon(
                       Icons.add,
