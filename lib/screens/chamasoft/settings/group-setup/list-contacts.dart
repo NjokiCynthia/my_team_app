@@ -29,8 +29,7 @@ class _ListContactsState extends State<ListContacts> {
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.undetermined;
   List<Contact> _contacts = new List<Contact>();
-  List<CustomContact> _selectedContacts = List<CustomContact>();
-  List<CustomContact> _allContacts = List<CustomContact>();
+  List<Contact> _selectedContacts = List<Contact>();
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
@@ -87,8 +86,7 @@ class _ListContactsState extends State<ListContacts> {
               "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,
           trailingAction: () {
-            _selectedContacts
-                .forEach((contact) => print(contact.contact.displayName));
+            _selectedContacts.forEach((contact) => print(contact.displayName));
           }),
       backgroundColor: Theme.of(context).backgroundColor,
       body: !_isLoading
@@ -107,11 +105,11 @@ class _ListContactsState extends State<ListContacts> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      itemCount: _allContacts?.length,
+                      itemCount: _contacts?.length,
                       itemBuilder: (BuildContext context, int index) {
-                        CustomContact _contact = _allContacts[index];
-                        String displayName = _contact.contact.displayName;
-                        var _phonesList = _contact.contact.phones.toList();
+                        Contact _contact = _contacts[index];
+                        String displayName = _contact.displayName;
+                        var _phonesList = _contact.phones.toList();
 
                         return filter == null || filter == ""
                             ? _buildListTile(index, _contact, _phonesList)
@@ -144,25 +142,25 @@ class _ListContactsState extends State<ListContacts> {
     });
   }
 
-  CheckboxListTile _buildListTile(int index, CustomContact c, List<Item> list) {
+  CheckboxListTile _buildListTile(int index, Contact contact, List<Item> list) {
     return CheckboxListTile(
       secondary: CircleAvatar(
         backgroundColor:
             Colors.primaries[Random().nextInt(Colors.primaries.length)],
-        child: Text(c.contact.displayName[0].toUpperCase(),
+        child: Text(contact.displayName[0].toUpperCase(),
             style: TextStyle(color: Colors.white, fontSize: 24)),
       ),
-      value: _selectedContacts.contains(_allContacts[index]),
+      value: _selectedContacts.contains(_contacts[index]),
       onChanged: (value) {
         setState(() {
           if (value) {
-            _selectedContacts.add(_allContacts[index]);
+            _selectedContacts.add(_contacts[index]);
           } else {
-            _selectedContacts.remove(_allContacts[index]);
+            _selectedContacts.remove(_contacts[index]);
           }
         });
       },
-      title: Text(c.contact.displayName ?? ""),
+      title: Text(contact.displayName ?? ""),
       subtitle: list.length >= 1 && list[0]?.value != null
           ? Text(list[0].value)
           : Text(''),
@@ -178,22 +176,15 @@ class _ListContactsState extends State<ListContacts> {
   }
 
   void _populateContacts(Iterable<Contact> contacts) {
-    _contacts = contacts.where((item) => item.displayName != null).toList();
-    _contacts.sort((a, b) => a.displayName.compareTo(b.displayName));
+    for (Contact contact in contacts) {
+      if (contact.phones.length > 0) {
+        _contacts.add(contact);
+      }
+    }
+
     setState(() {
-      _allContacts =
-          _contacts.map((contact) => CustomContact(contact: contact)).toList();
+      _contacts.sort((a, b) => a.displayName.compareTo(b.displayName));
       _isLoading = false;
     });
   }
-}
-
-class CustomContact {
-  final Contact contact;
-  bool isChecked;
-
-  CustomContact({
-    this.contact,
-    this.isChecked = false,
-  });
 }
