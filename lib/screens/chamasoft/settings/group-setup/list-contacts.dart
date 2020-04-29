@@ -28,10 +28,9 @@ class _ListContactsState extends State<ListContacts> {
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.undetermined;
   List<Contact> _contacts = new List<Contact>();
-  List<CustomContact> _uiCustomContacts = List<CustomContact>();
+  List<CustomContact> _selectedContacts = List<CustomContact>();
   List<CustomContact> _allContacts = List<CustomContact>();
   bool _isLoading = false;
-  bool _isSelectedContactsView = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
   IconData icon;
@@ -65,40 +64,57 @@ class _ListContactsState extends State<ListContacts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: secondaryPageAppbar(
-        context: context,
-        action: () => Navigator.of(context).pop(),
-        elevation: 2.5,
-        leadingIcon: LineAwesomeIcons.close,
-        title: "Add Members",
-      ),
+      appBar: tertiaryPageAppbar(
+          context: context,
+          action: () => Navigator.of(context).pop(),
+          elevation: 2.5,
+          leadingIcon: LineAwesomeIcons.close,
+          title: "Add Members",
+          trailingIcon: LineAwesomeIcons.check,
+          trailingAction: () {
+            _selectedContacts = _allContacts
+                .where((contact) => contact.isChecked == true)
+                .toList();
+
+            _selectedContacts
+                .forEach((contact) => print(contact.contact.displayName));
+          }),
       backgroundColor: Theme.of(context).backgroundColor,
       body: !_isLoading
           ? Container(
-              child: ListView.builder(
-                itemCount: _uiCustomContacts?.length,
-                itemBuilder: (BuildContext context, int index) {
-                  CustomContact _contact = _uiCustomContacts[index];
-                  var _phonesList = _contact.contact.phones.toList();
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(top: 20.0),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Search Contact",
+                      prefixIcon: Icon(LineAwesomeIcons.search),
+                    ),
+                    controller: controller,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: _allContacts?.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        CustomContact _contact = _allContacts[index];
+                        var _phonesList = _contact.contact.phones.toList();
 
-                  return _buildListTile(
-                      _contact,
-                      _phonesList,
-                      Colors.primaries[
-                          Random().nextInt(Colors.primaries.length)]);
-                },
+                        return _buildListTile(
+                            _contact,
+                            _phonesList,
+                            Colors.primaries[
+                                Random().nextInt(Colors.primaries.length)]);
+                      },
+                    ),
+                  ),
+                ],
               ),
             )
           : Center(
               child: CircularProgressIndicator(),
             ),
-      floatingActionButton: new FloatingActionButton.extended(
-        backgroundColor: floatingButtonColor,
-        onPressed: _onSubmit,
-        icon: Icon(icon),
-        label: Text(floatingButtonLabel),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -110,29 +126,6 @@ class _ListContactsState extends State<ListContacts> {
 
       if (_permissionStatus.isGranted) {
         refreshContacts();
-      }
-    });
-  }
-
-  void _onSubmit() {
-    setState(() {
-      if (!_isSelectedContactsView) {
-        _uiCustomContacts =
-            _allContacts.where((contact) => contact.isChecked == true).toList();
-        _isSelectedContactsView = true;
-        _restateFloatingButton(
-          widget.reloadLabel,
-          Icons.refresh,
-          Colors.green,
-        );
-      } else {
-        _uiCustomContacts = _allContacts;
-        _isSelectedContactsView = false;
-        _restateFloatingButton(
-          widget.fireLabel,
-          Icons.filter_center_focus,
-          Colors.red,
-        );
       }
     });
   }
@@ -159,12 +152,6 @@ class _ListContactsState extends State<ListContacts> {
     );
   }
 
-  void _restateFloatingButton(String label, IconData icon, Color color) {
-    floatingButtonLabel = label;
-    icon = icon;
-    floatingButtonColor = color;
-  }
-
   refreshContacts() async {
     setState(() {
       _isLoading = true;
@@ -176,10 +163,9 @@ class _ListContactsState extends State<ListContacts> {
   void _populateContacts(Iterable<Contact> contacts) {
     _contacts = contacts.where((item) => item.displayName != null).toList();
     _contacts.sort((a, b) => a.displayName.compareTo(b.displayName));
-    _allContacts =
-        _contacts.map((contact) => CustomContact(contact: contact)).toList();
     setState(() {
-      _uiCustomContacts = _allContacts;
+      _allContacts =
+          _contacts.map((contact) => CustomContact(contact: contact)).toList();
       _isLoading = false;
     });
   }
