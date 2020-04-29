@@ -1,6 +1,9 @@
 import 'dart:math';
 
+import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-roles.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -28,8 +31,8 @@ class _ListContactsState extends State<ListContacts> {
 
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.undetermined;
-  List<Contact> _contacts = new List<Contact>();
-  List<Contact> _selectedContacts = List<Contact>();
+  List<CustomContact> _contacts = new List<CustomContact>();
+  List<CustomContact> _selectedContacts = List<CustomContact>();
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
@@ -86,7 +89,11 @@ class _ListContactsState extends State<ListContacts> {
               "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,
           trailingAction: () {
-            _selectedContacts.forEach((contact) => print(contact.displayName));
+            if (_selectedContacts.length > 0)
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => SetMemberRoles(
+                        selectedContacts: _selectedContacts,
+                      )));
           }),
       backgroundColor: Theme.of(context).backgroundColor,
       body: !_isLoading
@@ -104,10 +111,12 @@ class _ListContactsState extends State<ListContacts> {
                     controller: controller,
                   ),
                   Expanded(
-                    child: ListView.builder(
+                    child: ListView.separated(
+                      separatorBuilder: (BuildContext context, int index) =>
+                          Divider(),
                       itemCount: _contacts?.length,
                       itemBuilder: (BuildContext context, int index) {
-                        Contact _contact = _contacts[index];
+                        Contact _contact = _contacts[index].contact;
                         String displayName = _contact.displayName;
                         var _phonesList = _contact.phones.toList();
 
@@ -145,11 +154,10 @@ class _ListContactsState extends State<ListContacts> {
   CheckboxListTile _buildListTile(int index, Contact contact, List<Item> list) {
     return CheckboxListTile(
       secondary: CircleAvatar(
-        backgroundColor:
-            Colors.primaries[Random().nextInt(Colors.primaries.length)],
-        child: Text(contact.displayName[0].toUpperCase(),
-            style: TextStyle(color: Colors.white, fontSize: 24)),
-      ),
+          backgroundColor:
+              Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          child: Text(contact.displayName[0].toUpperCase(),
+              style: TextStyle(color: Colors.white, fontSize: 24))),
       value: _selectedContacts.contains(_contacts[index]),
       onChanged: (value) {
         setState(() {
@@ -160,9 +168,9 @@ class _ListContactsState extends State<ListContacts> {
           }
         });
       },
-      title: Text(contact.displayName ?? ""),
+      title: subtitle1(text: contact.displayName ?? "", align: TextAlign.start),
       subtitle: list.length >= 1 && list[0]?.value != null
-          ? Text(list[0].value)
+          ? subtitle1(text: list[0].value, align: TextAlign.start)
           : Text(''),
     );
   }
@@ -178,12 +186,13 @@ class _ListContactsState extends State<ListContacts> {
   void _populateContacts(Iterable<Contact> contacts) {
     for (Contact contact in contacts) {
       if (contact.phones.length > 0) {
-        _contacts.add(contact);
+        _contacts.add(CustomContact(contact: contact));
       }
     }
 
     setState(() {
-      _contacts.sort((a, b) => a.displayName.compareTo(b.displayName));
+      _contacts.sort(
+          (a, b) => a.contact.displayName.compareTo(b.contact.displayName));
       _isLoading = false;
     });
   }
