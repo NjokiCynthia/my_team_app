@@ -59,6 +59,19 @@ class _ListContactsState extends State<ListContacts> {
     super.initState();
 
     _listenForPermissionStatus();
+
+    controller.addListener(() {
+      setState(() {
+        filter = controller.text;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    controller.dispose();
   }
 
   @override
@@ -99,13 +112,24 @@ class _ListContactsState extends State<ListContacts> {
                       itemCount: _allContacts?.length,
                       itemBuilder: (BuildContext context, int index) {
                         CustomContact _contact = _allContacts[index];
+                        String displayName = _contact.contact.displayName;
                         var _phonesList = _contact.contact.phones.toList();
 
-                        return _buildListTile(
-                            _contact,
-                            _phonesList,
-                            Colors.primaries[
-                                Random().nextInt(Colors.primaries.length)]);
+                        return filter == null || filter == ""
+                            ? _buildListTile(
+                                _contact,
+                                _phonesList,
+                                Colors.primaries[
+                                    Random().nextInt(Colors.primaries.length)])
+                            : displayName
+                                    .toLowerCase()
+                                    .contains(filter.toLowerCase())
+                                ? _buildListTile(
+                                    _contact,
+                                    _phonesList,
+                                    Colors.primaries[Random()
+                                        .nextInt(Colors.primaries.length)])
+                                : new Container();
                       },
                     ),
                   ),
@@ -126,7 +150,7 @@ class _ListContactsState extends State<ListContacts> {
 
       if (_permissionStatus.isGranted) {
         refreshContacts();
-      }
+      } else {}
     });
   }
 
