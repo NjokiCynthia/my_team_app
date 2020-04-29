@@ -24,6 +24,7 @@ class ListContacts extends StatefulWidget {
 class _ListContactsState extends State<ListContacts> {
   TextEditingController controller = new TextEditingController();
   String filter;
+  int count = 0;
 
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.undetermined;
@@ -82,13 +83,10 @@ class _ListContactsState extends State<ListContacts> {
           action: () => Navigator.of(context).pop(),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.close,
-          title: "Add Members",
+          title:
+              "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,
           trailingAction: () {
-            _selectedContacts = _allContacts
-                .where((contact) => contact.isChecked == true)
-                .toList();
-
             _selectedContacts
                 .forEach((contact) => print(contact.contact.displayName));
           }),
@@ -116,19 +114,11 @@ class _ListContactsState extends State<ListContacts> {
                         var _phonesList = _contact.contact.phones.toList();
 
                         return filter == null || filter == ""
-                            ? _buildListTile(
-                                _contact,
-                                _phonesList,
-                                Colors.primaries[
-                                    Random().nextInt(Colors.primaries.length)])
+                            ? _buildListTile(index, _contact, _phonesList)
                             : displayName
                                     .toLowerCase()
                                     .contains(filter.toLowerCase())
-                                ? _buildListTile(
-                                    _contact,
-                                    _phonesList,
-                                    Colors.primaries[Random()
-                                        .nextInt(Colors.primaries.length)])
+                                ? _buildListTile(index, _contact, _phonesList)
                                 : new Container();
                       },
                     ),
@@ -154,25 +144,28 @@ class _ListContactsState extends State<ListContacts> {
     });
   }
 
-  ListTile _buildListTile(CustomContact c, List<Item> list, Color color) {
-    return ListTile(
-      leading: CircleAvatar(
-        backgroundColor: color,
+  CheckboxListTile _buildListTile(int index, CustomContact c, List<Item> list) {
+    return CheckboxListTile(
+      secondary: CircleAvatar(
+        backgroundColor:
+            Colors.primaries[Random().nextInt(Colors.primaries.length)],
         child: Text(c.contact.displayName[0].toUpperCase(),
             style: TextStyle(color: Colors.white, fontSize: 24)),
       ),
+      value: _selectedContacts.contains(_allContacts[index]),
+      onChanged: (value) {
+        setState(() {
+          if (value) {
+            _selectedContacts.add(_allContacts[index]);
+          } else {
+            _selectedContacts.remove(_allContacts[index]);
+          }
+        });
+      },
       title: Text(c.contact.displayName ?? ""),
       subtitle: list.length >= 1 && list[0]?.value != null
           ? Text(list[0].value)
           : Text(''),
-      trailing: Checkbox(
-          activeColor: Colors.green,
-          value: c.isChecked,
-          onChanged: (bool value) {
-            setState(() {
-              c.isChecked = value;
-            });
-          }),
     );
   }
 
