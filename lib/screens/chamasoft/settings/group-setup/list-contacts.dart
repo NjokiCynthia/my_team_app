@@ -89,11 +89,12 @@ class _ListContactsState extends State<ListContacts> {
               "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,
           trailingAction: () {
-            if (_selectedContacts.length > 0)
+            if (_selectedContacts.length > 0) {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => SetMemberRoles(
-                        selectedContacts: _selectedContacts,
+                        initialSelectedContacts: _selectedContacts,
                       )));
+            }
           }),
       backgroundColor: Theme.of(context).backgroundColor,
       body: !_isLoading

@@ -3,7 +3,7 @@ import 'package:contacts_service/contacts_service.dart';
 
 class CustomContact {
   Contact contact;
-  MemberRole role = MemberRole(id: 0, name: "Member");
+  MemberRole role;
 
   CustomContact({this.contact, this.role});
 }

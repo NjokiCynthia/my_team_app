@@ -8,9 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class SetMemberRoles extends StatefulWidget {
-  final List<CustomContact> selectedContacts;
+  final List<CustomContact> initialSelectedContacts;
 
-  SetMemberRoles({this.selectedContacts});
+  SetMemberRoles({this.initialSelectedContacts});
 
   @override
   _SetMemberRolesState createState() => _SetMemberRolesState();
@@ -24,13 +24,21 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
     MemberRole(id: 0, name: "Member"),
   ];
 
+  List<CustomContact> selectedContacts = [];
+
+  @override
+  void initState() {
+    selectedContacts = widget.initialSelectedContacts;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
           title: "Set Group Roles",
-          action: () => Navigator.of(context).pop(),
+          action: () => Navigator.pop(context, selectedContacts),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -42,9 +50,9 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
             separatorBuilder: (BuildContext context, int index) => Divider(
                   color: Theme.of(context).dividerColor,
                 ),
-            itemCount: widget.selectedContacts.length,
+            itemCount: selectedContacts.length,
             itemBuilder: (BuildContext context, int index) {
-              CustomContact customContact = widget.selectedContacts[index];
+              CustomContact customContact = selectedContacts[index];
               String displayName = customContact.contact.displayName;
               var phoneList = customContact.contact.phones.toList();
 
@@ -75,9 +83,11 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                         ],
                       ),
                     ),
-                    DropdownButton<MemberRole>(
+                    DropdownButton(
                       hint: Text("Set Role"),
-                      value: customContact.role,
+                      value: roles.indexOf(customContact.role) != -1
+                          ? roles[roles.indexOf(customContact.role)]
+                          : null,
                       onChanged: (MemberRole role) {
                         setState(() {
                           customContact.role = role;
