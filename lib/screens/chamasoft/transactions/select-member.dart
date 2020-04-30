@@ -23,12 +23,12 @@ class SelectMember extends StatefulWidget {
   final List<MembersFilterEntry> initialMembersList;
 
   SelectMember({this.initialMembersList});
+
   @override
   State<StatefulWidget> createState() => new SelectMemberState();
 }
 
 class SelectMemberState extends State<SelectMember> {
-  List<String> items;
   TextEditingController controller = new TextEditingController();
   String filter;
 
