@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
@@ -26,6 +27,7 @@ class ListContacts extends StatefulWidget {
 
 class _ListContactsState extends State<ListContacts> {
   TextEditingController controller = new TextEditingController();
+  StreamSubscription<Iterable<Contact>> contactSubscriber;
   String filter;
   int count = 0;
 
@@ -49,7 +51,9 @@ class _ListContactsState extends State<ListContacts> {
     setState(() {
       _permissionStatus = status;
       if (_permissionStatus == PermissionStatus.granted) {
-        refreshContacts();
+        contactSubscriber = refreshContacts().asStream().listen((contacts) {
+          _populateContacts(contacts);
+        });
       } else {
         requestPermission();
       }
@@ -75,6 +79,7 @@ class _ListContactsState extends State<ListContacts> {
     // TODO: implement dispose
     super.dispose();
     controller.dispose();
+    contactSubscriber.cancel();
   }
 
   @override
@@ -146,7 +151,9 @@ class _ListContactsState extends State<ListContacts> {
       _permissionStatus = status;
 
       if (_permissionStatus.isGranted) {
-        refreshContacts();
+        contactSubscriber = refreshContacts().asStream().listen((contacts) {
+          _populateContacts(contacts);
+        });
       } else {}
     });
   }
@@ -175,12 +182,12 @@ class _ListContactsState extends State<ListContacts> {
     );
   }
 
-  refreshContacts() async {
+  Future<Iterable<Contact>> refreshContacts() async {
     setState(() {
       _isLoading = true;
     });
     var contacts = await ContactsService.getContacts();
-    _populateContacts(contacts);
+    return contacts;
   }
 
   void _populateContacts(Iterable<Contact> contacts) {
