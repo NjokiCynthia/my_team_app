@@ -1,7 +1,9 @@
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/settings/setup-lists/fine-setup-list.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/custom-dropdown-strings-only.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/dashed-divider.dart';
 import 'package:chamasoft/widgets/textfields.dart';
@@ -13,9 +15,13 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'setup-lists/contribution-setup-list.dart';
 
 List<NamesListItem> fineTypesList = [
-  NamesListItem(id: 1, name: "Fixed"),
-  NamesListItem(id: 2, name: "Percentage"),
-  NamesListItem(id: 3, name: "Compounded"),
+  NamesListItem(id: 1, name: "Fixed Amount Fine Of"),
+  NamesListItem(id: 2, name: "Percentage Rate Fine of"),
+];
+
+List<NamesListItem> fineForList = [
+  NamesListItem(id: 1, name: "for each unpaid contribution"),
+  NamesListItem(id: 2, name: "for outstanding balance"),
 ];
 
 List<NamesListItem> fineFrequenciesList = [
@@ -75,16 +81,15 @@ class _CreateContributionState extends State<CreateContribution>
   bool fineSettingsEnabled = false;
   int weekdayId;
   int contributionFrequencyId;
-
   int startingMonthId;
-
   int weekNumberId;
-
   int twoWeekdayId;
-
   int dateOfMonthId;
-
   int currentPage = 0;
+  int fineForId;
+  int fineLimitId;
+  String fineChargeableOn;
+  int percentageFineOptionId;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -153,6 +158,8 @@ class _CreateContributionState extends State<CreateContribution>
                       padding: EdgeInsets.all(5.0),
                       child: Divider(
                         thickness: 5.0,
+                        indent: 10,
+                        endIndent: 10,
                         color:
                             currentPage == 0 ? primaryColor : Color(0xFFAEAEAE),
                       ),
@@ -163,6 +170,8 @@ class _CreateContributionState extends State<CreateContribution>
                       padding: EdgeInsets.all(5.0),
                       child: Divider(
                         thickness: 5.0,
+                        indent: 10,
+                        endIndent: 10,
                         color:
                             currentPage == 1 ? primaryColor : Color(0xFFAEAEAE),
                       ),
@@ -173,6 +182,8 @@ class _CreateContributionState extends State<CreateContribution>
                       padding: EdgeInsets.all(5.0),
                       child: Divider(
                         thickness: 5.0,
+                        indent: 10,
+                        endIndent: 10,
                         color:
                             currentPage == 2 ? primaryColor : Color(0xFFAEAEAE),
                       ),
@@ -551,55 +562,113 @@ class _CreateContributionState extends State<CreateContribution>
                             });
                           },
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.all(16.0),
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  CustomDropDownButton(
-                                    labelText: "Select Fine Type",
-                                    listItems: fineTypesList,
-                                    selectedItem: fineTypeId,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        fineTypeId = value;
-                                      });
-                                    },
-                                  ),
-                                  CustomDropDownButton(
-                                    labelText: "Select Fine Frequency",
-                                    listItems: fineFrequenciesList,
-                                    selectedItem: fineFrequencyIid,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        fineFrequencyIid = value;
-                                      });
-                                    },
-                                  ),
-                                  CustomDropDownButton(
-                                    labelText:
-                                        "Select Fine Frequency Charged On",
-                                    listItems: fineFrequencyChargedOnList,
-                                    selectedItem: fineFrequencyChargedOnId,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        fineFrequencyChargedOnId = value;
-                                      });
-                                    },
-                                  ),
-                                  amountTextInputField(
-                                    context: context,
-                                    labelText: 'Fine Amount',
-                                    hintText: '1,500',
-                                    onChanged: (value) {
-                                      setState(() {
-                                        fineAmount = double.parse(value);
-                                      });
-                                    },
-                                  ),
-                                ]),
+                        Visibility(
+                          visible: fineSettingsEnabled,
+                          child: Expanded(
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(16.0),
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      CustomDropDownButton(
+                                        labelText: "Select Fine Type",
+                                        listItems: fineTypesList,
+                                        selectedItem: fineTypeId,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            fineTypeId = value;
+                                          });
+                                        },
+                                      ),
+                                      Visibility(
+                                        visible: fineTypeId == 1,
+                                        child: amountTextInputField(
+                                          context: context,
+                                          labelText: 'Fixed Amount',
+                                          hintText: '1,500',
+                                          onChanged: (value) {
+                                            setState(() {
+                                              fineAmount = double.parse(value);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: fineTypeId == 2,
+                                        child: amountTextInputField(
+                                          context: context,
+                                          labelText: 'Percentage Rate',
+                                          hintText: '',
+                                          onChanged: (value) {
+                                            setState(() {
+                                              fineAmount = double.parse(value);
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: fineTypeId == 2,
+                                        child: CustomDropDownButton(
+                                          labelText:
+                                              "Select percentage fine option",
+                                          listItems: percentageFineOnOptions,
+                                          selectedItem: percentageFineOptionId,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              percentageFineOptionId = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                      CustomDropDownStringOnlyButton(
+                                        labelText: "Select Fine Chargeable On",
+                                        listItems: fineChargeableOnOptions,
+                                        selectedItem: fineChargeableOn,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            fineChargeableOn = value;
+                                          });
+                                        },
+                                      ),
+                                      CustomDropDownButton(
+                                        labelText: "Select Fine For",
+                                        listItems: fineForList,
+                                        selectedItem: fineForId,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            fineForId = value;
+                                          });
+                                        },
+                                      ),
+                                      CustomDropDownButton(
+                                        labelText: "Select Fine Frequency",
+                                        listItems: fineFrequencyOptions,
+                                        selectedItem: fineFrequencyIid,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            fineFrequencyIid = value;
+                                          });
+                                        },
+                                      ),
+                                      Visibility(
+                                        visible: fineForId == 1,
+                                        child: CustomDropDownButton(
+                                          labelText: "Select Fine Limit",
+                                          listItems: fineLimitOptions,
+                                          selectedItem: fineLimitId,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              fineLimitId = value;
+                                            });
+                                          },
+                                        ),
+                                      ),
+                                    ]),
+                              ),
+                            ),
                           ),
                         ),
                         Row(
