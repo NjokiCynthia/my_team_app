@@ -1,6 +1,8 @@
+import 'package:chamasoft/screens/chamasoft/models/notification-item.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/dashed-divider.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -13,6 +15,56 @@ class ChamasoftNotifications extends StatefulWidget {
 class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
   @override
   Widget build(BuildContext context) {
+    List<NotificationItem> notifications = [
+      NotificationItem(
+          id: 1,
+          message:
+              "You have an upcoming savings payment of Ksh 2,000 due on 12 March 2020. Depending on your investment group's constitution, a fine might be imposed on you.",
+          dateTime: DateTime.now(),
+          isUnread: true),
+      NotificationItem(
+          id: 1,
+          message:
+              "You have an upcoming savings payment of Ksh 2,000 due on 12 March 2020. Depending on your investment group's constitution, a fine might be imposed on you.",
+          dateTime: DateTime.now(),
+          isUnread: true),
+      NotificationItem(
+          id: 1,
+          message:
+              "You have an upcoming savings payment of Ksh 2,000 due on 12 March 2020. Depending on your investment group's constitution, a fine might be imposed on you.",
+          dateTime: DateTime.now(),
+          isUnread: false),
+      NotificationItem(
+          id: 1,
+          message:
+              "You have an upcoming savings payment of Ksh 2,000 due on 12 March 2020. Depending on your investment group's constitution, a fine might be imposed on you.",
+          dateTime: DateTime.now(),
+          isUnread: false),
+      NotificationItem(
+          id: 1,
+          message:
+              "You have an upcoming savings payment of Ksh 2,000 due on 12 March 2020. Depending on your investment group's constitution, a fine might be imposed on you.",
+          dateTime: DateTime.now(),
+          isUnread: false),
+      NotificationItem(
+          id: 1,
+          message:
+              "You have an upcoming savings payment of Ksh 2,000 due on 12 March 2020. Depending on your investment group's constitution, a fine might be imposed on you.",
+          dateTime: DateTime.now(),
+          isUnread: false),
+      NotificationItem(
+          id: 1,
+          message:
+              "You have an upcoming savings payment of Ksh 2,000 due on 12 March 2020. Depending on your investment group's constitution, a fine might be imposed on you.",
+          dateTime: DateTime.now(),
+          isUnread: false),
+      NotificationItem(
+          id: 1,
+          message:
+              "You have an upcoming savings payment of Ksh 2,000 due on 12 March 2020. Depending on your investment group's constitution, a fine might be imposed on you.",
+          dateTime: DateTime.now(),
+          isUnread: false),
+    ];
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
@@ -71,6 +123,73 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
               ],
             ),
           ),
+          Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemBuilder: (context, index) {
+                NotificationItem notification = notifications[index];
+                return Container(
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(SPACING_NORMAL),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Icon(
+                                  Icons.notifications,
+                                  size: 24.0,
+                                  color: notification.isUnread
+                                      ? Theme.of(context).hintColor
+                                      : Theme.of(context).dividerColor,
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: Text(
+                                    notification.message,
+                                    style: TextStyle(
+                                        fontWeight: notification.isUnread
+                                            ? FontWeight.w700
+                                            : FontWeight.w400,
+                                        fontSize: 12.0,
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
+                                        fontFamily: 'SegoeUI'),
+                                    textAlign: TextAlign.start,
+                                  ),
+                                )
+                              ],
+                            ),
+                            customTitle(
+                                text: defaultDateFormat
+                                    .format(notification.dateTime),
+                                fontSize: 12.0,
+                                fontWeight: notification.isUnread
+                                    ? FontWeight.w700
+                                    : FontWeight.w400,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                align: TextAlign.end),
+                          ],
+                        ),
+                      ),
+                      DashedDivider(
+                        color: Theme.of(context).dividerColor,
+                        thickness: 1.0,
+                        height: 5.0,
+                        width: 4.0,
+                      ),
+                    ],
+                  ),
+                );
+              },
+              itemCount: notifications.length,
+            ),
+          )
         ],
       ),
     );
