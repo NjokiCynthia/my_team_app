@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/notification-item.dart';
+import 'package:chamasoft/screens/chamasoft/notifications/notification-details.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -128,62 +129,69 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 NotificationItem notification = notifications[index];
-                return Container(
-                  child: Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.all(SPACING_NORMAL),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                Icon(
-                                  Icons.notifications,
-                                  size: 24.0,
-                                  color: notification.isUnread
-                                      ? Theme.of(context).hintColor
-                                      : Theme.of(context).dividerColor,
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    notification.message,
-                                    style: TextStyle(
-                                        fontWeight: notification.isUnread
-                                            ? FontWeight.w700
-                                            : FontWeight.w400,
-                                        fontSize: 12.0,
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                        fontFamily: 'SegoeUI'),
-                                    textAlign: TextAlign.start,
+                return InkWell(
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => NotificationDetails(),
+                    ),
+                  ),
+                  child: Container(
+                    child: Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(SPACING_NORMAL),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.notifications,
+                                    size: 24.0,
+                                    color: notification.isUnread
+                                        ? Theme.of(context).hintColor
+                                        : Theme.of(context).dividerColor,
                                   ),
-                                )
-                              ],
-                            ),
-                            customTitle(
-                                text: defaultDateFormat
-                                    .format(notification.dateTime),
-                                fontSize: 12.0,
-                                fontWeight: notification.isUnread
-                                    ? FontWeight.w700
-                                    : FontWeight.w400,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.end),
-                          ],
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      notification.message,
+                                      style: TextStyle(
+                                          fontWeight: notification.isUnread
+                                              ? FontWeight.w700
+                                              : FontWeight.w400,
+                                          fontSize: 12.0,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
+                                          fontFamily: 'SegoeUI'),
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  )
+                                ],
+                              ),
+                              customTitle(
+                                  text: defaultDateFormat
+                                      .format(notification.dateTime),
+                                  fontSize: 12.0,
+                                  fontWeight: notification.isUnread
+                                      ? FontWeight.w700
+                                      : FontWeight.w400,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  align: TextAlign.end),
+                            ],
+                          ),
                         ),
-                      ),
-                      DashedDivider(
-                        color: Theme.of(context).dividerColor,
-                        thickness: 1.0,
-                        height: 5.0,
-                        width: 4.0,
-                      ),
-                    ],
+                        DashedDivider(
+                          color: Theme.of(context).dividerColor,
+                          thickness: 1.0,
+                          height: 5.0,
+                          width: 4.0,
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },
