@@ -24,7 +24,6 @@ List<NamesListItem> fineForList = [
   NamesListItem(id: 2, name: "for outstanding balance"),
 ];
 
-
 final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
   MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025', amount: 2500.0),
   MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025', amount: 5820.0),
@@ -43,12 +42,12 @@ final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
 
 List<NamesListItem> daysOfMonthList = [];
 
-class CreateContribution extends StatefulWidget {
+class CreateLoanType extends StatefulWidget {
   @override
-  _CreateContributionState createState() => _CreateContributionState();
+  _CreateLoanTypeState createState() => _CreateLoanTypeState();
 }
 
-class _CreateContributionState extends State<CreateContribution>
+class _CreateLoanTypeState extends State<CreateLoanType>
     with SingleTickerProviderStateMixin {
   double _appBarElevation = 0;
   List<MembersFilterEntry> selectedMembersList = [];
@@ -95,7 +94,7 @@ class _CreateContributionState extends State<CreateContribution>
     return Scaffold(
       appBar: secondaryPageTabbedAppbar(
         context: context,
-        title: "Create Contribution",
+        title: "Create Loan Type",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
