@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
+import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
@@ -111,7 +112,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 Icons.notifications,
                 color: Theme.of(context).textSelectionHandleColor,
               ),
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => ChamasoftNotifications(),
+                ),
+              ),
             ),
             Padding(
               padding: EdgeInsets.only(right: 20.0),
@@ -162,8 +167,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   "My Group",
                   style: TextStyle(
                       color: _currentPage == 1
-                  ? primaryColor
-                      : Colors.blueGrey[300],
+                          ? primaryColor
+                          : Colors.blueGrey[300],
                       fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
@@ -177,8 +182,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   "Transactions",
                   style: TextStyle(
                       color: _currentPage == 2
-                  ? primaryColor
-                      : Colors.blueGrey[300],
+                          ? primaryColor
+                          : Colors.blueGrey[300],
                       fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
@@ -194,8 +199,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                       color: _currentPage == 3
                           ? primaryColor
                           : Colors.blueGrey[300],
-                  fontFamily: 'SegoeUI',
-
+                      fontFamily: 'SegoeUI',
                       fontWeight: FontWeight.w700),
                 )),
           ],
