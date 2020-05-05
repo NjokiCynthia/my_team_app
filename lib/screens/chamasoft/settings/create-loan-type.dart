@@ -1,46 +1,13 @@
-import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
-import 'package:chamasoft/screens/chamasoft/settings/setup-lists/fine-setup-list.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/custom-dropdown-strings-only.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
-import 'package:chamasoft/widgets/dashed-divider.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-import 'setup-lists/contribution-setup-list.dart';
-
-List<NamesListItem> fineTypesList = [
-  NamesListItem(id: 1, name: "Fixed Amount Fine Of"),
-  NamesListItem(id: 2, name: "Percentage Rate Fine of"),
-];
-
-List<NamesListItem> fineForList = [
-  NamesListItem(id: 1, name: "for each unpaid contribution"),
-  NamesListItem(id: 2, name: "for outstanding balance"),
-];
-
-final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
-  MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025', amount: 2500.0),
-  MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025', amount: 5820.0),
-  MembersFilterEntry('Edwin Kapkei', 'EK', '+254 725 854 025', amount: 7800.0),
-  MembersFilterEntry('Geoffrey Githaiga', 'GG', '+254 725 854 025',
-      amount: 6000.0),
-  MembersFilterEntry('Peter Dragon', 'PD', '+254 725 854 025', amount: 2500.0),
-  MembersFilterEntry('Samson Mburu', 'SM', '+254 725 854 025', amount: 5820.0),
-  MembersFilterEntry('Kevin Njoroge', 'KN', '+254 725 854 025', amount: 7800.0),
-  MembersFilterEntry('Lois Nduku', 'LN', '+254 725 854 025', amount: 6000.0),
-  MembersFilterEntry('Alex Dragon', 'PD', '+254 725 854 025', amount: 2500.0),
-  MembersFilterEntry('Benson Mburu', 'SM', '+254 725 854 025', amount: 5820.0),
-  MembersFilterEntry('Jane Njoroge', 'KN', '+254 725 854 025', amount: 7800.0),
-  MembersFilterEntry('Mary Nduku', 'LN', '+254 725 854 025', amount: 6000.0),
-];
-
-List<NamesListItem> daysOfMonthList = [];
+import 'setup-lists/loan-setup-list.dart';
 
 class CreateLoanType extends StatefulWidget {
   @override
@@ -50,32 +17,68 @@ class CreateLoanType extends StatefulWidget {
 class _CreateLoanTypeState extends State<CreateLoanType>
     with SingleTickerProviderStateMixin {
   double _appBarElevation = 0;
-  List<MembersFilterEntry> selectedMembersList = [];
-  int memberTypeId;
   PageController _pageController;
 
-  int selectedTabIndex = 0;
-  int contributionTypeId;
-  int dayOfMonthId;
-  int fineTypeId;
-  int fineFrequencyIid;
-  int fineFrequencyChargedOnId;
-  double contributionAmount = 0;
-  double fineAmount = 0;
-  String contributionName = '';
-  bool selectAll = false;
-  bool fineSettingsEnabled = false;
-  int weekdayId;
-  int contributionFrequencyId;
-  int startingMonthId;
-  int weekNumberId;
-  int twoWeekdayId;
-  int dateOfMonthId;
+  //Loan Details
+  String loanTypeName = '';
+  int loanAmountTypeId;
+  double minimumLoanAmount;
+  double maximumLoanAmount;
+  double timesNumberOfSavings;
+
+  int interestTypeId;
+  bool enableLoanReducingBalanceRecalculation;
+  double loanInterestRate;
+  int loanInterestRatePerId;
+  int loanRepaymentTypeId;
+  double fixedRepaymentPeriod;
+  double minimumRepaymentPeriod;
+  double maximumRepaymentPeriod;
+
+  //Fines
+  bool enableLateLoanRepaymentFines;
+  int lateLoanPaymentFineTypeId;
+
+  int oneOffFineTypeId;
+  double oneOffFixedAmount;
+  double oneOffPercentage;
+  int oneOffPercentageOnId;
+
+  double fixedFineAmount;
+  int fixedFineFrequencyId;
+  int fixedFineAmountFrequencyOnId;
+
+  double percentageFineRate;
+  int percentageFineFrequencyId;
+  int percentageFineOnId;
+
+  bool enableFinesForOutstandingBalances;
+  int outstandingBalanceFineTypeId;
+
+  double outstandingLoanBalanceOneOffFineAmount;
+
+  double outstandingLoanBalanceFixedFineAmount;
+  int outstandingLoanBalanceFixedFineFrequencyId;
+
+  double outstandingLoanBalancePercentageFineRate;
+  int outstandingLoanBalancePercentageFineFrequencyId;
+  int outstandingLoanBalancePercentageFineChargedOnId;
+
+  //General Details
+  bool enableLoanGuarantors;
+
+  int guarantorOptionId;
+  int minimumAllowedGuarantors;
+
+  bool chargeLoanProcessingFee;
+
+  int loanProcessingFeeTypeId;
+
+  double loanProcessingFeeAmount;
+  double loanProcessingFeePercentage;
+  int loanProcessingFeePercentageChargedOnId;
+
   int currentPage = 0;
-  int fineForId;
-  int fineLimitId;
-  String fineChargeableOn;
-  int percentageFineOptionId;
 
   @override
   void initState() {
@@ -168,7 +171,7 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
-                            "Configure the behaviour of your contribution",
+                            "Configure the behaviour of your loan",
                             style: TextStyle(
                                 color: Theme.of(context).bottomAppBarColor),
                           ),
@@ -177,149 +180,169 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                           child: Padding(
                             padding: const EdgeInsets.all(16.0),
                             child: Column(
-//                        crossAxisAlignment: CrossAxisAlignment.stretch,
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
-                                  CustomDropDownButton(
-                                    labelText: "Select Contribution Type",
-                                    listItems: contributionTypeOptions,
-                                    selectedItem: contributionTypeId,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        contributionTypeId = value;
-                                      });
-                                    },
-                                  ),
-                                  Visibility(
-                                    visible: contributionTypeId == 1,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select Frequency",
-                                      listItems:
-                                          getContributionFrequencyOptions,
-                                      selectedItem: contributionFrequencyId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          contributionFrequencyId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: contributionFrequencyId == 1 ||
-                                        contributionFrequencyId == 2 ||
-                                        contributionFrequencyId == 3 ||
-                                        contributionFrequencyId == 4 ||
-                                        contributionFrequencyId == 5 ||
-                                        contributionFrequencyId == 9,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select Day of Month",
-                                      listItems: getDaysOfTheMonth,
-                                      selectedItem: dateOfMonthId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          dateOfMonthId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: contributionFrequencyId == 7,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select Day of Week",
-                                      listItems: getEveryTwoWeekDays,
-                                      selectedItem: twoWeekdayId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          twoWeekdayId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: contributionFrequencyId == 6,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select Day of Month",
-                                      listItems: getWeekDays,
-                                      selectedItem: dayOfMonthId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          dayOfMonthId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: (dateOfMonthId != null &&
-                                                (dateOfMonthId == 1 ||
-                                                    dateOfMonthId == 2 ||
-                                                    dateOfMonthId == 3 ||
-                                                    dayOfMonthId == 4) ||
-                                            dateOfMonthId == 32) &&
-                                        (contributionFrequencyId != 6 &&
-                                            contributionFrequencyId != 7 &&
-                                            contributionFrequencyId != 8),
-                                    child: CustomDropDownButton(
-                                      labelText: "Select Day of the Month",
-                                      listItems: getMonthDays,
-                                      selectedItem: weekdayId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          weekdayId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: contributionFrequencyId == 2 ||
-                                        contributionFrequencyId == 3 ||
-                                        contributionFrequencyId == 4 ||
-                                        contributionFrequencyId == 5 ||
-                                        contributionFrequencyId == 9,
-                                    child: CustomDropDownButton(
-                                      labelText: "Starting Month",
-                                      listItems: getStartingMonths,
-                                      selectedItem: startingMonthId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          startingMonthId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: contributionFrequencyId == 7,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select Week",
-                                      listItems: getWeekNumbers,
-                                      selectedItem: weekNumberId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          weekNumberId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
                                   simpleTextInputField(
                                     context: context,
-                                    labelText: 'Contribution Name',
-                                    hintText:
-                                        'Monthly Contributions'.toUpperCase(),
+                                    labelText: 'Loan Type Name',
                                     onChanged: (value) {
                                       setState(() {
-                                        contributionName = value;
+                                        loanTypeName = value;
                                       });
                                     },
+                                  ),
+
+                                  CustomDropDownButton(
+                                    labelText: "Loan Amount Type",
+                                    listItems: loanAmountTypes,
+                                    selectedItem: loanAmountTypeId,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        loanAmountTypeId = value;
+                                      });
+                                    },
+                                  ),
+                                  Visibility(
+                                    visible: loanAmountTypeId == 1,
+                                    child: amountTextInputField(
+                                      context: context,
+                                      labelText: 'Minimum Loan Amount',
+                                      hintText: '1,500',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          minimumLoanAmount =
+                                              double.parse(value);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: loanAmountTypeId == 1,
+                                    child: amountTextInputField(
+                                      context: context,
+                                      labelText: 'Maximum  Loan Amount',
+                                      hintText: '1,500',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          maximumLoanAmount =
+                                              double.parse(value);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: loanAmountTypeId == 2,
+                                    child: amountTextInputField(
+                                      context: context,
+                                      labelText:
+                                          'How many times the member savings',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          timesNumberOfSavings =
+                                              double.parse(value);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  CustomDropDownButton(
+                                    labelText: "Interest Type",
+                                    listItems: interestTypes,
+                                    selectedItem: interestTypeId,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        interestTypeId = value;
+                                      });
+                                    },
+                                  ), // enableLoanReducingBalanceRecalculation
+                                  Visibility(
+                                    visible: interestTypeId == 2,
+                                    child: SwitchListTile(
+                                      title: Text(
+                                        "Enable loan reducing balance recalculation",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      value:
+                                          enableLoanReducingBalanceRecalculation,
+                                      onChanged: (bool value) {
+                                        setState(() {
+                                          enableLoanReducingBalanceRecalculation =
+                                              value;
+                                        });
+                                      },
+                                    ),
                                   ),
                                   amountTextInputField(
                                     context: context,
-                                    labelText: 'Contribution Amount',
-                                    hintText: '1,500',
+                                    labelText: 'Loan Interest Rate(%)',
                                     onChanged: (value) {
                                       setState(() {
-                                        contributionAmount =
-                                            double.parse(value);
+                                        loanInterestRate = double.parse(value);
                                       });
                                     },
+                                  ),
+                                  CustomDropDownButton(
+                                    labelText: "Loan interest rate per",
+                                    listItems: loanInterestRatePer,
+                                    selectedItem: loanInterestRatePerId,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        loanInterestRatePerId = value;
+                                      });
+                                    },
+                                  ),
+                                  CustomDropDownButton(
+                                    labelText: "Loan repayment period type",
+                                    listItems: loanRepaymentType,
+                                    selectedItem: loanRepaymentTypeId,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        loanRepaymentTypeId = value;
+                                      });
+                                    },
+                                  ),
+                                  Visibility(
+                                    visible: loanRepaymentTypeId == 1,
+                                    child: amountTextInputField(
+                                      context: context,
+                                      labelText: 'Fixed repayment period',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          fixedRepaymentPeriod =
+                                              double.parse(value);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: loanRepaymentTypeId == 2,
+                                    child: amountTextInputField(
+                                      context: context,
+                                      labelText: 'Minimum repayment period',
+                                      hintText: 'Value in months . E.g 3',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          minimumRepaymentPeriod =
+                                              double.parse(value);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: loanRepaymentTypeId == 2,
+                                    child: amountTextInputField(
+                                      context: context,
+                                      labelText: 'Maximum repayment period',
+                                      hintText: 'Value in months . E.g 12',
+                                      onChanged: (value) {
+                                        setState(() {
+                                          maximumRepaymentPeriod =
+                                              double.parse(value);
+                                        });
+                                      },
+                                    ),
                                   ),
                                 ]),
                           ),
@@ -355,134 +378,340 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     height: MediaQuery.of(context).size.height,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          ListTile(
-                            title: Text(
-                              "Members",
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            subtitle: Text(
-                              "Select members who will contribute",
-                              style: TextStyle(
-                                  color: Theme.of(context).bottomAppBarColor),
-                            ),
-                          ),
-                          CheckboxListTile(
-                            title: Text(
-                              "Select All",
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                            value: selectAll,
-                            onChanged: (value) {
-                              setState(() {
-                                selectAll = value;
-                                if (selectAll) {
-                                  selectedMembersList.clear();
-                                  selectedMembersList.addAll(_membersList);
-                                } else {
-                                  selectedMembersList.clear();
-                                }
-                              });
-                            },
-                          ),
-                          Expanded(
-                            child: ListView.separated(
-                              itemCount: _membersList.length,
-                              separatorBuilder: (context, index) =>
-                                  DashedDivider(
-                                thickness: 1.0,
-                                color: Color(0xFFD4D4D4),
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              title: Text(
+                                "Fines",
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
+                                    fontWeight: FontWeight.w500),
                               ),
-                              itemBuilder: (BuildContext context, int index) {
-                                return CheckboxListTile(
-                                  secondary: const Icon(Icons.person),
-                                  value: selectedMembersList
-                                      .contains(_membersList[index]),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      if (value) {
-                                        selectedMembersList
-                                            .add(_membersList[index]);
-                                      } else {
-                                        selectedMembersList
-                                            .remove(_membersList[index]);
-                                      }
-                                    });
-                                  },
-                                  title: Text(_membersList[index].name),
-                                  subtitle:
-                                      Text(_membersList[index].phoneNumber),
-                                );
+                              subtitle: Text(
+                                "",
+                                style: TextStyle(
+                                    color: Theme.of(context).bottomAppBarColor),
+                              ),
+                            ),
+                            SwitchListTile(
+                              title: Text(
+                                "Enable late loan repayment fines",
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              value: enableLateLoanRepaymentFines,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  enableLateLoanRepaymentFines = value;
+                                });
                               },
                             ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              RaisedButton(
-                                onPressed: () {
-                                  if (_pageController.hasClients) {
-                                    _pageController.animateToPage(
-                                      0,
-                                      duration:
-                                          const Duration(milliseconds: 400),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  }
-
+                            Visibility(
+                              visible: enableLateLoanRepaymentFines,
+                              child: CustomDropDownButton(
+                                labelText: "Late Loan repayment fine type",
+                                listItems: lateLoanPaymentFineTypes,
+                                selectedItem: lateLoanPaymentFineTypeId,
+                                onChanged: (value) {
                                   setState(() {
-                                    currentPage = 0;
+                                    lateLoanPaymentFineTypeId = value;
                                   });
                                 },
-                                color: primaryColor,
-                                child: Text(
-                                  'Back',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                ),
                               ),
-                              RaisedButton(
-                                onPressed: () {
-                                  if (_pageController.hasClients) {
-                                    _pageController.animateToPage(
-                                      2,
-                                      duration:
-                                          const Duration(milliseconds: 400),
-                                      curve: Curves.easeInOut,
-                                    );
-                                  }
-
+                            ),
+                            Visibility(
+                              visible: lateLoanPaymentFineTypeId == 1,
+                              child: CustomDropDownButton(
+                                labelText: "Select one off fine type",
+                                listItems: oneOffFineTypes,
+                                selectedItem: oneOffFineTypeId,
+                                onChanged: (value) {
                                   setState(() {
-                                    currentPage = 2;
+                                    oneOffFineTypeId = value;
                                   });
                                 },
-                                color: primaryColor,
-                                child: Text(
-                                  'Next',
-                                  style: TextStyle(
-                                    color: Colors.white,
+                              ),
+                            ),
+                            Visibility(
+                              visible: oneOffFineTypeId == 1,
+                              child: amountTextInputField(
+                                context: context,
+                                labelText: 'Enter One Off Fixed Amount',
+                                onChanged: (value) {
+                                  setState(() {
+                                    oneOffFixedAmount = double.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: oneOffFineTypeId == 2,
+                              child: amountTextInputField(
+                                context: context,
+                                labelText: 'Enter one off percentage (%)',
+                                onChanged: (value) {
+                                  setState(() {
+                                    oneOffPercentage = double.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: oneOffFineTypeId == 2,
+                              child: CustomDropDownButton(
+                                labelText: "Select percentage fine on",
+                                listItems: oneOffPercentageRateOn,
+                                selectedItem: oneOffPercentageOnId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    oneOffPercentageOnId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: lateLoanPaymentFineTypeId == 2,
+                              child: amountTextInputField(
+                                context: context,
+                                labelText: 'Enter fixed fine amount',
+                                onChanged: (value) {
+                                  setState(() {
+                                    fixedFineAmount = double.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: oneOffFineTypeId == 2,
+                              child: CustomDropDownButton(
+                                labelText: "Select amount fine frequency",
+                                listItems: fixedAmountFineFrequencyOn,
+                                selectedItem: fixedFineFrequencyId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    fixedFineFrequencyId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: lateLoanPaymentFineTypeId == 3,
+                              child: amountTextInputField(
+                                context: context,
+                                labelText: 'Enter fine percentage rate',
+                                onChanged: (value) {
+                                  setState(() {
+                                    percentageFineRate = double.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: lateLoanPaymentFineTypeId == 3,
+                              child: CustomDropDownButton(
+                                labelText: "Select percentage fine Frequency",
+                                listItems: latePaymentsFineFrequency,
+                                selectedItem: percentageFineFrequencyId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    percentageFineFrequencyId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: lateLoanPaymentFineTypeId == 3,
+                              child: CustomDropDownButton(
+                                labelText: "Select percentage fine on",
+                                listItems: percentageFineOn,
+                                selectedItem: percentageFineOnId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    percentageFineOnId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            SwitchListTile(
+                              title: Text(
+                                "Enable fines for outstanding balances",
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              value: enableFinesForOutstandingBalances,
+                              onChanged: (bool value) {
+                                setState(() {
+                                  enableFinesForOutstandingBalances = value;
+                                });
+                              },
+                            ),
+                            Visibility(
+                              visible: enableFinesForOutstandingBalances,
+                              child: CustomDropDownButton(
+                                labelText: "Select fine type",
+                                listItems: lateLoanPaymentFineTypes,
+                                selectedItem: outstandingBalanceFineTypeId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    outstandingBalanceFineTypeId = value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: outstandingBalanceFineTypeId == 1,
+                              child: amountTextInputField(
+                                context: context,
+                                labelText:
+                                    'Outstanding Loan Balance One Off Fine Amount',
+                                onChanged: (value) {
+                                  setState(() {
+                                    outstandingLoanBalanceOneOffFineAmount =
+                                        double.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: outstandingBalanceFineTypeId == 2,
+                              child: amountTextInputField(
+                                context: context,
+                                labelText:
+                                    'Outstanding loan balance fixed fine amount',
+                                onChanged: (value) {
+                                  setState(() {
+                                    outstandingLoanBalanceFixedFineAmount =
+                                        double.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: outstandingBalanceFineTypeId == 2,
+                              child: CustomDropDownButton(
+                                labelText: "Fixed fine amount charged on",
+                                listItems: latePaymentsFineFrequency,
+                                selectedItem:
+                                    outstandingLoanBalanceFixedFineFrequencyId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    outstandingLoanBalanceFixedFineFrequencyId =
+                                        value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: outstandingBalanceFineTypeId == 3,
+                              child: amountTextInputField(
+                                context: context,
+                                labelText:
+                                    'Outstanding loan balance percentage fine rate',
+                                onChanged: (value) {
+                                  setState(() {
+                                    outstandingLoanBalancePercentageFineRate =
+                                        double.parse(value);
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: outstandingBalanceFineTypeId == 3,
+                              child: CustomDropDownButton(
+                                labelText: "Percentage fine frequency",
+                                listItems: latePaymentsFineFrequency,
+                                selectedItem:
+                                    outstandingLoanBalancePercentageFineFrequencyId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    outstandingLoanBalancePercentageFineFrequencyId =
+                                        value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Visibility(
+                              visible: outstandingBalanceFineTypeId == 3,
+                              child: CustomDropDownButton(
+                                labelText: "Percentage fine rate charged on",
+                                listItems: percentageFineOn,
+                                selectedItem:
+                                    outstandingLoanBalancePercentageFineChargedOnId,
+                                onChanged: (value) {
+                                  setState(() {
+                                    outstandingLoanBalancePercentageFineChargedOnId =
+                                        value;
+                                  });
+                                },
+                              ),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                RaisedButton(
+                                  onPressed: () {
+                                    if (_pageController.hasClients) {
+                                      _pageController.animateToPage(
+                                        0,
+                                        duration:
+                                            const Duration(milliseconds: 400),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    }
+
+                                    setState(() {
+                                      currentPage = 0;
+                                    });
+                                  },
+                                  color: primaryColor,
+                                  child: Text(
+                                    'Back',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
                                   ),
                                 ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
+                                RaisedButton(
+                                  onPressed: () {
+                                    if (_pageController.hasClients) {
+                                      _pageController.animateToPage(
+                                        2,
+                                        duration:
+                                            const Duration(milliseconds: 400),
+                                        curve: Curves.easeInOut,
+                                      );
+                                    }
+
+                                    setState(() {
+                                      currentPage = 2;
+                                    });
+                                  },
+                                  color: primaryColor,
+                                  child: Text(
+                                    'Next',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                  ),
                                 ),
-                              ),
-                            ],
-                          ),
-                        ]),
+                              ],
+                            ),
+                          ]),
+                    ),
                   ),
                   Container(
                     padding: const EdgeInsets.all(16.0),
@@ -491,141 +720,47 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                       children: <Widget>[
                         ListTile(
                           title: Text(
-                            "Fines",
+                            "General Details",
                             style: TextStyle(
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
                           subtitle: Text(
-                            "Select Fines for Late Members",
+                            "",
                             style: TextStyle(
                                 color: Theme.of(context).bottomAppBarColor),
                           ),
                         ),
                         SwitchListTile(
                           title: Text(
-                            "Activate Fine Settings",
+                            "Enable loan guarantors",
                             style: TextStyle(
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
-                          value: fineSettingsEnabled,
+                          value: enableLoanGuarantors,
                           onChanged: (bool value) {
                             setState(() {
-                              fineSettingsEnabled = value;
+                              enableLoanGuarantors = value;
                             });
                           },
                         ),
-                        Visibility(
-                          visible: fineSettingsEnabled,
-                          child: Expanded(
-                            child: SingleChildScrollView(
-                              child: Padding(
-                                padding: const EdgeInsets.all(16.0),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      CustomDropDownButton(
-                                        labelText: "Select Fine Type",
-                                        listItems: fineTypesList,
-                                        selectedItem: fineTypeId,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            fineTypeId = value;
-                                          });
-                                        },
-                                      ),
-                                      Visibility(
-                                        visible: fineTypeId == 1,
-                                        child: amountTextInputField(
-                                          context: context,
-                                          labelText: 'Fixed Amount',
-                                          hintText: '1,500',
-                                          onChanged: (value) {
-                                            setState(() {
-                                              fineAmount = double.parse(value);
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: fineTypeId == 2,
-                                        child: amountTextInputField(
-                                          context: context,
-                                          labelText: 'Percentage Rate',
-                                          hintText: '',
-                                          onChanged: (value) {
-                                            setState(() {
-                                              fineAmount = double.parse(value);
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                      Visibility(
-                                        visible: fineTypeId == 2,
-                                        child: CustomDropDownButton(
-                                          labelText:
-                                              "Select percentage fine option",
-                                          listItems: percentageFineOnOptions,
-                                          selectedItem: percentageFineOptionId,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              percentageFineOptionId = value;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                      CustomDropDownStringOnlyButton(
-                                        labelText: "Select Fine Chargeable On",
-                                        listItems: fineChargeableOnOptions,
-                                        selectedItem: fineChargeableOn,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            fineChargeableOn = value;
-                                          });
-                                        },
-                                      ),
-                                      CustomDropDownButton(
-                                        labelText: "Select Fine For",
-                                        listItems: fineForList,
-                                        selectedItem: fineForId,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            fineForId = value;
-                                          });
-                                        },
-                                      ),
-                                      CustomDropDownButton(
-                                        labelText: "Select Fine Frequency",
-                                        listItems: fineFrequencyOptions,
-                                        selectedItem: fineFrequencyIid,
-                                        onChanged: (value) {
-                                          setState(() {
-                                            fineFrequencyIid = value;
-                                          });
-                                        },
-                                      ),
-                                      Visibility(
-                                        visible: fineForId == 1,
-                                        child: CustomDropDownButton(
-                                          labelText: "Select Fine Limit",
-                                          listItems: fineLimitOptions,
-                                          selectedItem: fineLimitId,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              fineLimitId = value;
-                                            });
-                                          },
-                                        ),
-                                      ),
-                                    ]),
-                              ),
-                            ),
+                        SwitchListTile(
+                          title: Text(
+                            "Charge loan processing fee",
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                fontWeight: FontWeight.w500),
                           ),
+                          value: chargeLoanProcessingFee,
+                          onChanged: (bool value) {
+                            setState(() {
+                              chargeLoanProcessingFee = value;
+                            });
+                          },
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,

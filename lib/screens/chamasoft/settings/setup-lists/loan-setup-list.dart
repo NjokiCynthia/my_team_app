@@ -1,5 +1,10 @@
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 
+List<NamesListItem> loanAmountTypes = [
+  NamesListItem(id: 1, name: "Based on Amount Range"),
+  NamesListItem(id: 2, name: "Based on Member Savings"),
+];
+
 List<NamesListItem> interestTypes = [
   NamesListItem(id: 1, name: "Fixed Balance"),
   NamesListItem(id: 2, name: "Reducing Balance"),
@@ -18,6 +23,12 @@ List<NamesListItem> loanRepaymentType = [
   NamesListItem(id: 2, name: "Varying Repayment Period"),
 ];
 
+List<NamesListItem> lateLoanPaymentFineTypes = [
+  NamesListItem(id: 3, name: "A One off Fine Amount per Installment"),
+  NamesListItem(id: 1, name: "A Fixed Fine Amount"),
+  NamesListItem(id: 2, name: "A Percentage (%) Fine"),
+];
+
 List<NamesListItem> loanGracePeriods = [
   NamesListItem(id: 1, name: "One Month"),
   NamesListItem(id: 2, name: "Two Months"),
@@ -31,17 +42,6 @@ List<NamesListItem> loanGracePeriods = [
   NamesListItem(id: 10, name: "Ten Months"),
   NamesListItem(id: 11, name: "Eleven Months"),
   NamesListItem(id: 12, name: "One Year"),
-];
-
-List<NamesListItem> lateLoanPaymentFineTypes = [
-  NamesListItem(id: 3, name: "A One off Fine Amount per Installment"),
-  NamesListItem(id: 1, name: "A Fixed Fine Amount"),
-  NamesListItem(id: 2, name: "A Percentage (%) Fine"),
-];
-
-List<NamesListItem> loanAmountTypes = [
-  NamesListItem(id: 1, name: "Based on Amount Range"),
-  NamesListItem(id: 2, name: "Based on Member Savings"),
 ];
 
 List<NamesListItem> latePaymentsFineFrequency = [
