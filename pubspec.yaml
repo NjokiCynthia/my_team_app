@@ -24,6 +24,7 @@ dependencies:
   file_picker: ^1.6.3+2
   contacts_service: ^0.4.5
   permission_handler: ^5.0.0+hotfix.4
+  fl_chart: ^0.9.4
 
 dev_dependencies:
   flutter_test:

@@ -314,6 +314,30 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                   padding: EdgeInsets.all(16.0),
                   decoration: cardDecoration(
                       gradient: plainCardGradient(context), context: context),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Deposits vs Withdrawals",
+                            style: TextStyle(
+                              color: Colors.blueGrey[400],
+                              fontFamily: 'SegoeUI',
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Feather.more_horizontal,
+                                color: Colors.blueGrey,
+                              ),
+                              onPressed: () {})
+                        ],
+                      ),
+                    ],
+                  ),
                 )),
           ],
         ),
