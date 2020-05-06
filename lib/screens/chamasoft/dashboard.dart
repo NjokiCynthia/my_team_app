@@ -231,7 +231,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           appBarElevation: (elevation) => _setElevation(elevation),
         );
       case 1:
-        return ChamasoftGroup();
+        return ChamasoftGroup(
+          appBarElevation: (elevation) => _setElevation(elevation),
+        );
       case 2:
         return ChamasoftTransactions();
       case 3:
