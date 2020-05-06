@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
-import 'package:chamasoft/screens/chamasoft/settings/list-contribution.dart';
+import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
+import 'package:chamasoft/screens/chamasoft/settings/list-loan-types.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -290,7 +291,10 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
               ),
               dense: true,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ListLoanTypes()));
+              },
             ),
             DashedDivider(
               color: Color(0xFFECECEC),
