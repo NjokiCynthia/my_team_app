@@ -379,3 +379,73 @@ Widget toolTip(
         )),
   );
 }
+
+Widget accountBalance(
+    {Color color,
+    IconData cardIcon,
+    String currency,
+    String cardAmount,
+    String accountName}) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    crossAxisAlignment: CrossAxisAlignment.start,
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: <Widget>[
+      Icon(
+        cardIcon,
+        color: color.withOpacity(0.6),
+        size: 38.0,
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      RichText(
+        overflow: TextOverflow.ellipsis,
+        maxLines: 2,
+        text: TextSpan(
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 14.0,
+                color: color,
+                fontFamily: 'SegoeUI'),
+            children: [
+              TextSpan(text: accountName.toUpperCase()),
+              TextSpan(text: " "),
+              TextSpan(
+                  text: "BALANCE",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      color: color,
+                      fontFamily: 'SegoeUI'))
+            ]),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      Center(
+        child: FittedBox(
+          child: RichText(
+            overflow: TextOverflow.ellipsis,
+            text: TextSpan(
+                style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 20.0,
+                    color: color,
+                    fontFamily: 'SegoeUI'),
+                children: [
+                  TextSpan(
+                      text: currency,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 18.0,
+                          color: color,
+                          fontFamily: 'SegoeUI')),
+                  TextSpan(text: " "),
+                  TextSpan(text: cardAmount),
+                ]),
+          ),
+        ),
+      ),
+    ],
+  );
+}

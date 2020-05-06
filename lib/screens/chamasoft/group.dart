@@ -1,7 +1,9 @@
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
 class ChamasoftGroup extends StatefulWidget {
   final ValueChanged<double> appBarElevation;
@@ -113,7 +115,93 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+              padding: EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Account Balances",
+                    style: TextStyle(
+                      color: Colors.blueGrey[400],
+                      fontFamily: 'SegoeUI',
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  IconButton(
+                      icon: Icon(
+                        Feather.more_horizontal,
+                        color: Colors.blueGrey,
+                      ),
+                      onPressed: () {})
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+              child: Container(
+                height: 180.0,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                  physics: BouncingScrollPhysics(),
+                  children: <Widget>[
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    Container(
+                      width: 160.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: cardDecoration(
+                          gradient: csCardGradient(), context: context),
+                      child: accountBalance(
+                        color: Colors.white,
+                        cardIcon: Feather.globe,
+                        cardAmount: "19,000,000",
+                        currency: "Ksh",
+                        accountName: "Total",
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    Container(
+                      width: 160.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: cardDecoration(
+                          gradient: plainCardGradient(context),
+                          context: context),
+                      child: accountBalance(
+                        color: primaryColor,
+                        cardIcon: Feather.credit_card,
+                        cardAmount: "100,000",
+                        currency: "Ksh",
+                        accountName: "Finnlemm Bank Account",
+                      ),
+                    ),
+                    SizedBox(
+                      width: 16.0,
+                    ),
+                    Container(
+                      width: 160.0,
+                      padding: EdgeInsets.all(16.0),
+                      decoration: cardDecoration(
+                          gradient: plainCardGradient(context),
+                          context: context),
+                      child: accountBalance(
+                        color: primaryColor,
+                        cardIcon: Feather.credit_card,
+                        cardAmount: "10,000,000",
+                        currency: "Ksh",
+                        accountName: "E-Wall",
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
               child: Container(
                 padding: EdgeInsets.all(16.0),
                 decoration: cardDecoration(
@@ -219,6 +307,14 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                 ),
               ),
             ),
+            Padding(
+                padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                child: Container(
+                  height: 300,
+                  padding: EdgeInsets.all(16.0),
+                  decoration: cardDecoration(
+                      gradient: plainCardGradient(context), context: context),
+                )),
           ],
         ),
       ),
