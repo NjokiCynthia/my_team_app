@@ -19,82 +19,25 @@ class BarChartSample4State extends State<BarChartSample4> {
     ChartData(month: "Aug", deposit: 11000, withdrawal: 40000),
     ChartData(month: "Sep", deposit: 30000, withdrawal: 14700),
   ];
-//  List<BarChartGroupData> get data {
-//    return List.generate(depositsVsWithdrawals.length, (index) {});
-//  }
 
-  List<BarChartGroupData> data = [];
+  List<BarChartGroupData> get data {
+    return List.generate(depositsVsWithdrawals.length, (index) {
+      ChartData data = depositsVsWithdrawals[index];
+      return BarChartGroupData(x: index, barsSpace: 4, barRods: [
+        BarChartRodData(
+            y: data.total,
+            rodStackItem: [
+              BarChartRodStackItem(0, data.deposit, data.depositColor),
+              BarChartRodStackItem(data.deposit, data.total, data.depositColor)
+            ],
+            borderRadius: const BorderRadius.all(Radius.zero))
+      ]);
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    data = [
-      BarChartGroupData(
-        x: 0,
-        barsSpace: 4,
-        barRods: [
-          BarChartRodData(
-              y: 17,
-              rodStackItem: [
-                BarChartRodStackItem(0, 2, deposits),
-                BarChartRodStackItem(12, 17, withdrawals),
-              ],
-              borderRadius: const BorderRadius.all(Radius.zero)),
-        ],
-      ),
-      BarChartGroupData(
-        x: 1,
-        barsSpace: 4,
-        barRods: [
-          BarChartRodData(
-              y: 31,
-              rodStackItem: [
-                BarChartRodStackItem(0, 11, deposits),
-                BarChartRodStackItem(18, 31, withdrawals),
-              ],
-              borderRadius: const BorderRadius.all(Radius.zero)),
-        ],
-      ),
-      BarChartGroupData(
-        x: 2,
-        barsSpace: 4,
-        barRods: [
-          BarChartRodData(
-              y: 34,
-              rodStackItem: [
-                BarChartRodStackItem(0, 6, deposits),
-                BarChartRodStackItem(23, 34, withdrawals),
-              ],
-              borderRadius: const BorderRadius.all(Radius.zero)),
-        ],
-      ),
-      BarChartGroupData(
-        x: 3,
-        barsSpace: 4,
-        barRods: [
-          BarChartRodData(
-              y: 14,
-              rodStackItem: [
-                BarChartRodStackItem(0, 0.5, deposits),
-                BarChartRodStackItem(12, 14, withdrawals),
-              ],
-              borderRadius: const BorderRadius.all(Radius.zero)),
-        ],
-      ),
-      BarChartGroupData(
-        x: 4,
-        barsSpace: 4,
-        barRods: [
-          BarChartRodData(
-              y: 34,
-              rodStackItem: [
-                BarChartRodStackItem(0, 9, deposits),
-                BarChartRodStackItem(24, 34, withdrawals),
-              ],
-              borderRadius: const BorderRadius.all(Radius.zero)),
-        ],
-      ),
-    ];
   }
 
   @override
@@ -132,6 +75,8 @@ class BarChartSample4State extends State<BarChartSample4> {
                       case 3:
                         return 'Jul';
                       case 4:
+                        return 'Aug';
+                      case 5:
                         return 'Aug';
                       default:
                         return '';
