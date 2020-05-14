@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/bar_chart_sample4.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -336,6 +337,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               onPressed: () {})
                         ],
                       ),
+                      BarChartSample4()
                     ],
                   ),
                 )),
