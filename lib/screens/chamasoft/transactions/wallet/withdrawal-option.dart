@@ -4,6 +4,8 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
+import 'list-phone-contacts.dart';
+
 class WithdrawalOption extends StatefulWidget {
   @override
   _WithdrawalOptionState createState() => _WithdrawalOptionState();
@@ -39,11 +41,19 @@ class _WithdrawalOptionState extends State<WithdrawalOption> {
                 }
 
                 return GridItem(
-                  title: title,
-                  icon: icon,
-                  onTapped: () => Navigator.of(context).push(MaterialPageRoute(
-                      builder: (BuildContext context) => BankList())),
-                );
+                    title: title,
+                    icon: icon,
+                    onTapped: () {
+                      if (index == 1) {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => BankList()));
+                      } else {
+                        //Show List of Contacts for Selection of Recipient
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ListPhoneContacts()));
+                      }
+                    });
               }),
             ),
           ),

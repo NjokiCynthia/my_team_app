@@ -420,133 +420,157 @@ class _CreateLoanTypeState extends State<CreateLoanType>
                                   ),
                                   Visibility(
                                     visible: enableLateLoanRepaymentFines,
-                                    child: CustomDropDownButton(
-                                      labelText:
-                                          "Late Loan repayment fine type",
-                                      listItems: lateLoanPaymentFineTypes,
-                                      selectedItem: lateLoanPaymentFineTypeId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          lateLoanPaymentFineTypeId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: lateLoanPaymentFineTypeId == 1,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select one off fine type",
-                                      listItems: oneOffFineTypes,
-                                      selectedItem: oneOffFineTypeId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          oneOffFineTypeId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: oneOffFineTypeId == 1,
-                                    child: amountTextInputField(
-                                      context: context,
-                                      labelText: 'Enter One Off Fixed Amount',
-                                      onChanged: (value) {
-                                        setState(() {
-                                          oneOffFixedAmount =
-                                              double.parse(value);
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: oneOffFineTypeId == 2,
-                                    child: amountTextInputField(
-                                      context: context,
-                                      labelText: 'Enter one off percentage (%)',
-                                      onChanged: (value) {
-                                        setState(() {
-                                          oneOffPercentage =
-                                              double.parse(value);
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: oneOffFineTypeId == 2,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select percentage fine on",
-                                      listItems: oneOffPercentageRateOn,
-                                      selectedItem: oneOffPercentageOnId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          oneOffPercentageOnId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: lateLoanPaymentFineTypeId == 2,
-                                    child: amountTextInputField(
-                                      context: context,
-                                      labelText: 'Enter fixed fine amount',
-                                      onChanged: (value) {
-                                        setState(() {
-                                          fixedFineAmount = double.parse(value);
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: oneOffFineTypeId == 2,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select amount fine frequency",
-                                      listItems: fixedAmountFineFrequencyOn,
-                                      selectedItem: fixedFineFrequencyId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          fixedFineFrequencyId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: lateLoanPaymentFineTypeId == 3,
-                                    child: amountTextInputField(
-                                      context: context,
-                                      labelText: 'Enter fine percentage rate',
-                                      onChanged: (value) {
-                                        setState(() {
-                                          percentageFineRate =
-                                              double.parse(value);
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: lateLoanPaymentFineTypeId == 3,
-                                    child: CustomDropDownButton(
-                                      labelText:
-                                          "Select percentage fine Frequency",
-                                      listItems: latePaymentsFineFrequency,
-                                      selectedItem: percentageFineFrequencyId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          percentageFineFrequencyId = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  Visibility(
-                                    visible: lateLoanPaymentFineTypeId == 3,
-                                    child: CustomDropDownButton(
-                                      labelText: "Select percentage fine on",
-                                      listItems: percentageFineOn,
-                                      selectedItem: percentageFineOnId,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          percentageFineOnId = value;
-                                        });
-                                      },
+                                    child: Column(
+                                      children: <Widget>[
+                                        CustomDropDownButton(
+                                          labelText:
+                                              "Late Loan repayment fine type",
+                                          listItems: lateLoanPaymentFineTypes,
+                                          selectedItem:
+                                              lateLoanPaymentFineTypeId,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              lateLoanPaymentFineTypeId = value;
+                                            });
+                                          },
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              lateLoanPaymentFineTypeId == 3,
+                                          child: CustomDropDownButton(
+                                            labelText:
+                                                "Select one off fine type",
+                                            listItems: oneOffFineTypes,
+                                            selectedItem: oneOffFineTypeId,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                oneOffFineTypeId = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible: oneOffFineTypeId == 1,
+                                          child: amountTextInputField(
+                                            context: context,
+                                            labelText:
+                                                'Enter One Off Fixed Amount',
+                                            onChanged: (value) {
+                                              setState(() {
+                                                oneOffFixedAmount =
+                                                    double.parse(value);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible: oneOffFineTypeId == 2,
+                                          child: amountTextInputField(
+                                            context: context,
+                                            labelText:
+                                                'Enter one off percentage (%)',
+                                            onChanged: (value) {
+                                              setState(() {
+                                                oneOffPercentage =
+                                                    double.parse(value);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible: oneOffFineTypeId == 2,
+                                          child: CustomDropDownButton(
+                                            labelText:
+                                                "Select percentage fine on",
+                                            listItems: oneOffPercentageRateOn,
+                                            selectedItem: oneOffPercentageOnId,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                oneOffPercentageOnId = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              lateLoanPaymentFineTypeId == 1,
+                                          child: amountTextInputField(
+                                            context: context,
+                                            labelText:
+                                                'Enter fixed fine amount',
+                                            onChanged: (value) {
+                                              setState(() {
+                                                fixedFineAmount =
+                                                    double.parse(value);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              lateLoanPaymentFineTypeId == 1,
+                                          child: CustomDropDownButton(
+                                            labelText:
+                                                "Select amount fine frequency",
+                                            listItems:
+                                                fixedAmountFineFrequencyOn,
+                                            selectedItem: fixedFineFrequencyId,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                fixedFineFrequencyId = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              lateLoanPaymentFineTypeId == 2,
+                                          child: amountTextInputField(
+                                            context: context,
+                                            labelText:
+                                                'Enter fine percentage rate',
+                                            onChanged: (value) {
+                                              setState(() {
+                                                percentageFineRate =
+                                                    double.parse(value);
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              lateLoanPaymentFineTypeId == 2,
+                                          child: CustomDropDownButton(
+                                            labelText:
+                                                "Select percentage fine Frequency",
+                                            listItems:
+                                                latePaymentsFineFrequency,
+                                            selectedItem:
+                                                percentageFineFrequencyId,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                percentageFineFrequencyId =
+                                                    value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                        Visibility(
+                                          visible:
+                                              lateLoanPaymentFineTypeId == 2,
+                                          child: CustomDropDownButton(
+                                            labelText:
+                                                "Select percentage fine on",
+                                            listItems: percentageFineOn,
+                                            selectedItem: percentageFineOnId,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                percentageFineOnId = value;
+                                              });
+                                            },
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SwitchListTile(
