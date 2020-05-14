@@ -340,7 +340,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                       BarChartSample4()
                     ],
                   ),
-                )),
+                ))
           ],
         ),
       ),
