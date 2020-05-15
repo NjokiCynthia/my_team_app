@@ -85,7 +85,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Record Loan Payment",
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: GestureDetector(
         onTap: () {
           FocusScope.of(context).unfocus();
@@ -107,7 +107,6 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
               Container(
                 padding: EdgeInsets.all(16.0),
                 height: MediaQuery.of(context).size.height,
-                color: Theme.of(context).backgroundColor,
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
