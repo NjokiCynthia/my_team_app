@@ -54,6 +54,33 @@ Widget amountTextInputField(
   );
 }
 
+
+Widget numberTextInputField(
+    {BuildContext context,
+      String labelText,
+      Function onChanged,
+      String hintText = ''}) {
+  return TextFormField(
+    onChanged: onChanged,
+    style: inputTextStyle(),
+    inputFormatters: [_amountValidator],
+    keyboardType: TextInputType.numberWithOptions(
+      decimal: false,
+      signed: false,
+    ),
+    decoration: InputDecoration(
+      hasFloatingPlaceholder: true,
+      enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(
+            color: Theme.of(context).hintColor,
+            width: 1.0,
+          )),
+      hintText: hintText,
+      labelText: labelText,
+    ),
+  );
+}
+
 Widget multilineTextField(
     {BuildContext context,
     String labelText,

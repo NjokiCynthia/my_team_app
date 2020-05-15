@@ -11,6 +11,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'list-bank-accounts.dart';
 import 'update-group-profile.dart';
 
 class GroupSettings extends StatefulWidget {
@@ -180,7 +181,10 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
               ),
               dense: true,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ListBankAccounts()));
+              },
             ),
             DashedDivider(
               color: Color(0xFFECECEC),
