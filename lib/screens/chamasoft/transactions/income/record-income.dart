@@ -76,113 +76,118 @@ class _RecordIncomeState extends State<RecordIncome> {
         title: "Record Income",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Manually record income payments",
-                message: "",
-                visible: toolTipIsVisible,
-                toggleToolTip: () {
-                  setState(() {
-                    toolTipIsVisible = !toolTipIsVisible;
-                  });
-                }),
-            Container(
-              padding: inputPagePadding,
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  DatePicker(
-                    labelText: 'Select Deposit Date',
-                    selectedDate:
-                        refundDate == null ? DateTime.now() : refundDate,
-                    selectDate: (selectedDate) {
-                      setState(() {
-                        refundDate = selectedDate;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Depositor',
-                    listItems: depositors,
-                    selectedItem: depositorId,
-                    onChanged: (value) {
-                      setState(() {
-                        depositorId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Income Category',
-                    listItems: incomeCategories,
-                    selectedItem: incomeCategoryId,
-                    onChanged: (value) {
-                      setState(() {
-                        incomeCategoryId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Account',
-                    listItems: accounts,
-                    selectedItem: accountId,
-                    onChanged: (value) {
-                      setState(() {
-                        accountId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Deposit Method',
-                    listItems: depositMethods,
-                    selectedItem: refundMethod,
-                    onChanged: (value) {
-                      setState(() {
-                        refundMethod = value;
-                      });
-                    },
-                  ),
-                  amountTextInputField(
-                      context: context,
-                      labelText: 'Enter Amount',
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Manually record income payments",
+                  message: "",
+                  visible: toolTipIsVisible,
+                  toggleToolTip: () {
+                    setState(() {
+                      toolTipIsVisible = !toolTipIsVisible;
+                    });
+                  }),
+              Container(
+                padding: inputPagePadding,
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    DatePicker(
+                      labelText: 'Select Deposit Date',
+                      selectedDate:
+                          refundDate == null ? DateTime.now() : refundDate,
+                      selectDate: (selectedDate) {
+                        setState(() {
+                          refundDate = selectedDate;
+                        });
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Depositor',
+                      listItems: depositors,
+                      selectedItem: depositorId,
                       onChanged: (value) {
                         setState(() {
-                          amount = double.parse(value);
+                          depositorId = value;
                         });
-                      }),
-                  multilineTextField(
-                      context: context,
-                      labelText: 'Short Description (Optional)',
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Income Category',
+                      listItems: incomeCategories,
+                      selectedItem: incomeCategoryId,
                       onChanged: (value) {
                         setState(() {
-                          description = value;
+                          incomeCategoryId = value;
                         });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                    context: context,
-                    text: "SAVE",
-                    onPressed: () {
-                      print('Refund date: $refundDate');
-                      print('Refund Method: $refundMethod');
-                      print('Depositor: $depositorId');
-                      print('Account: $accountId');
-                      print('Amount: $amount');
-                      print('Description: $description');
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Account',
+                      listItems: accounts,
+                      selectedItem: accountId,
+                      onChanged: (value) {
+                        setState(() {
+                          accountId = value;
+                        });
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Deposit Method',
+                      listItems: depositMethods,
+                      selectedItem: refundMethod,
+                      onChanged: (value) {
+                        setState(() {
+                          refundMethod = value;
+                        });
+                      },
+                    ),
+                    amountTextInputField(
+                        context: context,
+                        labelText: 'Enter Amount',
+                        onChanged: (value) {
+                          setState(() {
+                            amount = double.parse(value);
+                          });
+                        }),
+                    multilineTextField(
+                        context: context,
+                        labelText: 'Short Description (Optional)',
+                        onChanged: (value) {
+                          setState(() {
+                            description = value;
+                          });
+                        }),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    defaultButton(
+                      context: context,
+                      text: "SAVE",
+                      onPressed: () {
+                        print('Refund date: $refundDate');
+                        print('Refund Method: $refundMethod');
+                        print('Depositor: $depositorId');
+                        print('Account: $accountId');
+                        print('Amount: $amount');
+                        print('Description: $description');
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

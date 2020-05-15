@@ -165,157 +165,162 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        scrollDirection: Axis.vertical,
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Note that...",
-                message: "Manually record fine payments",
-                showTitle: false),
-            Padding(
-              padding: inputPagePadding,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: DatePicker(
-                          labelText: 'Select Expense Date',
-                          selectedDate: finePaymentDate == null
-                              ? DateTime.now()
-                              : finePaymentDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              finePaymentDate = selectedDate;
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Expanded(
-                          flex: 3,
-                          child: CustomDropDownButton(
-                            labelText: "Select Deposit Method",
-                            listItems: withdrawalMethods,
-                            selectedItem: depositMethod,
-                            onChanged: (value) {
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Note that...",
+                  message: "Manually record fine payments",
+                  showTitle: false),
+              Padding(
+                padding: inputPagePadding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: DatePicker(
+                            labelText: 'Select Deposit Date',
+                            selectedDate: finePaymentDate == null
+                                ? DateTime.now()
+                                : finePaymentDate,
+                            selectDate: (selectedDate) {
                               setState(() {
-                                depositMethod = value;
+                                finePaymentDate = selectedDate;
                               });
                             },
-                          )),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomDropDownButton(
-                    labelText: "Select Fine",
-                    listItems: fineOptions,
-                    selectedItem: fineId,
-                    onChanged: (value) {
-                      setState(() {
-                        fineId = value;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomDropDownButton(
-                    labelText: "Select Deposit Account",
-                    listItems: accounts,
-                    selectedItem: accountId,
-                    onChanged: (value) {
-                      setState(() {
-                        accountId = value;
-                      });
-                    },
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Member',
-                    listItems: memberTypes,
-                    selectedItem: memberTypeId,
-                    onChanged: (value) {
-                      setState(() {
-                        memberTypeId = value;
-                      });
-                    },
-                  ),
-                  Visibility(
-                    visible: memberTypeId == 1,
-                    child: SingleChildScrollView(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          Column(
-                            children: memberWidgets.toList(),
                           ),
-                          FlatButton(
-                            onPressed: () async {
-                              //open select members dialog
-                              selectedMembersList = await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SelectMember(
-                                            initialMembersList:
-                                                selectedMembersList,
-                                          )));
-                            },
-                            child: Text(
-                              'Select members',
-                              style: TextStyle(
-                                color: Colors.blueAccent,
-                                fontSize: 15.0,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                            flex: 3,
+                            child: CustomDropDownButton(
+                              labelText: "Select Deposit Method",
+                              listItems: withdrawalMethods,
+                              selectedItem: depositMethod,
+                              onChanged: (value) {
+                                setState(() {
+                                  depositMethod = value;
+                                });
+                              },
+                            )),
+                      ],
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomDropDownButton(
+                      labelText: "Select Fine",
+                      listItems: fineOptions,
+                      selectedItem: fineId,
+                      onChanged: (value) {
+                        setState(() {
+                          fineId = value;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomDropDownButton(
+                      labelText: "Select Deposit Account",
+                      listItems: accounts,
+                      selectedItem: accountId,
+                      onChanged: (value) {
+                        setState(() {
+                          accountId = value;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Member',
+                      listItems: memberTypes,
+                      selectedItem: memberTypeId,
+                      onChanged: (value) {
+                        setState(() {
+                          memberTypeId = value;
+                        });
+                      },
+                    ),
+                    Visibility(
+                      visible: memberTypeId == 1,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            Column(
+                              children: memberWidgets.toList(),
+                            ),
+                            FlatButton(
+                              onPressed: () async {
+                                //open select members dialog
+                                selectedMembersList = await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SelectMember(
+                                              initialMembersList:
+                                                  selectedMembersList,
+                                            )));
+                              },
+                              child: Text(
+                                'Select members',
+                                style: TextStyle(
+                                  color: Colors.blueAccent,
+                                  fontSize: 15.0,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Visibility(
-                      visible: memberTypeId == 2,
-                      child: amountTextInputField(
-                          context: context,
-                          labelText: "Enter Amount(for each member)",
-                          onChanged: (value) {
-                            setState(() {
-                              amountInputValue = double.parse(value);
-                            });
-                          })),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  SizedBox(
-                    width: 200,
-                    child: defaultButton(
-                      context: context,
-                      text: "Save",
-                      onPressed: () {},
+                    SizedBox(
+                      height: 10,
                     ),
-                  ),
-                ],
+                    Visibility(
+                        visible: memberTypeId == 2,
+                        child: amountTextInputField(
+                            context: context,
+                            labelText: "Enter Amount(for each member)",
+                            onChanged: (value) {
+                              setState(() {
+                                amountInputValue = double.parse(value);
+                              });
+                            })),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: 200,
+                      child: defaultButton(
+                        context: context,
+                        text: "Save",
+                        onPressed: () {},
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

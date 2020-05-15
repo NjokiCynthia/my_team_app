@@ -105,125 +105,131 @@ class FineMemberState extends State<FineMember> {
         title: "Fine Member",
       ),
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Create custom fines",
-                message: "",
-                visible: toolTipIsVisible,
-                toggleToolTip: () {
-                  setState(() {
-                    toolTipIsVisible = !toolTipIsVisible;
-                  });
-                }),
-            Container(
-              padding: inputPagePadding,
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  DatePicker(
-                    labelText: 'Select Fine Date',
-                    selectedDate: fineDate == null ? DateTime.now() : fineDate,
-                    selectDate: (selectedDate) {
-                      setState(() {
-                        fineDate = selectedDate;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Fine type',
-                    listItems: fineTypes,
-                    selectedItem: fineTypeId,
-                    onChanged: (value) {
-                      setState(() {
-                        fineTypeId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Member',
-                    listItems: memberTypes,
-                    selectedItem: memberTypeId,
-                    onChanged: (value) {
-                      setState(() {
-                        memberTypeId = value;
-                      });
-                    },
-                  ),
-                  Visibility(
-                    visible: memberTypeId == 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Wrap(
-                          children: memberWidgets.toList(),
-                        ),
-                        FlatButton(
-                          onPressed: () async {
-                            //open select members dialog
-                            selectedMembersList = await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SelectMember(
-                                          initialMembersList:
-                                              selectedMembersList,
-                                        )));
-                          },
-                          child: Text(
-                            'Select more members',
-                            style: TextStyle(
-                              color: Colors.blueAccent,
-                              fontSize: 15.0,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Create custom fines",
+                  message: "",
+                  visible: toolTipIsVisible,
+                  toggleToolTip: () {
+                    setState(() {
+                      toolTipIsVisible = !toolTipIsVisible;
+                    });
+                  }),
+              Container(
+                padding: inputPagePadding,
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    DatePicker(
+                      labelText: 'Select Fine Date',
+                      selectedDate:
+                          fineDate == null ? DateTime.now() : fineDate,
+                      selectDate: (selectedDate) {
+                        setState(() {
+                          fineDate = selectedDate;
+                        });
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Fine type',
+                      listItems: fineTypes,
+                      selectedItem: fineTypeId,
+                      onChanged: (value) {
+                        setState(() {
+                          fineTypeId = value;
+                        });
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Member',
+                      listItems: memberTypes,
+                      selectedItem: memberTypeId,
+                      onChanged: (value) {
+                        setState(() {
+                          memberTypeId = value;
+                        });
+                      },
+                    ),
+                    Visibility(
+                      visible: memberTypeId == 1,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Wrap(
+                            children: memberWidgets.toList(),
+                          ),
+                          FlatButton(
+                            onPressed: () async {
+                              //open select members dialog
+                              selectedMembersList = await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectMember(
+                                            initialMembersList:
+                                                selectedMembersList,
+                                          )));
+                            },
+                            child: Text(
+                              'Select more members',
+                              style: TextStyle(
+                                color: Colors.blueAccent,
+                                fontSize: 15.0,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                  amountTextInputField(
+                    amountTextInputField(
+                        context: context,
+                        labelText: 'Enter Amount to fine',
+                        onChanged: (value) {
+                          setState(() {
+                            amount = double.parse(value);
+                          });
+                        }),
+                    multilineTextField(
+                        context: context,
+                        labelText: 'Short Description (Optional)',
+                        onChanged: (value) {
+                          setState(() {
+                            description = value;
+                          });
+                        }),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    defaultButton(
                       context: context,
-                      labelText: 'Enter Amount to fine',
-                      onChanged: (value) {
-                        setState(() {
-                          amount = double.parse(value);
-                        });
-                      }),
-                  multilineTextField(
-                      context: context,
-                      labelText: 'Short Description (Optional)',
-                      onChanged: (value) {
-                        setState(() {
-                          description = value;
-                        });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                    context: context,
-                    text: "SAVE",
-                    onPressed: () {
-                      print('Fine date: $fineDate');
-                      print('Fine Type: $fineTypeId');
-                      print('Member type: $memberTypeId');
-                      print('Amount: $amount');
-                      print('Description: $description');
-                      print('Members: ${selectedMembersList.length}');
-                      selectedMembersList.map((MembersFilterEntry mem) {
-                        return print(mem.name);
-                      }).toList();
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+                      text: "SAVE",
+                      onPressed: () {
+                        print('Fine date: $fineDate');
+                        print('Fine Type: $fineTypeId');
+                        print('Member type: $memberTypeId');
+                        print('Amount: $amount');
+                        print('Description: $description');
+                        print('Members: ${selectedMembersList.length}');
+                        selectedMembersList.map((MembersFilterEntry mem) {
+                          return print(mem.name);
+                        }).toList();
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -172,61 +172,65 @@ class PayNowState extends State<PayNow> {
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Contribution Payment",
       ),
-      backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Note that...",
-                message:
-                    "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                children: <Widget>[
-                  buildDropDown(),
-                  amountTextInputField(
-                      context: context,
-                      labelText: "Amount to pay",
-                      onChanged: (value) {
-                        setState(() {
-                          amountInputValue = double.parse(value);
-                        });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: textWithExternalLinks(
-                        color: Colors.blueGrey,
-                        size: 12.0,
-                        textData: {
-                          'Additional charges may be applied where necessary.':
-                              {},
-                          'Learn More': {
-                            "url": () => launchURL(
-                                'https://chamasoft.com/terms-and-conditions/'),
-                            "color": primaryColor,
-                            "weight": FontWeight.w500
-                          },
+      backgroundColor: Theme.of(context).backgroundColor,
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Note that...",
+                  message:
+                      "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: <Widget>[
+                    buildDropDown(),
+                    amountTextInputField(
+                        context: context,
+                        labelText: "Amount to pay",
+                        onChanged: (value) {
+                          setState(() {
+                            amountInputValue = double.parse(value);
+                          });
                         }),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                      context: context,
-                      text: "Pay Now",
-                      onPressed: () => _numberToPrompt())
-                ],
-              ),
-            )
-          ],
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                      child: textWithExternalLinks(
+                          color: Colors.blueGrey,
+                          size: 12.0,
+                          textData: {
+                            'Additional charges may be applied where necessary.':
+                                {},
+                            'Learn More': {
+                              "url": () => launchURL(
+                                  'https://chamasoft.com/terms-and-conditions/'),
+                              "color": primaryColor,
+                              "weight": FontWeight.w500
+                            },
+                          }),
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    defaultButton(
+                        context: context,
+                        text: "Pay Now",
+                        onPressed: () => _numberToPrompt())
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

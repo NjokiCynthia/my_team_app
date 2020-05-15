@@ -2,6 +2,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payme
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -58,93 +59,107 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
         leadingIcon: LineAwesomeIcons.close,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Manually record bank loans",
-                message: "",
-                visible: toolTipIsVisible,
-                toggleToolTip: () {
-                  setState(() {
-                    toolTipIsVisible = !toolTipIsVisible;
-                  });
-                }),
-            Container(
-              padding: inputPagePadding,
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  simpleTextInputField(
-                      context: context,
-                      labelText: "Bank loan description",
-                      onChanged: (value) {}),
-                  amountTextInputField(
-                      context: context,
-                      labelText: "Total amount received",
-                      onChanged: (value) {}),
-                  amountTextInputField(
-                      context: context,
-                      labelText: "Total amount payable",
-                      onChanged: (value) {}),
-                  amountTextInputField(
-                      context: context,
-                      labelText: "Total loan balance as at date",
-                      onChanged: (value) {}),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: DatePicker(
-                          labelText: 'Loan From',
-                          selectedDate: loanFromDate == null
-                              ? DateTime.now()
-                              : loanFromDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              loanFromDate = selectedDate;
-                            });
-                          },
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Manually record bank loans",
+                  message: "",
+                  visible: toolTipIsVisible,
+                  toggleToolTip: () {
+                    setState(() {
+                      toolTipIsVisible = !toolTipIsVisible;
+                    });
+                  }),
+              Container(
+                padding: inputPagePadding,
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    simpleTextInputField(
+                        context: context,
+                        labelText: "Bank loan description",
+                        onChanged: (value) {}),
+                    amountTextInputField(
+                        context: context,
+                        labelText: "Total amount received",
+                        onChanged: (value) {}),
+                    amountTextInputField(
+                        context: context,
+                        labelText: "Total amount payable",
+                        onChanged: (value) {}),
+                    amountTextInputField(
+                        context: context,
+                        labelText: "Total loan balance as at date",
+                        onChanged: (value) {}),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: DatePicker(
+                            labelText: 'Loan From',
+                            selectedDate: loanFromDate == null
+                                ? DateTime.now()
+                                : loanFromDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                loanFromDate = selectedDate;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: DatePicker(
-                          labelText: 'Loan To',
-                          selectedDate:
-                              loanToDate == null ? DateTime.now() : loanToDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              loanToDate = selectedDate;
-                            });
-                          },
+                        SizedBox(
+                          width: 5,
                         ),
-                      ),
-                    ],
-                  ),
-                  CustomDropDownButton(
-                    labelText: "Account loan deposited to",
-                    listItems: accounts,
-                    selectedItem: accountId,
-                    onChanged: (value) {
-                      setState(() {
-                        accountId = value;
-                      });
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+                        Expanded(
+                          flex: 1,
+                          child: DatePicker(
+                            labelText: 'Loan To',
+                            selectedDate: loanToDate == null
+                                ? DateTime.now()
+                                : loanToDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                loanToDate = selectedDate;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CustomDropDownButton(
+                      labelText: "Account loan deposited to",
+                      listItems: accounts,
+                      selectedItem: accountId,
+                      onChanged: (value) {
+                        setState(() {
+                          accountId = value;
+                        });
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    defaultButton(
+                      context: context,
+                      text: "SAVE",
+                      onPressed: () {},
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

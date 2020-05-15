@@ -66,103 +66,108 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
         title: "Record Bank Loan Repayment",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Manually record bank loan repayments",
-                message: "",
-                visible: toolTipIsVisible,
-                toggleToolTip: () {
-                  setState(() {
-                    toolTipIsVisible = !toolTipIsVisible;
-                  });
-                }),
-            Container(
-              padding: inputPagePadding,
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  CustomDropDownButton(
-                    labelText: 'Select Bank Loan',
-                    listItems: loans,
-                    selectedItem: loanId,
-                    onChanged: (value) {
-                      setState(() {
-                        loanId = value;
-                      });
-                    },
-                  ),
-                  DatePicker(
-                    labelText: 'Select Repayment Date',
-                    selectedDate:
-                        depositDate == null ? DateTime.now() : depositDate,
-                    selectDate: (selectedDate) {
-                      setState(() {
-                        depositDate = selectedDate;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Account Withdrawn',
-                    listItems: accounts,
-                    selectedItem: accountId,
-                    onChanged: (value) {
-                      setState(() {
-                        accountId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Repayment Method',
-                    listItems: depositMethods,
-                    selectedItem: depositMethod,
-                    onChanged: (value) {
-                      setState(() {
-                        depositMethod = value;
-                      });
-                    },
-                  ),
-                  amountTextInputField(
-                      context: context,
-                      labelText: 'Enter Amount',
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Manually record bank loan repayments",
+                  message: "",
+                  visible: toolTipIsVisible,
+                  toggleToolTip: () {
+                    setState(() {
+                      toolTipIsVisible = !toolTipIsVisible;
+                    });
+                  }),
+              Container(
+                padding: inputPagePadding,
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    CustomDropDownButton(
+                      labelText: 'Select Bank Loan',
+                      listItems: loans,
+                      selectedItem: loanId,
                       onChanged: (value) {
                         setState(() {
-                          amount = double.parse(value);
+                          loanId = value;
                         });
-                      }),
-                  multilineTextField(
-                      context: context,
-                      labelText: 'Short Description (Optional)',
+                      },
+                    ),
+                    DatePicker(
+                      labelText: 'Select Repayment Date',
+                      selectedDate:
+                          depositDate == null ? DateTime.now() : depositDate,
+                      selectDate: (selectedDate) {
+                        setState(() {
+                          depositDate = selectedDate;
+                        });
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Account Withdrawn',
+                      listItems: accounts,
+                      selectedItem: accountId,
                       onChanged: (value) {
                         setState(() {
-                          description = value;
+                          accountId = value;
                         });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                    context: context,
-                    text: "SAVE",
-                    onPressed: () {
-                      print('Deposit date: $depositDate');
-                      print('Deposit Method: $depositMethod');
-                      print('Member: $groupMemberId');
-                      print('Loan: $loanId');
-                      print('Account: $accountId');
-                      print('Amount: $amount');
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Repayment Method',
+                      listItems: depositMethods,
+                      selectedItem: depositMethod,
+                      onChanged: (value) {
+                        setState(() {
+                          depositMethod = value;
+                        });
+                      },
+                    ),
+                    amountTextInputField(
+                        context: context,
+                        labelText: 'Enter Amount',
+                        onChanged: (value) {
+                          setState(() {
+                            amount = double.parse(value);
+                          });
+                        }),
+                    multilineTextField(
+                        context: context,
+                        labelText: 'Short Description (Optional)',
+                        onChanged: (value) {
+                          setState(() {
+                            description = value;
+                          });
+                        }),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    defaultButton(
+                      context: context,
+                      text: "SAVE",
+                      onPressed: () {
+                        print('Deposit date: $depositDate');
+                        print('Deposit Method: $depositMethod');
+                        print('Member: $groupMemberId');
+                        print('Loan: $loanId');
+                        print('Account: $accountId');
+                        print('Amount: $amount');
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -79,125 +79,131 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
         title: "Record Contribution Refund",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Manually record contribution refund",
-                message: "",
-                visible: toolTipIsVisible,
-                toggleToolTip: () {
-                  setState(() {
-                    toolTipIsVisible = !toolTipIsVisible;
-                  });
-                }),
-            Container(
-              padding: inputPagePadding,
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        child: DatePicker(
-                          labelText: 'Select Refund Date',
-                          selectedDate:
-                              refundDate == null ? DateTime.now() : refundDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              refundDate = selectedDate;
-                            });
-                          },
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Manually record contribution refund",
+                  message: "",
+                  visible: toolTipIsVisible,
+                  toggleToolTip: () {
+                    setState(() {
+                      toolTipIsVisible = !toolTipIsVisible;
+                    });
+                  }),
+              Container(
+                padding: inputPagePadding,
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          child: DatePicker(
+                            labelText: 'Select Refund Date',
+                            selectedDate: refundDate == null
+                                ? DateTime.now()
+                                : refundDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                refundDate = selectedDate;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Expanded(
-                        child: CustomDropDownButton(
-                          labelText: 'Select Refund Method',
-                          listItems: depositMethods,
-                          selectedItem: refundMethod,
-                          onChanged: (value) {
-                            setState(() {
-                              refundMethod = value;
-                            });
-                          },
+                        SizedBox(
+                          width: 5.0,
                         ),
-                      ),
-                    ],
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Contribution to refund from',
-                    listItems: contributions,
-                    selectedItem: contributionId,
-                    onChanged: (value) {
-                      setState(() {
-                        contributionId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select account to refund from',
-                    listItems: accounts,
-                    selectedItem: accountId,
-                    onChanged: (value) {
-                      setState(() {
-                        accountId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Member to refund',
-                    listItems: groupMembers,
-                    selectedItem: groupMemberId,
-                    onChanged: (value) {
-                      setState(() {
-                        groupMemberId = value;
-                      });
-                    },
-                  ),
-                  amountTextInputField(
-                      context: context,
-                      labelText: 'Enter Amount refunded',
+                        Expanded(
+                          child: CustomDropDownButton(
+                            labelText: 'Select Refund Method',
+                            listItems: depositMethods,
+                            selectedItem: refundMethod,
+                            onChanged: (value) {
+                              setState(() {
+                                refundMethod = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Contribution to refund from',
+                      listItems: contributions,
+                      selectedItem: contributionId,
                       onChanged: (value) {
                         setState(() {
-                          amount = double.parse(value);
+                          contributionId = value;
                         });
-                      }),
-                  multilineTextField(
-                      context: context,
-                      labelText: 'Short Description (Optional)',
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select account to refund from',
+                      listItems: accounts,
+                      selectedItem: accountId,
                       onChanged: (value) {
                         setState(() {
-                          description = value;
+                          accountId = value;
                         });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                    context: context,
-                    text: "SAVE",
-                    onPressed: () {
-                      print('Refund date: $refundDate');
-                      print('Refund Method: $refundMethod');
-                      print('Member: $contributionId');
-                      print('Account: $accountId');
-                      print('Amount: $amount');
-                      print('Description: $description');
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Member to refund',
+                      listItems: groupMembers,
+                      selectedItem: groupMemberId,
+                      onChanged: (value) {
+                        setState(() {
+                          groupMemberId = value;
+                        });
+                      },
+                    ),
+                    amountTextInputField(
+                        context: context,
+                        labelText: 'Enter Amount refunded',
+                        onChanged: (value) {
+                          setState(() {
+                            amount = double.parse(value);
+                          });
+                        }),
+                    multilineTextField(
+                        context: context,
+                        labelText: 'Short Description (Optional)',
+                        onChanged: (value) {
+                          setState(() {
+                            description = value;
+                          });
+                        }),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    defaultButton(
+                      context: context,
+                      text: "SAVE",
+                      onPressed: () {
+                        print('Refund date: $refundDate');
+                        print('Refund Method: $refundMethod');
+                        print('Member: $contributionId');
+                        print('Account: $accountId');
+                        print('Amount: $amount');
+                        print('Description: $description');
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -86,118 +86,123 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
         title: "Record Loan Payment",
       ),
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Maually record loan payments",
-                message: "",
-                visible: toolTipIsVisible,
-                toggleToolTip: () {
-                  setState(() {
-                    toolTipIsVisible = !toolTipIsVisible;
-                  });
-                }),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        child: DatePicker(
-                          labelText: 'Select Deposit Date',
-                          selectedDate: depositDate == null
-                              ? DateTime.now()
-                              : depositDate,
-                          selectDate: (selectedDate) {
-                            setState(() {
-                              depositDate = selectedDate;
-                            });
-                          },
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Maually record loan payments",
+                  message: "",
+                  visible: toolTipIsVisible,
+                  toggleToolTip: () {
+                    setState(() {
+                      toolTipIsVisible = !toolTipIsVisible;
+                    });
+                  }),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          child: DatePicker(
+                            labelText: 'Select Deposit Date',
+                            selectedDate: depositDate == null
+                                ? DateTime.now()
+                                : depositDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                depositDate = selectedDate;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        width: 5.0,
-                      ),
-                      Expanded(
-                        child: CustomDropDownButton(
-                          labelText: 'Select Deposit Method',
-                          listItems: depositMethods,
-                          selectedItem: depositMethod,
-                          onChanged: (value) {
-                            setState(() {
-                              depositMethod = value;
-                            });
-                          },
+                        SizedBox(
+                          width: 5.0,
                         ),
-                      ),
-                    ],
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Member',
-                    listItems: groupMembers,
-                    selectedItem: groupMemberId,
-                    onChanged: (value) {
-                      setState(() {
-                        groupMemberId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Loan',
-                    listItems: loans,
-                    selectedItem: loanId,
-                    onChanged: (value) {
-                      setState(() {
-                        loanId = value;
-                      });
-                    },
-                  ),
-                  CustomDropDownButton(
-                    labelText: 'Select Account',
-                    listItems: accounts,
-                    selectedItem: accountId,
-                    onChanged: (value) {
-                      setState(() {
-                        accountId = value;
-                      });
-                    },
-                  ),
-                  amountTextInputField(
-                      context: context,
-                      labelText: 'Enter Amount refunded',
+                        Expanded(
+                          child: CustomDropDownButton(
+                            labelText: 'Select Deposit Method',
+                            listItems: depositMethods,
+                            selectedItem: depositMethod,
+                            onChanged: (value) {
+                              setState(() {
+                                depositMethod = value;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Member',
+                      listItems: groupMembers,
+                      selectedItem: groupMemberId,
                       onChanged: (value) {
                         setState(() {
-                          amount = double.parse(value);
+                          groupMemberId = value;
                         });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                    context: context,
-                    text: "SAVE",
-                    onPressed: () {
-                      print('Deposit date: $depositDate');
-                      print('Deposit Method: $depositMethod');
-                      print('Member: $groupMemberId');
-                      print('Loan: $loanId');
-                      print('Account: $accountId');
-                      print('Amount: $amount');
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Loan',
+                      listItems: loans,
+                      selectedItem: loanId,
+                      onChanged: (value) {
+                        setState(() {
+                          loanId = value;
+                        });
+                      },
+                    ),
+                    CustomDropDownButton(
+                      labelText: 'Select Account',
+                      listItems: accounts,
+                      selectedItem: accountId,
+                      onChanged: (value) {
+                        setState(() {
+                          accountId = value;
+                        });
+                      },
+                    ),
+                    amountTextInputField(
+                        context: context,
+                        labelText: 'Enter Amount refunded',
+                        onChanged: (value) {
+                          setState(() {
+                            amount = double.parse(value);
+                          });
+                        }),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    defaultButton(
+                      context: context,
+                      text: "SAVE",
+                      onPressed: () {
+                        print('Deposit date: $depositDate');
+                        print('Deposit Method: $depositMethod');
+                        print('Member: $groupMemberId');
+                        print('Loan: $loanId');
+                        print('Account: $accountId');
+                        print('Amount: $amount');
+                      },
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

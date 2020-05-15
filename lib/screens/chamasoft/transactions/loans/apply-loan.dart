@@ -124,61 +124,66 @@ class ApplyLoanState extends State<ApplyLoan> {
         title: "Apply Loan",
       ),
       backgroundColor: Colors.transparent,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          children: <Widget>[
-            toolTip(
-                context: context,
-                title: "Note that...",
-                message:
-                    "Loan application process is totally depended on your group's constitution and your group\'s management."),
-            Container(
-              padding: EdgeInsets.all(16.0),
-              height: MediaQuery.of(context).size.height,
-              color: Theme.of(context).backgroundColor,
-              child: Column(
-                children: <Widget>[
-                  buildDropDown(),
-                  amountTextInputField(
-                      context: context,
-                      labelText: "Amount applying for",
-                      onChanged: (value) {
-                        setState(() {
-                          amountInputValue = double.parse(value);
-                        });
-                      }),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                    child: textWithExternalLinks(
-                        color: Colors.blueGrey,
-                        size: 12.0,
-                        textData: {
-                          'By applying for this loan you agree to the ': {},
-                          'terms and conditions': {
-                            "url": () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        LoanAmortization(),
-                                  ),
-                                ),
-                            "color": primaryColor,
-                            "weight": FontWeight.w500
-                          },
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Note that...",
+                  message:
+                      "Loan application process is totally depended on your group's constitution and your group\'s management."),
+              Container(
+                padding: EdgeInsets.all(16.0),
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Column(
+                  children: <Widget>[
+                    buildDropDown(),
+                    amountTextInputField(
+                        context: context,
+                        labelText: "Amount applying for",
+                        onChanged: (value) {
+                          setState(() {
+                            amountInputValue = double.parse(value);
+                          });
                         }),
-                  ),
-                  SizedBox(
-                    height: 24,
-                  ),
-                  defaultButton(
-                      context: context, text: "Apply Now", onPressed: () {})
-                ],
-              ),
-            )
-          ],
+                    SizedBox(
+                      height: 24,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                      child: textWithExternalLinks(
+                          color: Colors.blueGrey,
+                          size: 12.0,
+                          textData: {
+                            'By applying for this loan you agree to the ': {},
+                            'terms and conditions': {
+                              "url": () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          LoanAmortization(),
+                                    ),
+                                  ),
+                              "color": primaryColor,
+                              "weight": FontWeight.w500
+                            },
+                          }),
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    defaultButton(
+                        context: context, text: "Apply Now", onPressed: () {})
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
