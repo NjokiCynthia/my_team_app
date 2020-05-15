@@ -84,8 +84,8 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
   String bankAccountName;
   String selectedBankName = '';
   String selectedBankBranchName = '';
-  String bankFilter;
-  String bankBranchFilter;
+  String bankFilter = "";
+  String bankBranchFilter = "";
 
   void _bankPrompt() {
     showDialog(
@@ -106,6 +106,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                 children: <Widget>[
                   TextFormField(
                     style: inputTextStyle(),
+                    initialValue: bankFilter,
                     onChanged: (value) {
                       setState(() {
                         bankFilter = value;
@@ -126,6 +127,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: banksList.length,
                           itemBuilder: (context, index) {
@@ -230,6 +232,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                 children: <Widget>[
                   TextFormField(
                     style: inputTextStyle(),
+                    initialValue: bankBranchFilter,
                     onChanged: (value) {
                       setState(() {
                         bankBranchFilter = value;
@@ -250,6 +253,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                   Expanded(
                     child: SingleChildScrollView(
                       child: ListView.builder(
+                          physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
                           itemCount: bankBranchesList.length,
                           itemBuilder: (context, index) {
