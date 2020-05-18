@@ -1,5 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -24,6 +24,15 @@ class _ContributionSummaryState extends State<ContributionSummary> {
         _appBarElevation = newElevation;
       });
     }
+  }
+
+  void _applyFilter() {}
+
+  void _showFilter(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) => FilterContainer(
+            ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
   @override
@@ -74,21 +83,17 @@ class _ContributionSummaryState extends State<ContributionSummary> {
       SummaryRow(
           id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
     ];
+
     return Scaffold(
-      appBar: secondaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context).pop(),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          title: appbarTitle,
-          actions: summaryFlag == CONTRIBUTION_STATEMENT
-              ? [
-                  FilterActionButton(
-                    icon: LineAwesomeIcons.filter,
-                    textColor: Colors.blueGrey,
-                  ),
-                ]
-              : null),
+      appBar: tertiaryPageAppbar(
+        context: context,
+        action: () => Navigator.of(context).pop(),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        trailingIcon: LineAwesomeIcons.filter,
+        title: appbarTitle,
+        trailingAction: () => _showFilter(context),
+      ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[

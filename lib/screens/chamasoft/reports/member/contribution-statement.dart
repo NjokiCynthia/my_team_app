@@ -1,6 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -62,6 +62,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
     StatementRow(false, "Welfare", "Invoice", "500", DateTime.now()),
   ];
 
+  void _applyFilter() {}
+
+  void _showFilter(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (_) => FilterContainer(
+            ModalRoute.of(context).settings.arguments, _applyFilter));
+  }
+
   @override
   Widget build(BuildContext context) {
     final statementFlag = ModalRoute.of(context).settings.arguments;
@@ -74,18 +83,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
     }
 
     return Scaffold(
-      appBar: secondaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context).pop(),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          title: appbarTitle,
-          actions: [
-            FilterActionButton(
-              icon: LineAwesomeIcons.filter,
-              textColor: Colors.blueGrey,
-            ),
-          ]),
+      appBar: tertiaryPageAppbar(
+        context: context,
+        action: () => Navigator.of(context).pop(),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        trailingIcon: LineAwesomeIcons.filter,
+        title: appbarTitle,
+        trailingAction: () => _showFilter(context),
+      ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: <Widget>[
@@ -167,139 +173,5 @@ class _ContributionStatementState extends State<ContributionStatement> {
         ],
       ),
     );
-  }
-}
-
-class FilterActionButton extends StatelessWidget {
-  const FilterActionButton(
-      {Key key, @required this.icon, @required this.textColor})
-      : super(key: key);
-  final IconData icon;
-  final Color textColor;
-
-  @override
-  Widget build(BuildContext context) {
-    final statementFlag = ModalRoute.of(context).settings.arguments;
-    String defaultTitle = "Contributions";
-    String single = "Contribution";
-
-    if (statementFlag == 2) {
-      defaultTitle = "Fines";
-      single = "Fine";
-    }
-
-    return Container(
-      width: 42.0,
-      height: 22.0,
-      child: FlatButton(
-        padding: EdgeInsets.all(0.0),
-        child: Icon(
-          icon,
-          size: 22.0,
-        ),
-        onPressed: () {
-          showBottomSheet(
-              context: context,
-              elevation: 10,
-              builder: (context) => Container(
-                    height: 250,
-                    padding: EdgeInsets.all(10.0),
-                    width: double.infinity,
-                    color: Theme.of(context).backgroundColor,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                            height: 10,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                color: Color(0xffededfe),
-                                shape: BoxShape.rectangle,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5)))),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        subtitle1(
-                            text: "Filter " + defaultTitle,
-                            color: Theme.of(context).textSelectionHandleColor,
-                            align: TextAlign.start),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        subtitle2(
-                            text: "Select " + single,
-                            color: Theme.of(context).textSelectionHandleColor,
-                            align: TextAlign.start),
-                        FilterButton(
-                          text: "All " + defaultTitle,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        subtitle2(
-                            text: "Statement Period",
-                            color: Theme.of(context).textSelectionHandleColor,
-                            align: TextAlign.start),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            FilterButton(
-                              text: "12/03/2020",
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 10.0, right: 10.0),
-                              child: subtitle2(
-                                  text: "to",
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor,
-                                  align: TextAlign.start),
-                            ),
-                            FilterButton(
-                              text: "12/04/2020",
-                            ),
-                          ],
-                        ),
-                        RaisedButton(
-                          color: primaryColor,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                            child: Text("Apply Filter"),
-                          ),
-                          textColor: Colors.white,
-                          onPressed: () {},
-                        )
-                      ],
-                    ),
-                  ));
-        },
-        shape: new RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(30.0)),
-        textColor: textColor,
-      ),
-    );
-  }
-}
-
-class FilterButton extends StatelessWidget {
-  const FilterButton({Key key, this.text}) : super(key: key);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return new OutlineButton(
-        child:
-            subtitle1(text: text, color: primaryColor, align: TextAlign.center),
-        onPressed: null,
-        color: primaryColor,
-        highlightedBorderColor: primaryColor.withOpacity(0.5),
-        disabledBorderColor: primaryColor.withOpacity(0.5),
-        borderSide: BorderSide(
-          width: 2.0,
-          color: primaryColor.withOpacity(0.5),
-        ),
-        shape: new RoundedRectangleBorder(
-            borderRadius: new BorderRadius.circular(5.0)));
   }
 }
