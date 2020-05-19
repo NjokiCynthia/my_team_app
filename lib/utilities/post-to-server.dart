@@ -1,47 +1,49 @@
-import 'dart:io';
-
 import 'package:encrypt/encrypt.dart';
-import 'package:encrypt/encrypt_io.dart';
 import 'package:flutter/services.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 
 class PostToServer{
 
-  static Future<String> encryptJson(String jsonObject) async{
-    // String key = '1245714587458745'; //combination of 16 character
-    // String iv = 'e16ce913a20dadb8'; ////combination of 16 character
-    // String encryptedString =
-    // await Cipher2.encryptAesCbc128Padding7(jsonObject, key, iv);
-    // print("key:$key");
-    // print("iv:$iv");
-    // print("String:$encryptedString");
+  static splitStr(String str) {
+    var begin = '-----BEGIN PUBLIC KEY-----\n';
+    var end = '\n-----END PUBLIC KEY-----';
+    int splitCount = str.length ~/ 64;
+    List<String> strList=List();
+
+    for (int i=0; i<splitCount; i++) {
+      strList.add(str.substring(64*i, 64*(i+1)));
+    }
+    if (str.length%64 != 0) {
+      strList.add(str.substring(64*splitCount));
+    }
+    return begin + strList.join('\n') + end;
   }
 
-
-  static Future<String> encryptSecretKey(var key) async{
-    try{
+  static _login(String password) async {
+    try {
       final publicCert = await rootBundle.loadString('assets/certificates/mpesachama.crt');
-      final publicKey = RSAKeyParser().parse(publicCert) as RSAPublicKey;
+      final parser = RSAKeyParser();
+
+      String publicKeyString = splitStr(publicCert);
       try{
-        final encrypter = Encrypter(
-          RSA(
-            publicKey: publicKey,
-            encoding: RSAEncoding.PKCS1,
-          ),
-        );
-        return (encrypter.encrypt(key)).base64;
-      }catch(error){
-        print("error2 ${error.toString()}");
+        RSAPublicKey publicKey = parser.parse(publicKeyString);
+        try{
+          final encrypter = Encrypter(RSA(publicKey: publicKey));
+          final rsaPasswd = encrypter.encrypt(password).base64;
+          print(rsaPasswd);
+        }catch(error3){
+          print("Error3 $error3");
+        }
+      }catch(error2){
+        print("Error2 $error2");
       }
-    }catch(error){
-      print("error ${error.toString()}");
+      
+    } catch (e) {
+      print(e);
     }
   }
 
   static Future<void> post(String jsonObject){
-    final key = Key.fromLength(32);
-    print("key ${key.toString()}");
-    print("encrypted: ${encryptSecretKey(key)}");
-    encryptJson(jsonObject);
+    _login(jsonObject);
   }
 }

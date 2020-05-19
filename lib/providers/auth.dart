@@ -23,7 +23,7 @@ class Auth with ChangeNotifier{
     });
     await PostToServer.post(postRequest);
 
-    final http.Response response = await http.post(url,headers:headers,body:postRequest);
-    print(response.body);
+    // final http.Response response = await http.post(url,headers:headers,body:postRequest);
+    // print(response.body);
   }
 }
