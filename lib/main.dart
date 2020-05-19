@@ -1,8 +1,11 @@
+
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import './providers/auth.dart';
 import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,9 +17,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   void getCurrentAppTheme() async {
-    themeChangeProvider.darkTheme = await themeChangeProvider.darkThemePreference.getTheme();
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
@@ -32,21 +35,29 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) {
-        return themeChangeProvider;
-      },
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (ctx) => Auth(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return themeChangeProvider;
+          },
+        )
+      ],
       child: Consumer<DarkThemeProvider>(
-        builder: (BuildContext context, value, Widget child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            color: themeChangeProvider.darkTheme ? Colors.blueGrey[900] : Colors.blue[50],
-            title: 'Chamasoft',
-            theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-            home: IntroScreen(),
-          );
-        }
-      ),
+          builder: (BuildContext context, value, Widget child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          color: themeChangeProvider.darkTheme
+              ? Colors.blueGrey[900]
+              : Colors.blue[50],
+          title: 'Chamasoft',
+          theme: Styles.themeData(themeChangeProvider.darkTheme, context),
+          home: IntroScreen(),
+        );
+      }),
     );
   }
 }
