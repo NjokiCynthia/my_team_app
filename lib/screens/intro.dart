@@ -1,4 +1,3 @@
-import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -21,8 +20,8 @@ class IntroScreenState extends State<IntroScreen> {
 
     (await getPreference("isFirstTime") != '')
         ? Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => ChamasoftDashboard()))
+            .pushReplacement(
+                MaterialPageRoute(builder: (BuildContext context) => Login()))
             .whenComplete(() {
             _loading = false;
           })

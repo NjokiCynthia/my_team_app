@@ -1,13 +1,13 @@
-import '../providers/auth.dart';
-
 import 'package:chamasoft/utilities/common.dart';
-import 'package:provider/provider.dart';
-import '../utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../providers/auth.dart';
+import '../utilities/custom-helper.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -28,7 +28,7 @@ class _LoginState extends State<Login> {
   void dispose() {
     super.dispose();
   }
-  
+
   void _submit() async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
@@ -39,7 +39,7 @@ class _LoginState extends State<Login> {
     //   _isLoading = true;
     // });
     try {
-      await Provider.of<Auth>(context,listen:false).generatePin(_identity);
+      await Provider.of<Auth>(context, listen: false).generatePin(_identity);
 
       // if (_authMode == AuthMode.Login) {
       //   await Provider.of<Auth>(context, listen: false)
@@ -103,12 +103,12 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ),
-                  validator: (value){
-                    if(!CustomHelper.validIdentity(value)){
+                  validator: (value) {
+                    if (!CustomHelper.validIdentity(value)) {
                       return 'Enter valid email or phone number';
                     }
                   },
-                  onSaved: (value){
+                  onSaved: (value) {
                     _identity = value;
                   },
                 ),

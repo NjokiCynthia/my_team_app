@@ -1,49 +1,25 @@
-import 'package:encrypt/encrypt.dart';
-import 'package:flutter/services.dart';
-import 'package:pointycastle/asymmetric/api.dart';
+import 'package:simple_rsa/simple_rsa.dart';
 
-class PostToServer{
-
-  static splitStr(String str) {
-    var begin = '-----BEGIN PUBLIC KEY-----\n';
-    var end = '\n-----END PUBLIC KEY-----';
-    int splitCount = str.length ~/ 64;
-    List<String> strList=List();
-
-    for (int i=0; i<splitCount; i++) {
-      strList.add(str.substring(64*i, 64*(i+1)));
-    }
-    if (str.length%64 != 0) {
-      strList.add(str.substring(64*splitCount));
-    }
-    return begin + strList.join('\n') + end;
-  }
-
+class PostToServer {
   static _login(String password) async {
     try {
-      final publicCert = await rootBundle.loadString('assets/certificates/mpesachama.crt');
-      final parser = RSAKeyParser();
+      final PUBLIC_KEY =
+          "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST" +
+              "0FfZzEXiPCC6i8RtA5pyS/orSBa1Ds3PMnF4qU+Z+HlBB9apKG/pYK73mXR8v1cX" +
+              "jZCFxg08Gq/dwam1O5ehNXtEHKhembXdZC2zdFyVVg8emgbyDxaP1oEWwQOqoUI7" +
+              "1e1lPqDMrFTUeS65YO2ayWeEKEnY12nE6pgyopSdEo5Boz4RzxCL8jLIhTwRouhi" +
+              "MOA9UyWBYuQEp8P1yj8zVoB20WyB6qOazPIiCEUz4MK0/yiVTR6B8hWwQydvMGKu" +
+              "QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd" +
+              "3QIDAQAB";
 
-      String publicKeyString = splitStr(publicCert);
-      try{
-        RSAPublicKey publicKey = parser.parse(publicKeyString);
-        try{
-          final encrypter = Encrypter(RSA(publicKey: publicKey));
-          final rsaPasswd = encrypter.encrypt(password).base64;
-          print(rsaPasswd);
-        }catch(error3){
-          print("Error3 $error3");
-        }
-      }catch(error2){
-        print("Error2 $error2");
-      }
-      
+      final encrypted = await encryptString(password, PUBLIC_KEY);
+      return encrypted;
     } catch (e) {
-      print(e);
+      print("Error3 $e");
     }
   }
 
-  static Future<void> post(String jsonObject){
+  static Future<void> post(String jsonObject) {
     _login(jsonObject);
   }
 }
