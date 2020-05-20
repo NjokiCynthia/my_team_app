@@ -230,24 +230,22 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                Text(
-                                                  '${accounts[index]['bank']}, ${accounts[index]['branch']}',
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .textSelectionHandleColor,
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 18.0,
-                                                  ),
+                                                customTitle(
+                                                  text:
+                                                      '${accounts[index]['bank']}, ${accounts[index]['branch']}',
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
+                                                  fontWeight: FontWeight.w800,
+                                                  fontSize: 18.0,
                                                 ),
-                                                Text(
-                                                  '${accounts[index]['account']}',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Theme.of(context)
-                                                        .textSelectionHandleColor
-                                                        .withOpacity(0.5),
-                                                    fontSize: 12.0,
-                                                  ),
+                                                customTitle(
+                                                  text:
+                                                      '${accounts[index]['account']}',
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor
+                                                      .withOpacity(0.5),
+                                                  fontSize: 12.0,
                                                 ),
                                               ],
                                             ),
