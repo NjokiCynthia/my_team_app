@@ -1,3 +1,7 @@
+import 'dart:math';
+
+import 'package:package_info/package_info.dart';
+
 class CustomHelper {
   static const String baseUrl = "https://uat.chamasoft.com/";
   static const String generatePin = "mobile/generate_pin";
@@ -23,6 +27,32 @@ class CustomHelper {
   static bool validIdentity(String identity){
     return validEmail(identity)||validPhone(identity);
   }
+  static String generateRandomStringCharacterPair(int length) {
+    var rand = new Random();
+    var codeUnits = new List.generate(
+        length, 
+        (index){
+          return rand.nextInt(33)+89;
+        }
+    );
+    return new String.fromCharCodes(codeUnits);
+  }
+
+  static String generateRandomString(int strlen) {
+    const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+    Random rnd = new Random(new DateTime.now().millisecondsSinceEpoch);
+    String result = "";
+    for (var i = 0; i < strlen; i++) {
+      result += chars[rnd.nextInt(chars.length)];
+    }
+    return result;
+  }
+
+  static Future<String> getApplicationBuildNumber() async{
+    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.buildNumber;
+  }
+
 }
 
 class HttpException implements Exception {
