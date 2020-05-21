@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -6,8 +7,10 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class MyGroups extends StatefulWidget {
+  static const namedRoute = '/my-groups-screen';
   @override
   _MyGroupsState createState() => _MyGroupsState();
 }
@@ -25,6 +28,7 @@ class _MyGroupsState extends State<MyGroups> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<Auth>(context,listen:false);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
@@ -52,10 +56,10 @@ class _MyGroupsState extends State<MyGroups> {
                 ),
               ),
               heading2(
-                  text: "Edwin Kapkei",
+                  text: auth.userName,
                   color: Theme.of(context).textSelectionHandleColor),
               subtitle1(
-                  text: "+254 701 234 567",
+                  text: auth.phoneNumber,
                   color: Theme.of(context)
                       .textSelectionHandleColor
                       .withOpacity(0.6)),

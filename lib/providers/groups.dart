@@ -20,8 +20,8 @@ class Groups with ChangeNotifier{
     return [..._groups];
   }
 
-  void addGroups(List<Group> groupObject){
-    
+  void addGroups(Map<String,dynamic> groupObject){
+    print("group : $groupObject");
   }
 
 }

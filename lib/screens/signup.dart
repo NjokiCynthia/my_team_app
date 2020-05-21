@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class SignUp extends StatefulWidget {
+  static const String namedRoute = '/signup-screen';
   @override
   _SignUpState createState() => _SignUpState();
 }

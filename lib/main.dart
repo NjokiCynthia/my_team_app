@@ -1,4 +1,6 @@
 
+import 'package:chamasoft/screens/my-groups.dart';
+import 'package:chamasoft/screens/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +59,8 @@ class _MyAppState extends State<MyApp> {
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
           //home: IntroScreen(),
           routes: {
-            '/' : (context) => IntroScreen(),
+            MyGroups.namedRoute : (ctx) => MyGroups(),
+            SignUp.namedRoute : (ctx) => SignUp(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(

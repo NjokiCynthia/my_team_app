@@ -24,13 +24,31 @@ class User{
     this.phone,
     this.email,
     this.avatarName
-  });
+  });  
 
-  
+  String get userName{
+    return firstName+" "+lastName;
+  }
 }
 
 
 class Auth with ChangeNotifier {
+  String _userId;
+  String _firstName;
+  String _lastName;
+  String _accessToken;
+  String _phone;
+  String _avatarName;
+  String _email;
+
+  String get userName{
+    return _firstName+" "+_lastName;
+  }
+
+  String get phoneNumber{
+    return _phone;
+  }
+
 
   Future<void> generatePin(String identity) async {
     const url = CustomHelper.baseUrl + CustomHelper.generatePin;
@@ -52,13 +70,13 @@ class Auth with ChangeNotifier {
     final postRequest = json.encode(object);
     try{
       final response = await PostToServer.post(postRequest,url);
-      print(response);
-      User(
-        userId: response['user']["id"]..toString(), 
-        firstName: response['user']["first_name"]..toString(),  
-        lastName: response['user']["last_name"]..toString(),  
-        accessToken: response['user']["access_token"]..toString()
-      );
+      _userId = response['user']["id"]..toString(); 
+      _firstName = response['user']["first_name"]..toString(); 
+      _lastName = response['user']["last_name"]..toString(); 
+      _accessToken = response['user']["access_token"]..toString();
+      _email = response['user']["email"]..toString();
+      _phone = response['user']["phone"]..toString();
+      _avatarName = response['user']["avatar"]..toString();
       if(response['user_exists'] == 1){
         return 1;
       }else{

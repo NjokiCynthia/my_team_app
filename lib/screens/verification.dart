@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:provider/provider.dart';
@@ -56,9 +57,9 @@ class _VerificationState extends State<Verification> {
       final response =
           await Provider.of<Auth>(context, listen: false).verifyPin(_authData);
       if(response == 1){
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ChamasoftDashboard(),),);
+        Navigator.of(context).pushReplacementNamed(MyGroups.namedRoute);
       }else{
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => SignUp(),),);
+        Navigator.pushReplacementNamed(context,SignUp.namedRoute);
       }
     } on HttpException catch (error) {
       alertDialog(context, error.toString());
@@ -113,7 +114,7 @@ class _VerificationState extends State<Verification> {
                         text: "A verification code has been sent to",
                         color: Theme.of(context).textSelectionHandleColor),
                     customTitle(
-                        text: "+254 701 234 567",
+                        text: _identity,
                         color: Theme.of(context).textSelectionHandleColor),
                     SizedBox(
                       height: 12,
