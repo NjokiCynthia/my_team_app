@@ -3,6 +3,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -32,20 +33,7 @@ class _LoginState extends State<Login> {
   }
 
   void _showErrorDialog(BuildContext context, String message) {
-    showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              content: Text(message),
-              title: Text("Something went wrong"),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text("Okay"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            ));
+    alertDialog(context, message);
   }
 
   void _submit(BuildContext context) async {
@@ -59,7 +47,8 @@ class _LoginState extends State<Login> {
     });
     try {
       await Provider.of<Auth>(context, listen: false).generatePin(_identity);
-      Navigator.of(context).pushNamed(Verification.namedRoute);
+      Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => Verification(),settings: RouteSettings(arguments: _identity)));
     } on HttpException catch (error) {
       _showErrorDialog(context, error.toString());
     } catch (error) {

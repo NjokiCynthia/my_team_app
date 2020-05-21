@@ -6,7 +6,6 @@ import './providers/auth.dart';
 import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
-import './screens/verification.dart';
 
 void main() {
   runApp(MyApp());
@@ -58,8 +57,15 @@ class _MyAppState extends State<MyApp> {
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
           //home: IntroScreen(),
           routes: {
-            '/' : (ctx) => IntroScreen(),
-            Verification.namedRoute :  (ctx) => Verification(),
+            '/' : (context) => IntroScreen(),
+          },
+          onGenerateRoute: (settings) {
+            return MaterialPageRoute(
+                builder: (context) => IntroScreen());
+          },
+          onUnknownRoute: (settings) {
+            return MaterialPageRoute(
+                builder: (context) => IntroScreen());
           },
         );
       }),
