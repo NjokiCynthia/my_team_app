@@ -16,7 +16,8 @@ class CustomHelper {
   }
 
   static bool validEmail(String email) {
-    Pattern pattern =r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    Pattern pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     RegExp regex = new RegExp(pattern);
     if (regex.hasMatch(email))
       return true;
@@ -24,17 +25,15 @@ class CustomHelper {
       return false;
   }
 
-  static bool validIdentity(String identity){
-    return validEmail(identity)||validPhone(identity);
+  static bool validIdentity(String identity) {
+    return validEmail(identity) || validPhone(identity);
   }
+
   static String generateRandomStringCharacterPair(int length) {
     var rand = new Random();
-    var codeUnits = new List.generate(
-        length, 
-        (index){
-          return rand.nextInt(33)+89;
-        }
-    );
+    var codeUnits = new List.generate(length, (index) {
+      return rand.nextInt(33) + 89;
+    });
     return new String.fromCharCodes(codeUnits);
   }
 
@@ -48,11 +47,10 @@ class CustomHelper {
     return result;
   }
 
-  static Future<String> getApplicationBuildNumber() async{
+  static Future<String> getApplicationBuildNumber() async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.buildNumber;
   }
-
 }
 
 class HttpException implements Exception {
