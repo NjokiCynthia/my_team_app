@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -18,6 +19,7 @@ class _LoginState extends State<Login> {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
+  bool _isLoading = false;
   @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
@@ -29,34 +31,44 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  void _submit() async {
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              content: Text(message),
+              title: Text("Something went wrong"),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Okay"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            ));
+  }
+
+  void _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
       return;
     }
     _formKey.currentState.save();
-    // setState(() {
-    //   _isLoading = true;
-    // });
+    setState(() {
+      _isLoading = true;
+    });
     try {
       await Provider.of<Auth>(context, listen: false).generatePin(_identity);
-
-      // if (_authMode == AuthMode.Login) {
-      //   await Provider.of<Auth>(context, listen: false)
-      //       .login(_authData['email'], _authData['password']);
-      // } else {
-      //   await Provider.of<Auth>(context, listen: false)
-      //       .signup(_authData['email'], _authData['password']);
-      // }
-      //Navigator.of(context).pushReplacementNamed(ProductsOverview.namedRoute);
+      Navigator.of(context).pushNamed(Verification.namedRoute);
     } on HttpException catch (error) {
-      print("Http ${error.toString()}");
+      _showErrorDialog(context, error.toString());
     } catch (error) {
-      print("System ${error.toString()}");
+      _showErrorDialog(context, error.toString());
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
-    // setState(() {
-    //   _isLoading = false;
-    // });
   }
 
   @override
@@ -115,11 +127,13 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: 24,
                 ),
-                defaultButton(
-                  context: context,
-                  text: "Continue",
-                  onPressed: _submit,
-                ),
+                _isLoading
+                    ? CircularProgressIndicator()
+                    : defaultButton(
+                        context: context,
+                        text: "Continue",
+                        onPressed: () => _submit(context),
+                      ),
                 SizedBox(
                   height: 24,
                 ),

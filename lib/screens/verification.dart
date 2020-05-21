@@ -9,6 +9,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 
 class Verification extends StatefulWidget {
+  static const namedRoute = '/verification-screen';
   @override
   _VerificationState createState() => _VerificationState();
 }

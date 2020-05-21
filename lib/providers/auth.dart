@@ -12,6 +12,14 @@ class Auth with ChangeNotifier {
     final postRequest = json.encode({
       "identity": identity,
     });
-    await PostToServer.post(postRequest,url);
+    try{
+      await PostToServer.post(postRequest,url);
+      notifyListeners();
+    }on HttpException catch(error){
+      throw HttpException(error.toString());
+    }catch(error){
+      throw ("We could not complete your request at the moment. Try again later");
+    }
+
   }
 }

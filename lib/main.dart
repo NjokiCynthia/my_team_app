@@ -6,6 +6,7 @@ import './providers/auth.dart';
 import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
+import './screens/verification.dart';
 
 void main() {
   runApp(MyApp());
@@ -55,7 +56,11 @@ class _MyAppState extends State<MyApp> {
               : Colors.blue[50],
           title: 'Chamasoft',
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-          home: IntroScreen(),
+          //home: IntroScreen(),
+          routes: {
+            '/' : (ctx) => IntroScreen(),
+            Verification.namedRoute :  (ctx) => Verification(),
+          },
         );
       }),
     );
