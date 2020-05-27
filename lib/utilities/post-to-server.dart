@@ -92,14 +92,20 @@ class PostToServer {
       final String secretKey = response["secret"];
       final String body = response["body"];
       try {
+        if (body == null ||
+            body.isEmpty ||
+            secretKey == null ||
+            secretKey.isEmpty) {
+          return;
+        }
         final secretKeyString = await _decretSecretKey(secretKey);
         var response = _decryptAESCryptoJS(body, secretKeyString);
         return json.decode(response);
       } catch (error) {
-        throw(error.toString());
+        throw (error.toString());
       }
     } catch (error) {
-      throw(error.toString());
+      throw (error.toString());
     }
   }
 
@@ -118,6 +124,7 @@ class PostToServer {
         final http.Response response =
             await http.post(url, headers: headers, body: postRequest);
         try {
+          print("Response: $response");
           final responseBody = await generateResponse(response.body);
           if (responseBody['status'] == 1) {
             return responseBody;
