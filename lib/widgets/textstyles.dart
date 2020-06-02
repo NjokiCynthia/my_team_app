@@ -77,6 +77,27 @@ Widget customTitle(
   );
 }
 
+Widget customTitleWithWrap(
+    {String text,
+    Color color,
+    TextAlign align = TextAlign.center,
+    double fontSize = 16.0,
+    FontWeight fontWeight = FontWeight.w400,
+    int maxLines = 2,
+    String fontFamily = 'SegoeUI'}) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontWeight: fontWeight,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      color: color,
+    ),
+    textAlign: align,
+    maxLines: maxLines,
+  );
+}
+
 Widget textWithExternalLinks(
     {Map<String, Map<String, dynamic>> textData, Color color, double size}) {
   if (textData.isNotEmpty) {

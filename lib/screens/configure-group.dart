@@ -19,7 +19,12 @@ Map<String, String> roles = {
 
 List<dynamic> members = [
   {"id": 1, "name": "Peter Kimutai", "phone": "+254 701 234 567", "role_id": 1},
-  {"id": 2, "name": "Edwin Kapkei", "phone": "+254 701 234 567", "role_id": 3},
+  {
+    "id": 2,
+    "name": "Edwin Kapkei",
+    "phone": "+254 701 234 567",
+    "role_id": 3
+  },
   {
     "id": 3,
     "name": "Geoffrey Githaiga",
@@ -35,7 +40,7 @@ List<dynamic> accounts = [
   {
     "id": 1,
     "bank": "Equity Bank",
-    "branch": "Kasarani",
+    "branch": "Kasarani, Nairobi, Kenya",
     "account": "011245762988",
     "status": "connected"
   },
@@ -117,53 +122,52 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.person,
-                                              color: Colors.blueGrey,
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            Column(
+                                    Expanded(
+                                      flex: 2,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.person,
+                                            color: Colors.blueGrey,
+                                          ),
+                                          SizedBox(width: 10.0),
+                                          Flexible(
+                                            fit: FlexFit.tight,
+                                            child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                Text(
-                                                  '${members[index]['name']}',
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .textSelectionHandleColor,
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 18.0,
-                                                  ),
+                                                customTitleWithWrap(
+                                                  text:
+                                                      '${members[index]['name']}',
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
+                                                  fontWeight: FontWeight.w800,
+                                                  align: TextAlign.start,
+                                                  fontSize: 15.0,
                                                 ),
-                                                Text(
-                                                  '${members[index]['phone']}',
-                                                  style: TextStyle(
-                                                    fontWeight: FontWeight.w600,
-                                                    color: Theme.of(context)
-                                                        .textSelectionHandleColor
-                                                        .withOpacity(0.5),
-                                                    fontSize: 12.0,
-                                                  ),
+                                                customTitleWithWrap(
+                                                  text:
+                                                      '${members[index]['phone']}',
+                                                  fontWeight: FontWeight.w600,
+                                                  align: TextAlign.start,
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor
+                                                      .withOpacity(0.5),
+                                                  fontSize: 12.0,
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        )
-                                      ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
+                                    Expanded(
+                                      flex: 1,
+                                      child: FittedBox(
+                                        child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: <Widget>[
@@ -189,8 +193,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                               iconSize: 16.0,
                                             ),
                                           ],
-                                        )
-                                      ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -213,35 +217,37 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.credit_card,
-                                              color: Colors.blueGrey,
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            Column(
+                                    Expanded(
+                                      flex: 2,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.credit_card,
+                                            color: Colors.blueGrey,
+                                          ),
+                                          SizedBox(width: 10.0),
+                                          Flexible(
+                                            fit: FlexFit.tight,
+                                            child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                customTitle(
+                                                customTitleWithWrap(
                                                   text:
                                                       '${accounts[index]['bank']}, ${accounts[index]['branch']}',
                                                   color: Theme.of(context)
                                                       .textSelectionHandleColor,
-                                                  fontWeight: FontWeight.w800,
-                                                  fontSize: 18.0,
+                                                  align: TextAlign.start,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 15.0,
                                                 ),
                                                 customTitle(
                                                   text:
                                                       '${accounts[index]['account']}',
                                                   fontWeight: FontWeight.w600,
+                                                  align: TextAlign.start,
                                                   color: Theme.of(context)
                                                       .textSelectionHandleColor
                                                       .withOpacity(0.5),
@@ -249,15 +255,14 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                 ),
                                               ],
                                             ),
-                                          ],
-                                        )
-                                      ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
+                                    Expanded(
+                                      flex: 1,
+                                      child: FittedBox(
+                                        child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: <Widget>[
@@ -296,8 +301,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                               iconSize: 16.0,
                                             ),
                                           ],
-                                        )
-                                      ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -320,109 +325,92 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.label,
-                                              color: Colors.blueGrey,
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                Text(
-                                                  '${contributions[index]['name']}',
-                                                  style: TextStyle(
-                                                    color: Theme.of(context)
-                                                        .textSelectionHandleColor,
-                                                    fontWeight: FontWeight.w800,
-                                                    fontSize: 18.0,
+                                    Expanded(
+                                      flex: 2,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: <Widget>[
+                                          Icon(
+                                            Icons.label,
+                                            color: Colors.blueGrey,
+                                          ),
+                                          SizedBox(width: 10.0),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              customTitle(
+                                                text:
+                                                    '${contributions[index]['name']}',
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontWeight: FontWeight.w700,
+                                                align: TextAlign.start,
+                                                fontSize: 15.0,
+                                              ),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Row(
+                                                    children: <Widget>[
+                                                      customTitle(
+                                                        text:
+                                                            'Contribution Type: ',
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Theme.of(context)
+                                                            .textSelectionHandleColor
+                                                            .withOpacity(0.5),
+                                                        fontSize: 12.0,
+                                                      ),
+                                                      customTitle(
+                                                        text:
+                                                            '${contributions[index]['type']}',
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        color: Theme.of(context)
+                                                            .textSelectionHandleColor
+                                                            .withOpacity(0.5),
+                                                        fontSize: 12.0,
+                                                      ),
+                                                    ],
                                                   ),
-                                                ),
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: <Widget>[
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Text(
-                                                          'Contribution Type: ',
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .textSelectionHandleColor
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            fontSize: 12.0,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '${contributions[index]['type']}',
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .textSelectionHandleColor
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            fontSize: 12.0,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: <Widget>[
-                                                        Text(
-                                                          'Frequency: ',
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .textSelectionHandleColor
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            fontSize: 12.0,
-                                                          ),
-                                                        ),
-                                                        Text(
-                                                          '${contributions[index]['frequency']}',
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w900,
-                                                            color: Theme.of(
-                                                                    context)
-                                                                .textSelectionHandleColor
-                                                                .withOpacity(
-                                                                    0.5),
-                                                            fontSize: 12.0,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                )
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                      ],
+                                                  Row(
+                                                    children: <Widget>[
+                                                      customTitle(
+                                                        text: 'Frequency: ',
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color: Theme.of(context)
+                                                            .textSelectionHandleColor
+                                                            .withOpacity(0.5),
+                                                        fontSize: 12.0,
+                                                      ),
+                                                      customTitle(
+                                                        text:
+                                                            '${contributions[index]['frequency']}',
+                                                        fontWeight:
+                                                            FontWeight.w900,
+                                                        color: Theme.of(context)
+                                                            .textSelectionHandleColor
+                                                            .withOpacity(0.5),
+                                                        fontSize: 12.0,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
+                                    Expanded(
+                                      flex: 1,
+                                      child: FittedBox(
+                                        child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.end,
                                           children: <Widget>[
@@ -447,8 +435,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                               iconSize: 16.0,
                                             ),
                                           ],
-                                        )
-                                      ],
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -509,21 +497,22 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                             fontWeight: FontWeight.w700,
                           ),
                           tabs: <Widget>[
-                            Text(
-                              "Members",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
+                            FittedBox(
+                              child: customTitle(
+                                text: "Members",
+                                fontWeight: FontWeight.w700,
+                              ),
                             ),
-                            Text(
-                              "Accounts",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
-                            Text(
-                              "Contributions",
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 1,
-                            ),
+                            FittedBox(
+                                child: customTitle(
+                              text: "Accounts",
+                              fontWeight: FontWeight.w700,
+                            )),
+                            FittedBox(
+                                child: customTitle(
+                              fontWeight: FontWeight.w700,
+                              text: "Contributions",
+                            )),
                           ],
                         ),
                       ),

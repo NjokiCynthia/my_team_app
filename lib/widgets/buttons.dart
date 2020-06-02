@@ -155,10 +155,10 @@ Widget smallBadgeButton(
       child: Text(
         text,
         style: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w400,
-          fontSize: textSize,
-        ),
+            color: textColor,
+            fontWeight: FontWeight.w400,
+            fontSize: textSize,
+            fontFamily: 'SegoeUI'),
       ),
       onPressed: action,
       shape: new RoundedRectangleBorder(
