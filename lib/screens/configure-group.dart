@@ -35,7 +35,7 @@ List<dynamic> accounts = [
   {
     "id": 1,
     "bank": "Equity Bank",
-    "branch": "Kasarani, Nairobi, Kenya",
+    "branch": "Kasarani",
     "account": "011245762988",
     "status": "connected"
   },

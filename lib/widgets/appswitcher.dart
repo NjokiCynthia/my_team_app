@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 
@@ -246,51 +247,58 @@ class _AppSwitcherState extends State<AppSwitcher> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      FlatButton(
-                        onPressed: () {},
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Learn more about groups',
-                              style: TextStyle(
-                                fontFamily: 'SegoeUI',
-                                fontWeight: FontWeight.w200,
-                                fontSize: 10.0,
+                      Expanded(
+                        flex: 3,
+                        child: FlatButton(
+                          onPressed: () {},
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              Flexible(
+                                fit: FlexFit.tight,
+                                child: customTitle(
+                                  text: 'Learn more about groups',
+                                  fontFamily: 'SegoeUI',
+                                  fontWeight: FontWeight.w200,
+                                  fontSize: 10.0,
+                                  color: primaryColor,
+                                ),
+                              ),
+                              Icon(
+                                Icons.chevron_right,
+                                size: 10.0,
                                 color: primaryColor,
                               ),
-                            ),
-                            Icon(
-                              Icons.chevron_right,
-                              size: 10.0,
-                              color: primaryColor,
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
                         width: 2.0,
                       ),
-                      FlatButton(
-                        onPressed: () {},
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              'Pricing',
-                              style: TextStyle(
-                                fontFamily: 'SegoeUI',
-                                fontWeight: FontWeight.w200,
-                                fontSize: 10.0,
-                                color: primaryColor,
-                              ),
+                      Flexible(
+                        flex: 1,
+                        child: FittedBox(
+                          child: FlatButton(
+                            onPressed: () {},
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                customTitle(
+                                  text: 'Pricing',
+                                  fontFamily: 'SegoeUI',
+                                  fontWeight: FontWeight.w200,
+                                  fontSize: 10.0,
+                                  color: primaryColor,
+                                ),
+                                Icon(
+                                  Icons.chevron_right,
+                                  size: 10.0,
+                                  color: primaryColor,
+                                ),
+                              ],
                             ),
-                            Icon(
-                              Icons.chevron_right,
-                              size: 10.0,
-                              color: primaryColor,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
                     ],
