@@ -4,6 +4,7 @@ import 'package:chamasoft/screens/chamasoft/settings/list-loan-types.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dashed-divider.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -120,41 +121,48 @@ class _GroupSettingsState extends State<GroupSettings> {
                       heading2(
                           text: "Witcher Welfare Association",
                           color: Theme.of(context).textSelectionHandleColor),
-                      Padding(
-                        padding: EdgeInsets.only(
-                          top: 10.0,
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            RaisedButton(
-                              child: Text("Update Profile".toUpperCase()),
-                              color: primaryColor,
+                      Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 10.0,
+                            ),
+                            child: smallBadgeButton(
+                              text: "Update Profile",
+                              backgroundColor: primaryColor,
                               textColor: Colors.white,
-                              onPressed: () =>
-                                  Navigator.of(context).pushReplacement(
+                              buttonHeight: 30.0,
+                              textSize: 12.0,
+                              action: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       UpdateGroupProfile(),
                                 ),
                               ),
                             ),
-                            SizedBox(
-                              width: 20.0,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.only(
+                              top: 10.0,
                             ),
-                            RaisedButton(
-                              child: Text("Preferences".toUpperCase()),
-                              color: Color(0xFFEDF8FE),
+                            child: smallBadgeButton(
+                              text: "Preferences",
+                              backgroundColor: Color(0xFFEDF8FE),
                               textColor: primaryColor,
-                              onPressed: () => Navigator.of(context).push(
+                              buttonHeight: 30.0,
+                              textSize: 12.0,
+                              action: () => Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (BuildContext context) =>
                                       ConfigurePreferences(),
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
