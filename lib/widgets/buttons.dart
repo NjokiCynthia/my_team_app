@@ -3,6 +3,7 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 Widget defaultButton({BuildContext context, String text, Function onPressed}) {
   return RaisedButton(
@@ -159,6 +160,47 @@ Widget smallBadgeButton(
             fontWeight: FontWeight.w400,
             fontSize: textSize,
             fontFamily: 'SegoeUI'),
+      ),
+      onPressed: action,
+      shape: new RoundedRectangleBorder(
+          borderRadius: new BorderRadius.circular(30.0)),
+      textColor: textColor,
+      color: backgroundColor,
+    ),
+  );
+}
+
+Widget smallBadgeButtonWithIcon(
+    {Color backgroundColor,
+    String text,
+    Color textColor,
+    Function action,
+    double buttonHeight = 24.0,
+    double textSize = 12.0,
+    IconData iconData = LineAwesomeIcons.warning}) {
+  return Container(
+    height: buttonHeight,
+    child: FlatButton(
+      padding: EdgeInsets.symmetric(horizontal: 6.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            text,
+            style: TextStyle(
+                color: textColor,
+                fontWeight: FontWeight.w600,
+                fontSize: textSize,
+                fontFamily: 'SegoeUI'),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Icon(
+            iconData,
+            size: 16.0,
+          ),
+        ],
       ),
       onPressed: action,
       shape: new RoundedRectangleBorder(

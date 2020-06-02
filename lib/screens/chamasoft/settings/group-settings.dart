@@ -346,21 +346,13 @@ class _GroupSettingsState extends State<GroupSettings> {
               ),
               child: Align(
                 alignment: Alignment.center,
-                child: RaisedButton(
-                  padding: EdgeInsets.all(16.0),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(4.0),
-                  ),
-                  child: Text(
-                    "Delete Group".toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  color: Colors.red,
-                  textColor: Colors.white,
-                  onPressed: () => _deleteGroupDialog(),
+                child: smallBadgeButtonWithIcon(
+                  text: "Delete Group",
+                  backgroundColor: Colors.red.withOpacity(0.2),
+                  textColor: Colors.red,
+                  buttonHeight: 36.0,
+                  textSize: 15.0,
+                  action: () => _deleteGroupDialog(),
                 ),
               ),
             ),
