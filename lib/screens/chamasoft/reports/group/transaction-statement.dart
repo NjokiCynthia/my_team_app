@@ -109,7 +109,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                 text: "Total Balance",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                             SizedBox(
                               height: 4,
                             ),
@@ -120,12 +120,12 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                     text: "Deposits ",
                                     color: Theme.of(context)
                                         .textSelectionHandleColor,
-                                    align: TextAlign.start),
+                                    textAlign: TextAlign.start),
                                 subtitle1(
                                     text: "Ksh 60,000",
                                     color: Theme.of(context)
                                         .textSelectionHandleColor,
-                                    align: TextAlign.start),
+                                    textAlign: TextAlign.start),
                               ],
                             ),
                             Row(
@@ -135,12 +135,12 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                     text: "Withdrawals ",
                                     color: Theme.of(context)
                                         .textSelectionHandleColor,
-                                    align: TextAlign.start),
+                                    textAlign: TextAlign.start),
                                 subtitle1(
                                     text: "Ksh 10,000",
                                     color: Theme.of(context)
                                         .textSelectionHandleColor,
-                                    align: TextAlign.start),
+                                    textAlign: TextAlign.start),
                               ],
                             ),
                           ],
@@ -150,7 +150,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                     heading2(
                         text: "Ksh 50,000",
                         color: Theme.of(context).textSelectionHandleColor,
-                        align: TextAlign.start)
+                        textAlign: TextAlign.start)
                   ],
                 ),
                 SizedBox(
@@ -165,14 +165,14 @@ class _TransactionStatementState extends State<TransactionStatement> {
                         subtitle2(
                           text: "Statement as At",
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                         ),
                         customTitle(
                           text: "20 Feb 2021",
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                         ),
                       ],
                     ),
@@ -183,14 +183,14 @@ class _TransactionStatementState extends State<TransactionStatement> {
                           subtitle2(
                             text: "Statement Period",
                             color: Theme.of(context).textSelectionHandleColor,
-                            align: TextAlign.end,
+                            textAlign: TextAlign.end,
                           ),
                           customTitle(
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
                             text: "12 Oct 2019 to 20 Feb 2021",
                             color: Theme.of(context).textSelectionHandleColor,
-                            align: TextAlign.end,
+                            textAlign: TextAlign.end,
                           ),
                         ],
                       ),
@@ -215,7 +215,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                       text: "Deposits",
                       fontSize: 13.0,
                       color: Theme.of(context).textSelectionHandleColor,
-                      align: TextAlign.center),
+                      textAlign: TextAlign.center),
                 ),
                 Expanded(
                   flex: 1,
@@ -223,7 +223,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                       text: "Withdrawals",
                       fontSize: 13.0,
                       color: Theme.of(context).textSelectionHandleColor,
-                      align: TextAlign.center),
+                      textAlign: TextAlign.center),
                 ),
                 Expanded(
                   flex: 1,
@@ -231,7 +231,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                       text: "Balance",
                       fontSize: 13.0,
                       color: Theme.of(context).textSelectionHandleColor,
-                      align: TextAlign.center),
+                      textAlign: TextAlign.center),
                 ),
               ],
             ),

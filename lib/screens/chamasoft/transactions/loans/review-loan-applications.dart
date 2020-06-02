@@ -135,7 +135,7 @@ class LoanApplicationCard extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                     fontSize: 16.0,
                     color: Theme.of(context).textSelectionHandleColor,
-                    align: TextAlign.start,
+                    textAlign: TextAlign.start,
                   ),
                   SizedBox(
                     height: 22,
@@ -152,7 +152,7 @@ class LoanApplicationCard extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                         fontSize: 16.0,
                         color: Theme.of(context).textSelectionHandleColor,
-                        align: TextAlign.start,
+                        textAlign: TextAlign.start,
                       ),
                     ],
                   ),
@@ -167,12 +167,12 @@ class LoanApplicationCard extends StatelessWidget {
                   subtitle2(
                       text: "Applied By",
                       color: Theme.of(context).textSelectionHandleColor,
-                      align: TextAlign.start),
+                      textAlign: TextAlign.start),
                   SizedBox(height: 22),
                   subtitle2(
                       text: "Applied On",
                       color: Theme.of(context).textSelectionHandleColor,
-                      align: TextAlign.start),
+                      textAlign: TextAlign.start),
                 ],
               ),
               Row(
@@ -181,13 +181,13 @@ class LoanApplicationCard extends StatelessWidget {
                   customTitle(
                     text: "$borrowerName",
                     color: Theme.of(context).textSelectionHandleColor,
-                    align: TextAlign.start,
+                    textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 22),
                   customTitle(
                     text: "$requestDate",
                     color: Theme.of(context).textSelectionHandleColor,
-                    align: TextAlign.start,
+                    textAlign: TextAlign.start,
                   ),
                 ],
               ),

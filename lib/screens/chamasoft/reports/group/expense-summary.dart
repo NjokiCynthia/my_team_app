@@ -96,7 +96,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                           subtitle2(
                             text: "41 Expenses",
                             color: Theme.of(context).textSelectionHandleColor,
-                            align: TextAlign.start,
+                            textAlign: TextAlign.start,
                           ),
                         ],
                       ),
@@ -112,7 +112,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                         heading2(
                           text: currencyFormat.format(2000000),
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.end,
+                          textAlign: TextAlign.end,
                         ),
                       ],
                     ),
@@ -132,7 +132,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                 subtitle1(
                     text: "Paid",
                     color: Theme.of(context).primaryColor,
-                    align: TextAlign.end),
+                    textAlign: TextAlign.end),
               ],
             ),
           ),

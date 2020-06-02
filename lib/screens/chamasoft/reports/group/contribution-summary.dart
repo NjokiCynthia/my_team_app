@@ -123,7 +123,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                           ),
                           customTitle(
                             text: "31 Members",
-                            align: TextAlign.start,
+                            textAlign: TextAlign.start,
                             color: primaryColor,
                             fontSize: 12.0,
                             fontWeight: FontWeight.w700,
@@ -142,7 +142,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                         heading2(
                           text: currencyFormat.format(2000000),
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.end,
+                          textAlign: TextAlign.end,
                         ),
                       ],
                     ),
@@ -154,12 +154,12 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                 subtitle2(
                   text: "Statement Period",
                   color: Theme.of(context).textSelectionHandleColor,
-                  align: TextAlign.start,
+                  textAlign: TextAlign.start,
                 ),
                 subtitle1(
                   text: "12 October 2019 to 20 February 2021",
                   color: Theme.of(context).textSelectionHandleColor,
-                  align: TextAlign.start,
+                  textAlign: TextAlign.start,
                 ),
               ],
             ),
@@ -178,14 +178,14 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                   child: subtitle1(
                       text: "Paid",
                       color: Theme.of(context).primaryColor,
-                      align: TextAlign.end),
+                      textAlign: TextAlign.end),
                 ),
                 Expanded(
                   flex: 1,
                   child: subtitle1(
                       text: "Balance",
                       color: Theme.of(context).primaryColor,
-                      align: TextAlign.end),
+                      textAlign: TextAlign.end),
                 ),
               ],
             ),

@@ -176,9 +176,10 @@ class _ListContactsState extends State<ListContacts> {
           }
         });
       },
-      title: subtitle1(text: contact.displayName ?? "", align: TextAlign.start),
+      title: subtitle1(
+          text: contact.displayName ?? "", textAlign: TextAlign.start),
       subtitle: list.length >= 1 && list[0]?.value != null
-          ? subtitle1(text: list[0].value, align: TextAlign.start)
+          ? subtitle1(text: list[0].value, textAlign: TextAlign.start)
           : Text(''),
     );
   }

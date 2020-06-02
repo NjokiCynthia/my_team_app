@@ -173,13 +173,13 @@ class ActiveLoanCard extends StatelessWidget {
                                 text: "Applied On",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(loan.applicationDate),
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start)
+                                textAlign: TextAlign.start)
                           ],
                         ),
                         Row(
@@ -195,7 +195,7 @@ class ActiveLoanCard extends StatelessWidget {
                             heading2(
                               text: currencyFormat.format(loan.amount),
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.end,
+                              textAlign: TextAlign.end,
                             ),
                           ],
                         ),

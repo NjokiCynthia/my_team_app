@@ -63,7 +63,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
             text: "Expense Summary",
-            align: TextAlign.start,
+            textAlign: TextAlign.start,
             color: Theme.of(context).textSelectionHandleColor,
           ),
           content: TextFormField(
@@ -179,7 +179,7 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
                                 text: category.name,
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                           ],
                         ),
                       ),

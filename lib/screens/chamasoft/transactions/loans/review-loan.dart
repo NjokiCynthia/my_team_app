@@ -168,7 +168,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                           "${widget.loanApplication.loanName}",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
-                                      align: TextAlign.start,
+                                      textAlign: TextAlign.start,
                                     ),
                                     Visibility(
                                         visible: flag == REVIEW_LOAN,
@@ -177,7 +177,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                               "Applied By ${widget.loanApplication.borrowerName}",
                                           fontSize: 12.0,
                                           color: primaryColor,
-                                          align: TextAlign.start,
+                                          textAlign: TextAlign.start,
                                         )),
                                   ],
                                 ),
@@ -196,7 +196,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                         "${numberFormat.format(widget.loanApplication.amount)}",
                                     color: Theme.of(context)
                                         .textSelectionHandleColor,
-                                    align: TextAlign.end,
+                                    textAlign: TextAlign.end,
                                   ),
                                 ],
                               ),
@@ -214,7 +214,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               customTitle(
-                                align: TextAlign.start,
+                                textAlign: TextAlign.start,
                                 text: "12%",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
@@ -231,7 +231,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               customTitle(
-                                align: TextAlign.start,
+                                textAlign: TextAlign.start,
                                 text: "1 Month",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
@@ -248,7 +248,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               customTitle(
-                                align: TextAlign.start,
+                                textAlign: TextAlign.start,
                                 text:
                                     "${dateFormat.format(widget.loanApplication.requestDate)}",
                                 color:
@@ -270,7 +270,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                 text: "Signatories",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                             SizedBox(
                               height: 10,
                             ),

@@ -6,7 +6,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'buttons.dart';
 
 Widget heading1(
-    {String text, Color color, TextAlign align = TextAlign.center}) {
+    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -14,12 +14,12 @@ Widget heading1(
       fontSize: 24.0,
       color: color,
     ),
-    textAlign: align,
+    textAlign: textAlign,
   );
 }
 
 Widget heading2(
-    {String text, Color color, TextAlign align = TextAlign.center}) {
+    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -27,12 +27,12 @@ Widget heading2(
         fontSize: 18.0,
         color: color,
         fontFamily: 'SegoeUI'),
-    textAlign: align,
+    textAlign: textAlign,
   );
 }
 
 Widget subtitle1(
-    {String text, Color color, TextAlign align = TextAlign.center}) {
+    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -40,12 +40,12 @@ Widget subtitle1(
         fontSize: 16.0,
         color: color,
         fontFamily: 'SegoeUI'),
-    textAlign: align,
+    textAlign: textAlign,
   );
 }
 
 Widget subtitle2(
-    {String text, Color color, TextAlign align = TextAlign.center}) {
+    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -53,14 +53,14 @@ Widget subtitle2(
         fontSize: 13.0,
         color: color,
         fontFamily: 'SegoeUI'),
-    textAlign: align,
+    textAlign: textAlign,
   );
 }
 
 Widget customTitle(
     {String text,
     Color color,
-    TextAlign align = TextAlign.center,
+    TextAlign textAlign = TextAlign.center,
     double fontSize = 16.0,
     FontWeight fontWeight = FontWeight.w400,
     String fontFamily = 'SegoeUI'}) {
@@ -72,7 +72,7 @@ Widget customTitle(
       fontFamily: fontFamily,
       color: color,
     ),
-    textAlign: align,
+    textAlign: textAlign,
     overflow: TextOverflow.ellipsis,
   );
 }
@@ -80,7 +80,7 @@ Widget customTitle(
 Widget customTitleWithWrap(
     {String text,
     Color color,
-    TextAlign align = TextAlign.center,
+    TextAlign textAlign = TextAlign.center,
     double fontSize = 16.0,
     FontWeight fontWeight = FontWeight.w400,
     int maxLines = 2,
@@ -93,7 +93,7 @@ Widget customTitleWithWrap(
       fontFamily: fontFamily,
       color: color,
     ),
-    textAlign: align,
+    textAlign: textAlign,
     maxLines: maxLines,
   );
 }
@@ -167,7 +167,7 @@ List<Widget> contributionSummary(
                     text: contributionName,
                     fontSize: 18.0,
                     fontWeight: FontWeight.w500,
-                    align: TextAlign.end,
+                    textAlign: TextAlign.end,
                     color: color,
                   ),
                 ),
@@ -380,14 +380,14 @@ Widget toolTip(
                   (showTitle)
                       ? subtitle1(
                           text: title,
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           color: Theme.of(context).textSelectionHandleColor)
                       : Container(),
                   (message.length > 0)
                       ? subtitle2(
                           text: message,
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start)
+                          textAlign: TextAlign.start)
                       : Container(),
                 ],
               ),

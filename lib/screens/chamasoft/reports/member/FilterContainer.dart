@@ -71,14 +71,14 @@ class _FilterContainerState extends State<FilterContainer> {
           subtitle1(
               text: "Filter " + defaultTitle,
               color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
+              textAlign: TextAlign.start),
           SizedBox(
             height: 5,
           ),
           subtitle2(
               text: "Select " + single,
               color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
+              textAlign: TextAlign.start),
           FilterButton(
             text: "All " + defaultTitle,
           ),
@@ -88,7 +88,7 @@ class _FilterContainerState extends State<FilterContainer> {
           subtitle2(
               text: "Statement Period",
               color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
+              textAlign: TextAlign.start),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -101,7 +101,7 @@ class _FilterContainerState extends State<FilterContainer> {
                 child: subtitle2(
                     text: "to",
                     color: Theme.of(context).textSelectionHandleColor,
-                    align: TextAlign.start),
+                    textAlign: TextAlign.start),
               ),
               FilterButton(
                 text: DateFormat.yMMMd().format(toDate),
@@ -133,8 +133,8 @@ class FilterButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new OutlineButton(
-        child:
-            subtitle1(text: text, color: primaryColor, align: TextAlign.center),
+        child: subtitle1(
+            text: text, color: primaryColor, textAlign: TextAlign.center),
         onPressed: onPressed,
         color: primaryColor,
         highlightedBorderColor: primaryColor.withOpacity(0.5),

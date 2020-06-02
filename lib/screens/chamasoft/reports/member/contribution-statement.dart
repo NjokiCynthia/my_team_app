@@ -112,7 +112,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                       heading2(
                           text: "Total " + defaultTitle,
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
+                          textAlign: TextAlign.start),
                       SizedBox(
                         height: 10,
                       ),
@@ -122,11 +122,11 @@ class _ContributionStatementState extends State<ContributionStatement> {
                           subtitle2(
                               text: "Total amount due ",
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
+                              textAlign: TextAlign.start),
                           subtitle1(
                               text: "Ksh 60,000",
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
+                              textAlign: TextAlign.start),
                         ],
                       ),
                       SizedBox(
@@ -138,11 +138,11 @@ class _ContributionStatementState extends State<ContributionStatement> {
                           subtitle2(
                               text: "Balance ",
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
+                              textAlign: TextAlign.start),
                           subtitle1(
                               text: "Ksh 10,000",
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
+                              textAlign: TextAlign.start),
                         ],
                       ),
                     ],
@@ -151,7 +151,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                 heading2(
                     text: "Ksh 50,000",
                     color: Theme.of(context).textSelectionHandleColor,
-                    align: TextAlign.start)
+                    textAlign: TextAlign.start)
               ],
             ),
           ),

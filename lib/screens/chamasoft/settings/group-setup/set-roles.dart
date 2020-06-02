@@ -74,11 +74,12 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           subtitle1(
-                              text: displayName ?? "", align: TextAlign.start),
+                              text: displayName ?? "",
+                              textAlign: TextAlign.start),
                           phoneList.length >= 1 && phoneList[0]?.value != null
                               ? subtitle1(
                                   text: phoneList[0].value,
-                                  align: TextAlign.start)
+                                  textAlign: TextAlign.start)
                               : Text(''),
                         ],
                       ),

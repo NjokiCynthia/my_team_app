@@ -126,7 +126,7 @@ class _BankListState extends State<BankList> {
                                 text: bank.name,
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                           ],
                         ),
                       ),

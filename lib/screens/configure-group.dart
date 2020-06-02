@@ -140,14 +140,14 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                   color: Theme.of(context)
                                                       .textSelectionHandleColor,
                                                   fontWeight: FontWeight.w800,
-                                                  align: TextAlign.start,
+                                                  textAlign: TextAlign.start,
                                                   fontSize: 15.0,
                                                 ),
                                                 customTitleWithWrap(
                                                   text:
                                                       '${members[index]['phone']}',
                                                   fontWeight: FontWeight.w600,
-                                                  align: TextAlign.start,
+                                                  textAlign: TextAlign.start,
                                                   color: Theme.of(context)
                                                       .textSelectionHandleColor
                                                       .withOpacity(0.5),
@@ -234,7 +234,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                       '${accounts[index]['bank']}, ${accounts[index]['branch']}',
                                                   color: Theme.of(context)
                                                       .textSelectionHandleColor,
-                                                  align: TextAlign.start,
+                                                  textAlign: TextAlign.start,
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 15.0,
                                                 ),
@@ -242,7 +242,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                   text:
                                                       '${accounts[index]['account']}',
                                                   fontWeight: FontWeight.w600,
-                                                  align: TextAlign.start,
+                                                  textAlign: TextAlign.start,
                                                   color: Theme.of(context)
                                                       .textSelectionHandleColor
                                                       .withOpacity(0.5),
@@ -341,7 +341,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                 color: Theme.of(context)
                                                     .textSelectionHandleColor,
                                                 fontWeight: FontWeight.w700,
-                                                align: TextAlign.start,
+                                                textAlign: TextAlign.start,
                                                 fontSize: 15.0,
                                               ),
                                               Column(

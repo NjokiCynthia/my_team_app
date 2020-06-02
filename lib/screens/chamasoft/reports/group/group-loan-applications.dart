@@ -148,13 +148,13 @@ class GroupApplicationCard extends StatelessWidget {
                               text: application.loanName,
                               fontWeight: FontWeight.w700,
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start,
+                              textAlign: TextAlign.start,
                             ),
                             subtitle2(
                                 text: "Applied By Jackie Chan",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                           ],
                         ),
                       ),
@@ -181,13 +181,13 @@ class GroupApplicationCard extends StatelessWidget {
                                 text: "Applied On",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(application.requestDate),
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start)
+                                textAlign: TextAlign.start)
                           ],
                         ),
                         Row(
@@ -200,7 +200,7 @@ class GroupApplicationCard extends StatelessWidget {
                             ),
                             customTitle(
                               text: currencyFormat.format(application.amount),
-                              align: TextAlign.end,
+                              textAlign: TextAlign.end,
                               fontSize: 20.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               fontWeight: FontWeight.w700,

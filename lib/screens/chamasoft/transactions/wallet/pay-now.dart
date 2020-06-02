@@ -114,7 +114,7 @@ class PayNowState extends State<PayNow> {
           title: heading2(
               text: "Confirm Mpesa Number",
               color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
+              textAlign: TextAlign.start),
           content: TextFormField(
             //controller: controller,
             style: inputTextStyle(),

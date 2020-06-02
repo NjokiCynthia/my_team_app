@@ -106,7 +106,9 @@ class GridItem extends StatelessWidget {
                 height: 15.0,
               ),
               subtitle1(
-                  text: title, color: primaryColor, align: TextAlign.center),
+                  text: title,
+                  color: primaryColor,
+                  textAlign: TextAlign.center),
             ],
           ),
         ),

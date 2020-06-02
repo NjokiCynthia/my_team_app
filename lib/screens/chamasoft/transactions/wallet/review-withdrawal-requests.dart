@@ -104,7 +104,7 @@ class WithdrawalRequestCard extends StatelessWidget {
                         fontWeight: FontWeight.w700,
                         fontSize: 16.0,
                         color: Theme.of(context).textSelectionHandleColor,
-                        align: TextAlign.start,
+                        textAlign: TextAlign.start,
                       ),
                     ),
                     SizedBox(
@@ -123,7 +123,7 @@ class WithdrawalRequestCard extends StatelessWidget {
                           fontWeight: FontWeight.w700,
                           fontSize: 16.0,
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                         ),
                       ],
                     ),
@@ -145,11 +145,11 @@ class WithdrawalRequestCard extends StatelessWidget {
                                 text: "Particulars",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                             customTitle(
                               text: request.particulars,
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start,
+                              textAlign: TextAlign.start,
                             )
                           ],
                         ),
@@ -166,12 +166,12 @@ class WithdrawalRequestCard extends StatelessWidget {
                                 text: "Requested On",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.end),
+                                textAlign: TextAlign.end),
                             customTitle(
                               text:
                                   defaultDateFormat.format(request.requestDate),
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start,
+                              textAlign: TextAlign.start,
                             )
                           ],
                         ),

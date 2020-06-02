@@ -50,7 +50,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                             child: heading2(
                               text: "Expense Payment",
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start,
+                              textAlign: TextAlign.start,
                             ),
                           ),
                           Expanded(
@@ -58,7 +58,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                             child: heading2(
                               text: "Audit Fees",
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.end,
+                              textAlign: TextAlign.end,
                             ),
                           ),
                         ],
@@ -75,7 +75,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                           ),
                           Expanded(
                               child: customTitle(
-                            align: TextAlign.start,
+                            textAlign: TextAlign.start,
                             text: "Peter Parker - 0712000111",
                             color: Theme.of(context).textSelectionHandleColor,
                             fontWeight: FontWeight.w600,
@@ -90,7 +90,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
                           customTitle(
-                            align: TextAlign.start,
+                            textAlign: TextAlign.start,
                             text: "Give unto Ceasar",
                             color: Theme.of(context).textSelectionHandleColor,
                             fontWeight: FontWeight.w600,

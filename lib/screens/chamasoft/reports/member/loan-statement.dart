@@ -156,7 +156,7 @@ class _LoanStatementState extends State<LoanStatement> {
                       child: heading2(
                         text: "${widget.loan.name}",
                         color: Theme.of(context).textSelectionHandleColor,
-                        align: TextAlign.start,
+                        textAlign: TextAlign.start,
                       ),
                     ),
                     Row(
@@ -170,7 +170,7 @@ class _LoanStatementState extends State<LoanStatement> {
                         heading2(
                           text: "${currencyFormat.format(widget.loan.amount)}",
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.end,
+                          textAlign: TextAlign.end,
                         ),
                       ],
                     ),
@@ -187,7 +187,7 @@ class _LoanStatementState extends State<LoanStatement> {
                       color: Theme.of(context).textSelectionHandleColor,
                     ),
                     customTitle(
-                      align: TextAlign.start,
+                      textAlign: TextAlign.start,
                       text: "Ksh ${currencyFormat.format(widget.loan.repaid)}",
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w600,
@@ -202,7 +202,7 @@ class _LoanStatementState extends State<LoanStatement> {
                       color: Theme.of(context).textSelectionHandleColor,
                     ),
                     customTitle(
-                      align: TextAlign.start,
+                      textAlign: TextAlign.start,
                       text: "Ksh ${currencyFormat.format(widget.loan.balance)}",
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w600,
@@ -217,7 +217,7 @@ class _LoanStatementState extends State<LoanStatement> {
                       color: Theme.of(context).textSelectionHandleColor,
                     ),
                     customTitle(
-                      align: TextAlign.start,
+                      textAlign: TextAlign.start,
                       text:
                           "${defaultDateFormat.format(widget.loan.applicationDate)}",
                       color: Theme.of(context).textSelectionHandleColor,
@@ -242,14 +242,14 @@ class _LoanStatementState extends State<LoanStatement> {
                   child: subtitle1(
                       text: "Paid",
                       color: Theme.of(context).primaryColor,
-                      align: TextAlign.end),
+                      textAlign: TextAlign.end),
                 ),
                 Expanded(
                   flex: 1,
                   child: subtitle1(
                       text: "Balance",
                       color: Theme.of(context).primaryColor,
-                      align: TextAlign.end),
+                      textAlign: TextAlign.end),
                 ),
               ],
             ),

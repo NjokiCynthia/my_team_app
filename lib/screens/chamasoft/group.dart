@@ -72,7 +72,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                       children: <Widget>[
                         customTitle(
                           text: "All Group Contributions",
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).textSelectionHandleColor,
@@ -232,7 +232,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                       children: <Widget>[
                         customTitle(
                           text: "Loaned Out",
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).textSelectionHandleColor,

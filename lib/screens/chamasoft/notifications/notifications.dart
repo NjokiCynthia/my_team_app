@@ -93,7 +93,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                       subtitle1(
                           text: "Mark as Read",
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
+                          textAlign: TextAlign.start),
                       RichText(
                         text: TextSpan(
                             style: TextStyle(
@@ -180,7 +180,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                       : FontWeight.w400,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
-                                  align: TextAlign.end),
+                                  textAlign: TextAlign.end),
                             ],
                           ),
                         ),

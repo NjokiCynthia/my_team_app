@@ -175,13 +175,13 @@ class MyLoansCard extends StatelessWidget {
                                 text: "Applied On",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start),
+                                textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(application.requestDate),
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start)
+                                textAlign: TextAlign.start)
                           ],
                         ),
                         Row(

@@ -85,14 +85,14 @@ class _AccountBalancesState extends State<AccountBalances> {
                       heading2(
                           text: "Total ",
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
+                          textAlign: TextAlign.start),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           subtitle2(
                               text: "Account balances",
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.start),
+                              textAlign: TextAlign.start),
                         ],
                       ),
                     ],
@@ -101,7 +101,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                 heading2(
                     text: "Ksh 50,000",
                     color: Theme.of(context).textSelectionHandleColor,
-                    align: TextAlign.start)
+                    textAlign: TextAlign.start)
               ],
             ),
           ),

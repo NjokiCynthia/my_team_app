@@ -97,7 +97,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
             title: heading2(
                 text: "Select Bank",
                 color: Theme.of(context).textSelectionHandleColor,
-                align: TextAlign.start),
+                textAlign: TextAlign.start),
             content: Container(
               //height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
@@ -223,7 +223,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
             title: heading2(
                 text: "Select Bank Branch",
                 color: Theme.of(context).textSelectionHandleColor,
-                align: TextAlign.start),
+                textAlign: TextAlign.start),
             content: Container(
               //height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,

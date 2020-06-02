@@ -159,7 +159,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                       child: heading2(
                           text: "Total Loaned Out",
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
+                          textAlign: TextAlign.start),
                     ),
                     Row(
                       children: <Widget>[
@@ -172,7 +172,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                         heading2(
                           text: currencyFormat.format(2000000),
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.end,
+                          textAlign: TextAlign.end,
                         ),
                       ],
                     ),
@@ -197,13 +197,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                       text: "Payable: Ksh ",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                   customTitle(
                                       text: "2,000,000",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
                                       fontSize: 12,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                 ],
                               ),
                               Row(
@@ -213,13 +213,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                       text: "Paid: Ksh ",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                   customTitle(
                                       text: "400,000",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
                                       fontSize: 12,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                 ],
                               ),
                               Row(
@@ -229,13 +229,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                       text: "Balance: Ksh ",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                   customTitle(
                                       text: "1,600,000",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
                                       fontSize: 12,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                 ],
                               ),
                             ]),
@@ -253,13 +253,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                       text: "Active Loans: ",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                   customTitle(
                                       text: "22",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
                                       fontSize: 12,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                 ],
                               ),
                               Row(
@@ -270,13 +270,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                       text: "Fully Paid: ",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                   customTitle(
                                       text: "10",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
                                       fontSize: 12,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                 ],
                               ),
                               Row(
@@ -287,13 +287,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                       text: "Bad Loans: ",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                   customTitle(
                                       text: "4",
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
                                       fontSize: 12,
-                                      align: TextAlign.start),
+                                      textAlign: TextAlign.start),
                                 ],
                               ),
                             ]),
@@ -316,21 +316,21 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                   child: subtitle1(
                       text: "Due",
                       color: Theme.of(context).primaryColor,
-                      align: TextAlign.center),
+                      textAlign: TextAlign.center),
                 ),
                 Expanded(
                   flex: 2,
                   child: subtitle1(
                       text: "Paid",
                       color: Theme.of(context).primaryColor,
-                      align: TextAlign.center),
+                      textAlign: TextAlign.center),
                 ),
                 Expanded(
                   flex: 2,
                   child: subtitle1(
                       text: "Balance",
                       color: Theme.of(context).primaryColor,
-                      align: TextAlign.center),
+                      textAlign: TextAlign.center),
                 ),
               ],
             ),

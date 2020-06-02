@@ -51,7 +51,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
             text: "Reason for Rejecting",
-            align: TextAlign.start,
+            textAlign: TextAlign.start,
             color: Theme.of(context).textSelectionHandleColor,
           ),
           content: TextFormField(
@@ -137,13 +137,13 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                 text: "${widget.withdrawalRequest.purpose}",
                                 color:
                                     Theme.of(context).textSelectionHandleColor,
-                                align: TextAlign.start,
+                                textAlign: TextAlign.start,
                               ),
                               customTitle(
                                 text: "Requested by Peter Parker",
                                 fontSize: 12.0,
                                 color: primaryColor,
-                                align: TextAlign.start,
+                                textAlign: TextAlign.start,
                               ),
                             ],
                           ),
@@ -161,7 +161,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               text:
                                   "${currencyFormat.format(widget.withdrawalRequest.amount)}",
                               color: Theme.of(context).textSelectionHandleColor,
-                              align: TextAlign.end,
+                              textAlign: TextAlign.end,
                             ),
                           ],
                         ),
@@ -178,7 +178,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
                         customTitle(
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           text: "${widget.withdrawalRequest.particulars}",
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -194,7 +194,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                         ),
                         Expanded(
                             child: customTitle(
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           text: "Peter Parker - 0712000111",
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -210,7 +210,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                         ),
                         Expanded(
                             child: customTitle(
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           text:
                               "${defaultDateFormat.format(widget.withdrawalRequest.requestDate)}",
                           color: Theme.of(context).textSelectionHandleColor,
@@ -227,7 +227,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                         ),
                         Expanded(
                           child: customTitle(
-                            align: TextAlign.start,
+                            textAlign: TextAlign.start,
                             text:
                                 "Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum",
                             color: Theme.of(context).textSelectionHandleColor,
@@ -249,7 +249,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                       heading2(
                           text: "Signatories",
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
+                          textAlign: TextAlign.start),
                       SizedBox(
                         height: 10,
                       ),

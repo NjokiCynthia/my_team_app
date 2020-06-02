@@ -22,7 +22,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
           title: heading2(
               text: "Confirm Mpesa Number",
               color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
+              textAlign: TextAlign.start),
           content: TextFormField(
             //controller: controller,
             style: inputTextStyle(),
@@ -102,7 +102,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                       child: heading2(
                         text: "Monthly Contribution",
                         color: Theme.of(context).textSelectionHandleColor,
-                        align: TextAlign.start,
+                        textAlign: TextAlign.start,
                       ),
                     ),
                     Row(
@@ -116,7 +116,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                         heading2(
                           text: "2,000",
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.end,
+                          textAlign: TextAlign.end,
                         ),
                       ],
                     ),
@@ -133,7 +133,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                       color: Theme.of(context).textSelectionHandleColor,
                     ),
                     customTitle(
-                      align: TextAlign.start,
+                      textAlign: TextAlign.start,
                       text: "Freedom Welfare Caucus",
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w600,
@@ -148,7 +148,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                       color: Theme.of(context).textSelectionHandleColor,
                     ),
                     customTitle(
-                      align: TextAlign.start,
+                      textAlign: TextAlign.start,
                       text: "12 May 2020",
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w600,
@@ -163,7 +163,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                       color: Theme.of(context).textSelectionHandleColor,
                     ),
                     customTitle(
-                      align: TextAlign.start,
+                      textAlign: TextAlign.start,
                       text: "20 May 2020",
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w600,

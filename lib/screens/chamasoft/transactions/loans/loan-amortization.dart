@@ -87,12 +87,12 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       child: heading2(
                           text: "Emergency Loan for Corona Virus",
                           color: Theme.of(context).textSelectionHandleColor,
-                          align: TextAlign.start),
+                          textAlign: TextAlign.start),
                     ),
                     heading2(
                         text: "Ksh 180,000",
                         color: Theme.of(context).textSelectionHandleColor,
-                        align: TextAlign.start)
+                        textAlign: TextAlign.start)
                   ],
                 ),
                 Column(
@@ -109,7 +109,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
                         customTitle(
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           text: "12%",
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -124,7 +124,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
                         customTitle(
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           text: "1 Month",
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -139,7 +139,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
                         customTitle(
-                          align: TextAlign.start,
+                          textAlign: TextAlign.start,
                           text: "May 12, 2020",
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,

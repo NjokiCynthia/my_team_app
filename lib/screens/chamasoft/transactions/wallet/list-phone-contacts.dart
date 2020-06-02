@@ -74,7 +74,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
           title: heading2(
               text: "Set Recipient Contact",
               color: Theme.of(context).textSelectionHandleColor,
-              align: TextAlign.start),
+              textAlign: TextAlign.start),
           content: TextFormField(
             //controller: controller,
             style: inputTextStyle(),
@@ -238,9 +238,10 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
           }
         });
       },
-      title: subtitle1(text: contact.displayName ?? "", align: TextAlign.start),
+      title: subtitle1(
+          text: contact.displayName ?? "", textAlign: TextAlign.start),
       subtitle: list.length >= 1 && list[0]?.value != null
-          ? subtitle1(text: list[0].value, align: TextAlign.start)
+          ? subtitle1(text: list[0].value, textAlign: TextAlign.start)
           : Text(''),
     );
   }

@@ -79,7 +79,7 @@ Widget groupInfoButton(
                 color: textColor,
                 //fontSize: 16,
                 fontWeight: FontWeight.w700,
-                align: TextAlign.start),
+                textAlign: TextAlign.start),
 //            Text(
 //              title,
 //              style: TextStyle(
