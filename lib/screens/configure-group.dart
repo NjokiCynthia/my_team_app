@@ -19,12 +19,7 @@ Map<String, String> roles = {
 
 List<dynamic> members = [
   {"id": 1, "name": "Peter Kimutai", "phone": "+254 701 234 567", "role_id": 1},
-  {
-    "id": 2,
-    "name": "Edwin Kapkei",
-    "phone": "+254 701 234 567",
-    "role_id": 3
-  },
+  {"id": 2, "name": "Edwin Kapkei", "phone": "+254 701 234 567", "role_id": 3},
   {
     "id": 3,
     "name": "Geoffrey Githaiga",
