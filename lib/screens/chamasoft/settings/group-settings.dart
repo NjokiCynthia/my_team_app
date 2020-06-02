@@ -172,21 +172,20 @@ class _GroupSettingsState extends State<GroupSettings> {
             ListTile(
               leading: Icon(
                 FontAwesome.file_text,
-                size: 40,
+                size: 32,
+                color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
               ),
-              title: Text("Accounts",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              subtitle: Text(
-                "Manage group deposit accounts",
-                style: TextStyle(
-                  color: Theme.of(context).bottomAppBarColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                ),
+              title: customTitle(
+                text: "Accounts",
+                fontWeight: FontWeight.w700,
+                textAlign: TextAlign.start,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              subtitle: customTitle(
+                text: "Manage group deposit accounts",
+                textAlign: TextAlign.start,
+                fontSize: 13.0,
+                color: Theme.of(context).bottomAppBarColor,
               ),
               dense: true,
               onTap: () {
@@ -202,21 +201,20 @@ class _GroupSettingsState extends State<GroupSettings> {
             ListTile(
               leading: Icon(
                 FontAwesome.file_text,
-                size: 40,
+                size: 32,
+                color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
               ),
-              title: Text("Contributions",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              subtitle: Text(
-                "Manage contributions",
-                style: TextStyle(
-                  color: Theme.of(context).bottomAppBarColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                ),
+              title: customTitle(
+                text: "Contributions",
+                fontWeight: FontWeight.w700,
+                textAlign: TextAlign.start,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              subtitle: customTitle(
+                text: "Manage contributions",
+                textAlign: TextAlign.start,
+                fontSize: 13.0,
+                color: Theme.of(context).bottomAppBarColor,
               ),
               dense: true,
               onTap: () {
@@ -232,48 +230,20 @@ class _GroupSettingsState extends State<GroupSettings> {
             ListTile(
               leading: Icon(
                 FontAwesome.file_text,
-                size: 40,
+                size: 32,
+                color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
               ),
-              title: Text("Expenses",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              subtitle: Text(
-                "Manage expense categories",
-                style: TextStyle(
-                  color: Theme.of(context).bottomAppBarColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                ),
+              title: customTitle(
+                text: "Expenses",
+                fontWeight: FontWeight.w700,
+                textAlign: TextAlign.start,
+                color: Theme.of(context).textSelectionHandleColor,
               ),
-              dense: true,
-              onTap: () {},
-            ),
-            DashedDivider(
-              color: Color(0xFFECECEC),
-              thickness: 1.0,
-              height: 5.0,
-            ),
-            ListTile(
-              leading: Icon(
-                FontAwesome.file_text,
-                size: 40,
-              ),
-              title: Text("Fine Types",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              subtitle: Text(
-                "Manage group fine categories",
-                style: TextStyle(
-                  color: Theme.of(context).bottomAppBarColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                ),
+              subtitle: customTitle(
+                text: "Manage expense categories",
+                textAlign: TextAlign.start,
+                fontSize: 13.0,
+                color: Theme.of(context).bottomAppBarColor,
               ),
               dense: true,
               onTap: () {},
@@ -286,21 +256,46 @@ class _GroupSettingsState extends State<GroupSettings> {
             ListTile(
               leading: Icon(
                 FontAwesome.file_text,
-                size: 40,
+                size: 32,
+                color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
               ),
-              title: Text("Loan Types",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              subtitle: Text(
-                "Manage loan types offered by the group",
-                style: TextStyle(
-                  color: Theme.of(context).bottomAppBarColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                ),
+              title: customTitle(
+                text: "Fine Types",
+                fontWeight: FontWeight.w700,
+                textAlign: TextAlign.start,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              subtitle: customTitle(
+                text: "Manage group fine categories",
+                textAlign: TextAlign.start,
+                fontSize: 13.0,
+                color: Theme.of(context).bottomAppBarColor,
+              ),
+              dense: true,
+              onTap: () {},
+            ),
+            DashedDivider(
+              color: Color(0xFFECECEC),
+              thickness: 1.0,
+              height: 5.0,
+            ),
+            ListTile(
+              leading: Icon(
+                FontAwesome.file_text,
+                size: 32,
+                color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+              ),
+              title: customTitle(
+                text: "Loan Types",
+                fontWeight: FontWeight.w700,
+                textAlign: TextAlign.start,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              subtitle: customTitle(
+                text: "Manage loan types offered by the group",
+                textAlign: TextAlign.start,
+                fontSize: 13.0,
+                color: Theme.of(context).bottomAppBarColor,
               ),
               dense: true,
               onTap: () {
@@ -316,21 +311,20 @@ class _GroupSettingsState extends State<GroupSettings> {
             ListTile(
               leading: Icon(
                 FontAwesome.file_text,
-                size: 40,
+                size: 32,
+                color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
               ),
-              title: Text("Members",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              subtitle: Text(
-                "Add or remove members of the group",
-                style: TextStyle(
-                  color: Theme.of(context).bottomAppBarColor,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14.0,
-                ),
+              title: customTitle(
+                text: "Members",
+                fontWeight: FontWeight.w700,
+                textAlign: TextAlign.start,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              subtitle: customTitle(
+                text: "Add or remove members of the group",
+                textAlign: TextAlign.start,
+                fontSize: 13.0,
+                color: Theme.of(context).bottomAppBarColor,
               ),
               dense: true,
               onTap: () {},
