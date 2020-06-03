@@ -48,7 +48,8 @@ class _LoginState extends State<Login> {
     try {
       await Provider.of<Auth>(context, listen: false).generatePin(_identity);
       Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => Verification(),settings: RouteSettings(arguments: _identity)));
+          builder: (BuildContext context) => Verification(),
+          settings: RouteSettings(arguments: _identity)));
     } on HttpException catch (error) {
       _showErrorDialog(context, error.toString());
     } catch (error) {
@@ -108,6 +109,7 @@ class _LoginState extends State<Login> {
                     if (!CustomHelper.validIdentity(value)) {
                       return 'Enter valid email or phone number';
                     }
+                    return null;
                   },
                   onSaved: (value) {
                     _identity = value;

@@ -1,10 +1,10 @@
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/auth.dart';
 import '../screens/signup.dart';
@@ -13,7 +13,6 @@ import '../utilities/theme.dart';
 import '../widgets/backgrounds.dart';
 import '../widgets/buttons.dart';
 import '../widgets/textstyles.dart';
-import 'chamasoft/dashboard.dart';
 
 class Verification extends StatefulWidget {
   static const namedRoute = '/verification-screen';
@@ -56,10 +55,10 @@ class _VerificationState extends State<Verification> {
       _authData["pin"] = _pinEditingController.text;
       final response =
           await Provider.of<Auth>(context, listen: false).verifyPin(_authData);
-      if(response == 1){
+      if (response == 1) {
         Navigator.of(context).pushReplacementNamed(MyGroups.namedRoute);
-      }else{
-        Navigator.pushReplacementNamed(context,SignUp.namedRoute);
+      } else {
+        Navigator.pushReplacementNamed(context, SignUp.namedRoute);
       }
     } on HttpException catch (error) {
       alertDialog(context, error.toString());
@@ -149,6 +148,7 @@ class _VerificationState extends State<Verification> {
                           if (!_validOtp(value)) {
                             return "Please enter a valid pin";
                           }
+                          return null;
                         },
                         onSubmit: (pin) {
                           _submit(context);

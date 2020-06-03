@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'chamasoft/models/group-model.dart';
+
 class MyGroups extends StatefulWidget {
   static const namedRoute = '/my-groups-screen';
   @override
@@ -28,16 +30,18 @@ class _MyGroupsState extends State<MyGroups> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<Auth>(context,listen:false);
+    final auth = Provider.of<Auth>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Container(
         alignment: Alignment.center,
         decoration: primaryGradient(context),
+        height: MediaQuery.of(context).size.height,
         child: SingleChildScrollView(
           padding: EdgeInsets.all(40.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               heading1(
                   text: "My Groups",
@@ -85,41 +89,30 @@ class _MyGroupsState extends State<MyGroups> {
               SizedBox(
                 height: 32,
               ),
-              groupInfoButton(
-                context: context,
-                leadingIcon: LineAwesomeIcons.group,
-                trailingIcon: LineAwesomeIcons.angle_right,
-                backgroundColor: primaryColor.withOpacity(0.2),
-                title: "WITCHER WELFARE ASSOCIATION",
-                subtitle: "9 Members",
-                description: "Chairperson",
-                textColor: Colors.blueGrey,
-                borderColor: Colors.blueGrey.withOpacity(0.2),
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ChamasoftDashboard(),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              groupInfoButton(
-                context: context,
-                leadingIcon: LineAwesomeIcons.group,
-                trailingIcon: LineAwesomeIcons.angle_right,
-                backgroundColor: primaryColor.withOpacity(0.2),
-                title: "DVEA WELFARE",
-                subtitle: "16 Members",
-                description: "Member",
-                textColor: Colors.blueGrey,
-                borderColor: Colors.blueGrey.withOpacity(0.2),
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ChamasoftDashboard(),
-                  ),
-                ),
-              ),
+              ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: auth.groups.length,
+                  itemBuilder: (context, index) {
+                    GroupModel groupModel = auth.groups[index];
+                    return groupInfoButton(
+                      context: context,
+                      leadingIcon: LineAwesomeIcons.group,
+                      trailingIcon: LineAwesomeIcons.angle_right,
+                      backgroundColor: primaryColor.withOpacity(0.2),
+                      title: "${groupModel.name}",
+                      subtitle: "${groupModel.size} Members",
+                      description: "${groupModel.role}",
+                      textColor: Colors.blueGrey,
+                      borderColor: Colors.blueGrey.withOpacity(0.2),
+                      action: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              ChamasoftDashboard(),
+                        ),
+                      ),
+                    );
+                  }),
             ],
           ),
         ),
