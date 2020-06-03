@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
+import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -20,9 +21,15 @@ class IntroScreenState extends State<IntroScreen> {
     setPreference("currency", "Ksh");
 
     (await getPreference("isFirstTime") != '')
-        ? Navigator.of(context)
+        ?(await getPreference("isLoggedIn") =='true')? 
+          Navigator.of(context)
             .pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => ChamasoftDashboard()))
+                builder: (BuildContext context) => MyGroups()))
+            .whenComplete(() {
+            _loading = false;
+          }): Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => Login()))
             .whenComplete(() {
             _loading = false;
           })

@@ -56,10 +56,10 @@ class _MyGroupsState extends State<MyGroups> {
                 ),
               ),
               heading2(
-                  text: auth.userName,
+                  text: "Geoffrey",
                   color: Theme.of(context).textSelectionHandleColor),
               subtitle1(
-                  text: auth.phoneNumber,
+                  text: "0728747061",//auth.phoneNumber,
                   color: Theme.of(context)
                       .textSelectionHandleColor
                       .withOpacity(0.6)),
