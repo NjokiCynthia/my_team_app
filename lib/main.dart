@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
               : Colors.blue[50],
           title: 'Chamasoft',
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
-          //home: IntroScreen(),
+          home: IntroScreen(),
           routes: {
             MyGroups.namedRoute : (ctx) => MyGroups(),
             SignUp.namedRoute : (ctx) => SignUp(),

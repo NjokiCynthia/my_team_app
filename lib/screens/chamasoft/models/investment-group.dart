@@ -1,4 +1,4 @@
-class GroupModel {
+class InvestmentGroup {
   final id;
   final name;
   final slug;
@@ -29,7 +29,7 @@ class GroupModel {
   final role;
   final billing_cycle;
 
-  GroupModel(
+  InvestmentGroup(
       this.id,
       this.name,
       this.slug,
@@ -60,7 +60,7 @@ class GroupModel {
       this.role,
       this.billing_cycle);
 
-  GroupModel.fromJson(Map<String, dynamic> json)
+  InvestmentGroup.fromJson(Map<String, dynamic> json)
       : id = json['id'],
         name = json['name'],
         slug = json['slug'],

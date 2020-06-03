@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -49,11 +50,17 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 "Logout",
                 style: new TextStyle(color: Colors.red),
               ),
-              onPressed: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => Login(),
-                ),
-              ),
+              onPressed: (){
+                Navigator.of(context).pop();
+                Navigator.of(context).pushReplacementNamed('/');
+                Provider.of<Auth>(context,listen:false).logout();
+              } 
+              
+              // Navigator.of(context).pushReplacement(
+              //   MaterialPageRoute(
+              //     builder: (BuildContext context) => Login(),
+              //   ),
+              // ),
             ),
           ],
         );

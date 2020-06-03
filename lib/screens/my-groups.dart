@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'chamasoft/models/group-model.dart';
+import 'chamasoft/models/investment-group.dart';
 
 class MyGroups extends StatefulWidget {
   static const namedRoute = '/my-groups-screen';
@@ -63,7 +63,7 @@ class _MyGroupsState extends State<MyGroups> {
                   text: auth.userName,
                   color: Theme.of(context).textSelectionHandleColor),
               subtitle1(
-                  text: auth.phoneNumber,
+                  text: auth.phoneNumber, //auth.phoneNumber,
                   color: Theme.of(context)
                       .textSelectionHandleColor
                       .withOpacity(0.6)),
@@ -94,7 +94,7 @@ class _MyGroupsState extends State<MyGroups> {
                   physics: NeverScrollableScrollPhysics(),
                   itemCount: auth.groups.length,
                   itemBuilder: (context, index) {
-                    GroupModel groupModel = auth.groups[index];
+                    InvestmentGroup groupModel = auth.groups[index];
                     return groupInfoButton(
                       context: context,
                       leadingIcon: LineAwesomeIcons.group,
@@ -113,6 +113,16 @@ class _MyGroupsState extends State<MyGroups> {
                       ),
                     );
                   }),
+//              SizedBox(
+//                height: 32,
+//              ),
+//              RaisedButton(
+//                onPressed: () {
+//                  Navigator.of(context).pushReplacementNamed('/');
+//                  Provider.of<Auth>(context, listen: false).logout();
+//                },
+//                child: Text('Logout'),
+//              ),
             ],
           ),
         ),

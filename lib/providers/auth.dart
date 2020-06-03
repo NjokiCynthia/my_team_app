@@ -1,7 +1,9 @@
 import 'dart:convert';
 
-import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/investment-group.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utilities/custom-helper.dart';
 import '../utilities/post-to-server.dart';
@@ -30,26 +32,67 @@ class User {
 }
 
 class Auth with ChangeNotifier {
-  String _userId;
-  String _firstName;
-  String _lastName;
-  String _accessToken;
-  String _phone;
-  String _avatarName;
-  String _email;
+  static const String user = "user";
+  static const String userId = "userId";
+  static const String firstName = "firstName";
+  static const String lastName = "lastName";
+  static const String avatar = "avatar";
+  static const String email = "email";
+  static const String phone = "phone";
+  static const String accessToken = "accessToken";
+  static const String isLoggedIn = "isLoggedIn";
 
-  List<GroupModel> _groups = [];
+  List<InvestmentGroup> _groups = [];
 
   List get groups {
     return _groups;
   }
 
   String get userName {
-    return _firstName + " " + _lastName;
+    return firstName + " " + lastName;
   }
 
   String get phoneNumber {
-    return _phone;
+    return phone;
+  }
+
+  void setUserObject(String userObject) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(user, userObject);
+  }
+
+  void setAccessToken(String accessToken) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString(accessToken, accessToken);
+  }
+
+  Future<String> getAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(accessToken);
+  }
+
+  Future<String> getUser(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey('userData')) {
+      String userObject = prefs.getString(user);
+      try {
+        if (key != null && key.isNotEmpty && key != "0") {
+          final extractedUserData =
+              json.decode(userObject) as Map<String, Object>;
+          if (extractedUserData.containsKey(key)) {
+            return extractedUserData[key].toString();
+          } else {
+            return "";
+          }
+        } else {
+          return "";
+        }
+      } catch (error) {
+        throw HttpException("JSON Passing error " + error.toString());
+      }
+    } else {
+      return "";
+    }
   }
 
   Future<void> generatePin(String identity) async {
@@ -70,24 +113,29 @@ class Auth with ChangeNotifier {
   Future<int> verifyPin(Map<String, String> object) async {
     const url = CustomHelper.baseUrl + CustomHelper.verifyPin;
     final postRequest = json.encode(object);
+
     try {
       final response = await PostToServer.post(postRequest, url);
-      _userId = response['user']["id"]..toString();
-      _firstName = response['user']["first_name"]..toString();
-      _lastName = response['user']["last_name"]..toString();
-      _accessToken = response['user']["access_token"]..toString();
-      _email = response['user']["email"]..toString();
-      _phone = response['user']["phone"]..toString();
-      _avatarName = response['user']["avatar"]..toString();
-
-      List<dynamic> groupsJSON = response['user_groups'];
-      if (groupsJSON.length > 0) {
-        for (var groupJSON in groupsJSON) {
-          this._groups.add(GroupModel.fromJson(groupJSON));
-        }
-      }
-
+      print(response);
       if (response['user_exists'] == 1) {
+        setUserObject(json.encode({
+          userId: response['user']["id"]..toString(),
+          firstName: response['user']["first_name"]..toString(),
+          lastName: response['user']["last_name"]..toString(),
+          email: response['user']["email"]..toString(),
+          phone: response['user']["phone"]..toString(),
+          avatar: response['user']["avatar"]..toString(),
+        }));
+        setAccessToken(response['user']["access_token"]..toString());
+        setPreference(isLoggedIn, "true");
+
+        List<dynamic> groupsJSON = response['user_groups'];
+        if (groupsJSON.length > 0) {
+          for (var groupJSON in groupsJSON) {
+            this._groups.add(InvestmentGroup.fromJson(groupJSON));
+          }
+        }
+
         return 1;
       } else {
         return 2;
@@ -98,5 +146,13 @@ class Auth with ChangeNotifier {
       print(error);
       throw ("We could not complete your request at the moment. Try again later");
     }
+  }
+
+  void logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove(isLoggedIn);
+    prefs.remove(user);
+    prefs.remove(accessToken);
+    notifyListeners();
   }
 }
