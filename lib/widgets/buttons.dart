@@ -79,31 +79,25 @@ Widget groupInfoButton(
                 //fontSize: 16,
                 fontWeight: FontWeight.w700,
                 textAlign: TextAlign.start),
-            Row(
-              children: <Widget>[
-                Text(
-                  subtitle,
-                  style: TextStyle(
+            FittedBox(
+              child: Row(
+                children: <Widget>[
+                  customTitle(
+                    text: subtitle,
                     color: textColor.withOpacity(0.8),
                     fontWeight: FontWeight.w800,
                     fontSize: 12.0,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                (description != "")
-                    ? Text(
-                        ", " + description,
-                        style: TextStyle(
+                  (description != "")
+                      ? customTitle(
+                          text: ", " + description,
                           color: textColor.withOpacity(0.8),
                           fontWeight: FontWeight.w500,
                           fontSize: 12.0,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    : SizedBox(),
-              ],
+                        )
+                      : SizedBox(),
+                ],
+              ),
             ),
           ],
         ),
