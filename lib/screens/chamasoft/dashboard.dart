@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
@@ -13,6 +14,7 @@ import 'package:chamasoft/widgets/appswitcher.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 
 class ChamasoftDashboard extends StatefulWidget {
   @override
@@ -22,10 +24,10 @@ class ChamasoftDashboard extends StatefulWidget {
 class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   StreamController _eventDispatcher = new StreamController.broadcast();
   List<dynamic> _overlayItems = [
-    {"id": 1, "title": "DVEA Staff Welfare", "role": "Member"},
-    {"id": 2, "title": "La Casa De Papel", "role": "Organizer"},
-    {"id": 3, "title": "Witcher Welfare Association", "role": "Chairperson"},
-    {"id": 4, "title": "Kejodu Investments", "role": "Secretary"},
+    // {"id": 1, "title": "DVEA Staff Welfare", "role": "Member"},
+    // {"id": 2, "title": "La Casa De Papel", "role": "Organizer"},
+    // {"id": 3, "title": "Witcher Welfare Association", "role": "Chairperson"},
+    // {"id": 4, "title": "Kejodu Investments", "role": "Secretary"},
   ];
 
   Stream get _stream => _eventDispatcher.stream;
@@ -34,7 +36,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       new GlobalKey<ScaffoldState>();
   int _currentPage;
   double _appBarElevation = 0;
-  int _selectedGroupIndex = 3;
+  int _selectedGroupIndex = 0;
 
   _setElevation(double elevation) {
     double newElevation = elevation > 1 ? appBarElevation : 0;
@@ -45,8 +47,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     }
   }
 
-  _handleSelectedOption(int option) {
-    if (option == 0) {
+  _handleSelectedOption(String option) {
+    if (option == '0') {
       // CREATE NEW Selected, handle it!
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -66,15 +68,39 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     }
   }
 
+  Future<void> _getUserGroupsOverlay(BuildContext context) async{
+    var _groups = Provider.of<Groups>(context,listen: false).item;
+    //List<String> _overlayGroups;
+    _groups.map((group) => {
+      _overlayItems.add(
+        {"id": group.groupId, "title": group.groupName, "role": "Member"}
+      )
+    }).toList();
+  }
+
   @override
   void initState() {
     _currentPage = 0;
     _overlayItems.insert(0, {
-      "id": 0,
+      "id": '0',
       "title": "Create New",
       "role": "Group, Merry-go-round, fundraiser"
     });
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    _getUserGroupsOverlay(context).then((_) async {
+      await Provider.of<Groups>(context,listen: false).getCurrentGroupId().then((groupId){
+        _handleSelectedOption(groupId);
+      });
+    })
+    .catchError((error){
+      
+    });
+    super.didChangeDependencies();
   }
 
   @override

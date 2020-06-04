@@ -6,6 +6,7 @@ class CustomHelper {
   static const String baseUrl = "https://uat.chamasoft.com/";
   static const String generatePin = "mobile/generate_pin";
   static const String verifyPin = "mobile/verify_pin";
+  static const String getCheckinData = "mobile/get_user_checkin_data";
 
   static bool validPhone(String phone) {
     Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
