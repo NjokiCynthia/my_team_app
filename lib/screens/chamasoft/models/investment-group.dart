@@ -1,134 +1,166 @@
+import 'named-list-item.dart';
+
 class InvestmentGroup {
-  final id;
-  final name;
-  final slug;
-  final size;
-  final sms_balance;
-  final account_number;
-  final is_validated;
-  final theme;
-  final online_banking_enabled;
-  final enable_member_information_privacy;
-  final member_listing_order_by;
-  final order_members_by;
-  final enable_send_monthly_email_statements;
-  final enable_bulk_transaction_alerts_reconciliation;
-  final disable_arrears;
-  final disable_ignore_contribution_transfers;
-  final disable_member_directory;
-  final disable_member_edit_profile;
-  final enable_absolute_loan_recalculation;
-  final avatar;
-  final country_id;
-  final country_name;
-  final phone;
-  final email;
-  final subscription_status;
-  final trial_days;
-  final billing_package_id;
-  final role;
-  final billing_cycle;
+  int id;
+  int size;
+  int onlineBankingEnabled;
+  int enableMemberInformationPrivacy;
+  int enableSendMonthlyEmailStatements;
+  int enableBulkTransactionAlertsReconciliation;
+  int disableArrears;
+  int disableIgnoreContributionTransfers;
+  int disableMemberDirectory;
+  int disableMemberEditProfile;
+  int enableAbsoluteLoanRecalculation;
+  int countryId;
+  int subscriptionStatus;
+  int trialDays;
+  int billingPackageId;
+  int billingCycle;
+  int isOnFreePlan;
+  int isAdmin;
+  int groupRoleId;
+  int isValidated;
+  double smsBalance;
+  String avatar;
+  String name;
+  String slug;
+  String accountNumber;
+  String theme;
+  String memberListingOrderBy;
+  String orderMembersBy;
+  String phone;
+  String email;
+  String countryName;
+  String activationStatus;
+  String activationStatusColorCode;
+  String groupCurrency;
+  String role;
+  List<NamesListItem> groupRoles;
 
   InvestmentGroup(
       this.id,
+      this.size,
+      this.onlineBankingEnabled,
+      this.enableMemberInformationPrivacy,
+      this.enableSendMonthlyEmailStatements,
+      this.enableBulkTransactionAlertsReconciliation,
+      this.disableArrears,
+      this.disableIgnoreContributionTransfers,
+      this.disableMemberDirectory,
+      this.disableMemberEditProfile,
+      this.enableAbsoluteLoanRecalculation,
+      this.countryId,
+      this.subscriptionStatus,
+      this.trialDays,
+      this.billingPackageId,
+      this.billingCycle,
+      this.isOnFreePlan,
+      this.isAdmin,
+      this.groupRoleId,
+      this.isValidated,
+      this.smsBalance,
+      this.avatar,
       this.name,
       this.slug,
-      this.size,
-      this.sms_balance,
-      this.account_number,
-      this.is_validated,
+      this.accountNumber,
       this.theme,
-      this.online_banking_enabled,
-      this.enable_member_information_privacy,
-      this.member_listing_order_by,
-      this.order_members_by,
-      this.enable_send_monthly_email_statements,
-      this.enable_bulk_transaction_alerts_reconciliation,
-      this.disable_arrears,
-      this.disable_ignore_contribution_transfers,
-      this.disable_member_directory,
-      this.disable_member_edit_profile,
-      this.enable_absolute_loan_recalculation,
-      this.avatar,
-      this.country_id,
-      this.country_name,
+      this.memberListingOrderBy,
+      this.orderMembersBy,
       this.phone,
       this.email,
-      this.subscription_status,
-      this.trial_days,
-      this.billing_package_id,
+      this.countryName,
+      this.activationStatus,
+      this.activationStatusColorCode,
+      this.groupCurrency,
       this.role,
-      this.billing_cycle);
+      this.groupRoles);
+
+  void initGroupRoles(List<NamesListItem> roles) {
+    this.groupRoles = roles;
+  }
 
   InvestmentGroup.fromJson(Map<String, dynamic> json)
-      : id = json['id'],
+      : id = int.parse(json['id']),
+        size = int.parse(json['size']),
+        onlineBankingEnabled = int.parse(json['online_banking_enabled']),
+        enableMemberInformationPrivacy =
+            int.parse(json['enable_member_information_privacy']),
+        enableSendMonthlyEmailStatements =
+            int.parse(json['enable_send_monthly_email_statements']),
+        enableBulkTransactionAlertsReconciliation =
+            int.parse(json['enable_bulk_transaction_alerts_reconciliation']),
+        disableArrears = int.parse(json['disable_arrears']),
+        disableIgnoreContributionTransfers =
+            int.parse(json['disable_ignore_contribution_transfers']),
+        disableMemberDirectory = int.parse(json['disable_member_directory']),
+        disableMemberEditProfile =
+            int.parse(json['disable_member_edit_profile']),
+        enableAbsoluteLoanRecalculation =
+            int.parse(json['enable_absolute_loan_recalculation']),
+        countryId = int.parse(json['country_id']),
+        subscriptionStatus = int.parse(json['subscription_status']),
+        trialDays = int.parse(json['trial_days']),
+        billingPackageId = int.parse(json['billing_package_id']),
+        billingCycle = int.parse(json['billing_cycle']),
+        isOnFreePlan = int.parse(json['is_on_free_plan']),
+        isAdmin = int.parse(json['is_admin']),
+        groupRoleId = int.parse(json['group_role_id']),
+        isValidated = int.parse(json['is_validated']),
+        smsBalance = double.parse(json['sms_balance']),
+        avatar = json['avatar'],
         name = json['name'],
         slug = json['slug'],
-        size = json['size'],
-        sms_balance = json['sms_balance'],
-        account_number = json['account_number'],
-        is_validated = json['is_validated'],
+        accountNumber = json['account_number'],
         theme = json['theme'],
-        online_banking_enabled = json['online_banking_enabled'],
-        enable_member_information_privacy =
-            json['enable_member_information_privacy'],
-        member_listing_order_by = json['member_listing_order_by'],
-        order_members_by = json['order_members_by'],
-        enable_send_monthly_email_statements =
-            json['enable_send_monthly_email_statements'],
-        enable_bulk_transaction_alerts_reconciliation =
-            json['enable_bulk_transaction_alerts_reconciliation'],
-        disable_arrears = json['disable_arrears'],
-        disable_ignore_contribution_transfers =
-            json['disable_ignore_contribution_transfers'],
-        disable_member_directory = json['disable_member_directory'],
-        disable_member_edit_profile = json['disable_member_edit_profile'],
-        enable_absolute_loan_recalculation =
-            json['enable_absolute_loan_recalculation'],
-        avatar = json['avatar'],
-        country_id = json['country_id'],
-        country_name = json['country_name'],
+        memberListingOrderBy = json['member_listing_order_by'],
+        orderMembersBy = json['order_members_by'],
         phone = json['phone'],
         email = json['email'],
-        subscription_status = json['subscription_status'],
-        trial_days = json['trial_days'],
-        billing_package_id = json['billing_package_id'],
-        role = json['role'],
-        billing_cycle = json['billing_cycle'];
+        countryName = json['country_name'],
+        activationStatus = json['activation_status'],
+        activationStatusColorCode = json['activation_status_color_code'],
+        groupCurrency = json['group_currency'],
+        role = json['role'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
+        'size': size,
+        'online_banking_enabled': onlineBankingEnabled,
+        'enable_member_information_privacy': enableMemberInformationPrivacy,
+        'enable_send_monthly_email_statements':
+            enableSendMonthlyEmailStatements,
+        'enable_bulk_transaction_alerts_reconciliation':
+            enableBulkTransactionAlertsReconciliation,
+        'disable_arrears': disableArrears,
+        'disable_ignore_contribution_transfers':
+            disableIgnoreContributionTransfers,
+        'disable_member_directory': disableMemberDirectory,
+        'disable_member_edit_profile': disableMemberEditProfile,
+        'enable_absolute_loan_recalculation': enableAbsoluteLoanRecalculation,
+        'country_id': countryId,
+        'subscription_status': subscriptionStatus,
+        'trial_days': trialDays,
+        'billing_package_id': billingPackageId,
+        'billing_cycle': billingCycle,
+        'is_on_free_plan': isOnFreePlan,
+        'is_admin': isAdmin,
+        'group_role_id': groupRoleId,
+        'is_validated': isValidated,
+        'sms_balance': smsBalance,
+        'avatar': avatar,
         'name': name,
         'slug': slug,
-        'size': size,
-        'sms_balance': sms_balance,
-        'account_number': account_number,
-        'is_validated': is_validated,
+        'account_number': accountNumber,
         'theme': theme,
-        'online_banking_enabled': online_banking_enabled,
-        'enable_member_information_privacy': enable_member_information_privacy,
-        'member_listing_order_by': member_listing_order_by,
-        'order_members_by': order_members_by,
-        'enable_send_monthly_email_statements':
-            enable_send_monthly_email_statements,
-        'enable_bulk_transaction_alerts_reconciliation':
-            enable_bulk_transaction_alerts_reconciliation,
-        'disable_arrears': disable_arrears,
-        'disable_ignore_contribution_transfers':
-            disable_ignore_contribution_transfers,
-        'disable_member_directory': disable_member_directory,
-        'disable_member_edit_profile': disable_member_edit_profile,
-        'enable_absolute_loan_recalculation':
-            enable_absolute_loan_recalculation,
-        'avatar': avatar,
-        'country_id': country_id,
-        'country_name': country_name,
+        'member_listing_order_by': memberListingOrderBy,
+        'order_members_by': orderMembersBy,
         'phone': phone,
         'email': email,
-        'subscription_status': subscription_status,
-        'trial_days': trial_days,
-        'billing_package_id': billing_package_id,
-        'billing_cycle': billing_cycle,
+        'country_name': countryName,
+        'activation_status': activationStatus,
+        'activation_status_color_code': activationStatusColorCode,
+        'group_currency': groupCurrency,
         'role': role,
       };
 }

@@ -113,16 +113,16 @@ class _MyGroupsState extends State<MyGroups> {
                       ),
                     );
                   }),
-//              SizedBox(
-//                height: 32,
-//              ),
-//              RaisedButton(
-//                onPressed: () {
-//                  Navigator.of(context).pushReplacementNamed('/');
-//                  Provider.of<Auth>(context, listen: false).logout();
-//                },
-//                child: Text('Logout'),
-//              ),
+              SizedBox(
+                height: 32,
+              ),
+              RaisedButton(
+                onPressed: () {
+                  Navigator.of(context).pushReplacementNamed('/');
+                  Provider.of<Auth>(context, listen: false).logout();
+                },
+                child: Text('Logout'),
+              ),
             ],
           ),
         ),
