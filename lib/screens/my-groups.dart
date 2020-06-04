@@ -86,9 +86,6 @@ class _MyGroupsState extends State<MyGroups> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 32,
-              ),
               ListView.builder(
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),

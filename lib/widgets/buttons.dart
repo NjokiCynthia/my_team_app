@@ -59,6 +59,7 @@ Widget groupInfoButton(
     Function action}) {
   return Container(
     width: MediaQuery.of(context).size.width,
+    margin: EdgeInsets.only(bottom: 10.0),
     // height: 42.0,
     child: OutlineButton(
       padding: EdgeInsets.all(0.0),
@@ -72,53 +73,31 @@ Widget groupInfoButton(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            SizedBox(
-              height: 10,
-            ),
             customTitle(
                 text: title,
                 color: textColor,
                 //fontSize: 16,
                 fontWeight: FontWeight.w700,
                 textAlign: TextAlign.start),
-//            Text(
-//              title,
-//              style: TextStyle(
-//                color: textColor,
-//                fontWeight: FontWeight.w700,
-//                fontSize: 18.0,
-//              ),
-//              maxLines: 1,
-//              overflow: TextOverflow.ellipsis,
-//            ),
-            Row(
-              children: <Widget>[
-                Text(
-                  subtitle,
-                  style: TextStyle(
+            FittedBox(
+              child: Row(
+                children: <Widget>[
+                  customTitle(
+                    text: subtitle,
                     color: textColor.withOpacity(0.8),
                     fontWeight: FontWeight.w800,
                     fontSize: 12.0,
                   ),
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                (description != "")
-                    ? Text(
-                        ", " + description,
-                        style: TextStyle(
+                  (description != "")
+                      ? customTitle(
+                          text: ", " + description,
                           color: textColor.withOpacity(0.8),
                           fontWeight: FontWeight.w500,
                           fontSize: 12.0,
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    : SizedBox(),
-              ],
-            ),
-            SizedBox(
-              height: 10,
+                        )
+                      : SizedBox(),
+                ],
+              ),
             ),
           ],
         ),
