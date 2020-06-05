@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -54,12 +55,20 @@ class _VerificationState extends State<Verification> {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
       final response =
-          await Provider.of<Auth>(context, listen: false).verifyPin(_authData);
-      if (response == 1) {
+          await Provider.of<Auth>(context, listen: false).verifyPin(_authData) as Map<String,dynamic>;
+      if(response['userExists'] == 1){
+        if(response.containsKey('userGroups')){
+          Provider.of<Groups>(context,listen:false).addGroups(response['userGroups']);
+        }
         Navigator.of(context).pushReplacementNamed(MyGroups.namedRoute);
-      } else {
+      }else{
         Navigator.pushReplacementNamed(context, SignUp.namedRoute);
       }
+      // if (response == 1) {
+      //   Navigator.of(context).pushReplacementNamed(MyGroups.namedRoute);
+      // } else {
+      //   Navigator.pushReplacementNamed(context, SignUp.namedRoute);
+      // }
     } on HttpException catch (error) {
       alertDialog(context, error.toString());
     } catch (error) {

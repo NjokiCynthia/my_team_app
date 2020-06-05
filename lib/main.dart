@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './providers/auth.dart';
+import './providers/groups.dart';
 import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -46,7 +47,10 @@ class _MyAppState extends State<MyApp> {
           create: (_) {
             return themeChangeProvider;
           },
-        )
+        ),
+        ChangeNotifierProvider(
+          create: (ctx) => Groups(),
+        ),
       ],
       child: Consumer<DarkThemeProvider>(
           builder: (BuildContext context, value, Widget child) {
