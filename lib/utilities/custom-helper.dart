@@ -52,6 +52,44 @@ class CustomHelper {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     return packageInfo.buildNumber;
   }
+
+  static int parseInt(String db) {
+    if (db == null) return 0;
+    int rd;
+    db = db.replaceAll(' ', '');
+    db = db.replaceAll(',', '');
+    db = db.trim();
+    if (db == null) {
+      rd = 0;
+    } else {
+      try {
+        rd = int.parse(db);
+      } catch (error) {
+        rd = 0;
+      }
+    }
+
+    return rd;
+  }
+
+  static double parseDouble(String db) {
+    double rd;
+    db = db.replaceAll(' ', '');
+    db = db.replaceAll(',', '');
+    db = db.trim();
+
+    if (db == null) {
+      rd = 0;
+    } else {
+      try {
+        rd = double.parse(db);
+      } catch (error) {
+        rd = 0;
+      }
+    }
+
+    return rd;
+  }
 }
 
 class HttpException implements Exception {

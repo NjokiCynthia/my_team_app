@@ -1,3 +1,5 @@
+import 'package:chamasoft/utilities/custom-helper.dart';
+
 import 'named-list-item.dart';
 
 class InvestmentGroup {
@@ -81,33 +83,35 @@ class InvestmentGroup {
   }
 
   InvestmentGroup.fromJson(Map<String, dynamic> json)
-      : id = int.parse(json['id']),
-        size = int.parse(json['size']),
-        onlineBankingEnabled = int.parse(json['online_banking_enabled']),
+      : id = CustomHelper.parseInt(json['id']),
+        size = CustomHelper.parseInt(json['size']),
+        onlineBankingEnabled =
+            CustomHelper.parseInt(json['online_banking_enabled']),
         enableMemberInformationPrivacy =
-            int.parse(json['enable_member_information_privacy']),
+            CustomHelper.parseInt(json['enable_member_information_privacy']),
         enableSendMonthlyEmailStatements =
-            int.parse(json['enable_send_monthly_email_statements']),
-        enableBulkTransactionAlertsReconciliation =
-            int.parse(json['enable_bulk_transaction_alerts_reconciliation']),
-        disableArrears = int.parse(json['disable_arrears']),
-        disableIgnoreContributionTransfers =
-            int.parse(json['disable_ignore_contribution_transfers']),
-        disableMemberDirectory = int.parse(json['disable_member_directory']),
+            CustomHelper.parseInt(json['enable_send_monthly_email_statements']),
+        enableBulkTransactionAlertsReconciliation = CustomHelper.parseInt(
+            json['enable_bulk_transaction_alerts_reconciliation']),
+        disableArrears = CustomHelper.parseInt(json['disable_arrears']),
+        disableIgnoreContributionTransfers = CustomHelper.parseInt(
+            json['disable_ignore_contribution_transfers']),
+        disableMemberDirectory =
+            CustomHelper.parseInt(json['disable_member_directory']),
         disableMemberEditProfile =
-            int.parse(json['disable_member_edit_profile']),
+            CustomHelper.parseInt(json['disable_member_edit_profile']),
         enableAbsoluteLoanRecalculation =
-            int.parse(json['enable_absolute_loan_recalculation']),
-        countryId = int.parse(json['country_id']),
-        subscriptionStatus = int.parse(json['subscription_status']),
-        trialDays = int.parse(json['trial_days']),
-        billingPackageId = int.parse(json['billing_package_id']),
-        billingCycle = int.parse(json['billing_cycle']),
-        isOnFreePlan = int.parse(json['is_on_free_plan']),
-        isAdmin = int.parse(json['is_admin']),
-        groupRoleId = int.parse(json['group_role_id']),
-        isValidated = int.parse(json['is_validated']),
-        smsBalance = double.parse(json['sms_balance']),
+            CustomHelper.parseInt(json['enable_absolute_loan_recalculation']),
+        countryId = CustomHelper.parseInt(json['country_id']),
+        subscriptionStatus = CustomHelper.parseInt(json['subscription_status']),
+        trialDays = CustomHelper.parseInt(json['trial_days']),
+        billingPackageId = CustomHelper.parseInt(json['billing_package_id']),
+        billingCycle = CustomHelper.parseInt(json['billing_cycle']),
+//        isOnFreePlan = CustomHelper.parseInt(json['is_on_free_plan']),
+ //       isAdmin = CustomHelper.parseInt(json['is_admin']),
+        groupRoleId = CustomHelper.parseInt(json['group_role_id']),
+        isValidated = CustomHelper.parseInt(json['is_validated']),
+        smsBalance = CustomHelper.parseDouble(json['sms_balance']),
         avatar = json['avatar'],
         name = json['name'],
         slug = json['slug'],
