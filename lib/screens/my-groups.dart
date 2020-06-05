@@ -10,13 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'chamasoft/models/investment-group.dart';
-
 class MyGroups extends StatefulWidget {
   static const namedRoute = '/my-groups-screen';
   @override
   _MyGroupsState createState() => _MyGroupsState();
 }
+
 bool _isInit = true;
 
 Future<void> _getUserCheckinData(BuildContext context) async {
@@ -54,10 +53,10 @@ class _MyGroupsState extends State<MyGroups> {
 
   @override
   void didChangeDependencies() {
-    if(_isInit){
+    if (_isInit) {
       _getUserCheckinData(context);
     }
-    _isInit=false;
+    _isInit = false;
     super.didChangeDependencies();
   }
 
@@ -132,36 +131,46 @@ class _MyGroupsState extends State<MyGroups> {
                       itemBuilder: (context, index) {
                         //InvestmentGroup groupModel = auth.groups[index];
                         return groupInfoButton(
-                          context: context,
-                          leadingIcon: LineAwesomeIcons.group,
-                          trailingIcon: LineAwesomeIcons.angle_right,
-                          backgroundColor: primaryColor.withOpacity(0.2),
-                          title: "${groups.item[index].groupName}",
-                          subtitle: "${groups.item[index].groupSize} Members",
-                          description: "Member",
-                          textColor: Colors.blueGrey,
-                          borderColor: Colors.blueGrey.withOpacity(0.2),
-                          action: (){
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    ChamasoftDashboard(),
-                              ),
-                            );
-                            Provider.of<Groups>(context,listen: false).setSelectedGroupId(groups.item[index].groupId);
-                          }
-                        );
+                            context: context,
+                            leadingIcon: LineAwesomeIcons.group,
+                            trailingIcon: LineAwesomeIcons.angle_right,
+                            backgroundColor: primaryColor.withOpacity(0.2),
+                            title: "${groups.item[index].groupName}",
+                            subtitle: "${groups.item[index].groupSize} Members",
+                            description: "Member",
+                            textColor: Colors.blueGrey,
+                            borderColor: Colors.blueGrey.withOpacity(0.2),
+                            action: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ChamasoftDashboard(),
+                                ),
+                              );
+                              Provider.of<Groups>(context, listen: false)
+                                  .setSelectedGroupId(
+                                      groups.item[index].groupId);
+                            });
                       }),
                 ),
-                SizedBox(
-                  height: 32,
-                ),
-                RaisedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/');
-                    Provider.of<Auth>(context, listen: false).logout();
-                  },
-                  child: Text('Logout'),
+                Padding(
+                  padding: EdgeInsets.only(
+                    top: 20.0,
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: smallBadgeButton(
+                      text: "Logout",
+                      backgroundColor: Colors.red.withOpacity(0.2),
+                      textColor: Colors.red,
+                      buttonHeight: 36.0,
+                      textSize: 15.0,
+                      action: () {
+                        Navigator.of(context).pushReplacementNamed('/');
+                        Provider.of<Auth>(context, listen: false).logout();
+                      },
+                    ),
+                  ),
                 ),
               ],
             ),
