@@ -98,15 +98,14 @@ class _MyGroupsState extends State<MyGroups> {
               SizedBox(
                 height: 32,
               ),
-              // Padding(
-              //   padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-              //   child: Image(
-              //     image: auth.displayAvatar != null
-              //         ? NetworkImage(auth.displayAvatar)
-              //         : ('assets/no-user.png'),
-              //     height: 80.0,
-              //   ),
-              // ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                child: Image(
+                  image: (auth.displayAvatar != null||auth.displayAvatar=="")? NetworkImage(auth.displayAvatar)
+                      : ('assets/no-user.png'),
+                  height: 80.0,
+                ),
+              ),
               heading2(
                   text: auth.userName,
                   color: Theme.of(context).textSelectionHandleColor),
