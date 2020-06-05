@@ -89,15 +89,15 @@ class Auth with ChangeNotifier {
         if(_lastName==""){
           _lastName = extractedUserData[lastName]..toString();
         }
-        // if(_emailAddress==""){
-        //   _emailAddress = extractedUserData[emailAddress]..toString();
-        // }
+        if(_emailAddress==""){
+          _emailAddress = extractedUserData[email]..toString();
+        }
         if(_avatar==""){
           _avatar = extractedUserData[userAvatar]..toString();
         }
-        // if(_userId==""){
-        //   _userId = extractedUserData[userId]..toString();
-        // }
+        if(_userId==""){
+          _userId = extractedUserData[userId]..toString();
+        }
       }catch(error){
 
       }
@@ -195,7 +195,7 @@ class Auth with ChangeNotifier {
         };
       } else {
         userResponse = {
-          'userExists' : 1,
+          'userExists' : 2,
           'userGroups' : '',
         };
       }
