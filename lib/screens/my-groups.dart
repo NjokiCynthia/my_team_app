@@ -62,6 +62,19 @@ class _MyGroupsState extends State<MyGroups> {
     super.didChangeDependencies();
   }
 
+  Widget buildContainer(Widget child) {
+    return Container(
+        margin: EdgeInsets.all(10),
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(10)),
+        height: 200,
+        width: 300,
+        child: child);
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: false);
@@ -122,37 +135,39 @@ class _MyGroupsState extends State<MyGroups> {
                     ),
                   ),
                 ),
-                Consumer<Groups>(
-                  child: Center(
-                    child: Text("Groups"),
+                buildContainer(
+                  Consumer<Groups>(
+                    child: Center(
+                      child: Text("Groups"),
+                    ),
+                    builder: (ctx, groups, ch) => ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: groups.item.length,
+                        itemBuilder: (context, index) {
+                          //InvestmentGroup groupModel = auth.groups[index];
+                          return groupInfoButton(
+                            context: context,
+                            leadingIcon: LineAwesomeIcons.group,
+                            trailingIcon: LineAwesomeIcons.angle_right,
+                            backgroundColor: primaryColor.withOpacity(0.2),
+                            title: "${groups.item[index].groupName}",
+                            subtitle: "${groups.item[index].groupSize} Members",
+                            description: "Member",
+                            textColor: Colors.blueGrey,
+                            borderColor: Colors.blueGrey.withOpacity(0.2),
+                            action: (){
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ChamasoftDashboard(),
+                                ),
+                              );
+                              Provider.of<Groups>(context,listen: false).setSelectedGroupId(groups.item[index].groupId);
+                            }
+                          );
+                        }),
                   ),
-                  builder: (ctx, groups, ch) => ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: groups.item.length,
-                      itemBuilder: (context, index) {
-                        //InvestmentGroup groupModel = auth.groups[index];
-                        return groupInfoButton(
-                          context: context,
-                          leadingIcon: LineAwesomeIcons.group,
-                          trailingIcon: LineAwesomeIcons.angle_right,
-                          backgroundColor: primaryColor.withOpacity(0.2),
-                          title: "${groups.item[index].groupName}",
-                          subtitle: "${groups.item[index].groupSize} Members",
-                          description: "Member",
-                          textColor: Colors.blueGrey,
-                          borderColor: Colors.blueGrey.withOpacity(0.2),
-                          action: (){
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    ChamasoftDashboard(),
-                              ),
-                            );
-                            Provider.of<Groups>(context,listen: false).setSelectedGroupId(groups.item[index].groupId);
-                          }
-                        );
-                      }),
                 ),
                 SizedBox(
                   height: 32,
