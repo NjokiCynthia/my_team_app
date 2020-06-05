@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:chamasoft/screens/chamasoft/models/investment-group.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -36,24 +35,73 @@ class Auth with ChangeNotifier {
   static const String userId = "userId";
   static const String firstName = "firstName";
   static const String lastName = "lastName";
-  static const String avatar = "avatar";
+  static const String userAvatar = "avatar";
   static const String email = "email";
   static const String phone = "phone";
   static const String accessToken = "accessToken";
   static const String isLoggedIn = "isLoggedIn";
+  String _firstName = "";
+  String _lastName = "";
+  String _phoneNumber = "";
+  String _userId = "";
+  String _emailAddress = "";
+  String _avatar = "";
 
-  List<InvestmentGroup> _groups = [];
-
-  List get groups {
-    return _groups;
-  }
 
   String get userName {
-    return firstName + " " + lastName;
+    return _firstName + " " + _lastName;
   }
 
   String get phoneNumber {
-    return phone;
+    return _phoneNumber;
+  }
+
+  String get id{
+    return _userId;
+  }
+
+  String get emailAddress{
+    return _emailAddress;
+  }
+
+  String get avatar{
+    return _avatar;
+  }
+
+  String get displayAvatar{
+    print(CustomHelper.imageUrl+_avatar);
+    return _avatar!=''?CustomHelper.imageUrl+_avatar:null;
+  }
+
+  Future<void> setUserProfile()async{
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(user)) {
+      String userObject = prefs.getString(user);
+      try {
+        final extractedUserData =
+              json.decode(userObject) as Map<String, Object>;
+        if(_phoneNumber==""){
+          _phoneNumber = extractedUserData[phone]..toString();
+        }
+        if(_firstName==""){
+          _firstName = extractedUserData[firstName]..toString();
+        }
+        if(_lastName==""){
+          _lastName = extractedUserData[lastName]..toString();
+        }
+        if(_emailAddress==""){
+          _emailAddress = extractedUserData[email]..toString();
+        }
+        if(_avatar==""){
+          _avatar = extractedUserData[userAvatar]..toString();
+        }
+        if(_userId==""){
+          _userId = extractedUserData[userId]..toString();
+        }
+      }catch(error){
+
+      }
+    }
   }
 
   void setUserObject(String userObject) async {
@@ -73,7 +121,7 @@ class Auth with ChangeNotifier {
 
   static Future<String> getUser(String key) async {
     final prefs = await SharedPreferences.getInstance();
-    if (!prefs.containsKey('userData')) {
+    if (prefs.containsKey(user)) {
       String userObject = prefs.getString(user);
       try {
         if (key != null && key.isNotEmpty && key != "0") {
@@ -118,30 +166,36 @@ class Auth with ChangeNotifier {
       final response = await PostToServer.post(postRequest, url);
       Map<String,dynamic> userResponse;
       if (response['user_exists'] == 1) {
+        String userFirstName = response['user']["first_name"]..toString();
+        String userLastName = response['user']["last_name"]..toString();
+        String userUserId = response['user']["id"]..toString();
+        String userUserEmail = response['user']["email"]..toString();
+        String userUserPhone = response['user']["phone"]..toString();
+        String userUserAvatar = response['user']["avatar"]..toString();
         setUserObject(json.encode({
-          userId: response['user']["id"]..toString(),
-          firstName: response['user']["first_name"]..toString(),
-          lastName: response['user']["last_name"]..toString(),
-          email: response['user']["email"]..toString(),
-          phone: response['user']["phone"]..toString(),
-          avatar: response['user']["avatar"]..toString(),
+          userId: userUserId,
+          firstName: userFirstName,
+          lastName: userLastName,
+          email: userUserEmail,
+          phone: userUserPhone,
+          userAvatar: userUserAvatar,
         }));
+        _firstName = userFirstName;
+        _lastName = userLastName;
+        _userId = userUserId;
+        _emailAddress = userUserEmail;
+        _phoneNumber = userUserPhone;
+        _avatar = userUserAvatar;
         final accessToken1 = response["access_token"]..toString();
         await setAccessToken(accessToken1);
         await setPreference(isLoggedIn, "true");
-        List<dynamic> groupsJSON = response['user_groups'];
-        if (groupsJSON.length > 0) {
-          for (var groupJSON in groupsJSON) {
-            this._groups.add(InvestmentGroup.fromJson(groupJSON));
-          }
-        }
         userResponse = {
           'userExists' : 1,
           'userGroups' : response['user_groups']
         };
       } else {
         userResponse = {
-          'userExists' : 1,
+          'userExists' : 2,
           'userGroups' : '',
         };
       }
