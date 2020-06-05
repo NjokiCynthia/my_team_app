@@ -69,7 +69,7 @@ class _MyGroupsState extends State<MyGroups> {
             //color: Theme.of(context).cardColor,
             //border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(10)),
-        height: 400,
+        height: 300,
         //width: 300,
         child: child);
   }
@@ -101,8 +101,10 @@ class _MyGroupsState extends State<MyGroups> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                 child: Image(
-                  image: (auth.displayAvatar != null||auth.displayAvatar=="")? NetworkImage(auth.displayAvatar)
-                      : ('assets/no-user.png'),
+                  image:
+                      (auth.displayAvatar != null || auth.displayAvatar == "")
+                          ? NetworkImage(auth.displayAvatar)
+                          : ('assets/no-user.png'),
                   height: 80.0,
                 ),
               ),
@@ -137,7 +139,8 @@ class _MyGroupsState extends State<MyGroups> {
                   future: _getUserCheckinData(context),
                   builder: (ctx, snapshot) => snapshot.connectionState ==
                           ConnectionState.waiting
-                      ? buildContainer(Center(child: CircularProgressIndicator()))
+                      ? buildContainer(
+                          Center(child: CircularProgressIndicator()))
                       : RefreshIndicator(
                           onRefresh: () => _getUserCheckinData(context),
                           child: Consumer<Groups>(

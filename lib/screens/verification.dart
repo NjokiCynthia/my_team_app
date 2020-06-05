@@ -54,14 +54,17 @@ class _VerificationState extends State<Verification> {
     try {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
-      final response =
-          await Provider.of<Auth>(context, listen: false).verifyPin(_authData) as Map<String,dynamic>;
-      if(response['userExists'] == 1){
-        if(response.containsKey('userGroups') && response['userGroups'].length>0){
-          Provider.of<Groups>(context,listen:false).addGroups(response['userGroups']);
+      final response = await Provider.of<Auth>(context, listen: false)
+          .verifyPin(_authData) as Map<String, dynamic>;
+      if (response['userExists'] == 1) {
+        if (response.containsKey('userGroups') &&
+            response['userGroups'].length > 0) {
+          Provider.of<Groups>(context, listen: false)
+              .addGroups(response['userGroups']);
         }
-        Navigator.of(context).pushNamed(MyGroups.namedRoute);
-      }else{
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            MyGroups.namedRoute, ModalRoute.withName('/'));
+      } else {
         Navigator.pushReplacementNamed(context, SignUp.namedRoute);
       }
     } on HttpException catch (error) {

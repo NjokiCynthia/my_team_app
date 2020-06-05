@@ -51,3 +51,7 @@ const int CONTRIBUTION_STATEMENT = 1;
 const int FINE_STATEMENT = 2;
 const int REVIEW_LOAN = 1;
 const int VIEW_APPLICATION_STATUS = 2;
+
+//Error messages
+const String ERROR_MESSAGE =
+    "We could not complete your request at the moment. Try again later";

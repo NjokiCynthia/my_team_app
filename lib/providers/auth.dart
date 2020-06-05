@@ -47,7 +47,6 @@ class Auth with ChangeNotifier {
   String _emailAddress = "";
   String _avatar = "";
 
-
   String get userName {
     return _firstName + " " + _lastName;
   }
@@ -56,51 +55,49 @@ class Auth with ChangeNotifier {
     return _phoneNumber;
   }
 
-  String get id{
+  String get id {
     return _userId;
   }
 
-  String get emailAddress{
+  String get emailAddress {
     return _emailAddress;
   }
 
-  String get avatar{
+  String get avatar {
     return _avatar;
   }
 
-  String get displayAvatar{
-    print(CustomHelper.imageUrl+_avatar);
-    return _avatar!=''?CustomHelper.imageUrl+_avatar:null;
+  String get displayAvatar {
+    print(CustomHelper.imageUrl + _avatar);
+    return _avatar != '' ? CustomHelper.imageUrl + _avatar : null;
   }
 
-  Future<void> setUserProfile()async{
+  Future<void> setUserProfile() async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(user)) {
       String userObject = prefs.getString(user);
       try {
         final extractedUserData =
-              json.decode(userObject) as Map<String, Object>;
-        if(_phoneNumber==""){
+            json.decode(userObject) as Map<String, Object>;
+        if (_phoneNumber == "") {
           _phoneNumber = extractedUserData[phone]..toString();
         }
-        if(_firstName==""){
+        if (_firstName == "") {
           _firstName = extractedUserData[firstName]..toString();
         }
-        if(_lastName==""){
+        if (_lastName == "") {
           _lastName = extractedUserData[lastName]..toString();
         }
-        if(_emailAddress==""){
+        if (_emailAddress == "") {
           _emailAddress = extractedUserData[email]..toString();
         }
-        if(_avatar==""){
+        if (_avatar == "") {
           _avatar = extractedUserData[userAvatar]..toString();
         }
-        if(_userId==""){
+        if (_userId == "") {
           _userId = extractedUserData[userId]..toString();
         }
-      }catch(error){
-
-      }
+      } catch (error) {}
     }
   }
 
@@ -154,7 +151,7 @@ class Auth with ChangeNotifier {
     } on HttpException catch (error) {
       throw HttpException(error.toString());
     } catch (error) {
-      throw ("We could not complete your request at the moment. Try again later");
+      throw (ERROR_MESSAGE);
     }
   }
 
@@ -164,7 +161,7 @@ class Auth with ChangeNotifier {
 
     try {
       final response = await PostToServer.post(postRequest, url);
-      Map<String,dynamic> userResponse;
+      Map<String, dynamic> userResponse;
       if (response['user_exists'] == 1) {
         String userFirstName = response['user']["first_name"]..toString();
         String userLastName = response['user']["last_name"]..toString();
@@ -189,14 +186,11 @@ class Auth with ChangeNotifier {
         final accessToken1 = response["access_token"]..toString();
         await setAccessToken(accessToken1);
         await setPreference(isLoggedIn, "true");
-        userResponse = {
-          'userExists' : 1,
-          'userGroups' : response['user_groups']
-        };
+        userResponse = {'userExists': 1, 'userGroups': response['user_groups']};
       } else {
         userResponse = {
-          'userExists' : 2,
-          'userGroups' : '',
+          'userExists': 2,
+          'userGroups': '',
         };
       }
       return userResponse;
@@ -204,7 +198,7 @@ class Auth with ChangeNotifier {
       throw HttpException(error.toString());
     } catch (error) {
       print(error);
-      throw ("We could not complete your request at the moment. Try again later");
+      throw (ERROR_MESSAGE);
     }
   }
 

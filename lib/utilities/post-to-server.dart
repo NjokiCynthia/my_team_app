@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:simple_rsa/simple_rsa.dart';
 
 import '../utilities/custom-helper.dart';
+import 'common.dart';
 
 class PostToServer {
   static const String _defaultAuthenticationToken =
@@ -116,7 +117,9 @@ class PostToServer {
       final String secretKey = await _encryptSecretKey(randomKey);
       final String versionCode = await CustomHelper.getApplicationBuildNumber();
       final String userAccessTokenKey = await Auth.getAccessToken();
-      final String userAccessToken = userAccessTokenKey!=null?userAccessTokenKey:_defaultAuthenticationToken;
+      final String userAccessToken = userAccessTokenKey != null
+          ? userAccessTokenKey
+          : _defaultAuthenticationToken;
       print(userAccessToken);
       final Map<String, String> headers = {
         "Secret": secretKey,
@@ -129,10 +132,65 @@ class PostToServer {
             await http.post(url, headers: headers, body: postRequest);
         try {
           final responseBody = await generateResponse(response.body);
-          if (responseBody['status'] == 1) {
-            return responseBody;
-          } else {
-            throw HttpException(responseBody['message'].toString());
+//          if (responseBody['status'] == 1) {
+//            return responseBody;
+//          } else {
+//            throw HttpException(responseBody['message'].toString());
+//          }
+
+          print(responseBody);
+          switch (responseBody['status']) {
+            case 0:
+              //handle validation and other generic errors
+              //display error(s)
+              String message = responseBody["message"].toString();
+              throw HttpException(message);
+              break;
+            case 1:
+              //request successful
+              return response;
+              break;
+            case 2:
+            case 3:
+              //generic error
+              //display error
+              break;
+            case 4:
+            case 8:
+            case 9:
+              //reset app
+              break;
+            case 5:
+            case 6:
+            case 10:
+              //clear current group loaded to preferences
+              //clear screens and restart app from splash screen
+              break;
+            case 7:
+              //generic error
+              //display error
+              break;
+            case 11:
+            case 13:
+              //invalid request id or format
+              break;
+            case 12:
+              //duplicate request submitted
+              //treat as case 1
+              //notify user of duplicates
+              return responseBody;
+              break;
+            case 400:
+              //log out user
+              break;
+            case 404:
+              //generic error
+              //display error
+              break;
+            default:
+              //generic error
+              //display error
+              throw HttpException(ERROR_MESSAGE);
           }
         } catch (error) {
           throw error;

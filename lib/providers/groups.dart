@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/post-to-server.dart';
 import 'package:flutter/foundation.dart';
@@ -61,7 +62,7 @@ class Groups with ChangeNotifier{
       throw HttpException(error.toString());
     } catch (error) {
       print("error ${error.toString()}");
-      throw ("We could not complete your request at the moment. Try again later");
+      throw (ERROR_MESSAGE);
     }
   }
 
