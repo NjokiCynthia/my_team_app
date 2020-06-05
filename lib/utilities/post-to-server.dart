@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chamasoft/providers/auth.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:http/http.dart' as http;
 import 'package:simple_rsa/simple_rsa.dart';
@@ -114,10 +115,13 @@ class PostToServer {
     try {
       final String secretKey = await _encryptSecretKey(randomKey);
       final String versionCode = await CustomHelper.getApplicationBuildNumber();
+      final String userAccessTokenKey = await Auth.getAccessToken();
+      final String userAccessToken = userAccessTokenKey!=null?userAccessTokenKey:_defaultAuthenticationToken;
+      print(userAccessToken);
       final Map<String, String> headers = {
         "Secret": secretKey,
         "Versioncode": versionCode,
-        "Authorization": _defaultAuthenticationToken,
+        "Authorization": userAccessToken,
       };
       final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
       try {

@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -16,6 +17,29 @@ class MyGroups extends StatefulWidget {
   @override
   _MyGroupsState createState() => _MyGroupsState();
 }
+bool _isInit = true;
+
+Future<void> _getUserCheckinData(BuildContext context) async {
+  try {
+    await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
+  } catch (error) {
+    await showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              title: Text("Error occured"),
+              content: Text(
+                  "We could not fetch products at the moment, try again later. Error message ${error.toString()}"),
+              actions: <Widget>[
+                FlatButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Close"),
+                ),
+              ],
+            ));
+  } finally {}
+}
 
 class _MyGroupsState extends State<MyGroups> {
   @override
@@ -29,20 +53,26 @@ class _MyGroupsState extends State<MyGroups> {
   }
 
   @override
+  void didChangeDependencies() {
+    if(_isInit){
+      _getUserCheckinData(context);
+    }
+    _isInit=false;
+    super.didChangeDependencies();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Container(
-        alignment: Alignment.center,
-        decoration: primaryGradient(context),
-        height: MediaQuery.of(context).size.height,
-        child: RefreshIndicator(
-          displacement: 40,
-          color: primaryColor,
-          onRefresh: () {}, //TODO implement refresh list
+      body: RefreshIndicator(
+        onRefresh: () => _getUserCheckinData(context),
+        child: Container(
+          alignment: Alignment.center,
+          decoration: primaryGradient(context),
+          height: MediaQuery.of(context).size.height,
           child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.all(40.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -91,40 +121,48 @@ class _MyGroupsState extends State<MyGroups> {
                     ),
                   ),
                 ),
-                ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: auth.groups.length,
-                    itemBuilder: (context, index) {
-                      InvestmentGroup groupModel = auth.groups[index];
-                      return groupInfoButton(
-                        context: context,
-                        leadingIcon: LineAwesomeIcons.group,
-                        trailingIcon: LineAwesomeIcons.angle_right,
-                        backgroundColor: primaryColor.withOpacity(0.2),
-                        title: "${groupModel.name}",
-                        subtitle: "${groupModel.size} Members",
-                        description: "${groupModel.role}",
-                        textColor: Colors.blueGrey,
-                        borderColor: Colors.blueGrey.withOpacity(0.2),
-                        action: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                ChamasoftDashboard(),
-                          ),
-                        ),
-                      );
-                    }),
-//              SizedBox(
-//                height: 32,
-//              ),
-//              RaisedButton(
-//                onPressed: () {
-//                  Navigator.of(context).pushReplacementNamed('/');
-//                  Provider.of<Auth>(context, listen: false).logout();
-//                },
-//                child: Text('Logout'),
-//              ),
+                Consumer<Groups>(
+                  child: Center(
+                    child: Text("Groups"),
+                  ),
+                  builder: (ctx, groups, ch) => ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: groups.item.length,
+                      itemBuilder: (context, index) {
+                        //InvestmentGroup groupModel = auth.groups[index];
+                        return groupInfoButton(
+                          context: context,
+                          leadingIcon: LineAwesomeIcons.group,
+                          trailingIcon: LineAwesomeIcons.angle_right,
+                          backgroundColor: primaryColor.withOpacity(0.2),
+                          title: "${groups.item[index].groupName}",
+                          subtitle: "${groups.item[index].groupSize} Members",
+                          description: "Member",
+                          textColor: Colors.blueGrey,
+                          borderColor: Colors.blueGrey.withOpacity(0.2),
+                          action: (){
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) =>
+                                    ChamasoftDashboard(),
+                              ),
+                            );
+                            Provider.of<Groups>(context,listen: false).setSelectedGroupId(groups.item[index].groupId);
+                          }
+                        );
+                      }),
+                ),
+                SizedBox(
+                  height: 32,
+                ),
+                RaisedButton(
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed('/');
+                    Provider.of<Auth>(context, listen: false).logout();
+                  },
+                  child: Text('Logout'),
+                ),
               ],
             ),
           ),

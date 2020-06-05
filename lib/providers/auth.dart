@@ -61,17 +61,17 @@ class Auth with ChangeNotifier {
     prefs.setString(user, userObject);
   }
 
-  void setAccessToken(String accessToken) async {
+  Future<void> setAccessToken(String accessTokenString) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString(accessToken, accessToken);
+    prefs.setString(accessToken, accessTokenString);
   }
 
-  Future<String> getAccessToken() async {
+  static Future<String> getAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(accessToken);
   }
 
-  Future<String> getUser(String key) async {
+  static Future<String> getUser(String key) async {
     final prefs = await SharedPreferences.getInstance();
     if (!prefs.containsKey('userData')) {
       String userObject = prefs.getString(user);
@@ -110,13 +110,13 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<int> verifyPin(Map<String, String> object) async {
+  Future<dynamic> verifyPin(Map<String, String> object) async {
     const url = CustomHelper.baseUrl + CustomHelper.verifyPin;
     final postRequest = json.encode(object);
 
     try {
       final response = await PostToServer.post(postRequest, url);
-      print(response);
+      Map<String,dynamic> userResponse;
       if (response['user_exists'] == 1) {
         setUserObject(json.encode({
           userId: response['user']["id"]..toString(),
@@ -126,20 +126,26 @@ class Auth with ChangeNotifier {
           phone: response['user']["phone"]..toString(),
           avatar: response['user']["avatar"]..toString(),
         }));
-        setAccessToken(response['user']["access_token"]..toString());
-        setPreference(isLoggedIn, "true");
-
+        final accessToken1 = response["access_token"]..toString();
+        await setAccessToken(accessToken1);
+        await setPreference(isLoggedIn, "true");
         List<dynamic> groupsJSON = response['user_groups'];
         if (groupsJSON.length > 0) {
           for (var groupJSON in groupsJSON) {
             this._groups.add(InvestmentGroup.fromJson(groupJSON));
           }
         }
-
-        return 1;
+        userResponse = {
+          'userExists' : 1,
+          'userGroups' : response['user_groups']
+        };
       } else {
-        return 2;
+        userResponse = {
+          'userExists' : 1,
+          'userGroups' : '',
+        };
       }
+      return userResponse;
     } on HttpException catch (error) {
       throw HttpException(error.toString());
     } catch (error) {
