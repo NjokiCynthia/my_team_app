@@ -47,11 +47,9 @@ class _LoginState extends State<Login> {
     });
     try {
       await Provider.of<Auth>(context, listen: false).generatePin(_identity);
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => Verification(),
-          settings: RouteSettings(arguments: _identity)));
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
     } on HttpException catch (error) {
-      if(error.status == ErrorStatusCode.statusRequireRestart){
+      if (error.status == ErrorStatusCode.statusRequireRestart) {
         //do something
       }
       _showErrorDialog(context, error.toString());
@@ -85,18 +83,12 @@ class _LoginState extends State<Login> {
                     height: 100.0,
                   ),
                 ),
-                heading1(
-                    text: "Chamasoft",
-                    color: Theme.of(context).textSelectionHandleColor),
+                heading1(text: "Chamasoft", color: Theme.of(context).textSelectionHandleColor),
                 SizedBox(
                   height: 10,
                 ),
-                subtitle1(
-                    text: "Let's verify your identity first",
-                    color: Theme.of(context).textSelectionHandleColor),
-                subtitle2(
-                    text: "Enter your phone number or email address below",
-                    color: Theme.of(context).textSelectionHandleColor),
+                subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
+                subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
                 TextFormField(
                   decoration: InputDecoration(
                     hasFloatingPlaceholder: true,
@@ -131,25 +123,20 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: 24,
                 ),
-                textWithExternalLinks(
-                    color: Theme.of(context).textSelectionHandleColor,
-                    size: 12.0,
-                    textData: {
-                      'By continuing you agree to our': {},
-                      'terms & conditions': {
-                        "url": () => launchURL(
-                            'https://chamasoft.com/terms-and-conditions/'),
-                        "color": primaryColor,
-                        "weight": FontWeight.w500
-                      },
-                      'and': {},
-                      'privacy policy.': {
-                        "url": () => launchURL(
-                            'https://chamasoft.com/terms-and-conditions/'),
-                        "color": primaryColor,
-                        "weight": FontWeight.w500
-                      },
-                    }),
+                textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
+                  'By continuing you agree to our': {},
+                  'terms & conditions': {
+                    "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                    "color": primaryColor,
+                    "weight": FontWeight.w500
+                  },
+                  'and': {},
+                  'privacy policy.': {
+                    "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                    "color": primaryColor,
+                    "weight": FontWeight.w500
+                  },
+                }),
               ],
             ),
           ),

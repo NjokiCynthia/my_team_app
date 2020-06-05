@@ -77,8 +77,7 @@ class Auth with ChangeNotifier {
     if (prefs.containsKey(user)) {
       String userObject = prefs.getString(user);
       try {
-        final extractedUserData =
-            json.decode(userObject) as Map<String, Object>;
+        final extractedUserData = json.decode(userObject) as Map<String, Object>;
         if (_phoneNumber == "") {
           _phoneNumber = extractedUserData[phone]..toString();
         }
@@ -122,8 +121,7 @@ class Auth with ChangeNotifier {
       String userObject = prefs.getString(user);
       try {
         if (key != null && key.isNotEmpty && key != "0") {
-          final extractedUserData =
-              json.decode(userObject) as Map<String, Object>;
+          final extractedUserData = json.decode(userObject) as Map<String, Object>;
           if (extractedUserData.containsKey(key)) {
             return extractedUserData[key].toString();
           } else {
