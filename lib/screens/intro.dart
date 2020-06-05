@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
@@ -5,6 +6,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:provider/provider.dart';
 
 class IntroScreen extends StatefulWidget {
   IntroScreen({Key key}) : super(key: key);
@@ -19,20 +21,24 @@ class IntroScreenState extends State<IntroScreen> {
 
   _isFirstTime() async {
     setPreference("currency", "Ksh");
-
     (await getPreference("isFirstTime") != '')
-        ?(await getPreference("isLoggedIn") =='true')? 
-          Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => MyGroups()))
-            .whenComplete(() {
-            _loading = false;
-          }): Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(
-                builder: (BuildContext context) => Login()))
-            .whenComplete(() {
-            _loading = false;
-          })
+        ? (await getPreference("isLoggedIn") == 'true')
+            ? await Provider.of<Auth>(context,listen: false)
+                .setUserProfile()
+                .then((_) {
+                Navigator.of(context)
+                    .pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => MyGroups()))
+                    .whenComplete(() {
+                  _loading = false;
+                });
+              })
+            : Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => Login()))
+                .whenComplete(() {
+                _loading = false;
+              })
         : setState(() {
             _loading = false;
           });

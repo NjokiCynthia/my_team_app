@@ -17,6 +17,7 @@ class MyGroups extends StatefulWidget {
 }
 
 bool _isInit = true;
+bool _isLoading = true;
 
 Future<void> _getUserCheckinData(BuildContext context) async {
   try {
@@ -53,11 +54,24 @@ class _MyGroupsState extends State<MyGroups> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
-      _getUserCheckinData(context);
-    }
+    // if (_isInit) {
+    //   _getUserCheckinData(context);
+    // }
     _isInit = false;
     super.didChangeDependencies();
+  }
+
+  Widget buildContainer(Widget child) {
+    return Container(
+        // margin: EdgeInsets.all(10),
+        // padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+            //color: Theme.of(context).cardColor,
+            //border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(10)),
+        height: 400,
+        //width: 300,
+        child: child);
   }
 
   @override
@@ -65,115 +79,129 @@ class _MyGroupsState extends State<MyGroups> {
     final auth = Provider.of<Auth>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: RefreshIndicator(
-        onRefresh: () => _getUserCheckinData(context),
-        child: Container(
-          alignment: Alignment.center,
-          decoration: primaryGradient(context),
-          height: MediaQuery.of(context).size.height,
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(40.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                heading1(
-                    text: "My Groups",
-                    color: Theme.of(context).textSelectionHandleColor),
-                subtitle1(
-                    text: "All groups I belong to",
-                    color: Theme.of(context).textSelectionHandleColor),
-                SizedBox(
-                  height: 32,
+      body: Container(
+        alignment: Alignment.center,
+        decoration: primaryGradient(context),
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          padding: EdgeInsets.all(40.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              heading1(
+                  text: "My Groups",
+                  color: Theme.of(context).textSelectionHandleColor),
+              subtitle1(
+                  text: "All groups I belong to",
+                  color: Theme.of(context).textSelectionHandleColor),
+              SizedBox(
+                height: 32,
+              ),
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                child: Image(
+                  image: (auth.displayAvatar != null||auth.displayAvatar=="")? NetworkImage(auth.displayAvatar)
+                      : ('assets/no-user.png'),
+                  height: 80.0,
                 ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                  child: Image(
-                    image: AssetImage('assets/no-user.png'),
-                    height: 80.0,
+              ),
+              heading2(
+                  text: auth.userName,
+                  color: Theme.of(context).textSelectionHandleColor),
+              subtitle1(
+                  text: auth.phoneNumber, //auth.phoneNumber,
+                  color: Theme.of(context)
+                      .textSelectionHandleColor
+                      .withOpacity(0.6)),
+              SizedBox(
+                height: 20,
+              ),
+              groupInfoButton(
+                context: context,
+                leadingIcon: LineAwesomeIcons.plus,
+                trailingIcon: LineAwesomeIcons.angle_right,
+                hideTrailingIcon: true,
+                backgroundColor: primaryColor.withOpacity(0.2),
+                title: "ADD NEW GROUP",
+                subtitle: "Chairperson",
+                textColor: primaryColor,
+                borderColor: primaryColor,
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => CreateGroup(),
                   ),
                 ),
-                heading2(
-                    text: auth.userName,
-                    color: Theme.of(context).textSelectionHandleColor),
-                subtitle1(
-                    text: auth.phoneNumber, //auth.phoneNumber,
-                    color: Theme.of(context)
-                        .textSelectionHandleColor
-                        .withOpacity(0.6)),
-                SizedBox(
-                  height: 20,
+              ),
+              FutureBuilder(
+                  future: _getUserCheckinData(context),
+                  builder: (ctx, snapshot) => snapshot.connectionState ==
+                          ConnectionState.waiting
+                      ? buildContainer(Center(child: CircularProgressIndicator()))
+                      : RefreshIndicator(
+                          onRefresh: () => _getUserCheckinData(context),
+                          child: Consumer<Groups>(
+                            child: Center(
+                              child: Text("Groups"),
+                            ),
+                            builder: (ctx, groups, ch) =>
+                                buildContainer(ListView.builder(
+                                    shrinkWrap: true,
+                                    //physics: NeverScrollableScrollPhysics(),
+                                    itemCount: groups.item.length,
+                                    itemBuilder: (context, index) {
+                                      //InvestmentGroup groupModel = auth.groups[index];
+                                      return groupInfoButton(
+                                          context: context,
+                                          leadingIcon: LineAwesomeIcons.group,
+                                          trailingIcon:
+                                              LineAwesomeIcons.angle_right,
+                                          backgroundColor:
+                                              primaryColor.withOpacity(0.2),
+                                          title:
+                                              "${groups.item[index].groupName}",
+                                          subtitle:
+                                              "${groups.item[index].groupSize} Members",
+                                          description: "Member",
+                                          textColor: Colors.blueGrey,
+                                          borderColor:
+                                              Colors.blueGrey.withOpacity(0.2),
+                                          action: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ChamasoftDashboard(),
+                                              ),
+                                            );
+                                            Provider.of<Groups>(context,
+                                                    listen: false)
+                                                .setSelectedGroupId(
+                                                    groups.item[index].groupId);
+                                          });
+                                    })),
+                          ),
+                        )),
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 20.0,
                 ),
-                groupInfoButton(
-                  context: context,
-                  leadingIcon: LineAwesomeIcons.plus,
-                  trailingIcon: LineAwesomeIcons.angle_right,
-                  hideTrailingIcon: true,
-                  backgroundColor: primaryColor.withOpacity(0.2),
-                  title: "ADD NEW GROUP",
-                  subtitle: "Chairperson",
-                  textColor: primaryColor,
-                  borderColor: primaryColor,
-                  action: () => Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => CreateGroup(),
-                    ),
+                child: Align(
+                  alignment: Alignment.center,
+                  child: smallBadgeButton(
+                    text: "Logout",
+                    backgroundColor: Colors.red.withOpacity(0.2),
+                    textColor: Colors.red,
+                    buttonHeight: 36.0,
+                    textSize: 15.0,
+                    action: () {
+                      Navigator.of(context).pushReplacementNamed('/');
+                      Provider.of<Auth>(context, listen: false).logout();
+                    },
                   ),
                 ),
-                Consumer<Groups>(
-                  child: Center(
-                    child: Text("Groups"),
-                  ),
-                  builder: (ctx, groups, ch) => ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: groups.item.length,
-                      itemBuilder: (context, index) {
-                        //InvestmentGroup groupModel = auth.groups[index];
-                        return groupInfoButton(
-                            context: context,
-                            leadingIcon: LineAwesomeIcons.group,
-                            trailingIcon: LineAwesomeIcons.angle_right,
-                            backgroundColor: primaryColor.withOpacity(0.2),
-                            title: "${groups.item[index].groupName}",
-                            subtitle: "${groups.item[index].groupSize} Members",
-                            description: "Member",
-                            textColor: Colors.blueGrey,
-                            borderColor: Colors.blueGrey.withOpacity(0.2),
-                            action: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ChamasoftDashboard(),
-                                ),
-                              );
-                              Provider.of<Groups>(context, listen: false)
-                                  .setSelectedGroupId(
-                                      groups.item[index].groupId);
-                            });
-                      }),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(
-                    top: 20.0,
-                  ),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: smallBadgeButton(
-                      text: "Logout",
-                      backgroundColor: Colors.red.withOpacity(0.2),
-                      textColor: Colors.red,
-                      buttonHeight: 36.0,
-                      textSize: 15.0,
-                      action: () {
-                        Navigator.of(context).pushReplacementNamed('/');
-                        Provider.of<Auth>(context, listen: false).logout();
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
