@@ -148,7 +148,7 @@ class PostToServer {
               break;
             case 1:
               //request successful
-              return response;
+              return responseBody;
               break;
             case 2:
             case 3:
@@ -173,6 +173,8 @@ class PostToServer {
             case 11:
             case 13:
               //invalid request id or format
+              String message = responseBody["message"].toString();
+              throw HttpException(message);
               break;
             case 12:
               //duplicate request submitted
