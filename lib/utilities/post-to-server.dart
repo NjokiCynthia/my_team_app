@@ -9,8 +9,7 @@ import '../utilities/custom-helper.dart';
 import 'common.dart';
 
 class PostToServer {
-  static const String _defaultAuthenticationToken =
-      "d8ng63ttyjp88cnjpkme65efgz6b2gwg";
+  static const String _defaultAuthenticationToken = "d8ng63ttyjp88cnjpkme65efgz6b2gwg";
 
   static String _encryptAESCryptoJS(String plainText, String passphrase) {
     try {
@@ -28,23 +27,20 @@ class PostToServer {
     var explodedString = encryptedString.split(":")..toList();
     final String encryptedBody = explodedString[0];
     final String ivBody = explodedString[1];
-    final encryptProtocol =
-        Encrypter(AES(Key.fromUtf8(passphrase), mode: AESMode.cbc));
-    final encrypted =
-        encryptProtocol.decrypt64(encryptedBody, iv: IV.fromBase64(ivBody));
+    final encryptProtocol = Encrypter(AES(Key.fromUtf8(passphrase), mode: AESMode.cbc));
+    final encrypted = encryptProtocol.decrypt64(encryptedBody, iv: IV.fromBase64(ivBody));
     return encrypted;
   }
 
   static Future<String> _encryptSecretKey(String randomKey) async {
     try {
-      final publicKey =
-          "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST" +
-              "0FfZzEXiPCC6i8RtA5pyS/orSBa1Ds3PMnF4qU+Z+HlBB9apKG/pYK73mXR8v1cX" +
-              "jZCFxg08Gq/dwam1O5ehNXtEHKhembXdZC2zdFyVVg8emgbyDxaP1oEWwQOqoUI7" +
-              "1e1lPqDMrFTUeS65YO2ayWeEKEnY12nE6pgyopSdEo5Boz4RzxCL8jLIhTwRouhi" +
-              "MOA9UyWBYuQEp8P1yj8zVoB20WyB6qOazPIiCEUz4MK0/yiVTR6B8hWwQydvMGKu" +
-              "QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd" +
-              "3QIDAQAB";
+      final publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST" +
+          "0FfZzEXiPCC6i8RtA5pyS/orSBa1Ds3PMnF4qU+Z+HlBB9apKG/pYK73mXR8v1cX" +
+          "jZCFxg08Gq/dwam1O5ehNXtEHKhembXdZC2zdFyVVg8emgbyDxaP1oEWwQOqoUI7" +
+          "1e1lPqDMrFTUeS65YO2ayWeEKEnY12nE6pgyopSdEo5Boz4RzxCL8jLIhTwRouhi" +
+          "MOA9UyWBYuQEp8P1yj8zVoB20WyB6qOazPIiCEUz4MK0/yiVTR6B8hWwQydvMGKu" +
+          "QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd" +
+          "3QIDAQAB";
       final encrypted = await encryptString(randomKey, publicKey);
       Codec<String, String> stringToBase64 = utf8.fuse(base64);
       return stringToBase64.encode(encrypted);
@@ -94,14 +90,12 @@ class PostToServer {
       final String secretKey = response["secret"];
       final String body = response["body"];
       try {
-        if (body == null ||
-            body.isEmpty ||
-            secretKey == null ||
-            secretKey.isEmpty) {
+        if (body == null || body.isEmpty || secretKey == null || secretKey.isEmpty) {
           return;
         }
         final secretKeyString = await _decretSecretKey(secretKey);
         var response = _decryptAESCryptoJS(body, secretKeyString);
+        print("Decrypt: " + response);
         return json.decode(response);
       } catch (error) {
         throw (error.toString());
@@ -117,9 +111,7 @@ class PostToServer {
       final String secretKey = await _encryptSecretKey(randomKey);
       final String versionCode = await CustomHelper.getApplicationBuildNumber();
       final String userAccessTokenKey = await Auth.getAccessToken();
-      final String userAccessToken = userAccessTokenKey != null
-          ? userAccessTokenKey
-          : _defaultAuthenticationToken;
+      final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
       print(userAccessToken);
       final Map<String, String> headers = {
         "Secret": secretKey,
@@ -128,8 +120,7 @@ class PostToServer {
       };
       final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
       try {
-        final http.Response response =
-            await http.post(url, headers: headers, body: postRequest);
+        final http.Response response = await http.post(url, headers: headers, body: postRequest);
         try {
           final responseBody = await generateResponse(response.body);
 //          if (responseBody['status'] == 1) {
@@ -139,12 +130,12 @@ class PostToServer {
 //          }
 
           print(responseBody);
+          String message = responseBody["message"].toString();
           switch (responseBody['status']) {
             case 0:
               //handle validation and other generic errors
               //display error(s)
-              String message = responseBody["message"].toString();
-              throw HttpException(message);
+              throw HttpException(message, ErrorStatusCode.statusNormal);
               break;
             case 1:
               //request successful
@@ -154,27 +145,30 @@ class PostToServer {
             case 3:
               //generic error
               //display error
+              throw HttpException(message, ErrorStatusCode.statusNormal);
               break;
             case 4:
             case 8:
             case 9:
               //reset app
+              throw HttpException(message, ErrorStatusCode.statusRequireLogout);
               break;
             case 5:
             case 6:
             case 10:
               //clear current group loaded to preferences
               //clear screens and restart app from splash screen
+              throw HttpException(message, ErrorStatusCode.statusRequireRestart);
               break;
             case 7:
               //generic error
               //display error
+              throw HttpException(message, ErrorStatusCode.statusNormal);
               break;
             case 11:
             case 13:
               //invalid request id or format
-              String message = responseBody["message"].toString();
-              throw HttpException(message);
+              throw HttpException(message, ErrorStatusCode.statusNormal);
               break;
             case 12:
               //duplicate request submitted
@@ -184,15 +178,17 @@ class PostToServer {
               break;
             case 400:
               //log out user
+              throw HttpException(ERROR_MESSAGE_LOGIN, ErrorStatusCode.statusRequireLogout);
               break;
             case 404:
               //generic error
               //display error
+              throw HttpException(ERROR_MESSAGE, ErrorStatusCode.statusNormal);
               break;
             default:
               //generic error
               //display error
-              throw HttpException(ERROR_MESSAGE);
+              throw HttpException(ERROR_MESSAGE, ErrorStatusCode.statusNormal);
           }
         } catch (error) {
           throw error;

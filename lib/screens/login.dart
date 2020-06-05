@@ -51,6 +51,9 @@ class _LoginState extends State<Login> {
           builder: (BuildContext context) => Verification(),
           settings: RouteSettings(arguments: _identity)));
     } on HttpException catch (error) {
+      if(error.status == ErrorStatusCode.statusRequireRestart){
+        //do something
+      }
       _showErrorDialog(context, error.toString());
     } catch (error) {
       _showErrorDialog(context, error.toString());

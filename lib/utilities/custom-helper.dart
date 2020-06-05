@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:chamasoft/utilities/common.dart';
 import 'package:package_info/package_info.dart';
 
 class CustomHelper {
@@ -59,8 +60,9 @@ class CustomHelper {
 
 class HttpException implements Exception {
   final String message;
+  final ErrorStatusCode status;
 
-  HttpException(this.message);
+  HttpException(this.message, this.status);
 
   @override
   String toString() {

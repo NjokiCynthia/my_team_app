@@ -36,8 +36,7 @@ TextStyle inputTextStyle() {
 }
 
 //Edge insets for scrolling input pages
-const inputPagePadding =
-    EdgeInsets.fromLTRB(SPACING_NORMAL, SPACING_NORMAL, SPACING_NORMAL, 0.0);
+const inputPagePadding = EdgeInsets.fromLTRB(SPACING_NORMAL, SPACING_NORMAL, SPACING_NORMAL, 0.0);
 
 final currencyFormat = new NumberFormat("#,##0", "en_US");
 final defaultDateFormat = new DateFormat("d MMM y");
@@ -52,6 +51,11 @@ const int FINE_STATEMENT = 2;
 const int REVIEW_LOAN = 1;
 const int VIEW_APPLICATION_STATUS = 2;
 
-//Error messages
-const String ERROR_MESSAGE =
-    "We could not complete your request at the moment. Try again later";
+//Error messages and codes
+const String ERROR_MESSAGE = "We could not complete your request at the moment. Try again later";
+const String ERROR_MESSAGE_LOGIN = "Kindly login again";
+enum ErrorStatusCode {
+  statusNormal,
+  statusRequireLogout,
+  statusRequireRestart, //remove the current selected group and clear screens to restart
+}

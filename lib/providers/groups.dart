@@ -56,10 +56,10 @@ class Groups with ChangeNotifier{
         final userGroups =  response['user_groups'] as List<dynamic>;
         addGroups(userGroups);
       }catch(error){
-        throw HttpException(error.toString());
+        throw HttpException(error.toString(), ErrorStatusCode.statusNormal);
       }
     } on HttpException catch (error) {
-      throw HttpException(error.toString());
+      throw HttpException(error.toString(), error.status);
     } catch (error) {
       print("error ${error.toString()}");
       throw (ERROR_MESSAGE);

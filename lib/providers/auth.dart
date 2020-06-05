@@ -133,7 +133,7 @@ class Auth with ChangeNotifier {
           return "";
         }
       } catch (error) {
-        throw HttpException("JSON Passing error " + error.toString());
+        throw HttpException("JSON Passing error " + error.toString(), ErrorStatusCode.statusNormal);
       }
     } else {
       return "";
@@ -149,7 +149,7 @@ class Auth with ChangeNotifier {
       await PostToServer.post(postRequest, url);
       notifyListeners();
     } on HttpException catch (error) {
-      throw HttpException(error.toString());
+      throw HttpException(error.toString(), error.status);
     } catch (error) {
       throw (ERROR_MESSAGE);
     }
@@ -195,7 +195,7 @@ class Auth with ChangeNotifier {
       }
       return userResponse;
     } on HttpException catch (error) {
-      throw HttpException(error.toString());
+      throw HttpException(error.toString(), error.status);
     } catch (error) {
       print(error);
       throw (ERROR_MESSAGE);
