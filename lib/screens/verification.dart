@@ -60,7 +60,7 @@ class _VerificationState extends State<Verification> {
         if(response.containsKey('userGroups')){
           Provider.of<Groups>(context,listen:false).addGroups(response['userGroups']);
         }
-        Navigator.of(context).pushReplacementNamed(MyGroups.namedRoute);
+        Navigator.of(context).pushNamed(MyGroups.namedRoute);
       }else{
         Navigator.pushReplacementNamed(context, SignUp.namedRoute);
       }

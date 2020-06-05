@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
@@ -90,7 +91,7 @@ class _MyGroupsState extends State<MyGroups> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                   child: Image(
-                    image: AssetImage('assets/no-user.png'),
+                    image: auth.displayAvatar!=null?NetworkImage(auth.displayAvatar):('assets/no-user.png'),
                     height: 80.0,
                   ),
                 ),
