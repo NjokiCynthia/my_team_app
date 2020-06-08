@@ -9,6 +9,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'dart:math' as math;
 
 class MyGroups extends StatefulWidget {
   static const namedRoute = '/my-groups-screen';
@@ -17,7 +18,7 @@ class MyGroups extends StatefulWidget {
 }
 
 bool _isInit = true;
-bool _isLoading = true;
+AnimationController _controller;
 
 Future<void> _getUserCheckinData(BuildContext context) async {
   try {
@@ -41,14 +42,19 @@ Future<void> _getUserCheckinData(BuildContext context) async {
   } finally {}
 }
 
-class _MyGroupsState extends State<MyGroups> {
+class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   @override
   void initState() {
+    _controller = AnimationController(
+      duration: const Duration(seconds: 300),
+      vsync: this,
+    );
     super.initState();
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     super.dispose();
   }
 
@@ -62,7 +68,7 @@ class _MyGroupsState extends State<MyGroups> {
     super.didChangeDependencies();
   }
 
-  Widget buildContainer(Widget child) {
+  Widget buildContainer(Widget child, int itemCount) {
     return Container(
         // margin: EdgeInsets.all(10),
         // padding: EdgeInsets.all(10),
@@ -70,8 +76,7 @@ class _MyGroupsState extends State<MyGroups> {
             //color: Theme.of(context).cardColor,
             //border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(10)),
-        height: 400,
-        //width: 300,
+        //height: itemCount >= 1 ? MediaQuery.of(context).size.height * 0.35 : 50,
         child: child);
   }
 
@@ -102,10 +107,9 @@ class _MyGroupsState extends State<MyGroups> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                 child: Image(
-                  image:
-                      (auth.displayAvatar != null || auth.displayAvatar == "")
-                          ? NetworkImage(auth.displayAvatar)
-                          : ('assets/no-user.png'),
+                  image: auth.displayAvatar != null
+                      ? NetworkImage(auth.displayAvatar)
+                      : AssetImage('assets/no-user.png'),
                   height: 80.0,
                 ),
               ),
@@ -136,74 +140,82 @@ class _MyGroupsState extends State<MyGroups> {
                   ),
                 ),
               ),
-              FutureBuilder(
-                  future: _getUserCheckinData(context),
-                  builder: (ctx, snapshot) => snapshot.connectionState ==
-                          ConnectionState.waiting
-                      ? buildContainer(
-                          Center(child: CircularProgressIndicator()))
-                      : RefreshIndicator(
-                          onRefresh: () => _getUserCheckinData(context),
-                          child: Consumer<Groups>(
-                            child: Center(
-                              child: Text("Groups"),
-                            ),
-                            builder: (ctx, groups, ch) =>
-                                buildContainer(ListView.builder(
-                                    shrinkWrap: true,
-                                    //physics: NeverScrollableScrollPhysics(),
-                                    itemCount: groups.item.length,
-                                    itemBuilder: (context, index) {
-                                      //InvestmentGroup groupModel = auth.groups[index];
-                                      return groupInfoButton(
-                                          context: context,
-                                          leadingIcon: LineAwesomeIcons.group,
-                                          trailingIcon:
-                                              LineAwesomeIcons.angle_right,
-                                          backgroundColor:
-                                              primaryColor.withOpacity(0.2),
-                                          title:
-                                              "${groups.item[index].groupName}",
-                                          subtitle:
-                                              "${groups.item[index].groupSize} Members",
-                                          description: "Member",
-                                          textColor: Colors.blueGrey,
-                                          borderColor:
-                                              Colors.blueGrey.withOpacity(0.2),
-                                          action: () {
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  FutureBuilder(
+                      future: _getUserCheckinData(context),
+                      builder: (ctx, snapshot) => snapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? buildContainer(
+                              Center(child: CircularProgressIndicator()), 0)
+                          : RefreshIndicator(
+                              onRefresh: () => _getUserCheckinData(context),
+                              child: Consumer<Groups>(
+                                child: Center(
+                                  child: Text("Groups"),
+                                ),
+                                builder: (ctx, groups, ch) => buildContainer(
+                                    ListView.builder(
+                                        shrinkWrap: true,
+                                        //physics: NeverScrollableScrollPhysics(),
+                                        itemCount: groups.item.length,
+                                        itemBuilder: (context, index) {
+                                          //InvestmentGroup groupModel = auth.groups[index];
+                                          return groupInfoButton(
+                                              context: context,
+                                              leadingIcon:
+                                                  LineAwesomeIcons.group,
+                                              trailingIcon:
+                                                  LineAwesomeIcons.angle_right,
+                                              backgroundColor:
+                                                  primaryColor.withOpacity(0.2),
+                                              title:
+                                                  "${groups.item[index].groupName}",
+                                              subtitle:
+                                                  "${groups.item[index].groupSize} Members",
+                                              description: "Member",
+                                              textColor: Colors.blueGrey,
+                                              borderColor: Colors.blueGrey
+                                                  .withOpacity(0.2),
+                                              action: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
                                                         ChamasoftDashboard(),
-                                              ),
-                                            );
-                                            Provider.of<Groups>(context,
-                                                    listen: false)
-                                                .setSelectedGroupId(
-                                                    groups.item[index].groupId);
-                                          });
-                                    })),
-                          ),
-                        )),
-              Padding(
-                padding: EdgeInsets.only(
-                  top: 20.0,
-                ),
-                child: Align(
-                  alignment: Alignment.center,
-                  child: smallBadgeButton(
-                    text: "Logout",
-                    backgroundColor: Colors.red.withOpacity(0.2),
-                    textColor: Colors.red,
-                    buttonHeight: 36.0,
-                    textSize: 15.0,
-                    action: () {
-                      Navigator.of(context).pushReplacementNamed('/');
-                      Provider.of<Auth>(context, listen: false).logout();
-                    },
+                                                  ),
+                                                );
+                                                Provider.of<Groups>(context,
+                                                        listen: false)
+                                                    .setSelectedGroupId(groups
+                                                        .item[index].groupId);
+                                              });
+                                        }),
+                                    groups.item.length),
+                              ),
+                    )
                   ),
-                ),
+                  Padding(
+                    padding: EdgeInsets.only(
+                      top: 20.0,
+                    ),
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: smallBadgeButton(
+                        text: "Logout",
+                        backgroundColor: Colors.red.withOpacity(0.2),
+                        textColor: Colors.red,
+                        buttonHeight: 36.0,
+                        textSize: 15.0,
+                        action: () {
+                          Navigator.of(context).pushReplacementNamed('/');
+                          Provider.of<Auth>(context, listen: false).logout();
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),

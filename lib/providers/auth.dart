@@ -69,8 +69,7 @@ class Auth with ChangeNotifier {
   }
 
   String get displayAvatar{
-    print(CustomHelper.imageUrl+_avatar);
-    return _avatar!=''?CustomHelper.imageUrl+_avatar:null;
+    return (_avatar!=null||_avatar=="")?CustomHelper.imageUrl+_avatar:null;
   }
 
   Future<void> setUserProfile()async{
