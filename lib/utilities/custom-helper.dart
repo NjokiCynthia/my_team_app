@@ -72,7 +72,6 @@ class CustomHelper {
         rd = 0;
       }
     }
-
     return rd;
   }
 
@@ -81,7 +80,6 @@ class CustomHelper {
     db = db.replaceAll(' ', '');
     db = db.replaceAll(',', '');
     db = db.trim();
-
     if (db == null) {
       rd = 0;
     } else {
@@ -91,7 +89,6 @@ class CustomHelper {
         rd = 0;
       }
     }
-
     return rd;
   }
 }

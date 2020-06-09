@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -97,8 +98,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
       theme = themeChange.darkTheme ? "Dark" : "Light";
     });
 
-    final auth = Provider.of<Auth>(context, listen: false);
-
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
@@ -127,10 +126,12 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       heading2(
-                          text: auth.userName,
+                          text: Provider.of<Auth>(context, listen: false)
+                              .userName,
                           color: Theme.of(context).textSelectionHandleColor),
                       subtitle2(
-                          text: auth.phoneNumber,
+                          text: Provider.of<Auth>(context, listen: false)
+                              .phoneNumber,
                           color: Theme.of(context).textSelectionHandleColor),
                       Padding(
                         padding: EdgeInsets.only(
@@ -163,7 +164,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     color: Theme.of(context).textSelectionHandleColor,
                   )),
               subtitle: Text(
-                "Witcher Welfare Association",
+                Provider.of<Groups>(context, listen: false)
+                    .getCurrentGroup()
+                    .groupName,
                 style: TextStyle(color: Theme.of(context).bottomAppBarColor),
               ),
               trailing: Padding(

@@ -132,6 +132,7 @@ class _VerificationState extends State<Verification> {
                           textStyle: TextStyle(
                             color: primaryColor,
                             fontSize: 20.0,
+                            
                             fontWeight: FontWeight.w800,
                           ),
                           obscureStyle: ObscureStyle(
