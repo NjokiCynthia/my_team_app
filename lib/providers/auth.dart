@@ -148,7 +148,7 @@ class Auth with ChangeNotifier {
     } on HttpException catch (error) {
       throw HttpException(message: error.toString(), status: error.status);
     } catch (error) {
-      throw (ERROR_MESSAGE);
+      throw HttpException(message: ERROR_MESSAGE);
     }
   }
 
@@ -194,8 +194,7 @@ class Auth with ChangeNotifier {
     } on HttpException catch (error) {
       throw HttpException(message: error.toString(), status: error.status);
     } catch (error) {
-      print(error);
-      throw (ERROR_MESSAGE);
+      throw HttpException(message: ERROR_MESSAGE);
     }
   }
 

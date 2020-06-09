@@ -53,8 +53,6 @@ class _LoginState extends State<Login> {
       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
     } on HttpException catch (error) {
       StatusHandler().handleStatus(context, error);
-    } catch (error) {
-      StatusHandler().showErrorDialog(context, error.toString());
     } finally {
       setState(() {
         _isLoading = false;

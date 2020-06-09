@@ -87,7 +87,7 @@ class PostToServer {
   static Future<dynamic> generateResponse(String jsonObjectResponse) async {
     try {
       final response = json.decode(jsonObjectResponse);
-      final String secretKey = response["secret"];
+      final String secretKey = response["secre"];
       final String body = response["body"];
       try {
         if (body == null || body.isEmpty || secretKey == null || secretKey.isEmpty) {

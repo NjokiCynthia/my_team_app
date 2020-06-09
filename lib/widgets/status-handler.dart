@@ -10,7 +10,7 @@ class StatusHandler {
   void handleStatus(BuildContext context, HttpException exception) {
     switch (exception.status) {
       case ErrorStatusCode.statusNormal:
-        showErrorDialog(context, "Hello" + exception.toString());
+        showErrorDialog(context, "Hello ere" + exception.message);
         break;
       case ErrorStatusCode.statusRequireLogout:
         Navigator.of(context).pushReplacementNamed('/');

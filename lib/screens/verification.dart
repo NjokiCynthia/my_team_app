@@ -68,8 +68,6 @@ class _VerificationState extends State<Verification> {
       }
     } on HttpException catch (error) {
       StatusHandler().handleStatus(context, error);
-    } catch (error) {
-      StatusHandler().showErrorDialog(context, error.toString());
     } finally {
       setState(() {
         _isLoading = false;
@@ -132,7 +130,6 @@ class _VerificationState extends State<Verification> {
                           textStyle: TextStyle(
                             color: primaryColor,
                             fontSize: 20.0,
-                            
                             fontWeight: FontWeight.w800,
                           ),
                           obscureStyle: ObscureStyle(

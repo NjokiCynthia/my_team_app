@@ -89,7 +89,7 @@ class Groups with ChangeNotifier {
       throw HttpException(message: error.message, status: error.status);
     } catch (error) {
       print("error ${error.toString()}");
-      throw (ERROR_MESSAGE);
+      throw HttpException(message: ERROR_MESSAGE);
     }
   }
 
@@ -114,13 +114,13 @@ class Groups with ChangeNotifier {
       } on HttpException catch (error) {
         throw HttpException(message: error.message, status: error.status);
       } catch (error) {
-        throw HttpException(message: error.message);
+        throw HttpException(message: ERROR_MESSAGE);
       }
     } on HttpException catch (error) {
       throw HttpException(message: error.message, status: error.status);
     } catch (error) {
       print("error ${error.toString()}");
-      throw (ERROR_MESSAGE);
+      throw HttpException(message: ERROR_MESSAGE);
     }
   }
 
