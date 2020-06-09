@@ -21,8 +21,7 @@ class CustomHelper {
   }
 
   static bool validEmail(String email) {
-    Pattern pattern =
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    Pattern pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     RegExp regex = new RegExp(pattern);
     if (regex.hasMatch(email))
       return true;
@@ -97,7 +96,7 @@ class HttpException implements Exception {
   final String message;
   final ErrorStatusCode status;
 
-  HttpException(this.message, this.status);
+  HttpException({this.message, this.status = ErrorStatusCode.statusNormal});
 
   @override
   String toString() {
