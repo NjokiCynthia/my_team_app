@@ -116,6 +116,7 @@ class PostToServer {
         "Versioncode": versionCode,
         "Authorization": userAccessToken,
       };
+      print("Token : $userAccessToken , URL: $url");
       final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
       try {
         final http.Response response = await http.post(url, headers: headers, body: postRequest);
@@ -131,7 +132,7 @@ class PostToServer {
             case 0:
               //handle validation and other generic errors
               //display error(s)
-              throw HttpException(message: message);
+              throw CustomException(message: message);
               break;
             case 1:
               //request successful
@@ -142,30 +143,30 @@ class PostToServer {
             case 3:
               //generic error
               //display error
-              throw HttpException(message: message);
+              throw CustomException(message: message);
               break;
             case 4:
             case 8:
             case 9:
               //reset app
-              throw HttpException(message: message, status: ErrorStatusCode.statusRequireLogout);
+              throw CustomException(message: message, status: ErrorStatusCode.statusRequireLogout);
               break;
             case 5:
             case 6:
             case 10:
               //clear current group loaded to preferences
               //clear screens and restart app from splash screen
-              throw HttpException(message: message, status: ErrorStatusCode.statusRequireRestart);
+              throw CustomException(message: message, status: ErrorStatusCode.statusRequireRestart);
               break;
             case 7:
               //generic error
               //display error
-              throw HttpException(message: message);
+              throw CustomException(message: message);
               break;
             case 11:
             case 13:
               //invalid request id or format
-              throw HttpException(message: message);
+              throw CustomException(message: message);
               break;
             case 12:
               //duplicate request submitted
@@ -175,17 +176,17 @@ class PostToServer {
               break;
             case 400:
               //log out user
-              throw HttpException(message: ERROR_MESSAGE_LOGIN, status: ErrorStatusCode.statusRequireLogout);
+              throw CustomException(message: ERROR_MESSAGE_LOGIN, status: ErrorStatusCode.statusRequireLogout);
               break;
             case 404:
               //generic error
               //display error
-              throw HttpException(message: ERROR_MESSAGE);
+              throw CustomException(message: ERROR_MESSAGE);
               break;
             default:
               //generic error
               //display error
-              throw HttpException(message: ERROR_MESSAGE);
+              throw CustomException(message: ERROR_MESSAGE);
           }
         } catch (error) {
           throw error;

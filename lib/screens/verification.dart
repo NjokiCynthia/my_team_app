@@ -66,10 +66,8 @@ class _VerificationState extends State<Verification> {
       } else {
         Navigator.pushReplacementNamed(context, SignUp.namedRoute);
       }
-    } on HttpException catch (error) {
+    } on CustomException catch (error) {
       StatusHandler().handleStatus(context, error);
-    } catch (error) {
-      StatusHandler().showErrorDialog(context, error.toString());
     } finally {
       setState(() {
         _isLoading = false;
@@ -132,7 +130,6 @@ class _VerificationState extends State<Verification> {
                           textStyle: TextStyle(
                             color: primaryColor,
                             fontSize: 20.0,
-                            
                             fontWeight: FontWeight.w800,
                           ),
                           obscureStyle: ObscureStyle(

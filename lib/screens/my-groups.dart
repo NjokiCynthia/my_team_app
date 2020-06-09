@@ -20,30 +20,13 @@ class MyGroups extends StatefulWidget {
   _MyGroupsState createState() => _MyGroupsState();
 }
 
-bool _isInit = true;
 AnimationController _controller;
 
 Future<void> _getUserCheckinData(BuildContext context) async {
   try {
     await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
-  } on HttpException catch (error) {
+  } on CustomException catch (error) {
     StatusHandler().handleStatus(context, error);
-  } catch (error) {
-    await showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              title: Text("Error occured"),
-              content: Text(
-                  "We could not fetch products at the moment, try again later. Error message ${error.toString()}"),
-              actions: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Close"),
-                ),
-              ],
-            ));
   } finally {}
 }
 
@@ -65,18 +48,16 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
 
   @override
   void didChangeDependencies() {
-    // if (_isInit) {
-    //   _getUserCheckinData(context);
-    // }
-    _isInit = false;
     super.didChangeDependencies();
   }
 
   Widget buildContainer(Widget child, int itemCount) {
+    double height = MediaQuery.of(context).size.height * 0.45;
+    double itemCountHeight = (itemCount.toDouble())*80;
     return Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10)),
-        height: itemCount >= 1 ? MediaQuery.of(context).size.height * 0.40 : 50,
+        height: itemCount >= 1 ?(itemCountHeight>height?height:itemCountHeight):80,
         child: child);
   }
 

@@ -92,11 +92,11 @@ class CustomHelper {
   }
 }
 
-class HttpException implements Exception {
+class CustomException implements Exception {
   final String message;
   final ErrorStatusCode status;
 
-  HttpException({this.message, this.status = ErrorStatusCode.statusNormal});
+  CustomException({this.message, this.status = ErrorStatusCode.statusNormal});
 
   @override
   String toString() {

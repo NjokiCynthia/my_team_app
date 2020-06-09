@@ -80,15 +80,16 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         final userGroups = response['user_groups'] as List<dynamic>;
         addGroups(userGroups);
-      } on HttpException catch (error) {
-        throw HttpException(message: error.message, status: error.status);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        throw HttpException(message: error.message);
+        throw CustomException(message: error.message);
       }
-    } on HttpException catch (error) {
-      throw HttpException(message: error.message, status: error.status);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
     } catch (error) {
-      throw (ERROR_MESSAGE);
+      print("error ${error.toString()}");
+      throw CustomException(message: ERROR_MESSAGE);
     }
   }
 
@@ -110,15 +111,15 @@ class Groups with ChangeNotifier {
         addAccounts(groupMobileMoneyAccounts, 3);
         final groupPettyCashAccountsAccounts = response['accounts']['petty_cash_accounts'] as List<dynamic>;
         addAccounts(groupPettyCashAccountsAccounts, 4);
-      } on HttpException catch (error) {
-        throw HttpException(message: error.message, status: error.status);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        throw HttpException(message: error.message);
+        throw CustomException(message: ERROR_MESSAGE);
       }
-    } on HttpException catch (error) {
-      throw HttpException(message: error.message, status: error.status);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
     } catch (error) {
-      throw (ERROR_MESSAGE);
+      throw CustomException(message: ERROR_MESSAGE);
     }
   }
 
