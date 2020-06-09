@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -32,14 +33,12 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Logout"),
-          content: new Text(
-              "Are you sure you want to log out? You'll have to login again to continue."),
+          content: new Text("Are you sure you want to log out? You'll have to login again to continue."),
           actions: <Widget>[
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -52,8 +51,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacementNamed('/');
-                  Provider.of<Auth>(context, listen: false).logout();
+                  StatusHandler().logout(context);
                 }
 
                 // Navigator.of(context).pushReplacement(
@@ -125,14 +123,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      heading2(
-                          text: Provider.of<Auth>(context, listen: false)
-                              .userName,
-                          color: Theme.of(context).textSelectionHandleColor),
-                      subtitle2(
-                          text: Provider.of<Auth>(context, listen: false)
-                              .phoneNumber,
-                          color: Theme.of(context).textSelectionHandleColor),
+                      heading2(text: Provider.of<Auth>(context, listen: false).userName, color: Theme.of(context).textSelectionHandleColor),
+                      subtitle2(text: Provider.of<Auth>(context, listen: false).phoneNumber, color: Theme.of(context).textSelectionHandleColor),
                       Padding(
                         padding: EdgeInsets.only(
                           top: 10.0,
@@ -145,8 +137,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                           textSize: 12.0,
                           action: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  UpdateProfile(),
+                              builder: (BuildContext context) => UpdateProfile(),
                             ),
                           ),
                         ),
@@ -164,9 +155,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     color: Theme.of(context).textSelectionHandleColor,
                   )),
               subtitle: Text(
-                Provider.of<Groups>(context, listen: false)
-                    .getCurrentGroup()
-                    .groupName,
+                Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName,
                 style: TextStyle(color: Theme.of(context).bottomAppBarColor),
               ),
               trailing: Padding(
@@ -196,9 +185,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
             SwitchListTile(
               title: Text(
                 "Push Notifications",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor,
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
               ),
               subtitle: Text(
                 pushNotifications ? "Enabled" : "Disabled",
@@ -247,10 +234,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text("English",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).indicatorColor)),
+                        Text("English", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
                       ],
                     )),
                 PopupMenuItem(
@@ -258,10 +242,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Text("Swahili",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).indicatorColor)),
+                        Text("Swahili", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
                       ],
                     )),
               ],
@@ -292,9 +273,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               onSelected: (value) {
                 setState(() {
                   theme = value;
-                  (theme == "Dark")
-                      ? themeChange.darkTheme = true
-                      : themeChange.darkTheme = false;
+                  (theme == "Dark") ? themeChange.darkTheme = true : themeChange.darkTheme = false;
                 });
               },
               tooltip: "Change theme",
@@ -309,10 +288,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                         // Padding(
                         //   padding: EdgeInsets.only(left: 10.0)
                         // ),
-                        Text("Light",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).indicatorColor)),
+                        Text("Light", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
                       ],
                     )),
                 PopupMenuItem(
@@ -324,10 +300,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                         // Padding(
                         //   padding: EdgeInsets.only(left: 10.0)
                         // ),
-                        Text("Dark",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).indicatorColor)),
+                        Text("Dark", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
                       ],
                     )),
               ],
@@ -418,8 +391,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () =>
-                  launchURL("https://chamasoft.com/company/about-chamasoft"),
+              onTap: () => launchURL("https://chamasoft.com/company/about-chamasoft"),
             ),
             ListTile(
               title: Text("Terms & Conditions",
@@ -436,8 +408,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () =>
-                  launchURL("https://chamasoft.com/terms-and-conditions"),
+              onTap: () => launchURL("https://chamasoft.com/terms-and-conditions"),
             ),
             ListTile(
               title: Text("E-Wallet Charges",

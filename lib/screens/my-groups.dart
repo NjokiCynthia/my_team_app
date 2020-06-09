@@ -3,10 +3,10 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/status-handler.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -173,8 +173,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                         buttonHeight: 36.0,
                         textSize: 15.0,
                         action: () {
-                          Navigator.of(context).pushReplacementNamed('/');
-                          Provider.of<Auth>(context, listen: false).logout();
+                          StatusHandler().logout(context);
                         },
                       ),
                     ),
