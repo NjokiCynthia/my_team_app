@@ -105,19 +105,6 @@ class _GroupSettingsState extends State<GroupSettings> {
       );
 
       Scaffold.of(context).showSnackBar(snackBar);
-    } catch (error) {
-      print(error.message);
-      final snackBar = SnackBar(
-        content: Text('Network Error occurred: could not fetch accounts'),
-        action: SnackBarAction(
-          label: 'Retry',
-          onPressed: () async {
-            fetchAccounts(context);
-          },
-        ),
-      );
-
-      Scaffold.of(context).showSnackBar(snackBar);
     }
   }
 

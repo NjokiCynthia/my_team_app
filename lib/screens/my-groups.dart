@@ -27,21 +27,6 @@ Future<void> _getUserCheckinData(BuildContext context) async {
     await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
   } on HttpException catch (error) {
     StatusHandler().handleStatus(context, error);
-  } catch (error) {
-    await showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-              title: Text("Error occured"),
-              content: Text("We could not fetch products at the moment, try again later. Error message ${error.toString()}"),
-              actions: <Widget>[
-                FlatButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Close"),
-                ),
-              ],
-            ));
   } finally {}
 }
 
