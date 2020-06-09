@@ -46,14 +46,12 @@ class _GroupSettingsState extends State<GroupSettings> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Delete Group"),
-          content: new Text(
-              "Are you sure you want to delete the group? You will lose all information regarding this group."),
+          content: new Text("Are you sure you want to delete the group? You will lose all information regarding this group."),
           actions: <Widget>[
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -90,8 +88,7 @@ class _GroupSettingsState extends State<GroupSettings> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchAccounts();
 
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ListBankAccounts()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListBankAccounts()));
     } on HttpException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -144,9 +141,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         heading2(
-                            text: Provider.of<Groups>(context, listen: false)
-                                .getCurrentGroup()
-                                .groupName,
+                            text: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName,
                             color: Theme.of(context).textSelectionHandleColor),
                         Row(
                           children: [
@@ -162,8 +157,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 textSize: 12.0,
                                 action: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        UpdateGroupProfile(),
+                                    builder: (BuildContext context) => UpdateGroupProfile(),
                                   ),
                                 ),
                               ),
@@ -183,8 +177,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 textSize: 12.0,
                                 action: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ConfigurePreferences(),
+                                    builder: (BuildContext context) => ConfigurePreferences(),
                                   ),
                                 ),
                               ),
@@ -244,8 +237,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
                 dense: true,
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ListContributions()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListContributions()));
                 },
               ),
               DashedDivider(
@@ -325,8 +317,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
                 dense: true,
                 onTap: () {
-                  Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => ListLoanTypes()));
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
                 },
               ),
               DashedDivider(
