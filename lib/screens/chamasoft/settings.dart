@@ -1,5 +1,4 @@
 import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -46,22 +45,22 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               },
             ),
             new FlatButton(
-              child: new Text(
-                "Logout",
-                style: new TextStyle(color: Colors.red),
-              ),
-              onPressed: (){
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacementNamed('/');
-                Provider.of<Auth>(context,listen:false).logout();
-              } 
-              
-              // Navigator.of(context).pushReplacement(
-              //   MaterialPageRoute(
-              //     builder: (BuildContext context) => Login(),
-              //   ),
-              // ),
-            ),
+                child: new Text(
+                  "Logout",
+                  style: new TextStyle(color: Colors.red),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacementNamed('/');
+                  Provider.of<Auth>(context, listen: false).logout();
+                }
+
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) => Login(),
+                //   ),
+                // ),
+                ),
           ],
         );
       },
@@ -98,6 +97,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
       theme = themeChange.darkTheme ? "Dark" : "Light";
     });
 
+    final auth = Provider.of<Auth>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
@@ -126,10 +127,10 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       heading2(
-                          text: "Edwin Kapkei",
+                          text: auth.userName,
                           color: Theme.of(context).textSelectionHandleColor),
                       subtitle2(
-                          text: "+254 701 234 567",
+                          text: auth.phoneNumber,
                           color: Theme.of(context).textSelectionHandleColor),
                       Padding(
                         padding: EdgeInsets.only(

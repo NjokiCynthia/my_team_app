@@ -27,6 +27,7 @@ class _VerificationState extends State<Verification> {
   String _identity;
   String _pin;
   bool _isLoading = false;
+  bool _isFormInputEnabled = true;
   Map<String, String> _authData = {
     'identity': '',
     'pin': '',
@@ -50,11 +51,13 @@ class _VerificationState extends State<Verification> {
     }
     setState(() {
       _isLoading = true;
+      _isFormInputEnabled = false;
     });
     try {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
       final response = await Provider.of<Auth>(context, listen: false).verifyPin(_authData) as Map<String, dynamic>;
+      print(response);
       if (response['userExists'] == 1) {
         if (response.containsKey('userGroups') && response['userGroups'].length > 0) {
           Provider.of<Groups>(context, listen: false).addGroups(response['userGroups']);
@@ -70,6 +73,7 @@ class _VerificationState extends State<Verification> {
     } finally {
       setState(() {
         _isLoading = false;
+        _isFormInputEnabled = true;
       });
     }
   }
@@ -137,7 +141,7 @@ class _VerificationState extends State<Verification> {
                         ),
                         controller: _pinEditingController,
                         textInputAction: TextInputAction.done,
-                        enabled: true,
+                        enabled: _isFormInputEnabled,
                         autoFocus: true,
                         validator: (value) {
                           if (!_validOtp(value)) {

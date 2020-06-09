@@ -22,6 +22,7 @@ class _LoginState extends State<Login> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
   bool _isLoading = false;
+  bool _isFormInputEnabled = true;
   @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
@@ -45,6 +46,7 @@ class _LoginState extends State<Login> {
     _formKey.currentState.save();
     setState(() {
       _isLoading = true;
+      _isFormInputEnabled = false;
     });
     try {
       await Provider.of<Auth>(context, listen: false).generatePin(_identity);
@@ -56,6 +58,7 @@ class _LoginState extends State<Login> {
     } finally {
       setState(() {
         _isLoading = false;
+        _isFormInputEnabled = true;
       });
     }
   }
@@ -88,16 +91,16 @@ class _LoginState extends State<Login> {
                 subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
                 subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
                 TextFormField(
-                  initialValue: "0712234345",
+                  enabled: _isFormInputEnabled,
                   decoration: InputDecoration(
                     hasFloatingPlaceholder: true,
                     labelText: 'Phone number or Email',
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).hintColor,
-                        width: 1.0,
-                      ),
-                    ),
+                    // enabledBorder: UnderlineInputBorder(
+                    //   borderSide: BorderSide(
+                    //     color: Theme.of(context).hintColor,
+                    //     width: 1.0,
+                    //   ),
+                    // ),
                   ),
                   validator: (value) {
                     if (!CustomHelper.validIdentity(value)) {
