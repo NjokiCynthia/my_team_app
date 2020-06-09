@@ -122,12 +122,9 @@ class PostToServer {
         final http.Response response = await http.post(url, headers: headers, body: postRequest);
         try {
           final responseBody = await generateResponse(response.body);
-//          if (responseBody['status'] == 1) {
-//            return responseBody;
-//          } else {
-//            throw HttpException(responseBody['message'].toString());
-//          }
+          print("Server response $responseBody");
           String message = responseBody["message"].toString();
+          print("error message $message");
           switch (responseBody['status']) {
             case 0:
               //handle validation and other generic errors

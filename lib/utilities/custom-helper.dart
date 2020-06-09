@@ -9,7 +9,7 @@ class CustomHelper {
   static const String generatePin = "mobile/generate_pin";
   static const String verifyPin = "mobile/verify_pin";
   static const String getCheckinData = "mobile/get_user_checkin_data";
-  static const String imageUrl = prodBaseUrl + "uploads/groups/";
+  static const String imageUrl = baseUrl + "uploads/groups/";
 
   static bool validPhone(String phone) {
     Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
