@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' as io;
 
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
@@ -67,8 +68,13 @@ class Auth with ChangeNotifier {
     return _avatar;
   }
 
-  String get displayAvatar {
-    return (_avatar != null || _avatar == "") ? CustomHelper.imageUrl + _avatar : null;
+  static Future<bool> imageExists(avatarUrl) async{
+    return io.File(avatarUrl).exists();
+  }
+
+  String get displayAvatar{
+    var result = (_avatar != null || _avatar == "") ? CustomHelper.imageUrl + _avatar: null;
+    return result;
   }
 
   Future<void> setUserProfile() async {

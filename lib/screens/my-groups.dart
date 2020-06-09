@@ -11,6 +11,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class MyGroups extends StatefulWidget {
   static const namedRoute = '/my-groups-screen';
@@ -32,7 +33,8 @@ Future<void> _getUserCheckinData(BuildContext context) async {
         context: context,
         builder: (ctx) => AlertDialog(
               title: Text("Error occured"),
-              content: Text("We could not fetch products at the moment, try again later. Error message ${error.toString()}"),
+              content: Text(
+                  "We could not fetch products at the moment, try again later. Error message ${error.toString()}"),
               actions: <Widget>[
                 FlatButton(
                   onPressed: () {
@@ -63,23 +65,18 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
-      _getUserCheckinData(context);
-    }
-
+    // if (_isInit) {
+    //   _getUserCheckinData(context);
+    // }
     _isInit = false;
     super.didChangeDependencies();
   }
 
   Widget buildContainer(Widget child, int itemCount) {
     return Container(
-        // margin: EdgeInsets.all(10),
-        // padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
-            //color: Theme.of(context).cardColor,
-            //border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(10)),
-        //height: itemCount >= 1 ? MediaQuery.of(context).size.height * 0.35 : 50,
+        height: itemCount >= 1 ? MediaQuery.of(context).size.height * 0.40 : 50,
         child: child);
   }
 
@@ -95,25 +92,50 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
         child: SingleChildScrollView(
           padding: EdgeInsets.all(40.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
-              heading1(text: "My Groups", color: Theme.of(context).textSelectionHandleColor),
-              subtitle1(text: "All groups I belong to", color: Theme.of(context).textSelectionHandleColor),
+              heading1(
+                  text: "My Groups",
+                  color: Theme.of(context).textSelectionHandleColor),
+              subtitle1(
+                  text: "All groups I belong to",
+                  color: Theme.of(context).textSelectionHandleColor),
               SizedBox(
                 height: 32,
               ),
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                child: Image(
-                  image: auth.displayAvatar != null ? NetworkImage(auth.displayAvatar) : AssetImage('assets/no-user.png'),
-                  height: 80.0,
-                ),
+                child: auth.displayAvatar != null
+                    ? CachedNetworkImage(
+                        imageUrl: auth.displayAvatar,
+                        placeholder: (context, url) => const CircleAvatar(
+                          radius: 45.0,
+                          backgroundImage:
+                              const AssetImage('assets/no-user.png'),
+                        ),
+                        imageBuilder: (context, image) => CircleAvatar(
+                          backgroundImage: image,
+                          radius: 45.0,
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
+                        fadeOutDuration: const Duration(seconds: 1),
+                        fadeInDuration: const Duration(seconds: 3),
+                      )
+                    : const CircleAvatar(
+                        backgroundImage: const AssetImage('assets/no-user.png'),
+                        radius: 45.0,
+                      ),
               ),
-              heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
+              heading2(
+                  text: auth.userName,
+                  color: Theme.of(context).textSelectionHandleColor),
               subtitle1(
-                  text: auth.phoneNumber, //auth.phoneNumber,
-                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
+                  text: auth.phoneNumber,
+                  color: Theme.of(context)
+                      .textSelectionHandleColor
+                      .withOpacity(0.6)),
               SizedBox(
                 height: 20,
               ),
@@ -138,8 +160,10 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                 children: <Widget>[
                   FutureBuilder(
                       future: _getUserCheckinData(context),
-                      builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                          ? buildContainer(Center(child: CircularProgressIndicator()), 0)
+                      builder: (ctx, snapshot) => snapshot.connectionState ==
+                              ConnectionState.waiting
+                          ? buildContainer(
+                              Center(child: CircularProgressIndicator()), 0)
                           : RefreshIndicator(
                               onRefresh: () => _getUserCheckinData(context),
                               child: Consumer<Groups>(
@@ -152,24 +176,34 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                         //physics: NeverScrollableScrollPhysics(),
                                         itemCount: groups.item.length,
                                         itemBuilder: (context, index) {
-                                          //InvestmentGroup groupModel = auth.groups[index];
                                           return groupInfoButton(
                                               context: context,
-                                              leadingIcon: LineAwesomeIcons.group,
-                                              trailingIcon: LineAwesomeIcons.angle_right,
-                                              backgroundColor: primaryColor.withOpacity(0.2),
-                                              title: "${groups.item[index].groupName}",
-                                              subtitle: "${groups.item[index].groupSize} Members",
+                                              leadingIcon:
+                                                  LineAwesomeIcons.group,
+                                              trailingIcon:
+                                                  LineAwesomeIcons.angle_right,
+                                              backgroundColor:
+                                                  primaryColor.withOpacity(0.2),
+                                              title:
+                                                  "${groups.item[index].groupName}",
+                                              subtitle:
+                                                  "${groups.item[index].groupSize} Members",
                                               description: "Member",
                                               textColor: Colors.blueGrey,
-                                              borderColor: Colors.blueGrey.withOpacity(0.2),
+                                              borderColor: Colors.blueGrey
+                                                  .withOpacity(0.2),
                                               action: () {
                                                 Navigator.of(context).push(
                                                   MaterialPageRoute(
-                                                    builder: (BuildContext context) => ChamasoftDashboard(),
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        ChamasoftDashboard(),
                                                   ),
                                                 );
-                                                Provider.of<Groups>(context, listen: false).setSelectedGroupId(groups.item[index].groupId);
+                                                Provider.of<Groups>(context,
+                                                        listen: false)
+                                                    .setSelectedGroupId(groups
+                                                        .item[index].groupId);
                                               });
                                         }),
                                     groups.item.length),

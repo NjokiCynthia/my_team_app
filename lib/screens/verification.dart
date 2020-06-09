@@ -59,7 +59,7 @@ class _VerificationState extends State<Verification> {
       final response = await Provider.of<Auth>(context, listen: false).verifyPin(_authData) as Map<String, dynamic>;
       print(response);
       if (response['userExists'] == 1) {
-        if (response.containsKey('userGroups') && response['userGroups'].length > 0) {
+        if (response.containsKey('userGroups')) {
           Provider.of<Groups>(context, listen: false).addGroups(response['userGroups']);
         }
         Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'));

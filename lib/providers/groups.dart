@@ -65,8 +65,8 @@ class Groups with ChangeNotifier {
             Group(groupId: groupJSON['id']..toString(), groupName: groupJSON['name']..toString(), groupSize: groupJSON['size']..toString());
         loadedGroups.add(newGroup);
       }
-      _items = loadedGroups;
     }
+    _items = loadedGroups;
     notifyListeners();
   }
 
@@ -88,7 +88,6 @@ class Groups with ChangeNotifier {
     } on HttpException catch (error) {
       throw HttpException(message: error.message, status: error.status);
     } catch (error) {
-      print("error ${error.toString()}");
       throw (ERROR_MESSAGE);
     }
   }
@@ -119,7 +118,6 @@ class Groups with ChangeNotifier {
     } on HttpException catch (error) {
       throw HttpException(message: error.message, status: error.status);
     } catch (error) {
-      print("error ${error.toString()}");
       throw (ERROR_MESSAGE);
     }
   }

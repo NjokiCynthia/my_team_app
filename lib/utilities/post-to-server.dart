@@ -95,7 +95,6 @@ class PostToServer {
         }
         final secretKeyString = await _decretSecretKey(secretKey);
         var response = _decryptAESCryptoJS(body, secretKeyString);
-        print("Decrypt: " + response);
         return json.decode(response);
       } catch (error) {
         throw (error.toString());
@@ -107,13 +106,11 @@ class PostToServer {
 
   static Future<dynamic> post(String jsonObject, String url) async {
     final String randomKey = CustomHelper.generateRandomString(16);
-    print(url);
     try {
       final String secretKey = await _encryptSecretKey(randomKey);
       final String versionCode = await CustomHelper.getApplicationBuildNumber();
       final String userAccessTokenKey = await Auth.getAccessToken();
       final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
-      print(userAccessToken);
       final Map<String, String> headers = {
         "Secret": secretKey,
         "Versioncode": versionCode,
@@ -129,8 +126,6 @@ class PostToServer {
 //          } else {
 //            throw HttpException(responseBody['message'].toString());
 //          }
-
-          print(responseBody);
           String message = responseBody["message"].toString();
           switch (responseBody['status']) {
             case 0:
