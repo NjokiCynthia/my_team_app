@@ -1,14 +1,14 @@
-
+import 'package:chamasoft/screens/intro.dart';
+import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
+import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './providers/auth.dart';
 import './providers/groups.dart';
-import 'package:chamasoft/screens/intro.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/theme.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,8 +21,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   void getCurrentAppTheme() async {
-    themeChangeProvider.darkTheme =
-        await themeChangeProvider.darkThemePreference.getTheme();
+    themeChangeProvider.darkTheme = await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
@@ -52,27 +51,23 @@ class _MyAppState extends State<MyApp> {
           create: (ctx) => Groups(),
         ),
       ],
-      child: Consumer<DarkThemeProvider>(
-          builder: (BuildContext context, value, Widget child) {
+      child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          color: themeChangeProvider.darkTheme
-              ? Colors.blueGrey[900]
-              : Colors.blue[50],
+          color: themeChangeProvider.darkTheme ? Colors.blueGrey[900] : Colors.blue[50],
           title: 'Chamasoft',
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
           home: IntroScreen(),
           routes: {
-            MyGroups.namedRoute : (ctx) => MyGroups(),
-            SignUp.namedRoute : (ctx) => SignUp(),
+            Login.namedRoute: (ctx) => Login(),
+            MyGroups.namedRoute: (ctx) => MyGroups(),
+            SignUp.namedRoute: (ctx) => SignUp(),
           },
           onGenerateRoute: (settings) {
-            return MaterialPageRoute(
-                builder: (context) => IntroScreen());
+            return MaterialPageRoute(builder: (context) => IntroScreen());
           },
           onUnknownRoute: (settings) {
-            return MaterialPageRoute(
-                builder: (context) => IntroScreen());
+            return MaterialPageRoute(builder: (context) => IntroScreen());
           },
         );
       }),
