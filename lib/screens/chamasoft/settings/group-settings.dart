@@ -89,7 +89,7 @@ class _GroupSettingsState extends State<GroupSettings> {
       await Provider.of<Groups>(context, listen: false).fetchAccounts();
 
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListBankAccounts()));
-    } on HttpException catch (error) {
+    } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
         content: Text('Network Error occurred: could not fetch accounts'),

@@ -51,7 +51,7 @@ class _LoginState extends State<Login> {
     try {
       await Provider.of<Auth>(context, listen: false).generatePin(_identity);
       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
-    } on HttpException catch (error) {
+    } on CustomException catch (error) {
       StatusHandler().handleStatus(context, error);
     } finally {
       setState(() {

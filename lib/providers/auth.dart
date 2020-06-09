@@ -130,7 +130,7 @@ class Auth with ChangeNotifier {
           return "";
         }
       } catch (error) {
-        throw HttpException(message: "JSON Passing error " + error.toString());
+        throw CustomException(message: "JSON Passing error " + error.toString());
       }
     } else {
       return "";
@@ -145,10 +145,10 @@ class Auth with ChangeNotifier {
     try {
       await PostToServer.post(postRequest, url);
       notifyListeners();
-    } on HttpException catch (error) {
-      throw HttpException(message: error.toString(), status: error.status);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
-      throw HttpException(message: ERROR_MESSAGE);
+      throw CustomException(message: ERROR_MESSAGE);
     }
   }
 
@@ -191,10 +191,10 @@ class Auth with ChangeNotifier {
         };
       }
       return userResponse;
-    } on HttpException catch (error) {
-      throw HttpException(message: error.toString(), status: error.status);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
-      throw HttpException(message: ERROR_MESSAGE);
+      throw CustomException(message: ERROR_MESSAGE);
     }
   }
 

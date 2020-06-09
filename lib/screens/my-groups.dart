@@ -25,7 +25,7 @@ AnimationController _controller;
 Future<void> _getUserCheckinData(BuildContext context) async {
   try {
     await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
-  } on HttpException catch (error) {
+  } on CustomException catch (error) {
     StatusHandler().handleStatus(context, error);
   } finally {}
 }
