@@ -1,7 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
+import 'package:chamasoft/widgets/status-handler.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
@@ -54,23 +54,19 @@ class _VerificationState extends State<Verification> {
     try {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
-      final response = await Provider.of<Auth>(context, listen: false)
-          .verifyPin(_authData) as Map<String, dynamic>;
+      final response = await Provider.of<Auth>(context, listen: false).verifyPin(_authData) as Map<String, dynamic>;
       if (response['userExists'] == 1) {
-        if (response.containsKey('userGroups') &&
-            response['userGroups'].length > 0) {
-          Provider.of<Groups>(context, listen: false)
-              .addGroups(response['userGroups']);
+        if (response.containsKey('userGroups') && response['userGroups'].length > 0) {
+          Provider.of<Groups>(context, listen: false).addGroups(response['userGroups']);
         }
-        Navigator.of(context).pushNamedAndRemoveUntil(
-            MyGroups.namedRoute, ModalRoute.withName('/'));
+        Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'));
       } else {
         Navigator.pushReplacementNamed(context, SignUp.namedRoute);
       }
     } on HttpException catch (error) {
-      alertDialog(context, error.toString());
+      StatusHandler().handleStatus(context, error);
     } catch (error) {
-      alertDialog(context, error.toString());
+      StatusHandler().showErrorDialog(context, error.toString());
     } finally {
       setState(() {
         _isLoading = false;
@@ -110,24 +106,16 @@ class _VerificationState extends State<Verification> {
                         height: 100.0,
                       ),
                     ),
-                    heading1(
-                        text: "Verification",
-                        color: Theme.of(context).textSelectionHandleColor),
+                    heading1(text: "Verification", color: Theme.of(context).textSelectionHandleColor),
                     SizedBox(
                       height: 10,
                     ),
-                    subtitle1(
-                        text: "A verification code has been sent to",
-                        color: Theme.of(context).textSelectionHandleColor),
-                    customTitle(
-                        text: _identity,
-                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle1(text: "A verification code has been sent to", color: Theme.of(context).textSelectionHandleColor),
+                    customTitle(text: _identity, color: Theme.of(context).textSelectionHandleColor),
                     SizedBox(
                       height: 12,
                     ),
-                    subtitle2(
-                        text: "Enter your code here",
-                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle2(text: "Enter your code here", color: Theme.of(context).textSelectionHandleColor),
                     Padding(
                       padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                       child: PinInputTextFormField(
@@ -180,17 +168,10 @@ class _VerificationState extends State<Verification> {
                     SizedBox(
                       height: 24,
                     ),
-                    textWithExternalLinks(
-                        color: Theme.of(context).textSelectionHandleColor,
-                        size: 12.0,
-                        textData: {
-                          "Didn't receive verification code?": {},
-                          'Resend': {
-                            "url": () => print("Resending now..."),
-                            "color": primaryColor,
-                            "weight": FontWeight.w700
-                          },
-                        }),
+                    textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
+                      "Didn't receive verification code?": {},
+                      'Resend': {"url": () => print("Resending now..."), "color": primaryColor, "weight": FontWeight.w700},
+                    }),
                   ],
                 ),
               ),

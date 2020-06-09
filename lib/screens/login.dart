@@ -4,6 +4,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
+import 'package:chamasoft/widgets/status-handler.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,12 +50,9 @@ class _LoginState extends State<Login> {
       await Provider.of<Auth>(context, listen: false).generatePin(_identity);
       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
     } on HttpException catch (error) {
-      if (error.status == ErrorStatusCode.statusRequireRestart) {
-        //do something
-      }
-      _showErrorDialog(context, error.toString());
+      StatusHandler().handleStatus(context, error);
     } catch (error) {
-      _showErrorDialog(context, error.toString());
+      StatusHandler().showErrorDialog(context, error.toString());
     } finally {
       setState(() {
         _isLoading = false;
@@ -90,6 +88,7 @@ class _LoginState extends State<Login> {
                 subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
                 subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
                 TextFormField(
+                  initialValue: "0712234345",
                   decoration: InputDecoration(
                     hasFloatingPlaceholder: true,
                     labelText: 'Phone number or Email',

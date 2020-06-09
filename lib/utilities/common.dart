@@ -56,6 +56,6 @@ const String ERROR_MESSAGE = "We could not complete your request at the moment. 
 const String ERROR_MESSAGE_LOGIN = "Kindly login again";
 enum ErrorStatusCode {
   statusNormal,
-  statusRequireLogout,
-  statusRequireRestart, //remove the current selected group and clear screens to restart
+  statusRequireLogout, //logout the current user
+  statusRequireRestart, //remove the current group loaded on shared preferences and clear screens to restart
 }

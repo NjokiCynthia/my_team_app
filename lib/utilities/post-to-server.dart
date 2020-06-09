@@ -107,6 +107,7 @@ class PostToServer {
 
   static Future<dynamic> post(String jsonObject, String url) async {
     final String randomKey = CustomHelper.generateRandomString(16);
+    print(url);
     try {
       final String secretKey = await _encryptSecretKey(randomKey);
       final String versionCode = await CustomHelper.getApplicationBuildNumber();
@@ -139,6 +140,7 @@ class PostToServer {
               break;
             case 1:
               //request successful
+              //throw HttpException(message, ErrorStatusCode.statusNormal);
               return responseBody;
               break;
             case 2:
