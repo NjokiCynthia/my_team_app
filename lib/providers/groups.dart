@@ -21,6 +21,7 @@ class Group{
 
 class Groups with ChangeNotifier{
   static const String selectedGroupId = "selectedGroupId";
+  String currentGroupId = "";
 
   List<Group> _items = [];
 
@@ -66,6 +67,7 @@ class Groups with ChangeNotifier{
   }
 
   setSelectedGroupId(String groupId) async{
+    currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();
     if(prefs.containsKey(selectedGroupId)){
       prefs.remove(selectedGroupId);
@@ -76,6 +78,25 @@ class Groups with ChangeNotifier{
   getCurrentGroupId() async{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(selectedGroupId);
+  }
+
+
+  Group getCurrentGroup(){
+    Group group;
+    bool groupFound = false;
+    _items.forEach((element) {
+      if(element.groupId == currentGroupId ){
+        group =  element;
+        groupFound = true;
+      }
+    });
+
+    if(groupFound){
+      return group;
+    } else {
+      return this._items[0];
+    }
+
   }
 
 }

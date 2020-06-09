@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-loan-types.dart';
@@ -119,7 +120,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       heading2(
-                          text: "Witcher Welfare Association",
+                          text: Provider.of<Groups>(context, listen: false)
+                              .getCurrentGroup()
+                              .groupName,
                           color: Theme.of(context).textSelectionHandleColor),
                       Row(
                         children: [
