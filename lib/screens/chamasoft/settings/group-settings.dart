@@ -191,7 +191,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                 color: Theme.of(context).bottomAppBarColor,
               ),
               dense: true,
-              onTap: () {
+              onTap: () async{
+                await Provider.of<Groups>(context, listen: false)
+                    .fetchAccounts();
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ListBankAccounts()));
               },

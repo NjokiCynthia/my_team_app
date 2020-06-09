@@ -157,6 +157,9 @@ class Auth with ChangeNotifier {
     }
   }
 
+
+
+
   Future<dynamic> verifyPin(Map<String, String> object) async {
     const url = CustomHelper.baseUrl + CustomHelper.verifyPin;
     final postRequest = json.encode(object);

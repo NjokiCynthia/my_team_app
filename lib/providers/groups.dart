@@ -19,15 +19,51 @@ class Group{
   });
 }
 
+
+class Account{
+  final String id;
+  final String name;
+  final int typeId;
+
+  Account({
+    @required this.id,
+    @required this.name,
+    @required this.typeId,
+  });
+}
+
 class Groups with ChangeNotifier{
   static const String selectedGroupId = "selectedGroupId";
   String currentGroupId = "";
 
   List<Group> _items = [];
+  List<Account> _accounts = [];
 
   List<Group> get item{
     return [..._items];
   }
+
+
+  List<Account> get accounts{
+    return _accounts;
+  }
+
+
+  void addAccounts(List<dynamic> groupBankAccounts,int accountType){
+    final List<Account> bankAccounts = [];
+    if (groupBankAccounts.length > 0) {
+      for (var bankAccountJSON in groupBankAccounts) {
+        final newAccount = Account(
+            id: bankAccountJSON['id']..toString(),
+            name: bankAccountJSON['name']..toString(),
+            typeId: accountType
+        );
+        _accounts.add(newAccount);
+      }
+    }
+    notifyListeners();
+  }
+
 
   void addGroups(List<dynamic> groupObject){
     final List<Group> loadedGroups = [];
@@ -65,6 +101,37 @@ class Groups with ChangeNotifier{
       throw ("We could not complete your request at the moment. Try again later");
     }
   }
+
+
+  Future<void> fetchAccounts()async{
+    const url = CustomHelper.baseUrl + "mobile/accounts/get_group_active_account_options";
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try{
+        final response =  await PostToServer.post(postRequest, url);
+        _accounts = []; //clear accounts
+        final groupBankAccounts =  response['accounts']['bank_accounts'] as List<dynamic>;
+        addAccounts(groupBankAccounts, 1);
+        final groupSaccoAccounts =  response['accounts']['sacco_accounts'] as List<dynamic>;
+        addAccounts(groupSaccoAccounts, 2);
+        final groupMobileMoneyAccounts =  response['accounts']['mobile_money_accounts'] as List<dynamic>;
+        addAccounts(groupMobileMoneyAccounts, 3);
+        final groupPettyCashAccountsAccounts =  response['accounts']['petty_cash_accounts'] as List<dynamic>;
+        addAccounts(groupPettyCashAccountsAccounts, 4);
+      }catch(error){
+        throw HttpException(error.toString());
+      }
+    } on HttpException catch (error) {
+      throw HttpException(error.toString());
+    } catch (error) {
+      print("error ${error.toString()}");
+      throw ("We could not complete your request at the moment. Try again later");
+    }
+  }
+
 
   setSelectedGroupId(String groupId) async{
     currentGroupId = groupId;
