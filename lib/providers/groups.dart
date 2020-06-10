@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/endpoint-url.dart';
 import 'package:chamasoft/utilities/post-to-server.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -337,7 +338,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchAndSetUserGroups() async {
-    const url = CustomHelper.baseUrl + CustomHelper.getCheckinData;
+    const url = EndpointUrl.GET_GROUPS;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
@@ -360,7 +361,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchAccounts() async {
-    const url = CustomHelper.baseUrl + "mobile/accounts/get_group_active_account_options";
+    const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
@@ -391,7 +392,7 @@ class Groups with ChangeNotifier {
 
 
   Future<void> fetchContributions() async {
-    const url = CustomHelper.baseUrl + "mobile/contributions/get_group_contribution_options";
+    const url = EndpointUrl.GET_GROUP_CONTRIBUTIONS_OPTIONS;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
@@ -416,7 +417,7 @@ class Groups with ChangeNotifier {
 
 
   Future<void> fetchExpenses() async {
-    const url = CustomHelper.baseUrl + "mobile/reports/expenses_summary";
+    const url = EndpointUrl.GET_EXPENSES_SUMMARY;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
@@ -440,7 +441,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchFineTypes() async {
-    const url = CustomHelper.baseUrl + "mobile/fine_categories/get_group_fine_category_options";
+    const url = EndpointUrl.GET_GROUP_FINE_OPTIONS;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
@@ -464,7 +465,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchLoanTypes() async {
-    const url = CustomHelper.baseUrl + "mobile/loan_types/get_group_loan_type_options";
+    const url = EndpointUrl.GET_GROUP_LOAN_TYPE_OPTIONS;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
@@ -489,7 +490,7 @@ class Groups with ChangeNotifier {
 
 
   Future<void> fetchMembers() async {
-    const url = CustomHelper.baseUrl + "mobile/members/get_group_member_options";
+    const url = EndpointUrl.GET_GROUP_MEMBERS;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),

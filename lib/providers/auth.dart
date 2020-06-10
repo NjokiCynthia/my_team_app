@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io' as io;
 
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/endpoint-url.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -68,12 +69,12 @@ class Auth with ChangeNotifier {
     return _avatar;
   }
 
-  static Future<bool> imageExists(avatarUrl) async{
+  static Future<bool> imageExists(avatarUrl) async {
     return io.File(avatarUrl).exists();
   }
 
-  String get displayAvatar{
-    var result = (_avatar != null || _avatar == "") ? CustomHelper.imageUrl + _avatar: null;
+  String get displayAvatar {
+    var result = (_avatar != null || _avatar == "") ? CustomHelper.imageUrl + _avatar : null;
     return result;
   }
 
@@ -144,7 +145,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> generatePin(String identity) async {
-    const url = CustomHelper.baseUrl + CustomHelper.generatePin;
+    const url = EndpointUrl.GENERATE_OTP;
     final postRequest = json.encode({
       "identity": identity,
     });
@@ -159,7 +160,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<dynamic> verifyPin(Map<String, String> object) async {
-    const url = CustomHelper.baseUrl + CustomHelper.verifyPin;
+    const url = EndpointUrl.VERIFY_OTP;
     final postRequest = json.encode(object);
 
     try {

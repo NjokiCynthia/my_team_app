@@ -4,12 +4,9 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:package_info/package_info.dart';
 
 class CustomHelper {
-  static const String baseUrl = "https://uat.chamasoft.com/";
-  static const String prodBaseUrl = "https://app.chamasoft.com/";
-  static const String generatePin = "mobile/generate_pin";
-  static const String verifyPin = "mobile/verify_pin";
-  static const String getCheckinData = "mobile/get_user_checkin_data";
-  static const String imageUrl = baseUrl + "uploads/groups/";
+  static const String baseUrl = "https://uat.chamasoft.com";
+  static const String prodBaseUrl = "https://app.chamasoft.com";
+  static const String imageUrl = baseUrl + "/uploads/groups/";
 
   static bool validPhone(String phone) {
     Pattern pattern = r'(^(?:[+0]9)?[0-9]{10,12}$)';
