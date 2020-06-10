@@ -535,7 +535,6 @@ class Groups with ChangeNotifier {
         groupFound = true;
       }
     });
-
     if (groupFound) {
       return group;
     } else {

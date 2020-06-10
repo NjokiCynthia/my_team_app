@@ -159,6 +159,21 @@ class Auth with ChangeNotifier {
     }
   }
 
+  Future<void> resendPin(String identity) async{
+    const url = EndpointUrl.RESEND_OTP;
+    final postRequest = json.encode({
+      "identity": identity,
+    });
+    try {
+      await PostToServer.post(postRequest, url);
+      notifyListeners();
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<dynamic> verifyPin(Map<String, String> object) async {
     const url = EndpointUrl.VERIFY_OTP;
     final postRequest = json.encode(object);

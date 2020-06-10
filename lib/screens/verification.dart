@@ -89,6 +89,25 @@ class _VerificationState extends State<Verification> {
     return true;
   }
 
+  void _resendOtp()async{
+    print("sending otp.......");
+    try{
+      await Provider.of<Auth>(context, listen: false).resendPin(_identity);
+    }on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormInputEnabled = true;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _identity = ModalRoute.of(context).settings.arguments as String;
@@ -142,7 +161,6 @@ class _VerificationState extends State<Verification> {
                                 obscureStyle: ObscureStyle(
                                   isTextObscure: false,
                                 ),
-                                // hintText: "1234",
                               ),
                               controller: _pinEditingController,
                               textInputAction: TextInputAction.done,
@@ -177,10 +195,33 @@ class _VerificationState extends State<Verification> {
                           SizedBox(
                             height: 24,
                           ),
-                          textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
-                            "Didn't receive verification code?": {},
-                            'Resend': {"url": () => print("Resending now..."), "color": primaryColor, "weight": FontWeight.w700},
-                          }),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Text(
+                                "Didn't receive verification code? ",
+                                style: TextStyle(
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  //fontSize: 12.0
+                                ),
+                              ),
+                              InkWell(
+                                child: Text(
+                                  'Resend',
+                                  style: TextStyle(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.w700,
+                                    decoration: TextDecoration.underline,
+                                  ),
+                                ),
+                                onTap: _resendOtp,
+                              )
+                            ],
+                          ),
+                          // textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
+                          //   "Didn't receive verification code?": {},
+                          //   'Resend': {"url": () => _resendOtp , "color": primaryColor, "weight": FontWeight.w700},
+                          // }),
                         ],
                       ),
                     ),

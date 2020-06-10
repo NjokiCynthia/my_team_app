@@ -108,13 +108,13 @@ class _LoginState extends State<Login> {
                         // ),
                       ),
                       validator: (value) {
-                        if (!CustomHelper.validIdentity(value)) {
+                        if (!CustomHelper.validIdentity(value.trim())) {
                           return 'Enter valid email or phone number';
                         }
                         return null;
                       },
                       onSaved: (value) {
-                        _identity = value;
+                        _identity = value.trim();
                       },
                     ),
                     SizedBox(

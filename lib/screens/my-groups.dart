@@ -3,6 +3,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/create-group.dart';
+import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -20,28 +21,29 @@ class MyGroups extends StatefulWidget {
   _MyGroupsState createState() => _MyGroupsState();
 }
 
-AnimationController _controller;
-
-Future<void> _getUserCheckinData(BuildContext context) async {
-  try {
-    await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
-  } on CustomException catch (error) {
-    StatusHandler().handleStatus(
-        context: context,
-        error: error,
-        callback: () {
-          _getUserCheckinData(context);
-        });
-  } finally {}
-}
-
 class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
+  Future<void> _future;
+  AnimationController _controller;
+
+  Future<void> _getUserCheckinData(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getUserCheckinData(context);
+          });
+    } finally {}
+  }
   @override
   void initState() {
     _controller = AnimationController(
       duration: const Duration(seconds: 300),
       vsync: this,
     );
+    _future = _getUserCheckinData(context);
     super.initState();
   }
 
@@ -133,43 +135,43 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     FutureBuilder(
-                        future: _getUserCheckinData(context),
-                        builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                            ? buildContainer(Center(child: CircularProgressIndicator()), 0)
-                            : RefreshIndicator(
-                                onRefresh: () => _getUserCheckinData(context),
-                                child: Consumer<Groups>(
-                                  child: Center(
-                                    child: Text("Groups"),
-                                  ),
-                                  builder: (ctx, groups, ch) => buildContainer(
-                                      ListView.builder(
-                                          shrinkWrap: true,
-                                          //physics: NeverScrollableScrollPhysics(),
-                                          itemCount: groups.item.length,
-                                          itemBuilder: (context, index) {
-                                            return groupInfoButton(
-                                                context: context,
-                                                leadingIcon: LineAwesomeIcons.group,
-                                                trailingIcon: LineAwesomeIcons.angle_right,
-                                                backgroundColor: primaryColor.withOpacity(0.2),
-                                                title: "${groups.item[index].groupName}",
-                                                subtitle: "${groups.item[index].groupSize} Members",
-                                                description: "Member",
-                                                textColor: Colors.blueGrey,
-                                                borderColor: Colors.blueGrey.withOpacity(0.2),
-                                                action: () {
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                      builder: (BuildContext context) => ChamasoftDashboard(),
-                                                    ),
-                                                  );
-                                                  Provider.of<Groups>(context, listen: false).setSelectedGroupId(groups.item[index].groupId);
-                                                });
-                                          }),
-                                      groups.item.length),
-                                ),
-                              )),
+                      future: _future,
+                      builder: (ctx, snapshot) =>snapshot.connectionState == ConnectionState.waiting
+                      ? buildContainer(Center(child: CircularProgressIndicator()), 0)
+                      : RefreshIndicator(
+                        onRefresh: () => _getUserCheckinData(context),
+                        child: Consumer<Groups>(
+                          child: Center(
+                            child: Text("Groups"),
+                          ),
+                          builder: (ctx, groups, ch) =>buildContainer(
+                            ListView.builder(
+                              shrinkWrap: true,
+                              //physics: NeverScrollableScrollPhysics(),
+                              itemCount: groups.item.length,
+                              itemBuilder: (ctx2, index) {
+                                return groupInfoButton(
+                                  context: context,
+                                  leadingIcon: LineAwesomeIcons.group,
+                                  trailingIcon: LineAwesomeIcons.angle_right,
+                                  backgroundColor: primaryColor.withOpacity(0.2),
+                                  title: "${groups.item[index].groupName}",
+                                  subtitle: "${groups.item[index].groupSize} Members",
+                                  description: "Member",
+                                  textColor: Colors.blueGrey,
+                                  borderColor: Colors.blueGrey.withOpacity(0.2),
+                                  action: () {
+                                    Provider.of<Groups>(ctx2, listen: false).setSelectedGroupId(groups.item[index].groupId);
+                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ChamasoftDashboard(),));
+                                  }
+                                );
+                              }
+                            ),
+                            groups.item.length
+                          ),
+                        ),
+                      )
+                    ),
                     Padding(
                       padding: EdgeInsets.only(
                         top: 20.0,

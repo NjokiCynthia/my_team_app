@@ -37,6 +37,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   int _currentPage;
   double _appBarElevation = 0;
   int _selectedGroupIndex = 0;
+  bool _updateSelectedGroup = false;
 
   _setElevation(double elevation) {
     double newElevation = elevation > 1 ? appBarElevation : 0;
@@ -47,7 +48,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     }
   }
 
-  _handleSelectedOption(String option) {
+  _handleSelectedOption(BuildContext context,String option,_updateSelectedGroup) {
     if (option == '0') {
       // CREATE NEW Selected, handle it!
       Navigator.of(context).push(
@@ -61,6 +62,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         if (value["id"] == option) {
           setState(() {
             _selectedGroupIndex = index;
+            print("Group Id $index");
+            if(_updateSelectedGroup) 
+              Provider.of<Groups>(context, listen: false).setSelectedGroupId(value["id"]);
           });
         }
         //switch to selected group.
@@ -94,7 +98,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     // TODO: implement didChangeDependencies
     _getUserGroupsOverlay(context).then((_) async {
       await Provider.of<Groups>(context,listen: false).getCurrentGroupId().then((groupId){
-        _handleSelectedOption(groupId);
+        _handleSelectedOption(context,groupId,false);
       });
     })
     .catchError((error){
@@ -127,7 +131,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             parentStream: _stream,
             currentGroup: _overlayItems[_selectedGroupIndex],
             selectedOption: (selected) {
-              _handleSelectedOption(selected);
+              _handleSelectedOption(context,selected,true);
             },
           ),
           elevation: _appBarElevation,
