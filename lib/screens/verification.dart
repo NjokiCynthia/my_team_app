@@ -67,7 +67,12 @@ class _VerificationState extends State<Verification> {
         Navigator.pushReplacementNamed(context, SignUp.namedRoute);
       }
     } on CustomException catch (error) {
-      StatusHandler().handleStatus(context: context, error: error, callback: () {});
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
     } finally {
       setState(() {
         _isLoading = false;

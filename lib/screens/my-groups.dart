@@ -26,7 +26,12 @@ Future<void> _getUserCheckinData(BuildContext context) async {
   try {
     await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
   } on CustomException catch (error) {
-    StatusHandler().handleStatus(context: context, error: error, callback: () {});
+    StatusHandler().handleStatus(
+        context: context,
+        error: error,
+        callback: () {
+          _getUserCheckinData(context);
+        });
   } finally {}
 }
 
