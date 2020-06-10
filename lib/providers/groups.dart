@@ -37,6 +37,7 @@ class Groups with ChangeNotifier {
 
   List<Group> _items = [];
   List<Account> _accounts = [];
+  List<List<Account>> _allAccounts = [];
 
   List<Group> get item {
     return [..._items];
@@ -46,14 +47,20 @@ class Groups with ChangeNotifier {
     return _accounts;
   }
 
+  List<List<Account>> get allAccounts {
+    return _allAccounts;
+  }
+
   void addAccounts(List<dynamic> groupBankAccounts, int accountType) {
     final List<Account> bankAccounts = [];
     if (groupBankAccounts.length > 0) {
       for (var bankAccountJSON in groupBankAccounts) {
         final newAccount = Account(id: bankAccountJSON['id']..toString(), name: bankAccountJSON['name']..toString(), typeId: accountType);
+        bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
     }
+    _allAccounts.add(bankAccounts);
     notifyListeners();
   }
 

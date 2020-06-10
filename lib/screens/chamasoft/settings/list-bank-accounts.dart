@@ -9,11 +9,10 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 List<String> accountTypes = [
-  "",
-  "Bank Account",
-  "Sacco Account",
-  "Mobile Money Account",
-  "Petty Cash Account"
+  "Bank Accounts",
+  "Sacco Accounts",
+  "Mobile Money Accounts",
+  "Petty Cash Accounts"
 ];
 
 class ListBankAccounts extends StatefulWidget {
@@ -40,7 +39,7 @@ class _ListBankAccountsState extends State<ListBankAccounts> {
         context: context,
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Bank Accounts List",
+        title: "Accounts List",
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -59,67 +58,79 @@ class _ListBankAccountsState extends State<ListBankAccounts> {
           width: MediaQuery.of(context).size.width,
           decoration: primaryGradient(context),
           child: Consumer<Groups>(builder: (context, groupData, child) {
-            return ListView.separated(
-              padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-              itemCount: groupData.accounts.length,
+            return ListView.builder(
+              shrinkWrap: true,
+              itemCount: groupData.allAccounts.length,
               itemBuilder: (context, index) {
-                return ListTile(
-                  dense: true,
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
+                String accountTitle = "";
+                accountTitle = accountTypes[index];
+                List<Account> accounts = groupData.allAccounts[index];
+
+                return accounts.length > 0
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Icon(
-                                Icons.label,
-                                color: Colors.blueGrey,
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              accountTitle,
+                              textAlign: TextAlign.start,
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
+                                fontWeight: FontWeight.w300,
+                                fontSize: 18.0,
                               ),
-                              SizedBox(width: 10.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Text(
-                                    '${groupData.accounts[index].name}',
+                            ),
+                          ),
+                          ListView.separated(
+                            shrinkWrap: true,
+                            padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+                            itemCount: accounts.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                child: ListTile(
+                                  leading: Icon(
+                                    Icons.credit_card,
+                                    size: 20,
+                                  ),
+                                  title: Text(
+                                    '${accounts[index].name}',
                                     style: TextStyle(
                                       color: Theme.of(context)
                                           .textSelectionHandleColor,
-                                      fontWeight: FontWeight.w800,
-                                      fontSize: 12.0,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 16.0,
                                     ),
                                   ),
-                                ],
-                              ),
-                            ],
+                                  trailing: Padding(
+                                    padding: EdgeInsets.all(12.0),
+                                    child: circleIconButton(
+                                      icon: Icons.close,
+                                      backgroundColor:
+                                          Colors.redAccent.withOpacity(.3),
+                                      color: Colors.red,
+                                      iconSize: 18.0,
+                                      padding: 0.0,
+                                      onPressed: () {
+                                        // TODO: Implement Delete Method
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                            separatorBuilder: (context, index) {
+                              return Divider(
+                                color: Theme.of(context).dividerColor,
+                                height: 6.0,
+                              );
+                            },
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              smallBadgeButton(
-                                backgroundColor: primaryColor.withOpacity(0.2),
-                                textColor: primaryColor,
-                                text:
-                                    '${accountTypes[groupData.accounts[index].typeId]}',
-                                action: () {},
-                                buttonHeight: 24.0,
-                                textSize: 12.0,
-                              ),
-                            ],
-                          )
                         ],
-                      ),
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Divider(
-                  color: Theme.of(context).dividerColor,
-                  height: 6.0,
-                );
+                      )
+                    : Container();
               },
             );
           })),
