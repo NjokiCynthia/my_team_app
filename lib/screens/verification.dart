@@ -67,7 +67,7 @@ class _VerificationState extends State<Verification> {
         Navigator.pushReplacementNamed(context, SignUp.namedRoute);
       }
     } on CustomException catch (error) {
-      StatusHandler().handleStatus(context, error);
+      StatusHandler().handleStatus(context: context, error: error, callback: () {});
     } finally {
       setState(() {
         _isLoading = false;
@@ -88,109 +88,112 @@ class _VerificationState extends State<Verification> {
   Widget build(BuildContext context) {
     _identity = ModalRoute.of(context).settings.arguments as String;
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Stack(
-        children: <Widget>[
-          Form(
-            key: _formKey,
-            child: Container(
-              alignment: Alignment.center,
-              decoration: primaryGradient(context),
-              child: SingleChildScrollView(
-                padding: EdgeInsets.all(40.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                      child: Image(
-                        image: AssetImage('assets/$_logo'),
-                        height: 100.0,
+        backgroundColor: Colors.transparent,
+        body: Builder(
+          builder: (BuildContext context) {
+            return Stack(
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    alignment: Alignment.center,
+                    decoration: primaryGradient(context),
+                    child: SingleChildScrollView(
+                      padding: EdgeInsets.all(40.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                            child: Image(
+                              image: AssetImage('assets/$_logo'),
+                              height: 100.0,
+                            ),
+                          ),
+                          heading1(text: "Verification", color: Theme.of(context).textSelectionHandleColor),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          subtitle1(text: "A verification code has been sent to", color: Theme.of(context).textSelectionHandleColor),
+                          customTitle(text: _identity, color: Theme.of(context).textSelectionHandleColor),
+                          SizedBox(
+                            height: 12,
+                          ),
+                          subtitle2(text: "Enter your code here", color: Theme.of(context).textSelectionHandleColor),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
+                            child: PinInputTextFormField(
+                              //child: PinInputTextField(
+                              pinLength: 4,
+                              decoration: UnderlineDecoration(
+                                enteredColor: primaryColor,
+                                color: Theme.of(context).textSelectionHandleColor,
+                                lineHeight: 2.0,
+                                textStyle: TextStyle(
+                                  color: primaryColor,
+                                  fontSize: 20.0,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                                obscureStyle: ObscureStyle(
+                                  isTextObscure: false,
+                                ),
+                                // hintText: "1234",
+                              ),
+                              controller: _pinEditingController,
+                              textInputAction: TextInputAction.done,
+                              enabled: _isFormInputEnabled,
+                              autoFocus: true,
+                              validator: (value) {
+                                if (!_validOtp(value)) {
+                                  return "Please enter a valid pin";
+                                }
+                                return null;
+                              },
+                              onSubmit: (pin) {
+                                _submit(context);
+                              },
+                              onChanged: (pin) {
+                                if (pin.length == 4) {
+                                  _submit(context);
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : defaultButton(
+                                  context: context,
+                                  text: "Verify Phone",
+                                  onPressed: () => _submit(context),
+                                ),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
+                            "Didn't receive verification code?": {},
+                            'Resend': {"url": () => print("Resending now..."), "color": primaryColor, "weight": FontWeight.w700},
+                          }),
+                        ],
                       ),
                     ),
-                    heading1(text: "Verification", color: Theme.of(context).textSelectionHandleColor),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    subtitle1(text: "A verification code has been sent to", color: Theme.of(context).textSelectionHandleColor),
-                    customTitle(text: _identity, color: Theme.of(context).textSelectionHandleColor),
-                    SizedBox(
-                      height: 12,
-                    ),
-                    subtitle2(text: "Enter your code here", color: Theme.of(context).textSelectionHandleColor),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
-                      child: PinInputTextFormField(
-                        //child: PinInputTextField(
-                        pinLength: 4,
-                        decoration: UnderlineDecoration(
-                          enteredColor: primaryColor,
-                          color: Theme.of(context).textSelectionHandleColor,
-                          lineHeight: 2.0,
-                          textStyle: TextStyle(
-                            color: primaryColor,
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                          obscureStyle: ObscureStyle(
-                            isTextObscure: false,
-                          ),
-                          // hintText: "1234",
-                        ),
-                        controller: _pinEditingController,
-                        textInputAction: TextInputAction.done,
-                        enabled: _isFormInputEnabled,
-                        autoFocus: true,
-                        validator: (value) {
-                          if (!_validOtp(value)) {
-                            return "Please enter a valid pin";
-                          }
-                          return null;
-                        },
-                        onSubmit: (pin) {
-                          _submit(context);
-                        },
-                        onChanged: (pin) {
-                          if (pin.length == 4) {
-                            _submit(context);
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    _isLoading
-                        ? CircularProgressIndicator()
-                        : defaultButton(
-                            context: context,
-                            text: "Verify Phone",
-                            onPressed: () => _submit(context),
-                          ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
-                      "Didn't receive verification code?": {},
-                      'Resend': {"url": () => print("Resending now..."), "color": primaryColor, "weight": FontWeight.w700},
-                    }),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 50.0,
-            left: 20.0,
-            child: screenActionButton(
-              icon: LineAwesomeIcons.arrow_left,
-              backgroundColor: primaryColor.withOpacity(0.2),
-              textColor: primaryColor,
-              action: () => Navigator.of(context).pop(),
-            ),
-          )
-        ],
-      ),
-    );
+                Positioned(
+                  top: 50.0,
+                  left: 20.0,
+                  child: screenActionButton(
+                    icon: LineAwesomeIcons.arrow_left,
+                    backgroundColor: primaryColor.withOpacity(0.2),
+                    textColor: primaryColor,
+                    action: () => Navigator.of(context).pop(),
+                  ),
+                )
+              ],
+            );
+          },
+        ));
   }
 }

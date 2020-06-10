@@ -29,6 +29,7 @@ dependencies:
   encrypt: ^4.0.1
   simple_rsa: ^0.0.5
   tuple: ^1.0.3
+  connectivity: ^0.4.8+6
 
 dev_dependencies:
   flutter_test:

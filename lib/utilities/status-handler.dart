@@ -2,21 +2,25 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/dialogs.dart';
 
 class StatusHandler {
-  void handleStatus(BuildContext context, CustomException exception) {
-    switch (exception.status) {
+  void handleStatus({BuildContext context, CustomException error, VoidCallback callback}) {
+    switch (error.status) {
       case ErrorStatusCode.statusNormal:
-        showErrorDialog(context, "Hello ere" + exception.message);
+        showErrorDialog(context, error.message);
         break;
       case ErrorStatusCode.statusRequireLogout:
         logout(context);
         break;
       case ErrorStatusCode.statusRequireRestart:
+        break;
+      case ErrorStatusCode.statusNoInternet:
+        showRetrySnackBar(context, error.message, callback);
         break;
       default:
         break;
@@ -25,6 +29,18 @@ class StatusHandler {
 
   void showErrorDialog(BuildContext context, String message) {
     alertDialog(context, message);
+  }
+
+  void showRetrySnackBar(BuildContext context, String message, VoidCallback voidCallback) {
+    final snackBar = SnackBar(
+      content: subtitle2(text: message, textAlign: TextAlign.start),
+      action: SnackBarAction(
+        label: "Retry",
+        onPressed: () => voidCallback(),
+      ),
+    );
+
+    Scaffold.of(context).showSnackBar(snackBar);
   }
 
   void logout(BuildContext context) {
