@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:chamasoft/providers/auth.dart';
 import 'package:encrypt/encrypt.dart';
@@ -105,94 +106,107 @@ class PostToServer {
   }
 
   static Future<dynamic> post(String jsonObject, String url) async {
-    final String randomKey = CustomHelper.generateRandomString(16);
     try {
-      final String secretKey = await _encryptSecretKey(randomKey);
-      final String versionCode = await CustomHelper.getApplicationBuildNumber();
-      final String userAccessTokenKey = await Auth.getAccessToken();
-      final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
-      final Map<String, String> headers = {
-        "Secret": secretKey,
-        "Versioncode": versionCode,
-        "Authorization": userAccessToken,
-      };
-      print("Token : $userAccessToken , URL: $url");
-      final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
-      try {
-        final http.Response response = await http.post(url, headers: headers, body: postRequest);
+      final result = await InternetAddress.lookup("example.com").timeout(const Duration(seconds: 10), onTimeout: () {
+        throw CustomException(message: ERROR_MESSAGE_INTERNET, status: ErrorStatusCode.statusNoInternet);
+      });
+      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+        final String randomKey = CustomHelper.generateRandomString(16);
+        print(url);
         try {
-          final responseBody = await generateResponse(response.body);
-          print("Server response $responseBody");
-          String message = responseBody["message"].toString();
-          print("error message $message");
-          switch (responseBody['status']) {
-            case 0:
-              //handle validation and other generic errors
-              //display error(s)
-              throw CustomException(message: message);
-              break;
-            case 1:
-              //request successful
-              //throw HttpException(message, ErrorStatusCode.statusNormal);
-              return responseBody;
-              break;
-            case 2:
-            case 3:
-              //generic error
-              //display error
-              throw CustomException(message: message);
-              break;
-            case 4:
-            case 8:
-            case 9:
-              //reset app
-              throw CustomException(message: message, status: ErrorStatusCode.statusRequireLogout);
-              break;
-            case 5:
-            case 6:
-            case 10:
-              //clear current group loaded to preferences
-              //clear screens and restart app from splash screen
-              throw CustomException(message: message, status: ErrorStatusCode.statusRequireRestart);
-              break;
-            case 7:
-              //generic error
-              //display error
-              throw CustomException(message: message);
-              break;
-            case 11:
-            case 13:
-              //invalid request id or format
-              throw CustomException(message: message);
-              break;
-            case 12:
-              //duplicate request submitted
-              //treat as case 1
-              //notify user of duplicates
-              return responseBody;
-              break;
-            case 400:
-              //log out user
-              throw CustomException(message: ERROR_MESSAGE_LOGIN, status: ErrorStatusCode.statusRequireLogout);
-              break;
-            case 404:
-              //generic error
-              //display error
-              throw CustomException(message: ERROR_MESSAGE);
-              break;
-            default:
-              //generic error
-              //display error
-              throw CustomException(message: ERROR_MESSAGE);
+          final String secretKey = await _encryptSecretKey(randomKey);
+          final String versionCode = await CustomHelper.getApplicationBuildNumber();
+          final String userAccessTokenKey = await Auth.getAccessToken();
+          final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
+          print(userAccessToken);
+          final Map<String, String> headers = {
+            "Secret": secretKey,
+            "Versioncode": versionCode,
+            "Authorization": userAccessToken,
+          };
+          final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
+          try {
+            final http.Response response = await http.post(url, headers: headers, body: postRequest);
+            try {
+              final responseBody = await generateResponse(response.body);
+              print("Server response $responseBody");
+              String message = responseBody["message"].toString();
+              print("error message $message");
+              switch (responseBody['status']) {
+                case 0:
+                  //handle validation and other generic errors
+                  //display error(s)
+                  throw CustomException(message: message);
+                  break;
+                case 1:
+                  //request successful
+                  //throw HttpException(message, ErrorStatusCode.statusNormal);
+                  return responseBody;
+                  break;
+                case 2:
+                case 3:
+                  //generic error
+                  //display error
+                  throw CustomException(message: message);
+                  break;
+                case 4:
+                case 8:
+                case 9:
+                  //reset app
+                  throw CustomException(message: message, status: ErrorStatusCode.statusRequireLogout);
+                  break;
+                case 5:
+                case 6:
+                case 10:
+                  //clear current group loaded to preferences
+                  //clear screens and restart app from splash screen
+                  throw CustomException(message: message, status: ErrorStatusCode.statusRequireRestart);
+                  break;
+                case 7:
+                  //generic error
+                  //display error
+                  throw CustomException(message: message);
+                  break;
+                case 11:
+                case 13:
+                  //invalid request id or format
+                  throw CustomException(message: message);
+                  break;
+                case 12:
+                  //duplicate request submitted
+                  //treat as case 1
+                  //notify user of duplicates
+                  return responseBody;
+                  break;
+                case 400:
+                  //log out user
+                  throw CustomException(message: ERROR_MESSAGE_LOGIN, status: ErrorStatusCode.statusRequireLogout);
+                  break;
+                case 404:
+                  //generic error
+                  //display error
+                  throw CustomException(message: ERROR_MESSAGE);
+                  break;
+                default:
+                  //generic error
+                  //display error
+                  throw CustomException(message: ERROR_MESSAGE);
+              }
+            } catch (error) {
+              throw error;
+            }
+          } catch (error) {
+            print(error.toString());
+            throw error;
           }
         } catch (error) {
-          throw error;
+          throw (error);
         }
-      } catch (error) {
-        throw error;
+      } else {
+        throw CustomException(message: ERROR_MESSAGE_INTERNET, status: ErrorStatusCode.statusNoInternet);
       }
-    } catch (error) {
-      throw (error);
+    } on SocketException catch (_) {
+      throw CustomException(message: ERROR_MESSAGE_INTERNET, status: ErrorStatusCode.statusNoInternet);
     }
   }
 }

@@ -54,8 +54,11 @@ const int VIEW_APPLICATION_STATUS = 2;
 //Error messages and codes
 const String ERROR_MESSAGE = "We could not complete your request at the moment. Try again later";
 const String ERROR_MESSAGE_LOGIN = "Kindly login again";
+const String ERROR_MESSAGE_INTERNET = "No internet connection";
+
 enum ErrorStatusCode {
   statusNormal,
   statusRequireLogout, //logout the current user
   statusRequireRestart, //remove the current group loaded on shared preferences and clear screens to restart
+  statusNoInternet,
 }

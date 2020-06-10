@@ -53,7 +53,12 @@ class _LoginState extends State<Login> {
       await Provider.of<Auth>(context, listen: false).generatePin(_identity);
       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
     } on CustomException catch (error) {
-      StatusHandler().handleStatus(context, error);
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
     } finally {
       setState(() {
         _isLoading = false;
@@ -65,84 +70,85 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Form(
-        key: _formKey,
-        child: Container(
-          alignment: Alignment.center,
-          decoration: primaryGradient(context),
-          child: SingleChildScrollView(
-            padding: EdgeInsets.all(40.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                  child: Image(
-                    image: AssetImage('assets/$_logo'),
-                    height: 100.0,
-                  ),
-                ),
-                heading1(text: "Chamasoft", color: Theme.of(context).textSelectionHandleColor),
-                SizedBox(
-                  height: 10,
-                ),
-                subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
-                subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
-                TextFormField(
-                  enabled: _isFormInputEnabled,
-                  decoration: InputDecoration(
-                    hasFloatingPlaceholder: true,
-                    labelText: 'Phone number or Email',
-                    // enabledBorder: UnderlineInputBorder(
-                    //   borderSide: BorderSide(
-                    //     color: Theme.of(context).hintColor,
-                    //     width: 1.0,
-                    //   ),
-                    // ),
-                  ),
-                  validator: (value) {
-                    if (!CustomHelper.validIdentity(value)) {
-                      return 'Enter valid email or phone number';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    _identity = value;
-                  },
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                _isLoading
-                    ? CircularProgressIndicator()
-                    : defaultButton(
-                        context: context,
-                        text: "Continue",
-                        onPressed: () => _submit(context),
+        backgroundColor: Colors.transparent,
+        body: Builder(builder: (BuildContext context) {
+          return Form(
+            key: _formKey,
+            child: Container(
+              alignment: Alignment.center,
+              decoration: primaryGradient(context),
+              child: SingleChildScrollView(
+                padding: EdgeInsets.all(40.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                      child: Image(
+                        image: AssetImage('assets/$_logo'),
+                        height: 100.0,
                       ),
-                SizedBox(
-                  height: 24,
+                    ),
+                    heading1(text: "Chamasoft", color: Theme.of(context).textSelectionHandleColor),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
+                    subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
+                    TextFormField(
+                      enabled: _isFormInputEnabled,
+                      decoration: InputDecoration(
+                        hasFloatingPlaceholder: true,
+                        labelText: 'Phone number or Email',
+                        // enabledBorder: UnderlineInputBorder(
+                        //   borderSide: BorderSide(
+                        //     color: Theme.of(context).hintColor,
+                        //     width: 1.0,
+                        //   ),
+                        // ),
+                      ),
+                      validator: (value) {
+                        if (!CustomHelper.validIdentity(value)) {
+                          return 'Enter valid email or phone number';
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _identity = value;
+                      },
+                    ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : defaultButton(
+                            context: context,
+                            text: "Continue",
+                            onPressed: () => _submit(context),
+                          ),
+                    SizedBox(
+                      height: 24,
+                    ),
+                    textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
+                      'By continuing you agree to our': {},
+                      'terms & conditions': {
+                        "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                        "color": primaryColor,
+                        "weight": FontWeight.w500
+                      },
+                      'and': {},
+                      'privacy policy.': {
+                        "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                        "color": primaryColor,
+                        "weight": FontWeight.w500
+                      },
+                    }),
+                  ],
                 ),
-                textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
-                  'By continuing you agree to our': {},
-                  'terms & conditions': {
-                    "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-                    "color": primaryColor,
-                    "weight": FontWeight.w500
-                  },
-                  'and': {},
-                  'privacy policy.': {
-                    "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-                    "color": primaryColor,
-                    "weight": FontWeight.w500
-                  },
-                }),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
+        }));
   }
 }
