@@ -37,6 +37,7 @@ class Groups with ChangeNotifier {
 
   List<Group> _items = [];
   List<Account> _accounts = [];
+  List<List<Account>> _allAccounts = [];
 
   List<Group> get item {
     return [..._items];
@@ -46,14 +47,20 @@ class Groups with ChangeNotifier {
     return _accounts;
   }
 
+  List<List<Account>> get allAccounts {
+    return _allAccounts;
+  }
+
   void addAccounts(List<dynamic> groupBankAccounts, int accountType) {
     final List<Account> bankAccounts = [];
     if (groupBankAccounts.length > 0) {
       for (var bankAccountJSON in groupBankAccounts) {
         final newAccount = Account(id: bankAccountJSON['id']..toString(), name: bankAccountJSON['name']..toString(), typeId: accountType);
+        bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
     }
+    _allAccounts.add(bankAccounts);
     notifyListeners();
   }
 
@@ -65,8 +72,8 @@ class Groups with ChangeNotifier {
             Group(groupId: groupJSON['id']..toString(), groupName: groupJSON['name']..toString(), groupSize: groupJSON['size']..toString());
         loadedGroups.add(newGroup);
       }
-      _items = loadedGroups;
     }
+    _items = loadedGroups;
     notifyListeners();
   }
 
@@ -119,7 +126,6 @@ class Groups with ChangeNotifier {
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
-      print("error ${error.toString()}");
       throw CustomException(message: ERROR_MESSAGE);
     }
   }

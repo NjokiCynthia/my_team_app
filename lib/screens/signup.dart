@@ -37,12 +37,8 @@ class _SignUpState extends State<SignUp> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  heading1(
-                      text: "Profile",
-                      color: Theme.of(context).textSelectionHandleColor),
-                  subtitle1(
-                      text: "Fill details to complete\naccount setup",
-                      color: Theme.of(context).textSelectionHandleColor),
+                  heading1(text: "Profile", color: Theme.of(context).textSelectionHandleColor),
+                  subtitle1(text: "Fill details to complete\naccount setup", color: Theme.of(context).textSelectionHandleColor),
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
                     child: Stack(
@@ -56,10 +52,7 @@ class _SignUpState extends State<SignUp> {
                           height: 32,
                           width: 32,
                           child: screenActionButton(
-                              icon: Icons.camera_alt,
-                              backgroundColor: Colors.white.withOpacity(0.5),
-                              textColor: Colors.blueGrey,
-                              action: () {}),
+                              icon: Icons.camera_alt, backgroundColor: Colors.white.withOpacity(0.5), textColor: Colors.blueGrey, action: () {}),
                         )
                       ],
                     ),
