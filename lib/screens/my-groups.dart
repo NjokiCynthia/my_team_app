@@ -62,9 +62,10 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
     double height = MediaQuery.of(context).size.height * 0.45;
     double itemCountHeight = (itemCount.toDouble()) * 80;
     return Container(
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-        height: itemCount >= 1 ? (itemCountHeight > height ? height : itemCountHeight) : 80,
-        child: child);
+      decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
+      height: itemCount >= 1 ? (itemCountHeight > height ? height : itemCountHeight) : 80,
+      child: child,
+    );
   }
 
   @override
@@ -122,7 +123,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   hideTrailingIcon: true,
                   backgroundColor: primaryColor.withOpacity(0.2),
                   title: "ADD NEW GROUP",
-                  subtitle: "Chairperson",
+                  subtitle: "Social Group, Merry-go-round, Fundraiser",
                   textColor: primaryColor,
                   borderColor: primaryColor,
                   action: () => Navigator.of(context).push(

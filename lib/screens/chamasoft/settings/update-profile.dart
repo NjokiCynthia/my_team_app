@@ -9,7 +9,9 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:chamasoft/providers/auth.dart';
 
 class UpdateProfile extends StatefulWidget {
   @override
@@ -38,6 +40,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    final auth = Provider.of<Auth>(context, listen: false);
+    name = auth.userName;
+    phoneNumber = auth.phoneNumber;
+    emailAddress = auth.emailAddress;
     super.initState();
   }
 
