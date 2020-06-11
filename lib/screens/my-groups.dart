@@ -3,7 +3,6 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/create-group.dart';
-import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -37,6 +36,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
           });
     } finally {}
   }
+
   @override
   void initState() {
     _controller = AnimationController(
@@ -86,7 +86,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                 heading1(text: "My Groups", color: Theme.of(context).textSelectionHandleColor),
                 subtitle1(text: "All groups I belong to", color: Theme.of(context).textSelectionHandleColor),
                 SizedBox(
-                  height: 32,
+                  height: 20,
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
@@ -135,43 +135,41 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     FutureBuilder(
-                      future: _future,
-                      builder: (ctx, snapshot) =>snapshot.connectionState == ConnectionState.waiting
-                      ? buildContainer(Center(child: CircularProgressIndicator()), 0)
-                      : RefreshIndicator(
-                        onRefresh: () => _getUserCheckinData(context),
-                        child: Consumer<Groups>(
-                          child: Center(
-                            child: Text("Groups"),
-                          ),
-                          builder: (ctx, groups, ch) =>buildContainer(
-                            ListView.builder(
-                              shrinkWrap: true,
-                              //physics: NeverScrollableScrollPhysics(),
-                              itemCount: groups.item.length,
-                              itemBuilder: (ctx2, index) {
-                                return groupInfoButton(
-                                  context: context,
-                                  leadingIcon: LineAwesomeIcons.group,
-                                  trailingIcon: LineAwesomeIcons.angle_right,
-                                  backgroundColor: primaryColor.withOpacity(0.2),
-                                  title: "${groups.item[index].groupName}",
-                                  subtitle: "${groups.item[index].groupSize} Members",
-                                  description: "Member",
-                                  textColor: Colors.blueGrey,
-                                  borderColor: Colors.blueGrey.withOpacity(0.2),
-                                  action: () {
-                                    Provider.of<Groups>(ctx2, listen: false).setSelectedGroupId(groups.item[index].groupId);
-                                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ChamasoftDashboard(),));
-                                  }
-                                );
-                              }
-                            ),
-                            groups.item.length
-                          ),
-                        ),
-                      )
-                    ),
+                        future: _future,
+                        builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                            ? buildContainer(Center(child: CircularProgressIndicator()), 0)
+                            : RefreshIndicator(
+                                onRefresh: () => _getUserCheckinData(context),
+                                child: Consumer<Groups>(
+                                  child: Center(
+                                    child: Text("Groups"),
+                                  ),
+                                  builder: (ctx, groups, ch) => buildContainer(
+                                      ListView.builder(
+                                          shrinkWrap: true,
+                                          //physics: NeverScrollableScrollPhysics(),
+                                          itemCount: groups.item.length,
+                                          itemBuilder: (ctx2, index) {
+                                            return groupInfoButton(
+                                                context: context,
+                                                leadingIcon: LineAwesomeIcons.group,
+                                                trailingIcon: LineAwesomeIcons.angle_right,
+                                                backgroundColor: primaryColor.withOpacity(0.2),
+                                                title: "${groups.item[index].groupName}",
+                                                subtitle: "${groups.item[index].groupSize} Members",
+                                                description: "Member",
+                                                textColor: Colors.blueGrey,
+                                                borderColor: Colors.blueGrey.withOpacity(0.2),
+                                                action: () {
+                                                  Provider.of<Groups>(ctx2, listen: false).setSelectedGroupId(groups.item[index].groupId);
+                                                  Navigator.of(context).push(MaterialPageRoute(
+                                                    builder: (BuildContext context) => ChamasoftDashboard(),
+                                                  ));
+                                                });
+                                          }),
+                                      groups.item.length),
+                                ),
+                              )),
                     Padding(
                       padding: EdgeInsets.only(
                         top: 20.0,
