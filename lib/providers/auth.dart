@@ -227,4 +227,10 @@ class Auth with ChangeNotifier {
     prefs.remove(accessToken);
     notifyListeners();
   }
+
+  Future<void> updateUserName()async{
+    const url = EndpointUrl.UPDATE_USER_NAME;
+
+    notifyListeners();
+  }
 }
