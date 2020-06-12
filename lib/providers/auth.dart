@@ -74,7 +74,9 @@ class Auth with ChangeNotifier {
   }
 
   String get displayAvatar {
-    var result = (_avatar != null || _avatar == "") ? CustomHelper.imageUrl + _avatar : null;
+    var result = (_avatar != null || _avatar == "")
+        ? CustomHelper.imageUrl + _avatar
+        : null;
     return result;
   }
 
@@ -83,7 +85,8 @@ class Auth with ChangeNotifier {
     if (prefs.containsKey(user)) {
       String userObject = prefs.getString(user);
       try {
-        final extractedUserData = json.decode(userObject) as Map<String, Object>;
+        final extractedUserData =
+            json.decode(userObject) as Map<String, Object>;
         if (_phoneNumber == "") {
           _phoneNumber = extractedUserData[phone]..toString();
         }
@@ -127,7 +130,8 @@ class Auth with ChangeNotifier {
       String userObject = prefs.getString(user);
       try {
         if (key != null && key.isNotEmpty && key != "0") {
-          final extractedUserData = json.decode(userObject) as Map<String, Object>;
+          final extractedUserData =
+              json.decode(userObject) as Map<String, Object>;
           if (extractedUserData.containsKey(key)) {
             return extractedUserData[key].toString();
           } else {
@@ -137,7 +141,8 @@ class Auth with ChangeNotifier {
           return "";
         }
       } catch (error) {
-        throw CustomException(message: "JSON Passing error " + error.toString());
+        throw CustomException(
+            message: "JSON Passing error " + error.toString());
       }
     } else {
       return "";
@@ -159,7 +164,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> resendPin(String identity) async{
+  Future<void> resendPin(String identity) async {
     const url = EndpointUrl.RESEND_OTP;
     final postRequest = json.encode({
       "identity": identity,
@@ -228,8 +233,8 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateUserName()async{
-    const url = EndpointUrl.UPDATE_USER_NAME;
+  Future<void> updateUserName() async {
+    //const url = EndpointUrl.UPDATE_USER_NAME;
 
     notifyListeners();
   }
