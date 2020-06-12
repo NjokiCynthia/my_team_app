@@ -169,7 +169,22 @@ class Member {
   });
 }
 
+class AccountBalance {
+  String name, accountNumber, balance;
+  bool isHeader;
+  String header;
 
+  AccountBalance.header({this.isHeader, this.header});
+
+  AccountBalance({this.isHeader, this.name, this.accountNumber, this.balance});
+}
+
+class AccountBalances {
+  List<AccountBalance> accounts;
+  String totalBalance;
+
+  AccountBalances({this.accounts, this.totalBalance});
+}
 
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
@@ -183,6 +198,7 @@ class Groups with ChangeNotifier {
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
   List<List<Account>> _allAccounts = [];
+  AccountBalances accountBalances;
 
   List<Group> get item {
     return [..._items];
@@ -329,12 +345,34 @@ class Groups with ChangeNotifier {
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
         final newGroup =
-            Group(groupId: groupJSON['id']..toString(), groupName: groupJSON['name']..toString(), groupSize: groupJSON['size']..toString());
+        Group(groupId: groupJSON['id']
+          ..toString(), groupName: groupJSON['name']
+          ..toString(), groupSize: groupJSON['size']
+          ..toString());
         loadedGroups.add(newGroup);
       }
     }
     _items = loadedGroups;
     notifyListeners();
+  }
+
+  void addAccountBalances(dynamic data) {
+    final balances = data['balances'] as List<dynamic>;
+    final List<AccountBalance> bankAccounts = [];
+    if (balances.length > 0) {
+      for (var balance in balances) {
+        final name = balance['category_name'].toString();
+        bankAccounts.add(AccountBalance.header(isHeader: true, header: name));
+        final accounts = balance['account_balances'] as List<dynamic>;
+        for (var account in accounts) {
+          final accountBalance =
+          AccountBalance(isHeader: false, name: account['account_name'].toString(), accountNumber: '10010012123', balance: account['account_balance'].toString());
+          bankAccounts.add(accountBalance);
+        }
+      }
+    }
+    String totalBalance = data['grand_total_balance'].toString();
+    accountBalances = AccountBalances(accounts: bankAccounts, totalBalance: totalBalance);
   }
 
   Future<void> fetchAndSetUserGroups() async {
@@ -512,6 +550,34 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
+  Future<void> fetchReportAccountBalances() async {
+    const url = EndpointUrl.GET_ACCOUNT_BALANCES;
+
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+
+      try {
+        final response = await PostToServer.post(postRequest, url);
+
+        final data = response['data'] as dynamic;
+        addAccountBalances(data);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   setSelectedGroupId(String groupId) async {
     currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();

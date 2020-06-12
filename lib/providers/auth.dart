@@ -159,7 +159,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> resendPin(String identity) async{
+  Future<void> resendPin(String identity) async {
     const url = EndpointUrl.RESEND_OTP;
     final postRequest = json.encode({
       "identity": identity,
@@ -228,8 +228,8 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateUserName()async{
-    const url = EndpointUrl.UPDATE_USER_NAME;
+  Future<void> updateUserName() async {
+    //const url = EndpointUrl.UPDATE_USER_NAME;
 
     notifyListeners();
   }
