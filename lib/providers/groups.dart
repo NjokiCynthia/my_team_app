@@ -90,87 +90,32 @@ class FineType {
   });
 }
 
+
 class LoanType {
   final String  id;
   final String  name;
-  final String  description;
-  final String  repayment_period_type;
-  final String  interest_type;
-  final String  interest_rate;
-  final String  loan_interest_rate_per;
-  final String  loan_repayment_period_type;
-  final String  minimum_repayment_period;
-  final String  maximum_repayment_period;
-  final String  fixed_repayment_period;
-  final String  enable_loan_guarantors;
-  final String  minimum_guarantors;
-  final String  enable_loan_fines;
-  final String  loan_fine_type;
-  final String  fixed_fine_amount;
-  final String  fixed_amount_fine_frequency;
-  final String  fixed_amount_fine_frequency_on;
-  final String  percentage_fine_rate;
-  final String  percentage_fine_frequency;
-  final String  percentage_fine_on;
-  final String  one_off_fine_type;
-  final String  one_off_fixed_amount;
-  final String  one_off_percentage_rate;
-  final String  one_off_percentage_rate_on;
-  final String  enable_outstanding_loan_balance_fines;
-  final String  outstanding_loan_balance_fine_type;
-  final String  outstanding_loan_balance_fine_fixed_amount;
-  final String  outstanding_loan_balance_fixed_fine_frequency;
-  final String  outstanding_loan_balance_percentage_fine_rate;
-  final String  outstanding_loan_balance_percentage_fine_frequency;
-  final String  outstanding_loan_balance_percentage_fine_on;
-  final String  outstanding_loan_balance_fine_one_off_amount;
-  final String  enable_loan_processing_fee;
-  final String  loan_processing_fee_type;
-  final String  loan_processing_fee_fixed_amount;
-  final String  loan_processing_fee_percentage_rate;
-  final String  loan_processing_fee_percentage_charged_on;
-  final String  loan_guarantors_type;
+  final String  repaymentPeriod;
+  final String  loanAmount;
+  final String  interestRate;
+  final String  loanProcessing;
+  final String  disbursementDate;
+  final String  guarantors;
+  final String  latePaymentFines;
+  final String  outstandingPaymentFines;
+  final String  isHidden;
 
   LoanType({
     this.id,
     this.name,
-    this.description,
-    this.repayment_period_type,
-    this.interest_type,
-    this.interest_rate,
-    this.loan_interest_rate_per,
-    this.loan_repayment_period_type,
-    this.minimum_repayment_period,
-    this.maximum_repayment_period,
-    this.fixed_repayment_period,
-    this.enable_loan_guarantors,
-    this.minimum_guarantors,
-    this.enable_loan_fines,
-    this.loan_fine_type,
-    this.fixed_fine_amount,
-    this.fixed_amount_fine_frequency,
-    this.fixed_amount_fine_frequency_on,
-    this.percentage_fine_rate,
-    this.percentage_fine_frequency,
-    this.percentage_fine_on,
-    this.one_off_fine_type,
-    this.one_off_fixed_amount,
-    this.one_off_percentage_rate,
-    this.one_off_percentage_rate_on,
-    this.enable_outstanding_loan_balance_fines,
-    this.outstanding_loan_balance_fine_type,
-    this.outstanding_loan_balance_fine_fixed_amount,
-    this.outstanding_loan_balance_fixed_fine_frequency,
-    this.outstanding_loan_balance_percentage_fine_rate,
-    this.outstanding_loan_balance_percentage_fine_frequency,
-    this.outstanding_loan_balance_percentage_fine_on,
-    this.outstanding_loan_balance_fine_one_off_amount,
-    this.enable_loan_processing_fee,
-    this.loan_processing_fee_type,
-    this.loan_processing_fee_fixed_amount,
-    this.loan_processing_fee_percentage_rate,
-    this.loan_processing_fee_percentage_charged_on,
-    this.loan_guarantors_type,
+    this.repaymentPeriod,
+    this.loanAmount,
+    this.interestRate,
+    this.loanProcessing,
+    this.disbursementDate,
+    this.guarantors,
+    this.latePaymentFines,
+    this.outstandingPaymentFines,
+    this.isHidden,
   });
 }
 
@@ -298,43 +243,16 @@ class Groups with ChangeNotifier {
         final newLoanType = LoanType(
           id: groupLoanTypesJSON['id']..toString,
           name: groupLoanTypesJSON['name']..toString,
-          description: groupLoanTypesJSON['description']..toString,
-          repayment_period_type: groupLoanTypesJSON['repayment_period_type']..toString,
-          interest_type: groupLoanTypesJSON['interest_type']..toString,
-          interest_rate: groupLoanTypesJSON['interest_rate']..toString,
-          loan_interest_rate_per: groupLoanTypesJSON['loan_interest_rate_per']..toString,
-          loan_repayment_period_type: groupLoanTypesJSON['loan_repayment_period_type']..toString,
-          minimum_repayment_period: groupLoanTypesJSON['minimum_repayment_period']..toString,
-          maximum_repayment_period: groupLoanTypesJSON['maximum_repayment_period']..toString,
-          fixed_repayment_period: groupLoanTypesJSON['fixed_repayment_period']..toString,
-          enable_loan_guarantors: groupLoanTypesJSON['enable_loan_guarantors']..toString,
-          minimum_guarantors: groupLoanTypesJSON['minimum_guarantors']..toString,
-          enable_loan_fines: groupLoanTypesJSON['enable_loan_fines']..toString,
-          loan_fine_type: groupLoanTypesJSON['loan_fine_type']..toString,
-          fixed_fine_amount: groupLoanTypesJSON['fixed_fine_amount']..toString,
-          fixed_amount_fine_frequency: groupLoanTypesJSON['fixed_amount_fine_frequency']..toString,
-          fixed_amount_fine_frequency_on: groupLoanTypesJSON['fixed_amount_fine_frequency_on']..toString,
-          percentage_fine_rate: groupLoanTypesJSON['percentage_fine_rate']..toString,
-          percentage_fine_frequency: groupLoanTypesJSON['percentage_fine_frequency']..toString,
-          percentage_fine_on: groupLoanTypesJSON['percentage_fine_on']..toString,
-          one_off_fine_type: groupLoanTypesJSON['one_off_fine_type']..toString,
-          one_off_fixed_amount: groupLoanTypesJSON['one_off_fixed_amount']..toString,
-          one_off_percentage_rate: groupLoanTypesJSON['one_off_percentage_rate']..toString,
-          one_off_percentage_rate_on: groupLoanTypesJSON['one_off_percentage_rate_on']..toString,
-          enable_outstanding_loan_balance_fines: groupLoanTypesJSON['enable_outstanding_loan_balance_fines']..toString,
-          outstanding_loan_balance_fine_type: groupLoanTypesJSON['outstanding_loan_balance_fine_type']..toString,
-          outstanding_loan_balance_fine_fixed_amount: groupLoanTypesJSON['outstanding_loan_balance_fine_fixed_amount']..toString,
-          outstanding_loan_balance_fixed_fine_frequency: groupLoanTypesJSON['outstanding_loan_balance_fixed_fine_frequency']..toString,
-          outstanding_loan_balance_percentage_fine_rate: groupLoanTypesJSON['outstanding_loan_balance_percentage_fine_rate']..toString,
-          outstanding_loan_balance_percentage_fine_frequency: groupLoanTypesJSON['outstanding_loan_balance_percentage_fine_frequency']..toString,
-          outstanding_loan_balance_percentage_fine_on: groupLoanTypesJSON['outstanding_loan_balance_percentage_fine_on']..toString,
-          outstanding_loan_balance_fine_one_off_amount: groupLoanTypesJSON['outstanding_loan_balance_fine_one_off_amount']..toString,
-          enable_loan_processing_fee: groupLoanTypesJSON['enable_loan_processing_fee']..toString,
-          loan_processing_fee_type: groupLoanTypesJSON['loan_processing_fee_type']..toString,
-          loan_processing_fee_fixed_amount: groupLoanTypesJSON['loan_processing_fee_fixed_amount']..toString,
-          loan_processing_fee_percentage_rate: groupLoanTypesJSON['loan_processing_fee_percentage_rate']..toString,
-          loan_processing_fee_percentage_charged_on: groupLoanTypesJSON['loan_processing_fee_percentage_charged_on']..toString,
-          loan_guarantors_type: groupLoanTypesJSON['loan_guarantors_type']..toString,
+          repaymentPeriod: groupLoanTypesJSON['repayment_period']..toString,
+          loanAmount: groupLoanTypesJSON['loan_amount']..toString,
+          interestRate: groupLoanTypesJSON['interest_rate']..toString,
+          loanProcessing: groupLoanTypesJSON['loan_processing']..toString,
+          disbursementDate: groupLoanTypesJSON['disbursement_date']..toString,
+          guarantors: groupLoanTypesJSON['guarantors']..toString,
+          latePaymentFines: groupLoanTypesJSON['late_payment_fines']..toString,
+          outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines']..toString,
+          isHidden: groupLoanTypesJSON['is_hidden']..toString,
+
         );
         _loanTypes.add(newLoanType);
       }
@@ -500,7 +418,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchLoanTypes() async {
-    const url = EndpointUrl.GET_GROUP_LOAN_TYPE_OPTIONS;
+    const url = EndpointUrl.GET_GROUP_LOAN_TYPES;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
