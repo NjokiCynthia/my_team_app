@@ -144,6 +144,28 @@ class Auth with ChangeNotifier {
     }
   }
 
+  Future<void> updateUserDetails(String key, String value) async{
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(user)) {
+      String userObject = prefs.getString(user);
+      try {
+        if (key != null && key.isNotEmpty && key != "0") {
+          final extractedUserData = json.decode(userObject) as Map<String, Object>;
+          if (extractedUserData.containsKey(key)) {
+            extractedUserData[key] = value;
+          }
+          setUserObject(json.encode(extractedUserData));
+        } else {
+          return "";
+        }
+      } catch (error) {
+        throw CustomException(message: "JSON Passing error " + error.toString());
+      }
+    } else {
+      return "";
+    }
+  }
+
   Future<void> generatePin(String identity) async {
     const url = EndpointUrl.GENERATE_OTP;
     final postRequest = json.encode({
@@ -228,9 +250,25 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateUserName()async{
+  Future<void> updateUserName(String name)async{
     const url = EndpointUrl.UPDATE_USER_NAME;
-
+    final postRequest = json.encode({
+      "name": name,
+      "user_id" : _userId,
+    });
+    try {
+      final response = await PostToServer.post(postRequest, url);
+      String userFirstName = response["first_name"]..toString();
+      String userLastName = response["last_name"]..toString();
+      _firstName = userFirstName;
+      _lastName = userLastName;
+      updateUserDetails(firstName,userFirstName);
+      updateUserDetails(lastName,userLastName);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
     notifyListeners();
   }
 }

@@ -15,6 +15,7 @@ class EndpointUrl {
   static const String VALIDATE_FORGOT_PASSWORD_CODE = CustomHelper.baseUrl + "/mobile/validate_forgot_password_code";
   static const String LOGIN = CustomHelper.baseUrl + "/mobile/login";
   static const String SIGNUP = CustomHelper.baseUrl + "/mobile/register_user";
+  static const String UPDATE_USER_NAME = CustomHelper.baseUrl+"/mobile/users/update_name";
 
   //Initial group setup
   static const String CREATE_GROUP = CustomHelper.baseUrl + "/mobile/create_group";

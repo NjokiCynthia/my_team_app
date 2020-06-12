@@ -12,6 +12,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 
 class UpdateProfile extends StatefulWidget {
   @override
@@ -23,9 +25,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
   ScrollController _scrollController;
   File avatar;
   String name = 'Jane Doe';
+  String _newName;
   String phoneNumber = '+254 701 234 567';
   String emailAddress = 'jane.doe@gmail.com';
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -52,6 +56,36 @@ class _UpdateProfileState extends State<UpdateProfile> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+
+  Future<void> _updateUserName(BuildContext context)async{
+    try{
+      if(name!=_newName){
+        await Provider.of<Auth>(context,listen:false).updateUserName(_newName);
+        setState(() {
+          name = _newName;
+        });
+        _scaffoldKey.currentState
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(SnackBar(content: Text("Copied \"Row \"")));
+        //Scaffold.of(context).showSnackBar(SnackBar(content: Text("Name successfully updated",textAlign: TextAlign.center,)));
+      }else{
+        _scaffoldKey.currentState
+                      ..removeCurrentSnackBar()
+                      ..showSnackBar(SnackBar(content: Text("Copied \"Row \"")));
+        //Scaffold.of(context).showSnackBar(SnackBar(content: Text("Name was not changed no update",textAlign: TextAlign.center,)));
+      }
+    }on CustomException catch(error){
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _updateUserName(context);
+          });
+    }finally{
+
+    }
   }
 
   void _updatePhoneNumber() {
@@ -144,7 +178,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               keyboardType: TextInputType.text,
               onChanged: (value) {
                 setState(() {
-                  name = value;
+                  _newName = value;
                 });
               },
               validator: (value) {
@@ -182,9 +216,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 style: new TextStyle(color: primaryColor),
               ),
               onPressed: () {
-                if (_formKey.currentState.validate()) {
-                  Navigator.of(context).pop();
-                }
+                Navigator.of(context).pop();
+                _updateUserName(context);
               },
             ),
           ],
@@ -256,6 +289,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
     );
   }
 
+  _displaySnackBar(BuildContext context) {
+    final snackBar = SnackBar(content: Text('Are you talkin\' to me?'));
+    Scaffold.of(context).showSnackBar(snackBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -274,6 +312,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Builder(builder: (ctx)=>RaisedButton(
+              child: Text('Show Snackbar'),
+              onPressed: ()=>_displaySnackBar(ctx),
+              ),),
               SizedBox(
                 height: 40.0,
               ),
