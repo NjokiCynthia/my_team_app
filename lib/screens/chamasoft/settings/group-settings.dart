@@ -353,9 +353,8 @@ class _GroupSettingsState extends State<GroupSettings> {
                   color: Theme.of(context).bottomAppBarColor,
                 ),
                 dense: true,
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ListContributions()));
+                onTap: () async {
+                  await fetchContributions(context);
                 },
               ),
               DashedDivider(

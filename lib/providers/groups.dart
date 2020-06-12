@@ -33,13 +33,34 @@ class Account {
 }
 
 
+
+
+
 class Contribution {
   final String id;
   final String name;
+  final String amount;
+  final String type;
+  final String contributionType;
+  final String frequency;
+  final String invoiceDate;
+  final String contributionDate;
+  final String oneTimeContributionSetting;
+  final String isHidden;
+  final String active;
 
   Contribution({
     @required this.id,
     @required this.name,
+    @required this.amount,
+    this.type,
+    this.contributionType,
+    this.frequency,
+    this.invoiceDate,
+    this.contributionDate,
+    this.oneTimeContributionSetting,
+    this.isHidden,
+    this.active,
   });
 }
 
@@ -220,7 +241,7 @@ class Groups with ChangeNotifier {
     final List<Account> bankAccounts = [];
     if (groupBankAccounts.length > 0) {
       for (var bankAccountJSON in groupBankAccounts) {
-        final newAccount = Account(id: bankAccountJSON['id']..toString(), name: bankAccountJSON['name']..toString(), typeId: accountType);
+        final newAccount = Account(id: bankAccountJSON['id'].toString(), name: bankAccountJSON['name'].toString(), typeId: accountType);
         bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
@@ -232,7 +253,19 @@ class Groups with ChangeNotifier {
   void addContributions(List<dynamic> groupContributions) {
     if (groupContributions.length > 0) {
       for (var groupContributionJSON in groupContributions) {
-        final newContribution = Contribution(id: groupContributionJSON['id']..toString(), name: groupContributionJSON['name']..toString());
+        final newContribution = Contribution(
+            id: groupContributionJSON['id'].toString(),
+            name: groupContributionJSON['name'].toString(),
+            amount: groupContributionJSON['amount'].toString(),
+            type: groupContributionJSON['type'].toString(),
+            contributionType: groupContributionJSON['contribution_type'].toString(),
+            frequency: groupContributionJSON['frequency'].toString(),
+            invoiceDate: groupContributionJSON['invoice_date'].toString(),
+            contributionDate: groupContributionJSON['contribution_date'].toString(),
+            oneTimeContributionSetting: groupContributionJSON['one_time_contribution_setting'].toString(),
+            isHidden: groupContributionJSON['is_hidden'].toString(),
+            active: groupContributionJSON['active'].toString(),
+        );
         _contributions.add(newContribution);
       }
     }
@@ -242,7 +275,7 @@ class Groups with ChangeNotifier {
   void addExpenses(List<dynamic> groupExpenses) {
     if (groupExpenses.length > 0) {
       for (var groupExpensesJSON in groupExpenses) {
-        final newExpense = Expense(position: groupExpensesJSON['position']..toString(), name: groupExpensesJSON['name']..toString(), amount: groupExpensesJSON['amount']..toString());
+        final newExpense = Expense(position: groupExpensesJSON['position'].toString(), name: groupExpensesJSON['name'].toString(), amount: groupExpensesJSON['amount'].toString());
         _expenses.add(newExpense);
       }
     }
@@ -252,7 +285,7 @@ class Groups with ChangeNotifier {
   void addFineTypes(List<dynamic> groupFineTypes) {
     if (groupFineTypes.length > 0) {
       for (var groupFineTypesJSON in groupFineTypes) {
-        final newFineType = FineType(id: groupFineTypesJSON['id']..toString(), name: groupFineTypesJSON['name']..toString(), amount: groupFineTypesJSON['amount']..toString(), balance: groupFineTypesJSON['balance']..toString());
+        final newFineType = FineType(id: groupFineTypesJSON['id'].toString(), name: groupFineTypesJSON['name'].toString(), amount: groupFineTypesJSON['amount'].toString(), balance: groupFineTypesJSON['balance'].toString());
         _fineTypes.add(newFineType);
       }
     }
@@ -313,11 +346,11 @@ class Groups with ChangeNotifier {
     if (groupMembers.length > 0) {
       for (var groupMembersJSON in groupMembers) {
         final newMember = Member(
-            id: groupMembersJSON['id']..toString(),
-            name: groupMembersJSON['name']..toString(),
-            userId: groupMembersJSON['user_id']..toString(),
-            identity: groupMembersJSON['identity']..toString(),
-            avatar: groupMembersJSON['avatar']..toString());
+            id: groupMembersJSON['id'].toString(),
+            name: groupMembersJSON['name'].toString(),
+            userId: groupMembersJSON['user_id'].toString(),
+            identity: groupMembersJSON['identity'].toString(),
+            avatar: groupMembersJSON['avatar'].toString());
         _members.add(newMember);
       }
     }
@@ -329,7 +362,7 @@ class Groups with ChangeNotifier {
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
         final newGroup =
-            Group(groupId: groupJSON['id']..toString(), groupName: groupJSON['name']..toString(), groupSize: groupJSON['size']..toString());
+            Group(groupId: groupJSON['id'].toString(), groupName: groupJSON['name'].toString(), groupSize: groupJSON['size'].toString());
         loadedGroups.add(newGroup);
       }
     }
@@ -392,7 +425,7 @@ class Groups with ChangeNotifier {
 
 
   Future<void> fetchContributions() async {
-    const url = EndpointUrl.GET_GROUP_CONTRIBUTIONS_OPTIONS;
+    const url = EndpointUrl.GET_GROUP_CONTRIBUTIONS;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
@@ -406,6 +439,7 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
+        print(error.toString());
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
