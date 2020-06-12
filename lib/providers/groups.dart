@@ -198,7 +198,7 @@ class Groups with ChangeNotifier {
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
   List<List<Account>> _allAccounts = [];
-  AccountBalances accountBalances;
+  AccountBalances _accountBalances;
 
   List<Group> get item {
     return [..._items];
@@ -230,6 +230,10 @@ class Groups with ChangeNotifier {
 
   List<List<Account>> get allAccounts {
     return _allAccounts;
+  }
+
+  AccountBalances get accountBalances {
+    return _accountBalances;
   }
 
   void addAccounts(List<dynamic> groupBankAccounts, int accountType) {
@@ -366,13 +370,18 @@ class Groups with ChangeNotifier {
         final accounts = balance['account_balances'] as List<dynamic>;
         for (var account in accounts) {
           final accountBalance =
-          AccountBalance(isHeader: false, name: account['account_name'].toString(), accountNumber: '10010012123', balance: account['account_balance'].toString());
+          AccountBalance(isHeader: false,
+              name: account['account_name'].toString(),
+              accountNumber: '10010012123',
+              balance: account['account_balance'].toString());
           bankAccounts.add(accountBalance);
         }
       }
     }
     String totalBalance = data['grand_total_balance'].toString();
-    accountBalances = AccountBalances(accounts: bankAccounts, totalBalance: totalBalance);
+    _accountBalances = AccountBalances(accounts: bankAccounts, totalBalance: totalBalance);
+
+    notifyListeners();
   }
 
   Future<void> fetchAndSetUserGroups() async {
