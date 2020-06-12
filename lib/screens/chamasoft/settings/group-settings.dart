@@ -15,6 +15,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'list-bank-accounts.dart';
+import 'list-expenses.dart';
 import 'update-group-profile.dart';
 
 class GroupSettings extends StatefulWidget {
@@ -135,7 +136,7 @@ class _GroupSettingsState extends State<GroupSettings> {
       await Provider.of<Groups>(context, listen: false).fetchExpenses();
 
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ListBankAccounts()));
+          .push(MaterialPageRoute(builder: (context) => ListExpenses()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -381,7 +382,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                   color: Theme.of(context).bottomAppBarColor,
                 ),
                 dense: true,
-                onTap: () {},
+                onTap: () async {
+                  await fetchExpenses(context);
+                },
               ),
               DashedDivider(
                 color: Color(0xFFECECEC),

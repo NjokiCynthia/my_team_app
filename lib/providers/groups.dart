@@ -275,7 +275,7 @@ class Groups with ChangeNotifier {
   void addExpenses(List<dynamic> groupExpenses) {
     if (groupExpenses.length > 0) {
       for (var groupExpensesJSON in groupExpenses) {
-        final newExpense = Expense(position: groupExpensesJSON['position'].toString(), name: groupExpensesJSON['name'].toString(), amount: groupExpensesJSON['amount'].toString());
+        final newExpense = Expense(position: groupExpensesJSON['position'].toString(), name: groupExpensesJSON['expense_name'].toString(), amount: groupExpensesJSON['amount'].toString());
         _expenses.add(newExpense);
       }
     }
@@ -460,11 +460,12 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _expenses = []; //clear accounts
-        final groupExpenses = response['expenses'] as List<dynamic>;
+        final groupExpenses = response['data']['expenses'] as List<dynamic>;
         addExpenses(groupExpenses);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
+        print(error.toString());
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
