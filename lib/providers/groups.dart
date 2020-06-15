@@ -147,6 +147,20 @@ class AccountBalances {
   AccountBalances({this.accounts, this.totalBalance});
 }
 
+class GroupContributionSummary{
+  final String memberId;
+  final String memberName;
+  final double paidAmount;
+  final double balanceAmount;
+
+  GroupContributionSummary({
+    @required this.memberId,
+    @required this.memberName,
+    @required this.paidAmount,
+    @required this.balanceAmount,
+  });
+}
+
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
   String currentGroupId = "";
@@ -160,9 +174,10 @@ class Groups with ChangeNotifier {
   List<Member> _members = [];
   List<List<Account>> _allAccounts = [];
   AccountBalances _accountBalances;
+  List<GroupContributionSummary> _groupcontributionSummary = [];
 
   List<Group> get item {
-    return [..._items];
+    return _items;
   }
 
   List<Account> get accounts {
@@ -195,6 +210,10 @@ class Groups with ChangeNotifier {
 
   AccountBalances get accountBalances {
     return _accountBalances;
+  }
+
+  List<GroupContributionSummary> get groupContributionSummary{
+    return _groupcontributionSummary;
   }
 
   void addAccounts(List<dynamic> groupBankAccounts, int accountType) {
@@ -329,6 +348,24 @@ class Groups with ChangeNotifier {
     String totalBalance = data['grand_total_balance'].toString();
     _accountBalances = AccountBalances(accounts: bankAccounts, totalBalance: totalBalance);
 
+    notifyListeners();
+  }
+
+  void addContributionSummary(List<dynamic> contributionSummaryList){
+    final List<GroupContributionSummary> contributionSummary = [];
+    if (contributionSummaryList.length > 0) {
+      for (var object in contributionSummaryList) {
+        final newData = GroupContributionSummary(
+          memberId: object['member_id'].toString(), 
+          memberName: object['name'].toString(), 
+          paidAmount: double.parse(object['paid'].toString()), 
+          balanceAmount: double.parse(object['arrears'].toString())
+        );
+        contributionSummary.add(newData);
+      }
+    }
+    print("contributionSummary ${contributionSummary.toString}");
+    _groupcontributionSummary = contributionSummary;
     notifyListeners();
   }
 
@@ -561,6 +598,36 @@ class Groups with ChangeNotifier {
       return group;
     } else {
       return this._items[0];
+    }
+  }
+
+
+  /*************************Contributions Summary*****************************/
+
+  Future<dynamic> getGroupContributionSummary()async{
+    const url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        try{
+          final contributionBalances = response["balances"];
+          addContributionSummary(contributionBalances);
+        }catch(error){
+          throw CustomException(message: ERROR_MESSAGE);
+        }
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
     }
   }
 }

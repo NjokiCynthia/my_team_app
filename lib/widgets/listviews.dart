@@ -8,6 +8,7 @@ import 'package:chamasoft/screens/chamasoft/models/transaction-statement-row.dar
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'textstyles.dart';
 
@@ -169,49 +170,53 @@ class LoanStatementBody extends StatelessWidget {
 }
 
 class ContributionSummaryBody extends StatelessWidget {
-  const ContributionSummaryBody({this.row, this.position});
-
-  final SummaryRow row;
-  final bool position;
-
+ 
   @override
   Widget build(BuildContext context) {
+    final contributionSummary = Provider.of<Groups>(context).groupContributionSummary;
+    print("Summary: $contributionSummary");
     return Container(
-      color: position ? Color(0xffF6F6FE) : Theme.of(context).backgroundColor,
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Expanded(
-              flex: 2,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Icon(
-                    Feather.user,
-                    color: Colors.blueGrey,
-                    size: 32,
+      child: ListView.builder(
+        itemBuilder: (ctx,index) => 
+        Container(
+          color: (index % 2 == 0) ? Color(0xffF6F6FE) : Theme.of(context).backgroundColor,
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Feather.user,
+                        color: Colors.blueGrey,
+                        size: 32,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      subtitle1(text: contributionSummary[index].memberName, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    ],
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  subtitle1(text: row.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                ],
-              ),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: subtitle1(
+                      text: "Ksh " + currencyFormat.format(contributionSummary[index].paidAmount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                ),
+                Expanded(
+                  flex: 1,
+                  child: subtitle1(
+                      text: "Ksh " + currencyFormat.format(contributionSummary[index].balanceAmount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                ),
+              ],
             ),
-            Expanded(
-              flex: 1,
-              child: subtitle1(
-                  text: "Ksh " + currencyFormat.format(row.paid), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-            ),
-            Expanded(
-              flex: 1,
-              child: subtitle1(
-                  text: "Ksh " + currencyFormat.format(row.balance), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-            ),
-          ],
+          ),
         ),
+        itemCount: contributionSummary.length,
       ),
     );
   }

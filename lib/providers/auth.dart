@@ -111,6 +111,9 @@ class Auth with ChangeNotifier {
 
   void setUserObject(String userObject) async {
     final prefs = await SharedPreferences.getInstance();
+    if(prefs.containsKey(user)){
+      prefs.remove(user);
+    }
     prefs.setString(user, userObject);
   }
 
@@ -159,7 +162,8 @@ class Auth with ChangeNotifier {
           if (extractedUserData.containsKey(key)) {
             extractedUserData[key] = value;
           }
-          setUserObject(json.encode(extractedUserData));
+          final data = json.encode(extractedUserData);
+          setUserObject(data);
         } else {
           return "";
         }
@@ -258,7 +262,7 @@ class Auth with ChangeNotifier {
   Future<void> updateUserName(String name)async{
     const url = EndpointUrl.UPDATE_USER_NAME;
     final postRequest = json.encode({
-      "name": name,
+      "name": name.trim(),
       "user_id" : _userId,
     });
     try {
@@ -267,8 +271,26 @@ class Auth with ChangeNotifier {
       String userLastName = response["last_name"]..toString();
       _firstName = userFirstName;
       _lastName = userLastName;
-      updateUserDetails(firstName,userFirstName);
-      updateUserDetails(lastName,userLastName);
+      await updateUserDetails(firstName,userFirstName);
+      await updateUserDetails(lastName,userLastName);
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+    notifyListeners();
+  }
+
+  Future<void> updateUserEmailAddress(String emailAddress) async{
+    const url = EndpointUrl.UPDATE_USER_EMAIL_ADDRESS;
+    final postRequest = json.encode({
+      "email": emailAddress.trim(),
+      "user_id" : _userId,
+    });
+    try {
+      await PostToServer.post(postRequest, url);
+      _emailAddress = emailAddress;
+      await updateUserDetails(email,emailAddress);
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {

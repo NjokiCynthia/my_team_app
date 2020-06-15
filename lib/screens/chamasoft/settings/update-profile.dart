@@ -25,11 +25,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
   ScrollController _scrollController;
   File avatar;
   String name = 'Jane Doe';
-  String _newName;
+  String _oldName;
   String phoneNumber = '+254 701 234 567';
-  String emailAddress = 'jane.doe@gmail.com';
+  String emailAddress,_oldEmailAddress;
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -46,8 +45,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
     _scrollController.addListener(_scrollListener);
     final auth = Provider.of<Auth>(context, listen: false);
     name = auth.userName;
+    _oldName = name;
     phoneNumber = auth.phoneNumber;
     emailAddress = auth.emailAddress;
+    _oldEmailAddress = emailAddress;
     super.initState();
   }
 
@@ -60,35 +61,38 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   Future<void> _updateUserName(BuildContext context) async {
     try {
-      if (name != _newName) {
-        await Provider.of<Auth>(context, listen: false).updateUserName(_newName);
-        setState(() {
-          name = _newName;
-        });
-//        _scaffoldKey.currentState
-//          ..removeCurrentSnackBar()
-//          ..showSnackBar(SnackBar(content: Text("Copied \"Row \"")));
-        Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "Name successfully updated",
-          textAlign: TextAlign.center,
-        )));
-      } else {
-//        _scaffoldKey.currentState
-//          ..removeCurrentSnackBar()
-//          ..showSnackBar(SnackBar(content: Text("Copied \"Row \"")));
-        Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "Name was not changed no update",
-          textAlign: TextAlign.center,
-        )));
+      if (name != _oldName) {
+        await Provider.of<Auth>(context, listen: false).updateUserName(name);
+        Scaffold.of(context).showSnackBar(SnackBar(content: Text("Name successfully updated",)));
       }
     } on CustomException catch (error) {
+      setState(() {
+        name = _oldName;
+      });
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
             _updateUserName(context);
+          });
+    } finally {}
+  }
+
+  Future<void> _updateUserEmailAdress(BuildContext context) async {
+    try {
+      if (emailAddress != _oldEmailAddress) {
+        await Provider.of<Auth>(context, listen: false).updateUserEmailAddress(emailAddress);
+        Scaffold.of(context).showSnackBar(SnackBar(content: Text("You have successfully updated your email address",)));
+      }
+    } on CustomException catch (error) {
+      setState(() {
+        emailAddress = _oldEmailAddress;
+      });
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _updateUserEmailAdress(context);
           });
     } finally {}
   }
@@ -179,9 +183,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
             child: TextFormField(
               initialValue: name,
               keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.words,
               onChanged: (value) {
                 setState(() {
-                  _newName = value;
+                  name = value;
                 });
               },
               validator: (value) {
@@ -228,10 +233,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
     );
   }
 
-  void _updateEmailAddress() {
+  void _updateEmailAddress(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (_) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Email Address"),
@@ -240,15 +245,17 @@ class _UpdateProfileState extends State<UpdateProfile> {
             child: TextFormField(
               initialValue: emailAddress,
               keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                setState(() {
-                  emailAddress = value;
-                });
+              onChanged: (_) {
               },
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Your email address is required';
+                }else if(!CustomHelper.validEmail(value)){
+                  return "Enter a valid email address";
                 }
+                setState(() {
+                  emailAddress = value;
+                });
                 return null;
               },
               decoration: InputDecoration(
@@ -281,6 +288,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               onPressed: () {
                 if (_formKey.currentState.validate()) {
                   Navigator.of(context).pop();
+                  _updateUserEmailAdress(context);
                 }
               },
             ),
@@ -290,10 +298,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
     );
   }
 
-  _displaySnackBar(BuildContext context) {
-    final snackBar = SnackBar(content: Text('Are you talkin\' to me?'));
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -355,7 +359,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     updateText: name,
                     icon: Icons.edit,
                     onPressed: () {
-                      //StatusHandler().showRetrySnackBar(context, "Show SnackBar", () {});
                       _updateName(context);
                     },
                   ),
@@ -372,7 +375,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     updateText: emailAddress,
                     icon: Icons.edit,
                     onPressed: () {
-                      _updateEmailAddress();
+                      _updateEmailAddress(context);
                     },
                   ),
                 ],

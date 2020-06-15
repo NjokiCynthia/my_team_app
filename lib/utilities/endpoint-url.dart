@@ -16,6 +16,7 @@ class EndpointUrl {
   static const String LOGIN = CustomHelper.baseUrl + "/mobile/login";
   static const String SIGNUP = CustomHelper.baseUrl + "/mobile/register_user";
   static const String UPDATE_USER_NAME = CustomHelper.baseUrl+"/mobile/users/update_name";
+  static const String UPDATE_USER_EMAIL_ADDRESS = CustomHelper.baseUrl+"/mobile/users/update_email";
 
   //Initial group setup
   static const String CREATE_GROUP = CustomHelper.baseUrl + "/mobile/create_group";

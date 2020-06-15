@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -5,8 +6,10 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class ContributionSummary extends StatefulWidget {
   @override
@@ -16,6 +19,8 @@ class ContributionSummary extends StatefulWidget {
 class _ContributionSummaryState extends State<ContributionSummary> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  bool _isLoading = true;
+  bool _isInit = true;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -50,6 +55,38 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   }
 
   @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    if(_isInit){
+      setState(() {
+        _isLoading = true;
+      });
+      _fetchGroupContributionSummary(context).then((_){
+        setState(() {
+          _isLoading = false;
+        });
+      })
+      .catchError((error){
+        
+      });
+    }
+    _isInit=false;
+    super.didChangeDependencies();
+  }
+
+  Future<void> _fetchGroupContributionSummary(BuildContext context)async{
+    try{
+      await Provider.of<Groups>(context,listen: false).getGroupContributionSummary();
+    }catch(error){
+
+    }finally{
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final summaryFlag = ModalRoute.of(context).settings.arguments;
     String appbarTitle = "Contribution Summary";
@@ -59,31 +96,6 @@ class _ContributionSummaryState extends State<ContributionSummary> {
       appbarTitle = "Fine Summary";
       defaultTitle = "Fines";
     }
-    final List<SummaryRow> list = [
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-      SummaryRow(
-          id: 1, name: "Peter Kimutai", avatar: "", paid: 1000, balance: 14000),
-    ];
-
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,
@@ -191,18 +203,10 @@ class _ContributionSummaryState extends State<ContributionSummary> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                SummaryRow row = list[index];
-                return ContributionSummaryBody(
-                  row: row,
-                  position: index % 2 == 0,
-                );
-              },
-              itemCount: list.length,
-            ),
+            child: _isLoading?
+              Center(
+                child: CircularProgressIndicator(),
+              ):ContributionSummaryBody()
           )
         ],
       ),
