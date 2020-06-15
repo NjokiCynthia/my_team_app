@@ -89,27 +89,27 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                       children: <Widget>[
                                         heading2(
                                             text: "Total Balance", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            subtitle2(
-                                                text: "Deposits ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                            subtitle1(
-                                                text: "Ksh 60,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            subtitle2(
-                                                text: "Withdrawals ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                            subtitle1(
-                                                text: "Ksh 10,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                          ],
-                                        ),
+//                                        SizedBox(
+//                                          height: 4,
+//                                        ),
+//                                        Row(
+//                                          crossAxisAlignment: CrossAxisAlignment.center,
+//                                          children: <Widget>[
+//                                            subtitle2(
+//                                                text: "Deposits ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+//                                            subtitle1(
+//                                                text: "Ksh 60,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+//                                          ],
+//                                        ),
+//                                        Row(
+//                                          crossAxisAlignment: CrossAxisAlignment.center,
+//                                          children: <Widget>[
+//                                            subtitle2(
+//                                                text: "Withdrawals ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+//                                            subtitle1(
+//                                                text: "Ksh 10,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+//                                          ],
+//                                        ),
                                       ],
                                     ),
                                   ),
