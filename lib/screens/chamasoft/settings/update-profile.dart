@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -9,11 +12,8 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:provider/provider.dart';
 
 class UpdateProfile extends StatefulWidget {
   @override
@@ -58,34 +58,39 @@ class _UpdateProfileState extends State<UpdateProfile> {
     super.dispose();
   }
 
-
-  Future<void> _updateUserName(BuildContext context)async{
-    try{
-      if(name!=_newName){
-        await Provider.of<Auth>(context,listen:false).updateUserName(_newName);
+  Future<void> _updateUserName(BuildContext context) async {
+    try {
+      if (name != _newName) {
+        await Provider.of<Auth>(context, listen: false).updateUserName(_newName);
         setState(() {
           name = _newName;
         });
-        _scaffoldKey.currentState
-                      ..removeCurrentSnackBar()
-                      ..showSnackBar(SnackBar(content: Text("Copied \"Row \"")));
-        //Scaffold.of(context).showSnackBar(SnackBar(content: Text("Name successfully updated",textAlign: TextAlign.center,)));
-      }else{
-        _scaffoldKey.currentState
-                      ..removeCurrentSnackBar()
-                      ..showSnackBar(SnackBar(content: Text("Copied \"Row \"")));
-        //Scaffold.of(context).showSnackBar(SnackBar(content: Text("Name was not changed no update",textAlign: TextAlign.center,)));
+//        _scaffoldKey.currentState
+//          ..removeCurrentSnackBar()
+//          ..showSnackBar(SnackBar(content: Text("Copied \"Row \"")));
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Name successfully updated",
+          textAlign: TextAlign.center,
+        )));
+      } else {
+//        _scaffoldKey.currentState
+//          ..removeCurrentSnackBar()
+//          ..showSnackBar(SnackBar(content: Text("Copied \"Row \"")));
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Name was not changed no update",
+          textAlign: TextAlign.center,
+        )));
       }
-    }on CustomException catch(error){
+    } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
             _updateUserName(context);
           });
-    }finally{
-
-    }
+    } finally {}
   }
 
   void _updatePhoneNumber() {
@@ -138,8 +143,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -153,8 +157,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               onPressed: () {
                 if (_formKey.currentState.validate()) {
 //                  Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (context) => Verification()));
+                  Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
                 }
               },
             ),
@@ -164,10 +167,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
     );
   }
 
-  void _updateName() {
+  void _updateName(BuildContext context) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
+      builder: (_) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Name"),
@@ -203,8 +206,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -265,8 +267,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -305,82 +306,80 @@ class _UpdateProfileState extends State<UpdateProfile> {
         title: "",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              heading1(
-                  text: "Update Profile",
-                  color: Theme.of(context).textSelectionHandleColor),
-              subtitle2(
-                  text: "Update your Chamasoft Profile",
-                  color: Theme.of(context).textSelectionHandleColor),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                height: 100,
-                width: 100,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: avatar == null
-                          ? AssetImage('assets/no-user.png')
-                          : FileImage(avatar),
-                      backgroundColor: Colors.transparent,
-                    ),
-                    Positioned(
-                      bottom: -12.0,
-                      right: -12.0,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.camera_alt,
-                          color: Colors.black,
-                          size: 30.0,
+      body: Builder(
+        builder: (BuildContext context) {
+          return SingleChildScrollView(
+            controller: _scrollController,
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
+            child: SafeArea(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  heading1(text: "Update Profile", color: Theme.of(context).textSelectionHandleColor),
+                  subtitle2(text: "Update your Chamasoft Profile", color: Theme.of(context).textSelectionHandleColor),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Container(
+                    height: 100,
+                    width: 100,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundImage: avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar),
+                          backgroundColor: Colors.transparent,
                         ),
-                        onPressed: () async {
-                          File newAvatar =
-                              await FilePicker.getFile(type: FileType.image);
-                          setState(() {
-                            avatar = newAvatar;
-                          });
-                        },
-                      ),
-                    )
-                  ],
-                ),
+                        Positioned(
+                          bottom: -12.0,
+                          right: -12.0,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.camera_alt,
+                              color: Colors.black,
+                              size: 30.0,
+                            ),
+                            onPressed: () async {
+                              File newAvatar = await FilePicker.getFile(type: FileType.image);
+                              setState(() {
+                                avatar = newAvatar;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  InfoUpdateTile(
+                    labelText: "Name",
+                    updateText: name,
+                    icon: Icons.edit,
+                    onPressed: () {
+                      //StatusHandler().showRetrySnackBar(context, "Show SnackBar", () {});
+                      _updateName(context);
+                    },
+                  ),
+                  InfoUpdateTile(
+                    labelText: "Phone Number",
+                    updateText: phoneNumber,
+                    icon: Icons.edit,
+                    onPressed: () {
+                      _updatePhoneNumber();
+                    },
+                  ),
+                  InfoUpdateTile(
+                    labelText: "Email Address",
+                    updateText: emailAddress,
+                    icon: Icons.edit,
+                    onPressed: () {
+                      _updateEmailAddress();
+                    },
+                  ),
+                ],
               ),
-              InfoUpdateTile(
-                labelText: "Name",
-                updateText: name,
-                icon: Icons.edit,
-                onPressed: () {
-                  _updateName();
-                },
-              ),
-              InfoUpdateTile(
-                labelText: "Phone Number",
-                updateText: phoneNumber,
-                icon: Icons.edit,
-                onPressed: () {
-                  _updatePhoneNumber();
-                },
-              ),
-              InfoUpdateTile(
-                labelText: "Email Address",
-                updateText: emailAddress,
-                icon: Icons.edit,
-                onPressed: () {
-                  _updateEmailAddress();
-                },
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
