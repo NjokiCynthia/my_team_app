@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
@@ -43,14 +44,8 @@ class StatementBody extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    subtitle1(
-                        text: row.title,
-                        color: Theme.of(context).textSelectionHandleColor,
-                        textAlign: TextAlign.start),
-                    subtitle2(
-                        text: row.description,
-                        color: Theme.of(context).textSelectionHandleColor,
-                        textAlign: TextAlign.start)
+                    subtitle1(text: row.title, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    subtitle2(text: row.description, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                   ],
                 ),
               ],
@@ -59,13 +54,8 @@ class StatementBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 subtitle1(
-                    text: "Ksh " + currencyFormat.format(amount),
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.start),
-                subtitle2(
-                    text: defaultDateFormat.format(row.date),
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.start),
+                    text: "Ksh " + currencyFormat.format(amount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                subtitle2(text: defaultDateFormat.format(row.date), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
               ],
             )
           ],
@@ -90,10 +80,7 @@ class StatementHeader extends StatelessWidget {
       child: Card(
         elevation: 0,
         color: Theme.of(context).backgroundColor,
-        child: subtitle2(
-            text: row.month,
-            color: Theme.of(context).textSelectionHandleColor,
-            textAlign: TextAlign.start),
+        child: subtitle2(text: row.month, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
       ),
     );
   }
@@ -121,26 +108,15 @@ class AmortizationBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 subtitle1(
-                    text: defaultDateFormat.format(installment.date),
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.start),
-                subtitle2(
-                    text: "Installment",
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.start),
+                    text: defaultDateFormat.format(installment.date), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                subtitle2(text: "Installment", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                subtitle1(
-                    text: "Ksh " + installment.amount,
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.end),
-                subtitle2(
-                    text: "Balance: Ksh " + installment.balance,
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.end),
+                subtitle1(text: "Ksh " + installment.amount, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                subtitle2(text: "Balance: Ksh " + installment.balance, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
               ],
             )
           ],
@@ -170,30 +146,20 @@ class LoanStatementBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  subtitle1(
-                      text: row.type,
-                      color: Theme.of(context).textSelectionHandleColor,
-                      textAlign: TextAlign.start),
-                  subtitle2(
-                      text: defaultDateFormat.format(row.date),
-                      color: Theme.of(context).textSelectionHandleColor,
-                      textAlign: TextAlign.start),
+                  subtitle1(text: row.type, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                  subtitle2(text: defaultDateFormat.format(row.date), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                 ],
               ),
             ),
             Expanded(
               flex: 1,
               child: subtitle1(
-                  text: "Ksh " + currencyFormat.format(row.paid),
-                  color: Theme.of(context).textSelectionHandleColor,
-                  textAlign: TextAlign.end),
+                  text: "Ksh " + currencyFormat.format(row.paid), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
             ),
             Expanded(
               flex: 1,
               child: subtitle1(
-                  text: "Ksh " + currencyFormat.format(row.balance),
-                  color: Theme.of(context).textSelectionHandleColor,
-                  textAlign: TextAlign.end),
+                  text: "Ksh " + currencyFormat.format(row.balance), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
             ),
           ],
         ),
@@ -230,26 +196,19 @@ class ContributionSummaryBody extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  subtitle1(
-                      text: row.name,
-                      color: Theme.of(context).textSelectionHandleColor,
-                      textAlign: TextAlign.start),
+                  subtitle1(text: row.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                 ],
               ),
             ),
             Expanded(
               flex: 1,
               child: subtitle1(
-                  text: "Ksh " + currencyFormat.format(row.paid),
-                  color: Theme.of(context).textSelectionHandleColor,
-                  textAlign: TextAlign.end),
+                  text: "Ksh " + currencyFormat.format(row.paid), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
             ),
             Expanded(
               flex: 1,
               child: subtitle1(
-                  text: "Ksh " + currencyFormat.format(row.balance),
-                  color: Theme.of(context).textSelectionHandleColor,
-                  textAlign: TextAlign.end),
+                  text: "Ksh " + currencyFormat.format(row.balance), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
             ),
           ],
         ),
@@ -258,17 +217,38 @@ class ContributionSummaryBody extends StatelessWidget {
   }
 }
 
-class AccountBody extends StatelessWidget {
-  const AccountBody({
+class AccountHeader extends StatelessWidget {
+  const AccountHeader({
     Key key,
-    @required this.row,
+    @required this.header,
   }) : super(key: key);
 
-  final StatementRow row;
+  final AccountBalance header;
 
   @override
   Widget build(BuildContext context) {
-    final amount = int.tryParse(row.amount) ?? 0;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+      child: Card(
+        elevation: 0,
+        color: Theme.of(context).backgroundColor,
+        child: subtitle2(text: header.header, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+      ),
+    );
+  }
+}
+
+class AccountBody extends StatelessWidget {
+  const AccountBody({
+    Key key,
+    @required this.account,
+  }) : super(key: key);
+
+  final AccountBalance account;
+
+  @override
+  Widget build(BuildContext context) {
+    final amount = int.tryParse(account.balance) ?? 0;
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
       child: Card(
@@ -294,14 +274,8 @@ class AccountBody extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        customTitle(
-                            text: row.title,
-                            color: Theme.of(context).textSelectionHandleColor,
-                            textAlign: TextAlign.start),
-                        subtitle2(
-                            text: row.description,
-                            color: Theme.of(context).textSelectionHandleColor,
-                            textAlign: TextAlign.start)
+                        customTitle(text: account.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                        subtitle2(text: account.accountNumber, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       ],
                     ),
                   ),
@@ -317,11 +291,7 @@ class AccountBody extends StatelessWidget {
                   textAlign: TextAlign.start,
                   fontWeight: FontWeight.w400,
                 ),
-                customTitle(
-                    text: currencyFormat.format(amount),
-                    color: Theme.of(context).primaryColor,
-                    textAlign: TextAlign.start,
-                    fontSize: 18),
+                customTitle(text: currencyFormat.format(amount), color: Theme.of(context).primaryColor, textAlign: TextAlign.start, fontSize: 18),
               ],
             )
           ],
@@ -351,11 +321,7 @@ class LoanSummaryBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  customTitle(
-                      text: row.name,
-                      color: Theme.of(context).textSelectionHandleColor,
-                      fontSize: 13,
-                      textAlign: TextAlign.start),
+                  customTitle(text: row.name, color: Theme.of(context).textSelectionHandleColor, fontSize: 13, textAlign: TextAlign.start),
                   customTitle(
                       text: defaultDateFormat.format(row.date),
                       color: Theme.of(context).textSelectionHandleColor,
@@ -423,26 +389,14 @@ class ExpenseBody extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  subtitle1(
-                      text: row.name,
-                      color: Theme.of(context).textSelectionHandleColor,
-                      textAlign: TextAlign.start),
+                  subtitle1(text: row.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                 ],
               ),
             ),
-            Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  customTitle(
-                      text: "Ksh ",
-                      color: Theme.of(context).textSelectionHandleColor,
-                      fontWeight: FontWeight.w400,
-                      textAlign: TextAlign.end),
-                  subtitle1(
-                      text: " " + currencyFormat.format(row.paid),
-                      color: Theme.of(context).textSelectionHandleColor,
-                      textAlign: TextAlign.end),
-                ]),
+            Row(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
+              customTitle(text: "Ksh ", color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w400, textAlign: TextAlign.end),
+              subtitle1(text: " " + currencyFormat.format(row.paid), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+            ]),
           ],
         ),
       ),
@@ -481,9 +435,7 @@ class TransactionStatementBody extends StatelessWidget {
                   flex: 1,
                   child: customTitle(
                       text: "Ksh " + currencyFormat.format(row.deposit),
-                      color: row.deposit == 0
-                          ? Theme.of(context).textSelectionHandleColor
-                          : Colors.green,
+                      color: row.deposit == 0 ? Theme.of(context).textSelectionHandleColor : Colors.green,
                       fontSize: 13,
                       textAlign: TextAlign.center),
                 ),
@@ -491,9 +443,7 @@ class TransactionStatementBody extends StatelessWidget {
                   flex: 1,
                   child: customTitle(
                       text: "Ksh " + currencyFormat.format(row.withdrawal),
-                      color: row.withdrawal == 0
-                          ? Theme.of(context).textSelectionHandleColor
-                          : Colors.red,
+                      color: row.withdrawal == 0 ? Theme.of(context).textSelectionHandleColor : Colors.red,
                       fontSize: 13,
                       textAlign: TextAlign.center),
                 ),

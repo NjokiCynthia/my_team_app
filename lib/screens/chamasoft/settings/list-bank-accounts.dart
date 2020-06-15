@@ -62,7 +62,7 @@ class _ListBankAccountsState extends State<ListBankAccounts> {
               shrinkWrap: true,
               itemCount: groupData.allAccounts.length,
               itemBuilder: (context, index) {
-                String accountTitle = "";
+                String accountTitle = " ";
                 accountTitle = accountTypes[index];
                 List<Account> accounts = groupData.allAccounts[index];
 
