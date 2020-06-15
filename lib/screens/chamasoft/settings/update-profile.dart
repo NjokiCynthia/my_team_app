@@ -312,13 +312,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Builder(builder: (ctx)=>RaisedButton(
-              child: Text('Show Snackbar'),
-              onPressed: ()=>_displaySnackBar(ctx),
-              ),),
-              SizedBox(
-                height: 40.0,
-              ),
               heading1(
                   text: "Update Profile",
                   color: Theme.of(context).textSelectionHandleColor),
