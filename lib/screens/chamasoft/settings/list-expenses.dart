@@ -9,12 +9,12 @@ import 'package:provider/provider.dart';
 
 import 'create-contribution.dart';
 
-class ListContributions extends StatefulWidget {
+class ListExpenses extends StatefulWidget {
   @override
-  _ListContributionsState createState() => _ListContributionsState();
+  _ListExpensesState createState() => _ListExpensesState();
 }
 
-class _ListContributionsState extends State<ListContributions> {
+class _ListExpensesState extends State<ListExpenses> {
   @override
   void initState() {
     super.initState();
@@ -33,7 +33,7 @@ class _ListContributionsState extends State<ListContributions> {
         context: context,
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Contributions List",
+        title: "Expenses List",
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -54,9 +54,9 @@ class _ListContributionsState extends State<ListContributions> {
           child: Consumer<Groups>(builder: (context, groupData, child) {
             return ListView.separated(
               padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-              itemCount: groupData.contributions.length,
+              itemCount: groupData.expenses.length,
               itemBuilder: (context, index) {
-                Contribution contribution = groupData.contributions[index];
+                Expense expense = groupData.expenses[index];
                 return ListTile(
                   dense: true,
                   title: Row(
@@ -79,7 +79,7 @@ class _ListContributionsState extends State<ListContributions> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Text(
-                                      '${contribution.name}',
+                                      '${expense.name}',
                                       style: TextStyle(
                                         color: Theme.of(context)
                                             .textSelectionHandleColor,
@@ -87,60 +87,6 @@ class _ListContributionsState extends State<ListContributions> {
                                         fontSize: 18.0,
                                       ),
                                     ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Text(
-                                              'Contribution Type: ',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor
-                                                    .withOpacity(0.5),
-                                                fontSize: 12.0,
-                                              ),
-                                            ),
-                                            Text(
-                                              '${contribution.type}',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w900,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor
-                                                    .withOpacity(0.5),
-                                                fontSize: 12.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Row(
-                                          children: <Widget>[
-                                            Text(
-                                              'Frequency: ',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor
-                                                    .withOpacity(0.5),
-                                                fontSize: 12.0,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Text(
-                                          '${contribution.frequency}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w900,
-                                            color: Theme.of(context)
-                                                .textSelectionHandleColor
-                                                .withOpacity(0.5),
-                                            fontSize: 12.0,
-                                          ),
-                                        ),
-                                      ],
-                                    )
                                   ],
                                 ),
                               ],
@@ -160,7 +106,7 @@ class _ListContributionsState extends State<ListContributions> {
                                   backgroundColor:
                                       primaryColor.withOpacity(0.2),
                                   textColor: primaryColor,
-                                  text: '${contribution.amount}',
+                                  text: '${expense.amount}',
                                   action: () {},
                                   buttonHeight: 24.0,
                                   textSize: 12.0,

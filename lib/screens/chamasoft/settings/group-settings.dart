@@ -15,6 +15,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'list-bank-accounts.dart';
+import 'list-expenses.dart';
+import 'list-fine-types.dart';
+import 'list-members.dart';
 import 'update-group-profile.dart';
 
 class GroupSettings extends StatefulWidget {
@@ -46,12 +49,14 @@ class _GroupSettingsState extends State<GroupSettings> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Delete Group"),
-          content: new Text("Are you sure you want to delete the group? You will lose all information regarding this group."),
+          content: new Text(
+              "Are you sure you want to delete the group? You will lose all information regarding this group."),
           actions: <Widget>[
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -88,11 +93,122 @@ class _GroupSettingsState extends State<GroupSettings> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchAccounts();
 
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListBankAccounts()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListBankAccounts()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
         content: Text('Network Error occurred: could not fetch accounts'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchAccounts(context);
+          },
+        ),
+      );
+
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future<void> fetchContributions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchContributions();
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListContributions()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch contributions'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchAccounts(context);
+          },
+        ),
+      );
+
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future<void> fetchExpenses(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchExpenses();
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListExpenses()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch expenses'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchAccounts(context);
+          },
+        ),
+      );
+
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future<void> fetchFineTypes(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchFineTypes();
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListFineTypes()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch fine types'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchAccounts(context);
+          },
+        ),
+      );
+
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future<void> fetchLoanTypes(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchLoanTypes();
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch loan types'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchAccounts(context);
+          },
+        ),
+      );
+
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future<void> fetchMembers(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchMembers();
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListMembers()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch members'),
         action: SnackBarAction(
           label: 'Retry',
           onPressed: () async {
@@ -141,7 +257,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         heading2(
-                            text: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName,
+                            text: Provider.of<Groups>(context, listen: false)
+                                .getCurrentGroup()
+                                .groupName,
                             color: Theme.of(context).textSelectionHandleColor),
                         Row(
                           children: [
@@ -157,7 +275,8 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 textSize: 12.0,
                                 action: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) => UpdateGroupProfile(),
+                                    builder: (BuildContext context) =>
+                                        UpdateGroupProfile(),
                                   ),
                                 ),
                               ),
@@ -177,7 +296,8 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 textSize: 12.0,
                                 action: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) => ConfigurePreferences(),
+                                    builder: (BuildContext context) =>
+                                        ConfigurePreferences(),
                                   ),
                                 ),
                               ),
@@ -236,8 +356,8 @@ class _GroupSettingsState extends State<GroupSettings> {
                   color: Theme.of(context).bottomAppBarColor,
                 ),
                 dense: true,
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListContributions()));
+                onTap: () async {
+                  await fetchContributions(context);
                 },
               ),
               DashedDivider(
@@ -264,7 +384,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                   color: Theme.of(context).bottomAppBarColor,
                 ),
                 dense: true,
-                onTap: () {},
+                onTap: () async {
+                  await fetchExpenses(context);
+                },
               ),
               DashedDivider(
                 color: Color(0xFFECECEC),
@@ -290,7 +412,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                   color: Theme.of(context).bottomAppBarColor,
                 ),
                 dense: true,
-                onTap: () {},
+                onTap: () async {
+                  await fetchFineTypes(context);
+                },
               ),
               DashedDivider(
                 color: Color(0xFFECECEC),
@@ -316,8 +440,8 @@ class _GroupSettingsState extends State<GroupSettings> {
                   color: Theme.of(context).bottomAppBarColor,
                 ),
                 dense: true,
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
+                onTap: () async {
+                  await fetchLoanTypes(context);
                 },
               ),
               DashedDivider(
@@ -344,7 +468,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                   color: Theme.of(context).bottomAppBarColor,
                 ),
                 dense: true,
-                onTap: () {},
+                onTap: () async {
+                  await fetchMembers(context);
+                },
               ),
               DashedDivider(
                 color: Color(0xFFECECEC),

@@ -1,9 +1,10 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'create-loan-type.dart';
 
@@ -178,126 +179,162 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           decoration: primaryGradient(context),
-          child: ListView.separated(
-            padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-            itemCount: loanTypesList.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                dense: true,
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            Icon(
-                              Icons.label,
-                              color: Colors.blueGrey,
-                            ),
-                            SizedBox(width: 10.0),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  '${loanTypesList[index]['name']}',
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 18.0,
+          child: Consumer<Groups>(builder: (context, groupData, child) {
+            return ListView.separated(
+              padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+              itemCount: groupData.loanTypes.length,
+              itemBuilder: (context, index) {
+                LoanType loanType = groupData.loanTypes[index];
+                return ListTile(
+                  dense: true,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              Icon(
+                                Icons.label,
+                                color: Colors.blueGrey,
+                              ),
+                              SizedBox(width: 10.0),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    '${loanType.name}',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
+                                      fontWeight: FontWeight.w800,
+                                      fontSize: 18.0,
+                                    ),
                                   ),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          'Contribution Type: ',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: Theme.of(context)
-                                                .textSelectionHandleColor
-                                                .withOpacity(0.5),
-                                            fontSize: 12.0,
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'Repayment Period: ',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor
+                                                  .withOpacity(0.5),
+                                              fontSize: 12.0,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          '${loanTypesList[index]['type']}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w900,
-                                            color: Theme.of(context)
-                                                .textSelectionHandleColor
-                                                .withOpacity(0.5),
-                                            fontSize: 12.0,
+                                          Text(
+                                            '${loanType.repaymentPeriod}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor
+                                                  .withOpacity(0.5),
+                                              fontSize: 12.0,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: <Widget>[
-                                        Text(
-                                          'Frequency: ',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            color: Theme.of(context)
-                                                .textSelectionHandleColor
-                                                .withOpacity(0.5),
-                                            fontSize: 12.0,
+                                        ],
+                                      ),
+                                      Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'Loan Amount: ',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor
+                                                  .withOpacity(0.5),
+                                              fontSize: 12.0,
+                                            ),
                                           ),
-                                        ),
-                                        Text(
-                                          '${loanTypesList[index]['frequency']}',
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w900,
-                                            color: Theme.of(context)
-                                                .textSelectionHandleColor
-                                                .withOpacity(0.5),
-                                            fontSize: 12.0,
+                                          Text(
+                                            '${loanType.loanAmount}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w900,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor
+                                                  .withOpacity(0.5),
+                                              fontSize: 12.0,
+                                            ),
                                           ),
+                                        ],
+                                      ),
+                                      Text(
+                                        'Interest rate: ${loanType.interestRate}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
+                                          fontSize: 12.0,
                                         ),
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            smallBadgeButton(
-                              backgroundColor: primaryColor.withOpacity(0.2),
-                              textColor: primaryColor,
-                              text: '${loanTypesList[index]['amount']}',
-                              action: () {},
-                              buttonHeight: 24.0,
-                              textSize: 12.0,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
-            separatorBuilder: (context, index) {
-              return Divider(
-                color: Theme.of(context).dividerColor,
-                height: 6.0,
-              );
-            },
-          )),
+                                      ),
+                                      Text(
+                                        'Loan Processing: ${loanType.loanProcessing}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Guarantors: ${loanType.guarantors}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Late Payment Fines: ${loanType.latePaymentFines}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                      Text(
+                                        'Outstanding Payment Fines: ${loanType.outstandingPaymentFines}',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w900,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
+                                          fontSize: 12.0,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+              separatorBuilder: (context, index) {
+                return Divider(
+                  color: Theme.of(context).dividerColor,
+                  height: 6.0,
+                );
+              },
+            );
+          })),
     );
   }
 }
