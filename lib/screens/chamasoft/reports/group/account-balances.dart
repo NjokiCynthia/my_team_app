@@ -65,73 +65,66 @@ class _AccountBalancesState extends State<AccountBalances> {
         title: "Account Balances",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          FutureBuilder(
-              future: _future,
-              builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                  ? Center(child: CircularProgressIndicator())
-                  : RefreshIndicator(
-                      onRefresh: () => _getAccountBalances(context),
-                      child: Consumer<Groups>(builder: (context, data, child) {
-                        List<AccountBalance> accountBalances = data.accountBalances.accounts;
-                        String totalBalance = data.accountBalances.totalBalance;
-                        return Column(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(20.0),
-                              color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 2,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+      body: FutureBuilder(
+          future: _future,
+          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+              ? Center(child: CircularProgressIndicator())
+              : RefreshIndicator(
+                  onRefresh: () => _getAccountBalances(context),
+                  child: Consumer<Groups>(builder: (context, data, child) {
+                    List<AccountBalance> accountBalances = data.accountBalances.accounts;
+                    String totalBalance = data.accountBalances.totalBalance;
+                    return Column(
+                      children: <Widget>[
+                        Container(
+                          padding: EdgeInsets.all(20.0),
+                          color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Container(
+                                width: MediaQuery.of(context).size.width / 2,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    heading2(text: "Total ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                    Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
                                       children: <Widget>[
-                                        heading2(text: "Total ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            subtitle2(
-                                                text: "Account balances",
-                                                color: Theme.of(context).textSelectionHandleColor,
-                                                textAlign: TextAlign.start),
-                                          ],
-                                        ),
+                                        subtitle2(
+                                            text: "Account balances", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                                       ],
                                     ),
-                                  ),
-                                  heading2(
-                                      text: currencyFormat.format(int.tryParse(totalBalance) ?? 0),
-                                      color: Theme.of(context).textSelectionHandleColor,
-                                      textAlign: TextAlign.start)
-                                ],
+                                  ],
+                                ),
                               ),
-                            ),
-                            Expanded(
-                              child: ListView.builder(
-                                controller: _scrollController,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  AccountBalance balance = accountBalances[index];
-                                  if (balance.isHeader) {
-                                    return AccountHeader(header: balance);
-                                  } else {
-                                    return AccountBody(account: balance);
-                                  }
-                                },
-                                itemCount: accountBalances.length,
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                    )),
-        ],
-      ),
+                              heading2(
+                                  text: "Ksh " + currencyFormat.format(int.tryParse(totalBalance) ?? 0),
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.start)
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: ListView.builder(
+                            controller: _scrollController,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              AccountBalance balance = accountBalances[index];
+                              if (balance.isHeader) {
+                                return AccountHeader(header: balance);
+                              } else {
+                                return AccountBody(account: balance);
+                              }
+                            },
+                            itemCount: accountBalances.length,
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                )),
     );
   }
 }
