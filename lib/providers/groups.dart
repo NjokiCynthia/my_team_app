@@ -1,13 +1,14 @@
 import 'dart:convert';
 
-import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/endpoint-url.dart';
 import 'package:chamasoft/utilities/post-to-server.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'auth.dart';
 
 class Group {
   final String groupId;
@@ -144,6 +145,7 @@ class Groups with ChangeNotifier {
   List<Member> _members = [];
   List<List<Account>> _allAccounts = [];
   AccountBalances _accountBalances;
+  TransactionStatement _transactionStatement;
 
   List<Group> get item {
     return [..._items];
@@ -179,6 +181,10 @@ class Groups with ChangeNotifier {
 
   AccountBalances get accountBalances {
     return _accountBalances;
+  }
+
+  TransactionStatement get transactionStatement {
+    return _transactionStatement;
   }
 
   void addAccounts(List<dynamic> groupBankAccounts, int accountType) {
@@ -294,6 +300,11 @@ class Groups with ChangeNotifier {
 
   void addAccountBalances(dynamic data) {
     _accountBalances = getAccountBalances(data);
+    notifyListeners();
+  }
+
+  void addTransactionStatements(dynamic data) {
+    _transactionStatement = getTransactionStatement(data);
     notifyListeners();
   }
 
@@ -486,6 +497,31 @@ class Groups with ChangeNotifier {
 
         final data = response['data'] as dynamic;
         addAccountBalances(data);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchTransactionStatement() async {
+    const url = EndpointUrl.GET_TRANSACTION_STATEMENT;
+
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final data = response['data'] as dynamic;
+        addTransactionStatements(data);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

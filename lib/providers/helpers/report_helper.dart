@@ -33,3 +33,60 @@ AccountBalances getAccountBalances(dynamic data) {
   String totalBalance = data['grand_total_balance'].toString();
   return AccountBalances(accounts: bankAccounts, totalBalance: totalBalance);
 }
+
+class TransactionStatementRow {
+  String date, description;
+  double deposit, withdrawal, balance;
+
+  TransactionStatementRow({this.date, this.description, this.deposit, this.withdrawal, this.balance});
+}
+
+class TransactionStatement {
+  List<TransactionStatementRow> transactionStatements;
+  double totalDeposits, totalWithdrawals, totalBalance;
+  String statementDate, statementPeriodFrom, statementPeriodTo;
+
+  TransactionStatement(
+      {this.transactionStatements,
+      this.totalDeposits,
+      this.totalWithdrawals,
+      this.totalBalance,
+      this.statementDate,
+      this.statementPeriodFrom,
+      this.statementPeriodTo});
+}
+
+TransactionStatement getTransactionStatement(dynamic data) {
+  final String statementAsAt = data['statement_details']['statement_as_at'].toString();
+  final String statementPeriodFrom = data['statement_details']['statement_period_from'].toString();
+  final String statementPeriodTo = data['statement_details']['statement_period_to'].toString();
+  final double totalDeposits = double.tryParse(data['statement_header']['deposited']) ?? 0;
+  final double totalWithdrawals = double.tryParse(data['statement_header']['withdrawn']) ?? 0;
+  final double totalBalance = double.tryParse(data['statement_footer']['balance']) ?? 0;
+
+  final statementBody = data['statement_body'] as List<dynamic>;
+  final List<TransactionStatementRow> transactionStatements = [];
+
+  if (statementBody.length > 0) {
+    for (var statement in statementBody) {
+      final date = statement['transaction_date'].toString();
+      final description = statement['description'].toString();
+      final withdrawn = double.tryParse(statement['withdrawn']) ?? 0;
+      final deposited = double.tryParse(statement['deposited']) ?? 0;
+      final balance = double.tryParse(statement['balance']) ?? 0;
+
+      final transactionRow =
+          TransactionStatementRow(date: date, description: description, deposit: deposited, withdrawal: withdrawn, balance: balance);
+      transactionStatements.add(transactionRow);
+    }
+  }
+
+  return TransactionStatement(
+      transactionStatements: transactionStatements,
+      totalDeposits: totalDeposits,
+      totalWithdrawals: totalWithdrawals,
+      totalBalance: totalBalance,
+      statementDate: statementAsAt,
+      statementPeriodFrom: statementPeriodFrom,
+      statementPeriodTo: statementPeriodTo);
+}
