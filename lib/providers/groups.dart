@@ -636,42 +636,11 @@ class Groups with ChangeNotifier {
     }
   }
 
-<<<<<<< HEAD
-=======
-  setSelectedGroupId(String groupId) async {
-    currentGroupId = groupId;
-    final prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey(selectedGroupId)) {
-      prefs.remove(selectedGroupId);
-    }
-    prefs.setString(selectedGroupId, groupId);
-  }
-
-  getCurrentGroupId() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(selectedGroupId);
-  }
-
-  Group getCurrentGroup() {
-    Group group;
-    bool groupFound = false;
-    _items.forEach((element) {
-      if (element.groupId == currentGroupId) {
-        group = element;
-        groupFound = true;
-      }
-    });
-    if (groupFound) {
-      return group;
-    } else {
-      return this._items[0];
-    }
-  }
-
->>>>>>> 5399ca73082c886de83835f21dc2ce93656f8f16
   /*************************Contributions Summary*****************************/
 
   Future<dynamic> getGroupContributionSummary() async {
+    _groupcontributionSummary = [];
+    notifyListeners();
     const url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
     try {
       final postRequest = json.encode({

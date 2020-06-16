@@ -173,7 +173,6 @@ class ContributionSummaryBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contributionSummary = Provider.of<Groups>(context).groupContributionSummary;
-    print("Summary: $contributionSummary");
     return Container(
       child: ListView.builder(
         itemBuilder: (ctx, index) => Container(
