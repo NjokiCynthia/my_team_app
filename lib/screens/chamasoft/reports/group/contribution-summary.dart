@@ -7,6 +7,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -80,6 +81,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context,listen: false).getCurrentGroup();
     final summaryFlag = ModalRoute.of(context).settings.arguments;
     String appbarTitle = "Contribution Summary";
     String defaultTitle = "Contributions";
@@ -120,11 +122,17 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           heading2(
-                            text: "Total " + defaultTitle,
+                            text: groupObject.groupName,
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
                           customTitle(
-                            text: "31 Members",
+                            text: "Total " + defaultTitle,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          customTitle(
+                            text: "${groupObject.groupSize} Members",
                             textAlign: TextAlign.start,
                             color: primaryColor,
                             fontSize: 12.0,
@@ -159,7 +167,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                   textAlign: TextAlign.start,
                 ),
                 subtitle1(
-                  text: "12 October 2019 to 20 February 2021",
+                  text: DateFormat('EEE, MMM d, ''yyyy').format(DateTime.now()),
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start,
                 ),
@@ -186,14 +194,14 @@ class _ContributionSummaryState extends State<ContributionSummary> {
               ],
             ),
           ),
+          _isLoading?LinearProgressIndicator():SizedBox(height: 0.0,),
           Expanded(
               child: _isLoading
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
+                  ? ContributionSummaryBody()
                   : ContributionSummaryBody())
         ],
       ),
     );
   }
+  
 }
