@@ -176,8 +176,7 @@ class ContributionSummaryBody extends StatelessWidget {
     print("Summary: $contributionSummary");
     return Container(
       child: ListView.builder(
-        itemBuilder: (ctx,index) => 
-        Container(
+        itemBuilder: (ctx, index) => Container(
           color: (index % 2 == 0) ? Color(0xffF6F6FE) : Theme.of(context).backgroundColor,
           child: Padding(
             padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
@@ -197,14 +196,21 @@ class ContributionSummaryBody extends StatelessWidget {
                       SizedBox(
                         width: 10,
                       ),
-                      subtitle1(text: contributionSummary[index].memberName, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                      Expanded(
+                        child: subtitle1(
+                            text: contributionSummary[index].memberName,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start),
+                      ),
                     ],
                   ),
                 ),
                 Expanded(
                   flex: 1,
                   child: subtitle1(
-                      text: "Ksh " + currencyFormat.format(contributionSummary[index].paidAmount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                      text: "Ksh " + currencyFormat.format(contributionSummary[index].paidAmount),
+                      color: Theme.of(context).textSelectionHandleColor,
+                      textAlign: TextAlign.end),
                 ),
                 Expanded(
                   flex: 1,
@@ -396,14 +402,15 @@ class ExpenseBody extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  subtitle1(text: row.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                  Expanded(child: customTitleWithWrap(text: row.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)),
                 ],
               ),
             ),
-            Row(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-              customTitle(text: "Ksh ", color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w400, textAlign: TextAlign.end),
-              subtitle1(text: " " + currencyFormat.format(row.paid), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-            ]),
+            customTitle(
+                text: "Ksh " + currencyFormat.format(row.paid),
+                color: Theme.of(context).textSelectionHandleColor,
+                fontWeight: FontWeight.w400,
+                textAlign: TextAlign.end),
           ],
         ),
       ),

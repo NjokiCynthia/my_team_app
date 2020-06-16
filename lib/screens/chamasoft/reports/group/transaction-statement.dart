@@ -33,7 +33,12 @@ class _TransactionStatementState extends State<TransactionStatement> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchTransactionStatement();
     } on CustomException catch (error) {
-      StatusHandler().handleStatus(context: context, error: error, callback: () {});
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getTransactionStatement(context);
+          });
     }
   }
 
@@ -70,7 +75,6 @@ class _TransactionStatementState extends State<TransactionStatement> {
             : RefreshIndicator(
                 onRefresh: () => _getTransactionStatement(context),
                 child: Consumer<Groups>(builder: (context, data, child) {
-                  //List<TransactionStatementRowdss> transactions = data.transactionStatement.transactionStatements;
                   return Column(
                     children: <Widget>[
                       Container(

@@ -146,7 +146,7 @@ class Member {
   });
 }
 
-class GroupContributionSummary{
+class GroupContributionSummary {
   final String memberId;
   final String memberName;
   final double paidAmount;
@@ -174,6 +174,7 @@ class Groups with ChangeNotifier {
   List<List<Account>> _allAccounts = [];
   AccountBalances _accountBalances;
   TransactionStatement _transactionStatement;
+  ExpenseSummaryList _expenseSummaryList;
   List<GroupContributionSummary> _groupcontributionSummary = [];
 
   List<Group> get item {
@@ -216,7 +217,11 @@ class Groups with ChangeNotifier {
     return _transactionStatement;
   }
 
-  List<GroupContributionSummary> get groupContributionSummary{
+  ExpenseSummaryList get expenseSummaryList {
+    return _expenseSummaryList;
+  }
+
+  List<GroupContributionSummary> get groupContributionSummary {
     return _groupcontributionSummary;
   }
 
@@ -383,16 +388,20 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addContributionSummary(List<dynamic> contributionSummaryList){
+  void addExpenseSummary(dynamic data) {
+    _expenseSummaryList = getExpenseSummary(data);
+    notifyListeners();
+  }
+
+  void addContributionSummary(List<dynamic> contributionSummaryList) {
     final List<GroupContributionSummary> contributionSummary = [];
     if (contributionSummaryList.length > 0) {
       for (var object in contributionSummaryList) {
         final newData = GroupContributionSummary(
-          memberId: object['member_id'].toString(), 
-          memberName: object['name'].toString(), 
-          paidAmount: double.parse(object['paid'].toString()), 
-          balanceAmount: double.parse(object['arrears'].toString())
-        );
+            memberId: object['member_id'].toString(),
+            memberName: object['name'].toString(),
+            paidAmount: double.parse(object['paid'].toString()),
+            balanceAmount: double.parse(object['arrears'].toString()));
         contributionSummary.add(newData);
       }
     }
@@ -627,9 +636,42 @@ class Groups with ChangeNotifier {
     }
   }
 
+<<<<<<< HEAD
+=======
+  setSelectedGroupId(String groupId) async {
+    currentGroupId = groupId;
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(selectedGroupId)) {
+      prefs.remove(selectedGroupId);
+    }
+    prefs.setString(selectedGroupId, groupId);
+  }
+
+  getCurrentGroupId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(selectedGroupId);
+  }
+
+  Group getCurrentGroup() {
+    Group group;
+    bool groupFound = false;
+    _items.forEach((element) {
+      if (element.groupId == currentGroupId) {
+        group = element;
+        groupFound = true;
+      }
+    });
+    if (groupFound) {
+      return group;
+    } else {
+      return this._items[0];
+    }
+  }
+
+>>>>>>> 5399ca73082c886de83835f21dc2ce93656f8f16
   /*************************Contributions Summary*****************************/
 
-  Future<dynamic> getGroupContributionSummary()async{
+  Future<dynamic> getGroupContributionSummary() async {
     const url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
     try {
       final postRequest = json.encode({
@@ -638,15 +680,41 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        try{
+        try {
           final contributionBalances = response["balances"];
           addContributionSummary(contributionBalances);
-        }catch(error){
+        } catch (error) {
           throw CustomException(message: ERROR_MESSAGE);
         }
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  /// ***********************Expense Summary*****************************
+  Future<void> fetchExpenseSummary() async {
+    const url = EndpointUrl.GET_EXPENSES_SUMMARY;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _expenses = []; //clear accounts
+        final groupExpenses = response['data'] as dynamic;
+        addExpenseSummary(groupExpenses);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error.toString());
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
