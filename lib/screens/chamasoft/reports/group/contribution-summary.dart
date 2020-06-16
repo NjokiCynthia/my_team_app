@@ -88,6 +88,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context,listen: false).getCurrentGroup();
     final summaryFlag = ModalRoute.of(context).settings.arguments;
     String appbarTitle = "Contribution Summary";
     String defaultTitle = "Contributions";
@@ -130,11 +131,17 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           heading2(
-                            text: "Total " + defaultTitle,
+                            text: groupObject.groupName,
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
                           customTitle(
-                            text: "31 Members",
+                            text: "Total " + defaultTitle,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                          customTitle(
+                            text: "${groupObject.groupSize} Members",
                             textAlign: TextAlign.start,
                             color: primaryColor,
                             fontSize: 12.0,
@@ -212,4 +219,5 @@ class _ContributionSummaryState extends State<ContributionSummary> {
       ),
     );
   }
+  
 }

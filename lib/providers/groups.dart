@@ -14,11 +14,25 @@ class Group {
   final String groupId;
   final String groupName;
   final String groupSize;
+  final String groupCountryId;
+  final List<GroupRoles> groupRoles;
 
   Group({
     @required this.groupId,
     @required this.groupName,
     @required this.groupSize,
+    @required this.groupCountryId,
+    this.groupRoles,
+  });
+}
+
+class GroupRoles{
+  String roleId;
+  String roleName;
+
+  GroupRoles({
+    @required this.roleId,
+    @required this.roleName,
   });
 }
 
@@ -163,7 +177,7 @@ class Groups with ChangeNotifier {
   List<GroupContributionSummary> _groupcontributionSummary = [];
 
   List<Group> get item {
-    return [..._items];
+    return _items;
   }
 
   List<Account> get accounts {
@@ -205,6 +219,59 @@ class Groups with ChangeNotifier {
   List<GroupContributionSummary> get groupContributionSummary{
     return _groupcontributionSummary;
   }
+
+
+
+  /// ********************Group Objects************/
+
+  setSelectedGroupId(String groupId) async {
+    currentGroupId = groupId;
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.containsKey(selectedGroupId)) {
+      prefs.remove(selectedGroupId);
+    }
+    prefs.setString(selectedGroupId, groupId);
+  }
+
+  getCurrentGroupId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(selectedGroupId);
+  }
+
+  Group getCurrentGroup() {
+    Group group;
+    bool groupFound = false;
+    _items.forEach((element) {
+      if (element.groupId == currentGroupId) {
+        group = element;
+        groupFound = true;
+      }
+    });
+    if (groupFound) {
+      return group;
+    } else {
+      return this._items[0];
+    }
+  }
+
+  void addGroups(List<dynamic> groupObject) {
+    final List<Group> loadedGroups = [];
+    if (groupObject.length > 0) {
+      for (var groupJSON in groupObject) {
+        final newGroup = Group(
+          groupId: groupJSON['id'].toString(), 
+          groupName: groupJSON['name'].toString(), 
+          groupSize: groupJSON['size'].toString(),
+          groupCountryId: groupJSON['country_id'].toString(),
+        );
+        loadedGroups.add(newGroup);
+      }
+    }
+    _items = loadedGroups;
+    notifyListeners();
+  }
+
+/// ********************End Group Objects************/
 
   void addAccounts(List<dynamic> groupBankAccounts, int accountType) {
     final List<Account> bankAccounts = [];
@@ -305,17 +372,6 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addGroups(List<dynamic> groupObject) {
-    final List<Group> loadedGroups = [];
-    if (groupObject.length > 0) {
-      for (var groupJSON in groupObject) {
-        final newGroup = Group(groupId: groupJSON['id'].toString(), groupName: groupJSON['name'].toString(), groupSize: groupJSON['size'].toString());
-        loadedGroups.add(newGroup);
-      }
-    }
-    _items = loadedGroups;
-    notifyListeners();
-  }
 
   void addAccountBalances(dynamic data) {
     _accountBalances = getAccountBalances(data);
@@ -570,37 +626,6 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
-
-  setSelectedGroupId(String groupId) async {
-    currentGroupId = groupId;
-    final prefs = await SharedPreferences.getInstance();
-    if (prefs.containsKey(selectedGroupId)) {
-      prefs.remove(selectedGroupId);
-    }
-    prefs.setString(selectedGroupId, groupId);
-  }
-
-  getCurrentGroupId() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(selectedGroupId);
-  }
-
-  Group getCurrentGroup() {
-    Group group;
-    bool groupFound = false;
-    _items.forEach((element) {
-      if (element.groupId == currentGroupId) {
-        group = element;
-        groupFound = true;
-      }
-    });
-    if (groupFound) {
-      return group;
-    } else {
-      return this._items[0];
-    }
-  }
-
 
   /*************************Contributions Summary*****************************/
 

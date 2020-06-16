@@ -170,7 +170,6 @@ class LoanStatementBody extends StatelessWidget {
 }
 
 class ContributionSummaryBody extends StatelessWidget {
- 
   @override
   Widget build(BuildContext context) {
     final contributionSummary = Provider.of<Groups>(context).groupContributionSummary;
@@ -210,7 +209,10 @@ class ContributionSummaryBody extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: subtitle1(
-                      text: "Ksh " + currencyFormat.format(contributionSummary[index].balanceAmount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                      text: "Ksh " + currencyFormat.format(contributionSummary[index].balanceAmount), 
+                      color: (contributionSummary[index].balanceAmount>0)?Colors.red:(contributionSummary[index].balanceAmount<0?Colors.green:Theme.of(context).textSelectionHandleColor), 
+                      textAlign: TextAlign.end
+                  ),
                 ),
               ],
             ),
