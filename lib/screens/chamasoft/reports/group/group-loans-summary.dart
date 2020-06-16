@@ -84,235 +84,196 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
           leadingIcon: LineAwesomeIcons.close,
           title: appbarTitle,
         ),
-        backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: FutureBuilder(
             future: _future,
-            builder: (context, snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
+            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                 ? Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
-                onRefresh: () => _getLoanSummary(context),
-                child: Consumer<Groups>(builder: (context, data, child) {
-                  List<LoanSummaryRow> list = data.getLoansSummaryList.summaryList;
-                  return Column(
-                    children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(16.0),
-                        width: double.infinity,
-                        color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                    onRefresh: () => _getLoanSummary(context),
+                    child: Consumer<Groups>(builder: (context, data, child) {
+                      List<LoanSummaryRow> list = data.getLoansSummaryList.summaryList;
+                      return Column(
+                        children: <Widget>[
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            width: double.infinity,
+                            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
-                                Expanded(
-                                  flex: 1,
-                                  child: heading2(
-                                      text: "Total Loaned Out", color: Theme
-                                      .of(context)
-                                      .textSelectionHandleColor, textAlign: TextAlign.start),
-                                ),
                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    customTitle(
-                                      text: "Ksh ",
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 18.0,
-                                      color: Theme
-                                          .of(context)
-                                          .textSelectionHandleColor,
+                                    Expanded(
+                                      flex: 1,
+                                      child: heading2(
+                                          text: "Total Loaned Out", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                                     ),
-                                    heading2(
-                                      text: currencyFormat.format(data.getLoansSummaryList.totalLoan),
-                                      color: Theme
-                                          .of(context)
-                                          .textSelectionHandleColor,
-                                      textAlign: TextAlign.end,
+                                    Row(
+                                      children: <Widget>[
+                                        customTitle(
+                                          text: "Ksh ",
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 18.0,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                        ),
+                                        heading2(
+                                          text: currencyFormat.format(data.getLoansSummaryList.totalLoan),
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          textAlign: TextAlign.end,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
+                                SizedBox(
+                                  height: 8.0,
+                                ),
+                                Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              subtitle2(
+                                                  text: "Payable: Ksh ",
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  textAlign: TextAlign.start),
+                                              customTitle(
+                                                  text: currencyFormat.format(data.getLoansSummaryList.totalPayable),
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  fontSize: 12,
+                                                  textAlign: TextAlign.start),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              subtitle2(
+                                                  text: "Paid: Ksh ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                              customTitle(
+                                                  text: currencyFormat.format(data.getLoansSummaryList.totalPaid),
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  fontSize: 12,
+                                                  textAlign: TextAlign.start),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: <Widget>[
+                                              subtitle2(
+                                                  text: "Balance: Ksh ",
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  textAlign: TextAlign.start),
+                                              customTitle(
+                                                  text: currencyFormat.format(data.getLoansSummaryList.totalBalance),
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  fontSize: 12,
+                                                  textAlign: TextAlign.start),
+                                            ],
+                                          ),
+                                        ]),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              subtitle2(
+                                                  text: "Active Loans: ",
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  textAlign: TextAlign.start),
+                                              customTitle(
+                                                  text: "22",
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  fontSize: 12,
+                                                  textAlign: TextAlign.start),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              subtitle2(
+                                                  text: "Fully Paid: ",
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  textAlign: TextAlign.start),
+                                              customTitle(
+                                                  text: "10",
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  fontSize: 12,
+                                                  textAlign: TextAlign.start),
+                                            ],
+                                          ),
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: <Widget>[
+                                              subtitle2(
+                                                  text: "Bad Loans: ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                              customTitle(
+                                                  text: "4",
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  fontSize: 12,
+                                                  textAlign: TextAlign.start),
+                                            ],
+                                          ),
+                                        ]),
+                                      ),
+                                    ]),
                               ],
                             ),
-                            SizedBox(
-                              height: 8.0,
+                          ),
+                          Container(
+                            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Expanded(
+                                  flex: 3,
+                                  child: Container(),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: subtitle1(text: "Due", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                ),
+                              ],
                             ),
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Expanded(
-                                    flex: 1,
-                                    child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          subtitle2(
-                                              text: "Payable: Ksh ",
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              textAlign: TextAlign.start),
-                                          customTitle(
-                                              text: currencyFormat.format(data.getLoansSummaryList.totalPayable),
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              fontSize: 12,
-                                              textAlign: TextAlign.start),
-                                        ],
-                                      ),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          subtitle2(
-                                              text: "Paid: Ksh ", color: Theme
-                                              .of(context)
-                                              .textSelectionHandleColor, textAlign: TextAlign.start),
-                                          customTitle(
-                                              text: currencyFormat.format(data.getLoansSummaryList.totalPaid),
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              fontSize: 12,
-                                              textAlign: TextAlign.start),
-                                        ],
-                                      ),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          subtitle2(
-                                              text: "Balance: Ksh ",
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              textAlign: TextAlign.start),
-                                          customTitle(
-                                              text: currencyFormat.format(data.getLoansSummaryList.totalBalance),
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              fontSize: 12,
-                                              textAlign: TextAlign.start),
-                                        ],
-                                      ),
-                                    ]),
-                                  ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          subtitle2(
-                                              text: "Active Loans: ",
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              textAlign: TextAlign.start),
-                                          customTitle(
-                                              text: "22",
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              fontSize: 12,
-                                              textAlign: TextAlign.start),
-                                        ],
-                                      ),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          subtitle2(
-                                              text: "Fully Paid: ",
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              textAlign: TextAlign.start),
-                                          customTitle(
-                                              text: "10",
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              fontSize: 12,
-                                              textAlign: TextAlign.start),
-                                        ],
-                                      ),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: <Widget>[
-                                          subtitle2(
-                                              text: "Bad Loans: ", color: Theme
-                                              .of(context)
-                                              .textSelectionHandleColor, textAlign: TextAlign.start),
-                                          customTitle(
-                                              text: "4",
-                                              color: Theme
-                                                  .of(context)
-                                                  .textSelectionHandleColor,
-                                              fontSize: 12,
-                                              textAlign: TextAlign.start),
-                                        ],
-                                      ),
-                                    ]),
-                                  ),
-                                ]),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 3,
-                              child: Container(),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                LoanSummaryRow row = list[index];
+                                return LoanSummaryBody(
+                                  row: row,
+                                  position: index % 2 == 0,
+                                );
+                              },
+                              itemCount: list.length,
                             ),
-                            Expanded(
-                              flex: 2,
-                              child: subtitle1(text: "Due", color: Theme
-                                  .of(context)
-                                  .primaryColor, textAlign: TextAlign.center),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: subtitle1(text: "Paid", color: Theme
-                                  .of(context)
-                                  .primaryColor, textAlign: TextAlign.center),
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: subtitle1(text: "Balance", color: Theme
-                                  .of(context)
-                                  .primaryColor, textAlign: TextAlign.center),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        child: ListView.builder(
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            LoanSummaryRow row = list[index];
-                            return LoanSummaryBody(
-                              row: row,
-                              position: index % 2 == 0,
-                            );
-                          },
-                          itemCount: list.length,
-                        ),
-                      )
-                    ],
-                  );
-                }))));
+                          )
+                        ],
+                      );
+                    }))));
   }
 }
