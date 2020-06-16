@@ -161,6 +161,7 @@ class Groups with ChangeNotifier {
   AccountBalances _accountBalances;
   TransactionStatement _transactionStatement;
   ExpenseSummaryList _expenseSummaryList;
+  LoansSummaryList _loansSummaryList;
   List<GroupContributionSummary> _groupcontributionSummary = [];
 
   List<Group> get item {
@@ -209,6 +210,10 @@ class Groups with ChangeNotifier {
 
   List<GroupContributionSummary> get groupContributionSummary {
     return _groupcontributionSummary;
+  }
+
+  LoansSummaryList get getLoansSummaryList {
+    return _loansSummaryList;
   }
 
   void addAccounts(List<dynamic> groupBankAccounts, int accountType) {
@@ -334,6 +339,11 @@ class Groups with ChangeNotifier {
 
   void addExpenseSummary(dynamic data) {
     _expenseSummaryList = getExpenseSummary(data);
+    notifyListeners();
+  }
+
+  void addLoansSummary(dynamic data) {
+    _loansSummaryList = getLoanSummaryList(data);
     notifyListeners();
   }
 
@@ -656,6 +666,32 @@ class Groups with ChangeNotifier {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
         print(error.toString());
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  /// ***********************Loans Summary*****************************
+  Future<void> fetchLoansSummary() async {
+    const url = EndpointUrl.GET_LOANS_SUMMARY;
+
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final data = response['data'] as dynamic;
+        addLoansSummary(data);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {

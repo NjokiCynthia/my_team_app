@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 
 class AccountBalance {
@@ -130,6 +131,48 @@ ExpenseSummaryList getExpenseSummary(dynamic data) {
   }
   double totalExpenses = ParseJson.getDoubleFromJson(data, "total_expenses");
   return ExpenseSummaryList(expenseSummary: expenseList, totalExpenses: totalExpenses);
+}
+
+class LoansSummaryList {
+  List<LoanSummaryRow> summaryList;
+  double totalLoan, totalPayable, totalPaid, totalBalance;
+
+  LoansSummaryList({
+    this.summaryList,
+    this.totalLoan,
+    this.totalPayable,
+    this.totalPaid,
+    this.totalBalance,
+  });
+}
+
+LoansSummaryList getLoanSummaryList(dynamic data) {
+  final double totalLoan = ParseJson.getDoubleFromJson(data['statement_footer'], 'total_loan');
+  final double totalInterest = ParseJson.getDoubleFromJson(data['statement_footer'], 'total_interest');
+  final double totalPayable = totalLoan + totalInterest;
+  final double totalPaid = ParseJson.getDoubleFromJson(data['statement_footer'], 'total_paid');
+  final double totalBalance = ParseJson.getDoubleFromJson(data['statement_footer'], 'total_balance');
+
+  final List<LoanSummaryRow> summaryList = [];
+
+  final statementBody = data['statement_body'] as List<dynamic>;
+  if (statementBody.length > 0) {
+    for (var statement in statementBody) {
+      final member = statement['member'].toString();
+      final disbursementDate = statement['disbursement_date'].toString();
+      final loan = ParseJson.getDoubleFromJson(statement, 'amount');
+      final interest = ParseJson.getDoubleFromJson(statement, 'interest');
+      final due = loan + interest;
+      final paid = ParseJson.getDoubleFromJson(statement, 'amount_paid');
+      final balance = ParseJson.getDoubleFromJson(statement, 'balance');
+
+      final loanSummaryRow = LoanSummaryRow(name: member, amountDue: due, paid: paid, balance: balance, date: DateTime.now());
+      summaryList.add(loanSummaryRow);
+    }
+  }
+
+  return LoansSummaryList(
+      summaryList: summaryList, totalLoan: totalLoan, totalPayable: totalPayable, totalPaid: totalPaid, totalBalance: totalBalance);
 }
 
 class ParseJson {
