@@ -1,3 +1,5 @@
+import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
+
 class AccountBalance {
   String name, accountNumber, balance;
   bool isHeader;
@@ -103,6 +105,31 @@ TransactionStatement getTransactionStatement(dynamic data) {
       statementDate: statementAsAt,
       statementPeriodFrom: statementPeriodFrom,
       statementPeriodTo: statementPeriodTo);
+}
+
+class ExpenseSummaryList {
+  List<SummaryRow> expenseSummary;
+  double totalExpenses;
+
+  ExpenseSummaryList({
+    this.expenseSummary,
+    this.totalExpenses,
+  });
+}
+
+ExpenseSummaryList getExpenseSummary(dynamic data) {
+  final expenses = data['expenses'] as List<dynamic>;
+  final List<SummaryRow> expenseList = [];
+  if (expenses.length > 0) {
+    for (var expense in expenses) {
+      final name = expense['expense_name'].toString();
+      final amount = ParseJson.getDoubleFromJson(expense, "amount");
+      final expenseRow = SummaryRow(name: name, paid: amount);
+      expenseList.add(expenseRow);
+    }
+  }
+  double totalExpenses = ParseJson.getDoubleFromJson(data, "total_expenses");
+  return ExpenseSummaryList(expenseSummary: expenseList, totalExpenses: totalExpenses);
 }
 
 class ParseJson {

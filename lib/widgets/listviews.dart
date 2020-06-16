@@ -401,14 +401,15 @@ class ExpenseBody extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  subtitle1(text: row.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                  Expanded(child: customTitleWithWrap(text: row.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)),
                 ],
               ),
             ),
-            Row(crossAxisAlignment: CrossAxisAlignment.center, children: <Widget>[
-              customTitle(text: "Ksh ", color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w400, textAlign: TextAlign.end),
-              subtitle1(text: " " + currencyFormat.format(row.paid), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-            ]),
+            customTitle(
+                text: "Ksh " + currencyFormat.format(row.paid),
+                color: Theme.of(context).textSelectionHandleColor,
+                fontWeight: FontWeight.w400,
+                textAlign: TextAlign.end),
           ],
         ),
       ),
