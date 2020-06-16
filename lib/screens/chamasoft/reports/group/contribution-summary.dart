@@ -1,12 +1,11 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -34,10 +33,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   void _applyFilter() {}
 
   void _showFilter(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (_) => FilterContainer(
-            ModalRoute.of(context).settings.arguments, _applyFilter));
+    showModalBottomSheet(context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
   @override
@@ -56,30 +52,26 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    if(_isInit){
+    if (_isInit) {
       setState(() {
         _isLoading = true;
       });
-      _fetchGroupContributionSummary(context).then((_){
+      _fetchGroupContributionSummary(context).then((_) {
         setState(() {
           _isLoading = false;
         });
-      })
-      .catchError((error){
-        
-      });
+      }).catchError((error) {});
     }
-    _isInit=false;
+    _isInit = false;
     super.didChangeDependencies();
   }
 
-  Future<void> _fetchGroupContributionSummary(BuildContext context)async{
-    try{
-      await Provider.of<Groups>(context,listen: false).getGroupContributionSummary();
-    }catch(error){
-
-    }finally{
+  Future<void> _fetchGroupContributionSummary(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).getGroupContributionSummary();
+    } catch (error) {
+      StatusHandler().handleStatus(context: context, error: error, callback: () {});
+    } finally {
       setState(() {
         _isLoading = false;
       });
@@ -112,9 +104,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
           Container(
             padding: EdgeInsets.all(16.0),
             width: double.infinity,
-            color: (themeChangeProvider.darkTheme)
-                ? Colors.blueGrey[800]
-                : Color(0xffededfe),
+            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -187,27 +177,21 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: subtitle1(
-                      text: "Paid",
-                      color: Theme.of(context).primaryColor,
-                      textAlign: TextAlign.end),
+                  child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
                 ),
                 Expanded(
                   flex: 1,
-                  child: subtitle1(
-                      text: "Balance",
-                      color: Theme.of(context).primaryColor,
-                      textAlign: TextAlign.end),
+                  child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
                 ),
               ],
             ),
           ),
           Expanded(
-            child: _isLoading?
-              Center(
-                child: CircularProgressIndicator(),
-              ):ContributionSummaryBody()
-          )
+              child: _isLoading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ContributionSummaryBody())
         ],
       ),
     );

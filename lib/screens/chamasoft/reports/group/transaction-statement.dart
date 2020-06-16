@@ -70,7 +70,6 @@ class _TransactionStatementState extends State<TransactionStatement> {
             : RefreshIndicator(
                 onRefresh: () => _getTransactionStatement(context),
                 child: Consumer<Groups>(builder: (context, data, child) {
-                  //List<TransactionStatementRowdss> transactions = data.transactionStatement.transactionStatements;
                   return Column(
                     children: <Widget>[
                       Container(
