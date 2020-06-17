@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
@@ -14,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
+import 'helpers/report_helper.dart';
 
 class Group {
   final String groupId;
@@ -294,7 +294,10 @@ class Groups with ChangeNotifier {
     final List<Account> bankAccounts = [];
     if (groupBankAccounts.length > 0) {
       for (var bankAccountJSON in groupBankAccounts) {
-        final newAccount = Account(id: bankAccountJSON['id'].toString(), name: bankAccountJSON['name'].toString(), typeId: accountType);
+        final newAccount = Account(
+            id: bankAccountJSON['id'].toString(),
+            name: bankAccountJSON['name'].toString(),
+            typeId: accountType);
         bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
@@ -311,11 +314,14 @@ class Groups with ChangeNotifier {
           name: groupContributionJSON['name'].toString(),
           amount: groupContributionJSON['amount'].toString(),
           type: groupContributionJSON['type'].toString(),
-          contributionType: groupContributionJSON['contribution_type'].toString(),
+          contributionType:
+              groupContributionJSON['contribution_type'].toString(),
           frequency: groupContributionJSON['frequency'].toString(),
           invoiceDate: groupContributionJSON['invoice_date'].toString(),
-          contributionDate: groupContributionJSON['contribution_date'].toString(),
-          oneTimeContributionSetting: groupContributionJSON['one_time_contribution_setting'].toString(),
+          contributionDate:
+              groupContributionJSON['contribution_date'].toString(),
+          oneTimeContributionSetting:
+              groupContributionJSON['one_time_contribution_setting'].toString(),
           isHidden: groupContributionJSON['is_hidden'].toString(),
           active: groupContributionJSON['active'].toString(),
         );
@@ -365,7 +371,8 @@ class Groups with ChangeNotifier {
           disbursementDate: groupLoanTypesJSON['disbursement_date']..toString,
           guarantors: groupLoanTypesJSON['guarantors']..toString,
           latePaymentFines: groupLoanTypesJSON['late_payment_fines']..toString,
-          outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines']..toString,
+          outstandingPaymentFines:
+              groupLoanTypesJSON['outstanding_payment_fines']..toString,
           isHidden: groupLoanTypesJSON['is_hidden']..toString,
         );
         _loanTypes.add(newLoanType);
@@ -463,13 +470,17 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _accounts = []; //clear accounts
-        final groupBankAccounts = response['accounts']['bank_accounts'] as List<dynamic>;
+        final groupBankAccounts =
+            response['accounts']['bank_accounts'] as List<dynamic>;
         addAccounts(groupBankAccounts, 1);
-        final groupSaccoAccounts = response['accounts']['sacco_accounts'] as List<dynamic>;
+        final groupSaccoAccounts =
+            response['accounts']['sacco_accounts'] as List<dynamic>;
         addAccounts(groupSaccoAccounts, 2);
-        final groupMobileMoneyAccounts = response['accounts']['mobile_money_accounts'] as List<dynamic>;
+        final groupMobileMoneyAccounts =
+            response['accounts']['mobile_money_accounts'] as List<dynamic>;
         addAccounts(groupMobileMoneyAccounts, 3);
-        final groupPettyCashAccountsAccounts = response['accounts']['petty_cash_accounts'] as List<dynamic>;
+        final groupPettyCashAccountsAccounts =
+            response['accounts']['petty_cash_accounts'] as List<dynamic>;
         addAccounts(groupPettyCashAccountsAccounts, 4);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -543,7 +554,8 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _fineTypes = []; //clear accounts
-        final groupFineTypes = response['fine_category_options'] as List<dynamic>;
+        final groupFineTypes =
+            response['fine_category_options'] as List<dynamic>;
         addFineTypes(groupFineTypes);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -593,6 +605,150 @@ class Groups with ChangeNotifier {
         _members = []; //clear
         final groupMembers = response['members'] as List<dynamic>;
         addMembers(groupMembers);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> updateGroupName(String name) async {
+    const url = EndpointUrl.UPDATE_GROUP_NAME;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "name": name,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        //final name = response['name'];
+
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> updateGroupPhoneNumber(String phone) async {
+    const url = EndpointUrl.UPDATE_GROUP_PHONE_NUMBER;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "phone": phone,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        //final phone = response['phone'];
+
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> updateGroupCountry(String countryId) async {
+    const url = EndpointUrl.UPDATE_GROUP_COUNTRY;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "country_id": countryId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        //final name = response['name'];
+        //final countryId = response['country_id'];
+
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> updateGroupCurrency(String currencyId) async {
+    const url = EndpointUrl.UPDATE_GROUP_CURRENCY;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "currency_id": currencyId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        //final currencyId = response['currencyId'];
+        //final currency = response['currency'];
+
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> updateGroupSettings({
+    String orderMembersBy,
+    String memberListingOrderBy,
+    String enableMemberInformationPrivacy,
+    String disableIgnoreContributionTransfers,
+    String disableArrears,
+    String enableSendMonthlyEmailStatements,
+    String disableMemberEditProfile,
+    String enableAbsoluteLoanRecalculation,
+    String userId,
+    String groupId,
+  }) async {
+    const url = EndpointUrl.UPDATE_GROUP_SETTINGS;
+
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "order_members_by": orderMembersBy,
+        "member_listing_order_by": memberListingOrderBy,
+        "enable_member_information_privacy": enableMemberInformationPrivacy,
+        "disable_ignore_contribution_transfers":
+            disableIgnoreContributionTransfers,
+        "disable_arrears": disableArrears,
+        "enable_send_monthly_email_statements":
+            enableSendMonthlyEmailStatements,
+        "disable_member_edit_profile": disableMemberEditProfile,
+        "enable_absolute_loan_recalculation": enableAbsoluteLoanRecalculation,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        //final status = response['status'];
+        //final message = response['message'];
+
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
