@@ -2,6 +2,10 @@ import 'dart:convert';
 
 import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
+import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/endpoint-url.dart';
@@ -174,9 +178,10 @@ class Groups with ChangeNotifier {
   List<Member> _members = [];
   List<List<Account>> _allAccounts = [];
   AccountBalanceModel _accountBalances;
-  TransactionStatement _transactionStatement;
+  TransactionStatementModel _transactionStatement;
   ExpenseSummaryList _expenseSummaryList;
   LoansSummaryList _loansSummaryList;
+  ContributionStatementModel _contributionStatement;
   List<GroupContributionSummary> _groupcontributionSummary = [];
 
   List<Group> get item {
@@ -215,7 +220,7 @@ class Groups with ChangeNotifier {
     return _accountBalances;
   }
 
-  TransactionStatement get transactionStatement {
+  TransactionStatementModel get transactionStatement {
     return _transactionStatement;
   }
 
@@ -229,6 +234,10 @@ class Groups with ChangeNotifier {
 
   LoansSummaryList get getLoansSummaryList {
     return _loansSummaryList;
+  }
+
+  ContributionStatementModel get getContributionStatements {
+    return _contributionStatement;
   }
 
   /// ********************Group Objects************/
@@ -397,6 +406,11 @@ class Groups with ChangeNotifier {
 
   void addLoansSummary(dynamic data) {
     _loansSummaryList = getLoanSummaryList(data);
+    notifyListeners();
+  }
+
+  void addContributionStatement(dynamic data) {
+    _contributionStatement = getContributionStatement(data);
     notifyListeners();
   }
 
@@ -713,6 +727,32 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         final data = response['data'] as dynamic;
         addLoansSummary(data);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  /// ***********************Contribution Statement*****************************
+  Future<void> fetchContributionStatement() async {
+    const url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
+
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final data = response['data'] as dynamic;
+        addContributionStatement(data);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

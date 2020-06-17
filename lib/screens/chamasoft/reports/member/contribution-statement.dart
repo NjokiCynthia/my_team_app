@@ -31,15 +31,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
     }
   }
 
-  Future<void> _getLoanSummary(BuildContext context) async {
+  Future<void> _getContributionStatement(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchLoansSummary();
+      await Provider.of<Groups>(context, listen: false).fetchContributionStatement();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _getLoanSummary(context);
+            _getContributionStatement(context);
           });
     }
   }
@@ -48,7 +48,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getLoanSummary(context);
+    _future = _getContributionStatement(context);
     super.initState();
   }
 
