@@ -109,21 +109,13 @@ LoansSummaryList getLoanSummaryList(dynamic data) {
       final paid = ParseHelper.getDoubleFromJson(statement, 'amount_paid');
       final balance = ParseHelper.getDoubleFromJson(statement, 'balance');
 
-      final loanSummaryRow = LoanSummaryRow(name: member,
-          amountDue: due,
-          paid: paid,
-          balance: balance,
-          date: DateTime.now());
+      final loanSummaryRow = LoanSummaryRow(name: member, amountDue: due, paid: paid, balance: balance, date: DateTime.now());
       summaryList.add(loanSummaryRow);
     }
   }
 
   return LoansSummaryList(
-      summaryList: summaryList,
-      totalLoan: totalLoan,
-      totalPayable: totalPayable,
-      totalPaid: totalPaid,
-      totalBalance: totalBalance);
+      summaryList: summaryList, totalLoan: totalLoan, totalPayable: totalPayable, totalPaid: totalPaid, totalBalance: totalBalance);
 }
 
 ContributionStatementModel getContributionStatement(dynamic data) {
@@ -149,11 +141,7 @@ ContributionStatementModel getContributionStatement(dynamic data) {
         type = "Payment";
       }
 
-      final statementRow = ContributionStatementRow(isHeader: false,
-          title: description,
-          description: type,
-          amount: amount,
-          date: date);
+      final statementRow = ContributionStatementRow(isHeader: false, title: description, description: type, amount: amount, date: date);
       statementList.add(statementRow);
     }
   }
