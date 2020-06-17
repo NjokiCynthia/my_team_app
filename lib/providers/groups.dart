@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chamasoft/providers/helpers/report_helper.dart';
+import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/endpoint-url.dart';
@@ -172,7 +173,7 @@ class Groups with ChangeNotifier {
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
   List<List<Account>> _allAccounts = [];
-  AccountBalances _accountBalances;
+  AccountBalanceModel _accountBalances;
   TransactionStatement _transactionStatement;
   ExpenseSummaryList _expenseSummaryList;
   LoansSummaryList _loansSummaryList;
@@ -210,7 +211,7 @@ class Groups with ChangeNotifier {
     return _allAccounts;
   }
 
-  AccountBalances get accountBalances {
+  AccountBalanceModel get accountBalances {
     return _accountBalances;
   }
 

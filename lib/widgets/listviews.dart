@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/report_helper.dart';
+import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
@@ -214,10 +215,11 @@ class ContributionSummaryBody extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: subtitle1(
-                      text: "Ksh " + currencyFormat.format(contributionSummary[index].balanceAmount), 
-                      color: (contributionSummary[index].balanceAmount>0)?Colors.red:(contributionSummary[index].balanceAmount<0?Colors.green:Theme.of(context).textSelectionHandleColor), 
-                      textAlign: TextAlign.end
-                  ),
+                      text: "Ksh " + currencyFormat.format(contributionSummary[index].balanceAmount),
+                      color: (contributionSummary[index].balanceAmount > 0)
+                          ? Colors.red
+                          : (contributionSummary[index].balanceAmount < 0 ? Colors.green : Theme.of(context).textSelectionHandleColor),
+                      textAlign: TextAlign.end),
                 ),
               ],
             ),

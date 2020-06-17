@@ -1,11 +1,15 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class ContributionStatement extends StatefulWidget {
   @override
@@ -16,6 +20,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
+  Future<void> _future;
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -25,10 +31,24 @@ class _ContributionStatementState extends State<ContributionStatement> {
     }
   }
 
+  Future<void> _getLoanSummary(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchLoansSummary();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getLoanSummary(context);
+          });
+    }
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    _future = _getLoanSummary(context);
     super.initState();
   }
 
@@ -65,10 +85,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
   void _applyFilter() {}
 
   void _showFilter(BuildContext context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (_) => FilterContainer(
-            ModalRoute.of(context).settings.arguments, _applyFilter));
+    showModalBottomSheet(context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
   @override
@@ -97,9 +114,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(16.0),
-            color: (themeChangeProvider.darkTheme)
-                ? Colors.blueGrey[800]
-                : Color(0xffededfe),
+            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -109,24 +124,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      heading2(
-                          text: "Total " + defaultTitle,
-                          color: Theme.of(context).textSelectionHandleColor,
-                          textAlign: TextAlign.start),
+                      heading2(text: "Total " + defaultTitle, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                       SizedBox(
                         height: 10,
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          subtitle2(
-                              text: "Total amount due ",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              textAlign: TextAlign.start),
-                          subtitle1(
-                              text: "Ksh 60,000",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              textAlign: TextAlign.start),
+                          subtitle2(text: "Total amount due ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                          subtitle1(text: "Ksh 60,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                         ],
                       ),
                       SizedBox(
@@ -135,23 +141,14 @@ class _ContributionStatementState extends State<ContributionStatement> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          subtitle2(
-                              text: "Balance ",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              textAlign: TextAlign.start),
-                          subtitle1(
-                              text: "Ksh 10,000",
-                              color: Theme.of(context).textSelectionHandleColor,
-                              textAlign: TextAlign.start),
+                          subtitle2(text: "Balance ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                          subtitle1(text: "Ksh 10,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                         ],
                       ),
                     ],
                   ),
                 ),
-                heading2(
-                    text: "Ksh 50,000",
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.start)
+                heading2(text: "Ksh 50,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
               ],
             ),
           ),

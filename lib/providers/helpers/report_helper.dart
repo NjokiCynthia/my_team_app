@@ -1,24 +1,8 @@
+import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 
-class AccountBalance {
-  String name, accountNumber, balance;
-  bool isHeader;
-  String header;
-
-  AccountBalance.header({this.isHeader, this.header});
-
-  AccountBalance({this.isHeader, this.name, this.accountNumber, this.balance});
-}
-
-class AccountBalances {
-  List<AccountBalance> accounts;
-  String totalBalance;
-
-  AccountBalances({this.accounts, this.totalBalance});
-}
-
-AccountBalances getAccountBalances(dynamic data) {
+AccountBalanceModel getAccountBalances(dynamic data) {
   final balances = data['balances'] as List<dynamic>;
   final List<AccountBalance> bankAccounts = [];
   if (balances.length > 0) {
@@ -34,7 +18,7 @@ AccountBalances getAccountBalances(dynamic data) {
     }
   }
   String totalBalance = data['grand_total_balance'].toString();
-  return AccountBalances(accounts: bankAccounts, totalBalance: totalBalance);
+  return AccountBalanceModel(accounts: bankAccounts, totalBalance: totalBalance);
 }
 
 class TransactionStatementRow {
