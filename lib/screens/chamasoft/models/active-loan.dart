@@ -3,13 +3,7 @@ class ActiveLoan {
   String name;
   double amount, repaid, balance;
   DateTime applicationDate;
+  String disbursementDate;
 
-  ActiveLoan(
-      {this.id,
-      this.status,
-      this.name,
-      this.amount,
-      this.repaid,
-      this.balance,
-      this.applicationDate});
+  ActiveLoan({this.id, this.status, this.name, this.amount, this.repaid, this.balance, this.applicationDate, this.disbursementDate});
 }

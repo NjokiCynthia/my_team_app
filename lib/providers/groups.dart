@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
+import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
@@ -182,7 +183,8 @@ class Groups with ChangeNotifier {
   ExpenseSummaryList _expenseSummaryList;
   LoansSummaryList _loansSummaryList;
   ContributionStatementModel _contributionStatement;
-  List<GroupContributionSummary> _groupcontributionSummary = [];
+  List<GroupContributionSummary> _groupContributionSummary = [];
+  List<ActiveLoan> _memberLoanList = [];
 
   List<Group> get item {
     return _items;
@@ -229,7 +231,7 @@ class Groups with ChangeNotifier {
   }
 
   List<GroupContributionSummary> get groupContributionSummary {
-    return _groupcontributionSummary;
+    return _groupContributionSummary;
   }
 
   LoansSummaryList get getLoansSummaryList {
@@ -238,6 +240,10 @@ class Groups with ChangeNotifier {
 
   ContributionStatementModel get getContributionStatements {
     return _contributionStatement;
+  }
+
+  List<ActiveLoan> get getMemberLoans {
+    return _memberLoanList;
   }
 
   /// ********************Group Objects************/
@@ -414,6 +420,11 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
+  void addMemberLoans(List<dynamic> data) {
+    _memberLoanList = getMemberLoanList(data);
+    notifyListeners();
+  }
+
   void addContributionSummary(List<dynamic> contributionSummaryList) {
     final List<GroupContributionSummary> contributionSummary = [];
     if (contributionSummaryList.length > 0) {
@@ -426,7 +437,7 @@ class Groups with ChangeNotifier {
         contributionSummary.add(newData);
       }
     }
-    _groupcontributionSummary = contributionSummary;
+    _groupContributionSummary = contributionSummary;
     notifyListeners();
   }
 
@@ -660,7 +671,7 @@ class Groups with ChangeNotifier {
   /*************************Contributions Summary*****************************/
 
   Future<dynamic> getGroupContributionSummary() async {
-    _groupcontributionSummary = [];
+    _groupContributionSummary = [];
     notifyListeners();
     const url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
     try {
@@ -755,6 +766,29 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         addContributionStatement(response);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  /// ***********************Member Loans*****************************
+  Future<void> fetchMemberLoans() async {
+    const url = EndpointUrl.GET_GROUP_LOAN_LIST;
+
+    try {
+      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "is_member_loans": 1});
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final loans = response['loans'] as List<dynamic>;
+        addMemberLoans(loans);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
