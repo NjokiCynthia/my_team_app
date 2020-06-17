@@ -12,6 +12,10 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ContributionStatement extends StatefulWidget {
+  final int statementFlag;
+
+  ContributionStatement({this.statementFlag});
+
   @override
   _ContributionStatementState createState() => _ContributionStatementState();
 }
@@ -33,7 +37,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
   Future<void> _getContributionStatement(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchContributionStatement();
+      await Provider.of<Groups>(context, listen: false).fetchContributionStatement(widget.statementFlag);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -67,13 +71,12 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
   @override
   Widget build(BuildContext context) {
-    final statementFlag = ModalRoute.of(context).settings.arguments;
     String appbarTitle = "Contribution Statement";
     String defaultTitle = "Contributions";
 
-    if (statementFlag == FINE_STATEMENT) {
+    if (widget.statementFlag == FINE_STATEMENT) {
       appbarTitle = "Fine Statement";
-      defaultTitle = "Fines";
+      defaultTitle = "Fines Paid";
     }
 
     return Scaffold(

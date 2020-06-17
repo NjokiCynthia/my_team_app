@@ -741,8 +741,11 @@ class Groups with ChangeNotifier {
   }
 
   /// ***********************Contribution Statement*****************************
-  Future<void> fetchContributionStatement() async {
-    const url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
+  Future<void> fetchContributionStatement(int statementFlag) async {
+    String url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
+    if (statementFlag == FINE_STATEMENT) {
+      url = EndpointUrl.GET_FINE_STATEMENT;
+    }
 
     try {
       final postRequest = json.encode({
