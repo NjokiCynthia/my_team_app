@@ -19,11 +19,10 @@ class StatementBody extends StatelessWidget {
     @required this.row,
   }) : super(key: key);
 
-  final StatementRow row;
+  final ContributionStatementRow row;
 
   @override
   Widget build(BuildContext context) {
-    final amount = int.tryParse(row.amount) ?? 0;
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
       child: Card(
@@ -56,8 +55,8 @@ class StatementBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 subtitle1(
-                    text: "Ksh " + currencyFormat.format(amount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                subtitle2(text: defaultDateFormat.format(row.date), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    text: "Ksh " + currencyFormat.format(row.amount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                subtitle2(text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
               ],
             )
           ],
@@ -73,7 +72,7 @@ class StatementHeader extends StatelessWidget {
     @required this.row,
   }) : super(key: key);
 
-  final StatementRow row;
+  final ContributionStatementRow row;
 
   @override
   Widget build(BuildContext context) {

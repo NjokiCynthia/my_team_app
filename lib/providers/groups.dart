@@ -751,8 +751,7 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        final data = response['data'] as dynamic;
-        addContributionStatement(data);
+        addContributionStatement(response);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

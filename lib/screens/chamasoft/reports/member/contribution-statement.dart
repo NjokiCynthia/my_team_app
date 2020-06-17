@@ -59,29 +59,6 @@ class _ContributionStatementState extends State<ContributionStatement> {
     super.dispose();
   }
 
-  final List<StatementRow> list = [
-    StatementRow.header(true, "April"),
-    StatementRow(false, "Monthly Savings", "Payment", "10000", DateTime.now()),
-    StatementRow(false, "Welfare", "Payment", "500", DateTime.now()),
-    StatementRow(false, "Monthly Savings", "Invoice", "10000", DateTime.now()),
-    StatementRow(false, "Welfare", "Invoice", "500", DateTime.now()),
-    StatementRow.header(true, "March"),
-    StatementRow(false, "Monthly Savings", "Payment", "10000", DateTime.now()),
-    StatementRow(false, "Welfare", "Payment", "500", DateTime.now()),
-    StatementRow(false, "Monthly Savings", "Invoice", "10000", DateTime.now()),
-    StatementRow(false, "Welfare", "Invoice", "500", DateTime.now()),
-    StatementRow.header(true, "February"),
-    StatementRow(false, "Monthly Savings", "Payment", "10000", DateTime.now()),
-    StatementRow(false, "Welfare", "Payment", "500", DateTime.now()),
-    StatementRow(false, "Monthly Savings", "Invoice", "10000", DateTime.now()),
-    StatementRow(false, "Welfare", "Invoice", "500", DateTime.now()),
-    StatementRow.header(true, "January"),
-    StatementRow(false, "Monthly Savings", "Payment", "10000", DateTime.now()),
-    StatementRow(false, "Welfare", "Payment", "500", DateTime.now()),
-    StatementRow(false, "Monthly Savings", "Invoice", "10000", DateTime.now()),
-    StatementRow(false, "Welfare", "Invoice", "500", DateTime.now()),
-  ];
-
   void _applyFilter() {}
 
   void _showFilter(BuildContext context) {
@@ -100,75 +77,97 @@ class _ContributionStatementState extends State<ContributionStatement> {
     }
 
     return Scaffold(
-      appBar: tertiaryPageAppbar(
-        context: context,
-        action: () => Navigator.of(context).pop(),
-        elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.arrow_left,
-        trailingIcon: LineAwesomeIcons.filter,
-        title: appbarTitle,
-        trailingAction: () => _showFilter(context),
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: Column(
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(16.0),
-            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width / 2,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      heading2(text: "Total " + defaultTitle, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+        appBar: tertiaryPageAppbar(
+          context: context,
+          action: () => Navigator.of(context).pop(),
+          elevation: _appBarElevation,
+          leadingIcon: LineAwesomeIcons.arrow_left,
+          trailingIcon: LineAwesomeIcons.filter,
+          title: appbarTitle,
+          trailingAction: () => _showFilter(context),
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: FutureBuilder(
+            future: _future,
+            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                ? Center(child: CircularProgressIndicator())
+                : RefreshIndicator(
+                    onRefresh: () => _getContributionStatement(context),
+                    child: Consumer<Groups>(builder: (context, data, child) {
+                      return Column(
                         children: <Widget>[
-                          subtitle2(text: "Total amount due ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                          subtitle1(text: "Ksh 60,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Container(
+                                  width: MediaQuery.of(context).size.width / 2,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      heading2(
+                                          text: "Total " + defaultTitle,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          textAlign: TextAlign.start),
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          subtitle2(
+                                              text: "Total amount due ",
+                                              color: Theme.of(context).textSelectionHandleColor,
+                                              textAlign: TextAlign.start),
+                                          subtitle1(
+                                              text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalDue),
+                                              color: Theme.of(context).textSelectionHandleColor,
+                                              textAlign: TextAlign.start),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 4,
+                                      ),
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: <Widget>[
+                                          subtitle2(text: "Balance ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                          subtitle1(
+                                              text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalBalance),
+                                              color: Theme.of(context).textSelectionHandleColor,
+                                              textAlign: TextAlign.start),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                heading2(
+                                    text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalPaid),
+                                    color: Theme.of(context).textSelectionHandleColor,
+                                    textAlign: TextAlign.start)
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              controller: _scrollController,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                ContributionStatementRow row = data.getContributionStatements.statements[index];
+                                if (row.isHeader) {
+                                  return StatementHeader(row: row);
+                                } else {
+                                  return StatementBody(row: row);
+                                }
+                              },
+                              itemCount: data.getContributionStatements.statements.length,
+                            ),
+                          ),
                         ],
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          subtitle2(text: "Balance ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                          subtitle1(text: "Ksh 10,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                heading2(text: "Ksh 50,000", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
-              ],
-            ),
-          ),
-          Expanded(
-            child: ListView.builder(
-              controller: _scrollController,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                StatementRow row = list[index];
-                if (row.isHeader) {
-                  return StatementHeader(row: row);
-                } else {
-                  return StatementBody(row: row);
-                }
-              },
-              itemCount: list.length,
-            ),
-          ),
-        ],
-      ),
-    );
+                      );
+                    }))));
   }
 }
