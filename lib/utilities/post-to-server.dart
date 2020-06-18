@@ -132,7 +132,7 @@ class PostToServer {
             try {
               final responseBody = await generateResponse(response.body);
               String message = responseBody["message"].toString();
-              print("error message $message");
+              print("Server Response: $responseBody");
               switch (responseBody['status']) {
                 case 0:
                   //handle validation and other generic errors

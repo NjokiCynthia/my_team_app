@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -24,11 +25,13 @@ class _UpdateProfileState extends State<UpdateProfile> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   File avatar;
+  String _userAvatar;
   String name = 'Jane Doe';
   String _oldName;
   String phoneNumber = '+254 701 234 567';
   String emailAddress,_oldEmailAddress;
   final _formKey = GlobalKey<FormState>();
+  bool _isLoadingImage = false;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -49,6 +52,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     phoneNumber = auth.phoneNumber;
     emailAddress = auth.emailAddress;
     _oldEmailAddress = emailAddress;
+    _userAvatar = auth.displayAvatar;
     super.initState();
   }
 
@@ -57,6 +61,36 @@ class _UpdateProfileState extends State<UpdateProfile> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  Future<void> _uploadUserAvatar(BuildContext context)async{
+    if(avatar!=null){
+      setState(() {
+        _isLoadingImage = true;
+      });
+      try{
+        await Provider.of<Auth>(context, listen: false).updateUserAvatar(avatar);
+        setState(() {
+          _userAvatar = null;
+        });
+        Scaffold.of(context).showSnackBar(SnackBar(content: Text("You have successfully updated your profile picture",)));
+      
+      }on CustomException catch (error) {
+        setState(() {
+          avatar = null;
+        });
+        StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _uploadUserAvatar(context);
+          }
+        );
+      }finally{
+        _isLoadingImage=false;
+      }
+      
+    }
   }
 
   Future<void> _updateUserName(BuildContext context) async {
@@ -330,8 +364,27 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
+                        _isLoadingImage?Center(child: CircularProgressIndicator(),):
+                        _userAvatar != null?
+                        CachedNetworkImage(
+                          imageUrl: _userAvatar,
+                          placeholder: (context, url) => const CircleAvatar(
+                            radius: 45.0,
+                            backgroundImage: const AssetImage('assets/no-user.png'),
+                          ),
+                          imageBuilder: (context, image) => CircleAvatar(
+                            backgroundImage: image,
+                            radius: 45.0,
+                          ),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                          fadeOutDuration: const Duration(seconds: 1),
+                          fadeInDuration: const Duration(seconds: 3),
+                        ):
                         CircleAvatar(
-                          backgroundImage: avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar),
+                          backgroundImage:_userAvatar!=null?NetworkImage(_userAvatar):
+                            (avatar == null ? AssetImage('assets/no-user.png') : 
+                              FileImage(avatar)
+                            ),
                           backgroundColor: Colors.transparent,
                         ),
                         Positioned(
@@ -348,6 +401,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               setState(() {
                                 avatar = newAvatar;
                               });
+                              _uploadUserAvatar(context);
                             },
                           ),
                         )

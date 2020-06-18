@@ -89,6 +89,7 @@ class EndpointUrl {
 
   //Upload images
   static const String EDIT_USER_PHOTO = CustomHelper.baseUrl + "/mobile/users/edit_profile_photo";
+  static const String EDIT_NEW_USER_PHOTO = CustomHelper.baseUrl + "/mobile/users/edit_new_profile_photo";
   static const String EDIT_MEMBER_PHOTO = CustomHelper.baseUrl + "/mobile/members/edit_profile_photo";
   static const String EDIT_GROUP_PHOTO = CustomHelper.baseUrl + "/mobile/groups/edit_profile_photo";
 

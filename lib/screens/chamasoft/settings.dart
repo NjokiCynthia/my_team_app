@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -95,7 +96,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
     setState(() {
       theme = themeChange.darkTheme ? "Dark" : "Light";
     });
-
+    final auth = Provider.of<Auth>(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
@@ -114,17 +115,32 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 20.0, 20.0, 20.0),
-                  child: Image(
-                    image: AssetImage('assets/no-user.png'),
-                    height: 80,
-                  ),
+                  child: auth.displayAvatar != null
+                    ? new CachedNetworkImage(
+                        imageUrl: auth.displayAvatar,
+                        placeholder: (context, url) => const CircleAvatar(
+                          radius: 45.0,
+                          backgroundImage: const AssetImage('assets/no-user.png'),
+                        ),
+                        imageBuilder: (context, image) => CircleAvatar(
+                          backgroundImage: image,
+                          radius: 45.0,
+                        ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        fadeOutDuration: const Duration(seconds: 1),
+                        fadeInDuration: const Duration(seconds: 3),
+                      )
+                    : const CircleAvatar(
+                        backgroundImage: const AssetImage('assets/no-user.png'),
+                        radius: 45.0,
+                      ),
                 ),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      heading2(text: Provider.of<Auth>(context, listen: false).userName, color: Theme.of(context).textSelectionHandleColor),
-                      subtitle2(text: Provider.of<Auth>(context, listen: false).phoneNumber, color: Theme.of(context).textSelectionHandleColor),
+                      heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
+                      subtitle2(text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor),
                       Padding(
                         padding: EdgeInsets.only(
                           top: 10.0,
