@@ -1,10 +1,12 @@
 import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
+import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:intl/intl.dart';
 
 ///Account Balances
 AccountBalanceModel getAccountBalances(dynamic data) {
@@ -129,7 +131,7 @@ ContributionStatementModel getContributionStatement(dynamic data) {
   if (statementBody.length > 0) {
     for (var statement in statementBody) {
       final description = statement['description'].toString();
-      final date = ParseHelper.formatDate(statement['date'].toString());
+      final date = ParseHelper.formatDate(statement['date'].toString(), "dd-MM-yyyy");
       double amount = 0;
       String type = "";
 
@@ -149,20 +151,48 @@ ContributionStatementModel getContributionStatement(dynamic data) {
   return ContributionStatementModel(statements: statementList, totalPaid: totalPaid, totalDue: totalPayable, totalBalance: totalBalance);
 }
 
-class ParseHelper {
-  static String formatDate(String date) {
-    try {
-      return defaultDateFormat.format(DateTime.parse(date));
-    } catch (_) {
-      return date;
+List<ActiveLoan> getMemberLoanList(List<dynamic> list) {
+  List<ActiveLoan> loanList = [];
+
+  if (list.length > 0) {
+    for (var loan in list) {
+      final id = ParseHelper.getIntFromJson(loan, "id");
+      final name = loan["loan_type"].toString();
+      final amount = ParseHelper.getDoubleFromJson(loan, "amount");
+      final disbursementDate = loan["disbursement_date"].toString();
+      final isFullPaid = ParseHelper.getIntFromJson(loan, "is_fully_paid");
+
+      final activeLoan = ActiveLoan(id: id, name: name, amount: amount, disbursementDate: disbursementDate, status: isFullPaid);
+      loanList.add(activeLoan);
     }
   }
 
+  return loanList;
+}
+
+class ParseHelper {
   static double getDoubleFromJson(dynamic object, String key) {
     try {
       return double.tryParse(object[key].toString());
     } catch (error) {
       return 0;
+    }
+  }
+
+  static int getIntFromJson(dynamic object, String key) {
+    try {
+      return int.tryParse(object[key].toString());
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  static String formatDate(String date, String dateFormat) {
+    try {
+      DateFormat format = new DateFormat(dateFormat);
+      return defaultDateFormat.format(format.parse(date));
+    } catch (_) {
+      return date;
     }
   }
 }
