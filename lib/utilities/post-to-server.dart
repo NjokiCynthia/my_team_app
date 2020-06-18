@@ -87,7 +87,6 @@ class PostToServer {
 
   static Future<dynamic> generateResponse(String jsonObjectResponse) async {
     try {
-      print(jsonObjectResponse);
       final response = json.decode(jsonObjectResponse);
       final String secretKey = response["secret"];
       final String body = response["body"];
@@ -119,15 +118,12 @@ class PostToServer {
           final String versionCode = await CustomHelper.getApplicationBuildNumber();
           final String userAccessTokenKey = await Auth.getAccessToken();
           final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
-          print("Access Token: " + userAccessToken);
-          print("Secret: " + secretKey);
           final Map<String, String> headers = {
             "Secret": secretKey,
             "Versioncode": versionCode,
             "Authorization": userAccessToken,
           };
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
-          print("Body: " + postRequest);
           try {
             final http.Response response =
                 await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 120), onTimeout: () {
@@ -135,7 +131,6 @@ class PostToServer {
             });
             try {
               final responseBody = await generateResponse(response.body);
-              print("Server response $responseBody");
               String message = responseBody["message"].toString();
               print("error message $message");
               switch (responseBody['status']) {
