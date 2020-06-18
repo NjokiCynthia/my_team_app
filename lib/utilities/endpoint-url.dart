@@ -92,6 +92,7 @@ class EndpointUrl {
   static const String EDIT_NEW_USER_PHOTO = CustomHelper.baseUrl + "/mobile/users/edit_new_profile_photo";
   static const String EDIT_MEMBER_PHOTO = CustomHelper.baseUrl + "/mobile/members/edit_profile_photo";
   static const String EDIT_GROUP_PHOTO = CustomHelper.baseUrl + "/mobile/groups/edit_profile_photo";
+  static const String EDIT_NEW_GROUP_PHOTO = CustomHelper.baseUrl + "/mobile/groups/edit_new_profile_photo";
 
   static const String WITHDRAWALS_FUNDS_TRANSFER = CustomHelper.baseUrl + "/mobile/withdrawals/request_funds_transfer";
   static const String VIEW_WITHDRAWAL_REQUEST = CustomHelper.baseUrl + "/mobile/withdrawals/view_withdrawal_request";

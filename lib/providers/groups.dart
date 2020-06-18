@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' as io;
 
 import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
@@ -345,6 +346,14 @@ class Groups with ChangeNotifier {
     }
   }
 
+  String getCurrentGroupDisplayAvatar(){
+    final avatar = getCurrentGroup().avatar;
+    var result = (avatar != null || avatar == "")
+        ? CustomHelper.imageUrl + avatar
+        : null;
+    return result;
+  }
+
   void addGroups(List<dynamic> groupObject) {
     final List<Group> loadedGroups = [];
     if (groupObject.length > 0) {
@@ -387,6 +396,31 @@ class Groups with ChangeNotifier {
     }
     _items = loadedGroups;
     notifyListeners();
+  }
+
+  Future<void> updateGroupAvatar(io.File avatar)async{
+    const url = EndpointUrl.EDIT_NEW_GROUP_PHOTO;
+    try{
+      final resizedImage = await CustomHelper.resizeFileImage(avatar,300);
+      try{
+        final newAvatar = base64Encode(resizedImage.readAsBytesSync());
+        final postRequest = json.encode({
+          "avatar": newAvatar,
+          "user_id": await Auth.getUser(Auth.userId),
+          "group_id": currentGroupId,
+        });
+        final response = await PostToServer.post(postRequest, url);
+        updateGroupProfile(currentGroupId,'avatar',response['avatar']);
+      }catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    }catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  void updateGroupProfile(String groupId,String key, String value){
+    final List<Group> loadedGroups = [];
   }
 
   /// ********************End Group Objects************/

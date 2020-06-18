@@ -302,7 +302,7 @@ class Auth with ChangeNotifier {
   Future<void> updateUserAvatar(io.File avatar)async{
     const url = EndpointUrl.EDIT_NEW_USER_PHOTO;
     try{
-      final resizedImage = await CustomHelper.resizeFileImage(avatar,200);
+      final resizedImage = await CustomHelper.resizeFileImage(avatar,300);
       print("resizedImage : $resizedImage");
       try{
         final newAvatar = base64Encode(resizedImage.readAsBytesSync());
