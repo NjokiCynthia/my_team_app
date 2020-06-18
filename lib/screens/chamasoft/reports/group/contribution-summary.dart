@@ -162,7 +162,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                   height: 8.0,
                 ),
                 subtitle2(
-                  text: "Statement Period",
+                  text: "Statement as at",
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start,
                 ),
