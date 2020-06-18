@@ -126,7 +126,7 @@ class PostToServer {
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
             final http.Response response =
-                await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 120), onTimeout: () {
+                await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 30), onTimeout: () {
               throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
@@ -195,6 +195,7 @@ class PostToServer {
                   throw CustomException(message: ERROR_MESSAGE);
               }
             } catch (error) {
+              print(response.body);
               throw error;
             }
           } catch (error) {
