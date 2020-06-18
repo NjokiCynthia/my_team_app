@@ -46,84 +46,19 @@ class _LoanStatementState extends State<LoanStatement> {
   @override
   Widget build(BuildContext context) {
     final List<LoanStatementRow> list = [
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
-      LoanStatementRow(
-          id: 1,
-          type: "Payment",
-          date: DateTime.now(),
-          paid: 1000,
-          balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
+      LoanStatementRow(id: 1, type: "Payment", date: DateTime.now(), paid: 1000, balance: 14000),
     ];
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -139,9 +74,7 @@ class _LoanStatementState extends State<LoanStatement> {
           Container(
             padding: EdgeInsets.all(16.0),
             width: double.infinity,
-            color: (themeChangeProvider.darkTheme)
-                ? Colors.blueGrey[800]
-                : Color(0xffededfe),
+            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -188,7 +121,7 @@ class _LoanStatementState extends State<LoanStatement> {
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
-                      text: "Ksh ${currencyFormat.format(widget.loan.repaid)}",
+                      text: "Ksh ${currencyFormat.format(100)}",
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
@@ -203,7 +136,7 @@ class _LoanStatementState extends State<LoanStatement> {
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
-                      text: "Ksh ${currencyFormat.format(widget.loan.balance)}",
+                      text: "Ksh ${currencyFormat.format(100)}",
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
@@ -218,8 +151,7 @@ class _LoanStatementState extends State<LoanStatement> {
                     ),
                     customTitle(
                       textAlign: TextAlign.start,
-                      text:
-                          "${defaultDateFormat.format(widget.loan.applicationDate)}",
+                      text: "${defaultDateFormat.format(DateTime.now())}",
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w600,
                     ),
@@ -239,17 +171,11 @@ class _LoanStatementState extends State<LoanStatement> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: subtitle1(
-                      text: "Paid",
-                      color: Theme.of(context).primaryColor,
-                      textAlign: TextAlign.end),
+                  child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
                 ),
                 Expanded(
                   flex: 1,
-                  child: subtitle1(
-                      text: "Balance",
-                      color: Theme.of(context).primaryColor,
-                      textAlign: TextAlign.end),
+                  child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
                 ),
               ],
             ),

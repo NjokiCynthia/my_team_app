@@ -60,7 +60,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
 
   @override
   Widget build(BuildContext context) {
-    String appbarTitle = "Loan Summary";
+    String appbarTitle = "Group Loan Summary";
 
     final List<LoanSummaryRow> list = [
       LoanSummaryRow(id: 1, name: "Peter Kimutai", amountDue: 2000, paid: 1000, balance: 14000, date: DateTime.now()),
