@@ -129,7 +129,6 @@ class PostToServer {
                 await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 30), onTimeout: () {
               throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
-            print(response.body);
             try {
               final responseBody = await generateResponse(response.body);
               String message = responseBody["message"].toString();
@@ -195,6 +194,7 @@ class PostToServer {
                   throw CustomException(message: ERROR_MESSAGE);
               }
             } catch (error) {
+              print(response.body);
               throw error;
             }
           } catch (error) {

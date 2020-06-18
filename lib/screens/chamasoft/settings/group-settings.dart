@@ -268,7 +268,7 @@ class _GroupSettingsState extends State<GroupSettings> {
     setState(() {
       theme = themeChange.darkTheme ? "Dark" : "Light";
     });
-
+    final currentGroup = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
@@ -288,30 +288,24 @@ class _GroupSettingsState extends State<GroupSettings> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(16.0, 20.0, 20.0, 20.0),
-                    child: Provider.of<Groups>(context, listen: false)
+                    child: currentGroup.avatar==null?Image(
+                        image: AssetImage('assets/no-user.png'),
+                        height: 80,
+                      ):
+                      Image(
+                        image: NetworkImage(CustomHelper.imageUrl +
+                            Provider.of<Groups>(context, listen: false)
                                 .getCurrentGroup()
-                                .avatar ==
-                            null
-                        ? Image(
-                            image: AssetImage('assets/no-user.png'),
-                            height: 80,
-                          )
-                        : Image(
-                            image: NetworkImage(CustomHelper.imageUrl +
-                                Provider.of<Groups>(context, listen: false)
-                                    .getCurrentGroup()
-                                    .avatar),
-                            height: 80,
-                          ),
+                                .avatar),
+                        height: 80,
+                      )
                   ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         heading2(
-                            text: Provider.of<Groups>(context, listen: false)
-                                .getCurrentGroup()
-                                .groupName,
+                            text: currentGroup.groupName,
                             color: Theme.of(context).textSelectionHandleColor),
                         Row(
                           children: [
