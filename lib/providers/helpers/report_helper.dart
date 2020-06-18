@@ -1,6 +1,7 @@
 import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
@@ -168,6 +169,31 @@ List<ActiveLoan> getMemberLoanList(List<dynamic> list) {
   }
 
   return loanList;
+}
+
+LoanStatementModel getLoanStatementModel(dynamic data) {
+  final double lumpSum = ParseHelper.getDoubleFromJson(data, 'lump_sum');
+  final String loanDescription = data["description"].toString();
+  final double paid = ParseHelper.getDoubleFromJson(data['statement_footer'], 'paid');
+  final double balance = ParseHelper.getDoubleFromJson(data['statement_footer'], 'balance');
+
+  final List<LoanStatementRow> statementRows = [];
+
+  final statementBody = data['statement_body'] as List<dynamic>;
+  print("Statement Body: $statementBody");
+  if (statementBody.length > 0) {
+    for (var statement in statementBody) {
+      final description = statement['description'].toString();
+      final date = ParseHelper.formatDate(statement['date'].toString(), "dd-MM-yyyy");
+      double amountPaid = ParseHelper.getDoubleFromJson(statement, 'amount_paid');
+      double remainingBalance = ParseHelper.getDoubleFromJson(statement, 'balance');
+
+      final statementRow = LoanStatementRow(type: description, paid: amountPaid, balance: remainingBalance, date: date);
+      statementRows.add(statementRow);
+    }
+  }
+
+  return LoanStatementModel(statementRows: statementRows, lumpSum: lumpSum, paid: paid, balance: balance, description: loanDescription);
 }
 
 class ParseHelper {
