@@ -199,6 +199,47 @@ class _GroupSettingsState extends State<GroupSettings> {
     }
   }
 
+  Future<void> fetchCurrencyOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchCurrencyOptions();
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch currencies'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchCurrencyOptions(context);
+          },
+        ),
+      );
+
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future<void> fetchCountryOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
+
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => UpdateGroupProfile()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch countries'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchCountryOptions(context);
+          },
+        ),
+      );
+
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
   Future<void> fetchMembers(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
@@ -247,10 +288,21 @@ class _GroupSettingsState extends State<GroupSettings> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(16.0, 20.0, 20.0, 20.0),
-                    child: Image(
-                      image: AssetImage('assets/no-user.png'),
-                      height: 80,
-                    ),
+                    child: Provider.of<Groups>(context, listen: false)
+                                .getCurrentGroup()
+                                .avatar ==
+                            null
+                        ? Image(
+                            image: AssetImage('assets/no-user.png'),
+                            height: 80,
+                          )
+                        : Image(
+                            image: NetworkImage(CustomHelper.imageUrl +
+                                Provider.of<Groups>(context, listen: false)
+                                    .getCurrentGroup()
+                                    .avatar),
+                            height: 80,
+                          ),
                   ),
                   Expanded(
                     child: Column(
@@ -273,12 +325,10 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 textColor: Colors.white,
                                 buttonHeight: 30.0,
                                 textSize: 12.0,
-                                action: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        UpdateGroupProfile(),
-                                  ),
-                                ),
+                                action: () async {
+                                  await fetchCurrencyOptions(context);
+                                  await fetchCountryOptions(context);
+                                },
                               ),
                             ),
                             SizedBox(

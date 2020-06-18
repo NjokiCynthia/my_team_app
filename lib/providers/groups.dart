@@ -20,6 +20,12 @@ class Group {
   final String groupName;
   final String groupSize;
   final String groupCountryId;
+  final String groupCurrencyId;
+  final String groupPhone;
+  final String groupEmail;
+  final String groupCountryName;
+  final String groupCurrencyName;
+  final String avatar;
   final List<GroupRoles> groupRoles;
 
   Group({
@@ -27,7 +33,13 @@ class Group {
     @required this.groupName,
     @required this.groupSize,
     @required this.groupCountryId,
+    this.groupCurrencyId,
     this.groupRoles,
+    this.groupPhone,
+    this.groupEmail,
+    this.groupCountryName,
+    this.groupCurrencyName,
+    this.avatar,
   });
 }
 
@@ -50,6 +62,26 @@ class Account {
     @required this.id,
     @required this.name,
     @required this.typeId,
+  });
+}
+
+class Country {
+  final int id;
+  final String name;
+
+  Country({
+    @required this.id,
+    @required this.name,
+  });
+}
+
+class Currency {
+  final int id;
+  final String name;
+
+  Currency({
+    @required this.id,
+    @required this.name,
   });
 }
 
@@ -177,6 +209,8 @@ class Groups with ChangeNotifier {
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
   List<List<Account>> _allAccounts = [];
+  List<Country> _countryOptions = [];
+  List<Currency> _currencyOptions = [];
   AccountBalanceModel _accountBalances;
   TransactionStatementModel _transactionStatement;
   ExpenseSummaryList _expenseSummaryList;
@@ -210,6 +244,14 @@ class Groups with ChangeNotifier {
 
   List<Member> get members {
     return _members;
+  }
+
+  List<Country> get countryOptions {
+    return _countryOptions;
+  }
+
+  List<Currency> get currencyOptions {
+    return _currencyOptions;
   }
 
   List<List<Account>> get allAccounts {
@@ -280,6 +322,12 @@ class Groups with ChangeNotifier {
           groupName: groupJSON['name'].toString(),
           groupSize: groupJSON['size'].toString(),
           groupCountryId: groupJSON['country_id'].toString(),
+          groupCurrencyId: groupJSON['country_id'].toString(),
+          groupPhone: groupJSON['phone'].toString(),
+          groupEmail: groupJSON['email'].toString(),
+          groupCountryName: groupJSON['country_name'].toString(),
+          groupCurrencyName: groupJSON['group_currency'].toString(),
+          avatar: groupJSON['avatar'].toString(),
         );
         loadedGroups.add(newGroup);
       }
@@ -391,6 +439,31 @@ class Groups with ChangeNotifier {
             identity: groupMembersJSON['identity'].toString(),
             avatar: groupMembersJSON['avatar'].toString());
         _members.add(newMember);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addCountryOptions(List<dynamic> countries) {
+    if (countries.length > 0) {
+      for (var countryJSON in countries) {
+        final newCountry = Country(
+            id: countryJSON['id'].toInt(),
+            name: countryJSON['name'].toString());
+        _countryOptions.add(newCountry);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addCurrencyOptions(List<dynamic> currencies) {
+    if (currencies.length > 0) {
+      for (var currencyJSON in currencies) {
+        print(currencyJSON);
+        final newCurrency = Currency(
+            id: currencyJSON['id'].toInt(),
+            name: currencyJSON['name'].toString());
+        _currencyOptions.add(newCurrency);
       }
     }
     notifyListeners();
@@ -617,7 +690,55 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> updateGroupName(String name) async {
+  Future<void> fetchCountryOptions() async {
+    const url = EndpointUrl.GET_COUNTRY_LIST;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _countryOptions = []; //clear
+        final countries = response['countries'] as List<dynamic>;
+        addCountryOptions(countries);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchCurrencyOptions() async {
+    const url = EndpointUrl.GET_CURRENCY_LIST;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _currencyOptions = []; //clear
+        final currencies = response['currencies'] as List<dynamic>;
+        addCurrencyOptions(currencies);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> updateGroupName(String name) async {
     const url = EndpointUrl.UPDATE_GROUP_NAME;
     try {
       final postRequest = json.encode({
@@ -627,8 +748,7 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        //final name = response['name'];
-
+        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -641,7 +761,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> updateGroupPhoneNumber(String phone) async {
+  Future<dynamic> updateGroupPhoneNumber(String phone) async {
     const url = EndpointUrl.UPDATE_GROUP_PHONE_NUMBER;
     try {
       final postRequest = json.encode({
@@ -651,8 +771,7 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        //final phone = response['phone'];
-
+        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -665,7 +784,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> updateGroupCountry(String countryId) async {
+  Future<dynamic> updateGroupCountry(String countryId) async {
     const url = EndpointUrl.UPDATE_GROUP_COUNTRY;
     try {
       final postRequest = json.encode({
@@ -677,7 +796,7 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         //final name = response['name'];
         //final countryId = response['country_id'];
-
+        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -690,7 +809,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> updateGroupCurrency(String currencyId) async {
+  Future<dynamic> updateGroupCurrency(String currencyId) async {
     const url = EndpointUrl.UPDATE_GROUP_CURRENCY;
     try {
       final postRequest = json.encode({
@@ -702,7 +821,7 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         //final currencyId = response['currencyId'];
         //final currency = response['currency'];
-
+        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -715,7 +834,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> updateGroupSettings({
+  Future<dynamic> updateGroupSettings({
     String orderMembersBy,
     String memberListingOrderBy,
     String enableMemberInformationPrivacy,
@@ -748,7 +867,7 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         //final status = response['status'];
         //final message = response['message'];
-
+        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
