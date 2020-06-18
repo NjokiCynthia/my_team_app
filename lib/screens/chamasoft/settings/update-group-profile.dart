@@ -1,15 +1,19 @@
 import 'dart:io';
 
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/country-dropdown.dart';
+import 'package:chamasoft/widgets/currency-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class UpdateGroupProfile extends StatefulWidget {
   @override
@@ -25,6 +29,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   String emailAddress = 'official@witcher.com';
   String currency = 'KES';
   String country = 'Kenya';
+  int countryId = 0;
+  int currencyId = 0;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -70,7 +76,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   ),
                 ),
                 TextFormField(
-                  initialValue: phoneNumber,
+                  initialValue: Provider.of<Groups>(context, listen: false)
+                      .getCurrentGroup()
+                      .groupPhone,
                   keyboardType: TextInputType.phone,
                   onChanged: (value) {
                     setState(() {
@@ -137,7 +145,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           content: Form(
             key: _formKey,
             child: TextFormField(
-              initialValue: groupName,
+              initialValue: Provider.of<Groups>(context, listen: false)
+                  .getCurrentGroup()
+                  .groupName,
               keyboardType: TextInputType.text,
               onChanged: (value) {
                 setState(() {
@@ -199,7 +209,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           content: Form(
             key: _formKey,
             child: TextFormField(
-              initialValue: emailAddress,
+              initialValue: Provider.of<Groups>(context, listen: false)
+                  .getCurrentGroup()
+                  .groupEmail,
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
                 setState(() {
@@ -260,29 +272,16 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           title: new Text("Update Group Currency"),
           content: Form(
             key: _formKey,
-            child: TextFormField(
-              initialValue: currency,
-              keyboardType: TextInputType.text,
+            child: CurrencyDropdown(
+              labelText: 'Select Currency',
+              listItems:
+                  Provider.of<Groups>(context, listen: false).currencyOptions,
+              selectedItem: currencyId,
               onChanged: (value) {
                 setState(() {
-                  currency = value;
+                  currencyId = value;
                 });
               },
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Your Group Currency is required';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hasFloatingPlaceholder: true,
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                  color: Theme.of(context).hintColor,
-                  width: 2.0,
-                )),
-                labelText: "Your Group Currency",
-              ),
             ),
           ),
           actions: <Widget>[
@@ -322,30 +321,19 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           title: new Text("Update Country"),
           content: Form(
             key: _formKey,
-            child: TextFormField(
-              initialValue: country,
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                setState(() {
-                  country = value;
-                });
-              },
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Your Country';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hasFloatingPlaceholder: true,
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                  color: Theme.of(context).hintColor,
-                  width: 2.0,
-                )),
-                labelText: "Your Country",
-              ),
-            ),
+            child: Consumer<Groups>(builder: (context, groupData, child) {
+              print("length of data is : ${groupData.countryOptions.length}");
+              return CountryDropdown(
+                labelText: 'Select Country',
+                listItems: groupData.countryOptions,
+                selectedItem: countryId,
+                onChanged: (value) {
+                  setState(() {
+                    countryId = value;
+                  });
+                },
+              );
+            }),
           ),
           actions: <Widget>[
             new FlatButton(
@@ -374,6 +362,17 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       },
     );
   }
+
+//  Future<void> fetchLoanTypes(BuildContext context) async {
+//    try {
+//      await Provider.of<Groups>(context, listen: false).fetchLoanTypes();
+//
+//      Navigator.of(context)
+//          .push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
+//    } on CustomException catch (error) {
+//      print(error.message);
+//    }
+//  }
 
   @override
   Widget build(BuildContext context) {
@@ -440,7 +439,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               ),
               InfoUpdateTile(
                 labelText: "Group Name",
-                updateText: groupName,
+                updateText: Provider.of<Groups>(context, listen: false)
+                    .getCurrentGroup()
+                    .groupName,
                 icon: Icons.edit,
                 onPressed: () {
                   _updateName();
@@ -448,7 +449,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               ),
               InfoUpdateTile(
                 labelText: "Group Phone Number",
-                updateText: phoneNumber,
+                updateText: Provider.of<Groups>(context, listen: false)
+                    .getCurrentGroup()
+                    .groupPhone,
                 icon: Icons.edit,
                 onPressed: () {
                   _updatePhoneNumber();
@@ -456,7 +459,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               ),
               InfoUpdateTile(
                 labelText: "Group Email Address",
-                updateText: emailAddress,
+                updateText: Provider.of<Groups>(context, listen: false)
+                    .getCurrentGroup()
+                    .groupEmail,
                 icon: Icons.edit,
                 onPressed: () {
                   _updateEmailAddress();
@@ -464,17 +469,34 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               ),
               InfoUpdateTile(
                 labelText: "Currency",
-                updateText: currency,
+                updateText: Provider.of<Groups>(context, listen: false)
+                    .getCurrentGroup()
+                    .groupCurrencyName,
                 icon: Icons.edit,
-                onPressed: () {
+                onPressed: () async {
+                  setState(() {
+                    currencyId = int.parse(
+                        Provider.of<Groups>(context, listen: false)
+                            .getCurrentGroup()
+                            .groupCurrencyId);
+                  });
                   _updateCurrency();
                 },
               ),
               InfoUpdateTile(
                 labelText: "Country",
-                updateText: country,
+                updateText: Provider.of<Groups>(context, listen: false)
+                    .getCurrentGroup()
+                    .groupCountryName,
                 icon: Icons.edit,
                 onPressed: () {
+                  setState(() {
+                    countryId = int.parse(
+                        Provider.of<Groups>(context, listen: false)
+                            .getCurrentGroup()
+                            .groupCountryId);
+                  });
+
                   _updateCountry();
                 },
               ),

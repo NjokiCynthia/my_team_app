@@ -118,7 +118,6 @@ class PostToServer {
           final String versionCode = await CustomHelper.getApplicationBuildNumber();
           final String userAccessTokenKey = await Auth.getAccessToken();
           final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
-          print(userAccessToken);
           final Map<String, String> headers = {
             "Secret": secretKey,
             "Versioncode": versionCode,
@@ -126,11 +125,13 @@ class PostToServer {
           };
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
-            print("postRequest $postRequest");
-            final http.Response response = await http.post(url, headers: headers, body: postRequest);
+            final http.Response response =
+                await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 30), onTimeout: () {
+              throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
+            });
+            print(response.body);
             try {
               final responseBody = await generateResponse(response.body);
-              print("Server response $responseBody");
               String message = responseBody["message"].toString();
               print("error message $message");
               switch (responseBody['status']) {

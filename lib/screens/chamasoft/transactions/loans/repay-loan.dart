@@ -58,9 +58,7 @@ class _RepayLoanState extends State<RepayLoan> {
             //controller: controller,
             initialValue: "254712233344",
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
+            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               hasFloatingPlaceholder: true,
               enabledBorder: UnderlineInputBorder(
@@ -76,8 +74,7 @@ class _RepayLoanState extends State<RepayLoan> {
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -123,9 +120,7 @@ class _RepayLoanState extends State<RepayLoan> {
                   Container(
                     padding: EdgeInsets.all(16.0),
                     width: double.infinity,
-                    color: (themeChangeProvider.darkTheme)
-                        ? Colors.blueGrey[800]
-                        : Color(0xffededfe),
+                    color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -140,9 +135,7 @@ class _RepayLoanState extends State<RepayLoan> {
                               child: Text(
                                 "${widget.loan.name}",
                                 style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textSelectionHandleColor
-                                      .withOpacity(0.8),
+                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                                   fontSize: 18.0,
                                   fontWeight: FontWeight.w800,
                                 ),
@@ -154,16 +147,14 @@ class _RepayLoanState extends State<RepayLoan> {
                                   "Ksh ",
                                   style: TextStyle(
                                     fontSize: 18.0,
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor,
+                                    color: Theme.of(context).textSelectionHandleColor,
                                     fontWeight: FontWeight.w400,
                                   ),
                                 ),
                                 Text(
                                   "${currencyFormat.format(widget.loan.amount)}",
                                   style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textSelectionHandleColor,
+                                    color: Theme.of(context).textSelectionHandleColor,
                                     fontSize: 18.0,
                                     fontWeight: FontWeight.w800,
                                   ),
@@ -182,19 +173,15 @@ class _RepayLoanState extends State<RepayLoan> {
                             Text(
                               "Amount Repaid: ",
                               style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
+                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
                             Text(
-                              "Ksh ${currencyFormat.format(widget.loan.repaid)}",
+                              "Ksh ${currencyFormat.format(100)}",
                               style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
+                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -207,19 +194,15 @@ class _RepayLoanState extends State<RepayLoan> {
                             Text(
                               "Balance: ",
                               style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
+                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
                             Text(
-                              "Ksh ${currencyFormat.format(widget.loan.balance)}",
+                              "Ksh ${currencyFormat.format(100)}",
                               style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
+                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -232,19 +215,15 @@ class _RepayLoanState extends State<RepayLoan> {
                             Text(
                               "Applied On: ",
                               style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
+                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),
                             Text(
-                              "${defaultDateFormat.format(widget.loan.applicationDate)}",
+                              "${defaultDateFormat.format(DateTime.now())}",
                               style: TextStyle(
-                                color: Theme.of(context)
-                                    .textSelectionHandleColor
-                                    .withOpacity(0.8),
+                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.8),
                                 fontSize: 16.0,
                                 fontWeight: FontWeight.w800,
                               ),
@@ -271,29 +250,21 @@ class _RepayLoanState extends State<RepayLoan> {
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                          child: textWithExternalLinks(
-                              color: Colors.blueGrey,
-                              size: 12.0,
-                              textData: {
-                                'Additional charges may be applied where necessary.':
-                                    {},
-                                'Learn More': {
-                                  "url": () => launchURL(
-                                      'https://chamasoft.com/terms-and-conditions/'),
-                                  "color": primaryColor,
-                                  "weight": FontWeight.w500
-                                },
-                              }),
+                          child: textWithExternalLinks(color: Colors.blueGrey, size: 12.0, textData: {
+                            'Additional charges may be applied where necessary.': {},
+                            'Learn More': {
+                              "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                              "color": primaryColor,
+                              "weight": FontWeight.w500
+                            },
+                          }),
                         ),
                         SizedBox(
                           height: 24,
                         ),
                         Container(
                           width: double.infinity,
-                          child: defaultButton(
-                              context: context,
-                              text: "Pay Now",
-                              onPressed: () => _numberToPrompt()),
+                          child: defaultButton(context: context, text: "Pay Now", onPressed: () => _numberToPrompt()),
                         )
                       ],
                     ),
