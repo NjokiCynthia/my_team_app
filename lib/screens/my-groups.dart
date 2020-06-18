@@ -158,7 +158,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                                 backgroundColor: primaryColor.withOpacity(0.2),
                                                 title: "${groups.item[index].groupName}",
                                                 subtitle: "${groups.item[index].groupSize} Members",
-                                                description: "Member",
+                                                description: groups.item[index].isGroupAdmin?"Group Admin | ${groups.item[index].groupRole}":groups.item[index].groupRole,
                                                 textColor: Colors.blueGrey,
                                                 borderColor: Colors.blueGrey.withOpacity(0.2),
                                                 action: () {

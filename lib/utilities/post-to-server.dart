@@ -126,6 +126,7 @@ class PostToServer {
           };
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
+            print("postRequest $postRequest");
             final http.Response response = await http.post(url, headers: headers, body: postRequest);
             try {
               final responseBody = await generateResponse(response.body);

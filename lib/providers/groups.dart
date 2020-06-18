@@ -22,13 +22,38 @@ class Group {
   final String groupSize;
   final String groupCountryId;
   final List<GroupRoles> groupRoles;
+  final String smsBalance,accountNumber;
+  final bool onlineBankingEnabled,enableMemberInformationPrivacy;
+  final String memberListingOrderBy,orderMembersBy;
+  final bool  enableSendMonthlyEmailStatements;
+  final String groupRoleId;
+  final String groupRole;
+  final bool isGroupAdmin;
+  final String groupAvatar,countryName,phone,email,groupCurrency;
+  final String currencyId;  
 
   Group({
     @required this.groupId,
     @required this.groupName,
     @required this.groupSize,
     @required this.groupCountryId,
-    this.groupRoles,
+    @required this.smsBalance,
+    this.memberListingOrderBy,
+    @required this.accountNumber,
+    this.enableMemberInformationPrivacy,
+    this.enableSendMonthlyEmailStatements,
+    @required this.onlineBankingEnabled,
+    this.orderMembersBy,
+    @required this.groupRoles,
+    @required this.groupRoleId,
+    @required this.groupRole,
+    @required this.isGroupAdmin,
+    @required this.groupAvatar,
+    @required this.countryName,
+    @required this.phone,
+    @required this.email,
+    @required this.groupCurrency,
+    @required this.currencyId,
   });
 }
 
@@ -281,11 +306,37 @@ class Groups with ChangeNotifier {
     final List<Group> loadedGroups = [];
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
+        var groupRoles = groupJSON["group_roles"] as Map<String,dynamic>;
+        List<GroupRoles> groupRoleObject = [];
+        groupRoles.forEach((key, value) {
+          final newRole = GroupRoles(
+            roleId: key, 
+            roleName: value
+          );
+          groupRoleObject.add(newRole);
+        });
         final newGroup = Group(
           groupId: groupJSON['id'].toString(),
           groupName: groupJSON['name'].toString(),
           groupSize: groupJSON['size'].toString(),
           groupCountryId: groupJSON['country_id'].toString(),
+          smsBalance: groupJSON["sms_balance"].toString(),
+          accountNumber: groupJSON["account_number"].toString(),
+          enableMemberInformationPrivacy: groupJSON["enable_member_information_privacy"] == 1?true:false,
+          enableSendMonthlyEmailStatements: groupJSON["enable_send_monthly_email_statements"]==1?true:false,
+          groupRoles: groupRoleObject,
+          memberListingOrderBy: groupJSON["member_listing_order_by"].toString(),
+          orderMembersBy: groupJSON["order_members_by"].toString(),
+          onlineBankingEnabled: groupJSON["online_banking_enabled"]==1?true:false,
+          groupRoleId: groupJSON['group_role_id']..toString(),
+          groupRole: groupJSON['role']..toString(),
+          isGroupAdmin: groupJSON['is_admin'] == 1?true:false,
+          groupCurrency:groupJSON['group_currency']..toString(),
+          countryName:groupJSON['country_name']..toString(),
+          currencyId:groupJSON['country_id']..toString(),
+          email: groupJSON['email']..toString(),
+          groupAvatar: groupJSON['avatar']..toString(),
+          phone: groupJSON['phone']..toString()
         );
         loadedGroups.add(newGroup);
       }
