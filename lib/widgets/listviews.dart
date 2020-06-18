@@ -1,10 +1,11 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/report_helper.dart';
+import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -18,11 +19,10 @@ class StatementBody extends StatelessWidget {
     @required this.row,
   }) : super(key: key);
 
-  final StatementRow row;
+  final ContributionStatementRow row;
 
   @override
   Widget build(BuildContext context) {
-    final amount = int.tryParse(row.amount) ?? 0;
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
       child: Card(
@@ -55,8 +55,8 @@ class StatementBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 subtitle1(
-                    text: "Ksh " + currencyFormat.format(amount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                subtitle2(text: defaultDateFormat.format(row.date), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    text: "Ksh " + currencyFormat.format(row.amount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                subtitle2(text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
               ],
             )
           ],
@@ -72,7 +72,7 @@ class StatementHeader extends StatelessWidget {
     @required this.row,
   }) : super(key: key);
 
-  final StatementRow row;
+  final ContributionStatementRow row;
 
   @override
   Widget build(BuildContext context) {
@@ -214,10 +214,11 @@ class ContributionSummaryBody extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: subtitle1(
-                      text: "Ksh " + currencyFormat.format(contributionSummary[index].balanceAmount), 
-                      color: (contributionSummary[index].balanceAmount>0)?Colors.red:(contributionSummary[index].balanceAmount<0?Colors.green:Theme.of(context).textSelectionHandleColor), 
-                      textAlign: TextAlign.end
-                  ),
+                      text: "Ksh " + currencyFormat.format(contributionSummary[index].balanceAmount),
+                      color: (contributionSummary[index].balanceAmount > 0)
+                          ? Colors.red
+                          : (contributionSummary[index].balanceAmount < 0 ? Colors.green : Theme.of(context).textSelectionHandleColor),
+                      textAlign: TextAlign.end),
                 ),
               ],
             ),

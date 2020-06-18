@@ -4,6 +4,7 @@ import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart'
 import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -62,11 +63,19 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
   }
 
   Widget navigate(int index) {
-    Widget target = ContributionStatement();
+    Widget target = ContributionStatement(
+      statementFlag: CONTRIBUTION_STATEMENT,
+    );
     switch (index) {
       case 0:
+        target = ContributionStatement(
+          statementFlag: CONTRIBUTION_STATEMENT,
+        );
+        break;
       case 1:
-        target = ContributionStatement();
+        target = ContributionStatement(
+          statementFlag: FINE_STATEMENT,
+        );
         break;
       case 2:
         target = LoanApplications();
