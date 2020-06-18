@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
@@ -183,6 +184,7 @@ class Groups with ChangeNotifier {
   ExpenseSummaryList _expenseSummaryList;
   LoansSummaryList _loansSummaryList;
   ContributionStatementModel _contributionStatement;
+  LoanStatementModel _loanStatements;
   List<GroupContributionSummary> _groupContributionSummary = [];
   List<ActiveLoan> _memberLoanList = [];
 
@@ -246,6 +248,10 @@ class Groups with ChangeNotifier {
     return _memberLoanList;
   }
 
+  LoanStatementModel get getLoanStatements {
+    return _loanStatements;
+  }
+
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
     currentGroupId = groupId;
@@ -300,10 +306,7 @@ class Groups with ChangeNotifier {
     final List<Account> bankAccounts = [];
     if (groupBankAccounts.length > 0) {
       for (var bankAccountJSON in groupBankAccounts) {
-        final newAccount = Account(
-            id: bankAccountJSON['id'].toString(),
-            name: bankAccountJSON['name'].toString(),
-            typeId: accountType);
+        final newAccount = Account(id: bankAccountJSON['id'].toString(), name: bankAccountJSON['name'].toString(), typeId: accountType);
         bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
@@ -320,14 +323,11 @@ class Groups with ChangeNotifier {
           name: groupContributionJSON['name'].toString(),
           amount: groupContributionJSON['amount'].toString(),
           type: groupContributionJSON['type'].toString(),
-          contributionType:
-              groupContributionJSON['contribution_type'].toString(),
+          contributionType: groupContributionJSON['contribution_type'].toString(),
           frequency: groupContributionJSON['frequency'].toString(),
           invoiceDate: groupContributionJSON['invoice_date'].toString(),
-          contributionDate:
-              groupContributionJSON['contribution_date'].toString(),
-          oneTimeContributionSetting:
-              groupContributionJSON['one_time_contribution_setting'].toString(),
+          contributionDate: groupContributionJSON['contribution_date'].toString(),
+          oneTimeContributionSetting: groupContributionJSON['one_time_contribution_setting'].toString(),
           isHidden: groupContributionJSON['is_hidden'].toString(),
           active: groupContributionJSON['active'].toString(),
         );
@@ -377,8 +377,7 @@ class Groups with ChangeNotifier {
           disbursementDate: groupLoanTypesJSON['disbursement_date']..toString,
           guarantors: groupLoanTypesJSON['guarantors']..toString,
           latePaymentFines: groupLoanTypesJSON['late_payment_fines']..toString,
-          outstandingPaymentFines:
-              groupLoanTypesJSON['outstanding_payment_fines']..toString,
+          outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines']..toString,
           isHidden: groupLoanTypesJSON['is_hidden']..toString,
         );
         _loanTypes.add(newLoanType);
@@ -432,6 +431,11 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
+  void addLoanStatements(dynamic data) {
+    _loanStatements = getLoanStatementModel(data);
+    notifyListeners();
+  }
+
   void addContributionSummary(List<dynamic> contributionSummaryList) {
     final List<GroupContributionSummary> contributionSummary = [];
     if (contributionSummaryList.length > 0) {
@@ -481,17 +485,13 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _accounts = []; //clear accounts
-        final groupBankAccounts =
-            response['accounts']['bank_accounts'] as List<dynamic>;
+        final groupBankAccounts = response['accounts']['bank_accounts'] as List<dynamic>;
         addAccounts(groupBankAccounts, 1);
-        final groupSaccoAccounts =
-            response['accounts']['sacco_accounts'] as List<dynamic>;
+        final groupSaccoAccounts = response['accounts']['sacco_accounts'] as List<dynamic>;
         addAccounts(groupSaccoAccounts, 2);
-        final groupMobileMoneyAccounts =
-            response['accounts']['mobile_money_accounts'] as List<dynamic>;
+        final groupMobileMoneyAccounts = response['accounts']['mobile_money_accounts'] as List<dynamic>;
         addAccounts(groupMobileMoneyAccounts, 3);
-        final groupPettyCashAccountsAccounts =
-            response['accounts']['petty_cash_accounts'] as List<dynamic>;
+        final groupPettyCashAccountsAccounts = response['accounts']['petty_cash_accounts'] as List<dynamic>;
         addAccounts(groupPettyCashAccountsAccounts, 4);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -565,8 +565,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _fineTypes = []; //clear accounts
-        final groupFineTypes =
-            response['fine_category_options'] as List<dynamic>;
+        final groupFineTypes = response['fine_category_options'] as List<dynamic>;
         addFineTypes(groupFineTypes);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -747,11 +746,9 @@ class Groups with ChangeNotifier {
         "order_members_by": orderMembersBy,
         "member_listing_order_by": memberListingOrderBy,
         "enable_member_information_privacy": enableMemberInformationPrivacy,
-        "disable_ignore_contribution_transfers":
-            disableIgnoreContributionTransfers,
+        "disable_ignore_contribution_transfers": disableIgnoreContributionTransfers,
         "disable_arrears": disableArrears,
-        "enable_send_monthly_email_statements":
-            enableSendMonthlyEmailStatements,
+        "enable_send_monthly_email_statements": enableSendMonthlyEmailStatements,
         "disable_member_edit_profile": disableMemberEditProfile,
         "enable_absolute_loan_recalculation": enableAbsoluteLoanRecalculation,
       });
@@ -945,6 +942,29 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         final loans = response['loans'] as List<dynamic>;
         addMemberLoans(loans);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  /// ***********************Member Loan Statement*****************************
+  Future<void> fetchLoanStatement(int loanId) async {
+    const url = EndpointUrl.GET_LOAN_STATEMENT;
+
+    try {
+      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "id": loanId});
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final data = response['data'] as dynamic;
+        addLoanStatements(data);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
