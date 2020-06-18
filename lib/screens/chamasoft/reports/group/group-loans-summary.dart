@@ -61,21 +61,6 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
   @override
   Widget build(BuildContext context) {
     String appbarTitle = "Group Loan Summary";
-
-    final List<LoanSummaryRow> list = [
-      LoanSummaryRow(id: 1, name: "Peter Kimutai", amountDue: 2000, paid: 1000, balance: 14000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Billie Eilish", amountDue: 120000, paid: 80000, balance: 40000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Peter Kimutai", amountDue: 2000, paid: 1000, balance: 14000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Billie Eilish", amountDue: 120000, paid: 80000, balance: 40000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Peter Kimutai", amountDue: 2000, paid: 1000, balance: 14000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Billie Eilish", amountDue: 120000, paid: 80000, balance: 40000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Peter Kimutai", amountDue: 2000, paid: 1000, balance: 14000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Billie Eilish", amountDue: 120000, paid: 80000, balance: 40000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Peter Kimutai", amountDue: 2000, paid: 1000, balance: 14000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Billie Eilish", amountDue: 120000, paid: 80000, balance: 40000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Peter Kimutai", amountDue: 2000, paid: 1000, balance: 14000, date: DateTime.now()),
-      LoanSummaryRow(id: 1, name: "Billie Eilish", amountDue: 120000, paid: 80000, balance: 40000, date: DateTime.now()),
-    ];
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,

@@ -50,7 +50,7 @@ class PostToServer {
     }
   }
 
-  static Future<String> _decretSecretKey(String encryptedSecretKey) async {
+  static Future<String> _decryptSecretKey(String encryptedSecretKey) async {
     try {
       final privateKey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAuo8TA41+kUZv" +
           "jM4sB+o9k4wkzuEdqUIZa710GmCPzQCc4kRTc7nrTO6sfNSq1Rz1O5XwQkhF1mFf" +
@@ -94,7 +94,7 @@ class PostToServer {
         if (body == null || body.isEmpty || secretKey == null || secretKey.isEmpty) {
           return;
         }
-        final secretKeyString = await _decretSecretKey(secretKey);
+        final secretKeyString = await _decryptSecretKey(secretKey);
         var response = _decryptAESCryptoJS(body, secretKeyString);
         return json.decode(response);
       } catch (error) {

@@ -121,51 +121,48 @@ class _LoanStatementState extends State<LoanStatement> {
                                   ],
                                 ),
                                 SizedBox(
-                                  height: 8.0,
+                                  height: 4.0,
                                 ),
+//                                Row(
+//                                  mainAxisAlignment: MainAxisAlignment.start,
+//                                  children: <Widget>[
+//                                    subtitle2(
+//                                        text: "Loan + Interest: ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+//                                    customTitle(
+//                                        text: "Ksh ${currencyFormat.format(data.getLoanStatements.lumpSum)}",
+//                                        color: Theme.of(context).textSelectionHandleColor,
+//                                        fontSize: 12,
+//                                        textAlign: TextAlign.start),
+//                                  ],
+//                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
+                                    subtitle2(text: "Amount Repaid ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                                     subtitle1(
-                                      text: "Amount Repaid: ",
-                                      color: Theme.of(context).textSelectionHandleColor,
-                                    ),
-                                    customTitle(
-                                      textAlign: TextAlign.start,
-                                      text: "Ksh ${currencyFormat.format(data.getLoanStatements.paid)}",
-                                      color: Theme.of(context).textSelectionHandleColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                        text: "Ksh ${currencyFormat.format(data.getLoanStatements.paid)}",
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        textAlign: TextAlign.start),
                                   ],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
+                                    subtitle2(text: "Balance ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                                     subtitle1(
-                                      text: "Balance: ",
-                                      color: Theme.of(context).textSelectionHandleColor,
-                                    ),
-                                    customTitle(
-                                      textAlign: TextAlign.start,
-                                      text: "Ksh ${currencyFormat.format(data.getLoanStatements.balance)}",
-                                      color: Theme.of(context).textSelectionHandleColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                        text: "Ksh ${currencyFormat.format(data.getLoanStatements.balance)}",
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        textAlign: TextAlign.start),
                                   ],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
+                                    subtitle2(text: "Disbursed On ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                                     subtitle1(
-                                      text: "Disbursed On: ",
-                                      color: Theme.of(context).textSelectionHandleColor,
-                                    ),
-                                    customTitle(
-                                      textAlign: TextAlign.start,
-                                      text: widget.loan.disbursementDate,
-                                      color: Theme.of(context).textSelectionHandleColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
+                                        text: widget.loan.disbursementDate,
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        textAlign: TextAlign.start),
                                   ],
                                 ),
                               ],
