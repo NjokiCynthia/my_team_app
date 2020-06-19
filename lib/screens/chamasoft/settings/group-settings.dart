@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
@@ -268,7 +269,8 @@ class _GroupSettingsState extends State<GroupSettings> {
     setState(() {
       theme = themeChange.darkTheme ? "Dark" : "Light";
     });
-
+    final currentGroup = Provider.of<Groups>(context).getCurrentGroup();
+    print(CustomHelper.imageUrl+'/'+currentGroup.avatar);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
@@ -288,30 +290,32 @@ class _GroupSettingsState extends State<GroupSettings> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(16.0, 20.0, 20.0, 20.0),
-                    child: Provider.of<Groups>(context, listen: false)
-                                .getCurrentGroup()
-                                .avatar ==
-                            null
-                        ? Image(
-                            image: AssetImage('assets/no-user.png'),
-                            height: 80,
-                          )
-                        : Image(
-                            image: NetworkImage(CustomHelper.imageUrl +
-                                Provider.of<Groups>(context, listen: false)
-                                    .getCurrentGroup()
-                                    .avatar),
-                            height: 80,
-                          ),
+                    child: currentGroup.avatar != null
+                    ? new CachedNetworkImage(
+                        imageUrl: CustomHelper.imageUrl+'/'+currentGroup.avatar,
+                        placeholder: (context, url) => const CircleAvatar(
+                          radius: 45.0,
+                          backgroundImage: const AssetImage('assets/no-user.png'),
+                        ),
+                        imageBuilder: (context, image) => CircleAvatar(
+                          backgroundImage: image,
+                          radius: 45.0,
+                        ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        fadeOutDuration: const Duration(seconds: 1),
+                        fadeInDuration: const Duration(seconds: 3),
+                      )
+                    : const CircleAvatar(
+                        backgroundImage: const AssetImage('assets/no-user.png'),
+                        radius: 45.0,
+                      ),
                   ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         heading2(
-                            text: Provider.of<Groups>(context, listen: false)
-                                .getCurrentGroup()
-                                .groupName,
+                            text: currentGroup.groupName,
                             color: Theme.of(context).textSelectionHandleColor),
                         Row(
                           children: [

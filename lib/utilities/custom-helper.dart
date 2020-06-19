@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:chamasoft/utilities/common.dart';
 import 'package:package_info/package_info.dart';
+import 'package:path_provider/path_provider.dart' as syspaths;
+import 'package:image/image.dart';
 
 class CustomHelper {
   static const String baseUrl = "https://uat.chamasoft.com";
@@ -86,6 +89,20 @@ class CustomHelper {
       }
     }
     return rd;
+  }
+
+
+  static Future<File> resizeFileImage(File imageFile,int width) async{
+    try{
+      final appDir = await syspaths.getTemporaryDirectory();
+      Image image = decodeImage(imageFile.readAsBytesSync());
+      Image thumbnail = copyResize(image, width: width);
+      final File thumbnailNew = new File("${appDir.path}/thumbnail.png")..writeAsBytesSync(encodePng(thumbnail));
+      return thumbnailNew;
+    }catch(error){
+      print("resize error :  ${error.toString()}");
+      throw error;
+    }
   }
 }
 

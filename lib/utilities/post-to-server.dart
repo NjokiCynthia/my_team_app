@@ -50,7 +50,7 @@ class PostToServer {
     }
   }
 
-  static Future<String> _decretSecretKey(String encryptedSecretKey) async {
+  static Future<String> _decryptSecretKey(String encryptedSecretKey) async {
     try {
       final privateKey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAuo8TA41+kUZv" +
           "jM4sB+o9k4wkzuEdqUIZa710GmCPzQCc4kRTc7nrTO6sfNSq1Rz1O5XwQkhF1mFf" +
@@ -94,7 +94,7 @@ class PostToServer {
         if (body == null || body.isEmpty || secretKey == null || secretKey.isEmpty) {
           return;
         }
-        final secretKeyString = await _decretSecretKey(secretKey);
+        final secretKeyString = await _decryptSecretKey(secretKey);
         var response = _decryptAESCryptoJS(body, secretKeyString);
         return json.decode(response);
       } catch (error) {
@@ -126,13 +126,14 @@ class PostToServer {
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
             final http.Response response =
-                await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 120), onTimeout: () {
+                await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 30), onTimeout: () {
               throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
               final responseBody = await generateResponse(response.body);
+              print("Server Response: $responseBody");
               String message = responseBody["message"].toString();
-              print("error message $message");
+              print("Server Response: $responseBody");
               switch (responseBody['status']) {
                 case 0:
                   //handle validation and other generic errors
@@ -194,6 +195,7 @@ class PostToServer {
                   throw CustomException(message: ERROR_MESSAGE);
               }
             } catch (error) {
+              print(response.body);
               throw error;
             }
           } catch (error) {

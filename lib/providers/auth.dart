@@ -273,12 +273,12 @@ class Auth with ChangeNotifier {
       _lastName = userLastName;
       await updateUserDetails(firstName,userFirstName);
       await updateUserDetails(lastName,userLastName);
+      notifyListeners();
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
-    notifyListeners();
   }
 
   Future<void> updateUserEmailAddress(String emailAddress) async{
@@ -291,11 +291,39 @@ class Auth with ChangeNotifier {
       await PostToServer.post(postRequest, url);
       _emailAddress = emailAddress;
       await updateUserDetails(email,emailAddress);
+      notifyListeners();
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
-    notifyListeners();
+  }
+
+  Future<void> updateUserAvatar(io.File avatar)async{
+    const url = EndpointUrl.EDIT_NEW_USER_PHOTO;
+    try{
+      final resizedImage = await CustomHelper.resizeFileImage(avatar,300);
+      print("resizedImage : $resizedImage");
+      try{
+        final newAvatar = base64Encode(resizedImage.readAsBytesSync());
+        final postRequest = json.encode({
+          "avatar": newAvatar,
+          "user_id" : _userId,
+        });
+        final response = await PostToServer.post(postRequest, url);
+        try{
+          final newUserAvatar = response["avatar"];
+          _avatar = newUserAvatar;
+          await updateUserDetails(userAvatar,newUserAvatar);
+          notifyListeners();
+        }catch (error) {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
+      }catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    }catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
   }
 }

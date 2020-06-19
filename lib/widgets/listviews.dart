@@ -148,7 +148,7 @@ class LoanStatementBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   subtitle1(text: row.type, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                  subtitle2(text: defaultDateFormat.format(row.date), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                  subtitle2(text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                 ],
               ),
             ),

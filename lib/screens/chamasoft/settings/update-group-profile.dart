@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -33,6 +35,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   String errorText = '';
   int countryId = 0;
   int currencyId = 0;
+  bool _isLoadingImage = false;
+  String _groupAvatar = null;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -49,6 +53,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    _groupAvatar = Provider.of<Groups>(context, listen: false)
+        .getCurrentGroupDisplayAvatar();
     super.initState();
   }
 
@@ -465,8 +471,41 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     );
   }
 
+  Future<void> _uploadGroupAvatar(BuildContext context) async {
+    if (avatar != null) {
+      setState(() {
+        _isLoadingImage = true;
+      });
+      try {
+        await Provider.of<Groups>(context, listen: false)
+            .updateGroupAvatar(avatar);
+        setState(() {
+          _groupAvatar = null;
+        });
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated Group profile picture",
+        )));
+      } on CustomException catch (error) {
+        setState(() {
+          avatar = null;
+        });
+        StatusHandler().handleStatus(
+            context: context,
+            error: error,
+            callback: () {
+              _uploadGroupAvatar(context);
+            });
+      } finally {
+        _isLoadingImage = false;
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -476,125 +515,140 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         title: "",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: 40.0,
-              ),
-              heading1(
-                  text: "Update Group Profile",
-                  color: Theme.of(context).textSelectionHandleColor),
-              subtitle2(
-                  text: "Update the profile info for your Group",
-                  color: Theme.of(context).textSelectionHandleColor),
-              SizedBox(
-                height: 20.0,
-              ),
-              Container(
-                height: 100,
-                width: 100,
-                child: Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: avatar == null
-                          ? AssetImage('assets/no-user.png')
-                          : FileImage(avatar),
-                      backgroundColor: Colors.transparent,
-                    ),
-                    Positioned(
-                      bottom: -12.0,
-                      right: -12.0,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.camera_alt,
-                          color: Colors.black,
-                          size: 30.0,
-                        ),
-                        onPressed: () async {
-                          File newAvatar =
-                              await FilePicker.getFile(type: FileType.image);
-                          setState(() {
-                            avatar = newAvatar;
-                          });
-                        },
-                      ),
-                    )
-                  ],
+      body: Builder(builder: (BuildContext context) {
+        return (SingleChildScrollView(
+          controller: _scrollController,
+          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 40.0,
                 ),
-              ),
-              InfoUpdateTile(
-                labelText: "Group Name",
-                updateText: Provider.of<Groups>(context, listen: false)
-                    .getCurrentGroup()
-                    .groupName,
-                icon: Icons.edit,
-                onPressed: () {
-                  _updateName();
-                },
-              ),
-              InfoUpdateTile(
-                labelText: "Group Phone Number",
-                updateText: Provider.of<Groups>(context, listen: false)
-                    .getCurrentGroup()
-                    .groupPhone,
-                icon: Icons.edit,
-                onPressed: () {
-                  _updatePhoneNumber();
-                },
-              ),
-              InfoUpdateTile(
-                labelText: "Group Email Address",
-                updateText: Provider.of<Groups>(context, listen: false)
-                    .getCurrentGroup()
-                    .groupEmail,
-                icon: Icons.edit,
-                onPressed: () {
-                  _updateEmailAddress();
-                },
-              ),
-              InfoUpdateTile(
-                labelText: "Currency",
-                updateText: Provider.of<Groups>(context, listen: false)
-                    .getCurrentGroup()
-                    .groupCurrencyName,
-                icon: Icons.edit,
-                onPressed: () async {
-                  setState(() {
-                    currencyId = int.parse(
-                        Provider.of<Groups>(context, listen: false)
-                            .getCurrentGroup()
-                            .groupCurrencyId);
-                  });
-                  _updateCurrency();
-                },
-              ),
-              InfoUpdateTile(
-                labelText: "Country",
-                updateText: Provider.of<Groups>(context, listen: false)
-                    .getCurrentGroup()
-                    .groupCountryName,
-                icon: Icons.edit,
-                onPressed: () {
-                  setState(() {
-                    countryId = int.parse(
-                        Provider.of<Groups>(context, listen: false)
-                            .getCurrentGroup()
-                            .groupCountryId);
-                  });
+                heading1(
+                    text: "Update Group Profile",
+                    color: Theme.of(context).textSelectionHandleColor),
+                subtitle2(
+                    text: "Update the profile info for your Group",
+                    color: Theme.of(context).textSelectionHandleColor),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Container(
+                  height: 100,
+                  width: 100,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      _isLoadingImage
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : _groupAvatar != null
+                              ? CachedNetworkImage(
+                                  imageUrl: _groupAvatar,
+                                  placeholder: (context, url) =>
+                                      const CircleAvatar(
+                                    radius: 45.0,
+                                    backgroundImage:
+                                        const AssetImage('assets/no-user.png'),
+                                  ),
+                                  imageBuilder: (context, image) =>
+                                      CircleAvatar(
+                                    backgroundImage: image,
+                                    radius: 45.0,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                  fadeOutDuration: const Duration(seconds: 1),
+                                  fadeInDuration: const Duration(seconds: 3),
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: _groupAvatar != null
+                                      ? NetworkImage(_groupAvatar)
+                                      : (avatar == null
+                                          ? AssetImage('assets/no-user.png')
+                                          : FileImage(avatar)),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                      Positioned(
+                        bottom: -12.0,
+                        right: -12.0,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.camera_alt,
+                            color: Colors.black,
+                            size: 30.0,
+                          ),
+                          onPressed: () async {
+                            File newAvatar =
+                                await FilePicker.getFile(type: FileType.image);
+                            setState(() {
+                              avatar = newAvatar;
+                            });
+                            _uploadGroupAvatar(context);
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                InfoUpdateTile(
+                  labelText: "Group Name",
+                  updateText: currentGroup.groupName,
+                  icon: Icons.edit,
+                  onPressed: () {
+                    _updateName();
+                  },
+                ),
+                InfoUpdateTile(
+                  labelText: "Group Phone Number",
+                  updateText: currentGroup.groupPhone,
+                  icon: Icons.edit,
+                  onPressed: () {
+                    _updatePhoneNumber();
+                  },
+                ),
+                InfoUpdateTile(
+                  labelText: "Group Email Address",
+                  updateText: currentGroup.groupEmail,
+                  icon: Icons.edit,
+                  onPressed: () {
+                    _updateEmailAddress();
+                  },
+                ),
+                InfoUpdateTile(
+                  labelText: "Currency",
+                  updateText: currentGroup.groupCurrencyName,
+                  icon: Icons.edit,
+                  onPressed: () async {
+                    setState(() {
+                      currencyId = int.parse(
+                          Provider.of<Groups>(context, listen: false)
+                              .getCurrentGroup()
+                              .groupCurrencyId);
+                    });
+                    _updateCurrency();
+                  },
+                ),
+                InfoUpdateTile(
+                  labelText: "Country",
+                  updateText: currentGroup.groupCountryName,
+                  icon: Icons.edit,
+                  onPressed: () {
+                    setState(() {
+                      countryId = int.parse(currentGroup.groupCountryId);
+                    });
 
-                  _updateCountry();
-                },
-              ),
-            ],
+                    _updateCountry();
+                  },
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        ));
+      }),
     );
   }
 }

@@ -77,7 +77,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     //List<String> _overlayGroups;
     _groups.map((group) => {
       _overlayItems.add(
-        {"id": group.groupId, "title": group.groupName, "role": "Member"}
+        {"id": group.groupId, "title": group.groupName, "role": group.isGroupAdmin?"Group Admin | ${group.groupRole}":group.groupRole}
       )
     }).toList();
   }
