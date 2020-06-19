@@ -136,7 +136,7 @@ class LoanStatementBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: position ? Theme.of(context).highlightColor : Theme.of(context).backgroundColor,
+      color: position ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
         child: Row(
@@ -176,7 +176,7 @@ class ContributionSummaryBody extends StatelessWidget {
     return Container(
       child: ListView.builder(
         itemBuilder: (ctx, index) => Container(
-          color: (index % 2 == 0) ? Theme.of(context).highlightColor : Theme.of(context).backgroundColor,
+          color: (index % 2 == 0) ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
           child: Padding(
             padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
             child: Row(
@@ -323,7 +323,7 @@ class LoanSummaryBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: position ? Theme.of(context).highlightColor : Theme.of(context).backgroundColor,
+      color: position ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
         child: Row(
@@ -384,7 +384,7 @@ class ExpenseBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: position ? Theme.of(context).highlightColor : Theme.of(context).backgroundColor,
+      color: position ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
         child: Row(
@@ -427,7 +427,7 @@ class TransactionStatementBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: position ? Theme.of(context).highlightColor : Theme.of(context).backgroundColor,
+      color: position ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
         child: Column(
