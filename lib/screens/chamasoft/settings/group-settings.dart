@@ -270,7 +270,7 @@ class _GroupSettingsState extends State<GroupSettings> {
       theme = themeChange.darkTheme ? "Dark" : "Light";
     });
     final currentGroup = Provider.of<Groups>(context).getCurrentGroup();
-    print(CustomHelper.imageUrl+'/'+currentGroup.avatar);
+//    print(CustomHelper.imageUrl+'/'+currentGroup.avatar);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
