@@ -354,8 +354,10 @@ class Groups with ChangeNotifier {
     return result;
   }
 
-  void addGroups(List<dynamic> groupObject) {
+  void addGroups(List<dynamic> groupObject,[bool replace = false, int position=0]) {
     final List<Group> loadedGroups = [];
+    Group loadedNewGroup;
+
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
         var groupRoles = groupJSON["group_roles"];
@@ -394,9 +396,15 @@ class Groups with ChangeNotifier {
           avatar: groupJSON['avatar']..toString(),
         );
         loadedGroups.add(newGroup);
+        loadedNewGroup = newGroup;
       }
     }
-    _items = loadedGroups;
+    if(replace){
+      _items.removeAt(position);
+      _items.insert(0, loadedNewGroup);
+    }else{
+      _items = loadedGroups;
+    }
     notifyListeners();
   }
 
@@ -412,7 +420,7 @@ class Groups with ChangeNotifier {
           "group_id": currentGroupId,
         });
         final response = await PostToServer.post(postRequest, url);
-        updateGroupProfile(currentGroupId,'avatar',response['avatar']);
+        await updateGroupProfile(currentGroupId,'avatar',response['avatar']);
       }catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
@@ -422,7 +430,6 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> updateGroupProfile(String groupId,String key, String value)async{
-    final List<Group> loadedGroups = [];
     const url = EndpointUrl.GET_GROUP_DATA;
     final postRequest = json.encode({
       "user_id": await Auth.getUser(Auth.userId),
@@ -430,7 +437,19 @@ class Groups with ChangeNotifier {
     });
     try{
       final response = await PostToServer.post(postRequest, url);
-      print(response);
+      final group = response['user_groups'];
+      if(group.length > 0){
+        int i = 0;
+        int position = 0;
+        _items.forEach((groupItem) {
+          if(groupItem.groupId == groupId){
+            position = i;
+          }
+          ++i;
+        });
+        addGroups(group,true,position);
+      }
+      notifyListeners();
     }on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
