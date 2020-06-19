@@ -269,8 +269,8 @@ class _GroupSettingsState extends State<GroupSettings> {
     setState(() {
       theme = themeChange.darkTheme ? "Dark" : "Light";
     });
-    final currentGroup = Provider.of<Groups>(context).getCurrentGroup();
-    print(CustomHelper.imageUrl+'/'+currentGroup.avatar);
+    final group = Provider.of<Groups>(context);
+    final currentGroup = group.getCurrentGroup();
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
@@ -290,9 +290,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.fromLTRB(16.0, 20.0, 20.0, 20.0),
-                    child: currentGroup.avatar != null
+                    child: group.getCurrentGroupDisplayAvatar() != null
                     ? new CachedNetworkImage(
-                        imageUrl: CustomHelper.imageUrl+'/'+currentGroup.avatar,
+                        imageUrl: group.getCurrentGroupDisplayAvatar(),
                         placeholder: (context, url) => const CircleAvatar(
                           radius: 45.0,
                           backgroundImage: const AssetImage('assets/no-user.png'),
