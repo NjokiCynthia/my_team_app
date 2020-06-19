@@ -87,6 +87,10 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       final response = await Provider.of<Groups>(context, listen: false)
           .updateGroupEmail(emailAddress);
       if (response['status'] == 1) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated Group email",
+        )));
         Navigator.of(context).pop();
       } else {
         errorText = response['message'];
@@ -120,6 +124,10 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       final response = await Provider.of<Groups>(context, listen: false)
           .updateGroupCurrency(currencyId);
       if (response['status'] == 1) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated Group Currency",
+        )));
         Navigator.of(context).pop();
       } else {
         errorText = response['message'];
@@ -136,6 +144,10 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       final response = await Provider.of<Groups>(context, listen: false)
           .updateGroupCountry(countryId);
       if (response['status'] == 1) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated Group Country",
+        )));
         Navigator.of(context).pop();
       } else {
         errorText = response['message'];
@@ -505,7 +517,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   @override
   Widget build(BuildContext context) {
     final currentGroup =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+        Provider.of<Groups>(context, listen: true).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
