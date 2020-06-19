@@ -772,6 +772,29 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<dynamic> updateGroupEmail(String email) async {
+    const url = EndpointUrl.UPDATE_GROUP_EMAIL;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "email": email,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        return response;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<dynamic> updateGroupPhoneNumber(String phone) async {
     const url = EndpointUrl.UPDATE_GROUP_PHONE_NUMBER;
     try {
@@ -795,7 +818,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<dynamic> updateGroupCountry(String countryId) async {
+  Future<dynamic> updateGroupCountry(int countryId) async {
     const url = EndpointUrl.UPDATE_GROUP_COUNTRY;
     try {
       final postRequest = json.encode({
@@ -820,7 +843,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<dynamic> updateGroupCurrency(String currencyId) async {
+  Future<dynamic> updateGroupCurrency(int currencyId) async {
     const url = EndpointUrl.UPDATE_GROUP_CURRENCY;
     try {
       final postRequest = json.encode({
@@ -1059,7 +1082,11 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_LOAN_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "is_member_loans": 1});
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "is_member_loans": 1
+      });
       try {
         final response = await PostToServer.post(postRequest, url);
         final loans = response['loans'] as List<dynamic>;

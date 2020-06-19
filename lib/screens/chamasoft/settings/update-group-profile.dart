@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -29,6 +30,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   String emailAddress = 'official@witcher.com';
   String currency = 'KES';
   String country = 'Kenya';
+  String errorText = '';
   int countryId = 0;
   int currencyId = 0;
 
@@ -55,6 +57,87 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  Future<void> doUpdateName(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupName(groupName);
+      if (response['status'] == 1) {
+        Navigator.of(context).pop();
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group name';
+    }
+  }
+
+  Future<void> doUpdateEmail(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupEmail(emailAddress);
+      if (response['status'] == 1) {
+        Navigator.of(context).pop();
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group email';
+    }
+  }
+
+  Future<void> doUpdatePhone(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupPhoneNumber(phoneNumber);
+      if (response['status'] == 1) {
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (context) => Verification()));
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group email';
+    }
+  }
+
+  Future<void> doUpdateCurrency(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupCurrency(currencyId);
+      if (response['status'] == 1) {
+        Navigator.of(context).pop();
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group currency';
+    }
+  }
+
+  Future<void> doUpdateCountry(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupCountry(countryId);
+      if (response['status'] == 1) {
+        Navigator.of(context).pop();
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group country';
+    }
   }
 
   void _updatePhoneNumber() {
@@ -121,11 +204,10 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 "Continue",
                 style: new TextStyle(color: primaryColor),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState.validate()) {
 //                  Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (context) => Verification()));
+                  await doUpdatePhone(context);
                 }
               },
             ),
@@ -142,34 +224,45 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Group Name"),
-          content: Form(
-            key: _formKey,
-            child: TextFormField(
-              initialValue: Provider.of<Groups>(context, listen: false)
-                  .getCurrentGroup()
-                  .groupName,
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                setState(() {
-                  groupName = value;
-                });
-              },
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Your Group name is required';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hasFloatingPlaceholder: true,
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                  color: Theme.of(context).hintColor,
-                  width: 2.0,
-                )),
-                labelText: "Your Group  Name",
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              errorText.length > 0
+                  ? Text(
+                      errorText,
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : Container(),
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  initialValue: Provider.of<Groups>(context, listen: false)
+                      .getCurrentGroup()
+                      .groupName,
+                  keyboardType: TextInputType.text,
+                  onChanged: (value) {
+                    setState(() {
+                      groupName = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Your Group name is required';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hasFloatingPlaceholder: true,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Theme.of(context).hintColor,
+                      width: 2.0,
+                    )),
+                    labelText: "Your Group  Name",
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           actions: <Widget>[
             new FlatButton(
@@ -187,9 +280,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 "Save",
                 style: new TextStyle(color: primaryColor),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                  Navigator.of(context).pop();
+                  await doUpdateName(context);
                 }
               },
             ),
@@ -251,9 +344,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 "Save",
                 style: new TextStyle(color: primaryColor),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                  Navigator.of(context).pop();
+                  await doUpdateEmail(context);
                 }
               },
             ),
@@ -267,47 +360,52 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Group Currency"),
-          content: Form(
-            key: _formKey,
-            child: CurrencyDropdown(
-              labelText: 'Select Currency',
-              listItems:
-                  Provider.of<Groups>(context, listen: false).currencyOptions,
-              selectedItem: currencyId,
-              onChanged: (value) {
-                setState(() {
-                  currencyId = value;
-                });
-              },
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            title: new Text("Update Group Currency"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  child: CurrencyDropdown(
+                    labelText: 'Select Currency',
+                    listItems: Provider.of<Groups>(context, listen: false)
+                        .currencyOptions,
+                    selectedItem: currencyId,
+                    onChanged: (value) {
+                      setState(() {
+                        currencyId = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Save",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "Cancel",
+                  style: TextStyle(
+                      color: Theme.of(context).textSelectionHandleColor),
+                ),
+                onPressed: () {
                   Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
+                },
+              ),
+              new FlatButton(
+                child: new Text(
+                  "Save",
+                  style: new TextStyle(color: primaryColor),
+                ),
+                onPressed: () async {
+                  await doUpdateCurrency(context);
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }
@@ -316,63 +414,56 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Country"),
-          content: Form(
-            key: _formKey,
-            child: Consumer<Groups>(builder: (context, groupData, child) {
-              print("length of data is : ${groupData.countryOptions.length}");
-              return CountryDropdown(
-                labelText: 'Select Country',
-                listItems: groupData.countryOptions,
-                selectedItem: countryId,
-                onChanged: (value) {
-                  setState(() {
-                    countryId = value;
-                  });
-                },
-              );
-            }),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            title: new Text("Update Country"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  child: Consumer<Groups>(builder: (context, groupData, child) {
+                    return CountryDropdown(
+                      labelText: 'Select Country',
+                      listItems: groupData.countryOptions,
+                      selectedItem: countryId,
+                      onChanged: (value) {
+                        setState(() {
+                          countryId = value;
+                        });
+                      },
+                    );
+                  }),
+                ),
+              ],
             ),
-            new FlatButton(
-              child: new Text(
-                "Save",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "Cancel",
+                  style: TextStyle(
+                      color: Theme.of(context).textSelectionHandleColor),
+                ),
+                onPressed: () {
                   Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
+                },
+              ),
+              new FlatButton(
+                child: new Text(
+                  "Save",
+                  style: new TextStyle(color: primaryColor),
+                ),
+                onPressed: () async {
+                  await doUpdateCountry(context);
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }
-
-//  Future<void> fetchLoanTypes(BuildContext context) async {
-//    try {
-//      await Provider.of<Groups>(context, listen: false).fetchLoanTypes();
-//
-//      Navigator.of(context)
-//          .push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
-//    } on CustomException catch (error) {
-//      print(error.message);
-//    }
-//  }
 
   @override
   Widget build(BuildContext context) {
