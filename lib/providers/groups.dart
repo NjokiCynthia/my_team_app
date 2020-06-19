@@ -358,15 +358,17 @@ class Groups with ChangeNotifier {
     final List<Group> loadedGroups = [];
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
-        var groupRoles = groupJSON["group_roles"] as Map<String,dynamic>;
+        var groupRoles = groupJSON["group_roles"];
         List<GroupRoles> groupRoleObject = [];
-        groupRoles.forEach((key, value) {
-          final newRole = GroupRoles(
-            roleId: key, 
-            roleName: value
-          );
-          groupRoleObject.add(newRole);
-        });
+        if(groupRoles.length > 0){
+          groupRoles.forEach((key, value) {
+            final newRole = GroupRoles(
+              roleId: key, 
+              roleName: value
+            );
+            groupRoleObject.add(newRole);
+          });
+        }
         final newGroup = Group(
           groupId: groupJSON['id']..toString(),
           groupName: groupJSON['name']..toString(),
@@ -419,8 +421,22 @@ class Groups with ChangeNotifier {
     }
   }
 
-  void updateGroupProfile(String groupId,String key, String value){
+  Future<void> updateGroupProfile(String groupId,String key, String value)async{
     final List<Group> loadedGroups = [];
+    const url = EndpointUrl.GET_GROUP_DATA;
+    final postRequest = json.encode({
+      "user_id": await Auth.getUser(Auth.userId),
+      "group_id": groupId,
+    });
+    try{
+      final response = await PostToServer.post(postRequest, url);
+      print(response);
+    }on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+    
   }
 
   /// ********************End Group Objects************/
