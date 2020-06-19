@@ -353,7 +353,8 @@ class Groups with ChangeNotifier {
     return result;
   }
 
-  void addGroups(List<dynamic> groupObject,[bool replace = false, int position=0]) {
+  void addGroups(List<dynamic> groupObject,
+      [bool replace = false, int position = 0]) {
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
 
@@ -403,10 +404,10 @@ class Groups with ChangeNotifier {
         loadedNewGroup = newGroup;
       }
     }
-    if(replace){
+    if (replace) {
       _groups.removeAt(position);
       _groups.insert(0, loadedNewGroup);
-    }else{
+    } else {
       _groups = loadedGroups;
     }
     notifyListeners();
@@ -424,8 +425,8 @@ class Groups with ChangeNotifier {
           "group_id": currentGroupId,
         });
         final response = await PostToServer.post(postRequest, url);
-        await updateGroupProfile(currentGroupId,'avatar',response['avatar']);
-      }catch (error) {
+        await updateGroupProfile();
+      } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } catch (error) {
@@ -433,28 +434,28 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> updateGroupProfile(String groupId,String key, String value)async{
+  Future<void> updateGroupProfile() async {
     const url = EndpointUrl.GET_GROUP_DATA;
     final postRequest = json.encode({
       "user_id": await Auth.getUser(Auth.userId),
-      "group_id": groupId,
+      "group_id": currentGroupId,
     });
     try {
       final response = await PostToServer.post(postRequest, url);
       final group = response['user_groups'];
-      if(group.length > 0){
+      if (group.length > 0) {
         int i = 0;
         int position = 0;
         _groups.forEach((groupItem) {
-          if(groupItem.groupId == groupId){
+          if (groupItem.groupId == currentGroupId) {
             position = i;
           }
           ++i;
         });
-        addGroups(group,true,position);
+        addGroups(group, true, position);
       }
       notifyListeners();
-    }on CustomException catch (error) {
+    } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
@@ -884,7 +885,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         if (response['status'] == 1) {
-          //this._groups[int.parse(currentGroupId)].groupName = response['name'];
+          updateGroupProfile();
         }
         return response;
       } on CustomException catch (error) {
@@ -909,6 +910,9 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
+        if (response['status'] == 1) {
+          updateGroupProfile();
+        }
         return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -932,6 +936,9 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
+        if (response['status'] == 1) {
+          updateGroupProfile();
+        }
         return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -957,6 +964,9 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         //final name = response['name'];
         //final countryId = response['country_id'];
+        if (response['status'] == 1) {
+          updateGroupProfile();
+        }
         return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -982,6 +992,9 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         //final currencyId = response['currencyId'];
         //final currency = response['currency'];
+        if (response['status'] == 1) {
+          updateGroupProfile();
+        }
         return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -1028,6 +1041,10 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         //final status = response['status'];
         //final message = response['message'];
+
+        if (response['status'] == 1) {
+          updateGroupProfile();
+        }
         return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
