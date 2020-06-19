@@ -32,6 +32,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   String emailAddress = 'official@witcher.com';
   String currency = 'KES';
   String country = 'Kenya';
+  String errorText = '';
   int countryId = 0;
   int currencyId = 0;
   bool _isLoadingImage = false;
@@ -52,7 +53,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _groupAvatar = Provider.of<Groups>(context,listen: false).getCurrentGroupDisplayAvatar();
+    _groupAvatar = Provider.of<Groups>(context, listen: false)
+        .getCurrentGroupDisplayAvatar();
     super.initState();
   }
 
@@ -61,6 +63,87 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  Future<void> doUpdateName(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupName(groupName);
+      if (response['status'] == 1) {
+        Navigator.of(context).pop();
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group name';
+    }
+  }
+
+  Future<void> doUpdateEmail(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupEmail(emailAddress);
+      if (response['status'] == 1) {
+        Navigator.of(context).pop();
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group email';
+    }
+  }
+
+  Future<void> doUpdatePhone(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupPhoneNumber(phoneNumber);
+      if (response['status'] == 1) {
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (context) => Verification()));
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group email';
+    }
+  }
+
+  Future<void> doUpdateCurrency(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupCurrency(currencyId);
+      if (response['status'] == 1) {
+        Navigator.of(context).pop();
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group currency';
+    }
+  }
+
+  Future<void> doUpdateCountry(BuildContext context) async {
+    errorText = '';
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupCountry(countryId);
+      if (response['status'] == 1) {
+        Navigator.of(context).pop();
+      } else {
+        errorText = response['message'];
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+      errorText = 'Network Error occurred: could not update group country';
+    }
   }
 
   void _updatePhoneNumber() {
@@ -127,11 +210,10 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 "Continue",
                 style: new TextStyle(color: primaryColor),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState.validate()) {
 //                  Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(
-                      builder: (context) => Verification()));
+                  await doUpdatePhone(context);
                 }
               },
             ),
@@ -148,34 +230,45 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Group Name"),
-          content: Form(
-            key: _formKey,
-            child: TextFormField(
-              initialValue: Provider.of<Groups>(context, listen: false)
-                  .getCurrentGroup()
-                  .groupName,
-              keyboardType: TextInputType.text,
-              onChanged: (value) {
-                setState(() {
-                  groupName = value;
-                });
-              },
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Your Group name is required';
-                }
-                return null;
-              },
-              decoration: InputDecoration(
-                hasFloatingPlaceholder: true,
-                enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                  color: Theme.of(context).hintColor,
-                  width: 2.0,
-                )),
-                labelText: "Your Group  Name",
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              errorText.length > 0
+                  ? Text(
+                      errorText,
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : Container(),
+              Form(
+                key: _formKey,
+                child: TextFormField(
+                  initialValue: Provider.of<Groups>(context, listen: false)
+                      .getCurrentGroup()
+                      .groupName,
+                  keyboardType: TextInputType.text,
+                  onChanged: (value) {
+                    setState(() {
+                      groupName = value;
+                    });
+                  },
+                  validator: (value) {
+                    if (value.isEmpty) {
+                      return 'Your Group name is required';
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                    hasFloatingPlaceholder: true,
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                      color: Theme.of(context).hintColor,
+                      width: 2.0,
+                    )),
+                    labelText: "Your Group  Name",
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           actions: <Widget>[
             new FlatButton(
@@ -193,9 +286,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 "Save",
                 style: new TextStyle(color: primaryColor),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                  Navigator.of(context).pop();
+                  await doUpdateName(context);
                 }
               },
             ),
@@ -257,9 +350,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 "Save",
                 style: new TextStyle(color: primaryColor),
               ),
-              onPressed: () {
+              onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                  Navigator.of(context).pop();
+                  await doUpdateEmail(context);
                 }
               },
             ),
@@ -273,47 +366,52 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Group Currency"),
-          content: Form(
-            key: _formKey,
-            child: CurrencyDropdown(
-              labelText: 'Select Currency',
-              listItems:
-                  Provider.of<Groups>(context, listen: false).currencyOptions,
-              selectedItem: currencyId,
-              onChanged: (value) {
-                setState(() {
-                  currencyId = value;
-                });
-              },
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            title: new Text("Update Group Currency"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  child: CurrencyDropdown(
+                    labelText: 'Select Currency',
+                    listItems: Provider.of<Groups>(context, listen: false)
+                        .currencyOptions,
+                    selectedItem: currencyId,
+                    onChanged: (value) {
+                      setState(() {
+                        currencyId = value;
+                      });
+                    },
+                  ),
+                ),
+              ],
             ),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Save",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "Cancel",
+                  style: TextStyle(
+                      color: Theme.of(context).textSelectionHandleColor),
+                ),
+                onPressed: () {
                   Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
+                },
+              ),
+              new FlatButton(
+                child: new Text(
+                  "Save",
+                  style: new TextStyle(color: primaryColor),
+                ),
+                onPressed: () async {
+                  await doUpdateCurrency(context);
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }
@@ -322,96 +420,92 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Country"),
-          content: Form(
-            key: _formKey,
-            child: Consumer<Groups>(builder: (context, groupData, child) {
-              print("length of data is : ${groupData.countryOptions.length}");
-              return CountryDropdown(
-                labelText: 'Select Country',
-                listItems: groupData.countryOptions,
-                selectedItem: countryId,
-                onChanged: (value) {
-                  setState(() {
-                    countryId = value;
-                  });
-                },
-              );
-            }),
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+        return StatefulBuilder(builder: (context, setState) {
+          return AlertDialog(
+            backgroundColor: Theme.of(context).backgroundColor,
+            title: new Text("Update Country"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Form(
+                  key: _formKey,
+                  child: Consumer<Groups>(builder: (context, groupData, child) {
+                    return CountryDropdown(
+                      labelText: 'Select Country',
+                      listItems: groupData.countryOptions,
+                      selectedItem: countryId,
+                      onChanged: (value) {
+                        setState(() {
+                          countryId = value;
+                        });
+                      },
+                    );
+                  }),
+                ),
+              ],
             ),
-            new FlatButton(
-              child: new Text(
-                "Save",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(
+                  "Cancel",
+                  style: TextStyle(
+                      color: Theme.of(context).textSelectionHandleColor),
+                ),
+                onPressed: () {
                   Navigator.of(context).pop();
-                }
-              },
-            ),
-          ],
-        );
+                },
+              ),
+              new FlatButton(
+                child: new Text(
+                  "Save",
+                  style: new TextStyle(color: primaryColor),
+                ),
+                onPressed: () async {
+                  await doUpdateCountry(context);
+                },
+              ),
+            ],
+          );
+        });
       },
     );
   }
 
-  Future<void> _uploadGroupAvatar(BuildContext context)async{
-    if(avatar!=null){
+  Future<void> _uploadGroupAvatar(BuildContext context) async {
+    if (avatar != null) {
       setState(() {
         _isLoadingImage = true;
       });
-      try{
-        await Provider.of<Groups>(context, listen: false).updateGroupAvatar(avatar);
+      try {
+        await Provider.of<Groups>(context, listen: false)
+            .updateGroupAvatar(avatar);
         setState(() {
           _groupAvatar = null;
         });
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("You have successfully updated Group profile picture",)));
-      }on CustomException catch (error) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated Group profile picture",
+        )));
+      } on CustomException catch (error) {
         setState(() {
           avatar = null;
         });
         StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _uploadGroupAvatar(context);
-          }
-        );
-      }finally{
-        _isLoadingImage=false;
+            context: context,
+            error: error,
+            callback: () {
+              _uploadGroupAvatar(context);
+            });
+      } finally {
+        _isLoadingImage = false;
       }
-      
     }
   }
 
-//  Future<void> fetchLoanTypes(BuildContext context) async {
-//    try {
-//      await Provider.of<Groups>(context, listen: false).fetchLoanTypes();
-//
-//      Navigator.of(context)
-//          .push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
-//    } on CustomException catch (error) {
-//      print(error.message);
-//    }
-//  }
-
   @override
   Widget build(BuildContext context) {
-    final currentGroup = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -421,136 +515,140 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         title: "",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Builder(
-        builder: (BuildContext context) {
-          return (
-            SingleChildScrollView(
-            controller: _scrollController,
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
-            child: SafeArea(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(
-                    height: 40.0,
-                  ),
-                  heading1(
-                      text: "Update Group Profile",
-                      color: Theme.of(context).textSelectionHandleColor),
-                  subtitle2(
-                      text: "Update the profile info for your Group",
-                      color: Theme.of(context).textSelectionHandleColor),
-                  SizedBox(
-                    height: 20.0,
-                  ),
-                  Container(
-                    height: 100,
-                    width: 100,
-                    child: Stack(
-                      fit: StackFit.expand,
-                      children: <Widget>[
-                        _isLoadingImage?Center(child: CircularProgressIndicator(),):
-                        _groupAvatar != null?
-                        CachedNetworkImage(
-                          imageUrl: _groupAvatar,
-                          placeholder: (context, url) => const CircleAvatar(
-                            radius: 45.0,
-                            backgroundImage: const AssetImage('assets/no-user.png'),
+      body: Builder(builder: (BuildContext context) {
+        return (SingleChildScrollView(
+          controller: _scrollController,
+          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: 40.0,
+                ),
+                heading1(
+                    text: "Update Group Profile",
+                    color: Theme.of(context).textSelectionHandleColor),
+                subtitle2(
+                    text: "Update the profile info for your Group",
+                    color: Theme.of(context).textSelectionHandleColor),
+                SizedBox(
+                  height: 20.0,
+                ),
+                Container(
+                  height: 100,
+                  width: 100,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: <Widget>[
+                      _isLoadingImage
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : _groupAvatar != null
+                              ? CachedNetworkImage(
+                                  imageUrl: _groupAvatar,
+                                  placeholder: (context, url) =>
+                                      const CircleAvatar(
+                                    radius: 45.0,
+                                    backgroundImage:
+                                        const AssetImage('assets/no-user.png'),
+                                  ),
+                                  imageBuilder: (context, image) =>
+                                      CircleAvatar(
+                                    backgroundImage: image,
+                                    radius: 45.0,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                  fadeOutDuration: const Duration(seconds: 1),
+                                  fadeInDuration: const Duration(seconds: 3),
+                                )
+                              : CircleAvatar(
+                                  backgroundImage: _groupAvatar != null
+                                      ? NetworkImage(_groupAvatar)
+                                      : (avatar == null
+                                          ? AssetImage('assets/no-user.png')
+                                          : FileImage(avatar)),
+                                  backgroundColor: Colors.transparent,
+                                ),
+                      Positioned(
+                        bottom: -12.0,
+                        right: -12.0,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.camera_alt,
+                            color: Colors.black,
+                            size: 30.0,
                           ),
-                          imageBuilder: (context, image) => CircleAvatar(
-                            backgroundImage: image,
-                            radius: 45.0,
-                          ),
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                          fadeOutDuration: const Duration(seconds: 1),
-                          fadeInDuration: const Duration(seconds: 3),
-                        ):
-                        CircleAvatar(
-                          backgroundImage:_groupAvatar!=null?NetworkImage(_groupAvatar):
-                            (avatar == null ? AssetImage('assets/no-user.png') : 
-                              FileImage(avatar)
-                            ),
-                          backgroundColor: Colors.transparent,
+                          onPressed: () async {
+                            File newAvatar =
+                                await FilePicker.getFile(type: FileType.image);
+                            setState(() {
+                              avatar = newAvatar;
+                            });
+                            _uploadGroupAvatar(context);
+                          },
                         ),
-                        Positioned(
-                          bottom: -12.0,
-                          right: -12.0,
-                          child: IconButton(
-                            icon: Icon(
-                              Icons.camera_alt,
-                              color: Colors.black,
-                              size: 30.0,
-                            ),
-                            onPressed: () async {
-                              File newAvatar =
-                                  await FilePicker.getFile(type: FileType.image);
-                              setState(() {
-                                avatar = newAvatar;
-                              });
-                              _uploadGroupAvatar(context);
-                            },
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
-                  InfoUpdateTile(
-                    labelText: "Group Name",
-                    updateText: currentGroup.groupName,
-                    icon: Icons.edit,
-                    onPressed: () {
-                      _updateName();
-                    },
-                  ),
-                  InfoUpdateTile(
-                    labelText: "Group Phone Number",
-                    updateText: currentGroup.groupPhone,
-                    icon: Icons.edit,
-                    onPressed: () {
-                      _updatePhoneNumber();
-                    },
-                  ),
-                  InfoUpdateTile(
-                    labelText: "Group Email Address",
-                    updateText: currentGroup.groupEmail,
-                    icon: Icons.edit,
-                    onPressed: () {
-                      _updateEmailAddress();
-                    },
-                  ),
-                  InfoUpdateTile(
-                    labelText: "Currency",
-                    updateText: currentGroup.groupCurrencyName,
-                    icon: Icons.edit,
-                    onPressed: () async {
-                      setState(() {
-                        currencyId = int.parse(
-                            Provider.of<Groups>(context, listen: false)
-                                .getCurrentGroup()
-                                .groupCurrencyId);
-                      });
-                      _updateCurrency();
-                    },
-                  ),
-                  InfoUpdateTile(
-                    labelText: "Country",
-                    updateText: currentGroup.groupCountryName,
-                    icon: Icons.edit,
-                    onPressed: () {
-                      setState(() {
-                        countryId = int.parse(currentGroup.groupCountryId);
-                      });
+                ),
+                InfoUpdateTile(
+                  labelText: "Group Name",
+                  updateText: currentGroup.groupName,
+                  icon: Icons.edit,
+                  onPressed: () {
+                    _updateName();
+                  },
+                ),
+                InfoUpdateTile(
+                  labelText: "Group Phone Number",
+                  updateText: currentGroup.groupPhone,
+                  icon: Icons.edit,
+                  onPressed: () {
+                    _updatePhoneNumber();
+                  },
+                ),
+                InfoUpdateTile(
+                  labelText: "Group Email Address",
+                  updateText: currentGroup.groupEmail,
+                  icon: Icons.edit,
+                  onPressed: () {
+                    _updateEmailAddress();
+                  },
+                ),
+                InfoUpdateTile(
+                  labelText: "Currency",
+                  updateText: currentGroup.groupCurrencyName,
+                  icon: Icons.edit,
+                  onPressed: () async {
+                    setState(() {
+                      currencyId = int.parse(
+                          Provider.of<Groups>(context, listen: false)
+                              .getCurrentGroup()
+                              .groupCurrencyId);
+                    });
+                    _updateCurrency();
+                  },
+                ),
+                InfoUpdateTile(
+                  labelText: "Country",
+                  updateText: currentGroup.groupCountryName,
+                  icon: Icons.edit,
+                  onPressed: () {
+                    setState(() {
+                      countryId = int.parse(currentGroup.groupCountryId);
+                    });
 
-                      _updateCountry();
-                    },
-                  ),
-                ],
-              ),
+                    _updateCountry();
+                  },
+                ),
+              ],
             ),
-            )
-          );
-        }
-      ),  
+          ),
+        ));
+      }),
     );
   }
 }
