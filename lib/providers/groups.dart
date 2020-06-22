@@ -585,7 +585,6 @@ class Groups with ChangeNotifier {
   void addCurrencyOptions(List<dynamic> currencies) {
     if (currencies.length > 0) {
       for (var currencyJSON in currencies) {
-        print(currencyJSON);
         final newCurrency = Currency(
             id: currencyJSON['id'].toInt(),
             name: currencyJSON['name'].toString());

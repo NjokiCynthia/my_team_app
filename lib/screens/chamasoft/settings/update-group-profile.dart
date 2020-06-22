@@ -36,7 +36,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   int countryId = 0;
   int currencyId = 0;
   bool _isLoadingImage = false;
-  String _groupAvatar = null;
+  String _groupAvatar;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -72,13 +72,23 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           .updateGroupName(groupName);
       if (response['status'] == 1) {
         Navigator.of(context).pop();
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated Group Name",
+        )));
       } else {
         errorText = response['message'];
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Error updating Group Name",
+        )));
       }
     } on CustomException catch (error) {
       print(error.message);
       errorText = 'Network Error occurred: could not update group name';
     }
+
+    return false;
   }
 
   Future<void> doUpdateEmail(BuildContext context) async {
@@ -158,7 +168,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     }
   }
 
-  void _updatePhoneNumber() {
+  void _updatePhoneNumber(BuildContext ctx) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -235,7 +245,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     );
   }
 
-  void _updateName() {
+  void _updateName(BuildContext ctx) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -300,7 +310,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               ),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                  await doUpdateName(context);
+                  await doUpdateName(ctx);
                 }
               },
             ),
@@ -310,7 +320,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     );
   }
 
-  void _updateEmailAddress() {
+  void _updateEmailAddress(BuildContext ctx) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -364,7 +374,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               ),
               onPressed: () async {
                 if (_formKey.currentState.validate()) {
-                  await doUpdateEmail(context);
+                  await doUpdateEmail(ctx);
                 }
               },
             ),
@@ -374,7 +384,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     );
   }
 
-  void _updateCurrency() {
+  void _updateCurrency(BuildContext ctx) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -418,7 +428,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   style: new TextStyle(color: primaryColor),
                 ),
                 onPressed: () async {
-                  await doUpdateCurrency(context);
+                  await doUpdateCurrency(ctx);
                 },
               ),
             ],
@@ -428,7 +438,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     );
   }
 
-  void _updateCountry() {
+  void _updateCountry(BuildContext ctx) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -473,7 +483,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   style: new TextStyle(color: primaryColor),
                 ),
                 onPressed: () async {
-                  await doUpdateCountry(context);
+                  await doUpdateCountry(ctx);
                 },
               ),
             ],
@@ -611,7 +621,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   updateText: currentGroup.groupName,
                   icon: Icons.edit,
                   onPressed: () {
-                    _updateName();
+                    _updateName(context);
                   },
                 ),
                 InfoUpdateTile(
@@ -619,7 +629,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   updateText: currentGroup.groupPhone,
                   icon: Icons.edit,
                   onPressed: () {
-                    _updatePhoneNumber();
+                    _updatePhoneNumber(context);
                   },
                 ),
                 InfoUpdateTile(
@@ -627,7 +637,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   updateText: currentGroup.groupEmail,
                   icon: Icons.edit,
                   onPressed: () {
-                    _updateEmailAddress();
+                    _updateEmailAddress(context);
                   },
                 ),
                 InfoUpdateTile(
@@ -641,7 +651,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                               .getCurrentGroup()
                               .groupCurrencyId);
                     });
-                    _updateCurrency();
+                    _updateCurrency(context);
                   },
                 ),
                 InfoUpdateTile(
@@ -650,10 +660,13 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   icon: Icons.edit,
                   onPressed: () {
                     setState(() {
-                      countryId = int.parse(currentGroup.groupCountryId);
+                      countryId = int.parse(
+                          Provider.of<Groups>(context, listen: false)
+                              .getCurrentGroup()
+                              .groupCountryId);
                     });
 
-                    _updateCountry();
+                    _updateCountry(context);
                   },
                 ),
               ],

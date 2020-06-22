@@ -93,7 +93,7 @@ class _GroupSettingsState extends State<GroupSettings> {
   Future<void> fetchAccounts(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchAccounts();
-
+      Navigator.pop(context);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => ListBankAccounts()));
     } on CustomException catch (error) {
@@ -107,7 +107,7 @@ class _GroupSettingsState extends State<GroupSettings> {
           },
         ),
       );
-
+      Navigator.pop(context);
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -115,7 +115,7 @@ class _GroupSettingsState extends State<GroupSettings> {
   Future<void> fetchContributions(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchContributions();
-
+      Navigator.pop(context);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => ListContributions()));
     } on CustomException catch (error) {
@@ -129,7 +129,7 @@ class _GroupSettingsState extends State<GroupSettings> {
           },
         ),
       );
-
+      Navigator.pop(context);
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -137,7 +137,7 @@ class _GroupSettingsState extends State<GroupSettings> {
   Future<void> fetchExpenses(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchExpenses();
-
+      Navigator.pop(context);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => ListExpenses()));
     } on CustomException catch (error) {
@@ -151,7 +151,7 @@ class _GroupSettingsState extends State<GroupSettings> {
           },
         ),
       );
-
+      Navigator.pop(context);
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -159,7 +159,7 @@ class _GroupSettingsState extends State<GroupSettings> {
   Future<void> fetchFineTypes(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchFineTypes();
-
+      Navigator.pop(context);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => ListFineTypes()));
     } on CustomException catch (error) {
@@ -173,7 +173,7 @@ class _GroupSettingsState extends State<GroupSettings> {
           },
         ),
       );
-
+      Navigator.pop(context);
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -181,7 +181,7 @@ class _GroupSettingsState extends State<GroupSettings> {
   Future<void> fetchLoanTypes(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchLoanTypes();
-
+      Navigator.pop(context);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
     } on CustomException catch (error) {
@@ -195,7 +195,7 @@ class _GroupSettingsState extends State<GroupSettings> {
           },
         ),
       );
-
+      Navigator.pop(context);
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -222,7 +222,7 @@ class _GroupSettingsState extends State<GroupSettings> {
   Future<void> fetchCountryOptions(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
-
+      Navigator.pop(context);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => UpdateGroupProfile()));
     } on CustomException catch (error) {
@@ -236,7 +236,7 @@ class _GroupSettingsState extends State<GroupSettings> {
           },
         ),
       );
-
+      Navigator.pop(context);
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -244,7 +244,7 @@ class _GroupSettingsState extends State<GroupSettings> {
   Future<void> fetchMembers(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
-
+      Navigator.pop(context);
       Navigator.of(context)
           .push(MaterialPageRoute(builder: (context) => ListMembers()));
     } on CustomException catch (error) {
@@ -258,7 +258,7 @@ class _GroupSettingsState extends State<GroupSettings> {
           },
         ),
       );
-
+      Navigator.pop(context);
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -335,8 +335,16 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 buttonHeight: 30.0,
                                 textSize: 12.0,
                                 action: () async {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      });
                                   await fetchCurrencyOptions(context);
                                   await fetchCountryOptions(context);
+//                                  Navigator.pop(context);
                                 },
                               ),
                             ),
@@ -388,7 +396,15 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
                 dense: true,
                 onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
                   await fetchAccounts(context);
+//                  Navigator.pop(context);
                 },
               ),
               DashedDivider(
@@ -416,7 +432,15 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
                 dense: true,
                 onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
                   await fetchContributions(context);
+//                  Navigator.pop(context);
                 },
               ),
               DashedDivider(
@@ -444,7 +468,15 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
                 dense: true,
                 onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
                   await fetchExpenses(context);
+//                  Navigator.pop(context);
                 },
               ),
               DashedDivider(
@@ -472,7 +504,15 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
                 dense: true,
                 onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
                   await fetchFineTypes(context);
+                  Navigator.pop(context);
                 },
               ),
               DashedDivider(
@@ -500,6 +540,13 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
                 dense: true,
                 onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
                   await fetchLoanTypes(context);
                 },
               ),
@@ -528,6 +575,13 @@ class _GroupSettingsState extends State<GroupSettings> {
                 ),
                 dense: true,
                 onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
                   await fetchMembers(context);
                 },
               ),
