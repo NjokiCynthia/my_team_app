@@ -31,7 +31,12 @@ class Group {
   final String avatar;
   final List<GroupRoles> groupRoles;
   final String smsBalance, accountNumber;
-  final bool onlineBankingEnabled, enableMemberInformationPrivacy;
+  final bool onlineBankingEnabled,
+      enableMemberInformationPrivacy,
+      disableArrears,
+      enableAbsoluteLoanRecalculation,
+      disableMemberEditProfile,
+      disableIgnoreContributionTransfers;
   final String memberListingOrderBy, orderMembersBy;
   final bool enableSendMonthlyEmailStatements;
   final String groupRoleId;
@@ -49,6 +54,10 @@ class Group {
     @required this.accountNumber,
     this.enableMemberInformationPrivacy,
     this.enableSendMonthlyEmailStatements,
+    this.disableArrears,
+    this.disableMemberEditProfile,
+    this.enableAbsoluteLoanRecalculation,
+    this.disableIgnoreContributionTransfers,
     @required this.onlineBankingEnabled,
     this.orderMembersBy,
     @required this.groupRoles,
@@ -391,6 +400,17 @@ class Groups with ChangeNotifier {
               groupJSON["online_banking_enabled"] == 1 ? true : false,
           groupRoleId: groupJSON['group_role_id']..toString(),
           groupRole: groupJSON['role']..toString(),
+          disableArrears: groupJSON['disable_arrears'] == 1 ? true : false,
+          enableAbsoluteLoanRecalculation:
+              groupJSON['enable_absolute_loan_recalculation'] == 1
+                  ? true
+                  : false,
+          disableIgnoreContributionTransfers:
+              groupJSON['disable_ignore_contribution_transfers'] == 1
+                  ? true
+                  : false,
+          disableMemberEditProfile:
+              groupJSON['disable_member_edit_profile'] == 1 ? true : false,
           isGroupAdmin: groupJSON['is_admin'] == 1 ? true : false,
           groupCurrency: groupJSON['group_currency']..toString(),
           groupCurrencyId: groupJSON['country_id']..toString(),
@@ -1016,8 +1036,6 @@ class Groups with ChangeNotifier {
     String enableSendMonthlyEmailStatements,
     String disableMemberEditProfile,
     String enableAbsoluteLoanRecalculation,
-    String userId,
-    String groupId,
   }) async {
     const url = EndpointUrl.UPDATE_GROUP_SETTINGS;
 
