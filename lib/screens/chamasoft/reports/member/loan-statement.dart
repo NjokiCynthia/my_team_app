@@ -170,26 +170,28 @@ class _LoanStatementState extends State<LoanStatement> {
                               ],
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 2,
-                                  child: Container(),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
-                                ),
-                                Expanded(
-                                  flex: 1,
-                                  child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
-                                ),
-                              ],
-                            ),
-                          ),
+                          statementRows.length > 0
+                              ? Container(
+                                  padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 2,
+                                        child: Container(),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
+                                      ),
+                                      Expanded(
+                                        flex: 1,
+                                        child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
                           Expanded(
                             child: statementRows.length > 0
                                 ? ListView.builder(
