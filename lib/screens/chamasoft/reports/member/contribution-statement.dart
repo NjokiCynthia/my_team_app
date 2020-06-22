@@ -5,6 +5,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -97,6 +98,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                 : RefreshIndicator(
                     onRefresh: () => _getContributionStatement(context),
                     child: Consumer<Groups>(builder: (context, data, child) {
+                      List<ContributionStatementRow> statements = data.getContributionStatements.statements;
                       return Column(
                         children: <Widget>[
                           Container(
@@ -155,19 +157,26 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             ),
                           ),
                           Expanded(
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                ContributionStatementRow row = data.getContributionStatements.statements[index];
-                                if (row.isHeader) {
-                                  return StatementHeader(row: row);
-                                } else {
-                                  return StatementBody(row: row);
-                                }
-                              },
-                              itemCount: data.getContributionStatements.statements.length,
-                            ),
+                            child: statements.length > 0
+                                ? ListView.builder(
+                                    controller: _scrollController,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      ContributionStatementRow row = statements[index];
+                                      if (row.isHeader) {
+                                        return StatementHeader(row: row);
+                                      } else {
+                                        return StatementBody(row: row);
+                                      }
+                                    },
+                                    itemCount: statements.length,
+                                  )
+                                : emptyList(
+                                    color: Colors.blue[400],
+                                    iconData: LineAwesomeIcons.file_text,
+                                    text: widget.statementFlag == FINE_STATEMENT
+                                        ? "There are no fine statements to display"
+                                        : "There are no contribution statements to display"),
                           ),
                         ],
                       );

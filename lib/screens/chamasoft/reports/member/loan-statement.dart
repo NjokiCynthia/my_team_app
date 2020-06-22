@@ -5,6 +5,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -80,6 +81,7 @@ class _LoanStatementState extends State<LoanStatement> {
                 : RefreshIndicator(
                     onRefresh: () => _getLoanStatements(context),
                     child: Consumer<Groups>(builder: (context, data, child) {
+                      List<LoanStatementRow> statementRows = data.getLoanStatements.statementRows;
                       return Column(
                         children: <Widget>[
                           Container(
@@ -189,18 +191,21 @@ class _LoanStatementState extends State<LoanStatement> {
                             ),
                           ),
                           Expanded(
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                LoanStatementRow row = data.getLoanStatements.statementRows[index];
-                                return LoanStatementBody(
-                                  row: row,
-                                  position: index % 2 == 0,
-                                );
-                              },
-                              itemCount: data.getLoanStatements.statementRows.length,
-                            ),
+                            child: statementRows.length > 0
+                                ? ListView.builder(
+                                    controller: _scrollController,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      LoanStatementRow row = statementRows[index];
+                                      return LoanStatementBody(
+                                        row: row,
+                                        position: index % 2 == 0,
+                                      );
+                                    },
+                                    itemCount: statementRows.length,
+                                  )
+                                : emptyList(
+                                    color: Colors.blue[400], iconData: LineAwesomeIcons.file_text, text: "There are no statements to display"),
                           )
                         ],
                       );

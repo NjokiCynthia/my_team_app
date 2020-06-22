@@ -4,6 +4,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -128,31 +129,35 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                               ],
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Container(),
-                                ),
-                                subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
-                              ],
-                            ),
-                          ),
+                          expenseList.length > 0
+                              ? Container(
+                                  padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Expanded(
+                                        child: Container(),
+                                      ),
+                                      subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
                           Expanded(
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                SummaryRow row = expenseList[index];
-                                return ExpenseBody(
-                                  row: row,
-                                  position: index % 2 == 0,
-                                );
-                              },
-                              itemCount: expenseList.length,
-                            ),
+                            child: expenseList.length > 0
+                                ? ListView.builder(
+                                    controller: _scrollController,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      SummaryRow row = expenseList[index];
+                                      return ExpenseBody(
+                                        row: row,
+                                        position: index % 2 == 0,
+                                      );
+                                    },
+                                    itemCount: expenseList.length,
+                                  )
+                                : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.file_text, text: "There are no expenses to display"),
                           )
                         ],
                       );

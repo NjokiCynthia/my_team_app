@@ -7,6 +7,7 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -79,36 +80,39 @@ class _LoanSummaryState extends State<LoanSummary> {
                 : RefreshIndicator(
                     onRefresh: () => _getMemberLoans(context),
                     child: Consumer<Groups>(builder: (context, data, child) {
+                      List<ActiveLoan> activeLoans = data.getMemberLoans;
                       return Container(
                         decoration: primaryGradient(context),
                         width: double.infinity,
                         height: double.infinity,
-                        child: ListView.builder(
-                            itemBuilder: (context, index) {
-                              ActiveLoan loan = data.getMemberLoans[index];
-                              return ActiveLoanCard(
-                                loan: loan,
-                                repay: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) => RepayLoan(
-                                        loan: loan,
-                                      ),
-                                    ),
+                        child: activeLoans.length > 0
+                            ? ListView.builder(
+                                itemBuilder: (context, index) {
+                                  ActiveLoan loan = activeLoans[index];
+                                  return ActiveLoanCard(
+                                    loan: loan,
+                                    repay: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) => RepayLoan(
+                                            loan: loan,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    statement: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) => LoanStatement(
+                                            loan: loan,
+                                          ),
+                                        ),
+                                      );
+                                    },
                                   );
                                 },
-                                statement: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) => LoanStatement(
-                                        loan: loan,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            itemCount: data.getMemberLoans.length),
+                                itemCount: activeLoans.length)
+                            : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.pie_chart, text: "There are no loans to display"),
                       );
                     }))));
   }
