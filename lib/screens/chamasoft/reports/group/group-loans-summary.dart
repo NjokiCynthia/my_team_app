@@ -4,6 +4,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -219,43 +220,47 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                               ],
                             ),
                           ),
-                          Container(
-                            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Expanded(
-                                  flex: 3,
-                                  child: Container(),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: subtitle1(text: "Due", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
-                                ),
-                              ],
-                            ),
-                          ),
+                          list.length > 0
+                              ? Container(
+                                  padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Expanded(
+                                        flex: 3,
+                                        child: Container(),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: subtitle1(text: "Due", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                      ),
+                                      Expanded(
+                                        flex: 2,
+                                        child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              : Container(),
                           Expanded(
-                            child: ListView.builder(
-                              controller: _scrollController,
-                              shrinkWrap: true,
-                              itemBuilder: (context, index) {
-                                LoanSummaryRow row = list[index];
-                                return LoanSummaryBody(
-                                  row: row,
-                                  position: index % 2 == 0,
-                                );
-                              },
-                              itemCount: list.length,
-                            ),
+                            child: list.length > 0
+                                ? ListView.builder(
+                                    controller: _scrollController,
+                                    shrinkWrap: true,
+                                    itemBuilder: (context, index) {
+                                      LoanSummaryRow row = list[index];
+                                      return LoanSummaryBody(
+                                        row: row,
+                                        position: index % 2 == 0,
+                                      );
+                                    },
+                                    itemCount: list.length,
+                                  )
+                                : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.bar_chart, text: "There are no loans to display"),
                           )
                         ],
                       );
