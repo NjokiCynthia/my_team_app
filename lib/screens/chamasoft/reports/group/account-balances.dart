@@ -4,6 +4,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -108,19 +109,21 @@ class _AccountBalancesState extends State<AccountBalances> {
                           ),
                         ),
                         Expanded(
-                          child: ListView.builder(
-                            controller: _scrollController,
-                            shrinkWrap: true,
-                            itemBuilder: (context, index) {
-                              AccountBalance balance = accountBalances[index];
-                              if (balance.isHeader) {
-                                return AccountHeader(header: balance);
-                              } else {
-                                return AccountBody(account: balance);
-                              }
-                            },
-                            itemCount: accountBalances.length,
-                          ),
+                          child: accountBalances.length > 0
+                              ? ListView.builder(
+                                  controller: _scrollController,
+                                  shrinkWrap: true,
+                                  itemBuilder: (context, index) {
+                                    AccountBalance balance = accountBalances[index];
+                                    if (balance.isHeader) {
+                                      return AccountHeader(header: balance);
+                                    } else {
+                                      return AccountBody(account: balance);
+                                    }
+                                  },
+                                  itemCount: accountBalances.length,
+                                )
+                              : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.list, text: "No Account balances available"),
                         ),
                       ],
                     );
