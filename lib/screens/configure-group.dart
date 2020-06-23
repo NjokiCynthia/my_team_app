@@ -107,89 +107,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       child: Consumer<Groups>(builder: (context, data, child) {
                                         List<Member> members = data.members;
                                         print("Count: ${members.length}");
-                                        return ListView.separated(
-                                          padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-                                          itemCount: members.length,
-                                          itemBuilder: (context, index) {
-                                            Member member = members[index];
-                                            return ListTile(
-                                              dense: true,
-                                              title: Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  Expanded(
-                                                    flex: 2,
-                                                    child: Row(
-                                                      mainAxisAlignment: MainAxisAlignment.start,
-                                                      children: <Widget>[
-                                                        Icon(
-                                                          Icons.person,
-                                                          color: Colors.blueGrey,
-                                                        ),
-                                                        SizedBox(width: 10.0),
-                                                        Flexible(
-                                                          fit: FlexFit.tight,
-                                                          child: Column(
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: <Widget>[
-                                                              customTitleWithWrap(
-                                                                text: '${member.name}',
-                                                                color: Theme.of(context).textSelectionHandleColor,
-                                                                fontWeight: FontWeight.w800,
-                                                                textAlign: TextAlign.start,
-                                                                fontSize: 15.0,
-                                                              ),
-                                                              customTitleWithWrap(
-                                                                text: '${member.identity}',
-                                                                fontWeight: FontWeight.w600,
-                                                                textAlign: TextAlign.start,
-                                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                                                fontSize: 12.0,
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: FittedBox(
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.end,
-                                                        children: <Widget>[
-                                                          smallBadgeButton(
-                                                            backgroundColor: Colors.blueGrey.withOpacity(0.2),
-                                                            textColor: Colors.blueGrey,
-                                                            text: roles["3"],
-                                                            action: () {},
-                                                            buttonHeight: 24.0,
-                                                            textSize: 12.0,
-                                                          ),
-                                                          SizedBox(width: 10.0),
-                                                          screenActionButton(
-                                                            icon: LineAwesomeIcons.close,
-                                                            backgroundColor: Colors.red.withOpacity(0.1),
-                                                            textColor: Colors.red,
-                                                            action: () {},
-                                                            buttonSize: 30.0,
-                                                            iconSize: 16.0,
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            );
-                                          },
-                                          separatorBuilder: (context, index) {
-                                            return Divider(
-                                              color: Theme.of(context).dividerColor,
-                                              height: 6.0,
-                                            );
-                                          },
-                                        );
+                                        return MembersTabView(members: members);
                                       }))),
                           ListView.separated(
                             padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
@@ -495,6 +413,102 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
+    );
+  }
+}
+
+class MembersTabView extends StatelessWidget {
+  const MembersTabView({
+    Key key,
+    @required this.members,
+  }) : super(key: key);
+
+  final List<Member> members;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+      itemCount: members.length,
+      itemBuilder: (context, index) {
+        Member member = members[index];
+        return ListTile(
+          dense: true,
+          title: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                flex: 2,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Icon(
+                      Icons.person,
+                      color: Colors.blueGrey,
+                    ),
+                    SizedBox(width: 10.0),
+                    Flexible(
+                      fit: FlexFit.tight,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          customTitleWithWrap(
+                            text: '${member.name}',
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w800,
+                            textAlign: TextAlign.start,
+                            fontSize: 15.0,
+                          ),
+                          customTitleWithWrap(
+                            text: '${member.identity}',
+                            fontWeight: FontWeight.w600,
+                            textAlign: TextAlign.start,
+                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                            fontSize: 12.0,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 1,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Expanded(
+                      child: smallBadgeButton(
+                        backgroundColor: Colors.blueGrey.withOpacity(0.2),
+                        textColor: Colors.blueGrey,
+                        text: roles["3"],
+                        action: () {},
+                        buttonHeight: 24.0,
+                        textSize: 12.0,
+                      ),
+                    ),
+                    SizedBox(width: 10.0),
+//                      screenActionButton(
+//                        icon: LineAwesomeIcons.close,
+//                        backgroundColor: Colors.red.withOpacity(0.1),
+//                        textColor: Colors.red,
+//                        action: () {},
+//                        buttonSize: 30.0,
+//                        iconSize: 16.0,
+//                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+      separatorBuilder: (context, index) {
+        return Divider(
+          color: Theme.of(context).dividerColor,
+          height: 6.0,
+        );
+      },
     );
   }
 }
