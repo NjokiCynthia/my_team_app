@@ -1,6 +1,6 @@
 import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
+import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class IntroScreenState extends State<IntroScreen> {
     (await getPreference("isFirstTime") != '')
         ? (await getPreference("isLoggedIn") == 'true')
             ? await Provider.of<Auth>(context, listen: false).setUserProfile().then((_) {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ChamasoftDashboard())).whenComplete(() {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MyGroups())).whenComplete(() {
                   _loading = false;
                 });
               })

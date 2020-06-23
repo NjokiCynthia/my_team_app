@@ -332,7 +332,8 @@ class _AppSwitcherState extends State<AppSwitcher> {
                           size: 12.0,
                         ),
                         SizedBox(width: 4.0),
-                        Expanded(
+                        Flexible(
+                          fit: FlexFit.loose,
                           child: Text(
                             role.toUpperCase(),
                             style: TextStyle(
