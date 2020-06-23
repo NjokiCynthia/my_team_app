@@ -1,4 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/settings/create-mobile-money-account.dart';
+import 'package:chamasoft/screens/chamasoft/settings/create-sacco-account.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -8,6 +10,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'create-bank-account.dart';
+import 'create-petty-cash-account.dart';
 
 List<String> accountTypes = [
   "Bank Accounts",
@@ -93,7 +96,11 @@ class _ListAccountsState extends State<ListAccounts> {
                             fontSize: 16.0,
                           ),
                         ),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreateSaccoAccount(),
+                          ));
+                        },
                       ),
                       FlatButton(
                         child: Text(
@@ -104,7 +111,11 @@ class _ListAccountsState extends State<ListAccounts> {
                             fontSize: 16.0,
                           ),
                         ),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreateMobileMoneyAccount(),
+                          ));
+                        },
                       ),
                       FlatButton(
                         child: Text(
@@ -115,7 +126,11 @@ class _ListAccountsState extends State<ListAccounts> {
                             fontSize: 16.0,
                           ),
                         ),
-                        onPressed: () => Navigator.pop(context),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreatePettyCashAccount(),
+                          ));
+                        },
                       ),
                     ],
                   ),
@@ -135,10 +150,7 @@ class _ListAccountsState extends State<ListAccounts> {
               itemCount: groupData.allAccounts.length,
               itemBuilder: (context, index) {
                 String accountTitle = " ";
-                print(
-                    "Index to show is: $index of ${groupData.allAccounts.length}");
                 accountTitle = accountTypes[index];
-                print("Index shown is: $accountTitle");
                 List<Account> accounts = groupData.allAccounts[index];
 
                 return accounts.length > 0
