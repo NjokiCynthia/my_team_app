@@ -1,6 +1,6 @@
-import 'package:chamasoft/screens/chamasoft/models/bank.dart';
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -9,36 +9,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
-List<Bank> banksList = [
-  Bank("1", "NCBA Bank", LineAwesomeIcons.bank),
-  Bank("2", "KCB Bank", LineAwesomeIcons.bank),
-  Bank("3", "Cooperative Bank", LineAwesomeIcons.bank),
-  Bank("4", "ABSA Bank", LineAwesomeIcons.bank),
-  Bank("5", "Wakurinu Fire Breathers an Demon Chasers Bank",
-      LineAwesomeIcons.bank),
-];
-
-List<NamesListItem> bankBranchesList = [
-  NamesListItem(id: 1, name: "Moi Avenue"),
-  NamesListItem(id: 2, name: "Tom Mboya"),
-  NamesListItem(id: 3, name: "Kenyatta Avenue"),
-  NamesListItem(id: 4, name: "Upper Hill"),
-  NamesListItem(id: 5, name: "Kilimani"),
-  NamesListItem(id: 6, name: "Westlands"),
-  NamesListItem(id: 7, name: "Head Office"),
-  NamesListItem(id: 8, name: "Community"),
-  NamesListItem(id: 9, name: "City Park"),
-  NamesListItem(id: 10, name: "Queens Way"),
-  NamesListItem(id: 11, name: "State House"),
-  NamesListItem(id: 12, name: "Junction"),
-  NamesListItem(id: 13, name: "Kasarani"),
-  NamesListItem(id: 14, name: "Embakasi"),
-  NamesListItem(
-      id: 15,
-      name: "Arab Kamwana Investment Committee Juja Branch Console Xbox"),
-  NamesListItem(id: 16, name: "Kiambu"),
-];
+import 'package:provider/provider.dart';
 
 class CreateBankAccount extends StatefulWidget {
   @override
@@ -79,13 +50,22 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
   String accountNumber;
   int bankId;
   int bankBranchId;
-  int selectedBankId;
-  int selectedBankBranchId;
+  int selectedBankId = 0;
+  int selectedBankBranchId = 0;
   String bankAccountName;
   String selectedBankName = '';
   String selectedBankBranchName = '';
   String bankFilter = "";
   String bankBranchFilter = "";
+
+  Future<void> fetchBankBranchOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .fetchBankBranchOptions(selectedBankId.toString());
+    } on CustomException catch (error) {
+      Navigator.pop(context);
+    }
+  }
 
   void _bankPrompt() {
     showDialog(
@@ -129,9 +109,13 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                       child: ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: banksList.length,
+                          itemCount: Provider.of<Groups>(context, listen: false)
+                              .bankOptions
+                              .length,
                           itemBuilder: (context, index) {
-                            Bank bank = banksList[index];
+                            Bank bank =
+                                Provider.of<Groups>(context, listen: false)
+                                    .bankOptions[index];
 
                             return bankFilter == null || bankFilter == ""
                                 ? RadioListTile(
@@ -143,7 +127,18 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                                               .textSelectionHandleColor,
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    onChanged: (value) {
+                                    onChanged: (value) async {
+                                      showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            );
+                                          });
+                                      await fetchBankBranchOptions(context);
+                                      Navigator.pop(context);
+
                                       setState(() {
                                         selectedBankId = value;
                                         selectedBankName = bank.name;
@@ -151,7 +146,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                                             selectedBankName;
                                       });
                                     },
-                                    value: int.parse(bank.id),
+                                    value: bank.id,
                                     groupValue: selectedBankId,
                                   )
                                 : bank.name
@@ -166,7 +161,18 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                                                   .textSelectionHandleColor,
                                               fontWeight: FontWeight.w500),
                                         ),
-                                        onChanged: (value) {
+                                        onChanged: (value) async {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Center(
+                                                  child:
+                                                      CircularProgressIndicator(),
+                                                );
+                                              });
+                                          await fetchBankBranchOptions(context);
+                                          Navigator.pop(context);
+
                                           setState(() {
                                             selectedBankId = value;
                                             selectedBankName = bank.name;
@@ -174,7 +180,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                                                 selectedBankName;
                                           });
                                         },
-                                        value: int.parse(bank.id),
+                                        value: bank.id,
                                         groupValue: selectedBankId,
                                       )
                                     : new Container();
@@ -221,7 +227,9 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
             title: heading2(
-                text: "Select Bank Branch",
+                text: selectedBankId > 0
+                    ? "Select Bank Branch"
+                    : "Select Bank First",
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start),
             content: Container(
@@ -252,61 +260,65 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                   ),
                   Expanded(
                     child: SingleChildScrollView(
-                      child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                          shrinkWrap: true,
-                          itemCount: bankBranchesList.length,
-                          itemBuilder: (context, index) {
-                            NamesListItem bankBranch = bankBranchesList[index];
+                      child: Consumer<Groups>(
+                          builder: (context, groupData, child) {
+                        return ListView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: groupData.bankBranchOptions.length,
+                            itemBuilder: (context, index) {
+                              BankBranch bankBranch =
+                                  groupData.bankBranchOptions[index];
 
-                            return bankBranchFilter == null ||
-                                    bankBranchFilter == ""
-                                ? RadioListTile(
-                                    activeColor: primaryColor,
-                                    title: Text(
-                                      bankBranch.name,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    onChanged: (value) {
-                                      setState(() {
-                                        selectedBankBranchId = value;
-                                        selectedBankBranchName =
-                                            bankBranch.name;
-                                        bankBranchTextController.text =
-                                            selectedBankBranchName;
-                                      });
-                                    },
-                                    value: bankBranch.id,
-                                    groupValue: selectedBankBranchId,
-                                  )
-                                : bankBranch.name.toLowerCase().contains(
-                                        bankBranchFilter.toLowerCase())
-                                    ? RadioListTile(
-                                        activeColor: primaryColor,
-                                        title: Text(
-                                          bankBranch.name,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        onChanged: (value) {
-                                          setState(() {
-                                            selectedBankBranchId = value;
-                                            selectedBankBranchName =
-                                                bankBranch.name;
-                                            bankBranchTextController.text =
-                                                selectedBankBranchName;
-                                          });
-                                        },
-                                        value: bankBranch.id,
-                                        groupValue: selectedBankBranchId,
-                                      )
-                                    : new Container();
-                          }),
+                              return bankBranchFilter == null ||
+                                      bankBranchFilter == ""
+                                  ? RadioListTile(
+                                      activeColor: primaryColor,
+                                      title: Text(
+                                        bankBranch.name,
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      onChanged: (value) {
+                                        setState(() {
+                                          selectedBankBranchId = value;
+                                          selectedBankBranchName =
+                                              bankBranch.name;
+                                          bankBranchTextController.text =
+                                              selectedBankBranchName;
+                                        });
+                                      },
+                                      value: bankBranch.id,
+                                      groupValue: selectedBankBranchId,
+                                    )
+                                  : bankBranch.name.toLowerCase().contains(
+                                          bankBranchFilter.toLowerCase())
+                                      ? RadioListTile(
+                                          activeColor: primaryColor,
+                                          title: Text(
+                                            bankBranch.name,
+                                            style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              selectedBankBranchId = value;
+                                              selectedBankBranchName =
+                                                  bankBranch.name;
+                                              bankBranchTextController.text =
+                                                  selectedBankBranchName;
+                                            });
+                                          },
+                                          value: bankBranch.id,
+                                          groupValue: selectedBankBranchId,
+                                        )
+                                      : new Container();
+                            });
+                      }),
                     ),
                   ),
                 ],
@@ -407,8 +419,13 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                             color: Theme.of(context).hintColor,
                             width: 1.0,
                           )),
-                          hintText: 'Select bank branch',
-                          labelText: 'Select bank branch',
+                          enabled: selectedBankId > 0,
+                          hintText: selectedBankId > 0
+                              ? 'Select bank branch'
+                              : 'Select bank First',
+                          labelText: selectedBankId > 0
+                              ? 'Select bank branch'
+                              : 'Select bank First',
                         ),
                         onTap: () {
                           //show popup to select bank
