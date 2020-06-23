@@ -228,4 +228,12 @@ class ParseHelper {
       return date;
     }
   }
+
+  static double stringToDouble(String amount) {
+    try {
+      return double.tryParse(amount);
+    } catch (_) {
+      return 0;
+    }
+  }
 }
