@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/settings/create-bank-account.dart';
+import 'package:chamasoft/screens/chamasoft/settings/create-mobile-money-account.dart';
+import 'package:chamasoft/screens/chamasoft/settings/create-sacco-account.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -8,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'create-bank-account.dart';
+import 'create-petty-cash-account.dart';
+
 List<String> accountTypes = [
   "Bank Accounts",
   "Sacco Accounts",
@@ -15,12 +19,14 @@ List<String> accountTypes = [
   "Petty Cash Accounts"
 ];
 
-class ListBankAccounts extends StatefulWidget {
+class ListAccounts extends StatefulWidget {
   @override
-  _ListBankAccountsState createState() => _ListBankAccountsState();
+  _ListAccountsState createState() => _ListAccountsState();
 }
 
-class _ListBankAccountsState extends State<ListBankAccounts> {
+class _ListAccountsState extends State<ListAccounts> {
+  bool showFab = true;
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +35,12 @@ class _ListBankAccountsState extends State<ListBankAccounts> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void showFoatingActionButton(bool value) {
+    setState(() {
+      showFab = value;
+    });
   }
 
   @override
@@ -48,9 +60,84 @@ class _ListBankAccountsState extends State<ListBankAccounts> {
         ),
         backgroundColor: primaryColor,
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CreateBankAccount(),
-          ));
+          showModalBottomSheet<void>(
+            context: context,
+            builder: (BuildContext context) {
+              return Container(
+                height: 200,
+                color: Colors.white,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      FlatButton(
+                        child: Text(
+                          'Add Bank Account',
+                          style: TextStyle(
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        onPressed: () {
+                          //Navigator.pop(context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreateBankAccount(),
+                          ));
+                        },
+                      ),
+                      FlatButton(
+                        child: Text(
+                          'Add Sacco Account',
+                          style: TextStyle(
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreateSaccoAccount(),
+                          ));
+                        },
+                      ),
+                      FlatButton(
+                        child: Text(
+                          'Add Mobile Money Account',
+                          style: TextStyle(
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreateMobileMoneyAccount(),
+                          ));
+                        },
+                      ),
+                      FlatButton(
+                        child: Text(
+                          'Add Petty Cash Account',
+                          style: TextStyle(
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreatePettyCashAccount(),
+                          ));
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          );
         },
       ),
       body: Container(

@@ -691,6 +691,8 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _accounts = []; //clear accounts
+
+        _allAccounts = []; //clear all accounts
         final groupBankAccounts = response['accounts']['bank_accounts'] as List<dynamic>;
         addAccounts(groupBankAccounts, 1);
         final groupSaccoAccounts = response['accounts']['sacco_accounts'] as List<dynamic>;
