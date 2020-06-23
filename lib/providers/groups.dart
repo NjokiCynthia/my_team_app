@@ -116,6 +116,62 @@ class Currency {
   });
 }
 
+class Bank {
+  final int id;
+  final String name;
+  final String logo;
+
+  Bank({
+    @required this.id,
+    @required this.name,
+    this.logo,
+  });
+}
+
+class BankBranch {
+  final int id;
+  final String name;
+
+  BankBranch({
+    @required this.id,
+    @required this.name,
+  });
+}
+
+class MobileMoneyProvider {
+  final int id;
+  final String name;
+  final String logo;
+
+  MobileMoneyProvider({
+    @required this.id,
+    @required this.name,
+    this.logo,
+  });
+}
+
+class Sacco {
+  final int id;
+  final String name;
+  final String logo;
+
+  Sacco({
+    @required this.id,
+    @required this.name,
+    this.logo,
+  });
+}
+
+class SaccoBranch {
+  final int id;
+  final String name;
+
+  SaccoBranch({
+    @required this.id,
+    @required this.name,
+  });
+}
+
 class Contribution {
   final String id;
   final String name;
@@ -242,6 +298,12 @@ class Groups with ChangeNotifier {
   List<List<Account>> _allAccounts = [];
   List<Country> _countryOptions = [];
   List<Currency> _currencyOptions = [];
+  List<Bank> _bankOptions = [];
+  List<BankBranch> _bankBranchOptions = [];
+  List<MobileMoneyProvider> _mobileMoneyProviderOptions = [];
+  List<Sacco> _saccoOptions = [];
+  List<SaccoBranch> _saccoBranchOptions = [];
+
   AccountBalanceModel _accountBalances;
   TransactionStatementModel _transactionStatement;
   ExpenseSummaryList _expenseSummaryList;
@@ -281,6 +343,26 @@ class Groups with ChangeNotifier {
 
   List<Country> get countryOptions {
     return _countryOptions;
+  }
+
+  List<Bank> get bankOptions {
+    return _bankOptions;
+  }
+
+  List<BankBranch> get bankBranchOptions {
+    return _bankBranchOptions;
+  }
+
+  List<MobileMoneyProvider> get mobileMoneyProviderOptions {
+    return _mobileMoneyProviderOptions;
+  }
+
+  List<Sacco> get saccoOptions {
+    return _saccoOptions;
+  }
+
+  List<SaccoBranch> get saccoBranchOptions {
+    return _saccoBranchOptions;
   }
 
   List<Currency> get currencyOptions {
@@ -612,6 +694,69 @@ class Groups with ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  void addBankOptions(List<dynamic> banks) {
+    if (banks.length > 0) {
+      for (var bankJSON in banks) {
+        final newBank = Bank(
+            id: bankJSON['id'].toInt(),
+            logo: bankJSON['logo'].toString(),
+            name: bankJSON['name'].toString());
+        _bankOptions.add(newBank);
+        notifyListeners();
+      }
+    }
+  }
+
+  void addBankBranchOptions(List<dynamic> bankBranches) {
+    if (bankBranches.length > 0) {
+      for (var bankBranchJSON in bankBranches) {
+        final newBankBranch = BankBranch(
+            id: bankBranchJSON['id'].toInt(),
+            name: bankBranchJSON['name'].toString());
+        _bankBranchOptions.add(newBankBranch);
+        notifyListeners();
+      }
+    }
+  }
+
+  void addMobileMoneyProviderOptions(List<dynamic> mobileMoneyProviderOptions) {
+    if (mobileMoneyProviderOptions.length > 0) {
+      for (var mobileMoneyProviderJSON in mobileMoneyProviderOptions) {
+        final newMobileMoneyProviderJSON = MobileMoneyProvider(
+            id: mobileMoneyProviderJSON['id'].toInt(),
+            logo: mobileMoneyProviderJSON['logo'].toString(),
+            name: mobileMoneyProviderJSON['name'].toString());
+        _mobileMoneyProviderOptions.add(newMobileMoneyProviderJSON);
+        notifyListeners();
+      }
+    }
+  }
+
+  void addSaccoOptions(List<dynamic> saccos) {
+    if (saccos.length > 0) {
+      for (var saccoJSON in saccos) {
+        final newSacco = Sacco(
+            id: saccoJSON['id'].toInt(),
+            logo: saccoJSON['logo'].toString(),
+            name: saccoJSON['name'].toString());
+        _saccoOptions.add(newSacco);
+        notifyListeners();
+      }
+    }
+  }
+
+  void addSaccoBranchOptions(List<dynamic> saccoBranches) {
+    if (saccoBranches.length > 0) {
+      for (var saccoBranchJSON in saccoBranches) {
+        final newSaccoBranch = SaccoBranch(
+            id: saccoBranchJSON['id'].toInt(),
+            name: saccoBranchJSON['name'].toString());
+        _saccoBranchOptions.add(newSaccoBranch);
+        notifyListeners();
+      }
+    }
   }
 
   void addAccountBalances(dynamic data) {
@@ -1064,6 +1209,127 @@ class Groups with ChangeNotifier {
           updateGroupProfile();
         }
         return response;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchBankOptions() async {
+    const url = EndpointUrl.GET_BANKS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _bankOptions = []; //clear
+        final banks = response['banks'] as List<dynamic>;
+        addBankOptions(banks);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchBankBranchOptions() async {
+    const url = EndpointUrl.GET_BANK_BRANCHES;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _bankBranchOptions = []; //clear
+        final bankBranches = response['bank_branches'] as List<dynamic>;
+        addBankBranchOptions(bankBranches);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchMobileMoneyProviderOptions() async {
+    const url = EndpointUrl.GE_MOBILE_PROVIDERS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _mobileMoneyProviderOptions = []; //clear
+        final mobileMoneyProviderOptions =
+            response['mobile_money_providers'] as List<dynamic>;
+        addMobileMoneyProviderOptions(mobileMoneyProviderOptions);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchSaccoOptions() async {
+    const url = EndpointUrl.GET_SACCOS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _saccoOptions = []; //clear
+        final saccoOptions = response['saccos'] as List<dynamic>;
+        addSaccoOptions(saccoOptions);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchSaccoBranchesOptions() async {
+    const url = EndpointUrl.GET_SACCO_BRANCHES;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _saccoBranchOptions = []; //clear
+        final saccoBranchOptions = response['sacco_branches'] as List<dynamic>;
+        addSaccoBranchOptions(saccoBranchOptions);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
