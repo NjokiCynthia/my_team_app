@@ -19,8 +19,7 @@ class _CustomDelegate extends SingleChildLayoutDelegate {
         assert(verticalOffset != null);
 
   @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) =>
-      constraints.loosen();
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) => constraints.loosen();
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
@@ -35,8 +34,7 @@ class _CustomDelegate extends SingleChildLayoutDelegate {
 
   @override
   bool shouldRelayout(_CustomDelegate oldDelegate) {
-    return target != oldDelegate.target ||
-        verticalOffset != oldDelegate.verticalOffset;
+    return target != oldDelegate.target || verticalOffset != oldDelegate.verticalOffset;
   }
 }
 
@@ -124,8 +122,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
 
     if (_overlay == null) {
       final RenderBox bounds = context.findRenderObject();
-      final Offset target =
-          bounds.localToGlobal(bounds.size.bottomCenter(Offset.zero));
+      final Offset target = bounds.localToGlobal(bounds.size.bottomCenter(Offset.zero));
 
       _entry = new OverlayEntry(builder: (BuildContext context) {
         return new _CustomOverlay(
@@ -139,18 +136,14 @@ class _AppSwitcherState extends State<AppSwitcher> {
                   child: Container(
                     decoration: new BoxDecoration(
                       color: Theme.of(context).backgroundColor,
-                      boxShadow:
-                          mildShadow(Theme.of(context).unselectedWidgetColor),
+                      boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
                       // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
                     ),
                     child: ListView.builder(
                       padding: const EdgeInsets.all(0.0),
                       itemBuilder: (BuildContext context, int ndx) {
                         return new Container(
-                          color: (_listItems[ndx]["id"] ==
-                                  widget.currentGroup["id"])
-                              ? Colors.blue[200].withOpacity(0.2)
-                              : Colors.transparent,
+                          color: (_listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue[200].withOpacity(0.2) : Colors.transparent,
                           child: new ListTile(
                             dense: true,
                             title: Row(
@@ -160,37 +153,23 @@ class _AppSwitcherState extends State<AppSwitcher> {
                                     right: 10.0,
                                   ),
                                   child: Icon(
-                                    _listItems[ndx]["id"] ==
-                                            widget.currentGroup["id"]
-                                        ? Feather.check
-                                        : Feather.plus,
-                                    color: (_listItems[ndx]["id"] == 0 ||
-                                            _listItems[ndx]["id"] ==
-                                                widget.currentGroup["id"])
+                                    _listItems[ndx]["id"] == widget.currentGroup["id"] ? Feather.check : Feather.plus,
+                                    color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
                                         ? primaryColor
-                                        : (_listItems[ndx]["id"] !=
-                                                widget.currentGroup["id"])
-                                            ? Colors.transparent
-                                            : Colors.blueGrey[300],
+                                        : (_listItems[ndx]["id"] != widget.currentGroup["id"]) ? Colors.transparent : Colors.blueGrey[300],
                                     size: 20.0,
                                   ),
                                 ),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
-                                        _listItems[ndx]["title"]
-                                            .toString()
-                                            .toUpperCase(),
+                                        _listItems[ndx]["title"].toString().toUpperCase(),
                                         style: TextStyle(
-                                          color: (_listItems[ndx]["id"] == 0 ||
-                                                  _listItems[ndx]["id"] ==
-                                                      widget.currentGroup["id"])
+                                          color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
                                               ? primaryColor
-                                              : Colors.blueGrey[
-                                                  400], //Theme.of(context).textSelectionHandleColor,
+                                              : Colors.blueGrey[400], //Theme.of(context).textSelectionHandleColor,
                                           fontSize: 16.0,
                                           fontWeight: FontWeight.w600,
                                           fontFamily: 'SegoeUI',
@@ -202,12 +181,9 @@ class _AppSwitcherState extends State<AppSwitcher> {
                                       Text(
                                         _listItems[ndx]["role"],
                                         style: TextStyle(
-                                          color: (_listItems[ndx]["id"] == 0 ||
-                                                  _listItems[ndx]["id"] ==
-                                                      widget.currentGroup["id"])
+                                          color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
                                               ? primaryColor.withOpacity(0.7)
-                                              : Colors.blueGrey[
-                                                  300], //Theme.of(context).indicatorColor,
+                                              : Colors.blueGrey[300], //Theme.of(context).indicatorColor,
                                           fontSize: 12.0,
                                           fontFamily: 'SegoeUI',
 //                                    fontWeight: FontWeight.w600,
@@ -235,8 +211,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                 Container(
                   color: null,
                   decoration: BoxDecoration(
-                    boxShadow:
-                        mildShadow(Theme.of(context).unselectedWidgetColor),
+                    boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
                     color: Theme.of(context).buttonColor,
                     borderRadius: new BorderRadius.only(
                       bottomRight: Radius.circular(20.0),
@@ -324,8 +299,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
     });
   }
 
-  Widget groupSwitcherButton(
-      {BuildContext context, String title, String role}) {
+  Widget groupSwitcherButton({BuildContext context, String title, String role}) {
     return FlatButton(
       padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
       child: Column(
@@ -348,7 +322,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       softWrap: false,
-                      textAlign: TextAlign.end,
+                      textAlign: TextAlign.center,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
@@ -358,18 +332,20 @@ class _AppSwitcherState extends State<AppSwitcher> {
                           size: 12.0,
                         ),
                         SizedBox(width: 4.0),
-                        Text(
-                          role.toUpperCase(),
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 11.0,
-                            fontFamily: 'SegoeUI',
+                        Expanded(
+                          child: Text(
+                            role.toUpperCase(),
+                            style: TextStyle(
+                              color: primaryColor,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 11.0,
+                              fontFamily: 'SegoeUI',
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.fade,
+                            softWrap: false,
+                            textAlign: TextAlign.end,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.fade,
-                          softWrap: false,
-                          textAlign: TextAlign.end,
                         ),
                       ],
                     ),
@@ -382,10 +358,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                 margin: EdgeInsets.only(left: 5.0),
                 decoration: BoxDecoration(
                   borderRadius: _entryIsVisible
-                      ? BorderRadius.only(
-                          topRight: Radius.circular(20.0),
-                          topLeft: Radius.circular(20.0),
-                          bottomLeft: Radius.circular(20.0))
+                      ? BorderRadius.only(topRight: Radius.circular(20.0), topLeft: Radius.circular(20.0), bottomLeft: Radius.circular(20.0))
                       : BorderRadius.circular(40.0),
                   color: Theme.of(context).hintColor.withOpacity(0.4),
                 ),
@@ -417,8 +390,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
               topRight: Radius.circular(19.0),
               topLeft: Radius.circular(20.0),
             ))
-          : new RoundedRectangleBorder(
-              borderRadius: new BorderRadius.all(Radius.circular(30.0))),
+          : new RoundedRectangleBorder(borderRadius: new BorderRadius.all(Radius.circular(30.0))),
       textColor: primaryColor,
       color: Theme.of(context).buttonColor,
     );
