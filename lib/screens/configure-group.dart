@@ -20,56 +20,21 @@ Map<String, String> roles = {
 List<dynamic> members = [
   {"id": 1, "name": "Peter Kimutai", "phone": "+254 701 234 567", "role_id": 1},
   {"id": 2, "name": "Edwin Kapkei", "phone": "+254 701 234 567", "role_id": 3},
-  {
-    "id": 3,
-    "name": "Geoffrey Githaiga",
-    "phone": "+254 701 234 567",
-    "role_id": 3
-  },
+  {"id": 3, "name": "Geoffrey Githaiga", "phone": "+254 701 234 567", "role_id": 3},
   {"id": 4, "name": "Edwin Kiburu", "phone": "+254 701 234 567", "role_id": 2},
   {"id": 5, "name": "Edwin Kapkei", "phone": "+254 701 234 567", "role_id": 4},
   {"id": 6, "name": "Samuel Wahome", "phone": "+254 701 234 567", "role_id": 3},
 ];
 
 List<dynamic> accounts = [
-  {
-    "id": 1,
-    "bank": "Equity Bank",
-    "branch": "Kasarani",
-    "account": "011245762988",
-    "status": "connected"
-  },
-  {
-    "id": 2,
-    "bank": "KCB Bank",
-    "branch": "Upperhill",
-    "account": "011245762988",
-    "status": "pending"
-  },
+  {"id": 1, "bank": "Equity Bank", "branch": "Kasarani", "account": "011245762988", "status": "connected"},
+  {"id": 2, "bank": "KCB Bank", "branch": "Upperhill", "account": "011245762988", "status": "pending"},
 ];
 
 List<dynamic> contributions = [
-  {
-    "id": 1,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,500"
-  },
-  {
-    "id": 2,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 1,500"
-  },
-  {
-    "id": 3,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,100"
-  },
+  {"id": 1, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,500"},
+  {"id": 2, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
+  {"id": 3, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
 ];
 
 class ConfigureGroup extends StatefulWidget {
@@ -114,14 +79,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                               return ListTile(
                                 dense: true,
                                 title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
                                       flex: 2,
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: <Widget>[
                                           Icon(
                                             Icons.person,
@@ -131,26 +94,20 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                           Flexible(
                                             fit: FlexFit.tight,
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 customTitleWithWrap(
-                                                  text:
-                                                      '${members[index]['name']}',
-                                                  color: Theme.of(context)
-                                                      .textSelectionHandleColor,
+                                                  text: '${members[index]['name']}',
+                                                  color: Theme.of(context).textSelectionHandleColor,
                                                   fontWeight: FontWeight.w800,
                                                   textAlign: TextAlign.start,
                                                   fontSize: 15.0,
                                                 ),
                                                 customTitleWithWrap(
-                                                  text:
-                                                      '${members[index]['phone']}',
+                                                  text: '${members[index]['phone']}',
                                                   fontWeight: FontWeight.w600,
                                                   textAlign: TextAlign.start,
-                                                  color: Theme.of(context)
-                                                      .textSelectionHandleColor
-                                                      .withOpacity(0.5),
+                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                   fontSize: 12.0,
                                                 ),
                                               ],
@@ -163,16 +120,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       flex: 1,
                                       child: FittedBox(
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           children: <Widget>[
                                             smallBadgeButton(
-                                              backgroundColor: Colors.blueGrey
-                                                  .withOpacity(0.2),
+                                              backgroundColor: Colors.blueGrey.withOpacity(0.2),
                                               textColor: Colors.blueGrey,
-                                              text: roles[members[index]
-                                                      ['role_id']
-                                                  .toString()],
+                                              text: roles[members[index]['role_id'].toString()],
                                               action: () {},
                                               buttonHeight: 24.0,
                                               textSize: 12.0,
@@ -180,8 +133,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                             SizedBox(width: 10.0),
                                             screenActionButton(
                                               icon: LineAwesomeIcons.close,
-                                              backgroundColor:
-                                                  Colors.red.withOpacity(0.1),
+                                              backgroundColor: Colors.red.withOpacity(0.1),
                                               textColor: Colors.red,
                                               action: () {},
                                               buttonSize: 30.0,
@@ -209,14 +161,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                               return ListTile(
                                 dense: true,
                                 title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
                                       flex: 2,
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: <Widget>[
                                           Icon(
                                             Icons.credit_card,
@@ -226,26 +176,20 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                           Flexible(
                                             fit: FlexFit.tight,
                                             child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
                                                 customTitleWithWrap(
-                                                  text:
-                                                      '${accounts[index]['bank']}, ${accounts[index]['branch']}',
-                                                  color: Theme.of(context)
-                                                      .textSelectionHandleColor,
+                                                  text: '${accounts[index]['bank']}, ${accounts[index]['branch']}',
+                                                  color: Theme.of(context).textSelectionHandleColor,
                                                   textAlign: TextAlign.start,
                                                   fontWeight: FontWeight.w700,
                                                   fontSize: 15.0,
                                                 ),
                                                 customTitle(
-                                                  text:
-                                                      '${accounts[index]['account']}',
+                                                  text: '${accounts[index]['account']}',
                                                   fontWeight: FontWeight.w600,
                                                   textAlign: TextAlign.start,
-                                                  color: Theme.of(context)
-                                                      .textSelectionHandleColor
-                                                      .withOpacity(0.5),
+                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                   fontSize: 12.0,
                                                 ),
                                               ],
@@ -258,29 +202,16 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       flex: 1,
                                       child: FittedBox(
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           children: <Widget>[
                                             smallBadgeButton(
-                                              backgroundColor: (accounts[index]
-                                                              ['status']
-                                                          .toString()
-                                                          .toLowerCase() ==
-                                                      "connected")
-                                                  ? primaryColor
-                                                      .withOpacity(0.2)
-                                                  : Colors.blueGrey
-                                                      .withOpacity(0.2),
-                                              textColor: (accounts[index]
-                                                              ['status']
-                                                          .toString()
-                                                          .toLowerCase() ==
-                                                      "connected")
+                                              backgroundColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
+                                                  ? primaryColor.withOpacity(0.2)
+                                                  : Colors.blueGrey.withOpacity(0.2),
+                                              textColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
                                                   ? primaryColor
                                                   : Colors.blueGrey,
-                                              text: accounts[index]['status']
-                                                  .toString()
-                                                  .toUpperCase(),
+                                              text: accounts[index]['status'].toString().toUpperCase(),
                                               action: () {},
                                               buttonHeight: 24.0,
                                               textSize: 12.0,
@@ -288,8 +219,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                             SizedBox(width: 10.0),
                                             screenActionButton(
                                               icon: LineAwesomeIcons.close,
-                                              backgroundColor:
-                                                  Colors.red.withOpacity(0.1),
+                                              backgroundColor: Colors.red.withOpacity(0.1),
                                               textColor: Colors.red,
                                               action: () {},
                                               buttonSize: 30.0,
@@ -317,14 +247,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                               return ListTile(
                                 dense: true,
                                 title: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Expanded(
                                       flex: 2,
                                       child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.start,
                                         children: <Widget>[
                                           Icon(
                                             Icons.label,
@@ -332,42 +260,30 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                           ),
                                           SizedBox(width: 10.0),
                                           Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
                                               customTitle(
-                                                text:
-                                                    '${contributions[index]['name']}',
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                text: '${contributions[index]['name']}',
+                                                color: Theme.of(context).textSelectionHandleColor,
                                                 fontWeight: FontWeight.w700,
                                                 textAlign: TextAlign.start,
                                                 fontSize: 15.0,
                                               ),
                                               Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
                                                 children: <Widget>[
                                                   Row(
                                                     children: <Widget>[
                                                       customTitle(
-                                                        text:
-                                                            'Contribution Type: ',
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Theme.of(context)
-                                                            .textSelectionHandleColor
-                                                            .withOpacity(0.5),
+                                                        text: 'Contribution Type: ',
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                         fontSize: 12.0,
                                                       ),
                                                       customTitle(
-                                                        text:
-                                                            '${contributions[index]['type']}',
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                        color: Theme.of(context)
-                                                            .textSelectionHandleColor
-                                                            .withOpacity(0.5),
+                                                        text: '${contributions[index]['type']}',
+                                                        fontWeight: FontWeight.w900,
+                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                         fontSize: 12.0,
                                                       ),
                                                     ],
@@ -376,21 +292,14 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                     children: <Widget>[
                                                       customTitle(
                                                         text: 'Frequency: ',
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Theme.of(context)
-                                                            .textSelectionHandleColor
-                                                            .withOpacity(0.5),
+                                                        fontWeight: FontWeight.w600,
+                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                         fontSize: 12.0,
                                                       ),
                                                       customTitle(
-                                                        text:
-                                                            '${contributions[index]['frequency']}',
-                                                        fontWeight:
-                                                            FontWeight.w900,
-                                                        color: Theme.of(context)
-                                                            .textSelectionHandleColor
-                                                            .withOpacity(0.5),
+                                                        text: '${contributions[index]['frequency']}',
+                                                        fontWeight: FontWeight.w900,
+                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                         fontSize: 12.0,
                                                       ),
                                                     ],
@@ -406,15 +315,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       flex: 1,
                                       child: FittedBox(
                                         child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           children: <Widget>[
                                             smallBadgeButton(
-                                              backgroundColor:
-                                                  primaryColor.withOpacity(0.2),
+                                              backgroundColor: primaryColor.withOpacity(0.2),
                                               textColor: primaryColor,
-                                              text:
-                                                  '${contributions[index]['amount']}',
+                                              text: '${contributions[index]['amount']}',
                                               action: () {},
                                               buttonHeight: 24.0,
                                               textSize: 12.0,
@@ -422,8 +328,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                             SizedBox(width: 10.0),
                                             screenActionButton(
                                               icon: LineAwesomeIcons.close,
-                                              backgroundColor:
-                                                  Colors.red.withOpacity(0.1),
+                                              backgroundColor: Colors.red.withOpacity(0.1),
                                               textColor: Colors.red,
                                               action: () {},
                                               buttonSize: 30.0,
@@ -465,16 +370,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                 action: () => Navigator.of(context).pop(),
                               ),
                               SizedBox(width: 20.0),
-                              heading2(
-                                  color: primaryColor,
-                                  text: "Staff Welfare Group"),
+                              heading2(color: primaryColor, text: "Staff Welfare Group"),
                             ],
                           ),
                         ),
                         elevation: 0.0,
-                        backgroundColor: (themeChangeProvider.darkTheme)
-                            ? Colors.blueGrey[900]
-                            : Colors.white54,
+                        backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900] : Colors.white54,
                         automaticallyImplyLeading: false,
                         bottom: TabBar(
                           indicator: MD2Indicator(
@@ -484,8 +385,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                           ),
                           labelColor: primaryColor,
                           unselectedLabelColor: Colors.blueGrey,
-                          labelPadding: EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 10),
+                          labelPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                           isScrollable: false,
                           labelStyle: TextStyle(
                             fontSize: 16.0,
@@ -544,8 +444,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 int currentIndex = DefaultTabController.of(context).index;
                 print(currentIndex);
                 if (currentIndex == 0) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (BuildContext context) {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                     return ListContacts();
                   }));
                 }
