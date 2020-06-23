@@ -34,12 +34,6 @@ List<dynamic> accounts = [
   {"id": 2, "bank": "KCB Bank", "branch": "Upperhill", "account": "011245762988", "status": "pending"},
 ];
 
-List<dynamic> contributions = [
-  {"id": 1, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,500"},
-  {"id": 2, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
-  {"id": 3, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
-];
-
 class ConfigureGroup extends StatefulWidget {
   @override
   _ConfigureGroupState createState() => _ConfigureGroupState();
@@ -109,201 +103,231 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                         print("Count: ${members.length}");
                                         return MembersTabView(members: members);
                                       }))),
-                          ListView.separated(
-                            padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-                            itemCount: accounts.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                dense: true,
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 2,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.credit_card,
-                                            color: Colors.blueGrey,
-                                          ),
-                                          SizedBox(width: 10.0),
-                                          Flexible(
-                                            fit: FlexFit.tight,
-                                            child: Column(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: <Widget>[
-                                                customTitleWithWrap(
-                                                  text: '${accounts[index]['bank']}, ${accounts[index]['branch']}',
-                                                  color: Theme.of(context).textSelectionHandleColor,
-                                                  textAlign: TextAlign.start,
-                                                  fontWeight: FontWeight.w700,
-                                                  fontSize: 15.0,
-                                                ),
-                                                customTitle(
-                                                  text: '${accounts[index]['account']}',
-                                                  fontWeight: FontWeight.w600,
-                                                  textAlign: TextAlign.start,
-                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                                  fontSize: 12.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: FittedBox(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: <Widget>[
-                                            smallBadgeButton(
-                                              backgroundColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
-                                                  ? primaryColor.withOpacity(0.2)
-                                                  : Colors.blueGrey.withOpacity(0.2),
-                                              textColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
-                                                  ? primaryColor
-                                                  : Colors.blueGrey,
-                                              text: accounts[index]['status'].toString().toUpperCase(),
-                                              action: () {},
-                                              buttonHeight: 24.0,
-                                              textSize: 12.0,
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            screenActionButton(
-                                              icon: LineAwesomeIcons.close,
-                                              backgroundColor: Colors.red.withOpacity(0.1),
-                                              textColor: Colors.red,
-                                              action: () {},
-                                              buttonSize: 30.0,
-                                              iconSize: 16.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return Divider(
-                                color: Theme.of(context).dividerColor,
-                                height: 6.0,
-                              );
-                            },
-                          ),
-                          ListView.separated(
-                            padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-                            itemCount: contributions.length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                dense: true,
-                                title: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Expanded(
-                                      flex: 2,
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.label,
-                                            color: Colors.blueGrey,
-                                          ),
-                                          SizedBox(width: 10.0),
-                                          Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: <Widget>[
-                                              customTitle(
-                                                text: '${contributions[index]['name']}',
-                                                color: Theme.of(context).textSelectionHandleColor,
-                                                fontWeight: FontWeight.w700,
-                                                textAlign: TextAlign.start,
-                                                fontSize: 15.0,
-                                              ),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                          FutureBuilder(
+                            future: _accountFuture,
+                            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                                ? Center(child: CircularProgressIndicator())
+                                : RefreshIndicator(
+                                    onRefresh: () => _getAccounts(context),
+                                    child: Consumer<Groups>(
+                                      builder: (context, data, child) {
+                                        return ListView.separated(
+                                          padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+                                          itemCount: accounts.length,
+                                          itemBuilder: (context, index) {
+                                            return ListTile(
+                                              dense: true,
+                                              title: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: <Widget>[
-                                                  Row(
-                                                    children: <Widget>[
-                                                      customTitle(
-                                                        text: 'Contribution Type: ',
-                                                        fontWeight: FontWeight.w600,
-                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                                        fontSize: 12.0,
-                                                      ),
-                                                      customTitle(
-                                                        text: '${contributions[index]['type']}',
-                                                        fontWeight: FontWeight.w900,
-                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                                        fontSize: 12.0,
-                                                      ),
-                                                    ],
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        Icon(
+                                                          Icons.credit_card,
+                                                          color: Colors.blueGrey,
+                                                        ),
+                                                        SizedBox(width: 10.0),
+                                                        Flexible(
+                                                          fit: FlexFit.tight,
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: <Widget>[
+                                                              customTitleWithWrap(
+                                                                text: '${accounts[index]['bank']}, ${accounts[index]['branch']}',
+                                                                color: Theme.of(context).textSelectionHandleColor,
+                                                                textAlign: TextAlign.start,
+                                                                fontWeight: FontWeight.w700,
+                                                                fontSize: 15.0,
+                                                              ),
+                                                              customTitle(
+                                                                text: '${accounts[index]['account']}',
+                                                                fontWeight: FontWeight.w600,
+                                                                textAlign: TextAlign.start,
+                                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                                fontSize: 12.0,
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                  Row(
-                                                    children: <Widget>[
-                                                      customTitle(
-                                                        text: 'Frequency: ',
-                                                        fontWeight: FontWeight.w600,
-                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                                        fontSize: 12.0,
+                                                  Expanded(
+                                                    flex: 1,
+                                                    child: FittedBox(
+                                                      child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.end,
+                                                        children: <Widget>[
+                                                          smallBadgeButton(
+                                                            backgroundColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
+                                                                ? primaryColor.withOpacity(0.2)
+                                                                : Colors.blueGrey.withOpacity(0.2),
+                                                            textColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
+                                                                ? primaryColor
+                                                                : Colors.blueGrey,
+                                                            text: accounts[index]['status'].toString().toUpperCase(),
+                                                            action: () {},
+                                                            buttonHeight: 24.0,
+                                                            textSize: 12.0,
+                                                          ),
+                                                          SizedBox(width: 10.0),
+                                                          screenActionButton(
+                                                            icon: LineAwesomeIcons.close,
+                                                            backgroundColor: Colors.red.withOpacity(0.1),
+                                                            textColor: Colors.red,
+                                                            action: () {},
+                                                            buttonSize: 30.0,
+                                                            iconSize: 16.0,
+                                                          ),
+                                                        ],
                                                       ),
-                                                      customTitle(
-                                                        text: '${contributions[index]['frequency']}',
-                                                        fontWeight: FontWeight.w900,
-                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                                        fontSize: 12.0,
-                                                      ),
-                                                    ],
+                                                    ),
                                                   ),
                                                 ],
-                                              )
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                              ),
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) {
+                                            return Divider(
+                                              color: Theme.of(context).dividerColor,
+                                              height: 6.0,
+                                            );
+                                          },
+                                        );
+                                      },
                                     ),
-                                    Expanded(
-                                      flex: 1,
-                                      child: FittedBox(
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: <Widget>[
-                                            smallBadgeButton(
-                                              backgroundColor: primaryColor.withOpacity(0.2),
-                                              textColor: primaryColor,
-                                              text: '${contributions[index]['amount']}',
-                                              action: () {},
-                                              buttonHeight: 24.0,
-                                              textSize: 12.0,
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            screenActionButton(
-                                              icon: LineAwesomeIcons.close,
-                                              backgroundColor: Colors.red.withOpacity(0.1),
-                                              textColor: Colors.red,
-                                              action: () {},
-                                              buttonSize: 30.0,
-                                              iconSize: 16.0,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                            separatorBuilder: (context, index) {
-                              return Divider(
-                                color: Theme.of(context).dividerColor,
-                                height: 6.0,
-                              );
-                            },
+                                  ),
                           ),
+                          FutureBuilder(
+                              future: _accountFuture,
+                              builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                                  ? Center(child: CircularProgressIndicator())
+                                  : RefreshIndicator(
+                                      onRefresh: () => _getContributions(context),
+                                      child: Consumer<Groups>(builder: (context, data, child) {
+                                        List<Contribution> contributions = data.contributions;
+                                        return ListView.separated(
+                                          padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+                                          itemCount: contributions.length,
+                                          itemBuilder: (context, index) {
+                                            Contribution contribution = contributions[index];
+                                            return ListTile(
+                                              dense: true,
+                                              title: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  Expanded(
+                                                    flex: 5,
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: <Widget>[
+                                                        Icon(
+                                                          Icons.label,
+                                                          color: Colors.blueGrey,
+                                                        ),
+                                                        SizedBox(width: 10.0),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: <Widget>[
+                                                              customTitle(
+                                                                text: '${contribution.name}',
+                                                                color: Theme.of(context).textSelectionHandleColor,
+                                                                fontWeight: FontWeight.w700,
+                                                                textAlign: TextAlign.start,
+                                                                fontSize: 15.0,
+                                                              ),
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      customTitle(
+                                                                        text: 'Contribution Type: ',
+                                                                        fontWeight: FontWeight.w600,
+                                                                        textAlign: TextAlign.start,
+                                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                                        fontSize: 12.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: customTitle(
+                                                                          text: '${contribution.type}',
+                                                                          fontWeight: FontWeight.w900,
+                                                                          textAlign: TextAlign.start,
+                                                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                                          fontSize: 12.0,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      customTitle(
+                                                                        text: 'Frequency: ',
+                                                                        fontWeight: FontWeight.w600,
+                                                                        textAlign: TextAlign.start,
+                                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                                        fontSize: 12.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: customTitle(
+                                                                          text: '${contribution.frequency}',
+                                                                          fontWeight: FontWeight.w900,
+                                                                          textAlign: TextAlign.start,
+                                                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                                          fontSize: 12.0,
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
+                                                              )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Expanded(
+                                                    flex: 2,
+                                                    child: Row(
+                                                      mainAxisAlignment: MainAxisAlignment.end,
+                                                      children: <Widget>[
+                                                        smallBadgeButton(
+                                                          backgroundColor: primaryColor.withOpacity(0.2),
+                                                          textColor: primaryColor,
+                                                          text: 'Ksh ' + currencyFormat.format(double.tryParse(contribution.amount) ?? 0),
+                                                          action: () {},
+                                                          buttonHeight: 24.0,
+                                                          textSize: 12.0,
+                                                        ),
+//                                                          SizedBox(width: 10.0),
+//                                                          screenActionButton(
+//                                                            icon: LineAwesomeIcons.close,
+//                                                            backgroundColor: Colors.red.withOpacity(0.1),
+//                                                            textColor: Colors.red,
+//                                                            action: () {},
+//                                                            buttonSize: 30.0,
+//                                                            iconSize: 16.0,
+//                                                          ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
+                                          separatorBuilder: (context, index) {
+                                            return Divider(
+                                              color: Theme.of(context).dividerColor,
+                                              height: 6.0,
+                                            );
+                                          },
+                                        );
+                                      }))),
                         ],
                       )),
                   Positioned(
