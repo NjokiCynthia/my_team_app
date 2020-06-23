@@ -15,7 +15,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'list-bank-accounts.dart';
+import 'list-accounts.dart';
 import 'list-expenses.dart';
 import 'list-fine-types.dart';
 import 'list-members.dart';
@@ -95,7 +95,7 @@ class _GroupSettingsState extends State<GroupSettings> {
       await Provider.of<Groups>(context, listen: false).fetchAccounts();
       Navigator.pop(context);
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ListBankAccounts()));
+          .push(MaterialPageRoute(builder: (context) => ListAccounts()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
