@@ -157,7 +157,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                     },
                                     itemCount: expenseList.length,
                                   )
-                                : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.file_text, text: "There are no expenses to display"),
+                                : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.pie_chart, text: "There are no expenses to display"),
                           )
                         ],
                       );
