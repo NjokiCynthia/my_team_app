@@ -1,10 +1,13 @@
-import 'package:chamasoft/screens/configure-group.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class CreateGroup extends StatefulWidget {
   @override
@@ -12,6 +15,40 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  bool _isFormInputEnabled = true;
+  bool _isLoading = false;
+
+  String _groupName;
+
+  void _submit(BuildContext context) async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    _formKey.currentState.save();
+    setState(() {
+      _isFormInputEnabled = false;
+      _isLoading = true;
+    });
+
+    try {
+      await Provider.of<Groups>(context, listen: false).createGroup(groupName: _groupName);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormInputEnabled = true;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -29,6 +66,7 @@ class _CreateGroupState extends State<CreateGroup> {
       body: Builder(
         builder: (BuildContext context) {
           return Form(
+            key: _formKey,
             child: Stack(
               children: <Widget>[
                 Center(
@@ -58,8 +96,19 @@ class _CreateGroupState extends State<CreateGroup> {
                             height: 20,
                           ),
                           TextFormField(
+                            enabled: _isFormInputEnabled,
+                            textCapitalization: TextCapitalization.words,
+                            validator: (value) {
+                              if (value.isEmpty) {
+                                return 'Please enter group name';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _groupName = value.trim();
+                            },
                             decoration: InputDecoration(
-                              hasFloatingPlaceholder: true,
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
                               labelText: 'Group name',
                               enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(
@@ -72,15 +121,17 @@ class _CreateGroupState extends State<CreateGroup> {
                           SizedBox(
                             height: 24,
                           ),
-                          defaultButton(
-                            context: context,
-                            text: "Continue",
-                            onPressed: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => ConfigureGroup(),
-                              ),
-                            ),
-                          ),
+                          _isLoading
+                              ? CircularProgressIndicator()
+                              : defaultButton(
+                                  context: context,
+                                  text: "Continue",
+                                  onPressed: () {
+                                    if (_formKey.currentState.validate()) {
+                                      _submit(context);
+                                    }
+                                  } //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ConfigureGroup(),)),
+                                  ),
                         ],
                       ),
                     ),
