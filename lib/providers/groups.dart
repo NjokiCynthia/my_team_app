@@ -356,14 +356,11 @@ class Groups with ChangeNotifier {
 
   String getCurrentGroupDisplayAvatar() {
     final avatar = getCurrentGroup().avatar;
-    var result = (avatar != null || avatar == "")
-        ? CustomHelper.imageUrl + avatar
-        : null;
+    var result = (avatar != null || avatar == "") ? CustomHelper.imageUrl + avatar : null;
     return result;
   }
 
-  void addGroups(List<dynamic> groupObject,
-      [bool replace = false, int position = 0]) {
+  void addGroups(List<dynamic> groupObject, [bool replace = false, int position = 0]) {
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
 
@@ -384,33 +381,18 @@ class Groups with ChangeNotifier {
           groupCountryId: groupJSON['country_id']..toString(),
           smsBalance: groupJSON["sms_balance"]..toString(),
           accountNumber: groupJSON["account_number"]..toString(),
-          enableMemberInformationPrivacy:
-              groupJSON["enable_member_information_privacy"] == 1
-                  ? true
-                  : false,
-          enableSendMonthlyEmailStatements:
-              groupJSON["enable_send_monthly_email_statements"] == 1
-                  ? true
-                  : false,
+          enableMemberInformationPrivacy: groupJSON["enable_member_information_privacy"] == 1 ? true : false,
+          enableSendMonthlyEmailStatements: groupJSON["enable_send_monthly_email_statements"] == 1 ? true : false,
           groupRoles: groupRoleObject,
-          memberListingOrderBy: groupJSON["member_listing_order_by"]
-            ..toString(),
+          memberListingOrderBy: groupJSON["member_listing_order_by"]..toString(),
           orderMembersBy: groupJSON["order_members_by"]..toString(),
-          onlineBankingEnabled:
-              groupJSON["online_banking_enabled"] == 1 ? true : false,
+          onlineBankingEnabled: groupJSON["online_banking_enabled"] == 1 ? true : false,
           groupRoleId: groupJSON['group_role_id']..toString(),
           groupRole: groupJSON['role']..toString(),
           disableArrears: groupJSON['disable_arrears'] == 1 ? true : false,
-          enableAbsoluteLoanRecalculation:
-              groupJSON['enable_absolute_loan_recalculation'] == 1
-                  ? true
-                  : false,
-          disableIgnoreContributionTransfers:
-              groupJSON['disable_ignore_contribution_transfers'] == 1
-                  ? true
-                  : false,
-          disableMemberEditProfile:
-              groupJSON['disable_member_edit_profile'] == 1 ? true : false,
+          enableAbsoluteLoanRecalculation: groupJSON['enable_absolute_loan_recalculation'] == 1 ? true : false,
+          disableIgnoreContributionTransfers: groupJSON['disable_ignore_contribution_transfers'] == 1 ? true : false,
+          disableMemberEditProfile: groupJSON['disable_member_edit_profile'] == 1 ? true : false,
           isGroupAdmin: groupJSON['is_admin'] == 1 ? true : false,
           groupCurrency: groupJSON['group_currency']..toString(),
           groupCurrencyId: groupJSON['country_id']..toString(),
@@ -488,10 +470,7 @@ class Groups with ChangeNotifier {
     final List<Account> bankAccounts = [];
     if (groupBankAccounts.length > 0) {
       for (var bankAccountJSON in groupBankAccounts) {
-        final newAccount = Account(
-            id: bankAccountJSON['id'].toString(),
-            name: bankAccountJSON['name'].toString(),
-            typeId: accountType);
+        final newAccount = Account(id: bankAccountJSON['id'].toString(), name: bankAccountJSON['name'].toString(), typeId: accountType);
         bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
@@ -508,14 +487,11 @@ class Groups with ChangeNotifier {
           name: groupContributionJSON['name'].toString(),
           amount: groupContributionJSON['amount'].toString(),
           type: groupContributionJSON['type'].toString(),
-          contributionType:
-              groupContributionJSON['contribution_type'].toString(),
+          contributionType: groupContributionJSON['contribution_type'].toString(),
           frequency: groupContributionJSON['frequency'].toString(),
           invoiceDate: groupContributionJSON['invoice_date'].toString(),
-          contributionDate:
-              groupContributionJSON['contribution_date'].toString(),
-          oneTimeContributionSetting:
-              groupContributionJSON['one_time_contribution_setting'].toString(),
+          contributionDate: groupContributionJSON['contribution_date'].toString(),
+          oneTimeContributionSetting: groupContributionJSON['one_time_contribution_setting'].toString(),
           isHidden: groupContributionJSON['is_hidden'].toString(),
           active: groupContributionJSON['active'].toString(),
         );
@@ -565,8 +541,7 @@ class Groups with ChangeNotifier {
           disbursementDate: groupLoanTypesJSON['disbursement_date']..toString,
           guarantors: groupLoanTypesJSON['guarantors']..toString,
           latePaymentFines: groupLoanTypesJSON['late_payment_fines']..toString,
-          outstandingPaymentFines:
-              groupLoanTypesJSON['outstanding_payment_fines']..toString,
+          outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines']..toString,
           isHidden: groupLoanTypesJSON['is_hidden']..toString,
         );
         _loanTypes.add(newLoanType);
@@ -593,9 +568,7 @@ class Groups with ChangeNotifier {
   void addCountryOptions(List<dynamic> countries) {
     if (countries.length > 0) {
       for (var countryJSON in countries) {
-        final newCountry = Country(
-            id: countryJSON['id'].toInt(),
-            name: countryJSON['name'].toString());
+        final newCountry = Country(id: countryJSON['id'].toInt(), name: countryJSON['name'].toString());
         _countryOptions.add(newCountry);
       }
     }
@@ -605,9 +578,7 @@ class Groups with ChangeNotifier {
   void addCurrencyOptions(List<dynamic> currencies) {
     if (currencies.length > 0) {
       for (var currencyJSON in currencies) {
-        final newCurrency = Currency(
-            id: currencyJSON['id'].toInt(),
-            name: currencyJSON['name'].toString());
+        final newCurrency = Currency(id: currencyJSON['id'].toInt(), name: currencyJSON['name'].toString());
         _currencyOptions.add(newCurrency);
       }
     }
@@ -688,6 +659,28 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> createGroup({String groupName}) async {
+    const url = EndpointUrl.CREATE_GROUP;
+
+    try {
+      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_name": groupName, "group_size": 10});
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final userGroups = response["user_groups"] as List<dynamic>;
+        addGroups(userGroups);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: error.message);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      print("error ${error.toString()}");
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchAccounts() async {
     const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
     try {
@@ -698,17 +691,13 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _accounts = []; //clear accounts
-        final groupBankAccounts =
-            response['accounts']['bank_accounts'] as List<dynamic>;
+        final groupBankAccounts = response['accounts']['bank_accounts'] as List<dynamic>;
         addAccounts(groupBankAccounts, 1);
-        final groupSaccoAccounts =
-            response['accounts']['sacco_accounts'] as List<dynamic>;
+        final groupSaccoAccounts = response['accounts']['sacco_accounts'] as List<dynamic>;
         addAccounts(groupSaccoAccounts, 2);
-        final groupMobileMoneyAccounts =
-            response['accounts']['mobile_money_accounts'] as List<dynamic>;
+        final groupMobileMoneyAccounts = response['accounts']['mobile_money_accounts'] as List<dynamic>;
         addAccounts(groupMobileMoneyAccounts, 3);
-        final groupPettyCashAccountsAccounts =
-            response['accounts']['petty_cash_accounts'] as List<dynamic>;
+        final groupPettyCashAccountsAccounts = response['accounts']['petty_cash_accounts'] as List<dynamic>;
         addAccounts(groupPettyCashAccountsAccounts, 4);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -782,8 +771,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _fineTypes = []; //clear accounts
-        final groupFineTypes =
-            response['fine_category_options'] as List<dynamic>;
+        final groupFineTypes = response['fine_category_options'] as List<dynamic>;
         addFineTypes(groupFineTypes);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -1046,11 +1034,9 @@ class Groups with ChangeNotifier {
         "order_members_by": orderMembersBy,
         "member_listing_order_by": memberListingOrderBy,
         "enable_member_information_privacy": enableMemberInformationPrivacy,
-        "disable_ignore_contribution_transfers":
-            disableIgnoreContributionTransfers,
+        "disable_ignore_contribution_transfers": disableIgnoreContributionTransfers,
         "disable_arrears": disableArrears,
-        "enable_send_monthly_email_statements":
-            enableSendMonthlyEmailStatements,
+        "enable_send_monthly_email_statements": enableSendMonthlyEmailStatements,
         "disable_member_edit_profile": disableMemberEditProfile,
         "enable_absolute_loan_recalculation": enableAbsoluteLoanRecalculation,
       });
@@ -1243,11 +1229,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_LOAN_LIST;
 
     try {
-      final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
-        "group_id": currentGroupId,
-        "is_member_loans": 1
-      });
+      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "is_member_loans": 1});
       try {
         final response = await PostToServer.post(postRequest, url);
         final loans = response['loans'] as List<dynamic>;
@@ -1270,11 +1252,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_LOAN_STATEMENT;
 
     try {
-      final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
-        "group_id": currentGroupId,
-        "id": loanId
-      });
+      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "id": loanId});
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['data'] as dynamic;
