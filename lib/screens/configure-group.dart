@@ -437,14 +437,14 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                             ),
                             FittedBox(
                                 child: customTitle(
-                                  text: "Accounts",
-                                  fontWeight: FontWeight.w700,
-                                )),
+                              text: "Accounts",
+                              fontWeight: FontWeight.w700,
+                            )),
                             FittedBox(
                                 child: customTitle(
-                                  fontWeight: FontWeight.w700,
-                                  text: "Contributions",
-                                )),
+                              fontWeight: FontWeight.w700,
+                              text: "Contributions",
+                            )),
                           ],
                         ),
                       ),
@@ -480,9 +480,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            int currentIndex = DefaultTabController
-                .of(context)
-                .index;
+            int currentIndex = DefaultTabController.of(context).index;
             print(currentIndex);
             if (currentIndex == 0) {
               Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
