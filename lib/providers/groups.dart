@@ -1417,6 +1417,203 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> editBankAccount({
+    String id,
+    String accountName,
+    String accountNumber,
+    String bankBranchId,
+    String bankId,
+    String initialBalance,
+  }) async {
+    const url = EndpointUrl.EDIT_BANK_ACCOUNT;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "id": id,
+        "account_name": accountName,
+        "account_number": accountNumber,
+        "bank_branch_id": bankBranchId,
+        "bank_id": bankId,
+        "initial_balance": initialBalance
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchAccounts();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> createSaccoAccount({
+    String accountType,
+    String accountName,
+    String accountNumber,
+    String saccoBranchId,
+    String saccoId,
+    String mobileLocalId,
+    String initialBalance,
+  }) async {
+    const url = EndpointUrl.ADD_SACCO_ACCOUNT;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "type": accountType,
+        "account_name": accountName,
+        "account_number": accountNumber,
+        "sacco_branch_id": saccoBranchId,
+        "mobile_local_id": mobileLocalId,
+        "sacco_id": saccoId,
+        "initial_balance": initialBalance
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchAccounts();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> editSaccoAccount({
+    String id,
+    String accountType,
+    String accountName,
+    String accountNumber,
+    String saccoBranchId,
+    String saccoId,
+    String mobileLocalId,
+    String initialBalance,
+  }) async {
+    const url = EndpointUrl.EDIT_SACCO_ACCOUNT;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "id": id,
+        "type": accountType,
+        "account_name": accountName,
+        "account_number": accountNumber,
+        "sacco_branch_id": saccoBranchId,
+        "mobile_local_id": mobileLocalId,
+        "sacco_id": saccoId,
+        "initial_balance": initialBalance
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchAccounts();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> createMobileMoneyAccount({
+    String accountName,
+    String accountNumber,
+    String bankBranchId,
+    String bankId,
+    String actionType,
+    String accountType,
+    String initialBalance,
+    String mobileLocalId,
+    String mobileMoneyProviderId,
+  }) async {
+    const url = EndpointUrl.ADD_MOBILE_MONEY_ACCOUNT;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "id": "",
+        "action_type": actionType,
+        "type": accountType,
+        "account_name": accountName,
+        "account_number": accountNumber,
+        "mobile_money_provider_id": mobileMoneyProviderId,
+        "mobile_local_id": mobileLocalId,
+        "initial_balance": initialBalance
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchAccounts();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> editMobileMoneyAccount({
+    String id,
+    String accountName,
+    String accountNumber,
+    String bankBranchId,
+    String bankId,
+    String actionType,
+    String accountType,
+    String initialBalance,
+    String mobileLocalId,
+    String mobileMoneyProviderId,
+  }) async {
+    const url = EndpointUrl.EDIT_MOBILE_MONEY_ACCOUNT;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "id": id,
+        "action_type": actionType,
+        "type": accountType,
+        "account_name": accountName,
+        "account_number": accountNumber,
+        "mobile_money_provider_id": mobileMoneyProviderId,
+        "mobile_local_id": mobileLocalId,
+        "initial_balance": initialBalance
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchAccounts();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchReportAccountBalances() async {
     const url = EndpointUrl.GET_ACCOUNT_BALANCES;
 
