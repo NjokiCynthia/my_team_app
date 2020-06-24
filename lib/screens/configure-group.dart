@@ -50,7 +50,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
 
   Future<void> _getAccounts(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchAccounts();
+      await Provider.of<Groups>(context, listen: false).temporaryFetchAccounts();
     } on CustomException catch (error) {}
   }
 
