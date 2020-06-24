@@ -42,16 +42,19 @@ class _CustomOverlay extends StatelessWidget {
   final Widget child;
   final Offset target;
   final double width;
+  final int itemCount;
 
   const _CustomOverlay({
     Key key,
     this.child,
     this.target,
     this.width,
+    this.itemCount,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double height = itemCount>4?330:210;
     return new Positioned.fill(
       child: new IgnorePointer(
         ignoring: false,
@@ -68,7 +71,7 @@ class _CustomOverlay extends StatelessWidget {
                 children: <Widget>[
                   new Container(
                     width: width,
-                    constraints: BoxConstraints(maxHeight: 210),
+                    constraints: BoxConstraints(maxHeight: height),
                     alignment: Alignment.topLeft,
                     color: Colors.transparent,
 //                    decoration: new BoxDecoration(
@@ -126,6 +129,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
 
       _entry = new OverlayEntry(builder: (BuildContext context) {
         return new _CustomOverlay(
+          itemCount : _listItems.length,
           target: target,
           width: width,
           child: new Material(

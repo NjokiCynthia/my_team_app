@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -21,6 +24,11 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   ScrollController _scrollController;
   bool _isLoading = true;
   bool _isInit = true;
+  String defaultTitle = "Contributions";
+  String appbarTitle = "Contribution Summary";
+  int _statementType = 1;
+  double _totalAmount = 0;
+
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -39,8 +47,8 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
+    // _scrollController = ScrollController();
+    // _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
@@ -53,17 +61,42 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
+    final summaryFlag = ModalRoute.of(context).settings.arguments;
+    if(_isInit){
       setState(() {
         _isLoading = true;
       });
-      _fetchGroupContributionSummary(context).then((_) {
-        setState(() {
-          _isLoading = false;
+      if (summaryFlag == FINE_STATEMENT) {
+        appbarTitle = "Fine Summary";
+        defaultTitle = "Fines";
+        _statementType = 2;
+        _totalAmount = Provider.of<Groups>(context,listen: false).groupTotalFinesSummary();
+        _fetchGroupFineSummary(context).then((_){
+          setState(() {
+            _isLoading = false;
+            _totalAmount = Provider.of<Groups>(context,listen: false).groupTotalFinesSummary();
+          });
         });
-      }).catchError((error) {});
+      }else{
+        _totalAmount = Provider.of<Groups>(context,listen: false).groupTotalContributionSummary();
+        _fetchGroupContributionSummary(context).then((_){
+          setState(() {
+            _isLoading = false;
+            _totalAmount = Provider.of<Groups>(context,listen: false).groupTotalContributionSummary();
+          });
+        })
+        .catchError((error){
+          print("${error.toString()}");
+          StatusHandler().handleStatus(
+            context: context,
+            error: error,
+            callback: () {
+              _fetchGroupContributionSummary(context);
+          });
+        });
+      }
     }
-    _isInit = false;
+    _isInit=false;
     super.didChangeDependencies();
   }
 
@@ -72,24 +105,20 @@ class _ContributionSummaryState extends State<ContributionSummary> {
       await Provider.of<Groups>(context, listen: false).getGroupContributionSummary();
     } catch (error) {
       StatusHandler().handleStatus(context: context, error: error, callback: () {});
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
+    } 
+  }
+
+  Future<void> _fetchGroupFineSummary(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).getGroupFinesSummary();
+    } catch (error) {
+      StatusHandler().handleStatus(context: context, error: error, callback: () {});
     }
   }
 
   @override
   Widget build(BuildContext context) {
     final groupObject = Provider.of<Groups>(context,listen: false).getCurrentGroup();
-    final summaryFlag = ModalRoute.of(context).settings.arguments;
-    String appbarTitle = "Contribution Summary";
-    String defaultTitle = "Contributions";
-
-    if (summaryFlag == FINE_STATEMENT) {
-      appbarTitle = "Fine Summary";
-      defaultTitle = "Fines";
-    }
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,
@@ -144,13 +173,13 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                     Row(
                       children: <Widget>[
                         customTitle(
-                          text: "Ksh ",
+                          text: groupObject.groupCurrency,
                           fontWeight: FontWeight.w400,
                           fontSize: 18.0,
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
                         heading2(
-                          text: currencyFormat.format(2000000),
+                          text: currencyFormat.format(_totalAmount),
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
@@ -194,11 +223,14 @@ class _ContributionSummaryState extends State<ContributionSummary> {
               ],
             ),
           ),
-          _isLoading?LinearProgressIndicator():SizedBox(height: 0.0,),
+          _isLoading?LinearProgressIndicator(
+            backgroundColor: Colors.cyanAccent,
+            valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+          ):SizedBox(height: 0.0,),
           Expanded(
               child: _isLoading
-                  ? ContributionSummaryBody()
-                  : ContributionSummaryBody())
+                  ? ContributionSummaryBody(_statementType)
+                  : ContributionSummaryBody(_statementType))
         ],
       ),
     );

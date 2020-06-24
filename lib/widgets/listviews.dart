@@ -170,9 +170,12 @@ class LoanStatementBody extends StatelessWidget {
 }
 
 class ContributionSummaryBody extends StatelessWidget {
+  final int _statementType;
+
+  ContributionSummaryBody(this._statementType);
   @override
   Widget build(BuildContext context) {
-    final contributionSummary = Provider.of<Groups>(context).groupContributionSummary;
+    final contributionSummary = _statementType==1?Provider.of<Groups>(context).groupContributionSummary:Provider.of<Groups>(context).groupFinesSummary;
     return Container(
       child: ListView.builder(
         itemBuilder: (ctx, index) => Container(

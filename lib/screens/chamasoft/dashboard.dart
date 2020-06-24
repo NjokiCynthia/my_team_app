@@ -62,7 +62,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         if (value["id"] == option) {
           setState(() {
             _selectedGroupIndex = index;
-            print("Group Id $index");
             if(_updateSelectedGroup) 
               Provider.of<Groups>(context, listen: false).setSelectedGroupId(value["id"]);
           });
