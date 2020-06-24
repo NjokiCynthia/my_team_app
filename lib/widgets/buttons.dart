@@ -21,12 +21,7 @@ Widget defaultButton({BuildContext context, String text, Function onPressed}) {
 }
 
 Widget screenActionButton(
-    {IconData icon,
-    Color backgroundColor,
-    Color textColor,
-    Function action,
-    double buttonSize = 42.0,
-    double iconSize = 22.0}) {
+    {IconData icon, Color backgroundColor, Color textColor, Function action, double buttonSize = 42.0, double iconSize = 22.0}) {
   return Container(
     width: buttonSize,
     height: buttonSize,
@@ -37,8 +32,7 @@ Widget screenActionButton(
         size: iconSize,
       ),
       onPressed: action,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
       textColor: textColor,
       color: backgroundColor,
     ),
@@ -110,10 +104,8 @@ Widget groupInfoButton(
               ),
       ),
       onPressed: action,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(50.0)),
-      borderSide:
-          BorderSide(color: borderColor, style: BorderStyle.solid, width: 2),
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(50.0)),
+      borderSide: BorderSide(color: borderColor, style: BorderStyle.solid, width: 2),
       textColor: textColor,
       color: backgroundColor,
       highlightedBorderColor: borderColor,
@@ -121,28 +113,19 @@ Widget groupInfoButton(
   );
 }
 
-Widget smallBadgeButton(
-    {Color backgroundColor,
-    String text,
-    Color textColor,
-    Function action,
-    double buttonHeight = 24.0,
-    double textSize = 12.0}) {
+Widget smallBadgeButton({Color backgroundColor, String text, Color textColor, Function action, double buttonHeight = 24.0, double textSize = 12.0}) {
   return Container(
     height: buttonHeight,
     child: FlatButton(
       padding: EdgeInsets.symmetric(horizontal: 6.0),
-      child: Text(
-        text,
-        style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.w400,
-            fontSize: textSize,
-            fontFamily: 'SegoeUI'),
+      child: customTitle(
+        text: text,
+        color: textColor,
+        fontWeight: FontWeight.w400,
+        fontSize: textSize,
       ),
       onPressed: action,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
       textColor: textColor,
       color: backgroundColor,
     ),
@@ -166,11 +149,7 @@ Widget smallBadgeButtonWithIcon(
         children: [
           Text(
             text,
-            style: TextStyle(
-                color: textColor,
-                fontWeight: FontWeight.w600,
-                fontSize: textSize,
-                fontFamily: 'SegoeUI'),
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w600, fontSize: textSize, fontFamily: 'SegoeUI'),
           ),
           SizedBox(
             width: 5,
@@ -182,20 +161,14 @@ Widget smallBadgeButtonWithIcon(
         ],
       ),
       onPressed: action,
-      shape: new RoundedRectangleBorder(
-          borderRadius: new BorderRadius.circular(30.0)),
+      shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
       textColor: textColor,
       color: backgroundColor,
     ),
   );
 }
 
-Widget cardAmountButton(
-    {String currency,
-    String amount,
-    Function action,
-    double size,
-    Color color}) {
+Widget cardAmountButton({String currency, String amount, Function action, double size, Color color}) {
   return FlatButton(
     padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
     child: Row(
@@ -234,12 +207,7 @@ Widget cardAmountButton(
   );
 }
 
-Widget plainButtonWithArrow(
-    {String text,
-    Function action,
-    double size,
-    Color color,
-    double spacing = 4.0}) {
+Widget plainButtonWithArrow({String text, Function action, double size, Color color, double spacing = 4.0}) {
   return FlatButton(
     padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
     child: Row(
@@ -271,12 +239,7 @@ Widget plainButtonWithArrow(
   );
 }
 
-Widget plainButton(
-    {String text,
-    Function action,
-    double size,
-    Color color,
-    double spacing = 4.0}) {
+Widget plainButton({String text, Function action, double size, Color color, double spacing = 4.0}) {
   return FlatButton(
     padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
     child: Row(
@@ -303,14 +266,7 @@ Widget plainButton(
   );
 }
 
-Widget paymentActionButton(
-    {bool isFlat = false,
-    String text,
-    IconData icon,
-    double iconSize = 12.0,
-    Color color,
-    Function action,
-    Color textColor}) {
+Widget paymentActionButton({bool isFlat = false, String text, IconData icon, double iconSize = 12.0, Color color, Function action, Color textColor}) {
   return (!isFlat)
       ? OutlineButton(
           color: Colors.white,
@@ -370,75 +326,63 @@ Widget paymentActionButton(
         );
 }
 
-Widget gridButton(
-    {BuildContext context,
-    Color color,
-    IconData icon,
-    String title,
-    String subtitle = "",
-    Function action,
-    bool isHighlighted}) {
+Widget gridButton({BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted}) {
   return Container(
     margin: EdgeInsets.all(16),
     height: 150,
-    decoration: cardDecoration(
-        gradient: isHighlighted ? csCardGradient() : plainCardGradient(context),
-        context: context),
+    decoration: cardDecoration(gradient: isHighlighted ? csCardGradient() : plainCardGradient(context), context: context),
     child: FlatButton(
       padding: EdgeInsets.all(0),
-      child: Stack(
-          fit: StackFit.expand,
-          alignment: Alignment.center,
+      child: Stack(fit: StackFit.expand, alignment: Alignment.center, children: <Widget>[
+        Positioned(
+          top: 0.0,
+          right: 40.0,
+          child: Icon(
+            icon,
+            size: 120.0,
+            color: color.withOpacity(0.04),
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Positioned(
-              top: 0.0,
-              right: 40.0,
-              child: Icon(
-                icon,
-                size: 120.0,
-                color: color.withOpacity(0.04),
+            Icon(
+              icon,
+              size: 38.0,
+              color: color.withOpacity(0.7),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14.0,
+                  fontFamily: 'SegoeUI',
+                ),
+                textAlign: TextAlign.center,
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Icon(
-                  icon,
-                  size: 38.0,
-                  color: color.withOpacity(0.7),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(
+                subtitle,
+                style: TextStyle(
+                  color: color.withOpacity(0.6),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'SegoeUI',
+                  fontSize: 12.0,
                 ),
-                SizedBox(
-                  height: 10.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      color: color,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 14.0,
-                      fontFamily: 'SegoeUI',
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    subtitle,
-                    style: TextStyle(
-                      color: color.withOpacity(0.6),
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'SegoeUI',
-                      fontSize: 12.0,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
+                textAlign: TextAlign.center,
+              ),
             ),
-          ]),
+          ],
+        ),
+      ]),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       highlightColor: primaryColor.withOpacity(0.1),
       onPressed: action,
@@ -458,13 +402,7 @@ Widget statusChip({String text, Color textColor, Color backgroundColor}) {
   );
 }
 
-Widget circleIconButton(
-    {IconData icon,
-    Color color,
-    Color backgroundColor,
-    Function onPressed,
-    double iconSize = 32.0,
-    double padding = 2.0}) {
+Widget circleIconButton({IconData icon, Color color, Color backgroundColor, Function onPressed, double iconSize = 32.0, double padding = 2.0}) {
   return Container(
     padding: EdgeInsets.all(padding),
     decoration: ShapeDecoration(

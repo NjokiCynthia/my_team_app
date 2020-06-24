@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/create-mobile-money-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/create-sacco-account.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -25,8 +26,6 @@ class ListAccounts extends StatefulWidget {
 }
 
 class _ListAccountsState extends State<ListAccounts> {
-  bool showFab = true;
-
   @override
   void initState() {
     super.initState();
@@ -37,10 +36,13 @@ class _ListAccountsState extends State<ListAccounts> {
     super.dispose();
   }
 
-  void showFoatingActionButton(bool value) {
-    setState(() {
-      showFab = value;
-    });
+  Future<bool> fetchBankOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchBankOptions();
+      return true;
+    } on CustomException catch (error) {
+      return false;
+    }
   }
 
   @override
@@ -80,8 +82,17 @@ class _ListAccountsState extends State<ListAccounts> {
                             fontSize: 16.0,
                           ),
                         ),
-                        onPressed: () {
-                          //Navigator.pop(context);
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              });
+                          await fetchBankOptions(context);
+                          Navigator.pop(context);
+
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CreateBankAccount(),
                           ));
