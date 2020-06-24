@@ -713,8 +713,7 @@ class Groups with ChangeNotifier {
     if (bankBranches.length > 0) {
       for (var bankBranchJSON in bankBranches) {
         final newBankBranch = BankBranch(
-            id: int.parse(bankBranchJSON['id']),
-            name: bankBranchJSON['name'].toString());
+            id: bankBranchJSON['id'], name: bankBranchJSON['name'].toString());
         _bankBranchOptions.add(newBankBranch);
       }
       notifyListeners();
@@ -1289,6 +1288,7 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
+        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1360,6 +1360,41 @@ class Groups with ChangeNotifier {
         _saccoBranchOptions = []; //clear
         final saccoBranchOptions = response['sacco_branches'] as List<dynamic>;
         addSaccoBranchOptions(saccoBranchOptions);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> createBankAccount({
+    String accountName,
+    String accountNumber,
+    String bankBranchId,
+    String bankId,
+    String initialBalance,
+  }) async {
+    const url = EndpointUrl.ADD_BANK_ACCOUNT;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "account_name": accountName,
+        "account_number": accountNumber,
+        "bank_branch_id": bankBranchId,
+        "bank_id": bankId,
+        "initial_balance": initialBalance
+      });
+
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        await fetchAccounts();
+        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

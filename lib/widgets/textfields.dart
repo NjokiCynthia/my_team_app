@@ -9,12 +9,16 @@ Widget simpleTextInputField(
     {BuildContext context,
     String labelText,
     Function onChanged,
-    String hintText = ''}) {
+    String hintText = '',
+    Function validator,
+    Function onSaved}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
     keyboardType: TextInputType.text,
     textCapitalization: TextCapitalization.sentences,
+    validator: validator,
+    onSaved: onSaved,
     decoration: InputDecoration(
       hasFloatingPlaceholder: true,
       enabledBorder: UnderlineInputBorder(
@@ -32,7 +36,9 @@ Widget amountTextInputField(
     {BuildContext context,
     String labelText,
     Function onChanged,
-    String hintText = ''}) {
+    String hintText = '',
+    Function validator,
+    Function onSaved}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
@@ -41,6 +47,8 @@ Widget amountTextInputField(
       decimal: true,
       signed: false,
     ),
+    validator: validator,
+    onSaved: onSaved,
     decoration: InputDecoration(
       hasFloatingPlaceholder: true,
       enabledBorder: UnderlineInputBorder(
@@ -54,12 +62,13 @@ Widget amountTextInputField(
   );
 }
 
-
 Widget numberTextInputField(
     {BuildContext context,
-      String labelText,
-      Function onChanged,
-      String hintText = ''}) {
+    String labelText,
+    Function onChanged,
+    String hintText = '',
+    Function validator,
+    Function onSaved}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
@@ -68,13 +77,15 @@ Widget numberTextInputField(
       decimal: false,
       signed: false,
     ),
+    validator: validator,
+    onSaved: onSaved,
     decoration: InputDecoration(
       hasFloatingPlaceholder: true,
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: Theme.of(context).hintColor,
-            width: 1.0,
-          )),
+        color: Theme.of(context).hintColor,
+        width: 1.0,
+      )),
       hintText: hintText,
       labelText: labelText,
     ),
