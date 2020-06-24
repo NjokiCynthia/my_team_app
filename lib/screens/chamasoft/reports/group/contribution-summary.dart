@@ -106,11 +106,6 @@ class _ContributionSummaryState extends State<ContributionSummary> {
     } catch (error) {
       StatusHandler().handleStatus(context: context, error: error, callback: () {});
     } 
-    // finally {
-    //   setState(() {
-    //     _isLoading = false;
-    //   });
-    // }
   }
 
   Future<void> _fetchGroupFineSummary(BuildContext context) async {
@@ -118,10 +113,6 @@ class _ContributionSummaryState extends State<ContributionSummary> {
       await Provider.of<Groups>(context, listen: false).getGroupFinesSummary();
     } catch (error) {
       StatusHandler().handleStatus(context: context, error: error, callback: () {});
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 
