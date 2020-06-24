@@ -74,7 +74,6 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
 
   Future<void> createNewBankAccount(BuildContext context) async {
     try {
-
       showDialog(
           context: context,
           builder: (BuildContext context) {
@@ -109,6 +108,8 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
         )));
       }
     } on CustomException catch (error) {
+      Navigator.pop(context);
+
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Bank Account. Network Error",
