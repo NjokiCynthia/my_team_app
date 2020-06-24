@@ -504,7 +504,9 @@ class Groups with ChangeNotifier {
   }
 
   void addNewGroup(dynamic groupObject) {
-    _groups.add(parseSingleGroup(groupObject));
+    Group newGroup = parseSingleGroup(groupObject);
+    _groups.add(newGroup);
+    setSelectedGroupId(newGroup.groupId);
     notifyListeners();
   }
 
