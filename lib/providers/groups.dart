@@ -1383,7 +1383,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<dynamic> createBankAccount({
+  Future<void> createBankAccount({
     String accountName,
     String accountNumber,
     String bankBranchId,
@@ -1403,9 +1403,8 @@ class Groups with ChangeNotifier {
       });
 
       try {
-        final response = await PostToServer.post(postRequest, url);
+        await PostToServer.post(postRequest, url);
         await fetchAccounts();
-        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

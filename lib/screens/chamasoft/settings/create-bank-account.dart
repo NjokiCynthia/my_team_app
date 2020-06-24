@@ -82,8 +82,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
             );
           });
 
-      final response =
-          await Provider.of<Groups>(context, listen: false).createBankAccount(
+      await Provider.of<Groups>(context, listen: false).createBankAccount(
         accountName: bankAccountName,
         accountNumber: accountNumber,
         bankBranchId: selectedBankBranchId.toString(),
@@ -92,27 +91,18 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
       );
 
       Navigator.pop(context);
-
-      if (response['status'] == 1) {
-        Navigator.of(context).pop();
-        Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "You have successfully added a Bank Account",
-        )));
-        Navigator.of(context)
-            .push(new MaterialPageRoute(builder: (context) => ListAccounts()));
-      } else {
-        Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "Error Adding the Bank Account ${response['message']}",
-        )));
-      }
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "You have successfully added a Bank Account",
+      )));
+      Navigator.of(context)
+          .push(new MaterialPageRoute(builder: (context) => ListAccounts()));
     } on CustomException catch (error) {
       Navigator.pop(context);
 
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "Error Adding the Bank Account. Network Error",
+        "Error Adding the Bank Account. ${error.message} ",
       )));
     }
   }
