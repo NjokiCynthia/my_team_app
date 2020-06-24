@@ -1,7 +1,8 @@
 import 'dart:convert';
 import 'dart:io' as io;
 
-import 'package:chamasoft/screens/chamasoft/models/account-balance.dart';
+import 'package:chamasoft/providers/helpers/setting_helper.dart';
+import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
@@ -312,6 +313,7 @@ class Groups with ChangeNotifier {
   LoanStatementModel _loanStatements;
   List<GroupContributionSummary> _groupContributionSummary = [];
   List<ActiveLoan> _memberLoanList = [];
+  List<CategorisedAccount> _categorisedAccounts = [];
 
   List<Group> get item {
     return _groups;
@@ -403,6 +405,10 @@ class Groups with ChangeNotifier {
 
   LoanStatementModel get getLoanStatements {
     return _loanStatements;
+  }
+
+  List<CategorisedAccount> get getAllCategorisedAccounts {
+    return _categorisedAccounts;
   }
 
   /// ********************Group Objects************/
@@ -790,6 +796,11 @@ class Groups with ChangeNotifier {
 
   void addLoanStatements(dynamic data) {
     _loanStatements = getLoanStatementModel(data);
+    notifyListeners();
+  }
+
+  void addCategorisedAccounts(dynamic data) {
+    _categorisedAccounts = getCategorisedAccounts(data);
     notifyListeners();
   }
 
@@ -1615,6 +1626,30 @@ class Groups with ChangeNotifier {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
         print(error);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  //TODO: consolidate with fetchAccounts()
+  Future<void> temporaryFetchAccounts() async {
+    const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final accounts = response['accounts'] as dynamic;
+        addCategorisedAccounts(accounts);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {

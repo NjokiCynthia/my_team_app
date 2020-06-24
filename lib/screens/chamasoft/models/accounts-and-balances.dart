@@ -1,3 +1,14 @@
+class CategorisedAccount {
+  String id, name, accountNumber;
+  int typeId;
+  String title;
+  bool isHeader;
+
+  CategorisedAccount.header({this.isHeader, this.title});
+
+  CategorisedAccount({this.isHeader, this.id, this.name, this.accountNumber, this.typeId});
+}
+
 class AccountBalance {
   String name, accountNumber, balance;
   bool isHeader;
