@@ -99,103 +99,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     child: Consumer<Groups>(
                                       builder: (context, data, child) {
                                         List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
-                                        return ListView.builder(
-                                          padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-                                          itemCount: accounts.length,
-                                          itemBuilder: (context, index) {
-                                            CategorisedAccount account = accounts[index];
-                                            if (account.isHeader) {
-                                              return Padding(
-                                                padding: index == 0
-                                                    ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0)
-                                                    : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                                                child: customTitle(
-                                                  text: account.title,
-                                                  fontWeight: FontWeight.w600,
-                                                  textAlign: TextAlign.start,
-                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
-                                                  fontSize: 13.0,
-                                                ),
-                                              );
-                                            } else {
-                                              return ListTile(
-                                                dense: true,
-                                                title: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: <Widget>[
-                                                    Expanded(
-                                                      flex: 2,
-                                                      child: Row(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        children: <Widget>[
-                                                          Icon(
-                                                            Icons.credit_card,
-                                                            color: Colors.blueGrey,
-                                                          ),
-                                                          SizedBox(width: 10.0),
-                                                          Flexible(
-                                                            fit: FlexFit.tight,
-                                                            child: Column(
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: <Widget>[
-                                                                customTitleWithWrap(
-                                                                  text: account.name,
-                                                                  color: Theme.of(context).textSelectionHandleColor,
-                                                                  textAlign: TextAlign.start,
-                                                                  fontWeight: FontWeight.w700,
-                                                                  fontSize: 15.0,
-                                                                ),
-                                                                account.accountNumber.isNotEmpty
-                                                                    ? customTitle(
-                                                                        text: account.accountNumber,
-                                                                        fontWeight: FontWeight.w600,
-                                                                        textAlign: TextAlign.start,
-                                                                        color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                                                        fontSize: 12.0,
-                                                                      )
-                                                                    : Container(),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ), //                                                    Expanded(
-//                                                      flex: 1,
-//                                                      child: FittedBox(
-//                                                        child: Row(
-//                                                          mainAxisAlignment: MainAxisAlignment.end,
-//                                                          children: <Widget>[
-//                                                            smallBadgeButton(
-//                                                              backgroundColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
-//                                                                  ? primaryColor.withOpacity(0.2)
-//                                                                  : Colors.blueGrey.withOpacity(0.2),
-//                                                              textColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
-//                                                                  ? primaryColor
-//                                                                  : Colors.blueGrey,
-//                                                              text: accounts[index]['status'].toString().toUpperCase(),
-//                                                              action: () {},
-//                                                              buttonHeight: 24.0,
-//                                                              textSize: 12.0,
-//                                                            ),
-//                                                            SizedBox(width: 10.0),
-//                                                            screenActionButton(
-//                                                              icon: LineAwesomeIcons.close,
-//                                                              backgroundColor: Colors.red.withOpacity(0.1),
-//                                                              textColor: Colors.red,
-//                                                              action: () {},
-//                                                              buttonSize: 30.0,
-//                                                              iconSize: 16.0,
-//                                                            ),
-//                                                          ],
-//                                                        ),
-//                                                      ),
-//                                                    ),
-                                                  ],
-                                                ),
-                                              );
-                                            }
-                                          },
-                                        );
+                                        return AccountsTabView(accounts: accounts);
                                       },
                                     ),
                                   ),
@@ -319,6 +223,114 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       ),
+    );
+  }
+}
+
+class AccountsTabView extends StatelessWidget {
+  const AccountsTabView({
+    Key key,
+    @required this.accounts,
+  }) : super(key: key);
+
+  final List<CategorisedAccount> accounts;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+      itemCount: accounts.length,
+      itemBuilder: (context, index) {
+        CategorisedAccount account = accounts[index];
+        if (account.isHeader) {
+          return Padding(
+            padding: index == 0 ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0) : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+            child: customTitle(
+              text: account.title,
+              fontWeight: FontWeight.w600,
+              textAlign: TextAlign.start,
+              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
+              fontSize: 13.0,
+            ),
+          );
+        } else {
+          return ListTile(
+            dense: true,
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Expanded(
+                  flex: 2,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Icon(
+                        Icons.credit_card,
+                        color: Colors.blueGrey,
+                      ),
+                      SizedBox(width: 10.0),
+                      Flexible(
+                        fit: FlexFit.tight,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            customTitleWithWrap(
+                              text: account.name,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.start,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15.0,
+                            ),
+                            account.accountNumber.isNotEmpty
+                                ? customTitle(
+                                    text: account.accountNumber,
+                                    fontWeight: FontWeight.w600,
+                                    textAlign: TextAlign.start,
+                                    color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                    fontSize: 12.0,
+                                  )
+                                : Container(),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ), //                                                    Expanded(
+//                                                      flex: 1,
+//                                                      child: FittedBox(
+//                                                        child: Row(
+//                                                          mainAxisAlignment: MainAxisAlignment.end,
+//                                                          children: <Widget>[
+//                                                            smallBadgeButton(
+//                                                              backgroundColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
+//                                                                  ? primaryColor.withOpacity(0.2)
+//                                                                  : Colors.blueGrey.withOpacity(0.2),
+//                                                              textColor: (accounts[index]['status'].toString().toLowerCase() == "connected")
+//                                                                  ? primaryColor
+//                                                                  : Colors.blueGrey,
+//                                                              text: accounts[index]['status'].toString().toUpperCase(),
+//                                                              action: () {},
+//                                                              buttonHeight: 24.0,
+//                                                              textSize: 12.0,
+//                                                            ),
+//                                                            SizedBox(width: 10.0),
+//                                                            screenActionButton(
+//                                                              icon: LineAwesomeIcons.close,
+//                                                              backgroundColor: Colors.red.withOpacity(0.1),
+//                                                              textColor: Colors.red,
+//                                                              action: () {},
+//                                                              buttonSize: 30.0,
+//                                                              iconSize: 16.0,
+//                                                            ),
+//                                                          ],
+//                                                        ),
+//                                                      ),
+//                                                    ),
+              ],
+            ),
+          );
+        }
+      },
     );
   }
 }
