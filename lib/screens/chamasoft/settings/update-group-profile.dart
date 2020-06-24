@@ -642,7 +642,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Currency",
-                  updateText: currentGroup.groupCurrencyName,
+                  updateText: currentGroup.groupCurrency,
                   icon: Icons.edit,
                   onPressed: () async {
                     setState(() {
