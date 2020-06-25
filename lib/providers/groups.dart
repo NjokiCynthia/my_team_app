@@ -466,7 +466,12 @@ class Groups with ChangeNotifier {
     return result;
   }
 
+<<<<<<< HEAD
+  void addGroups(List<dynamic> groupObject,
+      [bool replace = false, int position = 0,bool isNewGroup=false]) {
+=======
   void addGroups(List<dynamic> groupObject, [bool replace = false, int position = 0]) {
+>>>>>>> 99048e5068993c209ffbfb3b50ce71dc76d1d37f
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
 
@@ -515,6 +520,8 @@ class Groups with ChangeNotifier {
     if (replace) {
       _groups.removeAt(position);
       _groups.insert(0, loadedNewGroup);
+    }else if(isNewGroup){
+      _groups.add(loadedNewGroup);
     } else {
       _groups = loadedGroups;
     }
@@ -539,7 +546,7 @@ class Groups with ChangeNotifier {
           "user_id": await Auth.getUser(Auth.userId),
           "group_id": currentGroupId,
         });
-        final response = await PostToServer.post(postRequest, url);
+        await PostToServer.post(postRequest, url);
         await updateGroupProfile();
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
