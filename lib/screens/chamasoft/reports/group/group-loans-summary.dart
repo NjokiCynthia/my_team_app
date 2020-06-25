@@ -61,7 +61,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
 
   @override
   Widget build(BuildContext context) {
-    String appbarTitle = "Group Loan Summary";
+    String appbarTitle = "Group Loans Summary";
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
@@ -180,7 +180,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                                   color: Theme.of(context).textSelectionHandleColor,
                                                   textAlign: TextAlign.start),
                                               customTitle(
-                                                  text: "22",
+                                                  text: "-",
                                                   color: Theme.of(context).textSelectionHandleColor,
                                                   fontSize: 12,
                                                   textAlign: TextAlign.start),
@@ -195,7 +195,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                                   color: Theme.of(context).textSelectionHandleColor,
                                                   textAlign: TextAlign.start),
                                               customTitle(
-                                                  text: "10",
+                                                  text: "-",
                                                   color: Theme.of(context).textSelectionHandleColor,
                                                   fontSize: 12,
                                                   textAlign: TextAlign.start),
@@ -208,7 +208,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                               subtitle2(
                                                   text: "Bad Loans: ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                                               customTitle(
-                                                  text: "4",
+                                                  text: "-",
                                                   color: Theme.of(context).textSelectionHandleColor,
                                                   fontSize: 12,
                                                   textAlign: TextAlign.start),

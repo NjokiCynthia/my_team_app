@@ -22,13 +22,16 @@ class StatusHandler {
       case ErrorStatusCode.statusNoInternet:
         showRetrySnackBar(context, error.message, callback);
         break;
+      case ErrorStatusCode.statusFormValidationError:
+        showErrorDialog(context, error.message, "Some values are missing");
+        break;
       default:
         break;
     }
   }
 
-  void showErrorDialog(BuildContext context, String message) {
-    alertDialog(context, message);
+  void showErrorDialog(BuildContext context, String message, [String title]) {
+    alertDialog(context, message, title);
   }
 
   void showRetrySnackBar(BuildContext context, String message, VoidCallback voidCallback) {

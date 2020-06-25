@@ -1,18 +1,19 @@
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 
-Widget alertDialog(BuildContext context, String message){
+void alertDialog(BuildContext context, String message, [String title = "Something went wrong"]) {
   showDialog(
-    context: context,
-    builder: (ctx) => AlertDialog(
-          content: Text(message),
-          title: Text("Something went wrong"),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Okay"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
-          ],
-        ));
+      context: context,
+      builder: (ctx) => AlertDialog(
+            content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
+            title: heading2(text: title, textAlign: TextAlign.start),
+            actions: <Widget>[
+              FlatButton(
+                child: subtitle1(text: "Okay"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          ));
 }
