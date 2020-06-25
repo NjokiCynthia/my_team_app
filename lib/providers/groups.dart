@@ -5,6 +5,7 @@ import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
@@ -18,72 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'helpers/report_helper.dart';
-
-class Group {
-  final String groupId;
-  final String groupName;
-  final String groupSize;
-  final String groupCountryId;
-  final String groupCurrencyId;
-  final String groupPhone;
-  final String groupEmail;
-  final String groupCountryName;
-  final String groupCurrencyName;
-  final String avatar;
-  final List<GroupRoles> groupRoles;
-  final String smsBalance, accountNumber;
-  final bool onlineBankingEnabled,
-      enableMemberInformationPrivacy,
-      disableArrears,
-      enableAbsoluteLoanRecalculation,
-      disableMemberEditProfile,
-      disableIgnoreContributionTransfers;
-  final String memberListingOrderBy, orderMembersBy;
-  final bool enableSendMonthlyEmailStatements;
-  final String groupRoleId;
-  final String groupRole;
-  final bool isGroupAdmin;
-  final String groupCurrency;
-
-  Group({
-    @required this.groupId,
-    @required this.groupName,
-    @required this.groupSize,
-    @required this.groupCountryId,
-    @required this.smsBalance,
-    this.memberListingOrderBy,
-    @required this.accountNumber,
-    this.enableMemberInformationPrivacy,
-    this.enableSendMonthlyEmailStatements,
-    this.disableArrears,
-    this.disableMemberEditProfile,
-    this.enableAbsoluteLoanRecalculation,
-    this.disableIgnoreContributionTransfers,
-    @required this.onlineBankingEnabled,
-    this.orderMembersBy,
-    @required this.groupRoles,
-    @required this.groupRoleId,
-    @required this.groupRole,
-    @required this.isGroupAdmin,
-    @required this.groupCurrency,
-    this.groupCurrencyId,
-    this.groupPhone,
-    this.groupEmail,
-    this.groupCountryName,
-    this.groupCurrencyName,
-    this.avatar,
-  });
-}
-
-class GroupRoles {
-  String roleId;
-  String roleName;
-
-  GroupRoles({
-    @required this.roleId,
-    @required this.roleName,
-  });
-}
 
 class Account {
   final String id;
@@ -312,7 +247,9 @@ class Groups with ChangeNotifier {
   ContributionStatementModel _contributionStatement;
   LoanStatementModel _loanStatements;
   List<GroupContributionSummary> _groupContributionSummary = [];
+  List<GroupContributionSummary> _groupFinesSummary = [];
   List<ActiveLoan> _memberLoanList = [];
+  double _totalGroupContributionSummary = 0, _totalGroupFinesSummary = 0;
   List<CategorisedAccount> _categorisedAccounts = [];
 
   List<Group> get item {
@@ -391,6 +328,10 @@ class Groups with ChangeNotifier {
     return _groupContributionSummary;
   }
 
+  List<GroupContributionSummary> get groupFinesSummary {
+    return _groupFinesSummary;
+  }
+
   LoansSummaryList get getLoansSummaryList {
     return _loansSummaryList;
   }
@@ -407,12 +348,25 @@ class Groups with ChangeNotifier {
     return _loanStatements;
   }
 
+  double groupTotalContributionSummary() {
+    return _totalGroupContributionSummary;
+  }
+
+  double groupTotalFinesSummary() {
+    return _totalGroupFinesSummary;
+  }
+
   List<CategorisedAccount> get getAllCategorisedAccounts {
     return _categorisedAccounts;
   }
 
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
+    _groupContributionSummary = [];
+    _groupFinesSummary = [];
+    _totalGroupFinesSummary = 0;
+    _totalGroupContributionSummary = 0;
+
     currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(selectedGroupId)) {
@@ -451,70 +405,15 @@ class Groups with ChangeNotifier {
   }
 
   void addGroups(List<dynamic> groupObject,
-      [bool replace = false, int position = 0]) {
+      [bool replace = false, int position = 0, bool isNewGroup = false]) {
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
 
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
-        var groupRoles = groupJSON["group_roles"];
-        List<GroupRoles> groupRoleObject = [];
-        if (groupRoles.length > 0) {
-          groupRoles.forEach((key, value) {
-            final newRole = GroupRoles(roleId: key, roleName: value);
-            groupRoleObject.add(newRole);
-          });
-        }
-        final newGroup = Group(
-          groupId: groupJSON['id']..toString(),
-          groupName: groupJSON['name']..toString(),
-          groupSize: groupJSON['size']..toString(),
-          groupCountryId: groupJSON['country_id']..toString(),
-          smsBalance: groupJSON["sms_balance"]..toString(),
-          accountNumber: groupJSON["account_number"]..toString(),
-          enableMemberInformationPrivacy:
-              groupJSON["enable_member_information_privacy"].toString() == "1"
-                  ? true
-                  : false,
-          enableSendMonthlyEmailStatements:
-              groupJSON["enable_send_monthly_email_statements"].toString() ==
-                      "1"
-                  ? true
-                  : false,
-          groupRoles: groupRoleObject,
-          memberListingOrderBy: groupJSON["member_listing_order_by"]
-            ..toString(),
-          orderMembersBy: groupJSON["order_members_by"]..toString(),
-          onlineBankingEnabled:
-              groupJSON["online_banking_enabled"].toString() == "1"
-                  ? true
-                  : false,
-          groupRoleId: groupJSON['group_role_id']..toString(),
-          groupRole: groupJSON['role']..toString(),
-          disableArrears:
-              groupJSON['disable_arrears'].toString() == "1" ? true : false,
-          enableAbsoluteLoanRecalculation:
-              groupJSON['enable_absolute_loan_recalculation'].toString() == "1"
-                  ? true
-                  : false,
-          disableIgnoreContributionTransfers:
-              groupJSON['disable_ignore_contribution_transfers'].toString() ==
-                      "1"
-                  ? true
-                  : false,
-          disableMemberEditProfile:
-              groupJSON['disable_member_edit_profile'].toString() == "1"
-                  ? true
-                  : false,
-          isGroupAdmin: groupJSON['is_admin'].toString() == "1" ? true : false,
-          groupCurrency: groupJSON['group_currency']..toString(),
-          groupCurrencyId: groupJSON['country_id']..toString(),
-          groupPhone: groupJSON['phone']..toString(),
-          groupEmail: groupJSON['email']..toString(),
-          groupCountryName: groupJSON['country_name']..toString(),
-          groupCurrencyName: groupJSON['group_currency']..toString(),
-          avatar: groupJSON['avatar']..toString(),
-        );
+        var group = parseSingleGroup(groupJSON);
+        final newGroup = group;
+
         loadedGroups.add(newGroup);
         loadedNewGroup = newGroup;
       }
@@ -522,6 +421,9 @@ class Groups with ChangeNotifier {
     if (replace) {
       _groups.removeAt(position);
       _groups.insert(0, loadedNewGroup);
+    } else if (isNewGroup) {
+      _groups.add(loadedNewGroup);
+      setSelectedGroupId(loadedNewGroup.groupId);
     } else {
       _groups = loadedGroups;
     }
@@ -539,7 +441,7 @@ class Groups with ChangeNotifier {
           "user_id": await Auth.getUser(Auth.userId),
           "group_id": currentGroupId,
         });
-        final response = await PostToServer.post(postRequest, url);
+        await PostToServer.post(postRequest, url);
         await updateGroupProfile();
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
@@ -813,17 +715,43 @@ class Groups with ChangeNotifier {
 
   void addContributionSummary(List<dynamic> contributionSummaryList) {
     final List<GroupContributionSummary> contributionSummary = [];
+    double total = 0.0;
     if (contributionSummaryList.length > 0) {
       for (var object in contributionSummaryList) {
+        double amountpaid = double.tryParse(object['paid'].toString()) ?? 0.0;
         final newData = GroupContributionSummary(
-            memberId: object['member_id'].toString(),
-            memberName: object['name'].toString(),
-            paidAmount: double.parse(object['paid'].toString()),
-            balanceAmount: double.parse(object['arrears'].toString()));
+                memberId: object['member_id'].toString(),
+                memberName: object['name'].toString(),
+                paidAmount: amountpaid,
+                balanceAmount: double.tryParse(object['arrears'].toString())) ??
+            0.0;
         contributionSummary.add(newData);
+        total += amountpaid;
       }
     }
+    _totalGroupContributionSummary = total;
     _groupContributionSummary = contributionSummary;
+    notifyListeners();
+  }
+
+  void addFinesSummary(List<dynamic> finesSummaryList) {
+    final List<GroupContributionSummary> finesSummary = [];
+    double total = 0;
+    if (finesSummaryList.length > 0) {
+      for (var object in finesSummaryList) {
+        double amountpaid = double.tryParse(object['paid'].toString()) ?? 0.0;
+        final newData = GroupContributionSummary(
+                memberId: object['member_id'].toString(),
+                memberName: object['name'].toString(),
+                paidAmount: amountpaid,
+                balanceAmount: double.tryParse(object['arrears'].toString())) ??
+            0.0;
+        finesSummary.add(newData);
+        total += amountpaid;
+      }
+    }
+    _totalGroupFinesSummary = total;
+    _groupFinesSummary = finesSummary;
     notifyListeners();
   }
 
@@ -845,7 +773,6 @@ class Groups with ChangeNotifier {
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
-      print("error ${error.toString()}");
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
@@ -862,7 +789,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         final userGroups = response["user_groups"] as List<dynamic>;
-        addGroups(userGroups);
+        addGroups(userGroups, false, 0, true);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -871,7 +798,6 @@ class Groups with ChangeNotifier {
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
-      print("error ${error.toString()}");
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
@@ -927,7 +853,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.toString());
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -952,7 +877,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.toString());
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1634,7 +1558,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1659,7 +1582,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1669,11 +1591,9 @@ class Groups with ChangeNotifier {
     }
   }
 
-  /*************************Contributions Summary*****************************/
+  /*************************Contributions Summary and Fines Summary*****************************/
 
   Future<dynamic> getGroupContributionSummary() async {
-    _groupContributionSummary = [];
-    notifyListeners();
     const url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
     try {
       final postRequest = json.encode({
@@ -1684,7 +1604,38 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         try {
           final contributionBalances = response["balances"];
-          addContributionSummary(contributionBalances);
+          try {
+            addContributionSummary(contributionBalances);
+          } catch (error) {
+            throw CustomException(message: ERROR_MESSAGE);
+          }
+        } catch (error) {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> getGroupFinesSummary() async {
+    const url = EndpointUrl.GET_FINE_SUMMARY;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        try {
+          final fineBalances = response["balances"];
+          addFinesSummary(fineBalances);
         } catch (error) {
           throw CustomException(message: ERROR_MESSAGE);
         }
@@ -1716,7 +1667,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.toString());
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1742,7 +1692,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1770,7 +1719,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1797,7 +1745,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1824,7 +1771,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {

@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'configure-group.dart';
+
 class CreateGroup extends StatefulWidget {
   @override
   _CreateGroupState createState() => _CreateGroupState();
@@ -34,6 +36,9 @@ class _CreateGroupState extends State<CreateGroup> {
 
     try {
       await Provider.of<Groups>(context, listen: false).createGroup(groupName: _groupName);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) => ConfigureGroup(),
+      ));
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -130,8 +135,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                     if (_formKey.currentState.validate()) {
                                       _submit(context);
                                     }
-                                  } //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ConfigureGroup(),)),
-                                  ),
+                                  }),
                         ],
                       ),
                     ),

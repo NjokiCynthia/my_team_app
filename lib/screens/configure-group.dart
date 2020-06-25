@@ -135,7 +135,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                 action: () => Navigator.of(context).pop(),
                               ),
                               SizedBox(width: 20.0),
-                              heading2(color: primaryColor, text: "Staff Welfare Group"),
+                              heading2(color: primaryColor, text: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName + " Setup"),
                             ],
                           ),
                         ),
