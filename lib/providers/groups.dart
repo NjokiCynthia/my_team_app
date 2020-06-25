@@ -283,7 +283,6 @@ class GroupContributionSummary {
   });
 }
 
-
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
   String currentGroupId = "";
@@ -313,7 +312,7 @@ class Groups with ChangeNotifier {
   List<GroupContributionSummary> _groupContributionSummary = [];
   List<GroupContributionSummary> _groupFinesSummary = [];
   List<ActiveLoan> _memberLoanList = [];
-  double _totalGroupContributionSummary = 0 , _totalGroupFinesSummary=0;
+  double _totalGroupContributionSummary = 0, _totalGroupFinesSummary = 0;
   List<CategorisedAccount> _categorisedAccounts = [];
 
   List<Group> get item {
@@ -412,10 +411,11 @@ class Groups with ChangeNotifier {
     return _loanStatements;
   }
 
-  double groupTotalContributionSummary(){
+  double groupTotalContributionSummary() {
     return _totalGroupContributionSummary;
   }
-  double groupTotalFinesSummary(){
+
+  double groupTotalFinesSummary() {
     return _totalGroupFinesSummary;
   }
 
@@ -428,8 +428,7 @@ class Groups with ChangeNotifier {
     _groupContributionSummary = [];
     _groupFinesSummary = [];
     _totalGroupFinesSummary = 0;
-    _totalGroupContributionSummary= 0;
-
+    _totalGroupContributionSummary = 0;
 
     currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();
@@ -466,12 +465,7 @@ class Groups with ChangeNotifier {
     return result;
   }
 
-<<<<<<< HEAD
-  void addGroups(List<dynamic> groupObject,
-      [bool replace = false, int position = 0,bool isNewGroup=false]) {
-=======
-  void addGroups(List<dynamic> groupObject, [bool replace = false, int position = 0]) {
->>>>>>> 99048e5068993c209ffbfb3b50ce71dc76d1d37f
+  void addGroups(List<dynamic> groupObject, [bool replace = false, int position = 0, bool isNewGroup = false]) {
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
 
@@ -486,31 +480,31 @@ class Groups with ChangeNotifier {
           });
         }
         var group = Group(
-          groupId: groupJSON['id']..toString(),
-          groupName: groupJSON['name']..toString(),
-          groupSize: groupJSON['size']..toString(),
-          groupCountryId: groupJSON['country_id']..toString(),
-          smsBalance: groupJSON["sms_balance"]..toString(),
-          accountNumber: groupJSON["account_number"]..toString(),
+          groupId: groupJSON['id'].toString(),
+          groupName: groupJSON['name'].toString(),
+          groupSize: groupJSON['size'].toString(),
+          groupCountryId: groupJSON['country_id'].toString(),
+          smsBalance: groupJSON["sms_balance"].toString(),
+          accountNumber: groupJSON["account_number"].toString(),
           enableMemberInformationPrivacy: groupJSON["enable_member_information_privacy"] == 1 ? true : false,
           enableSendMonthlyEmailStatements: groupJSON["enable_send_monthly_email_statements"] == 1 ? true : false,
           groupRoles: groupRoleObject,
-          memberListingOrderBy: groupJSON["member_listing_order_by"]..toString(),
-          orderMembersBy: groupJSON["order_members_by"]..toString(),
+          memberListingOrderBy: groupJSON["member_listing_order_by"].toString(),
+          orderMembersBy: groupJSON["order_members_by"].toString(),
           onlineBankingEnabled: groupJSON["online_banking_enabled"] == 1 ? true : false,
-          groupRoleId: groupJSON['group_role_id']..toString(),
-          groupRole: groupJSON['role']..toString(),
+          groupRoleId: groupJSON['group_role_id'].toString(),
+          groupRole: groupJSON['role'].toString(),
           disableArrears: groupJSON['disable_arrears'] == 1 ? true : false,
           enableAbsoluteLoanRecalculation: groupJSON['enable_absolute_loan_recalculation'] == 1 ? true : false,
           disableIgnoreContributionTransfers: groupJSON['disable_ignore_contribution_transfers'] == 1 ? true : false,
           disableMemberEditProfile: groupJSON['disable_member_edit_profile'] == 1 ? true : false,
           isGroupAdmin: groupJSON['is_admin'] == 1 ? true : false,
-          groupCurrency: groupJSON['group_currency']..toString(),
-          groupCurrencyId: groupJSON['country_id']..toString(),
-          groupPhone: groupJSON['phone']..toString(),
-          groupEmail: groupJSON['email']..toString(),
-          groupCountryName: groupJSON['country_name']..toString(),
-          avatar: groupJSON['avatar']..toString(),
+          groupCurrency: groupJSON['group_currency'].toString(),
+          groupCurrencyId: groupJSON['country_id'].toString(),
+          groupPhone: groupJSON['phone'].toString(),
+          groupEmail: groupJSON['email'].toString(),
+          groupCountryName: groupJSON['country_name'].toString(),
+          avatar: groupJSON['avatar'].toString(),
         );
         final newGroup = group;
         loadedGroups.add(newGroup);
@@ -520,18 +514,12 @@ class Groups with ChangeNotifier {
     if (replace) {
       _groups.removeAt(position);
       _groups.insert(0, loadedNewGroup);
-    }else if(isNewGroup){
+    } else if (isNewGroup) {
       _groups.add(loadedNewGroup);
+      setSelectedGroupId(loadedNewGroup.groupId);
     } else {
       _groups = loadedGroups;
     }
-    notifyListeners();
-  }
-
-  void addNewGroup(dynamic groupObject) {
-    Group newGroup = parseSingleGroup(groupObject);
-    _groups.add(newGroup);
-    setSelectedGroupId(newGroup.groupId);
     notifyListeners();
   }
 
@@ -803,14 +791,15 @@ class Groups with ChangeNotifier {
     double total = 0.0;
     if (contributionSummaryList.length > 0) {
       for (var object in contributionSummaryList) {
-        double amountpaid = double.tryParse(object['paid'].toString())??0.0; 
+        double amountpaid = double.tryParse(object['paid'].toString()) ?? 0.0;
         final newData = GroupContributionSummary(
-            memberId: object['member_id'].toString(),
-            memberName: object['name'].toString(),
-            paidAmount: amountpaid,
-            balanceAmount: double.tryParse(object['arrears'].toString()))??0.0;
+                memberId: object['member_id'].toString(),
+                memberName: object['name'].toString(),
+                paidAmount: amountpaid,
+                balanceAmount: double.tryParse(object['arrears'].toString())) ??
+            0.0;
         contributionSummary.add(newData);
-        total+=amountpaid;
+        total += amountpaid;
       }
     }
     _totalGroupContributionSummary = total;
@@ -823,14 +812,15 @@ class Groups with ChangeNotifier {
     double total = 0;
     if (finesSummaryList.length > 0) {
       for (var object in finesSummaryList) {
-        double amountpaid =double.tryParse(object['paid'].toString())??0.0;
+        double amountpaid = double.tryParse(object['paid'].toString()) ?? 0.0;
         final newData = GroupContributionSummary(
-            memberId: object['member_id'].toString(),
-            memberName: object['name'].toString(),
-            paidAmount: amountpaid,
-            balanceAmount: double.tryParse(object['arrears'].toString()))??0.0;
+                memberId: object['member_id'].toString(),
+                memberName: object['name'].toString(),
+                paidAmount: amountpaid,
+                balanceAmount: double.tryParse(object['arrears'].toString())) ??
+            0.0;
         finesSummary.add(newData);
-        total+=amountpaid;
+        total += amountpaid;
       }
     }
     _totalGroupFinesSummary = total;
@@ -867,8 +857,8 @@ class Groups with ChangeNotifier {
       final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_name": groupName, "group_size": 10});
       try {
         final response = await PostToServer.post(postRequest, url);
-        final userGroup = response["user_groups"] as List<dynamic>;
-        addNewGroup(userGroup[0]);
+        final userGroups = response["user_groups"] as List<dynamic>;
+        addGroups(userGroups, false, 0, true);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -1679,9 +1669,9 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         try {
           final contributionBalances = response["balances"];
-          try{
+          try {
             addContributionSummary(contributionBalances);
-          }catch(error){
+          } catch (error) {
             throw CustomException(message: ERROR_MESSAGE);
           }
         } catch (error) {
@@ -1699,8 +1689,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-
-  Future<dynamic>getGroupFinesSummary() async {
+  Future<dynamic> getGroupFinesSummary() async {
     const url = EndpointUrl.GET_FINE_SUMMARY;
     try {
       final postRequest = json.encode({
