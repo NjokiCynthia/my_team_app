@@ -137,6 +137,16 @@ class PostToServer {
                 case 0:
                   //handle validation and other generic errors
                   //display error(s)
+                  if (responseBody["validation_errors"] != null) {
+                    message = "";
+                    Map<String, dynamic> validationErrors = responseBody["validation_errors"];
+                    validationErrors.forEach((key, value) {
+                      message = message + value + "\n";
+                    });
+
+                    throw CustomException(message: message, status: ErrorStatusCode.statusFormValidationError);
+                  }
+
                   throw CustomException(message: message);
                   break;
                 case 1:

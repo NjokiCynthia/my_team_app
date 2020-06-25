@@ -61,4 +61,5 @@ enum ErrorStatusCode {
   statusRequireLogout, //logout the current user
   statusRequireRestart, //remove the current group loaded on shared preferences and clear screens to restart
   statusNoInternet,
+  statusFormValidationError
 }
