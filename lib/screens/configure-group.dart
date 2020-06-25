@@ -237,65 +237,66 @@ class AccountsTabView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-      itemCount: accounts.length,
-      itemBuilder: (context, index) {
-        CategorisedAccount account = accounts[index];
-        if (account.isHeader) {
-          return Padding(
-            padding: index == 0 ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0) : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-            child: customTitle(
-              text: account.title,
-              fontWeight: FontWeight.w600,
-              textAlign: TextAlign.start,
-              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
-              fontSize: 13.0,
-            ),
-          );
-        } else {
-          return ListTile(
-            dense: true,
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+    return accounts.length > 0
+        ? ListView.builder(
+            padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+            itemCount: accounts.length,
+            itemBuilder: (context, index) {
+              CategorisedAccount account = accounts[index];
+              if (account.isHeader) {
+                return Padding(
+                  padding: index == 0 ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0) : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                  child: customTitle(
+                    text: account.title,
+                    fontWeight: FontWeight.w600,
+                    textAlign: TextAlign.start,
+                    color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
+                    fontSize: 13.0,
+                  ),
+                );
+              } else {
+                return ListTile(
+                  dense: true,
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Icon(
-                        Icons.credit_card,
-                        color: Colors.blueGrey,
-                      ),
-                      SizedBox(width: 10.0),
-                      Flexible(
-                        fit: FlexFit.tight,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      Expanded(
+                        flex: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            customTitleWithWrap(
-                              text: account.name,
-                              color: Theme.of(context).textSelectionHandleColor,
-                              textAlign: TextAlign.start,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 15.0,
+                            Icon(
+                              Icons.credit_card,
+                              color: Colors.blueGrey,
                             ),
-                            account.accountNumber.isNotEmpty
-                                ? customTitle(
-                                    text: account.accountNumber,
-                                    fontWeight: FontWeight.w600,
+                            SizedBox(width: 10.0),
+                            Flexible(
+                              fit: FlexFit.tight,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  customTitleWithWrap(
+                                    text: account.name,
+                                    color: Theme.of(context).textSelectionHandleColor,
                                     textAlign: TextAlign.start,
-                                    color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                    fontSize: 12.0,
-                                  )
-                                : Container(),
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 15.0,
+                                  ),
+                                  account.accountNumber.isNotEmpty
+                                      ? customTitle(
+                                          text: account.accountNumber,
+                                          fontWeight: FontWeight.w600,
+                                          textAlign: TextAlign.start,
+                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                          fontSize: 12.0,
+                                        )
+                                      : Container(),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                ), //                                                    Expanded(
+                      ), //                                                    Expanded(
 //                                                      flex: 1,
 //                                                      child: FittedBox(
 //                                                        child: Row(
@@ -326,12 +327,33 @@ class AccountsTabView extends StatelessWidget {
 //                                                        ),
 //                                                      ),
 //                                                    ),
+                    ],
+                  ),
+                );
+              }
+            },
+          )
+        : Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  LineAwesomeIcons.bank,
+                  size: 100,
+                  color: Colors.blue[400].withOpacity(0.15),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(SPACING_HUGE),
+                  child: customTitleWithWrap(
+                      text: "Press the button on the bottom to add an account",
+                      fontWeight: FontWeight.w700,
+                      fontSize: 14.0,
+                      textAlign: TextAlign.center,
+                      color: Colors.blue[400].withOpacity(0.8)),
+                )
               ],
             ),
           );
-        }
-      },
-    );
   }
 }
 
@@ -484,7 +506,7 @@ class ContributionsTabView extends StatelessWidget {
                 )
               ],
             ),
-          ); //emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.file_text, text: "There are no expenses to display");
+          );
   }
 }
 
