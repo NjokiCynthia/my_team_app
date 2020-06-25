@@ -473,11 +473,12 @@ class Groups with ChangeNotifier {
           smsBalance: groupJSON["sms_balance"]..toString(),
           accountNumber: groupJSON["account_number"]..toString(),
           enableMemberInformationPrivacy:
-              groupJSON["enable_member_information_privacy"] == 1
+              groupJSON["enable_member_information_privacy"].toString() == "1"
                   ? true
                   : false,
           enableSendMonthlyEmailStatements:
-              groupJSON["enable_send_monthly_email_statements"] == 1
+              groupJSON["enable_send_monthly_email_statements"].toString() ==
+                      "1"
                   ? true
                   : false,
           groupRoles: groupRoleObject,
@@ -485,21 +486,27 @@ class Groups with ChangeNotifier {
             ..toString(),
           orderMembersBy: groupJSON["order_members_by"]..toString(),
           onlineBankingEnabled:
-              groupJSON["online_banking_enabled"] == 1 ? true : false,
+              groupJSON["online_banking_enabled"].toString() == "1"
+                  ? true
+                  : false,
           groupRoleId: groupJSON['group_role_id']..toString(),
           groupRole: groupJSON['role']..toString(),
-          disableArrears: groupJSON['disable_arrears'] == 1 ? true : false,
+          disableArrears:
+              groupJSON['disable_arrears'].toString() == "1" ? true : false,
           enableAbsoluteLoanRecalculation:
-              groupJSON['enable_absolute_loan_recalculation'] == 1
+              groupJSON['enable_absolute_loan_recalculation'].toString() == "1"
                   ? true
                   : false,
           disableIgnoreContributionTransfers:
-              groupJSON['disable_ignore_contribution_transfers'] == 1
+              groupJSON['disable_ignore_contribution_transfers'].toString() ==
+                      "1"
                   ? true
                   : false,
           disableMemberEditProfile:
-              groupJSON['disable_member_edit_profile'] == 1 ? true : false,
-          isGroupAdmin: groupJSON['is_admin'] == 1 ? true : false,
+              groupJSON['disable_member_edit_profile'].toString() == "1"
+                  ? true
+                  : false,
+          isGroupAdmin: groupJSON['is_admin'].toString() == "1" ? true : false,
           groupCurrency: groupJSON['group_currency']..toString(),
           groupCurrencyId: groupJSON['country_id']..toString(),
           groupPhone: groupJSON['phone']..toString(),
@@ -1087,7 +1094,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         if (response['status'] == 1) {
-          updateGroupProfile();
+          await updateGroupProfile();
         }
         return response;
       } on CustomException catch (error) {
@@ -1113,7 +1120,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         if (response['status'] == 1) {
-          updateGroupProfile();
+          await updateGroupProfile();
         }
         return response;
       } on CustomException catch (error) {
@@ -1139,7 +1146,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         if (response['status'] == 1) {
-          updateGroupProfile();
+          await updateGroupProfile();
         }
         return response;
       } on CustomException catch (error) {
@@ -1167,7 +1174,7 @@ class Groups with ChangeNotifier {
         //final name = response['name'];
         //final countryId = response['country_id'];
         if (response['status'] == 1) {
-          updateGroupProfile();
+          await updateGroupProfile();
         }
         return response;
       } on CustomException catch (error) {
@@ -1195,7 +1202,7 @@ class Groups with ChangeNotifier {
         //final currencyId = response['currencyId'];
         //final currency = response['currency'];
         if (response['status'] == 1) {
-          updateGroupProfile();
+          await updateGroupProfile();
         }
         return response;
       } on CustomException catch (error) {
@@ -1210,7 +1217,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<dynamic> updateGroupSettings({
+  Future<void> updateGroupSettings({
     String orderMembersBy,
     String memberListingOrderBy,
     String enableMemberInformationPrivacy,
@@ -1239,13 +1246,9 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        //final status = response['status'];
-        //final message = response['message'];
-
         if (response['status'] == 1) {
-          updateGroupProfile();
+          await updateGroupProfile();
         }
-        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

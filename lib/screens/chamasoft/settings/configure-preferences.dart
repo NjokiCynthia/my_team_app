@@ -43,12 +43,12 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
   String orderByFieldId;
   String selectedMemberOrderDirection;
   String errorText;
-  bool memberPrivacyEnabled = true;
-  bool showContributionArrears = true;
-  bool ignoringContributionTransfersEnabled = true;
-  bool monthlyStatementsSendingEnabled = true;
-  bool reducingBalanceRecalculationEnabled = true;
-  bool disableMemberEditProfile = true;
+  bool memberPrivacyEnabled;
+  bool showContributionArrears;
+  bool ignoringContributionTransfersEnabled;
+  bool monthlyStatementsSendingEnabled;
+  bool reducingBalanceRecalculationEnabled;
+  bool disableMemberEditProfile;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -73,27 +73,34 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
     orderByFieldId = Provider.of<Groups>(context, listen: false)
         .getCurrentGroup()
         .memberListingOrderBy;
+
     selectedMemberOrderDirection = Provider.of<Groups>(context, listen: false)
         .getCurrentGroup()
         .orderMembersBy;
+
     memberPrivacyEnabled = Provider.of<Groups>(context, listen: false)
         .getCurrentGroup()
         .enableMemberInformationPrivacy;
+
     showContributionArrears = Provider.of<Groups>(context, listen: false)
         .getCurrentGroup()
         .disableArrears;
+
     ignoringContributionTransfersEnabled =
         Provider.of<Groups>(context, listen: false)
             .getCurrentGroup()
             .disableIgnoreContributionTransfers;
+
     monthlyStatementsSendingEnabled =
         Provider.of<Groups>(context, listen: false)
             .getCurrentGroup()
             .enableSendMonthlyEmailStatements;
+
     reducingBalanceRecalculationEnabled =
         Provider.of<Groups>(context, listen: false)
             .getCurrentGroup()
             .enableAbsoluteLoanRecalculation;
+
     disableMemberEditProfile = Provider.of<Groups>(context, listen: false)
         .getCurrentGroup()
         .disableMemberEditProfile;
@@ -109,8 +116,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
   Future<void> doUpdateSettings(BuildContext context) async {
     errorText = '';
     try {
-      final response =
-          await Provider.of<Groups>(context, listen: false).updateGroupSettings(
+      await Provider.of<Groups>(context, listen: false).updateGroupSettings(
         orderMembersBy: selectedMemberOrderDirection,
         memberListingOrderBy: orderByFieldId,
         enableMemberInformationPrivacy: memberPrivacyEnabled ? "1" : "0",
@@ -124,22 +130,20 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
             reducingBalanceRecalculationEnabled ? "1" : "0",
       );
 
-      if (response['status'] == 1) {
-        Navigator.of(context).pop();
-        Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "You have successfully updated Group Settings",
-        )));
-      } else {
-        errorText = response['message'];
-        Scaffold.of(context).showSnackBar(SnackBar(
-            content: Text(
-          "Error updating Group Settings",
-        )));
-      }
+      Navigator.of(context).pop();
+      setState(() {
+        refreshSettings();
+      });
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "You have successfully updated Group Settings",
+      )));
     } on CustomException catch (error) {
-      print(error.message);
-      errorText = 'Network Error occurred: could not update group name';
+      Navigator.of(context).pop();
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(
+        "Error updating Group Settings. ${error.message}",
+      )));
     }
 
     return false;
