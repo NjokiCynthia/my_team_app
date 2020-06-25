@@ -295,10 +295,8 @@ class Auth with ChangeNotifier {
         await setAccessToken(accessToken1);
         await setPreference(isLoggedIn, "true");
     } on CustomException catch (error) {
-      print("Custom error: ${error.toString()}");
       throw CustomException(message: error.toString(), status: error.status);
     }catch(error){
-      print("Error: ${error.toString()}");
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
