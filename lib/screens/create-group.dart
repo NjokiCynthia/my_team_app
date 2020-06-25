@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -66,6 +68,7 @@ class _CreateGroupState extends State<CreateGroup> {
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<Auth>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Builder(
@@ -90,13 +93,28 @@ class _CreateGroupState extends State<CreateGroup> {
                           ),
                           Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                            child: Image(
-                              image: AssetImage('assets/no-user.png'),
-                              height: 80.0,
-                            ),
+                            child: auth.displayAvatar != null
+                                ? CachedNetworkImage(
+                                    imageUrl: auth.displayAvatar,
+                                    placeholder: (context, image) => const CircleAvatar(
+                                      radius: 45.0,
+                                      backgroundImage: const AssetImage('assets/no-user.png'),
+                                    ),
+                                    imageBuilder: (context, image) => CircleAvatar(
+                                      backgroundImage: image,
+                                      radius: 45.0,
+                                    ),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    fadeOutDuration: const Duration(seconds: 1),
+                                    fadeInDuration: const Duration(seconds: 3),
+                                  )
+                                : const CircleAvatar(
+                                    backgroundImage: const AssetImage('assets/no-user.png'),
+                                    radius: 45.0,
+                                  ),
                           ),
-                          heading2(text: "Edwin Kapkei", color: Theme.of(context).textSelectionHandleColor),
-                          subtitle1(text: "+254 701 234 567", color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
+                          heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
+                          subtitle1(text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
                           SizedBox(
                             height: 20,
                           ),
