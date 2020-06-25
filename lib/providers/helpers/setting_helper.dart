@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 
 List<CategorisedAccount> getCategorisedAccounts(dynamic response) {
   List<CategorisedAccount> accounts = [];
@@ -36,12 +37,53 @@ List<CategorisedAccount> getCategorisedAccounts(dynamic response) {
   return accounts;
 }
 
+Group parseSingleGroup(dynamic groupJSON) {
+  var groupRoles = groupJSON["group_roles"];
+  List<GroupRoles> groupRoleObject = [];
+  if (groupRoles.length > 0) {
+    groupRoles.forEach((key, value) {
+      final newRole = GroupRoles(roleId: key, roleName: value);
+      groupRoleObject.add(newRole);
+    });
+  }
+  final newGroup = Group(
+    groupId: groupJSON['id'].toString(),
+    groupName: groupJSON['name'].toString(),
+    groupSize: groupJSON['size'].toString(),
+    groupCountryId: groupJSON['country_id'].toString(),
+    smsBalance: groupJSON["sms_balance"].toString(),
+    accountNumber: groupJSON["account_number"].toString(),
+    enableMemberInformationPrivacy: groupJSON["enable_member_information_privacy"] == 1 ? true : false,
+    enableSendMonthlyEmailStatements: groupJSON["enable_send_monthly_email_statements"] == 1 ? true : false,
+    groupRoles: groupRoleObject,
+    memberListingOrderBy: groupJSON["member_listing_order_by"].toString(),
+    orderMembersBy: groupJSON["order_members_by"].toString(),
+    onlineBankingEnabled: groupJSON["online_banking_enabled"] == 1 ? true : false,
+    groupRoleId: groupJSON['group_role_id'].toString(),
+    groupRole: groupJSON['role'].toString(),
+    disableArrears: groupJSON['disable_arrears'] == 1 ? true : false,
+    enableAbsoluteLoanRecalculation: groupJSON['enable_absolute_loan_recalculation'] == 1 ? true : false,
+    disableIgnoreContributionTransfers: groupJSON['disable_ignore_contribution_transfers'] == 1 ? true : false,
+    disableMemberEditProfile: groupJSON['disable_member_edit_profile'] == 1 ? true : false,
+    isGroupAdmin: groupJSON['is_admin'] == 1 ? true : false,
+    groupCurrency: groupJSON['group_currency'].toString(),
+    groupCurrencyId: groupJSON['country_id'].toString(),
+    groupPhone: groupJSON['phone'].toString(),
+    groupEmail: groupJSON['email'].toString(),
+    groupCountryName: groupJSON['country_name'].toString(),
+    avatar: groupJSON['avatar'].toString(),
+  );
+
+  return newGroup;
+}
+
 List<CategorisedAccount> parseAccountsJson(List<dynamic> accountsJson, int typeId) {
   List<CategorisedAccount> accounts = [];
   for (var account in accountsJson) {
     String id = account['id'].toString();
     String name = account['name'].toString();
 
+    //TODO: add account to API response
     String accountNumber = "";
     if (typeId != 4) {
       accountNumber = "1100312314562";

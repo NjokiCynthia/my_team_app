@@ -5,6 +5,7 @@ import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
@@ -18,70 +19,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'auth.dart';
 import 'helpers/report_helper.dart';
-
-class Group {
-  final String groupId;
-  final String groupName;
-  final String groupSize;
-  final String groupCountryId;
-  final String groupCurrencyId;
-  final String groupPhone;
-  final String groupEmail;
-  final String groupCountryName;
-  final String avatar;
-  final List<GroupRoles> groupRoles;
-  final String smsBalance, accountNumber;
-  final bool onlineBankingEnabled,
-      enableMemberInformationPrivacy,
-      disableArrears,
-      enableAbsoluteLoanRecalculation,
-      disableMemberEditProfile,
-      disableIgnoreContributionTransfers;
-  final String memberListingOrderBy, orderMembersBy;
-  final bool enableSendMonthlyEmailStatements;
-  final String groupRoleId;
-  final String groupRole;
-  final bool isGroupAdmin;
-  final String groupCurrency;
-
-  Group({
-    @required this.groupId,
-    @required this.groupName,
-    @required this.groupSize,
-    @required this.groupCountryId,
-    @required this.smsBalance,
-    this.memberListingOrderBy,
-    @required this.accountNumber,
-    this.enableMemberInformationPrivacy,
-    this.enableSendMonthlyEmailStatements,
-    this.disableArrears,
-    this.disableMemberEditProfile,
-    this.enableAbsoluteLoanRecalculation,
-    this.disableIgnoreContributionTransfers,
-    @required this.onlineBankingEnabled,
-    this.orderMembersBy,
-    @required this.groupRoles,
-    @required this.groupRoleId,
-    @required this.groupRole,
-    @required this.isGroupAdmin,
-    @required this.groupCurrency,
-    this.groupCurrencyId,
-    this.groupPhone,
-    this.groupEmail,
-    this.groupCountryName,
-    this.avatar,
-  });
-}
-
-class GroupRoles {
-  String roleId;
-  String roleName;
-
-  GroupRoles({
-    @required this.roleId,
-    @required this.roleName,
-  });
-}
 
 class Account {
   final String id;
@@ -471,41 +408,7 @@ class Groups with ChangeNotifier {
 
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
-        var groupRoles = groupJSON["group_roles"];
-        List<GroupRoles> groupRoleObject = [];
-        if (groupRoles.length > 0) {
-          groupRoles.forEach((key, value) {
-            final newRole = GroupRoles(roleId: key, roleName: value);
-            groupRoleObject.add(newRole);
-          });
-        }
-        var group = Group(
-          groupId: groupJSON['id'].toString(),
-          groupName: groupJSON['name'].toString(),
-          groupSize: groupJSON['size'].toString(),
-          groupCountryId: groupJSON['country_id'].toString(),
-          smsBalance: groupJSON["sms_balance"].toString(),
-          accountNumber: groupJSON["account_number"].toString(),
-          enableMemberInformationPrivacy: groupJSON["enable_member_information_privacy"] == 1 ? true : false,
-          enableSendMonthlyEmailStatements: groupJSON["enable_send_monthly_email_statements"] == 1 ? true : false,
-          groupRoles: groupRoleObject,
-          memberListingOrderBy: groupJSON["member_listing_order_by"].toString(),
-          orderMembersBy: groupJSON["order_members_by"].toString(),
-          onlineBankingEnabled: groupJSON["online_banking_enabled"] == 1 ? true : false,
-          groupRoleId: groupJSON['group_role_id'].toString(),
-          groupRole: groupJSON['role'].toString(),
-          disableArrears: groupJSON['disable_arrears'] == 1 ? true : false,
-          enableAbsoluteLoanRecalculation: groupJSON['enable_absolute_loan_recalculation'] == 1 ? true : false,
-          disableIgnoreContributionTransfers: groupJSON['disable_ignore_contribution_transfers'] == 1 ? true : false,
-          disableMemberEditProfile: groupJSON['disable_member_edit_profile'] == 1 ? true : false,
-          isGroupAdmin: groupJSON['is_admin'] == 1 ? true : false,
-          groupCurrency: groupJSON['group_currency'].toString(),
-          groupCurrencyId: groupJSON['country_id'].toString(),
-          groupPhone: groupJSON['phone'].toString(),
-          groupEmail: groupJSON['email'].toString(),
-          groupCountryName: groupJSON['country_name'].toString(),
-          avatar: groupJSON['avatar'].toString(),
-        );
+        var group = parseSingleGroup(groupJSON);
         final newGroup = group;
         loadedGroups.add(newGroup);
         loadedNewGroup = newGroup;
