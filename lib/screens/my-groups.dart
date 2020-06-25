@@ -15,7 +15,6 @@ import 'package:provider/provider.dart';
 
 class MyGroups extends StatefulWidget {
   static const namedRoute = '/my-groups-screen';
-
   @override
   _MyGroupsState createState() => _MyGroupsState();
 }
@@ -34,7 +33,8 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
           callback: () {
             _getUserCheckinData(context);
           });
-    } finally {}
+    } finally {
+    }
   }
 
   @override
@@ -58,12 +58,12 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
     super.didChangeDependencies();
   }
 
-  Widget buildContainer(Widget child, int itemCount) {
+  Widget buildContainer(Widget child, int itemCount,[bool initialLoad=false]) {
     double height = MediaQuery.of(context).size.height * 0.45;
     double itemCountHeight = (itemCount.toDouble()) * 80;
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(10)),
-      height: itemCount >= 1 ? (itemCountHeight > height ? height : itemCountHeight) : 80,
+      height: itemCount >= 1 ? (itemCountHeight > height ? height : itemCountHeight) : (initialLoad?80:10),
       child: child,
     );
   }
@@ -138,7 +138,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     FutureBuilder(
                         future: _future,
                         builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                            ? buildContainer(Center(child: CircularProgressIndicator()), 0)
+                            ? buildContainer(Center(child: CircularProgressIndicator()),0,true)
                             : RefreshIndicator(
                                 onRefresh: () => _getUserCheckinData(context),
                                 child: Consumer<Groups>(

@@ -466,11 +466,11 @@ class Groups with ChangeNotifier {
     return result;
   }
 
-  void addGroups(List<dynamic> groupObject,
-      [bool replace = false, int position = 0,bool isNewGroup=false]) {
+  Future<void>addGroups(List<dynamic> groupObject,
+      [bool replace = false, int position = 0,bool isNewGroup=false]) async{
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
-
+    
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
         var groupRoles = groupJSON["group_roles"];
@@ -520,6 +520,7 @@ class Groups with ChangeNotifier {
       _groups.add(loadedNewGroup);
     } else {
       _groups = loadedGroups;
+      print("Groups : ${_groups.length}");
     }
     notifyListeners();
   }

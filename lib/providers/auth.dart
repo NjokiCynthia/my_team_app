@@ -241,6 +241,7 @@ class Auth with ChangeNotifier {
         userResponse = {
           'userExists': 2,
           'userGroups': '',
+          'uniqueCode' : response['unique_code'],
         };
       }
       return userResponse;
@@ -250,6 +251,58 @@ class Auth with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
+  Future<void> registerUser(Map<String,dynamic> userObject) async{
+    try{
+      String newAvatar; 
+      if(userObject['avatar'] !=null){
+        print(userObject['avatar']);
+        final resizedImage = await CustomHelper.resizeFileImage(userObject['avatar'],300);
+        newAvatar = base64Encode(resizedImage.readAsBytesSync());
+      }
+      const url = EndpointUrl.SIGNUP;
+      final postRequest = json.encode({
+        "identity":userObject['identity'],
+        "first_name":userObject['firstName'],
+        "last_name":userObject['lastName'],
+        "avatar" : newAvatar,
+        "password" : userObject['identity'],
+        "confirm_password" : userObject['identity'],
+        'unique_code' : userObject['uniqueCode'],
+      });
+      final response = await PostToServer.post(postRequest, url);
+      String userFirstName = response['user']["first_name"].toString();
+        String userLastName = response['user']["last_name"].toString();
+        String userUserId = response['user']["id"].toString();
+        String userUserEmail = response['user']["email"].toString();
+        String userUserPhone = response['user']["phone"].toString();
+        String userUserAvatar = response['user']["avatar"].toString();
+        setUserObject(json.encode({
+          userId: userUserId,
+          firstName: userFirstName,
+          lastName: userLastName,
+          email: userUserEmail,
+          phone: userUserPhone,
+          userAvatar: userUserAvatar,
+        }));
+        _firstName = userFirstName;
+        _lastName = userLastName;
+        _userId = userUserId;
+        _emailAddress = userUserEmail;
+        _phoneNumber = userUserPhone;
+        _avatar = userUserAvatar;
+        final accessToken1 = response["access_token"].toString();
+        await setAccessToken(accessToken1);
+        await setPreference(isLoggedIn, "true");
+    } on CustomException catch (error) {
+      print("Custom error: ${error.toString()}");
+      throw CustomException(message: error.toString(), status: error.status);
+    }catch(error){
+      print("Error: ${error.toString()}");
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
 
   void logout() async {
     final prefs = await SharedPreferences.getInstance();

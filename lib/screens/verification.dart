@@ -62,9 +62,13 @@ class _VerificationState extends State<Verification> {
         if (response.containsKey('userGroups')) {
           Provider.of<Groups>(context, listen: false).addGroups(response['userGroups']);
         }
-        Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'));
+        Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'),arguments:0);
       } else {
-        Navigator.pushReplacementNamed(context, SignUp.namedRoute);
+        final uniqueCode = response['uniqueCode'];
+        Navigator.pushReplacementNamed(context, SignUp.namedRoute,arguments:{
+          "identity": _identity,
+          "uniqueCode" : uniqueCode,
+        });
       }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(

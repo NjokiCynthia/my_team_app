@@ -72,7 +72,6 @@ Group parseSingleGroup(dynamic groupJSON) {
     groupPhone: groupJSON['phone']..toString(),
     groupEmail: groupJSON['email']..toString(),
     groupCountryName: groupJSON['country_name']..toString(),
-    groupCurrencyName: groupJSON['group_currency']..toString(),
     avatar: groupJSON['avatar']..toString(),
   );
 
