@@ -74,9 +74,10 @@ class Auth with ChangeNotifier {
   }
 
   String get displayAvatar {
-    var result = (_avatar != null || _avatar == "")
-        ? CustomHelper.imageUrl + _avatar
-        : null;
+    var result;
+    if(_avatar!=null && _avatar!='null' && _avatar!=''){
+      result = CustomHelper.imageUrl+_avatar;
+    }
     return result;
   }
 
