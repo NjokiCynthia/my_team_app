@@ -398,7 +398,9 @@ class Groups with ChangeNotifier {
 
   String getCurrentGroupDisplayAvatar() {
     final avatar = getCurrentGroup().avatar;
-    var result = (avatar != null || avatar == "") ? CustomHelper.imageUrl + avatar : null;
+    var result = (avatar!=null && avatar!='null' && avatar!='')?
+                  CustomHelper.imageUrl+avatar:
+                  null;
     return result;
   }
 
