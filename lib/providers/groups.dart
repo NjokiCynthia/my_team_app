@@ -889,6 +889,97 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<dynamic> fetchSaccoAccount(int saccoAccountId) async {
+    const url = EndpointUrl.GET_SACCO_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupSaccoAccounts = response['saccos'] as List<dynamic>;
+        for (int i = 0; i < groupSaccoAccounts.length; i++) {
+          if (groupSaccoAccounts[i]['id'].toString() ==
+              saccoAccountId.toString()) {
+            return groupSaccoAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error.message);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchMobileMoneyAccount(int mobileMoneyAccountId) async {
+    const url = EndpointUrl.GET_MOBILE_MONEY_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupMobileMoneyAccounts =
+            response['mobile_money_accounts'] as List<dynamic>;
+        for (int i = 0; i < groupMobileMoneyAccounts.length; i++) {
+          if (groupMobileMoneyAccounts[i]['id'].toString() ==
+              mobileMoneyAccountId.toString()) {
+            return groupMobileMoneyAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error.message);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchPettyCashAccount(int pettyCashAccountId) async {
+    const url = EndpointUrl.GET_PETTY_CASH_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupPettyCashAccounts = response['petty_accounts'] as List<dynamic>;
+        for (int i = 0; i < groupPettyCashAccounts.length; i++) {
+          if (groupPettyCashAccounts[i]['id'].toString() ==
+              pettyCashAccountId.toString()) {
+            return groupPettyCashAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error.message);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchContributions() async {
     const url = EndpointUrl.GET_GROUP_CONTRIBUTIONS;
     try {
@@ -1358,7 +1449,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchSaccoBranchesOptions(String saccoId) async {
+  Future<void> fetchSaccoBranchOptions(String saccoId) async {
     const url = EndpointUrl.GET_SACCO_BRANCHES;
     try {
       final postRequest = json.encode({

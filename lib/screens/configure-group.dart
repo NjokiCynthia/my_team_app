@@ -32,23 +32,24 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
     } on CustomException catch (error) {
-//      Scaffold.of(context).showSnackBar(SnackBar(
-//          content: Text(
-//        "Error Adding the Bank Account. ${error.message} ",
-//      )));
+      print(error.message);
     }
   }
 
   Future<void> _getAccounts(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).temporaryFetchAccounts();
-    } on CustomException catch (error) {}
+    } on CustomException catch (error) {
+      print(error.message);
+    }
   }
 
   Future<void> _getContributions(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchContributions();
-    } on CustomException catch (error) {}
+    } on CustomException catch (error) {
+      print(error.message);
+    }
   }
 
   @override

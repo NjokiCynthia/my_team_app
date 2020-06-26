@@ -78,6 +78,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
       await Provider.of<Groups>(context, listen: false).fetchBankOptions();
       return true;
     } on CustomException catch (error) {
+      print(error.message);
       return false;
     }
   }
@@ -120,6 +121,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
       await Provider.of<Groups>(context, listen: false)
           .fetchBankBranchOptions(selectedBankId.toString());
     } on CustomException catch (error) {
+      print(error.message);
       Navigator.pop(context);
     }
   }
@@ -186,7 +188,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
                       });
                     },
                     decoration: InputDecoration(
-                      hasFloatingPlaceholder: true,
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
                       prefixIcon: Icon(Icons.search),
                       enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -340,7 +342,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
                       });
                     },
                     decoration: InputDecoration(
-                      hasFloatingPlaceholder: true,
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
                       prefixIcon: Icon(Icons.search),
                       enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -503,7 +505,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
                                   readOnly: true,
                                   style: inputTextStyle(),
                                   decoration: InputDecoration(
-                                    hasFloatingPlaceholder: true,
+                                    floatingLabelBehavior: FloatingLabelBehavior.auto,
                                     enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                       color: Theme.of(context).hintColor,
@@ -522,7 +524,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
                                   readOnly: true,
                                   style: inputTextStyle(),
                                   decoration: InputDecoration(
-                                    hasFloatingPlaceholder: true,
+                                    floatingLabelBehavior: FloatingLabelBehavior.auto,
                                     enabledBorder: UnderlineInputBorder(
                                         borderSide: BorderSide(
                                       color: Theme.of(context).hintColor,

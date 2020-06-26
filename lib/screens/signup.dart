@@ -135,7 +135,7 @@ class _SignUpState extends State<SignUp> {
                       textCapitalization: TextCapitalization.words,
                       enabled: _isFormInputEnabled,
                       decoration: InputDecoration(
-                        hasFloatingPlaceholder: true,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
                         labelText: "First Name",
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
@@ -162,7 +162,7 @@ class _SignUpState extends State<SignUp> {
                       enabled: _isFormInputEnabled,
                       textCapitalization: TextCapitalization.words,
                       decoration: InputDecoration(
-                        hasFloatingPlaceholder: true,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
                         labelText: "Last Name",
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(

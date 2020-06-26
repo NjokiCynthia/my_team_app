@@ -76,7 +76,7 @@ class ReviewLoanState extends State<ReviewLoan> {
               rejectReason = reason;
             },
             decoration: InputDecoration(
-              hasFloatingPlaceholder: true,
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                 color: Theme.of(context).hintColor,

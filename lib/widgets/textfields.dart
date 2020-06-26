@@ -22,7 +22,7 @@ Widget simpleTextInputField(
     onSaved: onSaved,
     controller: controller,
     decoration: InputDecoration(
-      hasFloatingPlaceholder: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
@@ -54,7 +54,7 @@ Widget amountTextInputField(
     validator: validator,
     onSaved: onSaved,
     decoration: InputDecoration(
-      hasFloatingPlaceholder: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
@@ -86,7 +86,7 @@ Widget numberTextInputField(
     validator: validator,
     onSaved: onSaved,
     decoration: InputDecoration(
-      hasFloatingPlaceholder: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
@@ -109,7 +109,7 @@ Widget multilineTextField(
     minLines: 1,
     onChanged: onChanged,
     decoration: InputDecoration(
-      hasFloatingPlaceholder: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: inputTextStyle(),
       errorStyle: inputTextStyle(),
       hintStyle: inputTextStyle(),

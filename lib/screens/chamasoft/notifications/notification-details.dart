@@ -32,7 +32,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
               WhitelistingTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
-              hasFloatingPlaceholder: true,
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                 color: Theme.of(context).hintColor,
