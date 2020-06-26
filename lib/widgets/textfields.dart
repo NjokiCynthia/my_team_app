@@ -10,6 +10,7 @@ Widget simpleTextInputField(
     String labelText,
     Function onChanged,
     String hintText = '',
+      TextEditingController controller,
     Function validator,
     Function onSaved}) {
   return TextFormField(
@@ -19,6 +20,7 @@ Widget simpleTextInputField(
     textCapitalization: TextCapitalization.sentences,
     validator: validator,
     onSaved: onSaved,
+    controller: controller,
     decoration: InputDecoration(
       hasFloatingPlaceholder: true,
       enabledBorder: UnderlineInputBorder(
@@ -37,11 +39,13 @@ Widget amountTextInputField(
     String labelText,
     Function onChanged,
     String hintText = '',
+      TextEditingController controller,
     Function validator,
     Function onSaved}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
+    controller: controller,
     inputFormatters: [_amountValidator],
     keyboardType: TextInputType.numberWithOptions(
       decimal: true,
@@ -67,12 +71,14 @@ Widget numberTextInputField(
     String labelText,
     Function onChanged,
     String hintText = '',
+      TextEditingController controller,
     Function validator,
     Function onSaved}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
     inputFormatters: [_amountValidator],
+    controller: controller,
     keyboardType: TextInputType.numberWithOptions(
       decimal: false,
       signed: false,

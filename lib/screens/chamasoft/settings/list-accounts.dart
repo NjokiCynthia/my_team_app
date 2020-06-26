@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'create-bank-account.dart';
 import 'create-petty-cash-account.dart';
+import 'edit-bank-account.dart';
 
 List<String> accountTypes = [
   "Bank Accounts",
@@ -161,6 +162,7 @@ class _ListAccountsState extends State<ListAccounts> {
               itemCount: groupData.allAccounts.length,
               itemBuilder: (context, index) {
                 String accountTitle = " ";
+                int accountType = index;
                 accountTitle = accountTypes[index];
                 List<Account> accounts = groupData.allAccounts[index];
 
@@ -205,14 +207,19 @@ class _ListAccountsState extends State<ListAccounts> {
                                   trailing: Padding(
                                     padding: EdgeInsets.all(12.0),
                                     child: circleIconButton(
-                                      icon: Icons.close,
+                                      icon: Icons.edit,
                                       backgroundColor:
-                                          Colors.redAccent.withOpacity(.3),
-                                      color: Colors.red,
+                                          primaryColor.withOpacity(.3),
+                                      color: primaryColor,
                                       iconSize: 18.0,
                                       padding: 0.0,
                                       onPressed: () {
-                                        // TODO: Implement Delete Method
+                                        if(accountType == 0){
+                                          Navigator.of(context).push(MaterialPageRoute(
+                                            builder: (context) => EditBankAccount(bankAccountId: int.parse(accounts[index].id),),
+                                          ));
+                                        }
+
                                       },
                                     ),
                                   ),
