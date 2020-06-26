@@ -398,16 +398,14 @@ class Groups with ChangeNotifier {
 
   String getCurrentGroupDisplayAvatar() {
     final avatar = getCurrentGroup().avatar;
-    var result = (avatar!=null && avatar!='null' && avatar!='')?
-                  CustomHelper.imageUrl+avatar:
-                  null;
+    var result = (avatar != null && avatar != 'null' && avatar != '') ? CustomHelper.imageUrl + avatar : null;
     return result;
   }
 
-  Future<void>addGroups(List<dynamic> groupObject,[bool replace = false, int position = 0,bool isNewGroup=false]) async{
+  Future<void> addGroups(List<dynamic> groupObject, [bool replace = false, int position = 0, bool isNewGroup = false]) async {
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
-    
+
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
         var group = parseSingleGroup(groupJSON);
@@ -761,7 +759,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.CREATE_GROUP;
 
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_name": groupName});
+      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_name": groupName, "group_size": 10});
       try {
         final response = await PostToServer.post(postRequest, url);
         final userGroups = response["user_groups"] as List<dynamic>;

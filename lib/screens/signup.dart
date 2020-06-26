@@ -25,13 +25,13 @@ class _SignUpState extends State<SignUp> {
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
   final _lastNameFocusNode = FocusNode();
-  String _firstName,_lastName;
-  String _identity,_uniqueCode;
+  String _firstName, _lastName;
+  String _identity, _uniqueCode;
   Map<String, dynamic> _authData = {
     'identity': '',
-    'avatar':'',
-    'firstName' : '',
-    'lastName' : '',
+    'avatar': '',
+    'firstName': '',
+    'lastName': '',
   };
 
   @override
@@ -62,7 +62,7 @@ class _SignUpState extends State<SignUp> {
       _authData['avatar'] = avatar;
       _authData['uniqueCode'] = _uniqueCode;
       await Provider.of<Auth>(context, listen: false).registerUser(_authData);
-      Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'),arguments: 0);
+      Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'), arguments: 0);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -80,8 +80,8 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final modalRoute = ModalRoute.of(context).settings.arguments as Map<String,dynamic>;
-    if(modalRoute.length>0){
+    final modalRoute = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    if (modalRoute.length > 0) {
       _identity = modalRoute['identity'];
       _uniqueCode = modalRoute['uniqueCode'];
     }
@@ -107,10 +107,9 @@ class _SignUpState extends State<SignUp> {
                         alignment: AlignmentDirectional.bottomEnd,
                         children: <Widget>[
                           CircleAvatar(
-                            backgroundImage:avatar == null ? AssetImage('assets/no-user.png') : 
-                                FileImage(avatar),
+                            backgroundImage: avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar),
                             backgroundColor: Colors.transparent,
-                            radius:50,
+                            radius: 50,
                           ),
                           Positioned(
                             bottom: -12.0,
@@ -140,18 +139,20 @@ class _SignUpState extends State<SignUp> {
                         labelText: "First Name",
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).hintColor,
+                            color: Theme
+                                .of(context)
+                                .hintColor,
                             width: 1.0,
                           ),
                         ),
                       ),
-                      validator: (value){
-                        if(value.trim()=='' || value.trim()==null){
+                      validator: (value) {
+                        if (value.trim() == '' || value.trim() == null) {
                           return 'Enter a valid last name';
                         }
                         return null;
                       },
-                      onSaved: (value){
+                      onSaved: (value) {
                         _firstName = value;
                       },
                       textInputAction: TextInputAction.next,
@@ -167,16 +168,18 @@ class _SignUpState extends State<SignUp> {
                         labelText: "Last Name",
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme.of(context).hintColor,
+                            color: Theme
+                                .of(context)
+                                .hintColor,
                             width: 1.0,
                           ),
                         ),
                       ),
-                      onSaved: (value){
+                      onSaved: (value) {
                         _lastName = value;
                       },
-                      validator: (value){
-                        if(value.trim()=='' || value.trim()==null){
+                      validator: (value) {
+                        if (value.trim() == '' || value.trim() == null) {
                           return 'Enter a valid last name';
                         }
                         return null;
@@ -187,13 +190,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 24,
                     ),
-                     _isLoading
-                      ? CircularProgressIndicator():
-                      defaultButton(
-                        context: context,
-                        text: "Finish",
-                        onPressed: ()=>_submit(context)
-                      )
+                    _isLoading ? CircularProgressIndicator() : defaultButton(context: context, text: "Finish", onPressed: () => _submit(context))
                   ],
                 ),
               ),
