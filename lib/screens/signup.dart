@@ -139,9 +139,7 @@ class _SignUpState extends State<SignUp> {
                         labelText: "First Name",
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme
-                                .of(context)
-                                .hintColor,
+                            color: Theme.of(context).hintColor,
                             width: 1.0,
                           ),
                         ),
@@ -168,9 +166,7 @@ class _SignUpState extends State<SignUp> {
                         labelText: "Last Name",
                         enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                            color: Theme
-                                .of(context)
-                                .hintColor,
+                            color: Theme.of(context).hintColor,
                             width: 1.0,
                           ),
                         ),
