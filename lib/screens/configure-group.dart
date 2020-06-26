@@ -18,7 +18,6 @@ Map<String, String> roles = {
   "2": "Secretary",
   "3": "Member",
   "4": "Treasurer",
-  "5": "Other",
 };
 
 class ConfigureGroup extends StatefulWidget {
@@ -32,7 +31,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
   Future<void> _getMembers(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
-    } on CustomException catch (error) {}
+    } on CustomException catch (error) {
+//      Scaffold.of(context).showSnackBar(SnackBar(
+//          content: Text(
+//        "Error Adding the Bank Account. ${error.message} ",
+//      )));
+    }
   }
 
   Future<void> _getAccounts(BuildContext context) async {
@@ -63,121 +67,124 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 3,
-      initialIndex: 0,
-      child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
-        body: Builder(
+        length: 3,
+        initialIndex: 0,
+        child: Builder(
           builder: (BuildContext context) {
-            return SingleChildScrollView(
-              child: Stack(
-                children: <Widget>[
-                  Container(
-                      padding: EdgeInsets.only(top: 120.0),
-                      height: MediaQuery.of(context).size.height,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: primaryGradient(context),
-                      child: TabBarView(
-                        children: <Widget>[
-                          FutureBuilder(
-                              future: _memberFuture,
-                              builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                  ? Center(child: CircularProgressIndicator())
-                                  : RefreshIndicator(
-                                      onRefresh: () => _getMembers(context),
-                                      child: Consumer<Groups>(builder: (context, data, child) {
-                                        List<Member> members = data.members;
-                                        print("Count: ${members.length}");
-                                        return MembersTabView(members: members);
-                                      }))),
-                          FutureBuilder(
-                            future: _accountFuture,
-                            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                ? Center(child: CircularProgressIndicator())
-                                : RefreshIndicator(
-                                    onRefresh: () => _getAccounts(context),
-                                    child: Consumer<Groups>(
-                                      builder: (context, data, child) {
-                                        List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
-                                        return AccountsTabView(accounts: accounts);
-                                      },
+            return Scaffold(
+              backgroundColor: Theme.of(context).backgroundColor,
+              body: Builder(
+                builder: (BuildContext context) {
+                  return SingleChildScrollView(
+                    child: Stack(
+                      children: <Widget>[
+                        Container(
+                            padding: EdgeInsets.only(top: 120.0),
+                            height: MediaQuery.of(context).size.height,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: primaryGradient(context),
+                            child: TabBarView(
+                              children: <Widget>[
+                                FutureBuilder(
+                                    future: _memberFuture,
+                                    builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                                        ? Center(child: CircularProgressIndicator())
+                                        : RefreshIndicator(
+                                            onRefresh: () => _getMembers(context),
+                                            child: Consumer<Groups>(builder: (context, data, child) {
+                                              List<Member> members = data.members;
+                                              return MembersTabView(members: members);
+                                            }))),
+                                FutureBuilder(
+                                  future: _accountFuture,
+                                  builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                                      ? Center(child: CircularProgressIndicator())
+                                      : RefreshIndicator(
+                                          onRefresh: () => _getAccounts(context),
+                                          child: Consumer<Groups>(
+                                            builder: (context, data, child) {
+                                              List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
+                                              return AccountsTabView(accounts: accounts);
+                                            },
+                                          ),
+                                        ),
+                                ),
+                                FutureBuilder(
+                                    future: _contributionFuture,
+                                    builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                                        ? Center(child: CircularProgressIndicator())
+                                        : RefreshIndicator(
+                                            onRefresh: () => _getContributions(context),
+                                            child: Consumer<Groups>(builder: (context, data, child) {
+                                              List<Contribution> contributions = data.contributions;
+                                              return ContributionsTabView(contributions: contributions);
+                                            }))),
+                              ],
+                            )),
+                        Positioned(
+                          top: 0.0,
+                          left: 0.0,
+                          right: 0.0,
+                          child: Container(
+                            height: 120.0,
+                            child: AppBar(
+                              title: Padding(
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    screenActionButton(
+                                      icon: LineAwesomeIcons.arrow_left,
+                                      backgroundColor: primaryColor.withOpacity(0.1),
+                                      textColor: primaryColor,
+                                      action: () => Navigator.of(context).pop(),
+                                    ),
+                                    SizedBox(width: 20.0),
+                                    heading2(
+                                        color: primaryColor,
+                                        text: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName + " Setup"),
+                                  ],
+                                ),
+                              ),
+                              elevation: 0.0,
+                              backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900] : Colors.white54,
+                              automaticallyImplyLeading: false,
+                              bottom: TabBar(
+                                indicator: MD2Indicator(
+                                  indicatorHeight: 3,
+                                  indicatorColor: primaryColor,
+                                  indicatorSize: MD2IndicatorSize.normal,
+                                ),
+                                labelColor: primaryColor,
+                                unselectedLabelColor: Colors.blueGrey,
+                                labelPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                isScrollable: false,
+                                labelStyle: TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                                tabs: <Widget>[
+                                  FittedBox(
+                                    child: customTitle(
+                                      text: "Members",
+                                      fontWeight: FontWeight.w700,
                                     ),
                                   ),
-                          ),
-                          FutureBuilder(
-                              future: _accountFuture,
-                              builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                  ? Center(child: CircularProgressIndicator())
-                                  : RefreshIndicator(
-                                      onRefresh: () => _getContributions(context),
-                                      child: Consumer<Groups>(builder: (context, data, child) {
-                                        List<Contribution> contributions = data.contributions;
-                                        return ContributionsTabView(contributions: contributions);
-                                      }))),
-                        ],
-                      )),
-                  Positioned(
-                    top: 0.0,
-                    left: 0.0,
-                    right: 0.0,
-                    child: Container(
-                      height: 120.0,
-                      child: AppBar(
-                        title: Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              screenActionButton(
-                                icon: LineAwesomeIcons.arrow_left,
-                                backgroundColor: primaryColor.withOpacity(0.1),
-                                textColor: primaryColor,
-                                action: () => Navigator.of(context).pop(),
-                              ),
-                              SizedBox(width: 20.0),
-                              heading2(color: primaryColor, text: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName + " Setup"),
-                            ],
-                          ),
-                        ),
-                        elevation: 0.0,
-                        backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900] : Colors.white54,
-                        automaticallyImplyLeading: false,
-                        bottom: TabBar(
-                          indicator: MD2Indicator(
-                            indicatorHeight: 3,
-                            indicatorColor: primaryColor,
-                            indicatorSize: MD2IndicatorSize.normal,
-                          ),
-                          labelColor: primaryColor,
-                          unselectedLabelColor: Colors.blueGrey,
-                          labelPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                          isScrollable: false,
-                          labelStyle: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w700,
-                          ),
-                          tabs: <Widget>[
-                            FittedBox(
-                              child: customTitle(
-                                text: "Members",
-                                fontWeight: FontWeight.w700,
+                                  FittedBox(
+                                      child: customTitle(
+                                    text: "Accounts",
+                                    fontWeight: FontWeight.w700,
+                                  )),
+                                  FittedBox(
+                                      child: customTitle(
+                                    fontWeight: FontWeight.w700,
+                                    text: "Contributions",
+                                  )),
+                                ],
                               ),
                             ),
-                            FittedBox(
-                                child: customTitle(
-                              text: "Accounts",
-                              fontWeight: FontWeight.w700,
-                            )),
-                            FittedBox(
-                                child: customTitle(
-                              fontWeight: FontWeight.w700,
-                              text: "Contributions",
-                            )),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
 //              Positioned(
 //                bottom: 30.0,
 //                right: 20.0,
@@ -201,29 +208,31 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
 //                  ),
 //                ),
 //              ),
-                ],
+                      ],
+                    ),
+                  );
+                },
               ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  int currentIndex = DefaultTabController.of(context).index;
+                  print("Current Index $currentIndex");
+                  print(currentIndex);
+                  if (currentIndex == 0) {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                      return ListContacts();
+                    }));
+                  }
+                },
+                backgroundColor: primaryColor,
+                child: Icon(
+                  Icons.add,
+                ),
+              ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             );
           },
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            int currentIndex = DefaultTabController.of(context).index;
-            print(currentIndex);
-            if (currentIndex == 0) {
-              Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                return ListContacts();
-              }));
-            }
-          },
-          backgroundColor: primaryColor,
-          child: Icon(
-            Icons.add,
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      ),
-    );
+        ));
   }
 }
 

@@ -251,6 +251,8 @@ class Groups with ChangeNotifier {
   List<ActiveLoan> _memberLoanList = [];
   double _totalGroupContributionSummary = 0, _totalGroupFinesSummary = 0;
   List<CategorisedAccount> _categorisedAccounts = [];
+  GroupRolesStatusAndCurrentMemberStatus
+      _groupRolesStatusAndCurrentMemberStatus;
 
   List<Group> get item {
     return _groups;
@@ -360,6 +362,11 @@ class Groups with ChangeNotifier {
     return _categorisedAccounts;
   }
 
+  GroupRolesStatusAndCurrentMemberStatus
+      get getGroupRolesAndCurrentMemberStatus {
+    return _groupRolesStatusAndCurrentMemberStatus;
+  }
+
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
     _groupContributionSummary = [];
@@ -398,6 +405,7 @@ class Groups with ChangeNotifier {
 
   String getCurrentGroupDisplayAvatar() {
     final avatar = getCurrentGroup().avatar;
+
     var result = (avatar != null && avatar != 'null' && avatar != '')
         ? CustomHelper.imageUrl + avatar
         : null;
@@ -585,6 +593,18 @@ class Groups with ChangeNotifier {
         _members.add(newMember);
       }
     }
+    notifyListeners();
+  }
+
+  void addUnAssignedRoles(dynamic data) {
+    int memberStatus = data["member_has_role"];
+    final Map<String, int> groupRoles = {};
+    data["roles_status"].forEach((key, value) {
+      groupRoles[key.toString()] = value;
+    });
+    _groupRolesStatusAndCurrentMemberStatus =
+        GroupRolesStatusAndCurrentMemberStatus(
+            currentMemberStatus: memberStatus, roleStatus: groupRoles);
     notifyListeners();
   }
 
@@ -786,6 +806,7 @@ class Groups with ChangeNotifier {
         "user_id": await Auth.getUser(Auth.userId),
         "group_name": groupName
       });
+
       try {
         final response = await PostToServer.post(postRequest, url);
         final userGroups = response["user_groups"] as List<dynamic>;
@@ -977,6 +998,28 @@ class Groups with ChangeNotifier {
         _members = []; //clear
         final groupMembers = response['members'] as List<dynamic>;
         addMembers(groupMembers);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchUnAssignedGroupRoles() async {
+    const url = EndpointUrl.GET_GROUP_UNASSIGNED_ROLES;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        addUnAssignedRoles(response);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
