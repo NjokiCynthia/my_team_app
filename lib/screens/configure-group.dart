@@ -18,7 +18,6 @@ Map<String, String> roles = {
   "2": "Secretary",
   "3": "Member",
   "4": "Treasurer",
-  "5": "Other",
 };
 
 class ConfigureGroup extends StatefulWidget {
@@ -94,7 +93,6 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                             onRefresh: () => _getMembers(context),
                                             child: Consumer<Groups>(builder: (context, data, child) {
                                               List<Member> members = data.members;
-                                              print("Count: ${members.length}");
                                               return MembersTabView(members: members);
                                             }))),
                                 FutureBuilder(
@@ -112,7 +110,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                         ),
                                 ),
                                 FutureBuilder(
-                                    future: _accountFuture,
+                                    future: _contributionFuture,
                                     builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                         ? Center(child: CircularProgressIndicator())
                                         : RefreshIndicator(
