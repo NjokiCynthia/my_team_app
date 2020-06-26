@@ -1718,7 +1718,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  /// ***********************Member Loan Statement*****************************
+  /// ***********************Member Loan Statement*****************************/
   Future<void> fetchLoanStatement(int loanId) async {
     const url = EndpointUrl.GET_LOAN_STATEMENT;
 
@@ -1740,7 +1740,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  //TODO: consolidate with fetchAccounts()
+  /// ********************TODO: consolidate with fetchAccounts()********************/
   Future<void> temporaryFetchAccounts() async {
     const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
     try {
