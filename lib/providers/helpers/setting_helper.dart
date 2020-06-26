@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 
 List<CategorisedAccount> getCategorisedAccounts(dynamic response) {
   List<CategorisedAccount> accounts = [];
@@ -125,3 +126,20 @@ List<CategorisedAccount> parseAccountsJson(
 
   return accounts;
 }
+
+
+List<NamesListItem> depositMethods = [
+  NamesListItem(id: 1, name: "MPesa"),
+  NamesListItem(id: 2, name: "Cash"),
+  NamesListItem(id: 3, name: "FundsTransfer"),
+  NamesListItem(id: 4, name: "Equitel"),
+  NamesListItem(id: 4, name: "Standing Order"),
+];
+
+List<NamesListItem> withdrawalMethods = [
+  NamesListItem(id: 1, name: "Cash"),
+  NamesListItem(id: 2, name: "MPesa"),
+  NamesListItem(id: 3, name: "Cheque"),
+  NamesListItem(id: 4, name: "Account to Account Transfer"),
+  NamesListItem(id: 5, name: "Equitel"),
+];

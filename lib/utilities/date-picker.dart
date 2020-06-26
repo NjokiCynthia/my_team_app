@@ -5,23 +5,24 @@ import 'package:flutter/material.dart';
 import 'common.dart';
 
 class DatePicker extends StatelessWidget {
+  final String labelText;
+  final DateTime selectedDate,lastDate;
+  final ValueChanged<DateTime> selectDate;
+
   const DatePicker({
     Key key,
     this.labelText,
     this.selectedDate,
     this.selectDate,
+    this.lastDate,
   }) : super(key: key);
-
-  final String labelText;
-  final DateTime selectedDate;
-  final ValueChanged<DateTime> selectDate;
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
         firstDate: new DateTime(1970, 8),
-        lastDate: new DateTime(2101));
+        lastDate: lastDate.isAfter(selectedDate)?lastDate:new DateTime(2101));
     if (picked != null && picked != selectedDate) selectDate(picked);
   }
 

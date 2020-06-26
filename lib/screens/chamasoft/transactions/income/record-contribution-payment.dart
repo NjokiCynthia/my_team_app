@@ -1,5 +1,7 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
+import 'package:chamasoft/providers/helpers/setting_helper.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -11,6 +13,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 import '../select-member.dart';
 
@@ -23,12 +26,21 @@ class RecordContributionPayment extends StatefulWidget {
 String selectedContributionValue;
 String selectedAccountValue;
 String selectedMemberType;
+List<NamesListItem> contributionOptions = [];
 
 class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   List<MembersFilterEntry> selectedMembersList = [];
   int memberTypeId;
+  final _formKey = new GlobalKey<FormState>();
+  DateTime contributionDate = DateTime.now();
+  final now = DateTime.now();
+  int depositMethod;
+  int contributionId;
+  int accountId;
+  Map<String,dynamic> _formData = {};
+
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -39,11 +51,41 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     }
   }
 
+  Future<void> _fetchDefaultValues(BuildContext context) async{
+    List<Contribution> contributions = Provider.of<Groups>(context,listen: false).contributions;
+    if(contributions.length==0){
+      await Provider.of<Groups>(context,listen: false).fetchContributions();
+      contributions = Provider.of<Groups>(context,listen: false).contributions;
+      contributions.map((element) => 
+        contributionOptions.add(NamesListItem(id: int.tryParse(element.id), name: element.name))
+      ).toList();
+    }
+  }
+
+  void _submit(){
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+    print(contributionDate);
+    _formData['deposit_date'] = contributionDate;
+    _formData['deposit_method'] = depositMethod;
+    _formData['contribution_id'] = contributionId;
+    print("we are going to submit the form here");
+    print(_formData);
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    _fetchDefaultValues(context);
+    super.didChangeDependencies();
   }
 
   Iterable<Widget> get memberWidgets sync* {
@@ -99,14 +141,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _scrollController?.dispose();
     super.dispose();
   }
-
-  final formKey = new GlobalKey<FormState>();
-  DateTime contributionDate = DateTime.now();
-
-  int depositMethod;
-  int contributionId;
-  int accountId;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,144 +169,147 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                     showTitle: false),
                 Padding(
                   padding: inputPagePadding,
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 2,
-                              child: DatePicker(
-                                labelText: 'Select Deposit Date',
-                                selectedDate: contributionDate == null
-                                    ? DateTime.now()
-                                    : contributionDate,
-                                selectDate: (selectedDate) {
-                                  setState(() {
-                                    contributionDate = selectedDate;
-                                  });
-                                },
-                              ),
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Expanded(
-                              flex: 3,
-                              child: CustomDropDownButton(
-                                labelText: "Select Deposit Method",
-                                listItems: withdrawalMethods,
-                                selectedItem: depositMethod,
-                                onChanged: (value) {
-                                  setState(() {
-                                    depositMethod = value;
-                                  });
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CustomDropDownButton(
-                          labelText: "Select Contribution",
-                          listItems: contributions,
-                          selectedItem: contributionId,
-                          onChanged: (value) {
-                            setState(() {
-                              contributionId = value;
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CustomDropDownButton(
-                          labelText: "Select Account",
-                          listItems: accounts,
-                          selectedItem: accountId,
-                          onChanged: (value) {
-                            setState(() {
-                              accountId = value;
-                            });
-                          },
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        CustomDropDownButton(
-                          labelText: 'Select Member',
-                          listItems: memberTypes,
-                          selectedItem: memberTypeId,
-                          onChanged: (value) {
-                            setState(() {
-                              memberTypeId = value;
-                            });
-                          },
-                        ),
-                        Visibility(
-                          visible: memberTypeId == 1,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Column(
-                                  children: memberWidgets.toList(),
-                                ),
-                                FlatButton(
-                                  onPressed: () async {
-                                    //open select members dialog
-                                    selectedMembersList = await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SelectMember(
-                                                  initialMembersList:
-                                                      selectedMembersList,
-                                                )));
+                  child: Form(
+                    key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 2,
+                                child: DatePicker(
+                                  labelText: 'Select Deposit Date',
+                                  lastDate: DateTime.now(),
+                                  selectedDate: contributionDate == null
+                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      : contributionDate,
+                                  selectDate: (selectedDate) {
+                                    setState(() {
+                                      contributionDate = selectedDate;
+                                    });
                                   },
-                                  child: Text(
-                                    'Select members',
-                                    style: TextStyle(
-                                      color: Colors.blueAccent,
-                                      fontSize: 15.0,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: CustomDropDownButton(
+                                  labelText: "Select Deposit Method",
+                                  listItems: depositMethods,
+                                  selectedItem: depositMethod,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      depositMethod = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomDropDownButton(
+                            labelText: "Select Contribution",
+                            listItems: contributionOptions,
+                            selectedItem: contributionId,
+                            onChanged: (value) {
+                              setState(() {
+                                contributionId = value;
+                              });
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          // CustomDropDownButton(
+                          //   labelText: "Select Account",
+                          //   listItems: accounts,
+                          //   selectedItem: accountId,
+                          //   onChanged: (value) {
+                          //     setState(() {
+                          //       accountId = value;
+                          //     });
+                          //   },
+                          // ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          CustomDropDownButton(
+                            labelText: 'Select Member',
+                            listItems: memberTypes,
+                            selectedItem: memberTypeId,
+                            onChanged: (value) {
+                              setState(() {
+                                memberTypeId = value;
+                              });
+                            },
+                          ),
+                          Visibility(
+                            visible: memberTypeId == 1,
+                            child: SingleChildScrollView(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Column(
+                                    children: memberWidgets.toList(),
+                                  ),
+                                  FlatButton(
+                                    onPressed: () async {
+                                      //open select members dialog
+                                      selectedMembersList = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => SelectMember(
+                                                    initialMembersList:
+                                                        selectedMembersList,
+                                                  )));
+                                    },
+                                    child: Text(
+                                      'Select members',
+                                      style: TextStyle(
+                                        color: Colors.blueAccent,
+                                        fontSize: 15.0,
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Visibility(
-                          visible: memberTypeId == 2,
-                          child: amountTextInputField(
-                              context: context,
-                              labelText: 'Enter Amount',
-                              onChanged: (value) {
-                                //member.amount = value;
-                              }),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        defaultButton(
-                          context: context,
-                          text: "SAVE",
-                          onPressed: () {
-                            print("Contribution: " + selectedContributionValue);
-                            print("Account: " + selectedAccountValue);
-                            selectedMembersList.map((MembersFilterEntry mem) {
-                              return print(mem.name);
-                            }).toList();
-                          },
-                        )
-                      ]),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Visibility(
+                            visible: memberTypeId == 2,
+                            child: amountTextInputField(
+                                context: context,
+                                labelText: 'Enter Amount',
+                                onChanged: (value) {
+                                  //member.amount = value;
+                                }),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          defaultButton(
+                            context: context,
+                            text: "SAVE",
+                            onPressed: () {
+                              selectedMembersList.map((MembersFilterEntry mem) {
+                                return print(mem.name);
+                              }).toList();
+                              _submit();
+                            },
+                          )
+                        ]),
+                  ),
                 ),
               ],
             )),
