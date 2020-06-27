@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
@@ -55,11 +56,17 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     List<Contribution> contributions = Provider.of<Groups>(context,listen: false).contributions;
     if(contributions.length==0){
       await Provider.of<Groups>(context,listen: false).fetchContributions();
-      contributions = Provider.of<Groups>(context,listen: false).contributions;
-      contributions.map((element) => 
-        contributionOptions.add(NamesListItem(id: int.tryParse(element.id), name: element.name))
-      ).toList();
     }
+    List<CategorisedAccount> accountOptions = Provider.of<Groups>(context,listen: false).getAllCategorisedAccounts;
+    print(accountOptions);
+    List<NamesListItem> emptyContributions;
+    contributions = Provider.of<Groups>(context,listen: false).contributions;
+    contributions.map((element) => 
+      emptyContributions.add(NamesListItem(id: int.tryParse(element.id), name: element.name))
+    ).toList();
+    setState(() {
+      contributionOptions = emptyContributions;
+    });
   }
 
   void _submit(){
