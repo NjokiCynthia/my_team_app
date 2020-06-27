@@ -10,6 +10,7 @@ Widget simpleTextInputField(
     String labelText,
     Function onChanged,
     String hintText = '',
+      TextEditingController controller,
     Function validator,
     Function onSaved}) {
   return TextFormField(
@@ -19,8 +20,9 @@ Widget simpleTextInputField(
     textCapitalization: TextCapitalization.sentences,
     validator: validator,
     onSaved: onSaved,
+    controller: controller,
     decoration: InputDecoration(
-      hasFloatingPlaceholder: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
@@ -37,11 +39,13 @@ Widget amountTextInputField(
     String labelText,
     Function onChanged,
     String hintText = '',
+      TextEditingController controller,
     Function validator,
     Function onSaved}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
+    controller: controller,
     inputFormatters: [_amountValidator],
     keyboardType: TextInputType.numberWithOptions(
       decimal: true,
@@ -50,7 +54,7 @@ Widget amountTextInputField(
     validator: validator,
     onSaved: onSaved,
     decoration: InputDecoration(
-      hasFloatingPlaceholder: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
@@ -67,12 +71,14 @@ Widget numberTextInputField(
     String labelText,
     Function onChanged,
     String hintText = '',
+      TextEditingController controller,
     Function validator,
     Function onSaved}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
     inputFormatters: [_amountValidator],
+    controller: controller,
     keyboardType: TextInputType.numberWithOptions(
       decimal: false,
       signed: false,
@@ -80,7 +86,7 @@ Widget numberTextInputField(
     validator: validator,
     onSaved: onSaved,
     decoration: InputDecoration(
-      hasFloatingPlaceholder: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
@@ -103,7 +109,7 @@ Widget multilineTextField(
     minLines: 1,
     onChanged: onChanged,
     decoration: InputDecoration(
-      hasFloatingPlaceholder: true,
+      floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: inputTextStyle(),
       errorStyle: inputTextStyle(),
       hintStyle: inputTextStyle(),

@@ -203,7 +203,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hasFloatingPlaceholder: true,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                       color: Theme.of(context).hintColor,
@@ -280,7 +280,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hasFloatingPlaceholder: true,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                       color: Theme.of(context).hintColor,
@@ -346,7 +346,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 return null;
               },
               decoration: InputDecoration(
-                hasFloatingPlaceholder: true,
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
                 enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                   color: Theme.of(context).hintColor,

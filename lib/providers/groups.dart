@@ -251,6 +251,8 @@ class Groups with ChangeNotifier {
   List<ActiveLoan> _memberLoanList = [];
   double _totalGroupContributionSummary = 0, _totalGroupFinesSummary = 0;
   List<CategorisedAccount> _categorisedAccounts = [];
+  GroupRolesStatusAndCurrentMemberStatus
+      _groupRolesStatusAndCurrentMemberStatus;
 
   List<Group> get item {
     return _groups;
@@ -360,6 +362,11 @@ class Groups with ChangeNotifier {
     return _categorisedAccounts;
   }
 
+  GroupRolesStatusAndCurrentMemberStatus
+      get getGroupRolesAndCurrentMemberStatus {
+    return _groupRolesStatusAndCurrentMemberStatus;
+  }
+
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
     _groupContributionSummary = [];
@@ -398,16 +405,18 @@ class Groups with ChangeNotifier {
 
   String getCurrentGroupDisplayAvatar() {
     final avatar = getCurrentGroup().avatar;
-    var result = (avatar!=null && avatar!='null' && avatar!='')?
-                  CustomHelper.imageUrl+avatar:
-                  null;
+
+    var result = (avatar != null && avatar != 'null' && avatar != '')
+        ? CustomHelper.imageUrl + avatar
+        : null;
     return result;
   }
 
-  Future<void>addGroups(List<dynamic> groupObject,[bool replace = false, int position = 0,bool isNewGroup=false]) async{
+  Future<void> addGroups(List<dynamic> groupObject,
+      [bool replace = false, int position = 0, bool isNewGroup = false]) async {
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
-    
+
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
         var group = parseSingleGroup(groupJSON);
@@ -485,7 +494,10 @@ class Groups with ChangeNotifier {
     final List<Account> bankAccounts = [];
     if (groupBankAccounts.length > 0) {
       for (var bankAccountJSON in groupBankAccounts) {
-        final newAccount = Account(id: bankAccountJSON['id'].toString(), name: bankAccountJSON['name'].toString(), typeId: accountType);
+        final newAccount = Account(
+            id: bankAccountJSON['id'].toString(),
+            name: bankAccountJSON['name'].toString(),
+            typeId: accountType);
         bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
@@ -502,11 +514,14 @@ class Groups with ChangeNotifier {
           name: groupContributionJSON['name'].toString(),
           amount: groupContributionJSON['amount'].toString(),
           type: groupContributionJSON['type'].toString(),
-          contributionType: groupContributionJSON['contribution_type'].toString(),
+          contributionType:
+              groupContributionJSON['contribution_type'].toString(),
           frequency: groupContributionJSON['frequency'].toString(),
           invoiceDate: groupContributionJSON['invoice_date'].toString(),
-          contributionDate: groupContributionJSON['contribution_date'].toString(),
-          oneTimeContributionSetting: groupContributionJSON['one_time_contribution_setting'].toString(),
+          contributionDate:
+              groupContributionJSON['contribution_date'].toString(),
+          oneTimeContributionSetting:
+              groupContributionJSON['one_time_contribution_setting'].toString(),
           isHidden: groupContributionJSON['is_hidden'].toString(),
           active: groupContributionJSON['active'].toString(),
         );
@@ -556,7 +571,8 @@ class Groups with ChangeNotifier {
           disbursementDate: groupLoanTypesJSON['disbursement_date']..toString,
           guarantors: groupLoanTypesJSON['guarantors']..toString,
           latePaymentFines: groupLoanTypesJSON['late_payment_fines']..toString,
-          outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines']..toString,
+          outstandingPaymentFines:
+              groupLoanTypesJSON['outstanding_payment_fines']..toString,
           isHidden: groupLoanTypesJSON['is_hidden']..toString,
         );
         _loanTypes.add(newLoanType);
@@ -580,10 +596,24 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
+  void addUnAssignedRoles(dynamic data) {
+    int memberStatus = data["member_has_role"];
+    final Map<String, int> groupRoles = {};
+    data["roles_status"].forEach((key, value) {
+      groupRoles[key.toString()] = value;
+    });
+    _groupRolesStatusAndCurrentMemberStatus =
+        GroupRolesStatusAndCurrentMemberStatus(
+            currentMemberStatus: memberStatus, roleStatus: groupRoles);
+    notifyListeners();
+  }
+
   void addCountryOptions(List<dynamic> countries) {
     if (countries.length > 0) {
       for (var countryJSON in countries) {
-        final newCountry = Country(id: countryJSON['id'].toInt(), name: countryJSON['name'].toString());
+        final newCountry = Country(
+            id: countryJSON['id'].toInt(),
+            name: countryJSON['name'].toString());
         _countryOptions.add(newCountry);
       }
     }
@@ -593,7 +623,9 @@ class Groups with ChangeNotifier {
   void addCurrencyOptions(List<dynamic> currencies) {
     if (currencies.length > 0) {
       for (var currencyJSON in currencies) {
-        final newCurrency = Currency(id: currencyJSON['id'].toInt(), name: currencyJSON['name'].toString());
+        final newCurrency = Currency(
+            id: currencyJSON['id'].toInt(),
+            name: currencyJSON['name'].toString());
         _currencyOptions.add(newCurrency);
       }
     }
@@ -603,7 +635,10 @@ class Groups with ChangeNotifier {
   void addBankOptions(List<dynamic> banks) {
     if (banks.length > 0) {
       for (var bankJSON in banks) {
-        final newBank = Bank(id: int.parse(bankJSON['id']), logo: bankJSON['logo'].toString(), name: bankJSON['name'].toString());
+        final newBank = Bank(
+            id: int.parse(bankJSON['id']),
+            logo: bankJSON['logo'].toString(),
+            name: bankJSON['name'].toString());
         _bankOptions.add(newBank);
       }
       notifyListeners();
@@ -613,7 +648,8 @@ class Groups with ChangeNotifier {
   void addBankBranchOptions(List<dynamic> bankBranches) {
     if (bankBranches.length > 0) {
       for (var bankBranchJSON in bankBranches) {
-        final newBankBranch = BankBranch(id: bankBranchJSON['id'], name: bankBranchJSON['name'].toString());
+        final newBankBranch = BankBranch(
+            id: bankBranchJSON['id'], name: bankBranchJSON['name'].toString());
         _bankBranchOptions.add(newBankBranch);
       }
       notifyListeners();
@@ -636,7 +672,10 @@ class Groups with ChangeNotifier {
   void addSaccoOptions(List<dynamic> saccos) {
     if (saccos.length > 0) {
       for (var saccoJSON in saccos) {
-        final newSacco = Sacco(id: int.parse(saccoJSON['id']), logo: saccoJSON['logo'].toString(), name: saccoJSON['name'].toString());
+        final newSacco = Sacco(
+            id: int.parse(saccoJSON['id']),
+            logo: saccoJSON['logo'].toString(),
+            name: saccoJSON['name'].toString());
         _saccoOptions.add(newSacco);
         notifyListeners();
       }
@@ -646,7 +685,9 @@ class Groups with ChangeNotifier {
   void addSaccoBranchOptions(List<dynamic> saccoBranches) {
     if (saccoBranches.length > 0) {
       for (var saccoBranchJSON in saccoBranches) {
-        final newSaccoBranch = SaccoBranch(id: int.parse(saccoBranchJSON['id']), name: saccoBranchJSON['name'].toString());
+        final newSaccoBranch = SaccoBranch(
+            id: int.parse(saccoBranchJSON['id']),
+            name: saccoBranchJSON['name'].toString());
         _saccoBranchOptions.add(newSaccoBranch);
         notifyListeners();
       }
@@ -761,7 +802,11 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.CREATE_GROUP;
 
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_name": groupName});
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_name": groupName
+      });
+
       try {
         final response = await PostToServer.post(postRequest, url);
         final userGroups = response["user_groups"] as List<dynamic>;
@@ -790,17 +835,142 @@ class Groups with ChangeNotifier {
         _accounts = []; //clear accounts
 
         _allAccounts = []; //clear all accounts
-        final groupBankAccounts = response['accounts']['bank_accounts'] as List<dynamic>;
+        final groupBankAccounts =
+            response['accounts']['bank_accounts'] as List<dynamic>;
         addAccounts(groupBankAccounts, 1);
-        final groupSaccoAccounts = response['accounts']['sacco_accounts'] as List<dynamic>;
+        final groupSaccoAccounts =
+            response['accounts']['sacco_accounts'] as List<dynamic>;
         addAccounts(groupSaccoAccounts, 2);
-        final groupMobileMoneyAccounts = response['accounts']['mobile_money_accounts'] as List<dynamic>;
+        final groupMobileMoneyAccounts =
+            response['accounts']['mobile_money_accounts'] as List<dynamic>;
         addAccounts(groupMobileMoneyAccounts, 3);
-        final groupPettyCashAccountsAccounts = response['accounts']['petty_cash_accounts'] as List<dynamic>;
+        final groupPettyCashAccountsAccounts =
+            response['accounts']['petty_cash_accounts'] as List<dynamic>;
         addAccounts(groupPettyCashAccountsAccounts, 4);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchBankAccount(int bankAccountId) async {
+    const url = EndpointUrl.GET_BANK_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupBankAccounts = response['banks'] as List<dynamic>;
+        for (int i = 0; i < groupBankAccounts.length; i++) {
+          if (groupBankAccounts[i]['id'].toString() ==
+              bankAccountId.toString()) {
+            return groupBankAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error.message);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchSaccoAccount(int saccoAccountId) async {
+    const url = EndpointUrl.GET_SACCO_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupSaccoAccounts = response['saccos'] as List<dynamic>;
+        for (int i = 0; i < groupSaccoAccounts.length; i++) {
+          if (groupSaccoAccounts[i]['id'].toString() ==
+              saccoAccountId.toString()) {
+            return groupSaccoAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error.message);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchMobileMoneyAccount(int mobileMoneyAccountId) async {
+    const url = EndpointUrl.GET_MOBILE_MONEY_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupMobileMoneyAccounts =
+            response['mobile_money_accounts'] as List<dynamic>;
+        for (int i = 0; i < groupMobileMoneyAccounts.length; i++) {
+          if (groupMobileMoneyAccounts[i]['id'].toString() ==
+              mobileMoneyAccountId.toString()) {
+            return groupMobileMoneyAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error.message);
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchPettyCashAccount(int pettyCashAccountId) async {
+    const url = EndpointUrl.GET_PETTY_CASH_ACCOUNTS;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupPettyCashAccounts = response['petty_accounts'] as List<dynamic>;
+        for (int i = 0; i < groupPettyCashAccounts.length; i++) {
+          if (groupPettyCashAccounts[i]['id'].toString() ==
+              pettyCashAccountId.toString()) {
+            return groupPettyCashAccounts[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -868,7 +1038,8 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _fineTypes = []; //clear accounts
-        final groupFineTypes = response['fine_category_options'] as List<dynamic>;
+        final groupFineTypes =
+            response['fine_category_options'] as List<dynamic>;
         addFineTypes(groupFineTypes);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -918,6 +1089,28 @@ class Groups with ChangeNotifier {
         _members = []; //clear
         final groupMembers = response['members'] as List<dynamic>;
         addMembers(groupMembers);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchUnAssignedGroupRoles() async {
+    const url = EndpointUrl.GET_GROUP_UNASSIGNED_ROLES;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        addUnAssignedRoles(response);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -1131,9 +1324,11 @@ class Groups with ChangeNotifier {
         "order_members_by": orderMembersBy,
         "member_listing_order_by": memberListingOrderBy,
         "enable_member_information_privacy": enableMemberInformationPrivacy,
-        "disable_ignore_contribution_transfers": disableIgnoreContributionTransfers,
+        "disable_ignore_contribution_transfers":
+            disableIgnoreContributionTransfers,
         "disable_arrears": disableArrears,
-        "enable_send_monthly_email_statements": enableSendMonthlyEmailStatements,
+        "enable_send_monthly_email_statements":
+            enableSendMonthlyEmailStatements,
         "disable_member_edit_profile": disableMemberEditProfile,
         "enable_absolute_loan_recalculation": enableAbsoluteLoanRecalculation,
       });
@@ -1215,7 +1410,8 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _mobileMoneyProviderOptions = []; //clear
-        final mobileMoneyProviderOptions = response['mobile_money_providers'] as List<dynamic>;
+        final mobileMoneyProviderOptions =
+            response['mobile_money_providers'] as List<dynamic>;
         addMobileMoneyProviderOptions(mobileMoneyProviderOptions);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -1253,7 +1449,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchSaccoBranchesOptions(String saccoId) async {
+  Future<void> fetchSaccoBranchOptions(String saccoId) async {
     const url = EndpointUrl.GET_SACCO_BRANCHES;
     try {
       final postRequest = json.encode({
@@ -1701,7 +1897,11 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_LOAN_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "is_member_loans": 1});
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "is_member_loans": 1
+      });
       try {
         final response = await PostToServer.post(postRequest, url);
         final loans = response['loans'] as List<dynamic>;
@@ -1723,7 +1923,11 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_LOAN_STATEMENT;
 
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "id": loanId});
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "id": loanId
+      });
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['data'] as dynamic;

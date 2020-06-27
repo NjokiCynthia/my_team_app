@@ -12,16 +12,24 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class CreateSaccoAccount extends StatefulWidget {
+class EditSaccoAccount extends StatefulWidget {
+  final int saccoAccountId;
+
+  EditSaccoAccount({this.saccoAccountId});
+
   @override
-  _CreateSaccoAccountState createState() => _CreateSaccoAccountState();
+  _EditSaccoAccountState createState() => _EditSaccoAccountState();
 }
 
-class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
+class _EditSaccoAccountState extends State<EditSaccoAccount> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   TextEditingController saccoTextController = TextEditingController();
   TextEditingController saccoBranchTextController = TextEditingController();
+  TextEditingController accountNameTextController = TextEditingController();
+  TextEditingController accountNumberTextController = TextEditingController();
+  TextEditingController initialAmountTextController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   void _scrollListener() {
@@ -37,6 +45,7 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    fetchSaccoAccount(context);
     super.initState();
   }
 
@@ -55,13 +64,57 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
   int selectedSaccoBranchId = 0;
   double initialBalance = 0;
 
-  String saccoAccountName;
-  String accountNumber;
+  String saccoAccountName = "";
+  String accountNumber = "";
   String selectedSaccoName = '';
   String selectedSaccoBranchName = '';
 
   String saccoFilter = "";
   String saccoBranchFilter = "";
+  bool pageLoaded = false;
+
+  Future<bool> fetchSaccoOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchSaccoOptions();
+      return true;
+    } on CustomException catch (error) {
+      print(error.message);
+      return false;
+    }
+  }
+
+  Future<void> fetchSaccoAccount(BuildContext context) async {
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .fetchSaccoAccount(widget.saccoAccountId);
+      if (response != null) {
+        await fetchSaccoOptions(context);
+        await fetchSaccoBranchOptions(context);
+
+        this.setState(() {
+          selectedSaccoId = int.parse(response['sacco_id'].toString());
+          selectedSaccoBranchId =
+              int.parse(response['sacco_branch_id'].toString());
+
+          saccoAccountName = response['account_name'].toString();
+          accountNumber = response['account_number'].toString();
+
+          selectedSaccoName = response['sacco_name'].toString();
+          selectedSaccoBranchName = response['sacco_branch'].toString();
+
+          accountNameTextController.text = saccoAccountName;
+          accountNumberTextController.text = accountNumber;
+          initialAmountTextController.text = initialBalance.toString();
+          saccoTextController.text = selectedSaccoName;
+          saccoBranchTextController.text = selectedSaccoBranchName;
+
+          pageLoaded = true;
+        });
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+    }
+  }
 
   Future<void> fetchSaccoBranchOptions(BuildContext context) async {
     try {
@@ -73,7 +126,7 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
     }
   }
 
-  Future<void> createNewSaccoAccount(BuildContext context) async {
+  Future<void> editSaccoAccount(BuildContext context) async {
     try {
       showDialog(
           context: context,
@@ -83,20 +136,20 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
             );
           });
 
-      await Provider.of<Groups>(context, listen: false).createSaccoAccount(
+      await Provider.of<Groups>(context, listen: false).editSaccoAccount(
+        id: widget.saccoAccountId.toString(),
         accountName: saccoAccountName,
         accountNumber: accountNumber,
         saccoBranchId: selectedSaccoBranchId.toString(),
         saccoId: selectedSaccoId.toString(),
         initialBalance: initialBalance.toString(),
-        mobileLocalId: "0",
       );
 
       Navigator.pop(context);
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "You have successfully added a Sacco Account",
-      )));
+            "You have successfully updated the Sacco Account",
+          )));
       Navigator.of(context)
           .push(new MaterialPageRoute(builder: (context) => ListAccounts()));
     } on CustomException catch (error) {
@@ -104,8 +157,8 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
 
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "Error Adding the Sacco Account. ${error.message} ",
-      )));
+            "Error updating the Sacco Account. ${error.message} ",
+          )));
     }
   }
 
@@ -139,9 +192,9 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                       prefixIcon: Icon(Icons.search),
                       enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                        color: Theme.of(context).hintColor,
-                        width: 1.0,
-                      )),
+                            color: Theme.of(context).hintColor,
+                            width: 1.0,
+                          )),
                       // hintText: 'Phone Number or Email Address',
                       labelText: "Search",
                     ),
@@ -156,77 +209,76 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                               .length,
                           itemBuilder: (context, index) {
                             Sacco sacco =
-                                Provider.of<Groups>(context, listen: false)
-                                    .saccoOptions[index];
+                            Provider.of<Groups>(context, listen: false)
+                                .saccoOptions[index];
 
                             return saccoFilter == null || saccoFilter == ""
                                 ? RadioListTile(
-                                    activeColor: primaryColor,
-                                    title: Text(
-                                      sacco.name,
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor,
-                                          fontWeight: FontWeight.w500),
-                                    ),
-                                    onChanged: (value) async {
-                                      showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            );
-                                          });
-                                      await fetchSaccoBranchOptions(context);
-                                      Navigator.pop(context);
+                              activeColor: primaryColor,
+                              title: Text(
+                                sacco.name,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (value) async {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Center(
+                                        child:
+                                        CircularProgressIndicator(),
+                                      );
+                                    });
+                                await fetchSaccoBranchOptions(context);
+                                Navigator.pop(context);
 
-                                      setState(() {
-                                        selectedSaccoId = value;
-                                        selectedSaccoName = sacco.name;
-                                        saccoTextController.text =
-                                            selectedSaccoName;
-                                      });
-                                    },
-                                    value: sacco.id,
-                                    groupValue: selectedSaccoId,
-                                  )
+                                setState(() {
+                                  selectedSaccoId = value;
+                                  selectedSaccoName = sacco.name;
+                                  saccoTextController.text =
+                                      selectedSaccoName;
+                                });
+                              },
+                              value: sacco.id,
+                              groupValue: selectedSaccoId,
+                            )
                                 : sacco.name
-                                        .toLowerCase()
-                                        .contains(saccoFilter.toLowerCase())
-                                    ? RadioListTile(
-                                        activeColor: primaryColor,
-                                        title: Text(
-                                          sacco.name,
-                                          style: TextStyle(
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        onChanged: (value) async {
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Center(
-                                                  child:
-                                                      CircularProgressIndicator(),
-                                                );
-                                              });
-                                          await fetchSaccoBranchOptions(
-                                              context);
-                                          Navigator.pop(context);
+                                .toLowerCase()
+                                .contains(saccoFilter.toLowerCase())
+                                ? RadioListTile(
+                              activeColor: primaryColor,
+                              title: Text(
+                                sacco.name,
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              onChanged: (value) async {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return Center(
+                                        child:
+                                        CircularProgressIndicator(),
+                                      );
+                                    });
+                                await fetchSaccoBranchOptions(context);
+                                Navigator.pop(context);
 
-                                          setState(() {
-                                            selectedSaccoId = value;
-                                            selectedSaccoName = sacco.name;
-                                            saccoTextController.text =
-                                                selectedSaccoName;
-                                          });
-                                        },
-                                        value: sacco.id,
-                                        groupValue: selectedSaccoId,
-                                      )
-                                    : new Container();
+                                setState(() {
+                                  selectedSaccoId = value;
+                                  selectedSaccoName = sacco.name;
+                                  saccoTextController.text =
+                                      selectedSaccoName;
+                                });
+                              },
+                              value: sacco.id,
+                              groupValue: selectedSaccoId,
+                            )
+                                : new Container();
                           }),
                     ),
                   ),
@@ -249,7 +301,7 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                 child: new Text(
                   "Continue",
                   style:
-                      new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
+                  new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -294,9 +346,9 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                       prefixIcon: Icon(Icons.search),
                       enabledBorder: UnderlineInputBorder(
                           borderSide: BorderSide(
-                        color: Theme.of(context).hintColor,
-                        width: 1.0,
-                      )),
+                            color: Theme.of(context).hintColor,
+                            width: 1.0,
+                          )),
                       // hintText: 'Phone Number or Email Address',
                       labelText: "Search",
                     ),
@@ -305,63 +357,63 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                     child: SingleChildScrollView(
                       child: Consumer<Groups>(
                           builder: (context, groupData, child) {
-                        return ListView.builder(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: groupData.saccoBranchOptions.length,
-                            itemBuilder: (context, index) {
-                              SaccoBranch saccoBranch =
+                            return ListView.builder(
+                                physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: groupData.saccoBranchOptions.length,
+                                itemBuilder: (context, index) {
+                                  SaccoBranch saccoBranch =
                                   groupData.saccoBranchOptions[index];
 
-                              return saccoBranchFilter == null ||
+                                  return saccoBranchFilter == null ||
                                       saccoBranchFilter == ""
-                                  ? RadioListTile(
-                                      activeColor: primaryColor,
-                                      title: Text(
-                                        saccoBranch.name,
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .textSelectionHandleColor,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedSaccoBranchId = value;
-                                          selectedSaccoBranchName =
-                                              saccoBranch.name;
-                                          saccoBranchTextController.text =
-                                              selectedSaccoBranchName;
-                                        });
-                                      },
-                                      value: saccoBranch.id,
-                                      groupValue: selectedSaccoBranchId,
-                                    )
-                                  : saccoBranch.name.toLowerCase().contains(
-                                          saccoBranchFilter.toLowerCase())
                                       ? RadioListTile(
-                                          activeColor: primaryColor,
-                                          title: Text(
-                                            saccoBranch.name,
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
-                                                fontWeight: FontWeight.w500),
-                                          ),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              selectedSaccoBranchId = value;
-                                              selectedSaccoBranchName =
-                                                  saccoBranch.name;
-                                              saccoBranchTextController.text =
-                                                  selectedSaccoBranchName;
-                                            });
-                                          },
-                                          value: saccoBranch.id,
-                                          groupValue: selectedSaccoBranchId,
-                                        )
+                                    activeColor: primaryColor,
+                                    title: Text(
+                                      saccoBranch.name,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedSaccoBranchId = value;
+                                        selectedSaccoBranchName =
+                                            saccoBranch.name;
+                                        saccoBranchTextController.text =
+                                            selectedSaccoBranchName;
+                                      });
+                                    },
+                                    value: saccoBranch.id,
+                                    groupValue: selectedSaccoBranchId,
+                                  )
+                                      : saccoBranch.name.toLowerCase().contains(
+                                      saccoBranchFilter.toLowerCase())
+                                      ? RadioListTile(
+                                    activeColor: primaryColor,
+                                    title: Text(
+                                      saccoBranch.name,
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                    onChanged: (value) {
+                                      setState(() {
+                                        selectedSaccoBranchId = value;
+                                        selectedSaccoBranchName =
+                                            saccoBranch.name;
+                                        saccoBranchTextController.text =
+                                            selectedSaccoBranchName;
+                                      });
+                                    },
+                                    value: saccoBranch.id,
+                                    groupValue: selectedSaccoBranchId,
+                                  )
                                       : new Container();
-                            });
-                      }),
+                                });
+                          }),
                     ),
                   ),
                 ],
@@ -383,7 +435,7 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                 child: new Text(
                   "Continue",
                   style:
-                      new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
+                  new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -401,14 +453,15 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Create Sacco Account",
+        title: "Edit Sacco Account",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(builder: (context) {
-        return Form(
+        return pageLoaded
+            ? Form(
           key: _formKey,
           child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -419,10 +472,11 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                   toolTip(
                       context: context,
                       title: "",
-                      message: "Create a new sacco account",
+                      message: "Edit sacco account",
                       showTitle: false),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                    padding:
+                    const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
@@ -430,8 +484,10 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                           simpleTextInputField(
                               context: context,
                               labelText: 'Enter account name',
+                              controller: accountNameTextController,
                               validator: (value) {
-                                Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
+                                Pattern pattern =
+                                    r'^([A-Za-z0-9_ ]{2,})$';
                                 RegExp regex = new RegExp(pattern);
                                 if (!regex.hasMatch(value))
                                   return 'Invalid sacco account name';
@@ -452,9 +508,9 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                color: Theme.of(context).hintColor,
-                                width: 1.0,
-                              )),
+                                    color: Theme.of(context).hintColor,
+                                    width: 1.0,
+                                  )),
                               hintText: 'Select Sacco',
                               labelText: 'Select Sacco',
                             ),
@@ -471,9 +527,9 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               enabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
-                                color: Theme.of(context).hintColor,
-                                width: 1.0,
-                              )),
+                                    color: Theme.of(context).hintColor,
+                                    width: 1.0,
+                                  )),
                               enabled: selectedSaccoId > 0,
                               hintText: selectedSaccoId > 0
                                   ? 'Select sacco branch'
@@ -490,6 +546,7 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                           numberTextInputField(
                             context: context,
                             labelText: 'Enter account number',
+                            controller: accountNumberTextController,
                             onChanged: (value) {
                               setState(() {
                                 accountNumber = value;
@@ -508,6 +565,7 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                           amountTextInputField(
                             context: context,
                             labelText: 'Initial Balance',
+                            controller: initialAmountTextController,
                             onChanged: (value) {
                               setState(() {
                                 initialBalance = double.parse(value);
@@ -517,19 +575,19 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                               return null;
                             },
                             onSaved: (value) =>
-                                initialBalance = double.parse(value),
+                            initialBalance = double.parse(value),
                           ),
                           SizedBox(
                             height: 24,
                           ),
                           defaultButton(
                             context: context,
-                            text: "CREATE ACCOUNT",
+                            text: "EDIT ACCOUNT",
                             onPressed: () async {
                               if (_formKey.currentState.validate() &&
                                   selectedSaccoId > 0 &&
                                   selectedSaccoBranchId > 0) {
-                                await createNewSaccoAccount(context);
+                                await editSaccoAccount(context);
                               }
                             },
                           ),
@@ -537,7 +595,8 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
                   ),
                 ],
               )),
-        );
+        )
+            : Center(child: CircularProgressIndicator());
       }),
     );
   }

@@ -60,7 +60,7 @@ class _RepayLoanState extends State<RepayLoan> {
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
-              hasFloatingPlaceholder: true,
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                 color: Theme.of(context).hintColor,

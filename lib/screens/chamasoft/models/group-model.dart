@@ -63,3 +63,10 @@ class GroupRoles {
     @required this.roleName,
   });
 }
+
+class GroupRolesStatusAndCurrentMemberStatus {
+  final int currentMemberStatus;
+  final Map<String, int> roleStatus;
+
+  GroupRolesStatusAndCurrentMemberStatus({this.currentMemberStatus, this.roleStatus});
+}

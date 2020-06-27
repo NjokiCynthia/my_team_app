@@ -59,7 +59,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             keyboardType: TextInputType.text,
             style: inputTextStyle(),
             decoration: InputDecoration(
-              hasFloatingPlaceholder: true,
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                 color: Theme.of(context).hintColor,

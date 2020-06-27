@@ -124,7 +124,7 @@ class PayNowState extends State<PayNow> {
               WhitelistingTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
-              hasFloatingPlaceholder: true,
+              floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
                 color: Theme.of(context).hintColor,

@@ -164,7 +164,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     return null;
                   },
                   decoration: InputDecoration(
-                    hasFloatingPlaceholder: true,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
                     enabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(
                       color: Theme.of(context).hintColor,
@@ -230,7 +230,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 return null;
               },
               decoration: InputDecoration(
-                hasFloatingPlaceholder: true,
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
                 enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                   color: Theme.of(context).hintColor,
@@ -293,7 +293,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 return null;
               },
               decoration: InputDecoration(
-                hasFloatingPlaceholder: true,
+                floatingLabelBehavior: FloatingLabelBehavior.auto,
                 enabledBorder: UnderlineInputBorder(
                     borderSide: BorderSide(
                   color: Theme.of(context).hintColor,
