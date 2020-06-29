@@ -28,6 +28,7 @@ String selectedContributionValue;
 String selectedAccountValue;
 String selectedMemberType;
 List<NamesListItem> contributionOptions = [];
+List<NamesListItem> accountOptions = [];
 
 class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   double _appBarElevation = 0;
@@ -56,17 +57,26 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     List<Contribution> contributions = Provider.of<Groups>(context,listen: false).contributions;
     if(contributions.length==0){
       await Provider.of<Groups>(context,listen: false).fetchContributions();
+      contributions = Provider.of<Groups>(context,listen: false).contributions;
     }
-    List<CategorisedAccount> accountOptions = Provider.of<Groups>(context,listen: false).getAllCategorisedAccounts;
-    print(accountOptions);
-    List<NamesListItem> emptyContributions;
-    contributions = Provider.of<Groups>(context,listen: false).contributions;
+    List<NamesListItem> emptyContributions = [];
     contributions.map((element) => 
       emptyContributions.add(NamesListItem(id: int.tryParse(element.id), name: element.name))
     ).toList();
     setState(() {
       contributionOptions = emptyContributions;
     });
+
+
+    List<Account> accounts = Provider.of<Groups>(context,listen: false).accounts;
+    if(accounts.length==0){
+      await Provider.of<Groups>(context).fetchAccounts();
+      accounts = Provider.of<Groups>(context,listen: false).accounts;
+    }
+    print(accounts);
+    accounts.map((account) =>
+      print(account.id+" "+account.name)
+    ).toList();
   }
 
   void _submit(){
@@ -234,16 +244,16 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                           SizedBox(
                             height: 10,
                           ),
-                          // CustomDropDownButton(
-                          //   labelText: "Select Account",
-                          //   listItems: accounts,
-                          //   selectedItem: accountId,
-                          //   onChanged: (value) {
-                          //     setState(() {
-                          //       accountId = value;
-                          //     });
-                          //   },
-                          // ),
+                          CustomDropDownButton(
+                            labelText: "Select Account",
+                            listItems: accountOptions,
+                            selectedItem: accountId,
+                            onChanged: (value) {
+                              setState(() {
+                                accountId = value;
+                              });
+                            },
+                          ),
                           SizedBox(
                             height: 10,
                           ),

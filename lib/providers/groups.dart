@@ -369,11 +369,6 @@ class Groups with ChangeNotifier {
 
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
-    _groupContributionSummary = [];
-    _groupFinesSummary = [];
-    _totalGroupFinesSummary = 0;
-    _totalGroupContributionSummary = 0;
-
     currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(selectedGroupId)) {
