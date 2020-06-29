@@ -89,7 +89,6 @@ class _CreateSaccoAccountState extends State<CreateSaccoAccount> {
         saccoBranchId: selectedSaccoBranchId.toString(),
         saccoId: selectedSaccoId.toString(),
         initialBalance: initialBalance.toString(),
-        mobileLocalId: "0",
       );
 
       Navigator.pop(context);

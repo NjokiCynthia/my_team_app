@@ -78,7 +78,6 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
         accountNumber: accountNumber,
         mobileMoneyProviderId: selectedMobileMoneyProviderId.toString(),
         initialBalance: initialBalance.toString(),
-        mobileLocalId: "0",
       );
 
       Navigator.pop(context);

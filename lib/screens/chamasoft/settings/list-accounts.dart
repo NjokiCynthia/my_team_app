@@ -12,8 +12,10 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'create-bank-account.dart';
+import 'create-petty-cash-account.dart';
 import 'edit-bank-account.dart';
 import 'edit-mobile-money-account.dart';
+import 'edit-petty-cash-account.dart';
 
 List<String> accountTypes = [
   "Bank Accounts",
@@ -181,7 +183,11 @@ class _ListAccountsState extends State<ListAccounts> {
                             fontSize: 16.0,
                           ),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => CreatePettyCashAccount(),
+                          ));
+                        },
                       ),
                     ],
                   ),
@@ -279,6 +285,15 @@ class _ListAccountsState extends State<ListAccounts> {
                                               mobileMoneyAccountId:
                                                   int.parse(accounts[index].id),
                                             ),
+                                          ));
+                                        } else if (accountType == 3) {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditPettyCashAccount(
+                                                  pettyCashAccountId:
+                                                  int.parse(accounts[index].id),
+                                                ),
                                           ));
                                         }
                                       },

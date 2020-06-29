@@ -959,7 +959,8 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        final groupPettyCashAccounts = response['petty_accounts'] as List<dynamic>;
+        final groupPettyCashAccounts =
+            response['petty_accounts'] as List<dynamic>;
         for (int i = 0; i < groupPettyCashAccounts.length; i++) {
           if (groupPettyCashAccounts[i]['id'].toString() ==
               pettyCashAccountId.toString()) {
@@ -1550,7 +1551,6 @@ class Groups with ChangeNotifier {
     String accountNumber,
     String saccoBranchId,
     String saccoId,
-    String mobileLocalId,
     String initialBalance,
   }) async {
     const url = EndpointUrl.ADD_SACCO_ACCOUNT;
@@ -1562,7 +1562,6 @@ class Groups with ChangeNotifier {
         "account_name": accountName,
         "account_number": accountNumber,
         "sacco_branch_id": saccoBranchId,
-        "mobile_local_id": mobileLocalId,
         "sacco_id": saccoId,
         "initial_balance": initialBalance
       });
@@ -1589,7 +1588,6 @@ class Groups with ChangeNotifier {
     String accountNumber,
     String saccoBranchId,
     String saccoId,
-    String mobileLocalId,
     String initialBalance,
   }) async {
     const url = EndpointUrl.EDIT_SACCO_ACCOUNT;
@@ -1602,7 +1600,6 @@ class Groups with ChangeNotifier {
         "account_name": accountName,
         "account_number": accountNumber,
         "sacco_branch_id": saccoBranchId,
-        "mobile_local_id": mobileLocalId,
         "sacco_id": saccoId,
         "initial_balance": initialBalance
       });
@@ -1627,10 +1624,7 @@ class Groups with ChangeNotifier {
     String accountNumber,
     String bankBranchId,
     String bankId,
-    String actionType,
-    String accountType,
     String initialBalance,
-    String mobileLocalId,
     String mobileMoneyProviderId,
   }) async {
     const url = EndpointUrl.ADD_MOBILE_MONEY_ACCOUNT;
@@ -1639,12 +1633,9 @@ class Groups with ChangeNotifier {
         "user_id": await Auth.getUser(Auth.userId),
         "group_id": currentGroupId,
         "id": "",
-        "action_type": actionType,
-        "type": accountType,
         "account_name": accountName,
         "account_number": accountNumber,
         "mobile_money_provider_id": mobileMoneyProviderId,
-        "mobile_local_id": mobileLocalId,
         "initial_balance": initialBalance
       });
 
@@ -1669,10 +1660,7 @@ class Groups with ChangeNotifier {
     String accountNumber,
     String bankBranchId,
     String bankId,
-    String actionType,
-    String accountType,
     String initialBalance,
-    String mobileLocalId,
     String mobileMoneyProviderId,
   }) async {
     const url = EndpointUrl.EDIT_MOBILE_MONEY_ACCOUNT;
@@ -1681,13 +1669,65 @@ class Groups with ChangeNotifier {
         "user_id": await Auth.getUser(Auth.userId),
         "group_id": currentGroupId,
         "id": id,
-        "action_type": actionType,
-        "type": accountType,
         "account_name": accountName,
         "account_number": accountNumber,
         "mobile_money_provider_id": mobileMoneyProviderId,
-        "mobile_local_id": mobileLocalId,
         "initial_balance": initialBalance
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchAccounts();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> createPettyCashAccount({
+    String accountName,
+  }) async {
+    const url = EndpointUrl.ADD_PETTY_CASH_ACCOUNT;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "id": "",
+        "account_name": accountName,
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchAccounts();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> editPettyCashAccount({
+    String id,
+    String accountName,
+  }) async {
+    const url = EndpointUrl.EDIT_PETTY_CASH_ACCOUNT;
+    try {
+      final postRequest = json.encode({
+        "user_id": await Auth.getUser(Auth.userId),
+        "group_id": currentGroupId,
+        "id": id,
+        "account_name": accountName,
       });
 
       try {
