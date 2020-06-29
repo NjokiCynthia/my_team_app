@@ -673,7 +673,7 @@ class Groups with ChangeNotifier {
     if (saccos.length > 0) {
       for (var saccoJSON in saccos) {
         final newSacco = Sacco(
-            id: int.parse(saccoJSON['id']),
+            id: int.parse(saccoJSON['id'].toString()),
             logo: saccoJSON['logo'].toString(),
             name: saccoJSON['name'].toString());
         _saccoOptions.add(newSacco);
@@ -686,7 +686,7 @@ class Groups with ChangeNotifier {
     if (saccoBranches.length > 0) {
       for (var saccoBranchJSON in saccoBranches) {
         final newSaccoBranch = SaccoBranch(
-            id: int.parse(saccoBranchJSON['id']),
+            id: int.parse(saccoBranchJSON['id'].toString()),
             name: saccoBranchJSON['name'].toString());
         _saccoBranchOptions.add(newSaccoBranch);
         notifyListeners();

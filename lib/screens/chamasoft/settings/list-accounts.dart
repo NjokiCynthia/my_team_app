@@ -231,11 +231,13 @@ class _ListAccountsState extends State<ListAccounts> {
                           ),
                           ListView.separated(
                             shrinkWrap: true,
-                            padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+                            padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
                             itemCount: accounts.length,
                             itemBuilder: (context, index) {
                               return Card(
+                                elevation: 0.0,
                                 child: ListTile(
+                                  contentPadding: EdgeInsets.only(left: 16.0),
                                   leading: Icon(
                                     Icons.credit_card,
                                     size: 20,
@@ -291,9 +293,9 @@ class _ListAccountsState extends State<ListAccounts> {
                                               .push(MaterialPageRoute(
                                             builder: (context) =>
                                                 EditPettyCashAccount(
-                                                  pettyCashAccountId:
+                                              pettyCashAccountId:
                                                   int.parse(accounts[index].id),
-                                                ),
+                                            ),
                                           ));
                                         }
                                       },
@@ -305,7 +307,7 @@ class _ListAccountsState extends State<ListAccounts> {
                             separatorBuilder: (context, index) {
                               return Divider(
                                 color: Theme.of(context).dividerColor,
-                                height: 6.0,
+                                height: 2.0,
                               );
                             },
                           ),
