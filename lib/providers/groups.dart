@@ -369,12 +369,23 @@ class Groups with ChangeNotifier {
 
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
+    _switchGroupValuesToDefault();
     currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(selectedGroupId)) {
       prefs.remove(selectedGroupId);
     }
     prefs.setString(selectedGroupId, groupId);
+  }
+
+  void _switchGroupValuesToDefault(){
+    _groupContributionSummary = [];
+    _groupFinesSummary = [];
+    _totalGroupFinesSummary = 0;
+    _totalGroupContributionSummary = 0;
+    _accounts = [];
+    _members = [];
+    _allAccounts = [];
   }
 
   getCurrentGroupId() async {
@@ -668,7 +679,7 @@ class Groups with ChangeNotifier {
     if (saccos.length > 0) {
       for (var saccoJSON in saccos) {
         final newSacco = Sacco(
-            id: int.parse(saccoJSON['id'].toString()),
+            id: int.parse(saccoJSON['id']),
             logo: saccoJSON['logo'].toString(),
             name: saccoJSON['name'].toString());
         _saccoOptions.add(newSacco);
@@ -681,7 +692,7 @@ class Groups with ChangeNotifier {
     if (saccoBranches.length > 0) {
       for (var saccoBranchJSON in saccoBranches) {
         final newSaccoBranch = SaccoBranch(
-            id: int.parse(saccoBranchJSON['id'].toString()),
+            id: int.parse(saccoBranchJSON['id']),
             name: saccoBranchJSON['name'].toString());
         _saccoBranchOptions.add(newSaccoBranch);
         notifyListeners();
