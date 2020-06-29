@@ -3,3 +3,9 @@ class NamesListItem {
   int id;
   NamesListItem({this.id, this.name});
 }
+
+class NamesListItemString{
+  String name;
+  String id;
+  NamesListItemString({this.id, this.name});
+}

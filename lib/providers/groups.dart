@@ -24,11 +24,13 @@ class Account {
   final String id;
   final String name;
   final int typeId;
+  final int uniqueId;
 
   Account({
     @required this.id,
     @required this.name,
     @required this.typeId,
+    @required this.uniqueId,
   });
 }
 
@@ -386,6 +388,14 @@ class Groups with ChangeNotifier {
     _accounts = [];
     _members = [];
     _allAccounts = [];
+    _contributions = [];
+    _countryOptions = [];
+    _currencyOptions = [];
+    _bankOptions = [];
+    _bankBranchOptions = [];
+    _mobileMoneyProviderOptions = [];
+    _saccoOptions = [];
+    _saccoBranchOptions = [];
   }
 
   getCurrentGroupId() async {
@@ -496,13 +506,15 @@ class Groups with ChangeNotifier {
 
   /// ********************End Group Objects************/
 
-  void addAccounts(List<dynamic> groupBankAccounts, int accountType) {
+  int addAccounts(List<dynamic> groupBankAccounts, int accountType,[int position=0]) {
     final List<Account> bankAccounts = [];
     if (groupBankAccounts.length > 0) {
       for (var bankAccountJSON in groupBankAccounts) {
+        ++position;
         final newAccount = Account(
             id: bankAccountJSON['id'].toString(),
             name: bankAccountJSON['name'].toString(),
+            uniqueId: position,
             typeId: accountType);
         bankAccounts.add(newAccount);
         _accounts.add(newAccount);
@@ -510,6 +522,25 @@ class Groups with ChangeNotifier {
     }
     _allAccounts.add(bankAccounts);
     notifyListeners();
+    return position;
+  }
+
+  String _getAccountFormId(int position){
+    for (var accountOption in _allAccounts){
+      for(var account in accountOption){
+        if(position == account.uniqueId){
+          if(account.typeId == 1){
+            return "bank-${account.id}";
+          }else if(account.typeId == 2){
+            return "sacco-${account.id}";
+          }else if(account.typeId == 3){
+            return "mobile-${account.id}";
+          }else{
+            return "petty-${account.id}";
+          }
+        }
+      }
+    }
   }
 
   void addContributions(List<dynamic> groupContributions) {
@@ -831,6 +862,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchAccounts() async {
     const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
+    int position=0;
     try {
       final postRequest = json.encode({
         "user_id": await Auth.getUser(Auth.userId),
@@ -843,16 +875,16 @@ class Groups with ChangeNotifier {
         _allAccounts = []; //clear all accounts
         final groupBankAccounts =
             response['accounts']['bank_accounts'] as List<dynamic>;
-        addAccounts(groupBankAccounts, 1);
+        position = addAccounts(groupBankAccounts, 1,position);
         final groupSaccoAccounts =
             response['accounts']['sacco_accounts'] as List<dynamic>;
-        addAccounts(groupSaccoAccounts, 2);
+        position = addAccounts(groupSaccoAccounts, 2,position);
         final groupMobileMoneyAccounts =
             response['accounts']['mobile_money_accounts'] as List<dynamic>;
-        addAccounts(groupMobileMoneyAccounts, 3);
+        position = addAccounts(groupMobileMoneyAccounts, 3,position);
         final groupPettyCashAccountsAccounts =
             response['accounts']['petty_cash_accounts'] as List<dynamic>;
-        addAccounts(groupPettyCashAccountsAccounts, 4);
+        position = addAccounts(groupPettyCashAccountsAccounts, 4,position);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -2013,4 +2045,32 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
+  /****************************Transaction****************/
+
+  Future<void> recordContibutionPayments(Map<String,dynamic> formData)async{
+    try{
+      const url = EndpointUrl.RECORD_CONTRIBUTION_PAYMENTS;
+      final userId = await Auth.getUser(Auth.userId);
+      final identity = await Auth.getUser(Auth.identity);
+      formData['user_id'] = userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] = "${formData['request_id']}_${userId}_$identity";
+      try {
+        final postRequest = json.encode(formData);
+        print(postRequest);
+        final response = await PostToServer.post(postRequest,url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    }on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
 }

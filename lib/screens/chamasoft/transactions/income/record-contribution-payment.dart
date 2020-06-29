@@ -1,11 +1,12 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -24,13 +25,9 @@ class RecordContributionPayment extends StatefulWidget {
       _RecordContributionPaymentState();
 }
 
-String selectedContributionValue;
-String selectedAccountValue;
-String selectedMemberType;
-List<NamesListItem> contributionOptions = [];
-List<NamesListItem> accountOptions = [];
-
 class _RecordContributionPaymentState extends State<RecordContributionPayment> {
+  bool _isInit = true;
+  bool _isLoading = false;
   double _appBarElevation = 0;
   ScrollController _scrollController;
   List<MembersFilterEntry> selectedMembersList = [];
@@ -41,8 +38,15 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   int depositMethod;
   int contributionId;
   int accountId;
+  String contributionAmount;
   Map<String,dynamic> _formData = {};
-
+  String selectedContributionValue;
+  String selectedAccountValue;
+  String selectedMemberType;
+  List<NamesListItem> contributionOptions = [];
+  List<NamesListItem> accountOptions = [];
+  static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
+  String requestId = ((epochTime.toDouble()/1000).toStringAsFixed(0));
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -63,33 +67,58 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     contributions.map((element) => 
       emptyContributions.add(NamesListItem(id: int.tryParse(element.id), name: element.name))
     ).toList();
+    
+    List<List<Account>> accounts = Provider.of<Groups>(context,listen: false).allAccounts;
+    if(accounts.length==0){
+      await Provider.of<Groups>(context,listen: false).fetchAccounts();
+      accounts = Provider.of<Groups>(context,listen: false).allAccounts;
+    }
+    List<NamesListItem> emptyAccountOptions = [];
+    for (var account in accounts) {
+      for (var typeAccount in account) {
+        print("id: ${typeAccount.uniqueId}");
+        emptyAccountOptions.add(NamesListItem(id: typeAccount.uniqueId,name: typeAccount.name));
+      }
+    }
+    print(emptyAccountOptions);
     setState(() {
       contributionOptions = emptyContributions;
+      accountOptions = emptyAccountOptions;
+      _isInit = false;
     });
-
-
-    List<Account> accounts = Provider.of<Groups>(context,listen: false).accounts;
-    if(accounts.length==0){
-      await Provider.of<Groups>(context).fetchAccounts();
-      accounts = Provider.of<Groups>(context,listen: false).accounts;
-    }
-    print(accounts);
-    accounts.map((account) =>
-      print(account.id+" "+account.name)
-    ).toList();
   }
 
-  void _submit(){
+  void _submit(BuildContext context) async{
     if (!_formKey.currentState.validate()) {
+      print("validation failed");
       return;
     }
+    setState(() {
+      _isLoading=true;
+    });
     _formKey.currentState.save();
-    print(contributionDate);
-    _formData['deposit_date'] = contributionDate;
+    _formData['deposit_date'] = contributionDate.toString();
     _formData['deposit_method'] = depositMethod;
     _formData['contribution_id'] = contributionId;
-    print("we are going to submit the form here");
-    print(_formData);
+    _formData['account_id'] = accountId;
+    _formData['request_id'] = requestId;
+    _formData['amount'] = contributionAmount;
+    try{
+      await Provider.of<Groups>(context,listen: false).recordContibutionPayments(_formData);
+    }on CustomException catch (error) {
+      print("Error: ${error.toString()}");
+      // StatusHandler().handleStatus(
+      // context: context,
+      // error: error,
+      // callback: () {
+      //   _submit(context);
+      // });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        //_isFormInputEnabled = true;
+      });
+    }
   }
 
   @override
@@ -101,7 +130,9 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
 
   @override
   void didChangeDependencies() {
-    _fetchDefaultValues(context);
+    if(_isInit){
+      _fetchDefaultValues(context);
+    }
     super.didChangeDependencies();
   }
 
@@ -309,20 +340,21 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 context: context,
                                 labelText: 'Enter Amount',
                                 onChanged: (value) {
-                                  //member.amount = value;
+                                  contributionAmount = value;
                                 }),
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          defaultButton(
+                          _isLoading?Center(child:CircularProgressIndicator())
+                          :defaultButton(
                             context: context,
                             text: "SAVE",
                             onPressed: () {
                               selectedMembersList.map((MembersFilterEntry mem) {
                                 return print(mem.name);
                               }).toList();
-                              _submit();
+                              _submit(context);
                             },
                           )
                         ]),
