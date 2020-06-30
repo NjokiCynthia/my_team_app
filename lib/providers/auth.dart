@@ -42,6 +42,7 @@ class Auth with ChangeNotifier {
   static const String phone = "phone";
   static const String accessToken = "accessToken";
   static const String isLoggedIn = "isLoggedIn";
+  static const String identity = "identity";
   String _firstName = "";
   String _lastName = "";
   String _phoneNumber = "";
@@ -68,6 +69,7 @@ class Auth with ChangeNotifier {
   String get avatar {
     return _avatar;
   }
+
 
   static Future<bool> imageExists(avatarUrl) async {
     return io.File(avatarUrl).exists();
@@ -137,6 +139,12 @@ class Auth with ChangeNotifier {
               json.decode(userObject) as Map<String, Object>;
           if (extractedUserData.containsKey(key)) {
             return extractedUserData[key].toString();
+          } else if(key==identity){
+            if(extractedUserData[phone].toString()!=''){
+              return extractedUserData[phone].toString();
+            }else{
+              return extractedUserData[email].toString();
+            }
           } else {
             return "";
           }

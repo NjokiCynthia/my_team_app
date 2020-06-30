@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/create-mobile-money-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/create-sacco-account.dart';
+import 'package:chamasoft/screens/chamasoft/settings/edit-sacco-account.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -12,6 +13,9 @@ import 'package:provider/provider.dart';
 
 import 'create-bank-account.dart';
 import 'create-petty-cash-account.dart';
+import 'edit-bank-account.dart';
+import 'edit-mobile-money-account.dart';
+import 'edit-petty-cash-account.dart';
 
 List<String> accountTypes = [
   "Bank Accounts",
@@ -41,6 +45,28 @@ class _ListAccountsState extends State<ListAccounts> {
       await Provider.of<Groups>(context, listen: false).fetchBankOptions();
       return true;
     } on CustomException catch (error) {
+      print(error.message);
+      return false;
+    }
+  }
+
+  Future<bool> fetchSaccoOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchSaccoOptions();
+      return true;
+    } on CustomException catch (error) {
+      print(error.message);
+      return false;
+    }
+  }
+
+  Future<bool> fetchMobileMoneyProviderOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .fetchMobileMoneyProviderOptions();
+      return true;
+    } on CustomException catch (error) {
+      print(error.message);
       return false;
     }
   }
@@ -107,7 +133,17 @@ class _ListAccountsState extends State<ListAccounts> {
                             fontSize: 16.0,
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              });
+                          await fetchSaccoOptions(context);
+                          Navigator.pop(context);
+
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CreateSaccoAccount(),
                           ));
@@ -122,7 +158,17 @@ class _ListAccountsState extends State<ListAccounts> {
                             fontSize: 16.0,
                           ),
                         ),
-                        onPressed: () {
+                        onPressed: () async {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              });
+                          await fetchMobileMoneyProviderOptions(context);
+                          Navigator.pop(context);
+
                           Navigator.of(context).push(MaterialPageRoute(
                             builder: (context) => CreateMobileMoneyAccount(),
                           ));
@@ -161,6 +207,7 @@ class _ListAccountsState extends State<ListAccounts> {
               itemCount: groupData.allAccounts.length,
               itemBuilder: (context, index) {
                 String accountTitle = " ";
+                int accountType = index;
                 accountTitle = accountTypes[index];
                 List<Account> accounts = groupData.allAccounts[index];
 
@@ -184,11 +231,13 @@ class _ListAccountsState extends State<ListAccounts> {
                           ),
                           ListView.separated(
                             shrinkWrap: true,
-                            padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+                            padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
                             itemCount: accounts.length,
                             itemBuilder: (context, index) {
                               return Card(
+                                elevation: 0.0,
                                 child: ListTile(
+                                  contentPadding: EdgeInsets.only(left: 16.0),
                                   leading: Icon(
                                     Icons.credit_card,
                                     size: 20,
@@ -205,14 +254,50 @@ class _ListAccountsState extends State<ListAccounts> {
                                   trailing: Padding(
                                     padding: EdgeInsets.all(12.0),
                                     child: circleIconButton(
-                                      icon: Icons.close,
+                                      icon: Icons.edit,
                                       backgroundColor:
-                                          Colors.redAccent.withOpacity(.3),
-                                      color: Colors.red,
+                                          primaryColor.withOpacity(.3),
+                                      color: primaryColor,
                                       iconSize: 18.0,
                                       padding: 0.0,
                                       onPressed: () {
-                                        // TODO: Implement Delete Method
+                                        if (accountType == 0) {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditBankAccount(
+                                              bankAccountId:
+                                                  int.parse(accounts[index].id),
+                                            ),
+                                          ));
+                                        } else if (accountType == 1) {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditSaccoAccount(
+                                              saccoAccountId:
+                                                  int.parse(accounts[index].id),
+                                            ),
+                                          ));
+                                        } else if (accountType == 2) {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditMobileMoneyAccount(
+                                              mobileMoneyAccountId:
+                                                  int.parse(accounts[index].id),
+                                            ),
+                                          ));
+                                        } else if (accountType == 3) {
+                                          Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                            builder: (context) =>
+                                                EditPettyCashAccount(
+                                              pettyCashAccountId:
+                                                  int.parse(accounts[index].id),
+                                            ),
+                                          ));
+                                        }
                                       },
                                     ),
                                   ),
@@ -222,7 +307,7 @@ class _ListAccountsState extends State<ListAccounts> {
                             separatorBuilder: (context, index) {
                               return Divider(
                                 color: Theme.of(context).dividerColor,
-                                height: 6.0,
+                                height: 2.0,
                               );
                             },
                           ),

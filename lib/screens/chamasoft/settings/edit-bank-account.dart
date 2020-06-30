@@ -12,16 +12,24 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class CreateBankAccount extends StatefulWidget {
+class EditBankAccount extends StatefulWidget {
+  final int bankAccountId;
+
+  EditBankAccount({this.bankAccountId});
+
   @override
-  _CreateBankAccountState createState() => _CreateBankAccountState();
+  _EditBankAccountState createState() => _EditBankAccountState();
 }
 
-class _CreateBankAccountState extends State<CreateBankAccount> {
+class _EditBankAccountState extends State<EditBankAccount> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   TextEditingController bankTextController = TextEditingController();
   TextEditingController bankBranchTextController = TextEditingController();
+  TextEditingController accountNameTextController = TextEditingController();
+  TextEditingController accountNumberTextController = TextEditingController();
+  TextEditingController initialAmountTextController = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
 
   void _scrollListener() {
@@ -37,6 +45,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    fetchBankAccount(context);
     super.initState();
   }
 
@@ -55,13 +64,57 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
   int selectedBankBranchId = 0;
   double initialBalance = 0;
 
-  String bankAccountName;
-  String accountNumber;
+  String bankAccountName = "";
+  String accountNumber = "";
   String selectedBankName = '';
   String selectedBankBranchName = '';
 
   String bankFilter = "";
   String bankBranchFilter = "";
+  bool pageLoaded = false;
+
+  Future<bool> fetchBankOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchBankOptions();
+      return true;
+    } on CustomException catch (error) {
+      print(error.message);
+      return false;
+    }
+  }
+
+  Future<void> fetchBankAccount(BuildContext context) async {
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .fetchBankAccount(widget.bankAccountId);
+      if (response != null) {
+        await fetchBankOptions(context);
+        await fetchBankBranchOptions(context);
+
+        this.setState(() {
+          selectedBankId = int.parse(response['bank_id'].toString());
+          selectedBankBranchId =
+              int.parse(response['bank_branch_id'].toString());
+
+          bankAccountName = response['account_name'].toString();
+          accountNumber = response['account_number'].toString();
+
+          selectedBankName = response['bank_name'].toString();
+          selectedBankBranchName = response['bank_branch'].toString();
+
+          accountNameTextController.text = bankAccountName;
+          accountNumberTextController.text = accountNumber;
+          initialAmountTextController.text = initialBalance.toString();
+          bankTextController.text = selectedBankName;
+          bankBranchTextController.text = selectedBankBranchName;
+
+          pageLoaded = true;
+        });
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+    }
+  }
 
   Future<void> fetchBankBranchOptions(BuildContext context) async {
     try {
@@ -73,7 +126,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
     }
   }
 
-  Future<void> createNewBankAccount(BuildContext context) async {
+  Future<void> editBankAccount(BuildContext context) async {
     try {
       showDialog(
           context: context,
@@ -83,7 +136,8 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
             );
           });
 
-      await Provider.of<Groups>(context, listen: false).createBankAccount(
+      await Provider.of<Groups>(context, listen: false).editBankAccount(
+        id: widget.bankAccountId.toString(),
         accountName: bankAccountName,
         accountNumber: accountNumber,
         bankBranchId: selectedBankBranchId.toString(),
@@ -94,7 +148,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
       Navigator.pop(context);
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "You have successfully added a Bank Account",
+        "You have successfully updated the Bank Account",
       )));
       Navigator.of(context)
           .push(new MaterialPageRoute(builder: (context) => ListAccounts()));
@@ -103,7 +157,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
 
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "Error Adding the Bank Account. ${error.message} ",
+        "Error updating the Bank Account. ${error.message} ",
       )));
     }
   }
@@ -399,143 +453,150 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Create Bank Account",
+        title: "Edit Bank Account",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(builder: (context) {
-        return Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              controller: _scrollController,
-              child: Column(
-                children: <Widget>[
-                  toolTip(
-                      context: context,
-                      title: "",
-                      message: "Create a new bank account",
-                      showTitle: false),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+        return pageLoaded
+            ? Form(
+                key: _formKey,
+                child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    controller: _scrollController,
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          simpleTextInputField(
-                              context: context,
-                              labelText: 'Enter account name',
-                              validator: (value) {
-                                Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
-                                RegExp regex = new RegExp(pattern);
-                                if (!regex.hasMatch(value))
-                                  return 'Invalid bank account name';
-                                else
-                                  return null;
-                              },
-                              onSaved: (value) => bankAccountName = value,
-                              onChanged: (value) {
-                                setState(() {
-                                  bankAccountName = value;
-                                });
-                              }),
-                          TextFormField(
-                            controller: bankTextController,
-                            readOnly: true,
-                            style: inputTextStyle(),
-                            decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.auto,
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                color: Theme.of(context).hintColor,
-                                width: 1.0,
-                              )),
-                              hintText: 'Select Bank',
-                              labelText: 'Select Bank',
-                            ),
-                            onTap: () {
-                              //show popup to select bank
-                              _bankPrompt();
-                            },
-                          ),
-                          TextFormField(
-                            controller: bankBranchTextController,
-                            readOnly: true,
-                            style: inputTextStyle(),
-                            decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.auto,
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                color: Theme.of(context).hintColor,
-                                width: 1.0,
-                              )),
-                              enabled: selectedBankId > 0,
-                              hintText: selectedBankId > 0
-                                  ? 'Select bank branch'
-                                  : 'Select bank First',
-                              labelText: selectedBankId > 0
-                                  ? 'Select bank branch'
-                                  : 'Select bank First',
-                            ),
-                            onTap: () {
-                              //show popup to select bank
-                              _bankBranchPrompt();
-                            },
-                          ),
-                          numberTextInputField(
+                      children: <Widget>[
+                        toolTip(
                             context: context,
-                            labelText: 'Enter account number',
-                            onChanged: (value) {
-                              setState(() {
-                                accountNumber = value;
-                              });
-                            },
-                            validator: (value) {
-                              Pattern pattern = r'^([0-9]{8,20})$';
-                              RegExp regex = new RegExp(pattern);
-                              if (!regex.hasMatch(value))
-                                return 'Invalid Bank account number';
-                              else
-                                return null;
-                            },
-                            onSaved: (value) => accountNumber = value,
-                          ),
-                          amountTextInputField(
-                            context: context,
-                            labelText: 'Initial Balance',
-                            onChanged: (value) {
-                              setState(() {
-                                initialBalance = double.parse(value);
-                              });
-                            },
-                            validator: (value) {
-                              return null;
-                            },
-                            onSaved: (value) =>
-                                initialBalance = double.parse(value),
-                          ),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          defaultButton(
-                            context: context,
-                            text: "CREATE ACCOUNT",
-                            onPressed: () async {
-                              if (_formKey.currentState.validate() &&
-                                  selectedBankId > 0 &&
-                                  selectedBankBranchId > 0) {
-                                await createNewBankAccount(context);
-                              }
-                            },
-                          ),
-                        ]),
-                  ),
-                ],
-              )),
-        );
+                            title: "",
+                            message: "Edit bank account",
+                            showTitle: false),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                simpleTextInputField(
+                                    context: context,
+                                    labelText: 'Enter account name',
+                                    controller: accountNameTextController,
+                                    validator: (value) {
+                                      Pattern pattern =
+                                          r'^([A-Za-z0-9_ ]{2,})$';
+                                      RegExp regex = new RegExp(pattern);
+                                      if (!regex.hasMatch(value))
+                                        return 'Invalid bank account name';
+                                      else
+                                        return null;
+                                    },
+                                    onSaved: (value) => bankAccountName = value,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        bankAccountName = value;
+                                      });
+                                    }),
+                                TextFormField(
+                                  controller: bankTextController,
+                                  readOnly: true,
+                                  style: inputTextStyle(),
+                                  decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                      color: Theme.of(context).hintColor,
+                                      width: 1.0,
+                                    )),
+                                    hintText: 'Select Bank',
+                                    labelText: 'Select Bank',
+                                  ),
+                                  onTap: () {
+                                    //show popup to select bank
+                                    _bankPrompt();
+                                  },
+                                ),
+                                TextFormField(
+                                  controller: bankBranchTextController,
+                                  readOnly: true,
+                                  style: inputTextStyle(),
+                                  decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                      color: Theme.of(context).hintColor,
+                                      width: 1.0,
+                                    )),
+                                    enabled: selectedBankId > 0,
+                                    hintText: selectedBankId > 0
+                                        ? 'Select bank branch'
+                                        : 'Select bank First',
+                                    labelText: selectedBankId > 0
+                                        ? 'Select bank branch'
+                                        : 'Select bank First',
+                                  ),
+                                  onTap: () {
+                                    //show popup to select bank
+                                    _bankBranchPrompt();
+                                  },
+                                ),
+                                numberTextInputField(
+                                  context: context,
+                                  labelText: 'Enter account number',
+                                  controller: accountNumberTextController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      accountNumber = value;
+                                    });
+                                  },
+                                  validator: (value) {
+                                    Pattern pattern = r'^([0-9]{8,20})$';
+                                    RegExp regex = new RegExp(pattern);
+                                    if (!regex.hasMatch(value))
+                                      return 'Invalid Bank account number';
+                                    else
+                                      return null;
+                                  },
+                                  onSaved: (value) => accountNumber = value,
+                                ),
+                                amountTextInputField(
+                                  context: context,
+                                  labelText: 'Initial Balance',
+                                  controller: initialAmountTextController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      initialBalance = double.parse(value);
+                                    });
+                                  },
+                                  validator: (value) {
+                                    return null;
+                                  },
+                                  onSaved: (value) =>
+                                      initialBalance = double.parse(value),
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                defaultButton(
+                                  context: context,
+                                  text: "EDIT ACCOUNT",
+                                  onPressed: () async {
+                                    if (_formKey.currentState.validate() &&
+                                        selectedBankId > 0 &&
+                                        selectedBankBranchId > 0) {
+                                      await editBankAccount(context);
+                                    }
+                                  },
+                                ),
+                              ]),
+                        ),
+                      ],
+                    )),
+              )
+            : Center(child: CircularProgressIndicator());
       }),
     );
   }

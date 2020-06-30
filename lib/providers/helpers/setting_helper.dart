@@ -5,7 +5,6 @@ import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 List<CategorisedAccount> getCategorisedAccounts(dynamic response) {
   List<CategorisedAccount> accounts = [];
 
-  print(response);
   final groupBankAccounts = response['bank_accounts'] as List<dynamic>;
   final groupSaccoAccounts = response['sacco_accounts'] as List<dynamic>;
   final groupMobileMoneyAccounts =
@@ -104,7 +103,9 @@ Group parseSingleGroup(dynamic groupJSON) {
 List<CategorisedAccount> parseAccountsJson(
     List<dynamic> accountsJson, int typeId) {
   List<CategorisedAccount> accounts = [];
+  int position = 0;
   for (var account in accountsJson) {
+    ++position;
     String id = account['id'].toString();
     String name = account['name'].toString();
 
@@ -119,8 +120,9 @@ List<CategorisedAccount> parseAccountsJson(
         id: id,
         name: name,
         accountNumber: accountNumber,
-        typeId: typeId);
-
+        typeId: typeId,
+        uniqueId: position,
+    );
     accounts.add(newAccount);
   }
 

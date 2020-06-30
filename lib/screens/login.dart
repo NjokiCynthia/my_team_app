@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                     TextFormField(
                       enabled: _isFormInputEnabled,
                       decoration: InputDecoration(
-                        hasFloatingPlaceholder: true,
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
                         labelText: 'Phone number or Email',
                         // enabledBorder: UnderlineInputBorder(
                         //   borderSide: BorderSide(

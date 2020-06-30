@@ -6,7 +6,7 @@ import 'common.dart';
 
 class DatePicker extends StatelessWidget {
   final String labelText;
-  final DateTime selectedDate,lastDate;
+  final DateTime selectedDate, lastDate;
   final ValueChanged<DateTime> selectDate;
 
   const DatePicker({
@@ -22,7 +22,8 @@ class DatePicker extends StatelessWidget {
         context: context,
         initialDate: selectedDate,
         firstDate: new DateTime(1970, 8),
-        lastDate: lastDate.isAfter(selectedDate)?lastDate:new DateTime(2101));
+        lastDate:
+            lastDate.isAfter(selectedDate) ? lastDate : new DateTime(2101));
     if (picked != null && picked != selectedDate) selectDate(picked);
   }
 
@@ -63,7 +64,7 @@ class _InputDropdown extends StatelessWidget {
         decoration: InputDecoration(
           labelStyle: inputTextStyle(),
           labelText: labelText,
-          hasFloatingPlaceholder: true,
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
           enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
             color: Theme.of(context).hintColor,
