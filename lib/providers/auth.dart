@@ -54,6 +54,14 @@ class Auth with ChangeNotifier {
     return _firstName + " " + _lastName;
   }
 
+  String get firstNameOnly {
+    return _firstName;
+  }
+
+  String get lastNameOnly {
+    return _lastName;
+  }
+
   String get phoneNumber {
     return _phoneNumber;
   }
@@ -70,15 +78,12 @@ class Auth with ChangeNotifier {
     return _avatar;
   }
 
-
   static Future<bool> imageExists(avatarUrl) async {
     return io.File(avatarUrl).exists();
   }
 
   String get displayAvatar {
-    var result = (_avatar!=null && _avatar!='null' && _avatar!='')?
-                  CustomHelper.imageUrl+_avatar:
-                  null;
+    var result = (_avatar != null && _avatar != 'null' && _avatar != '') ? CustomHelper.imageUrl + _avatar : null;
     return result;
   }
 
@@ -87,8 +92,7 @@ class Auth with ChangeNotifier {
     if (prefs.containsKey(user)) {
       String userObject = prefs.getString(user);
       try {
-        final extractedUserData =
-            json.decode(userObject) as Map<String, Object>;
+        final extractedUserData = json.decode(userObject) as Map<String, Object>;
         if (_phoneNumber == "") {
           _phoneNumber = extractedUserData[phone]..toString();
         }
@@ -113,7 +117,7 @@ class Auth with ChangeNotifier {
 
   void setUserObject(String userObject) async {
     final prefs = await SharedPreferences.getInstance();
-    if(prefs.containsKey(user)){
+    if (prefs.containsKey(user)) {
       prefs.remove(user);
     }
     prefs.setString(user, userObject);
@@ -135,14 +139,13 @@ class Auth with ChangeNotifier {
       String userObject = prefs.getString(user);
       try {
         if (key != null && key.isNotEmpty && key != "0") {
-          final extractedUserData =
-              json.decode(userObject) as Map<String, Object>;
+          final extractedUserData = json.decode(userObject) as Map<String, Object>;
           if (extractedUserData.containsKey(key)) {
             return extractedUserData[key].toString();
-          } else if(key==identity){
-            if(extractedUserData[phone].toString()!=''){
+          } else if (key == identity) {
+            if (extractedUserData[phone].toString() != '') {
               return extractedUserData[phone].toString();
-            }else{
+            } else {
               return extractedUserData[email].toString();
             }
           } else {
@@ -152,15 +155,14 @@ class Auth with ChangeNotifier {
           return "";
         }
       } catch (error) {
-        throw CustomException(
-            message: "JSON Passing error " + error.toString());
+        throw CustomException(message: "JSON Passing error " + error.toString());
       }
     } else {
       return "";
     }
   }
 
-  Future<void> updateUserDetails(String key, String value) async{
+  Future<void> updateUserDetails(String key, String value) async {
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(user)) {
       String userObject = prefs.getString(user);
@@ -249,7 +251,7 @@ class Auth with ChangeNotifier {
         userResponse = {
           'userExists': 2,
           'userGroups': '',
-          'uniqueCode' : response['unique_code'],
+          'uniqueCode': response['unique_code'],
         };
       }
       return userResponse;
@@ -260,55 +262,54 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> registerUser(Map<String,dynamic> userObject) async{
-    try{
-      String newAvatar; 
-      if(userObject['avatar'] !=null){
+  Future<void> registerUser(Map<String, dynamic> userObject) async {
+    try {
+      String newAvatar;
+      if (userObject['avatar'] != null) {
         print(userObject['avatar']);
-        final resizedImage = await CustomHelper.resizeFileImage(userObject['avatar'],300);
+        final resizedImage = await CustomHelper.resizeFileImage(userObject['avatar'], 300);
         newAvatar = base64Encode(resizedImage.readAsBytesSync());
       }
       const url = EndpointUrl.SIGNUP;
       final postRequest = json.encode({
-        "identity":userObject['identity'],
-        "first_name":userObject['firstName'],
-        "last_name":userObject['lastName'],
-        "avatar" : newAvatar,
-        "password" : userObject['identity'],
-        "confirm_password" : userObject['identity'],
-        'unique_code' : userObject['uniqueCode'],
+        "identity": userObject['identity'],
+        "first_name": userObject['firstName'],
+        "last_name": userObject['lastName'],
+        "avatar": newAvatar,
+        "password": userObject['identity'],
+        "confirm_password": userObject['identity'],
+        'unique_code': userObject['uniqueCode'],
       });
       final response = await PostToServer.post(postRequest, url);
       String userFirstName = response['user']["first_name"].toString();
-        String userLastName = response['user']["last_name"].toString();
-        String userUserId = response['user']["id"].toString();
-        String userUserEmail = response['user']["email"].toString();
-        String userUserPhone = response['user']["phone"].toString();
-        String userUserAvatar = response['user']["avatar"].toString();
-        setUserObject(json.encode({
-          userId: userUserId,
-          firstName: userFirstName,
-          lastName: userLastName,
-          email: userUserEmail,
-          phone: userUserPhone,
-          userAvatar: userUserAvatar,
-        }));
-        _firstName = userFirstName;
-        _lastName = userLastName;
-        _userId = userUserId;
-        _emailAddress = userUserEmail;
-        _phoneNumber = userUserPhone;
-        _avatar = userUserAvatar;
-        final accessToken1 = response["access_token"].toString();
-        await setAccessToken(accessToken1);
-        await setPreference(isLoggedIn, "true");
+      String userLastName = response['user']["last_name"].toString();
+      String userUserId = response['user']["id"].toString();
+      String userUserEmail = response['user']["email"].toString();
+      String userUserPhone = response['user']["phone"].toString();
+      String userUserAvatar = response['user']["avatar"].toString();
+      setUserObject(json.encode({
+        userId: userUserId,
+        firstName: userFirstName,
+        lastName: userLastName,
+        email: userUserEmail,
+        phone: userUserPhone,
+        userAvatar: userUserAvatar,
+      }));
+      _firstName = userFirstName;
+      _lastName = userLastName;
+      _userId = userUserId;
+      _emailAddress = userUserEmail;
+      _phoneNumber = userUserPhone;
+      _avatar = userUserAvatar;
+      final accessToken1 = response["access_token"].toString();
+      await setAccessToken(accessToken1);
+      await setPreference(isLoggedIn, "true");
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
-    }catch(error){
+    } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
-
 
   void logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -318,11 +319,11 @@ class Auth with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> updateUserName(String name)async{
+  Future<void> updateUserName(String name) async {
     const url = EndpointUrl.UPDATE_USER_NAME;
     final postRequest = json.encode({
       "name": name.trim(),
-      "user_id" : _userId,
+      "user_id": _userId,
     });
     try {
       final response = await PostToServer.post(postRequest, url);
@@ -330,8 +331,8 @@ class Auth with ChangeNotifier {
       String userLastName = response["last_name"]..toString();
       _firstName = userFirstName;
       _lastName = userLastName;
-      await updateUserDetails(firstName,userFirstName);
-      await updateUserDetails(lastName,userLastName);
+      await updateUserDetails(firstName, userFirstName);
+      await updateUserDetails(lastName, userLastName);
       notifyListeners();
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
@@ -340,16 +341,16 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> updateUserEmailAddress(String emailAddress) async{
+  Future<void> updateUserEmailAddress(String emailAddress) async {
     const url = EndpointUrl.UPDATE_USER_EMAIL_ADDRESS;
     final postRequest = json.encode({
       "email": emailAddress.trim(),
-      "user_id" : _userId,
+      "user_id": _userId,
     });
     try {
       await PostToServer.post(postRequest, url);
       _emailAddress = emailAddress;
-      await updateUserDetails(email,emailAddress);
+      await updateUserDetails(email, emailAddress);
       notifyListeners();
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
@@ -358,30 +359,30 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> updateUserAvatar(io.File avatar)async{
+  Future<void> updateUserAvatar(io.File avatar) async {
     const url = EndpointUrl.EDIT_NEW_USER_PHOTO;
-    try{
-      final resizedImage = await CustomHelper.resizeFileImage(avatar,300);
+    try {
+      final resizedImage = await CustomHelper.resizeFileImage(avatar, 300);
       print("resizedImage : $resizedImage");
-      try{
+      try {
         final newAvatar = base64Encode(resizedImage.readAsBytesSync());
         final postRequest = json.encode({
           "avatar": newAvatar,
-          "user_id" : _userId,
+          "user_id": _userId,
         });
         final response = await PostToServer.post(postRequest, url);
-        try{
+        try {
           final newUserAvatar = response["avatar"];
           _avatar = newUserAvatar;
-          await updateUserDetails(userAvatar,newUserAvatar);
+          await updateUserDetails(userAvatar, newUserAvatar);
           notifyListeners();
-        }catch (error) {
+        } catch (error) {
           throw CustomException(message: ERROR_MESSAGE);
         }
-      }catch (error) {
+      } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
-    }catch (error) {
+    } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }

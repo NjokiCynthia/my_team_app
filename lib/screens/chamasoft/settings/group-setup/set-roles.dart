@@ -1,11 +1,18 @@
 import 'dart:math';
 
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:contacts_service/contacts_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +32,67 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
   GroupRoles memberRole = GroupRoles(roleId: "0", roleName: "Member");
   List<CustomContact> selectedContacts = [];
   Map<String, int> roleStatus = {};
-  GlobalKey _dropdownButtonKey;
+  bool addedCurrentUser = false;
+
+  Future<void> _submitMembers(BuildContext context) async {
+    List<Map<String, String>> members = [];
+    for (CustomContact customContact in selectedContacts) {
+      Map<String, String> map = {};
+      var phoneList = customContact.contact.phones.toList();
+
+      String email = "";
+      String phone = phoneList[0].value;
+      if (phone.contains("@")) {
+        email = phone;
+        phone = "";
+      }
+
+      String firstName = customContact.contact.givenName;
+      String lastName = customContact.contact.familyName;
+
+      String roleId = customContact.role.roleId;
+
+      map["first_name"] = firstName;
+      map["last_name"] = lastName;
+      map["email"] = email;
+      map["phone"] = phone.replaceAll(" ", "");
+      map["group_role_id"] = roleId;
+
+      members.add(map);
+    }
+
+    try {
+      await Provider.of<Groups>(context, listen: false).addGroupMembers(members);
+      Navigator.of(context).pop();
+
+      showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+            content: heading2(
+                text: "You have successfully added members to your group",
+                textAlign: TextAlign.center,
+                color: Theme.of(context).textSelectionHandleColor),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: subtitle1(text: "Okay", color: primaryColor),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  int count = 0;
+                  Navigator.of(context).popUntil((_) => count++ >= 2);
+                },
+              )
+            ]),
+      );
+    } on CustomException catch (error) {
+      Navigator.of(context).pop();
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submitMembers(context);
+          });
+    }
+  }
 
   void _updateRoleStatus(GroupRoles currentRole, GroupRoles newRole) {
     if ("0" == currentRole.roleId && "0" != newRole.roleId) {
@@ -54,7 +121,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
     roleStatus.forEach((key, value) {
       if (value == 1) {
         roles.forEach((element) {
-          if (identical(key, element)) {
+          if (key == element.roleName) {
             tempRoles.add(element);
           }
         });
@@ -62,64 +129,87 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
     });
   }
 
-  void _showDropDown() {
-/*    DropdownButton(
-      hint: Text("Set Role"),
-      value: tempRoles.indexOf(customContact.role) != -1 ? tempRoles[tempRoles.indexOf(customContact.role)] : tempRoles[0],
-      onChanged: (GroupRoles role) {
-        setState(() {
-          customContact.role = role;
-          //_updateRoleStatus(, role);
-        });
-      },
-      items: tempRoles.map((GroupRoles role) {
-        return DropdownMenuItem<GroupRoles>(
-          value: role,
-          child: Text(
-            role.roleName,
-            style: TextStyle(color: Colors.black),
-          ),
-        );
-      }).toList(),
-    );*/
+  void _showGroupRoles(BuildContext context, int position) {
+    showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    width: 300,
+                    height: 300,
+                    child: ScrollConfiguration(
+                      behavior: CustomScrollBehavior(),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        separatorBuilder: (BuildContext context, int index) => Divider(
+                          color: Theme.of(context).dividerColor,
+                        ),
+                        itemBuilder: (context, index) {
+                          GroupRoles groupRole = tempRoles[index];
+                          return CupertinoDialogAction(
+                            child: customTitleWithWrap(
+                                text: groupRole.roleName, textAlign: TextAlign.center, color: Theme.of(context).textSelectionHandleColor),
+                            onPressed: () {
+                              print(groupRole.roleName + " tapped");
+                              setState(() {
+                                _updateRoleStatus(selectedContacts[position].role, groupRole);
+                                selectedContacts[position].role = groupRole;
+                              });
+                              Navigator.of(ctx).pop();
+                            },
+                          );
+                        },
+                        itemCount: tempRoles.length,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              title: heading2(text: "Set Role", textAlign: TextAlign.center, color: Theme.of(context).textSelectionHandleColor),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: subtitle1(text: "Close", color: primaryColor),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
+            ));
   }
 
   @override
   void initState() {
     selectedContacts = widget.initialSelectedContacts;
+    for (CustomContact contact in selectedContacts) {
+      contact.role = memberRole;
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<Auth>(context);
     roles = Provider.of<Groups>(context).getCurrentGroup().groupRoles;
-
-    final dropDown = DropdownButton(
-      key: _dropdownButtonKey,
-      onChanged: (GroupRoles role) {
-        setState(() {
-          //customContact.role = role;
-          //_updateRoleStatus(, role);
-        });
-      },
-      items: tempRoles.map((GroupRoles role) {
-        return DropdownMenuItem<GroupRoles>(
-          value: role,
-          child: Text(
-            role.roleName,
-            style: TextStyle(color: Colors.black),
-          ),
-        );
-      }).toList(),
-    );
-
     return Scaffold(
-      appBar: secondaryPageAppbar(
+      appBar: tertiaryPageAppbar(
           context: context,
           title: "Set Group Roles",
-          action: () => Navigator.pop(context, selectedContacts),
+          action: () {
+            Navigator.of(context).pop();
+          },
           elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.arrow_left),
+          leadingIcon: LineAwesomeIcons.arrow_left,
+          trailingIcon: LineAwesomeIcons.check,
+          trailingAction: () async {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                });
+            await _submitMembers(context);
+          }),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
@@ -127,10 +217,23 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
         margin: EdgeInsets.only(top: 8.0),
         child: Consumer<Groups>(builder: (context, data, child) {
           roleStatus = data.getGroupRolesAndCurrentMemberStatus.roleStatus;
+          if (!addedCurrentUser) {
+            if (data.getGroupRolesAndCurrentMemberStatus.currentMemberStatus == 0) {
+              addedCurrentUser = true;
+              List<Item> item = [];
+              item.add(Item(value: auth.phoneNumber));
+              if (auth.phoneNumber.isEmpty) {
+                item.add(Item(value: auth.emailAddress));
+              }
+              CustomContact customContact = CustomContact(
+                  contact: Contact(displayName: auth.userName, givenName: auth.firstNameOnly, familyName: auth.lastNameOnly, phones: item),
+                  role: memberRole);
+              selectedContacts.insert(0, customContact);
+            }
+          }
           tempRoles = [];
           tempRoles.add(memberRole);
           _cleanRolesList();
-
           return ListView.separated(
               separatorBuilder: (BuildContext context, int index) => Divider(
                     color: Theme.of(context).dividerColor,
@@ -168,8 +271,9 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                         child: smallBadgeButton(
                           backgroundColor: Colors.blueGrey.withOpacity(0.2),
                           textColor: Colors.blueGrey,
-                          text: tempRoles[0].roleName,
-                          action: () {},
+                          text: customContact.role.roleName,
+                          // == null ? "Member" : customContact.role.roleName,
+                          action: () => _showGroupRoles(context, index),
                           buttonHeight: 24.0,
                           textSize: 12.0,
                         ),
