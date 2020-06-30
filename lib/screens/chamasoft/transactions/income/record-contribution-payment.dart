@@ -87,7 +87,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
 
   void _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
-      print("validation failed");
       return;
     }
     setState(() {
@@ -103,7 +102,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     try {
       await Provider.of<Groups>(context, listen: false).recordContibutionPayments(_formData);
     } on CustomException catch (error) {
-      print("Error: ${error.toString()}");
       StatusHandler().handleStatus(
           context: context,
           error: error,
@@ -236,6 +234,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               labelText: "Select Deposit Method",
                               listItems: depositMethods,
                               selectedItem: depositMethod,
+                              validator: (value){
+                                if(value==null){
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
                               onChanged: (value) {
                                 setState(() {
                                   depositMethod = value;
@@ -252,6 +256,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         labelText: "Select Contribution",
                         listItems: contributionOptions,
                         selectedItem: contributionId,
+                        validator: (value){
+                          if(value==null){
+                            return "This field is required";
+                          }
+                          return null;
+                        },
                         onChanged: (value) {
                           setState(() {
                             contributionId = value;
@@ -270,6 +280,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                             accountId = value;
                           });
                         },
+                        validator: (value){
+                          if(value==null){
+                            return "This field is required";
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(
                         height: 10,
@@ -282,6 +298,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                           setState(() {
                             memberTypeId = value;
                           });
+                        },
+                        validator: (value){
+                          if(value==null){
+                            return "This field is required";
+                          }
+                          return null;
                         },
                       ),
                       Visibility(
@@ -332,7 +354,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         height: 10,
                       ),
                       _isLoading
-                          ? Center(child: CircularProgressIndicator())
+                          ? Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Center(
+                                child: CircularProgressIndicator()
+                              ),
+                          )
                           : defaultButton(
                               context: context,
                               text: "SAVE",

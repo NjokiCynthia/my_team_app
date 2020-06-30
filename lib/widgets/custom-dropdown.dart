@@ -5,13 +5,14 @@ import 'package:flutter/material.dart';
 class CustomDropDownButton extends StatelessWidget {
   final int selectedItem;
   final String labelText;
-  final Function onChanged;
+  final Function onChanged,validator;
   final List<NamesListItem> listItems;
 
   const CustomDropDownButton({
     this.selectedItem,
     this.labelText,
     this.onChanged,
+    this.validator,
     this.listItems,
   });
 
@@ -23,42 +24,40 @@ class CustomDropDownButton extends StatelessWidget {
           child: new Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              InputDecorator(
-                decoration: InputDecoration(
-                  filled: false,
-                  labelStyle: inputTextStyle(),
-                  hintStyle: inputTextStyle(),
-                  errorStyle: inputTextStyle(),
-                  hintText: labelText,
-                  labelText: selectedItem == 0 ? labelText : labelText,
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Theme.of(context).hintColor,
-                      width: 1.0,
-                    ),
-                  ),
-                ),
-                isEmpty: selectedItem == null,
-                child: new Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: Theme.of(context).cardColor,
-                  ),
-                  child: new DropdownButton(
-                    value: selectedItem,
-                    isDense: true,
-                    onChanged: onChanged,
-                    items: listItems.map((NamesListItem item) {
-                        return new DropdownMenuItem(
-                          value: item.id,
-                          child: new Text(
-                            item.name,
-                            style: inputTextStyle(),
-                          ),
-                        );
-                      }).toList(),
-                  ),
-                ),
-              ),
+              //InputDecorator(
+                // decoration: InputDecoration(
+                //   icon: const Icon(Icons.laptop),
+                //   border: InputBorder.none,
+                //   focusedBorder: InputBorder.none,
+                //   enabledBorder: InputBorder.none,
+                //   errorBorder: InputBorder.none,
+                //   disabledBorder: InputBorder.none,
+                //   contentPadding:EdgeInsets.all(0.0),
+                //   hintText: labelText,
+                //   filled: false,
+                //   labelStyle: inputTextStyle(),
+                //   hintStyle: inputTextStyle(),
+                //   errorStyle: inputTextStyle(),
+                //   labelText: selectedItem == 0 ? labelText : labelText,
+                // ),
+                DropdownButtonFormField(
+                  hint: Text(labelText),
+                  isExpanded: true,
+                  value: selectedItem,
+                  items: listItems.map((NamesListItem item) {
+                    return new DropdownMenuItem(
+                      value: item.id,
+                      child: new Text(
+                        item.name,
+                        style: inputTextStyle(),
+                      ),
+                    );
+                  }).toList(),
+                  isDense: true,
+                  onChanged: onChanged,
+                  validator: validator,
+                )
+              //)
             ],
           ),
         );

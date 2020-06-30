@@ -2050,7 +2050,7 @@ class Groups with ChangeNotifier {
 
   Future<void> recordContibutionPayments(Map<String,dynamic> formData)async{
     try{
-      const url = EndpointUrl.RECORD_CONTRIBUTION_PAYMENTS;
+      const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
       final userId = await Auth.getUser(Auth.userId);
       final identity = await Auth.getUser(Auth.identity);
       formData['user_id'] = userId;
