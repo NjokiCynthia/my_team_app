@@ -99,6 +99,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['account_id'] = accountId;
     _formData['request_id'] = requestId;
     _formData['amount'] = contributionAmount;
+    _formData['member_type_id'] = memberTypeId;
     try {
       await Provider.of<Groups>(context, listen: false).recordContibutionPayments(_formData);
     } on CustomException catch (error) {
