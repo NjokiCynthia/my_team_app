@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-roles.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -211,9 +212,10 @@ class _ListContactsState extends State<ListContacts> {
   }
 
   void _populateContacts(Iterable<Contact> contacts) {
+    final role = GroupRoles(roleName: "Member", roleId: "0");
     for (Contact contact in contacts) {
       if (contact.phones.length > 0) {
-        _contacts.add(CustomContact(contact: contact));
+        _contacts.add(CustomContact(contact: contact, role: role));
       }
     }
 
