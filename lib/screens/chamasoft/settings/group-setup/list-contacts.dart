@@ -71,7 +71,7 @@ class _ListContactsState extends State<ListContacts> {
       Navigator.of(context).pop();
       Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) => SetMemberRoles(
-                initialSelectedContacts: _selectedContacts,
+                initialSelectedContacts: _selectedContacts.toList(),
               )));
     } on CustomException catch (error) {
       Navigator.of(context).pop();

@@ -116,24 +116,24 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 20.0, 20.0, 20.0),
                   child: auth.displayAvatar != null
-                    ? new CachedNetworkImage(
-                        imageUrl: auth.displayAvatar,
-                        placeholder: (context, url) => const CircleAvatar(
-                          radius: 45.0,
+                      ? new CachedNetworkImage(
+                          imageUrl: auth.displayAvatar,
+                          placeholder: (context, url) => const CircleAvatar(
+                            radius: 45.0,
+                            backgroundImage: const AssetImage('assets/no-user.png'),
+                          ),
+                          imageBuilder: (context, image) => CircleAvatar(
+                            backgroundImage: image,
+                            radius: 45.0,
+                          ),
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                          fadeOutDuration: const Duration(seconds: 1),
+                          fadeInDuration: const Duration(seconds: 3),
+                        )
+                      : const CircleAvatar(
                           backgroundImage: const AssetImage('assets/no-user.png'),
-                        ),
-                        imageBuilder: (context, image) => CircleAvatar(
-                          backgroundImage: image,
                           radius: 45.0,
                         ),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                        fadeOutDuration: const Duration(seconds: 1),
-                        fadeInDuration: const Duration(seconds: 3),
-                      )
-                    : const CircleAvatar(
-                        backgroundImage: const AssetImage('assets/no-user.png'),
-                        radius: 45.0,
-                      ),
                 ),
                 Expanded(
                   child: Column(
