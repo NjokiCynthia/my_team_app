@@ -8,6 +8,7 @@ import 'package:introduction_screen/introduction_screen.dart';
 import 'package:provider/provider.dart';
 
 class IntroScreen extends StatefulWidget {
+  static const namedRoute = "intro-screen";
   IntroScreen({Key key}) : super(key: key);
 
   @override

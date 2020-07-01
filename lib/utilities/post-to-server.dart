@@ -151,7 +151,6 @@ class PostToServer {
                   break;
                 case 1:
                   //request successful
-                  //throw HttpException(message, ErrorStatusCode.statusNormal);
                   return responseBody;
                   break;
                 case 2:

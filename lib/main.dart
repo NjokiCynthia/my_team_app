@@ -47,12 +47,8 @@ class _MyAppState extends State<MyApp> {
             return themeChangeProvider;
           },
         ),
-        ChangeNotifierProxyProvider<Auth,Groups>(
-          update: (ctx,auth,previousGroups) => Groups(
-            previousGroups == null ? [] : previousGroups.item,
-            auth.id,
-            auth.userIdentity
-          ),
+        ChangeNotifierProxyProvider<Auth, Groups>(
+          update: (ctx, auth, previousGroups) => Groups(previousGroups == null ? [] : previousGroups.item, auth.id, auth.userIdentity),
           create: (BuildContext context) {},
         ),
       ],
@@ -64,6 +60,7 @@ class _MyAppState extends State<MyApp> {
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
           home: IntroScreen(),
           routes: {
+            IntroScreen.namedRoute: (ctx) => IntroScreen(),
             Login.namedRoute: (ctx) => Login(),
             MyGroups.namedRoute: (ctx) => MyGroups(),
             SignUp.namedRoute: (ctx) => SignUp(),
