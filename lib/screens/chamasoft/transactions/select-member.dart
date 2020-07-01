@@ -4,19 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
-  MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025', amount: 2500.0),
-  MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025', amount: 5820.0),
-  MembersFilterEntry('Edwin Kapkei', 'EK', '+254 725 854 025', amount: 7800.0),
-  MembersFilterEntry('Geoffrey Githaiga', 'GG', '+254 725 854 025',
-      amount: 6000.0),
-  MembersFilterEntry('Peter Dragon', 'PD', '+254 725 854 025', amount: 2500.0),
-  MembersFilterEntry('Samson Mburu', 'SM', '+254 725 854 025', amount: 5820.0),
-  MembersFilterEntry('Kevin Njoroge', 'KN', '+254 725 854 025', amount: 7800.0),
-  MembersFilterEntry('Lois Nduku', 'LN', '+254 725 854 025', amount: 6000.0),
-  MembersFilterEntry('Alex Dragon', 'PD', '+254 725 854 025', amount: 2500.0),
-  MembersFilterEntry('Benson Mburu', 'SM', '+254 725 854 025', amount: 5820.0),
-  MembersFilterEntry('Jane Njoroge', 'KN', '+254 725 854 025', amount: 7800.0),
-  MembersFilterEntry('Mary Nduku', 'LN', '+254 725 854 025', amount: 6000.0),
+  // MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025', amount: 2500.0),
+  // MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025', amount: 5820.0),
+  // MembersFilterEntry('Edwin Kapkei', 'EK', '+254 725 854 025', amount: 7800.0),
+  // MembersFilterEntry('Geoffrey Githaiga', 'GG', '+254 725 854 025',
+  //     amount: 6000.0),
+  // MembersFilterEntry('Peter Dragon', 'PD', '+254 725 854 025', amount: 2500.0),
+  // MembersFilterEntry('Samson Mburu', 'SM', '+254 725 854 025', amount: 5820.0),
+  // MembersFilterEntry('Kevin Njoroge', 'KN', '+254 725 854 025', amount: 7800.0),
+  // MembersFilterEntry('Lois Nduku', 'LN', '+254 725 854 025', amount: 6000.0),
+  // MembersFilterEntry('Alex Dragon', 'PD', '+254 725 854 025', amount: 2500.0),
+  // MembersFilterEntry('Benson Mburu', 'SM', '+254 725 854 025', amount: 5820.0),
+  // MembersFilterEntry('Jane Njoroge', 'KN', '+254 725 854 025', amount: 7800.0),
+  // MembersFilterEntry('Mary Nduku', 'LN', '+254 725 854 025', amount: 6000.0),
 ];
 
 class SelectMember extends StatefulWidget {
@@ -39,6 +39,7 @@ class SelectMemberState extends State<SelectMember> {
   @override
   void initState() {
     selectedMembersList = widget.initialMembersList;
+
     controller.addListener(() {
       setState(() {
         filter = controller.text;

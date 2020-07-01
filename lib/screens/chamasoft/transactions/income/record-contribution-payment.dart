@@ -73,14 +73,29 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     List<NamesListItem> emptyAccountOptions = [];
     for (var account in accounts) {
       for (var typeAccount in account) {
-        print("id: ${typeAccount.uniqueId}");
         emptyAccountOptions.add(NamesListItem(id: typeAccount.uniqueId, name: typeAccount.name));
       }
     }
-    print(emptyAccountOptions);
+    
+    List<Member> members = Provider.of<Groups>(context, listen: false).members;
+    if(members.length == 0){
+      await Provider.of<Groups>(context, listen: false).fetchMembers();
+      members = Provider.of<Groups>(context, listen: false).members;
+    }
+    List<MembersFilterEntry> emptyMemberOptions = [];
+    members.map((member) => 
+      emptyMemberOptions.add(MembersFilterEntry(
+        memberId: member.id,
+        name: member.name,
+        phoneNumber: member.identity,
+        amount: 0.0
+      ))
+    ).toList();
+
     setState(() {
       contributionOptions = emptyContributions;
       accountOptions = emptyAccountOptions;
+      selectedMembersList = emptyMemberOptions;
       _isInit = false;
     });
   }
