@@ -115,20 +115,17 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['request_id'] = requestId;
     _formData['amount'] = contributionAmount;
     _formData['member_type_id'] = memberTypeId;
-    Map<int,List<dynamic>> _individualMemberContributions = {};
+    List<dynamic> _individualMemberContributions = [];
     if(memberTypeId == 1){
-      int position = 0;
       selectedMembersList.map((MembersFilterEntry mem) {
-        List<dynamic> payment = [];
-        payment.add({
+        _individualMemberContributions.add({
           "member_id" : mem.memberId,
           "amount" : mem.amount
         });
-        _individualMemberContributions[position] = payment;
-        ++position;
       }).toList();
     }
     _formData['individual_payments'] = _individualMemberContributions;
+    print(_formData);
     try {
       await Provider.of<Groups>(context, listen: false).recordContibutionPayments(_formData);
     } on CustomException catch (error) {

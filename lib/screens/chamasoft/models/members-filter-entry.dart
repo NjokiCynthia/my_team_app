@@ -6,7 +6,7 @@ class MembersFilterEntry {
     this.initials, 
     this.phoneNumber,
     @required this.memberId,
-    this.amount = 0.0});
+    this.amount});
   final String name;
   final String initials;
   final String phoneNumber;
