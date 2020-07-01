@@ -29,7 +29,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   bool _isLoading = false;
   double _appBarElevation = 0;
   ScrollController _scrollController;
-  List<MembersFilterEntry> selectedMembersList = [];
+  List<MembersFilterEntry> selectedMembersList = [],memberOptions = [];
   int memberTypeId;
   final _formKey = new GlobalKey<FormState>();
   DateTime contributionDate = DateTime.now();
@@ -95,7 +95,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     setState(() {
       contributionOptions = emptyContributions;
       accountOptions = emptyAccountOptions;
-      selectedMembersList = emptyMemberOptions;
+      memberOptions = emptyMemberOptions;
       _isInit = false;
     });
   }
@@ -340,7 +340,10 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                       MaterialPageRoute(
                                           builder: (context) => SelectMember(
                                                 initialMembersList: selectedMembersList,
-                                              )));
+                                                membersList: memberOptions,
+                                              ))).then((value){
+                                                print("Result : $value");
+                                              });
                                 },
                                 child: Text(
                                   'Select members',

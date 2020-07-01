@@ -178,6 +178,7 @@ class FineMemberState extends State<FineMember> {
                                       builder: (context) => SelectMember(
                                             initialMembersList:
                                                 selectedMembersList,
+                                                membersList: [],
                                           )));
                             },
                             child: Text(
