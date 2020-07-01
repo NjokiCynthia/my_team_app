@@ -212,6 +212,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
                                           builder: (context) => SelectMember(
                                                 initialMembersList:
                                                     selectedMembersList,
+                                                    membersList: [],
                                               )));
                                 },
                                 child: Text(

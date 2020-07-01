@@ -47,8 +47,13 @@ class _MyAppState extends State<MyApp> {
             return themeChangeProvider;
           },
         ),
+
+        // ChangeNotifierProvider(
+        //   create: (ctx) => Groups(),
+        // ),
         ChangeNotifierProxyProvider<Auth, Groups>(
-          update: (ctx, auth, previousGroups) => Groups(previousGroups == null ? [] : previousGroups.item, auth.id, auth.userIdentity),
+          update: (ctx, auth, previousGroups) => Groups(previousGroups == null ? [] : previousGroups.item, auth.id, auth.userIdentity,
+              previousGroups == null ? '' : previousGroups.currentGroupId),
           create: (BuildContext context) {},
         ),
       ],

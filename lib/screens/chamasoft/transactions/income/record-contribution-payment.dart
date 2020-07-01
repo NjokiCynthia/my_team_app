@@ -29,7 +29,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   bool _isLoading = false;
   double _appBarElevation = 0;
   ScrollController _scrollController;
-  List<MembersFilterEntry> selectedMembersList = [];
+  List<MembersFilterEntry> selectedMembersList = [],memberOptions = [];
   int memberTypeId;
   final _formKey = new GlobalKey<FormState>();
   DateTime contributionDate = DateTime.now();
@@ -73,14 +73,29 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     List<NamesListItem> emptyAccountOptions = [];
     for (var account in accounts) {
       for (var typeAccount in account) {
-        print("id: ${typeAccount.uniqueId}");
         emptyAccountOptions.add(NamesListItem(id: typeAccount.uniqueId, name: typeAccount.name));
       }
     }
-    print(emptyAccountOptions);
+    
+    List<Member> members = Provider.of<Groups>(context, listen: false).members;
+    if(members.length == 0){
+      await Provider.of<Groups>(context, listen: false).fetchMembers();
+      members = Provider.of<Groups>(context, listen: false).members;
+    }
+    List<MembersFilterEntry> emptyMemberOptions = [];
+    members.map((member) => 
+      emptyMemberOptions.add(MembersFilterEntry(
+        memberId: member.id,
+        name: member.name,
+        phoneNumber: member.identity,
+        amount: 0.0
+      ))
+    ).toList();
+
     setState(() {
       contributionOptions = emptyContributions;
       accountOptions = emptyAccountOptions;
+      memberOptions = emptyMemberOptions;
       _isInit = false;
     });
   }
@@ -100,6 +115,17 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['request_id'] = requestId;
     _formData['amount'] = contributionAmount;
     _formData['member_type_id'] = memberTypeId;
+    List<dynamic> _individualMemberContributions = [];
+    if(memberTypeId == 1){
+      selectedMembersList.map((MembersFilterEntry mem) {
+        _individualMemberContributions.add({
+          "member_id" : mem.memberId,
+          "amount" : mem.amount
+        });
+      }).toList();
+    }
+    _formData['individual_payments'] = _individualMemberContributions;
+    print(_formData);
     try {
       await Provider.of<Groups>(context, listen: false).recordContibutionPayments(_formData);
     } on CustomException catch (error) {
@@ -320,12 +346,20 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               FlatButton(
                                 onPressed: () async {
                                   //open select members dialog
-                                  selectedMembersList = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SelectMember(
-                                                initialMembersList: selectedMembersList,
-                                              )));
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SelectMember(
+                                          initialMembersList: selectedMembersList,
+                                          membersList: memberOptions,
+                                        )
+                                      )
+                                    ).then((value){
+                                        setState(() {
+                                          selectedMembersList = value;
+                                        });   
+                                    }
+                                  );
                                 },
                                 child: Text(
                                   'Select members',
@@ -365,9 +399,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               context: context,
                               text: "SAVE",
                               onPressed: () {
-                                selectedMembersList.map((MembersFilterEntry mem) {
-                                  return print(mem.name);
-                                }).toList();
                                 _submit(context);
                               },
                             )

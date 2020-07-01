@@ -223,7 +223,6 @@ class GroupContributionSummary {
 
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
-  String currentGroupId = "";
 
   List<Group> _groups = [];
   List<Account> _accounts = [];
@@ -256,10 +255,21 @@ class Groups with ChangeNotifier {
 
   String userId;
   String identity;
-  Groups(this._groups,this.userId,this.identity);
+  String _currentGroupId;
+  Groups(List<Group> _groups,String userId,String identity,String _currentGroupId){
+    this._groups = _groups;
+    this.userId = userId;
+    this.identity = identity;
+    this._currentGroupId = _currentGroupId;
+    print(" currentGroupId $currentGroupId and length ${_groups.length}");
+  }
 
   List<Group> get item {
     return _groups;
+  }
+
+  String get currentGroupId{
+    return _currentGroupId;
   }
 
   List<Account> get accounts {
@@ -373,7 +383,7 @@ class Groups with ChangeNotifier {
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
     _switchGroupValuesToDefault();
-    currentGroupId = groupId;
+    _currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(selectedGroupId)) {
       prefs.remove(selectedGroupId);
@@ -408,7 +418,7 @@ class Groups with ChangeNotifier {
     Group group;
     bool groupFound = false;
     _groups.forEach((element) {
-      if (element.groupId == currentGroupId) {
+      if (element.groupId == _currentGroupId) {
         group = element;
         groupFound = true;
       }
@@ -462,7 +472,7 @@ class Groups with ChangeNotifier {
         final postRequest = json.encode({
           "avatar": newAvatar,
           "user_id": userId,
-          "group_id": currentGroupId,
+          "group_id": _currentGroupId,
         });
         await PostToServer.post(postRequest, url);
         await updateGroupProfile();
@@ -478,7 +488,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_DATA;
     final postRequest = json.encode({
       "user_id": userId,
-      "group_id": currentGroupId,
+      "group_id": _currentGroupId,
     });
     try {
       final response = await PostToServer.post(postRequest, url);
@@ -839,7 +849,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -871,7 +881,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -900,7 +910,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -929,7 +939,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -958,7 +968,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -987,7 +997,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1011,7 +1021,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1035,7 +1045,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1059,7 +1069,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1083,7 +1093,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1107,7 +1117,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1127,7 +1137,7 @@ class Groups with ChangeNotifier {
   Future<void> addGroupMembers(List<Map<String, String>> members) async {
     const url = EndpointUrl.ADD_MEMBERS;
     try {
-      final postRequest = json.encode({"user_id": userId, "group_id": currentGroupId, "members": members});
+      final postRequest = json.encode({"user_id": userId, "group_id": _currentGroupId, "members": members});
       print("PostRequest: " + postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1148,7 +1158,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1172,7 +1182,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1196,7 +1206,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "name": name,
       });
       try {
@@ -1222,7 +1232,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "email": email,
       });
       try {
@@ -1248,7 +1258,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "phone": phone,
       });
       try {
@@ -1274,7 +1284,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "country_id": countryId,
       });
       try {
@@ -1302,7 +1312,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "currency_id": currencyId,
       });
       try {
@@ -1340,7 +1350,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "order_members_by": orderMembersBy,
         "member_listing_order_by": memberListingOrderBy,
         "enable_member_information_privacy": enableMemberInformationPrivacy,
@@ -1372,7 +1382,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1397,7 +1407,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "bank_id": bankId,
       });
       try {
@@ -1423,7 +1433,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1447,7 +1457,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1471,7 +1481,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "sacco_id": saccoId,
       });
       try {
@@ -1502,7 +1512,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "account_name": accountName,
         "account_number": accountNumber,
         "bank_branch_id": bankBranchId,
@@ -1537,7 +1547,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "id": id,
         "account_name": accountName,
         "account_number": accountNumber,
@@ -1573,7 +1583,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "type": accountType,
         "account_name": accountName,
         "account_number": accountNumber,
@@ -1610,7 +1620,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "id": id,
         "type": accountType,
         "account_name": accountName,
@@ -1647,7 +1657,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "id": "",
         "account_name": accountName,
         "account_number": accountNumber,
@@ -1683,7 +1693,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "id": id,
         "account_name": accountName,
         "account_number": accountNumber,
@@ -1713,7 +1723,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "id": "",
         "account_name": accountName,
       });
@@ -1741,7 +1751,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
         "id": id,
         "account_name": accountName,
       });
@@ -1767,7 +1777,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
 
       try {
@@ -1793,7 +1803,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1818,7 +1828,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1849,7 +1859,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1877,7 +1887,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1903,7 +1913,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1931,7 +1941,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1953,7 +1963,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_LOAN_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": userId, "group_id": currentGroupId, "is_member_loans": 1});
+      final postRequest = json.encode({"user_id": userId, "group_id": _currentGroupId, "is_member_loans": 1});
       try {
         final response = await PostToServer.post(postRequest, url);
         final loans = response['loans'] as List<dynamic>;
@@ -1975,7 +1985,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_LOAN_STATEMENT;
 
     try {
-      final postRequest = json.encode({"user_id": userId, "group_id": currentGroupId, "id": loanId});
+      final postRequest = json.encode({"user_id": userId, "group_id": _currentGroupId, "id": loanId});
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['data'] as dynamic;
@@ -1998,7 +2008,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": userId,
-        "group_id": currentGroupId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -2028,7 +2038,7 @@ class Groups with ChangeNotifier {
       try {
         final postRequest = json.encode(formData);
         print(postRequest);
-        final response = await PostToServer.post(postRequest, url);
+        // final response = await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
