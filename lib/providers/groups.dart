@@ -452,7 +452,7 @@ class Groups with ChangeNotifier {
     }
     if (replace) {
       _groups.removeAt(position);
-      _groups.insert(0, loadedNewGroup);
+      _groups.insert(position, loadedNewGroup);
     } else if (isNewGroup) {
       _groups.add(loadedNewGroup);
       setSelectedGroupId(loadedNewGroup.groupId);

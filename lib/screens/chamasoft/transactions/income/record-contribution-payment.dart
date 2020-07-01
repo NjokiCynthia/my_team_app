@@ -46,6 +46,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   List<NamesListItem> accountOptions = [];
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
+  Map<String,dynamic> _individualMemberContributions ={};
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -115,15 +116,14 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['request_id'] = requestId;
     _formData['amount'] = contributionAmount;
     _formData['member_type_id'] = memberTypeId;
-    List<dynamic> _individualMemberContributions = [];
-    if(memberTypeId == 1){
-      selectedMembersList.map((MembersFilterEntry mem) {
-        _individualMemberContributions.add({
-          "member_id" : mem.memberId,
-          "amount" : mem.amount
-        });
-      }).toList();
-    }
+    // if(memberTypeId == 1){
+    //   selectedMembersList.map((MembersFilterEntry mem) {
+    //     _individualMemberContributions.add({
+    //       "member_id" : mem.memberId,
+    //       "amount" : mem.amount
+    //     });
+    //   }).toList();
+    // }
     _formData['individual_payments'] = _individualMemberContributions;
     print(_formData);
     try {
@@ -162,24 +162,49 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     for (MembersFilterEntry member in selectedMembersList) {
       yield ListTile(
 //          avatar: CircleAvatar(child: Text(member.initials)),
-        title: Text(member.name, style: TextStyle(color: Color(0xFFB3C7D9), fontWeight: FontWeight.w700)),
+          // Color(0xFFB3C7D9)
+        title: Container(
+          width: 200,
+          child: Text(member.name, style: TextStyle(
+          //color:Theme.of(context).textSelectionColor, 
+          //fontWeight: FontWeight.w700
+          fontSize: 17
+        ))),
         contentPadding: EdgeInsets.all(4.0),
-        subtitle: Text(
+        subtitle: Container(
+          width: 200,
+          child: Text(
           member.phoneNumber,
-          style: TextStyle(color: Color(0xFFB3C7D9)),
-        ),
+          style: TextStyle(
+            //color: Color(0xFFB3C7D9)
+            fontSize: 12
+          ),
+          
+        )),
         trailing: Container(
-          width: 250.0,
+          width:220.0,
           child: Row(
             children: <Widget>[
               Expanded(
-                flex: 5,
+                flex: 5, 
                 child: amountTextInputField(
-                    context: context,
-                    labelText: 'Enter Amount',
-                    onChanged: (value) {
-                      member.amount = value;
-                    }),
+                  labelText: "Enter Amount",
+                  context: context,
+                  onChanged: (value){
+                    _individualMemberContributions[member.memberId] = value;
+                    // _individualMemberContributions.insert(int.tryParse(member.memberId),{
+                    //   "member_id" : member.memberId,
+                    //   "amount" : value, 
+                    // });
+                    // print(_individualMemberContributions[int.tryParse(member.memberId)]);
+                  },
+                  validator: (value){
+                    if(value==null || value==""){
+                      return "Field is required";
+                    }
+                    return null;
+                  }
+                )
               ),
               Expanded(
                 child: circleIconButton(
