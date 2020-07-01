@@ -121,6 +121,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['individual_payments'] = _individualMemberContributions;
     try {
       await Provider.of<Groups>(context, listen: false).recordContibutionPayments(_formData);
+      Navigator.of(context).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
