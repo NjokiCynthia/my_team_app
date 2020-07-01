@@ -255,6 +255,10 @@ class Groups with ChangeNotifier {
   List<CategorisedAccount> _categorisedAccounts = [];
   GroupRolesStatusAndCurrentMemberStatus _groupRolesStatusAndCurrentMemberStatus;
 
+  String userId;
+  String token;
+  Groups(this._groups,this.userId,this.token);
+
   List<Group> get item {
     return _groups;
   }

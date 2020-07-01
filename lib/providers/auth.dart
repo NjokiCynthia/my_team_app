@@ -70,6 +70,10 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
+  String get token{
+    return accessToken;
+  }
+
   String get emailAddress {
     return _emailAddress;
   }

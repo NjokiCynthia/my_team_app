@@ -73,7 +73,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
 
   Future<void> _getUserGroupsOverlay(BuildContext context) async{
     var _groups = Provider.of<Groups>(context,listen: false).item;
-    //List<String> _overlayGroups;
+    _overlayItems = [];
+    _overlayItems.insert(0, {
+      "id": '0',
+      "title": "Create New",
+      "role": "Group, Merry-go-round, fundraiser"
+    });
     _groups.map((group) => {
       _overlayItems.add(
         {"id": group.groupId, "title": group.groupName, "role": group.isGroupAdmin?"Group Admin | ${group.groupRole}":group.groupRole}
@@ -84,11 +89,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   void initState() {
     _currentPage = 0;
-    _overlayItems.insert(0, {
-      "id": '0',
-      "title": "Create New",
-      "role": "Group, Merry-go-round, fundraiser"
-    });
     super.initState();
   }
 

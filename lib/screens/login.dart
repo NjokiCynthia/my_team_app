@@ -143,7 +143,7 @@ class _LoginState extends State<Login> {
                               enabled: _isFormInputEnabled,
                               initialSelection: 'KE',
                               favorite: ['+254', 'KE'],
-                              showFlag: false,
+                              showFlag: true,
                               flagWidth: 16,
                               textStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
                               showCountryOnly: false,
