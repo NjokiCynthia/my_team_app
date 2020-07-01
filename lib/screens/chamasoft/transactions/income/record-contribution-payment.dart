@@ -46,6 +46,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   List<NamesListItem> accountOptions = [];
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
+  Map<String,dynamic> _individualMemberContributions ={};
+  bool _isFormInputEnabled = true;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -106,6 +108,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     }
     setState(() {
       _isLoading = true;
+      _isFormInputEnabled = false;
     });
     _formKey.currentState.save();
     _formData['deposit_date'] = contributionDate.toString();
@@ -115,19 +118,10 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['request_id'] = requestId;
     _formData['amount'] = contributionAmount;
     _formData['member_type_id'] = memberTypeId;
-    List<dynamic> _individualMemberContributions = [];
-    if(memberTypeId == 1){
-      selectedMembersList.map((MembersFilterEntry mem) {
-        _individualMemberContributions.add({
-          "member_id" : mem.memberId,
-          "amount" : mem.amount
-        });
-      }).toList();
-    }
     _formData['individual_payments'] = _individualMemberContributions;
-    print(_formData);
     try {
       await Provider.of<Groups>(context, listen: false).recordContibutionPayments(_formData);
+      Navigator.of(context).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -138,7 +132,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     } finally {
       setState(() {
         _isLoading = false;
-        //_isFormInputEnabled = true;
+        _isFormInputEnabled = true;
       });
     }
   }
@@ -162,24 +156,45 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     for (MembersFilterEntry member in selectedMembersList) {
       yield ListTile(
 //          avatar: CircleAvatar(child: Text(member.initials)),
-        title: Text(member.name, style: TextStyle(color: Color(0xFFB3C7D9), fontWeight: FontWeight.w700)),
+          // Color(0xFFB3C7D9)
+        title: Container(
+          width: 200,
+          child: Text(member.name, style: TextStyle(
+          //color:Theme.of(context).textSelectionColor, 
+          //fontWeight: FontWeight.w700
+          fontSize: 17
+        ))),
         contentPadding: EdgeInsets.all(4.0),
-        subtitle: Text(
+        subtitle: Container(
+          width: 200,
+          child: Text(
           member.phoneNumber,
-          style: TextStyle(color: Color(0xFFB3C7D9)),
-        ),
+          style: TextStyle(
+            //color: Color(0xFFB3C7D9)
+            fontSize: 12
+          ),
+          
+        )),
         trailing: Container(
-          width: 250.0,
+          width:220.0,
           child: Row(
             children: <Widget>[
               Expanded(
-                flex: 5,
+                flex: 5, 
                 child: amountTextInputField(
-                    context: context,
-                    labelText: 'Enter Amount',
-                    onChanged: (value) {
-                      member.amount = value;
-                    }),
+                  labelText: "Enter Amount",
+                  enabled : _isFormInputEnabled,
+                  context: context,
+                  onChanged: (value){
+                    _individualMemberContributions[member.memberId] = value;
+                  },
+                  validator: (value){
+                    if(value==null || value==""){
+                      return "Field is required";
+                    }
+                    return null;
+                  }
+                )
               ),
               Expanded(
                 child: circleIconButton(
@@ -379,11 +394,19 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       Visibility(
                         visible: memberTypeId == 2,
                         child: amountTextInputField(
-                            context: context,
-                            labelText: 'Enter Amount',
-                            onChanged: (value) {
-                              contributionAmount = value;
-                            }),
+                          enabled: _isFormInputEnabled,
+                          context: context,
+                          labelText: 'Enter Amount',
+                          onChanged: (value) {
+                            contributionAmount = value;
+                          },
+                          validator: (value){
+                            if(value==null || value==""){
+                              return "Field is required";
+                            }
+                            return null;
+                          }
+                        ),
                       ),
                       SizedBox(
                         height: 10,

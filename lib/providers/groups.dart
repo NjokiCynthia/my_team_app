@@ -452,7 +452,7 @@ class Groups with ChangeNotifier {
     }
     if (replace) {
       _groups.removeAt(position);
-      _groups.insert(0, loadedNewGroup);
+      _groups.insert(position, loadedNewGroup);
     } else if (isNewGroup) {
       _groups.add(loadedNewGroup);
       setSelectedGroupId(loadedNewGroup.groupId);
@@ -2038,7 +2038,7 @@ class Groups with ChangeNotifier {
       try {
         final postRequest = json.encode(formData);
         print(postRequest);
-        // final response = await PostToServer.post(postRequest, url);
+        await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
