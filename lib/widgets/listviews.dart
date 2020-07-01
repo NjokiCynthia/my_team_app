@@ -31,25 +31,29 @@ class StatementBody extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                Icon(
-                  Icons.credit_card,
-                  color: Theme.of(context).hintColor,
-                  size: 24.0,
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    subtitle1(text: row.title, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                    subtitle2(text: row.description, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
-                  ],
-                ),
-              ],
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Icon(
+                    Icons.credit_card,
+                    color: Theme.of(context).hintColor,
+                    size: 24.0,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        subtitle1(text: row.title, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                        subtitle2(text: row.description, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
@@ -175,7 +179,8 @@ class ContributionSummaryBody extends StatelessWidget {
   ContributionSummaryBody(this._statementType);
   @override
   Widget build(BuildContext context) {
-    final contributionSummary = _statementType==1?Provider.of<Groups>(context).groupContributionSummary:Provider.of<Groups>(context).groupFinesSummary;
+    final contributionSummary =
+        _statementType == 1 ? Provider.of<Groups>(context).groupContributionSummary : Provider.of<Groups>(context).groupFinesSummary;
     return Container(
       child: ListView.builder(
         itemBuilder: (ctx, index) => Container(
