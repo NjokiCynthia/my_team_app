@@ -19,7 +19,6 @@ class StatusHandler {
         logout(context);
         break;
       case ErrorStatusCode.statusRequireRestart:
-        print("Status 5");
         restartApp(context);
         break;
       case ErrorStatusCode.statusNoInternet:
