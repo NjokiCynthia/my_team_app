@@ -17,7 +17,6 @@ import 'package:chamasoft/utilities/post-to-server.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'auth.dart';
 import 'helpers/report_helper.dart';
 
 class Account {
@@ -256,8 +255,8 @@ class Groups with ChangeNotifier {
   GroupRolesStatusAndCurrentMemberStatus _groupRolesStatusAndCurrentMemberStatus;
 
   String userId;
-  String token;
-  Groups(this._groups,this.userId,this.token);
+  String identity;
+  Groups(this._groups,this.userId,this.identity);
 
   List<Group> get item {
     return _groups;
@@ -462,7 +461,7 @@ class Groups with ChangeNotifier {
         final newAvatar = base64Encode(resizedImage.readAsBytesSync());
         final postRequest = json.encode({
           "avatar": newAvatar,
-          "user_id": await Auth.getUser(Auth.userId),
+          "user_id": userId,
           "group_id": currentGroupId,
         });
         await PostToServer.post(postRequest, url);
@@ -478,7 +477,7 @@ class Groups with ChangeNotifier {
   Future<void> updateGroupProfile() async {
     const url = EndpointUrl.GET_GROUP_DATA;
     final postRequest = json.encode({
-      "user_id": await Auth.getUser(Auth.userId),
+      "user_id": userId,
       "group_id": currentGroupId,
     });
     try {
@@ -794,7 +793,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUPS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -816,7 +815,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.CREATE_GROUP;
 
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_name": groupName});
+      final postRequest = json.encode({"user_id": userId, "group_name": groupName});
 
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -839,7 +838,7 @@ class Groups with ChangeNotifier {
     int position = 0;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -871,7 +870,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_BANK_ACCOUNTS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -900,7 +899,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_SACCO_ACCOUNTS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -929,7 +928,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_MOBILE_MONEY_ACCOUNTS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -958,7 +957,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_PETTY_CASH_ACCOUNTS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -987,7 +986,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_CONTRIBUTIONS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1011,7 +1010,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_EXPENSES_SUMMARY;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1035,7 +1034,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_FINE_OPTIONS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1059,7 +1058,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_LOAN_TYPES;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1083,7 +1082,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_MEMBERS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1107,7 +1106,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_UNASSIGNED_ROLES;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1128,7 +1127,7 @@ class Groups with ChangeNotifier {
   Future<void> addGroupMembers(List<Map<String, String>> members) async {
     const url = EndpointUrl.ADD_MEMBERS;
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "members": members});
+      final postRequest = json.encode({"user_id": userId, "group_id": currentGroupId, "members": members});
       print("PostRequest: " + postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -1148,7 +1147,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_COUNTRY_LIST;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1172,7 +1171,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_CURRENCY_LIST;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1196,7 +1195,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.UPDATE_GROUP_NAME;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "name": name,
       });
@@ -1222,7 +1221,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.UPDATE_GROUP_EMAIL;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "email": email,
       });
@@ -1248,7 +1247,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.UPDATE_GROUP_PHONE_NUMBER;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "phone": phone,
       });
@@ -1274,7 +1273,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.UPDATE_GROUP_COUNTRY;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "country_id": countryId,
       });
@@ -1302,7 +1301,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.UPDATE_GROUP_CURRENCY;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "currency_id": currencyId,
       });
@@ -1340,7 +1339,7 @@ class Groups with ChangeNotifier {
 
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "order_members_by": orderMembersBy,
         "member_listing_order_by": memberListingOrderBy,
@@ -1372,7 +1371,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_BANKS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1397,7 +1396,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_BANK_BRANCHES;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "bank_id": bankId,
       });
@@ -1423,7 +1422,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GE_MOBILE_PROVIDERS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1447,7 +1446,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_SACCOS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1471,7 +1470,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_SACCO_BRANCHES;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "sacco_id": saccoId,
       });
@@ -1502,7 +1501,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.ADD_BANK_ACCOUNT;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "account_name": accountName,
         "account_number": accountNumber,
@@ -1537,7 +1536,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.EDIT_BANK_ACCOUNT;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "id": id,
         "account_name": accountName,
@@ -1573,7 +1572,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.ADD_SACCO_ACCOUNT;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "type": accountType,
         "account_name": accountName,
@@ -1610,7 +1609,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.EDIT_SACCO_ACCOUNT;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "id": id,
         "type": accountType,
@@ -1647,7 +1646,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.ADD_MOBILE_MONEY_ACCOUNT;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "id": "",
         "account_name": accountName,
@@ -1683,7 +1682,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.EDIT_MOBILE_MONEY_ACCOUNT;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "id": id,
         "account_name": accountName,
@@ -1713,7 +1712,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.ADD_PETTY_CASH_ACCOUNT;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "id": "",
         "account_name": accountName,
@@ -1741,7 +1740,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.EDIT_PETTY_CASH_ACCOUNT;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
         "id": id,
         "account_name": accountName,
@@ -1767,7 +1766,7 @@ class Groups with ChangeNotifier {
 
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
 
@@ -1793,7 +1792,7 @@ class Groups with ChangeNotifier {
 
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1818,7 +1817,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1849,7 +1848,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_FINE_SUMMARY;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1877,7 +1876,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_EXPENSES_SUMMARY;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1903,7 +1902,7 @@ class Groups with ChangeNotifier {
 
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1931,7 +1930,7 @@ class Groups with ChangeNotifier {
 
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -1954,7 +1953,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_LOAN_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "is_member_loans": 1});
+      final postRequest = json.encode({"user_id": userId, "group_id": currentGroupId, "is_member_loans": 1});
       try {
         final response = await PostToServer.post(postRequest, url);
         final loans = response['loans'] as List<dynamic>;
@@ -1976,7 +1975,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_LOAN_STATEMENT;
 
     try {
-      final postRequest = json.encode({"user_id": await Auth.getUser(Auth.userId), "group_id": currentGroupId, "id": loanId});
+      final postRequest = json.encode({"user_id": userId, "group_id": currentGroupId, "id": loanId});
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['data'] as dynamic;
@@ -1998,7 +1997,7 @@ class Groups with ChangeNotifier {
     const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
     try {
       final postRequest = json.encode({
-        "user_id": await Auth.getUser(Auth.userId),
+        "user_id": userId,
         "group_id": currentGroupId,
       });
       try {
@@ -2022,8 +2021,6 @@ class Groups with ChangeNotifier {
   Future<void> recordContibutionPayments(Map<String,dynamic> formData)async{
     try{
       const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
-      final userId = await Auth.getUser(Auth.userId);
-      final identity = await Auth.getUser(Auth.identity);
       formData['user_id'] = userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);

@@ -51,7 +51,7 @@ class _MyAppState extends State<MyApp> {
           update: (ctx,auth,previousGroups) => Groups(
             previousGroups == null ? [] : previousGroups.item,
             auth.id,
-            auth.token
+            auth.userIdentity
           ),
           create: (BuildContext context) {},
         ),
