@@ -59,6 +59,13 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   }
 
   Future<void> _fetchDefaultValues(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+    });
     List<Contribution> contributions = Provider.of<Groups>(context, listen: false).contributions;
     if (contributions.length == 0) {
       await Provider.of<Groups>(context, listen: false).fetchContributions();
@@ -100,6 +107,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
       memberOptions = emptyMemberOptions;
       _isInit = false;
     });
+    Navigator.pop(context);
   }
 
   void _submit(BuildContext context) async {
