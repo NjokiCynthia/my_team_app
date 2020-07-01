@@ -115,6 +115,12 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['request_id'] = requestId;
     _formData['amount'] = contributionAmount;
     _formData['member_type_id'] = memberTypeId;
+    Map<String,double> _individualMemberContributions;
+    if(memberTypeId == 1){
+      // selectedMembersList.map((MembersFilterEntry mem) {
+      //   _individualMemberContributions.add
+      // }).toList();
+    }
     try {
       await Provider.of<Groups>(context, listen: false).recordContibutionPayments(_formData);
     } on CustomException catch (error) {
@@ -388,9 +394,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               context: context,
                               text: "SAVE",
                               onPressed: () {
-                                selectedMembersList.map((MembersFilterEntry mem) {
-                                  return print(mem.name);
-                                }).toList();
                                 _submit(context);
                               },
                             )
