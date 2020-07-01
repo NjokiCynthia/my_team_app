@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -6,14 +7,16 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/auth.dart';
 import '../utilities/custom-helper.dart';
 
 class Login extends StatefulWidget {
   static const namedRoute = "/login-screen";
+
   @override
   _LoginState createState() => _LoginState();
 }
@@ -22,8 +25,10 @@ class _LoginState extends State<Login> {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
+  String _countryCode = "+254";
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
+
   @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
@@ -44,27 +49,60 @@ class _LoginState extends State<Login> {
       // Invalid!
       return;
     }
+
     _formKey.currentState.save();
-    setState(() {
-      _isLoading = true;
-      _isFormInputEnabled = false;
-    });
-    try {
-      await Provider.of<Auth>(context, listen: false).generatePin(_identity);
-      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _submit(context);
-          });
-    } finally {
-      setState(() {
-        _isLoading = false;
-        _isFormInputEnabled = true;
-      });
+
+    String title = "Confirm Email Address";
+    if (!_identity.contains("@")) {
+      _identity = _identity.startsWith("0") ? _identity.replaceFirst("0", "") : _identity;
+      _identity = _countryCode + _identity;
+      title = "Confirm Phone Number";
     }
+
+    showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+              content: Padding(
+                padding: const EdgeInsets.only(top: 16.0),
+                child: customTitleWithWrap(text: _identity, textAlign: TextAlign.center),
+              ),
+              title: heading2(text: title, textAlign: TextAlign.center, color: primaryColor),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: heading2(text: "Cancel", color: Theme.of(context).textSelectionHandleColor),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: heading2(text: "Continue", color: primaryColor),
+                  onPressed: () async {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      _isLoading = true;
+                      _isFormInputEnabled = false;
+                    });
+                    try {
+                      await Provider.of<Auth>(context, listen: false).generatePin(_identity);
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
+                    } on CustomException catch (error) {
+                      StatusHandler().handleStatus(
+                          context: context,
+                          error: error,
+                          callback: () {
+                            _submit(context);
+                          });
+                    } finally {
+                      setState(() {
+                        _isLoading = false;
+                        _isFormInputEnabled = true;
+                      });
+                    }
+                  },
+                )
+              ],
+            ));
   }
 
   @override
@@ -95,27 +133,63 @@ class _LoginState extends State<Login> {
                     ),
                     subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
                     subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
-                    TextFormField(
-                      enabled: _isFormInputEnabled,
-                      decoration: InputDecoration(
-                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        labelText: 'Phone number or Email',
-                        // enabledBorder: UnderlineInputBorder(
-                        //   borderSide: BorderSide(
-                        //     color: Theme.of(context).hintColor,
-                        //     width: 1.0,
-                        //   ),
-                        // ),
-                      ),
-                      validator: (value) {
-                        if (!CustomHelper.validIdentity(value.trim())) {
-                          return 'Enter valid email or phone number';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _identity = value.trim();
-                      },
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(top: 15),
+                            child: CountryCodePicker(
+                              enabled: _isFormInputEnabled,
+                              initialSelection: 'KE',
+                              favorite: ['+254', 'KE'],
+                              showFlag: false,
+                              flagWidth: 16,
+                              textStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                              showCountryOnly: false,
+                              searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                              showOnlyCountryWhenClosed: false,
+                              alignLeft: true,
+                              onChanged: (countryCode) {
+                                _countryCode = countryCode.dialCode;
+                                print("Code: " + countryCode.dialCode);
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: TextFormField(
+                            enabled: _isFormInputEnabled,
+                            decoration: InputDecoration(
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              labelText: 'Phone number or Email',
+//                              focusedBorder: InputBorder.none,
+//                              enabledBorder: InputBorder.none,
+//                              errorBorder: InputBorder.none,
+//                              disabledBorder: InputBorder.none,
+                              // enabledBorder: UnderlineInputBorder(
+                              //   borderSide: BorderSide(
+                              //     color: Theme.of(context).hintColor,
+                              //     width: 1.0,
+                              //   ),
+                              // ),
+                            ),
+                            validator: (value) {
+                              if (!CustomHelper.validIdentity(value.trim())) {
+                                return 'Enter valid email or phone number';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _identity = value.trim();
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 24,
