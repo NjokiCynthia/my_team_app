@@ -335,15 +335,20 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               FlatButton(
                                 onPressed: () async {
                                   //open select members dialog
-                                  selectedMembersList = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SelectMember(
-                                                initialMembersList: selectedMembersList,
-                                                membersList: memberOptions,
-                                              ))).then((value){
-                                                print("Result : $value");
-                                              });
+                                  await Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => SelectMember(
+                                          initialMembersList: selectedMembersList,
+                                          membersList: memberOptions,
+                                        )
+                                      )
+                                    ).then((value){
+                                        setState(() {
+                                          selectedMembersList = value;
+                                        });   
+                                    }
+                                  );
                                 },
                                 child: Text(
                                   'Select members',
