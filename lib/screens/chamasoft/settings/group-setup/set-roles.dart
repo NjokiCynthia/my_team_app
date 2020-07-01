@@ -221,10 +221,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
             if (data.getGroupRolesAndCurrentMemberStatus.currentMemberStatus == 0) {
               addedCurrentUser = true;
               List<Item> item = [];
-              item.add(Item(value: auth.phoneNumber));
-              if (auth.phoneNumber.isEmpty) {
-                item.add(Item(value: auth.emailAddress));
-              }
+              item.add(Item(value: auth.userIdentity));
               CustomContact customContact = CustomContact(
                   contact: Contact(displayName: auth.userName, givenName: auth.firstNameOnly, familyName: auth.lastNameOnly, phones: item),
                   role: memberRole);

@@ -47,16 +47,13 @@ class _MyAppState extends State<MyApp> {
             return themeChangeProvider;
           },
         ),
+
         // ChangeNotifierProvider(
         //   create: (ctx) => Groups(),
         // ),
-        ChangeNotifierProxyProvider<Auth,Groups>(
-          update: (ctx,auth,previousGroups) => Groups(
-            previousGroups == null ? [] : previousGroups.item,
-            auth.id,
-            auth.userIdentity,
-            previousGroups==null?'':previousGroups.currentGroupId
-          ),
+        ChangeNotifierProxyProvider<Auth, Groups>(
+          update: (ctx, auth, previousGroups) => Groups(previousGroups == null ? [] : previousGroups.item, auth.id, auth.userIdentity,
+              previousGroups == null ? '' : previousGroups.currentGroupId),
           create: (BuildContext context) {},
         ),
       ],
@@ -68,6 +65,7 @@ class _MyAppState extends State<MyApp> {
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
           home: IntroScreen(),
           routes: {
+            IntroScreen.namedRoute: (ctx) => IntroScreen(),
             Login.namedRoute: (ctx) => Login(),
             MyGroups.namedRoute: (ctx) => MyGroups(),
             SignUp.namedRoute: (ctx) => SignUp(),

@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -18,6 +19,8 @@ class StatusHandler {
         logout(context);
         break;
       case ErrorStatusCode.statusRequireRestart:
+        print("Status 5");
+        restartApp(context);
         break;
       case ErrorStatusCode.statusNoInternet:
         showRetrySnackBar(context, error.message, callback);
@@ -48,6 +51,11 @@ class StatusHandler {
     );
 
     Scaffold.of(context).showSnackBar(snackBar);
+  }
+
+  void restartApp(BuildContext context) {
+    Navigator.of(context).pushNamedAndRemoveUntil(IntroScreen.namedRoute, ModalRoute.withName("/"));
+    //Navigator.popUntil(context, ModalRoute.withName("/"));
   }
 
   void logout(BuildContext context) {

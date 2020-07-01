@@ -98,88 +98,92 @@ class _ContributionStatementState extends State<ContributionStatement> {
                 : RefreshIndicator(
                     onRefresh: () => _getContributionStatement(context),
                     child: Consumer<Groups>(builder: (context, data, child) {
-                      List<ContributionStatementRow> statements = data.getContributionStatements.statements;
-                      return Column(
-                        children: <Widget>[
-                          Container(
-                            padding: EdgeInsets.all(16.0),
-                            color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Container(
-                                  width: MediaQuery.of(context).size.width / 2,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      heading2(
-                                          text: "Total " + defaultTitle,
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          textAlign: TextAlign.start),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          subtitle2(
-                                              text: "Total amount due ",
-                                              color: Theme.of(context).textSelectionHandleColor,
-                                              textAlign: TextAlign.start),
-                                          subtitle1(
-                                              text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalDue),
-                                              color: Theme.of(context).textSelectionHandleColor,
-                                              textAlign: TextAlign.start),
-                                        ],
-                                      ),
-                                      SizedBox(
-                                        height: 4,
-                                      ),
-                                      Row(
-                                        crossAxisAlignment: CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          subtitle2(text: "Balance ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                          subtitle1(
-                                              text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalBalance),
-                                              color: Theme.of(context).textSelectionHandleColor,
-                                              textAlign: TextAlign.start),
-                                        ],
-                                      ),
-                                    ],
+                      if (data.getContributionStatements != null) {
+                        List<ContributionStatementRow> statements = data.getContributionStatements.statements;
+                        return Column(
+                          children: <Widget>[
+                            Container(
+                              padding: EdgeInsets.all(16.0),
+                              color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Container(
+                                    width: MediaQuery.of(context).size.width / 2,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        heading2(
+                                            text: "Total " + defaultTitle,
+                                            color: Theme.of(context).textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            subtitle2(
+                                                text: "Total amount due ",
+                                                color: Theme.of(context).textSelectionHandleColor,
+                                                textAlign: TextAlign.start),
+                                            subtitle1(
+                                                text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalDue),
+                                                color: Theme.of(context).textSelectionHandleColor,
+                                                textAlign: TextAlign.start),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 4,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          children: <Widget>[
+                                            subtitle2(
+                                                text: "Balance ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                            subtitle1(
+                                                text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalBalance),
+                                                color: Theme.of(context).textSelectionHandleColor,
+                                                textAlign: TextAlign.start),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                ),
-                                heading2(
-                                    text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalPaid),
-                                    color: Theme.of(context).textSelectionHandleColor,
-                                    textAlign: TextAlign.start)
-                              ],
+                                  heading2(
+                                      text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalPaid),
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                      textAlign: TextAlign.start)
+                                ],
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: statements.length > 0
-                                ? ListView.builder(
-                                    controller: _scrollController,
-                                    shrinkWrap: true,
-                                    itemBuilder: (context, index) {
-                                      ContributionStatementRow row = statements[index];
-                                      if (row.isHeader) {
-                                        return StatementHeader(row: row);
-                                      } else {
-                                        return StatementBody(row: row);
-                                      }
-                                    },
-                                    itemCount: statements.length,
-                                  )
-                                : emptyList(
-                                    color: Colors.blue[400],
-                                    iconData: LineAwesomeIcons.file_text,
-                                    text: widget.statementFlag == FINE_STATEMENT
-                                        ? "There are no fine statements to display"
-                                        : "There are no contribution statements to display"),
-                          ),
-                        ],
-                      );
+                            Expanded(
+                              child: statements.length > 0
+                                  ? ListView.builder(
+                                      controller: _scrollController,
+                                      shrinkWrap: true,
+                                      itemBuilder: (context, index) {
+                                        ContributionStatementRow row = statements[index];
+                                        if (row.isHeader) {
+                                          return StatementHeader(row: row);
+                                        } else {
+                                          return StatementBody(row: row);
+                                        }
+                                      },
+                                      itemCount: statements.length,
+                                    )
+                                  : emptyList(
+                                      color: Colors.blue[400],
+                                      iconData: LineAwesomeIcons.file_text,
+                                      text: widget.statementFlag == FINE_STATEMENT
+                                          ? "There are no fine statements to display"
+                                          : "There are no contribution statements to display"),
+                            ),
+                          ],
+                        );
+                      } else
+                        return Container();
                     }))));
   }
 }
