@@ -2028,7 +2028,7 @@ class Groups with ChangeNotifier {
       try {
         final postRequest = json.encode(formData);
         print(postRequest);
-        final response = await PostToServer.post(postRequest, url);
+        // final response = await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
