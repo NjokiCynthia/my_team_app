@@ -41,7 +41,8 @@ Widget amountTextInputField(
     String hintText = '',
       TextEditingController controller,
     Function validator,
-    Function onSaved}) {
+    Function onSaved,
+    bool enabled}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
@@ -62,6 +63,7 @@ Widget amountTextInputField(
       )),
       hintText: hintText,
       labelText: labelText,
+      enabled: enabled,
     ),
   );
 }
