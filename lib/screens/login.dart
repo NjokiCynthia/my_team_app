@@ -5,10 +5,10 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,10 +24,15 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
+  final GlobalKey<CountryCodePickerState> _countryKey = GlobalKey();
   String _identity;
-  String _countryCode = "+254";
+  CountryCode _countryCode = CountryCode.fromCode("KE");
+  final _countryCodeController = TextEditingController(text: "+254");
+  final _emailController = TextEditingController();
+  final _phoneController = TextEditingController();
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
+  bool _isPhoneNumber = true;
 
   @override
   void initState() {
@@ -40,10 +45,6 @@ class _LoginState extends State<Login> {
     super.dispose();
   }
 
-  void _showErrorDialog(BuildContext context, String message) {
-    alertDialog(context, message);
-  }
-
   void _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
       // Invalid!
@@ -51,11 +52,10 @@ class _LoginState extends State<Login> {
     }
 
     _formKey.currentState.save();
-
     String title = "Confirm Email Address";
     if (!_identity.contains("@")) {
       _identity = _identity.startsWith("0") ? _identity.replaceFirst("0", "") : _identity;
-      _identity = _countryCode + _identity;
+      _identity = _countryCode.dialCode + _identity;
       title = "Confirm Phone Number";
     }
 
@@ -133,63 +133,130 @@ class _LoginState extends State<Login> {
                     ),
                     subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
                     subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Expanded(
-                          child: Container(
-                            margin: EdgeInsets.only(top: 15),
-                            child: CountryCodePicker(
-                              enabled: _isFormInputEnabled,
-                              initialSelection: 'KE',
-                              favorite: ['+254', 'KE'],
-                              showFlag: true,
-                              flagWidth: 16,
-                              textStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
-                              showCountryOnly: false,
-                              searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
-                              showOnlyCountryWhenClosed: false,
-                              alignLeft: true,
-                              onChanged: (countryCode) {
-                                _countryCode = countryCode.dialCode;
-                                print("Code: " + countryCode.dialCode);
-                              },
-                            ),
+                    _isPhoneNumber
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              ),
+                              Flexible(
+                                flex: 2,
+                                child: CountryCodePicker(
+                                  key: _countryKey,
+                                  enabled: _isFormInputEnabled,
+                                  initialSelection: 'KE',
+                                  builder: (country) {
+                                    return TextFormField(
+                                      controller: _countryCodeController,
+                                      onTap: () => _countryKey.currentState.showCountryCodePickerDialog(),
+                                      style: TextStyle(fontFamily: 'SegoeUI'),
+                                      enabled: _isFormInputEnabled,
+                                      readOnly: true,
+                                      showCursor: false,
+                                      decoration: InputDecoration(
+                                        labelText: 'Code',
+                                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                      ),
+                                    );
+                                  },
+                                  favorite: ['+254', 'KE'],
+                                  showFlag: true,
+                                  textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,*/ color: Theme.of(context).textSelectionHandleColor),
+                                  showCountryOnly: false,
+                                  searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                                  showOnlyCountryWhenClosed: false,
+                                  alignLeft: true,
+                                  onChanged: (countryCode) {
+                                    setState(() {
+                                      _countryCode = countryCode;
+                                      _countryCodeController.text = countryCode.dialCode;
+                                      print("Code: " + countryCode.dialCode);
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Expanded(
+                                flex: 5,
+                                child: TextFormField(
+                                  controller: _phoneController,
+                                  style: TextStyle(fontFamily: 'SegoeUI'),
+                                  enabled: _isFormInputEnabled,
+                                  decoration: InputDecoration(
+                                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                    labelText: 'Phone Number',
+                                    labelStyle: TextStyle(fontFamily: 'SegoeUI'),
+                                  ),
+                                  validator: (value) {
+                                    if (!CustomHelper.validIdentity(value.trim())) {
+                                      return 'Enter valid phone number';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    _identity = value.trim();
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              )
+                            ],
+                          )
+                        : Row(
+                            children: <Widget>[
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              ),
+                              Expanded(
+                                flex: 7,
+                                child: TextFormField(
+                                  controller: _emailController,
+                                  enabled: _isFormInputEnabled,
+                                  decoration: InputDecoration(
+                                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                                      labelText: 'Email Address',
+                                      labelStyle: TextStyle(fontFamily: 'SegoeUI')),
+                                  validator: (value) {
+                                    if (!CustomHelper.validIdentity(value.trim())) {
+                                      return 'Enter valid email';
+                                    }
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    _identity = value.trim();
+                                  },
+                                ),
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: Container(),
+                              )
+                            ],
                           ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: TextFormField(
-                            enabled: _isFormInputEnabled,
-                            decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.auto,
-                              labelText: 'Phone number or Email',
-//                              focusedBorder: InputBorder.none,
-//                              enabledBorder: InputBorder.none,
-//                              errorBorder: InputBorder.none,
-//                              disabledBorder: InputBorder.none,
-                              // enabledBorder: UnderlineInputBorder(
-                              //   borderSide: BorderSide(
-                              //     color: Theme.of(context).hintColor,
-                              //     width: 1.0,
-                              //   ),
-                              // ),
-                            ),
-                            validator: (value) {
-                              if (!CustomHelper.validIdentity(value.trim())) {
-                                return 'Enter valid email or phone number';
+                    SizedBox(
+                      height: 16,
+                    ),
+                    RichText(
+                      text: TextSpan(
+                          text: _isPhoneNumber ? "Use Email" : "Use Phone Number",
+                          style: TextStyle(
+                              decoration: TextDecoration.underline, color: primaryColor, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              if (_isFormInputEnabled) {
+                                setState(() {
+                                  _emailController.clear();
+                                  _isPhoneNumber = !_isPhoneNumber;
+                                });
                               }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _identity = value.trim();
-                            },
-                          ),
-                        ),
-                      ],
+                            }),
                     ),
                     SizedBox(
                       height: 24,
