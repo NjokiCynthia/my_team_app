@@ -63,7 +63,7 @@ Widget amountTextInputField(
       )),
       hintText: hintText,
       labelText: labelText,
-      enabled: enabled,
+      enabled: enabled!=null?enabled:true,
     ),
   );
 }

@@ -2201,7 +2201,13 @@ class Groups with ChangeNotifier {
 
   /************************Load Form initial Data**********/
 
-  Future<Map<String,dynamic>> loadInitialFormData({bool contr=false,bool acc=false,bool member=false})async{
+  Future<Map<String,dynamic>> loadInitialFormData(
+    {
+      bool contr=false,
+      bool acc=false,
+      bool member=false
+    }
+  )async{
     List<NamesListItem> contributionOptions = [],accountOptions=[],memberOptions=[];
     if(contr){
       if (_contributions.length == 0) {
