@@ -24,21 +24,7 @@ List<NamesListItem> fineForList = [
   NamesListItem(id: 2, name: "for outstanding balance"),
 ];
 
-final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[
-  // MembersFilterEntry('Peter Kimutai', 'PK', '+254 725 854 025', amount: 2500.0),
-  // MembersFilterEntry('Samuel Wahome', 'SW', '+254 725 854 025', amount: 5820.0),
-  // MembersFilterEntry('Edwin Kapkei', 'EK', '+254 725 854 025', amount: 7800.0),
-  // MembersFilterEntry('Geoffrey Githaiga', 'GG', '+254 725 854 025',
-  //     amount: 6000.0),
-  // MembersFilterEntry('Peter Dragon', 'PD', '+254 725 854 025', amount: 2500.0),
-  // MembersFilterEntry('Samson Mburu', 'SM', '+254 725 854 025', amount: 5820.0),
-  // MembersFilterEntry('Kevin Njoroge', 'KN', '+254 725 854 025', amount: 7800.0),
-  // MembersFilterEntry('Lois Nduku', 'LN', '+254 725 854 025', amount: 6000.0),
-  // MembersFilterEntry('Alex Dragon', 'PD', '+254 725 854 025', amount: 2500.0),
-  // MembersFilterEntry('Benson Mburu', 'SM', '+254 725 854 025', amount: 5820.0),
-  // MembersFilterEntry('Jane Njoroge', 'KN', '+254 725 854 025', amount: 7800.0),
-  // MembersFilterEntry('Mary Nduku', 'LN', '+254 725 854 025', amount: 6000.0),
-];
+final List<MembersFilterEntry> _membersList = <MembersFilterEntry>[];
 
 List<NamesListItem> daysOfMonthList = [];
 
@@ -51,31 +37,55 @@ class _CreateContributionState extends State<CreateContribution>
     with SingleTickerProviderStateMixin {
   double _appBarElevation = 0;
   List<MembersFilterEntry> selectedMembersList = [];
-  int memberTypeId;
-  PageController _pageController;
 
+  PageController _pageController;
   int selectedTabIndex = 0;
-  int contributionTypeId;
-  int dayOfMonthId;
-  int fineTypeId;
-  int fineFrequencyIid;
-  int fineFrequencyChargedOnId;
-  double contributionAmount = 0;
-  double fineAmount = 0;
-  String contributionName = '';
   bool selectAll = false;
-  bool fineSettingsEnabled = false;
-  int weekdayId;
-  int contributionFrequencyId;
+  int currentPage = 0;
+
+  double contributionAmount = 0;
   int startingMonthId;
+  int dayOfMonthId;
+  String contributionName = '';
+//  "one_time_invoicing_active": 1,
+  int contributionTypeId;
+//  "regular_invoicing_active": 1,
+//  "week_number_fortnight": 0,
+  int weekdayId;
   int weekNumberId;
   int twoWeekdayId;
   int dateOfMonthId;
-  int currentPage = 0;
+//  "week_day_fortnight": 0,
+//  "week_day_weekly": 0,
+//  "week_day_monthly": 0,
+//  "month_day_monthly": 10,
+//  "invoice_days": 1,
+  int contributionFrequencyId;
+//  "contribution_date": "01-01-1970",
+//  "invoice_date": "01-01-1970"
+
+  int memberTypeId;
+
+
+
+  bool fineSettingsEnabled = false;
+  int fineTypeId;
+  int fineFrequencyIid;
+  int fineFrequencyChargedOnId;
+  double fineAmount = 0;
   int fineForId;
   int fineLimitId;
   String fineChargeableOn;
   int percentageFineOptionId;
+
+
+
+
+
+
+
+
+
 
   @override
   void initState() {
@@ -658,9 +668,7 @@ class _CreateContributionState extends State<CreateContribution>
                               ),
                             ),
                             RaisedButton(
-                              onPressed: () {
-                                print('Ready to save values');
-                              },
+                              onPressed: () {},
                               color: primaryColor,
                               child: Text(
                                 'Save',

@@ -42,12 +42,11 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   String selectedContributionValue;
   String selectedAccountValue;
   String selectedMemberType;
-  List<NamesListItem> contributionOptions = [];
-  List<NamesListItem> accountOptions = [];
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
   Map<String,dynamic> _individualMemberContributions ={};
   bool _isFormInputEnabled = true;
+  Map <String,dynamic> formLoadData = {};
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -66,45 +65,9 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     //       child: CircularProgressIndicator(),
     //     );
     // });
-    List<Contribution> contributions = Provider.of<Groups>(context, listen: false).contributions;
-    if (contributions.length == 0) {
-      await Provider.of<Groups>(context, listen: false).fetchContributions();
-      contributions = Provider.of<Groups>(context, listen: false).contributions;
-    }
-    List<NamesListItem> emptyContributions = [];
-    contributions.map((element) => emptyContributions.add(NamesListItem(id: int.tryParse(element.id), name: element.name))).toList();
 
-    List<List<Account>> accounts = Provider.of<Groups>(context, listen: false).allAccounts;
-    if (accounts.length == 0) {
-      await Provider.of<Groups>(context, listen: false).fetchAccounts();
-      accounts = Provider.of<Groups>(context, listen: false).allAccounts;
-    }
-    List<NamesListItem> emptyAccountOptions = [];
-    for (var account in accounts) {
-      for (var typeAccount in account) {
-        emptyAccountOptions.add(NamesListItem(id: typeAccount.uniqueId, name: typeAccount.name));
-      }
-    }
-    
-    List<Member> members = Provider.of<Groups>(context, listen: false).members;
-    if(members.length == 0){
-      await Provider.of<Groups>(context, listen: false).fetchMembers();
-      members = Provider.of<Groups>(context, listen: false).members;
-    }
-    List<MembersFilterEntry> emptyMemberOptions = [];
-    members.map((member) => 
-      emptyMemberOptions.add(MembersFilterEntry(
-        memberId: member.id,
-        name: member.name,
-        phoneNumber: member.identity,
-        amount: 0.0
-      ))
-    ).toList();
-
+    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(contr: true,acc:true); 
     setState(() {
-      contributionOptions = emptyContributions;
-      accountOptions = emptyAccountOptions;
-      memberOptions = emptyMemberOptions;
       _isInit = false;
     });
   }
@@ -314,7 +277,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       ),
                       CustomDropDownButton(
                         labelText: "Select Contribution",
-                        listItems: contributionOptions,
+                        listItems: formLoadData["contributionOptions"],
                         selectedItem: contributionId,
                         validator: (value){
                           if(value==null){
@@ -333,7 +296,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       ),
                       CustomDropDownButton(
                         labelText: "Select Account",
-                        listItems: accountOptions,
+                        listItems: formLoadData["accountOptions"],
                         selectedItem: accountId,
                         onChanged: (value) {
                           setState(() {
@@ -384,7 +347,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                     MaterialPageRoute(
                                       builder: (context) => SelectMember(
                                           initialMembersList: selectedMembersList,
-                                          membersList: memberOptions,
+                                          //membersList: memberOptions,
                                         )
                                       )
                                     ).then((value){
