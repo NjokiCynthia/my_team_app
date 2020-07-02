@@ -8,6 +8,8 @@ import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -2024,6 +2026,41 @@ class Groups with ChangeNotifier {
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
+  }
+
+  /************************Load Form initial Data**********/
+
+  Future<Map<String,dynamic>> loadInitialFormData({bool contr,bool acc,bool member})async{
+    List<NamesListItem> contributionOptions = [],accountOptions=[];
+    List<NamesListItem> memberOptions=[];
+    if(contr){
+      if (_contributions.length == 0) {
+        await fetchContributions();
+      }
+      _contributions.map((element) => contributionOptions.add(NamesListItem(id: int.tryParse(element.id), name: element.name))).toList();
+    }
+    if(acc){
+      if (_allAccounts.length == 0) {
+        await fetchAccounts();
+      }
+      for (var account in _allAccounts) {
+        for (var typeAccount in account) {
+          accountOptions.add(NamesListItem(id: typeAccount.uniqueId, name: typeAccount.name));
+        }
+      }
+    }
+    if(member){
+      if(_members.length == 0){
+          await fetchMembers();
+        }
+      _members.map((member) => memberOptions.add(NamesListItem(id: int.tryParse(member.id),name: member.name))).toList();
+    }
+    Map<String,dynamic> result = {
+      "contributionOptions" :  contributionOptions,
+      "accountOptions" : accountOptions,
+      "memberOptions" : memberOptions,
+    };
+    return result;
   }
 
   /****************************Transaction****************/
