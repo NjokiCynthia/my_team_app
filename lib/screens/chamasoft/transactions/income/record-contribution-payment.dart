@@ -1,7 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -277,7 +276,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       ),
                       CustomDropDownButton(
                         labelText: "Select Contribution",
-                        listItems: formLoadData["contributionOptions"],
+                        listItems: formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
                         selectedItem: contributionId,
                         validator: (value){
                           if(value==null){
@@ -296,7 +295,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       ),
                       CustomDropDownButton(
                         labelText: "Select Account",
-                        listItems: formLoadData["accountOptions"],
+                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                         selectedItem: accountId,
                         onChanged: (value) {
                           setState(() {
