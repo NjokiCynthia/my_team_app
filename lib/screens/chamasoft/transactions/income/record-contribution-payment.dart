@@ -86,25 +86,25 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
       }
     }
     
-    List<Member> members = Provider.of<Groups>(context, listen: false).members;
-    if(members.length == 0){
-      await Provider.of<Groups>(context, listen: false).fetchMembers();
-      members = Provider.of<Groups>(context, listen: false).members;
-    }
-    List<MembersFilterEntry> emptyMemberOptions = [];
-    members.map((member) => 
-      emptyMemberOptions.add(MembersFilterEntry(
-        memberId: member.id,
-        name: member.name,
-        phoneNumber: member.identity,
-        amount: 0.0
-      ))
-    ).toList();
+    // List<Member> members = Provider.of<Groups>(context, listen: false).members;
+    // if(members.length == 0){
+    //   await Provider.of<Groups>(context, listen: false).fetchMembers();
+    //   members = Provider.of<Groups>(context, listen: false).members;
+    // }
+    // List<MembersFilterEntry> emptyMemberOptions = [];
+    // members.map((member) => 
+    //   emptyMemberOptions.add(MembersFilterEntry(
+    //     memberId: member.id,
+    //     name: member.name,
+    //     phoneNumber: member.identity,
+    //     amount: 0.0
+    //   ))
+    // ).toList();
 
     setState(() {
       contributionOptions = emptyContributions;
       accountOptions = emptyAccountOptions;
-      memberOptions = emptyMemberOptions;
+      //memberOptions = emptyMemberOptions;
       _isInit = false;
     });
   }

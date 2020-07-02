@@ -35,7 +35,7 @@ class SelectMemberState extends State<SelectMember> {
         filter = controller.text;
       });
     });
-    _future = _getGroupMembers(context);
+    _future = _getGroupMembers(context,false);
     super.initState();
   }
 
@@ -46,9 +46,15 @@ class SelectMemberState extends State<SelectMember> {
   }
 
 
-  Future<void> _getGroupMembers(BuildContext context) async {
+  Future<void> _getGroupMembers(BuildContext context,[bool fullRefresh = false]) async {
     try {
-      List<Member> members = Provider.of<Groups>(context, listen: false).members;
+      List<Member> members;
+      if(fullRefresh){
+        await Provider.of<Groups>(context, listen: false).fetchMembers();
+        members = Provider.of<Groups>(context, listen: false).members;
+      }else{
+         members = Provider.of<Groups>(context, listen: false).members;
+      }
       if(members.length==0){
         await Provider.of<Groups>(context, listen: false).fetchMembers();
         members = Provider.of<Groups>(context, listen: false).members;
@@ -70,7 +76,7 @@ class SelectMemberState extends State<SelectMember> {
           context: context,
           error: error,
           callback: () {
-            _getGroupMembers(context);
+            _getGroupMembers(context,false);
           });
     } finally {
     }
@@ -140,7 +146,7 @@ class SelectMemberState extends State<SelectMember> {
                   builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                   ? Center(child: CircularProgressIndicator())
                   : RefreshIndicator(
-                      onRefresh: () => _getGroupMembers(context),
+                      onRefresh: () => _getGroupMembers(context,true),
                       child: Consumer<Groups>(
                         child: Center(
                           child: Text("Groups"),
