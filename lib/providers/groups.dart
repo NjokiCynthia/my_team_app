@@ -255,13 +255,15 @@ class Groups with ChangeNotifier {
       _groupRolesStatusAndCurrentMemberStatus;
 
   String _userId;
-  String identity;
+
+  String _identity;
   String _currentGroupId;
-  Groups(List<Group> _groups, String userId, String identity,
+  Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
     this._groups = _groups;
-    this._userId = userId;
-    this.identity = identity;
+    this._userId = _userId;
+    this._identity = _identity;
+
     this._currentGroupId = _currentGroupId;
     print(" currentGroupId $currentGroupId and length ${_groups.length}");
   }
@@ -1183,6 +1185,7 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "members": members
       });
+
       print("PostRequest: " + postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
@@ -2153,6 +2156,7 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode(
           {"user_id": _userId, "group_id": _currentGroupId, "id": loanId});
+
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['data'] as dynamic;
@@ -2201,7 +2205,10 @@ class Groups with ChangeNotifier {
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
-      formData['request_id'] = "${formData['request_id']}_${_userId}_$identity";
+
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
+
       try {
         final postRequest = json.encode(formData);
         print(postRequest);
