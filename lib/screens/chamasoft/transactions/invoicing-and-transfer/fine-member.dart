@@ -177,8 +177,7 @@ class FineMemberState extends State<FineMember> {
                                   MaterialPageRoute(
                                       builder: (context) => SelectMember(
                                             initialMembersList:
-                                                selectedMembersList,
-                                                membersList: [],
+                                                selectedMembersList
                                           )));
                             },
                             child: Text(

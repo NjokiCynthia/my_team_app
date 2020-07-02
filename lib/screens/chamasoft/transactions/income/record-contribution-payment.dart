@@ -384,7 +384,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                     MaterialPageRoute(
                                       builder: (context) => SelectMember(
                                           initialMembersList: selectedMembersList,
-                                          membersList: memberOptions,
+                                          //membersList: memberOptions,
                                         )
                                       )
                                     ).then((value){

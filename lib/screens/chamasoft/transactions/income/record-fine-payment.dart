@@ -278,7 +278,6 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                                         builder: (context) => SelectMember(
                                               initialMembersList:
                                                   selectedMembersList,
-                                                  membersList: [],
                                             )));
                               },
                               child: Text(
