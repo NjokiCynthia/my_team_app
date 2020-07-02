@@ -42,7 +42,7 @@ Widget amountTextInputField(
       TextEditingController controller,
     Function validator,
     Function onSaved,
-    bool enabled}) {
+    bool enabled = true}) {
   return TextFormField(
     onChanged: onChanged,
     style: inputTextStyle(),
