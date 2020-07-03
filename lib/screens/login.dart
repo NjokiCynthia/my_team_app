@@ -8,7 +8,6 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -28,20 +27,43 @@ class _LoginState extends State<Login> {
   String _identity;
   CountryCode _countryCode = CountryCode.fromCode("KE");
   final _countryCodeController = TextEditingController(text: "+254");
-  final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
-  bool _isPhoneNumber = true;
+  bool _isPhoneNumber = false;
+  bool _setStateCalled = false;
+
+  _printLatestValues() {
+    final text = _phoneController.text;
+
+    if (text.length >= 2 && CustomHelper.isNumeric(text)) {
+      if (!_setStateCalled) {
+        _setStateCalled = true;
+        setState(() {
+          _isPhoneNumber = true;
+        });
+      }
+    } else {
+      if (_isPhoneNumber) {
+        _setStateCalled = false;
+        setState(() {
+          _isPhoneNumber = false;
+        });
+      }
+    }
+  }
 
   @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
     super.initState();
+
+    _phoneController.addListener(_printLatestValues);
   }
 
   @override
   void dispose() {
+    _phoneController.dispose();
     super.dispose();
   }
 
@@ -133,15 +155,15 @@ class _LoginState extends State<Login> {
                     ),
                     subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
                     subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
-                    _isPhoneNumber
-                        ? Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                flex: 1,
-                                child: Container(),
-                              ),
-                              Flexible(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Container(),
+                        ),
+                        _isPhoneNumber
+                            ? Flexible(
                                 flex: 2,
                                 child: CountryCodePicker(
                                   key: _countryKey,
@@ -176,87 +198,41 @@ class _LoginState extends State<Login> {
                                     });
                                   },
                                 ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Expanded(
-                                flex: 5,
-                                child: TextFormField(
-                                  controller: _phoneController,
-                                  style: TextStyle(fontFamily: 'SegoeUI'),
-                                  enabled: _isFormInputEnabled,
-                                  decoration: InputDecoration(
-                                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                    labelText: 'Phone Number',
-                                    labelStyle: TextStyle(fontFamily: 'SegoeUI'),
-                                  ),
-                                  validator: (value) {
-                                    if (!CustomHelper.validIdentity(value.trim())) {
-                                      return 'Enter valid phone number';
-                                    }
-                                    return null;
-                                  },
-                                  onSaved: (value) {
-                                    _identity = value.trim();
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(),
                               )
-                            ],
-                          )
-                        : Row(
-                            children: <Widget>[
-                              Expanded(
-                                flex: 1,
-                                child: Container(),
-                              ),
-                              Expanded(
-                                flex: 7,
-                                child: TextFormField(
-                                  controller: _emailController,
-                                  enabled: _isFormInputEnabled,
-                                  decoration: InputDecoration(
-                                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                      labelText: 'Email Address',
-                                      labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                                  validator: (value) {
-                                    if (!CustomHelper.validIdentity(value.trim())) {
-                                      return 'Enter valid email';
-                                    }
-                                    return null;
-                                  },
-                                  onSaved: (value) {
-                                    _identity = value.trim();
-                                  },
-                                ),
-                              ),
-                              Expanded(
-                                flex: 1,
-                                child: Container(),
-                              )
-                            ],
+                            : Container(),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Expanded(
+                          flex: 5,
+                          child: TextFormField(
+                            controller: _phoneController,
+                            style: TextStyle(fontFamily: 'SegoeUI'),
+                            enabled: _isFormInputEnabled,
+                            decoration: InputDecoration(
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              labelText: 'Phone Number or Email',
+                              labelStyle: TextStyle(fontFamily: 'SegoeUI'),
+                            ),
+                            validator: (value) {
+                              if (!CustomHelper.validIdentity(value.trim())) {
+                                return 'Enter valid phone or email';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _identity = value.trim();
+                            },
                           ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: Container(),
+                        )
+                      ],
+                    ),
                     SizedBox(
                       height: 16,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                          text: _isPhoneNumber ? "Use Email" : "Use Phone Number",
-                          style: TextStyle(
-                              decoration: TextDecoration.underline, color: primaryColor, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              if (_isFormInputEnabled) {
-                                setState(() {
-                                  _emailController.clear();
-                                  _isPhoneNumber = !_isPhoneNumber;
-                                });
-                              }
-                            }),
                     ),
                     SizedBox(
                       height: 24,
