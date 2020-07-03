@@ -151,9 +151,11 @@ class _RecordIncomeState extends State<RecordIncome> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          controller: _scrollController,
           child: Column(
             children: <Widget>[
               toolTip(
@@ -167,156 +169,147 @@ class _RecordIncomeState extends State<RecordIncome> {
                     });
                   }),
               Container(
-                child: SingleChildScrollView(
-                  controller: _scrollController,
+                padding: inputPagePadding,
+                height: MediaQuery.of(context).size.height,
+                color: Theme.of(context).backgroundColor,
+                child: Form(
+                  key: _formKey,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Container(
-                        padding: inputPagePadding,
-                        height: MediaQuery.of(context).size.height,
-                        color: Theme.of(context).backgroundColor,
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: <Widget>[
-                              DatePicker(
-                                labelText: 'Select Deposit Date',
-                                lastDate: DateTime.now(),
-                                selectedDate: incomeDate == null
-                                    ? new DateTime(
-                                        now.year, now.month, now.day - 1, 6, 30)
-                                    : incomeDate,
-                                selectDate: (selectedDate) {
-                                  setState(() {
-                                    incomeDate = selectedDate;
-                                  });
-                                },
-                              ),
-                              CustomDropDownButton(
-                                labelText: 'Select Depositor',
-                                listItems:
-                                    formLoadData.containsKey("depositorOptions")
-                                        ? formLoadData["depositorOptions"]
-                                        : [],
-                                selectedItem: depositorId,
-                                validator: (value) {
-                                  if (value == null || value == "") {
-                                    return "Field required";
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  setState(() {
-                                    depositorId = value;
-                                  });
-                                },
-                              ),
-                              CustomDropDownButton(
-                                labelText: 'Select Income Category',
-                                listItems: formLoadData
-                                        .containsKey("incomeCategoryOptions")
-                                    ? formLoadData["incomeCategoryOptions"]
-                                    : [],
-                                selectedItem: incomeCategoryId,
-                                validator: (value) {
-                                  if (value == null || value == "") {
-                                    return "Field required";
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  setState(() {
-                                    incomeCategoryId = value;
-                                  });
-                                },
-                              ),
-                              CustomDropDownButton(
-                                labelText: 'Select Account',
-                                listItems:
-                                    formLoadData.containsKey("accountOptions")
-                                        ? formLoadData["accountOptions"]
-                                        : [],
-                                selectedItem: accountId,
-                                validator: (value) {
-                                  if (value == null || value == "") {
-                                    return "Field required";
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  setState(() {
-                                    accountId = value;
-                                  });
-                                },
-                              ),
-                              CustomDropDownButton(
-                                labelText: 'Select Deposit Method',
-                                listItems: depositMethods,
-                                selectedItem: depositMethod,
-                                validator: (value) {
-                                  if (value == null || value == "") {
-                                    return "Field required";
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  setState(() {
-                                    depositMethod = value;
-                                  });
-                                },
-                              ),
-                              amountTextInputField(
-                                context: context,
-                                labelText: 'Enter Amount',
-                                onChanged: (value) {
-                                  setState(() {
-                                    amount = double.parse(value);
-                                  });
-                                },
-                                validator: (value) {
-                                  if (value == null || value == "") {
-                                    return "Field required";
-                                  }
-                                  return null;
-                                },
-                              ),
-                              multilineTextField(
-                                  maxLines: 30,
-                                  context: context,
-                                  labelText: 'Short Description (Optional)',
-                                  onChanged: (value) {
-                                    setState(() {
-                                      description = value;
-                                    });
-                                  }),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              _isLoading
-                                  ? Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: Center(
-                                          child: CircularProgressIndicator()),
-                                    )
-                                  : defaultButton(
-                                      context: context,
-                                      text: "SAVE",
-                                      onPressed: () {
-                                        _submit(context);
-                                      },
-                                    ),
-                            ],
-                          ),
-                        ),
-                      )
+                      DatePicker(
+                        labelText: 'Select Deposit Date',
+                        lastDate: DateTime.now(),
+                        selectedDate: incomeDate == null
+                            ? new DateTime(
+                                now.year, now.month, now.day - 1, 6, 30)
+                            : incomeDate,
+                        selectDate: (selectedDate) {
+                          setState(() {
+                            incomeDate = selectedDate;
+                          });
+                        },
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select Depositor',
+                        listItems: formLoadData.containsKey("depositorOptions")
+                            ? formLoadData["depositorOptions"]
+                            : [],
+                        selectedItem: depositorId,
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            return "Field required";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            depositorId = value;
+                          });
+                        },
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select Income Category',
+                        listItems:
+                            formLoadData.containsKey("incomeCategoryOptions")
+                                ? formLoadData["incomeCategoryOptions"]
+                                : [],
+                        selectedItem: incomeCategoryId,
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            return "Field required";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            incomeCategoryId = value;
+                          });
+                        },
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select Account',
+                        listItems: formLoadData.containsKey("accountOptions")
+                            ? formLoadData["accountOptions"]
+                            : [],
+                        selectedItem: accountId,
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            return "Field required";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            accountId = value;
+                          });
+                        },
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select Deposit Method',
+                        listItems: depositMethods,
+                        selectedItem: depositMethod,
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            return "Field required";
+                          }
+                          return null;
+                        },
+                        onChanged: (value) {
+                          setState(() {
+                            depositMethod = value;
+                          });
+                        },
+                      ),
+                      amountTextInputField(
+                        context: context,
+                        enabled: _isFormInputEnabled,
+                        labelText: 'Enter Amount',
+                        onChanged: (value) {
+                          setState(() {
+                            amount = double.parse(value);
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            return "Field required";
+                          }
+                          return null;
+                        },
+                      ),
+                      multilineTextField(
+                          maxLines: 30,
+                          context: context,
+                          labelText: 'Short Description (Optional)',
+                          onChanged: (value) {
+                            setState(() {
+                              description = value;
+                            });
+                          }),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      _isLoading
+                          ? Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Center(child: CircularProgressIndicator()),
+                            )
+                          : defaultButton(
+                              context: context,
+                              text: "SAVE",
+                              onPressed: () {
+                                _submit(context);
+                              },
+                            ),
                     ],
                   ),
                 ),
               )
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 }
