@@ -5,7 +5,6 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -194,38 +193,38 @@ class DepositCard extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
-                                  right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-                          child: plainButton(
-                              text: "SHOW DETAILS",
-                              size: 16.0,
-                              spacing: 2.0,
-                              color: Theme.of(context).primaryColor.withOpacity(0.5),
-                              // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
-                              action: details) //loan.status == 2 ? null : repay),
-                          ),
-                    ),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border(
-                                top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
-                                left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: voidItem),
-                      ),
-                    ),
-                  ],
-                )
+//                Row(
+//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                  crossAxisAlignment: CrossAxisAlignment.center,
+//                  children: <Widget>[
+//                    Expanded(
+//                      flex: 1,
+//                      child: Container(
+//                          decoration: BoxDecoration(
+//                              border: Border(
+//                                  top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
+//                                  right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
+//                          child: plainButton(
+//                              text: "SHOW DETAILS",
+//                              size: 16.0,
+//                              spacing: 2.0,
+//                              color: Theme.of(context).primaryColor.withOpacity(0.5),
+//                              // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
+//                              action: details) //loan.status == 2 ? null : repay),
+//                          ),
+//                    ),
+//                    Expanded(
+//                      flex: 1,
+//                      child: Container(
+//                        decoration: BoxDecoration(
+//                            border: Border(
+//                                top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
+//                                left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
+//                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: voidItem),
+//                      ),
+//                    ),
+//                  ],
+//                )
               ],
             )),
       ),
