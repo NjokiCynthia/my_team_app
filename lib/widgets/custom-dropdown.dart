@@ -18,50 +18,53 @@ class CustomDropDownButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormField(
-      builder: (FormFieldState state) {
-        return DropdownButtonHideUnderline(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              //InputDecorator(
-                // decoration: InputDecoration(
-                //   icon: const Icon(Icons.laptop),
-                //   border: InputBorder.none,
-                //   focusedBorder: InputBorder.none,
-                //   enabledBorder: InputBorder.none,
-                //   errorBorder: InputBorder.none,
-                //   disabledBorder: InputBorder.none,
-                //   contentPadding:EdgeInsets.all(0.0),
-                //   hintText: labelText,
-                //   filled: false,
-                //   labelStyle: inputTextStyle(),
-                //   hintStyle: inputTextStyle(),
-                //   errorStyle: inputTextStyle(),
-                //   labelText: selectedItem == 0 ? labelText : labelText,
-                // ),
-                DropdownButtonFormField(
-                  hint: Text(labelText),
-                  isExpanded: true,
-                  value: selectedItem,
-                  items: listItems.map((NamesListItem item) {
-                    return new DropdownMenuItem(
-                      value: item.id,
-                      child: new Text(
-                        item.name,
-                        style: inputTextStyle(),
-                      ),
-                    );
-                  }).toList(),
-                  isDense: true,
-                  onChanged: onChanged,
-                  validator: validator,
-                )
-              //)
-            ],
-          ),
-        );
-      },
+    return Padding(
+        padding: EdgeInsets.only(top: 10),
+          child: FormField(
+        builder: (FormFieldState state) {
+          return DropdownButtonHideUnderline(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                //InputDecorator(
+                  // decoration: InputDecoration(
+                  //   icon: const Icon(Icons.laptop),
+                  //   border: InputBorder.none,
+                  //   focusedBorder: InputBorder.none,
+                  //   enabledBorder: InputBorder.none,
+                  //   errorBorder: InputBorder.none,
+                  //   disabledBorder: InputBorder.none,
+                  //   contentPadding:EdgeInsets.all(0.0),
+                  //   hintText: labelText,
+                  //   filled: false,
+                  //   labelStyle: inputTextStyle(),
+                  //   hintStyle: inputTextStyle(),
+                  //   errorStyle: inputTextStyle(),
+                  //   labelText: selectedItem == 0 ? labelText : labelText,
+                  // ),
+                  DropdownButtonFormField(
+                    hint: Text(labelText),
+                    isExpanded: true,
+                    value: selectedItem,
+                    items: listItems.map((NamesListItem item) {
+                      return new DropdownMenuItem(
+                        value: item.id,
+                        child: new Text(
+                          item.name,
+                          style: inputTextStyle(),
+                        ),
+                      );
+                    }).toList(),
+                    isDense: true,
+                    onChanged: onChanged,
+                    validator: validator,
+                  )
+                //)
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -11,6 +11,8 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 
 List<NamesListItem> depositors = [
   NamesListItem(id: 1, name: "Peter Parker"),
@@ -35,8 +37,7 @@ class _RecordIncomeState extends State<RecordIncome> {
   bool toolTipIsVisible = true;
   DateTime incomeDate = DateTime.now();
   DateTime now = DateTime.now();
-  int refundMethod;
-  NamesListItem depositMethodValue;
+  int depositMethod;
   int depositorId;
   int groupMemberId;
   int incomeCategoryId;
@@ -46,7 +47,11 @@ class _RecordIncomeState extends State<RecordIncome> {
   bool _isInit = true;
   Map<String, dynamic> _formData = {};
   bool _isFormInputEnabled = true;
-  Map <String,dynamic> formLoadData = {};
+  static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
+  String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
+  Map<String, dynamic> formLoadData = {};
+  final _formKey = new GlobalKey<FormState>();
+  bool _isLoading = false;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -82,20 +87,56 @@ class _RecordIncomeState extends State<RecordIncome> {
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      );
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true,incomeCats: true); 
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(acc: true, incomeCats: true, depositor: true);
     setState(() {
       _isInit = false;
     });
-    Navigator.of(context,rootNavigator: true).pop();
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  void _submit(BuildContext context) async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+      _isFormInputEnabled = false;
+    });
+    _formKey.currentState.save();
+    _formData['deposit_date'] = incomeDate.toString();
+    _formData["depositor_id"] = depositorId;
+    _formData["income_category_id"] = incomeCategoryId;
+    _formData["account_id"] = accountId;
+    _formData["deposit_method"] = depositMethod;
+    _formData["amount"] = amount;
+    _formData["description"] = description;
+    _formData["request_id"] = requestId;
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .recordIncomePayment(_formData);
+      Navigator.of(context).pop();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormInputEnabled = true;
+      });
+    }
   }
 
   @override
@@ -110,11 +151,9 @@ class _RecordIncomeState extends State<RecordIncome> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          controller: _scrollController,
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
           child: Column(
             children: <Widget>[
               toolTip(
@@ -128,97 +167,156 @@ class _RecordIncomeState extends State<RecordIncome> {
                     });
                   }),
               Container(
-                padding: inputPagePadding,
-                height: MediaQuery.of(context).size.height,
-                color: Theme.of(context).backgroundColor,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    DatePicker(
-                      labelText: 'Select Deposit Date',
-                      lastDate: DateTime.now(),
-                      selectedDate: incomeDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : incomeDate,
-                      selectDate: (selectedDate) {
-                        setState(() {
-                          incomeDate = selectedDate;
-                        });
-                      },
-                    ),
-                    CustomDropDownButton(
-                      labelText: 'Select Depositor',
-                      listItems: formLoadData.containsKey("depositorOptions")?formLoadData["depositorOptions"]:[],
-                      selectedItem: depositorId,
-                      onChanged: (value) {
-                        setState(() {
-                          depositorId = value;
-                        });
-                      },
-                    ),
-                    CustomDropDownButton(
-                      labelText: 'Select Income Category',
-                      listItems: formLoadData.containsKey("incomeCategoryOptions")?formLoadData["incomeCategoryOptions"]:[],
-                      selectedItem: incomeCategoryId,
-                      onChanged: (value) {
-                        setState(() {
-                          incomeCategoryId = value;
-                        });
-                      },
-                    ),
-                    CustomDropDownButton(
-                      labelText: 'Select Account',
-                      listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
-                      selectedItem: accountId,
-                      onChanged: (value) {
-                        setState(() {
-                          accountId = value;
-                        });
-                      },
-                    ),
-                    CustomDropDownButton(
-                      labelText: 'Select Deposit Method',
-                      listItems: depositMethods,
-                      selectedItem: refundMethod,
-                      onChanged: (value) {
-                        setState(() {
-                          refundMethod = value;
-                        });
-                      },
-                    ),
-                    amountTextInputField(
-                        context: context,
-                        labelText: 'Enter Amount',
-                        onChanged: (value) {
-                          setState(() {
-                            amount = double.parse(value);
-                          });
-                        }),
-                    multilineTextField(
-                        maxLines : 3,
-                        context: context,
-                        labelText: 'Short Description (Optional)',
-                        onChanged: (value) {
-                          setState(() {
-                            description = value;
-                          });
-                        }),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    defaultButton(
-                      context: context,
-                      text: "SAVE",
-                      onPressed: () {
-                        
-                      },
-                    ),
-                  ],
+                child: SingleChildScrollView(
+                  controller: _scrollController,
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        padding: inputPagePadding,
+                        height: MediaQuery.of(context).size.height,
+                        color: Theme.of(context).backgroundColor,
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              DatePicker(
+                                labelText: 'Select Deposit Date',
+                                lastDate: DateTime.now(),
+                                selectedDate: incomeDate == null
+                                    ? new DateTime(
+                                        now.year, now.month, now.day - 1, 6, 30)
+                                    : incomeDate,
+                                selectDate: (selectedDate) {
+                                  setState(() {
+                                    incomeDate = selectedDate;
+                                  });
+                                },
+                              ),
+                              CustomDropDownButton(
+                                labelText: 'Select Depositor',
+                                listItems:
+                                    formLoadData.containsKey("depositorOptions")
+                                        ? formLoadData["depositorOptions"]
+                                        : [],
+                                selectedItem: depositorId,
+                                validator: (value) {
+                                  if (value == null || value == "") {
+                                    return "Field required";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    depositorId = value;
+                                  });
+                                },
+                              ),
+                              CustomDropDownButton(
+                                labelText: 'Select Income Category',
+                                listItems: formLoadData
+                                        .containsKey("incomeCategoryOptions")
+                                    ? formLoadData["incomeCategoryOptions"]
+                                    : [],
+                                selectedItem: incomeCategoryId,
+                                validator: (value) {
+                                  if (value == null || value == "") {
+                                    return "Field required";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    incomeCategoryId = value;
+                                  });
+                                },
+                              ),
+                              CustomDropDownButton(
+                                labelText: 'Select Account',
+                                listItems:
+                                    formLoadData.containsKey("accountOptions")
+                                        ? formLoadData["accountOptions"]
+                                        : [],
+                                selectedItem: accountId,
+                                validator: (value) {
+                                  if (value == null || value == "") {
+                                    return "Field required";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    accountId = value;
+                                  });
+                                },
+                              ),
+                              CustomDropDownButton(
+                                labelText: 'Select Deposit Method',
+                                listItems: depositMethods,
+                                selectedItem: depositMethod,
+                                validator: (value) {
+                                  if (value == null || value == "") {
+                                    return "Field required";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    depositMethod = value;
+                                  });
+                                },
+                              ),
+                              amountTextInputField(
+                                context: context,
+                                labelText: 'Enter Amount',
+                                onChanged: (value) {
+                                  setState(() {
+                                    amount = double.parse(value);
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value == null || value == "") {
+                                    return "Field required";
+                                  }
+                                  return null;
+                                },
+                              ),
+                              multilineTextField(
+                                  maxLines: 30,
+                                  context: context,
+                                  labelText: 'Short Description (Optional)',
+                                  onChanged: (value) {
+                                    setState(() {
+                                      description = value;
+                                    });
+                                  }),
+                              SizedBox(
+                                height: 24,
+                              ),
+                              _isLoading
+                                  ? Padding(
+                                      padding: EdgeInsets.all(10),
+                                      child: Center(
+                                          child: CircularProgressIndicator()),
+                                    )
+                                  : defaultButton(
+                                      context: context,
+                                      text: "SAVE",
+                                      onPressed: () {
+                                        _submit(context);
+                                      },
+                                    ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               )
             ],
-          ),
-        ),
-      ),
+          )),
     );
   }
 }

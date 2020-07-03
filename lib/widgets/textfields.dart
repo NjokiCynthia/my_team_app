@@ -76,26 +76,29 @@ Widget numberTextInputField(
       TextEditingController controller,
     Function validator,
     Function onSaved}) {
-  return TextFormField(
-    onChanged: onChanged,
-    style: inputTextStyle(),
-    inputFormatters: [_amountValidator],
-    controller: controller,
-    keyboardType: TextInputType.numberWithOptions(
-      decimal: false,
-      signed: false,
-    ),
-    validator: validator,
-    onSaved: onSaved,
-    decoration: InputDecoration(
-      floatingLabelBehavior: FloatingLabelBehavior.auto,
-      enabledBorder: UnderlineInputBorder(
-          borderSide: BorderSide(
-        color: Theme.of(context).hintColor,
-        width: 1.0,
-      )),
-      hintText: hintText,
-      labelText: labelText,
+  return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: TextFormField(
+      onChanged: onChanged,
+      style: inputTextStyle(),
+      inputFormatters: [_amountValidator],
+      controller: controller,
+      keyboardType: TextInputType.numberWithOptions(
+        decimal: false,
+        signed: false,
+      ),
+      validator: validator,
+      onSaved: onSaved,
+      decoration: InputDecoration(
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(
+          color: Theme.of(context).hintColor,
+          width: 1.0,
+        )),
+        hintText: hintText,
+        labelText: labelText,
+      ),
     ),
   );
 }
@@ -104,11 +107,11 @@ Widget multilineTextField(
     {BuildContext context,
     String labelText,
     Function onChanged,
-    int maxLines = 4}) {
+    int maxLines}) {
   return TextFormField(
     keyboardType: TextInputType.multiline,
     maxLines: maxLines,
-    minLines: 1,
+    minLines: 3,
     onChanged: onChanged,
     decoration: InputDecoration(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
