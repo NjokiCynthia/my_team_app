@@ -2204,10 +2204,11 @@ class Groups with ChangeNotifier {
     {
       bool contr=false,
       bool acc=false,
-      bool member=false
+      bool member=false,
+      bool fineOptions = false
     }
   )async{
-    List<NamesListItem> contributionOptions = [],accountOptions=[],memberOptions=[];
+    List<NamesListItem> contributionOptions = [],accountOptions=[],memberOptions=[],finesOptions=[];
     if(contr){
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2230,10 +2231,17 @@ class Groups with ChangeNotifier {
         }
       _members.map((member) => memberOptions.add(NamesListItem(id: int.tryParse(member.id),name: member.name))).toList();
     }
+    if(fineOptions){
+      if(_fineTypes.length == 0){
+        await fetchFineTypes();
+      }
+      _fineTypes.map((fine) => finesOptions.add(NamesListItem(id:int.tryParse(fine.id),name:fine.name))).toList();
+    }
     Map<String,dynamic> result = {
       "contributionOptions" :  contributionOptions,
       "accountOptions" : accountOptions,
       "memberOptions" : memberOptions,
+      "finesOptions" : finesOptions,
     };
     return result;
   }
@@ -2254,6 +2262,33 @@ class Groups with ChangeNotifier {
         final postRequest = json.encode(formData);
         print(postRequest);
         await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> recordFinePayments(Map<String, dynamic> formData) async {
+    try {
+      //const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
+      print(formData['account_id']);
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
+
+      try {
+        final postRequest = json.encode(formData);
+        print(postRequest);
+        //await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
