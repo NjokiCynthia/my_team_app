@@ -12,6 +12,15 @@
                 "--flavor",
                 "dev"
             ]
+        },
+        {
+            "name": "Flutter PROD",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "prod"
+            ]
         }
     ]
 }
