@@ -135,18 +135,15 @@ class _RecordIncomeState extends State<RecordIncome> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Expanded(
-                      flex: 2,
-                      child: DatePicker(
-                        labelText: 'Select Deposit Date',
-                        lastDate: DateTime.now(),
-                        selectedDate: incomeDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : incomeDate,
-                        selectDate: (selectedDate) {
-                          setState(() {
-                            incomeDate = selectedDate;
-                          });
-                        },
-                      ),
+                    DatePicker(
+                      labelText: 'Select Deposit Date',
+                      lastDate: DateTime.now(),
+                      selectedDate: incomeDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : incomeDate,
+                      selectDate: (selectedDate) {
+                        setState(() {
+                          incomeDate = selectedDate;
+                        });
+                      },
                     ),
                     CustomDropDownButton(
                       labelText: 'Select Depositor',
