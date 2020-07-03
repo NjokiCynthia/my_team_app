@@ -13,14 +13,14 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'loan-statement.dart';
+import 'member/loan-statement.dart';
 
-class LoanSummary extends StatefulWidget {
+class DepositReceipts extends StatefulWidget {
   @override
-  _LoanSummaryState createState() => _LoanSummaryState();
+  _DepositReceiptsState createState() => _DepositReceiptsState();
 }
 
-class _LoanSummaryState extends State<LoanSummary> {
+class _DepositReceiptsState extends State<DepositReceipts> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -68,7 +68,7 @@ class _LoanSummaryState extends State<LoanSummary> {
     return Scaffold(
         appBar: secondaryPageAppbar(
             context: context,
-            title: "My Loans Summary",
+            title: "Deposit Receipts",
             action: () => Navigator.of(context).pop(),
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left),
@@ -89,7 +89,7 @@ class _LoanSummaryState extends State<LoanSummary> {
                             ? ListView.builder(
                                 itemBuilder: (context, index) {
                                   ActiveLoan loan = activeLoans[index];
-                                  return ActiveLoanCard(
+                                  return DepositCard(
                                     loan: loan,
                                     repay: () {
                                       Navigator.of(context).push(
@@ -118,8 +118,8 @@ class _LoanSummaryState extends State<LoanSummary> {
   }
 }
 
-class ActiveLoanCard extends StatelessWidget {
-  const ActiveLoanCard({Key key, @required this.loan, this.repay, this.statement}) : super(key: key);
+class DepositCard extends StatelessWidget {
+  const DepositCard({Key key, @required this.loan, this.repay, this.statement}) : super(key: key);
 
   final ActiveLoan loan;
   final Function repay, statement;
@@ -144,21 +144,48 @@ class ActiveLoanCard extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         flex: 1,
-                        child: Text(
-                          loan.name,
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 16.0, color: Theme.of(context).textSelectionHandleColor, fontFamily: 'SegoeUI'),
-                          textAlign: TextAlign.start,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            customTitle(
+                              text: "Contribution Payment",
+                              fontSize: 16.0,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.start,
+                            ),
+                            subtitle2(
+                              text: "Monthly Welfare",
+                              textAlign: TextAlign.start,
+                              color: Theme.of(context).textSelectionHandleColor,
+                            )
+                          ],
                         ),
                       ),
                       SizedBox(
                         width: 10,
                       ),
-                      getStatus()
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          customTitle(
+                            text: "Ksh ",
+                            fontSize: 18.0,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          heading2(
+                            text: currencyFormat.format(loan.amount),
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.end,
+                          ),
+                        ],
+                      ),
                     ],
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 12.0, right: 12.0),
@@ -166,25 +193,15 @@ class ActiveLoanCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        subtitle2(text: "Disbursed On", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle1(text: loan.disbursementDate, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
+                        subtitle2(text: "Paid By", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                        subtitle1(text: "Peter Parker", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        customTitle(
-                          text: "Ksh ",
-                          fontSize: 18.0,
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w400,
-                        ),
-                        heading2(
-                          text: currencyFormat.format(loan.amount),
-                          color: Theme.of(context).textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
+                        subtitle2(text: "Paid On", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                        subtitle1(text: "12 Jan 2020", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       ],
                     ),
                   ]),
@@ -204,7 +221,7 @@ class ActiveLoanCard extends StatelessWidget {
                                   top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
                                   right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
                           child: plainButton(
-                              text: "REPAY NOW",
+                              text: "SHOW DETAILS",
                               size: 16.0,
                               spacing: 2.0,
                               color: Theme.of(context).primaryColor.withOpacity(0.5),
@@ -219,7 +236,7 @@ class ActiveLoanCard extends StatelessWidget {
                             border: Border(
                                 top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
                                 left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-                        child: plainButton(text: "STATEMENT", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: statement),
+                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: statement),
                       ),
                     ),
                   ],
