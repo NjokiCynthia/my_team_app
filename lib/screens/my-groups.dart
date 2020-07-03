@@ -10,6 +10,7 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,7 @@ class MyGroups extends StatefulWidget {
 class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   Future<void> _future;
   AnimationController _controller;
+  DateTime currentBackPressTime;
 
   Future<void> _getUserCheckinData(BuildContext context) async {
     try {
@@ -68,12 +70,25 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
     );
   }
 
+  Future<bool> _onWillPop() {
+    DateTime now = DateTime.now();
+    if (currentBackPressTime == null || 
+        now.difference(currentBackPressTime) > Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      //Fluttertoast.showToast(msg: "Press again to exit");
+      SystemNavigator.pop();
+    }
+    return Future.value(true);
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: false);
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Builder(builder: (BuildContext context) {
+      body: WillPopScope(
+        onWillPop: _onWillPop,
+        child: Builder(builder: (BuildContext context) {
         return Container(
           alignment: Alignment.center,
           decoration: primaryGradient(context),
@@ -196,6 +211,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
           ),
         );
       }),
+      )
     );
   }
 }
