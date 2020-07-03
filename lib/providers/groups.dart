@@ -165,6 +165,20 @@ class FineType {
   });
 }
 
+class IncomeCategories{
+  @required final String id;
+  @required final String name;
+  final String description;
+  final bool ishidden;
+
+  IncomeCategories({
+    this.id,
+    this.name,
+    this.description,
+    this.ishidden,
+  });
+}
+
 class LoanType {
   final String id;
   final String name;
@@ -230,6 +244,7 @@ class Groups with ChangeNotifier {
   List<Contribution> _contributions = [];
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
+  List<IncomeCategories> _incomeCategories = [];
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
   List<List<Account>> _allAccounts = [];
@@ -1064,6 +1079,31 @@ class Groups with ChangeNotifier {
         _fineTypes = []; //clear accounts
         final groupFineTypes = response['fine_category_options'] as List<dynamic>;
         addFineTypes(groupFineTypes);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchIncomeCategories()async{
+    const url = EndpointUrl.GET_GROUP_INCOME_CATEGORIES;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        _incomeCategories = []; //clear accounts
+        // final IncomeCategoriesTypes = response['fine_category_options'] as List<dynamic>;
+        // addFineTypes(groupFineTypes);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -2177,7 +2217,14 @@ class Groups with ChangeNotifier {
   }
 
   /************************Load Form initial Data**********/
-  Future<Map<String, dynamic>> loadInitialFormData({bool contr = false, bool acc = false, bool member = false, bool fineOptions = false}) async {
+  Future<Map<String, dynamic>> loadInitialFormData(
+    {
+      bool contr = false, 
+      bool acc = false, 
+      bool member = false, 
+      bool fineOptions = false,
+      bool incomeCats = false,
+    }) async {
     List<NamesListItem> contributionOptions = [], accountOptions = [], memberOptions = [], finesOptions = [], incomeCategoryOptions = [];
     if (contr) {
       if (_contributions.length == 0) {
@@ -2207,6 +2254,13 @@ class Groups with ChangeNotifier {
         await fetchFineTypes();
       }
       _fineTypes.map((fine) => finesOptions.add(NamesListItem(id: int.tryParse(fine.id), name: fine.name))).toList();
+    }
+
+    if(incomeCats){
+      if(_incomeCategories.length==0){
+        await fetchIncomeCategories();
+      }
+      _incomeCategories.map((income) => incomeCategoryOptions.add(NamesListItem(id:int.tryParse(income.id),name:income.name))).toList();
     }
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,

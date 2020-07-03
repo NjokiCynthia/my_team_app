@@ -91,7 +91,7 @@ class _RecordIncomeState extends State<RecordIncome> {
         }
       );
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true); 
+    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true,incomeCats: true); 
     setState(() {
       _isInit = false;
     });
