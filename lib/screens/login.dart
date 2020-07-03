@@ -34,10 +34,16 @@ class _LoginState extends State<Login> {
   bool _isFormInputEnabled = true;
   bool _isPhoneNumber = true;
 
+  _printLatestValues() {
+    print("Text: ${_phoneController.text}");
+  }
+
   @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
     super.initState();
+
+    _phoneController.addListener(_printLatestValues);
   }
 
   @override
