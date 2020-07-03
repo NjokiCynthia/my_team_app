@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
+import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
@@ -201,6 +202,40 @@ LoanStatementModel getLoanStatementModel(dynamic data) {
   }
 
   return LoanStatementModel(statementRows: statementRows, lumpSum: lumpSum, paid: paid, balance: balance, description: loanDescription);
+}
+
+List<Deposit> getDepositList(List<dynamic> data) {
+  List<Deposit> depositList = [];
+  if (data.length > 0) {
+    for (var deposit in data) {
+      String id = deposit["id"].toString();
+      String depositType = deposit["type"].toString();
+      String date = deposit["date"].toString();
+      double amount = ParseHelper.getDoubleFromJson(deposit, "amount");
+      String reconciliation = deposit["reconciliation"].toString();
+      String narrative = deposit["narrative"].toString();
+      String name = "Monthly Savings";
+
+      final parts = depositType.split("made by");
+
+      String depositor = "";
+      String type = "";
+      try {
+        type = parts[0].trim();
+        depositor = parts[1].trim();
+      } catch (_) {
+        type = depositType;
+        depositor = "--";
+      }
+
+      final depositItem = Deposit(
+          id: id, type: type, name: name, depositor: depositor, date: date, reconciliation: reconciliation, narrative: narrative, amount: amount);
+
+      depositList.add(depositItem);
+    }
+  }
+
+  return depositList;
 }
 
 class ParseHelper {

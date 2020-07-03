@@ -183,7 +183,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                           ],
                         );
                       } else
-                        return Container();
+                        return Container(); //TODO: handle failed request
                     }))));
   }
 }

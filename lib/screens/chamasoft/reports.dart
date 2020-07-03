@@ -57,8 +57,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   icon: menu.icon,
                   title: menu.title,
                   subtitle: menu.subtitle,
-                  color: (index == 5) ? Colors.white : Colors.blue[400],
-                  isHighlighted: (index == 5) ? true : false,
+                  color: (index == 6) ? Colors.white : Colors.blue[400],
+                  isHighlighted: (index == 6) ? true : false,
                   action: () => navigate(index),
                 );
               }),

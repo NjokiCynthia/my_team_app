@@ -1,6 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/repay-loan.dart';
+import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -12,8 +11,6 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
-
-import 'member/loan-statement.dart';
 
 class DepositReceipts extends StatefulWidget {
   @override
@@ -35,15 +32,15 @@ class _DepositReceiptsState extends State<DepositReceipts> {
     }
   }
 
-  Future<void> _getMemberLoans(BuildContext context) async {
+  Future<void> _getDeposits(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchMemberLoans();
+      await Provider.of<Groups>(context, listen: false).fetchDeposits();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _getMemberLoans(context);
+            _getDeposits(context);
           });
     }
   }
@@ -52,7 +49,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getMemberLoans(context);
+    _future = _getDeposits(context);
     super.initState();
   }
 
@@ -78,51 +75,39 @@ class _DepositReceiptsState extends State<DepositReceipts> {
             builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                 ? Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
-                    onRefresh: () => _getMemberLoans(context),
+                    onRefresh: () => _getDeposits(context),
                     child: Consumer<Groups>(builder: (context, data, child) {
-                      List<ActiveLoan> activeLoans = data.getMemberLoans;
-                      return Container(
-                        decoration: primaryGradient(context),
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: activeLoans.length > 0
-                            ? ListView.builder(
-                                itemBuilder: (context, index) {
-                                  ActiveLoan loan = activeLoans[index];
-                                  return DepositCard(
-                                    loan: loan,
-                                    repay: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) => RepayLoan(
-                                            loan: loan,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    statement: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) => LoanStatement(
-                                            loan: loan,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                  );
-                                },
-                                itemCount: activeLoans.length)
-                            : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.pie_chart, text: "There are no loans to display"),
-                      );
+                      if (data.getDeposits != null) {
+                        List<Deposit> deposits = data.getDeposits;
+                        return Container(
+                          decoration: primaryGradient(context),
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: deposits.length > 0
+                              ? ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    Deposit deposit = deposits[index];
+                                    return DepositCard(
+                                      deposit: deposit,
+                                      details: () {},
+                                      voidItem: () {},
+                                    );
+                                  },
+                                  itemCount: deposits.length)
+                              : emptyList(
+                                  color: Colors.blue[400], iconData: LineAwesomeIcons.angle_double_down, text: "There are no deposits to display"),
+                        );
+                      } else
+                        return Container();
                     }))));
   }
 }
 
 class DepositCard extends StatelessWidget {
-  const DepositCard({Key key, @required this.loan, this.repay, this.statement}) : super(key: key);
+  const DepositCard({Key key, @required this.deposit, this.details, this.voidItem}) : super(key: key);
 
-  final ActiveLoan loan;
-  final Function repay, statement;
+  final Deposit deposit;
+  final Function details, voidItem;
 
   @override
   Widget build(BuildContext context) {
@@ -148,13 +133,13 @@ class DepositCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             customTitle(
-                              text: "Contribution Payment",
+                              text: deposit.type,
                               fontSize: 16.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
                             subtitle2(
-                              text: "Monthly Welfare",
+                              text: deposit.name,
                               textAlign: TextAlign.start,
                               color: Theme.of(context).textSelectionHandleColor,
                             )
@@ -175,7 +160,7 @@ class DepositCard extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                           heading2(
-                            text: currencyFormat.format(loan.amount),
+                            text: currencyFormat.format(deposit.amount),
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.end,
                           ),
@@ -194,14 +179,14 @@ class DepositCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         subtitle2(text: "Paid By", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle1(text: "Peter Parker", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
+                        subtitle1(text: deposit.depositor, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         subtitle2(text: "Paid On", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle1(text: "12 Jan 2020", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
+                        subtitle1(text: deposit.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       ],
                     ),
                   ]),
@@ -226,7 +211,7 @@ class DepositCard extends StatelessWidget {
                               spacing: 2.0,
                               color: Theme.of(context).primaryColor.withOpacity(0.5),
                               // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
-                              action: null) //loan.status == 2 ? null : repay),
+                              action: details) //loan.status == 2 ? null : repay),
                           ),
                     ),
                     Expanded(
@@ -236,7 +221,7 @@ class DepositCard extends StatelessWidget {
                             border: Border(
                                 top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
                                 left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: statement),
+                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: voidItem),
                       ),
                     ),
                   ],
@@ -245,15 +230,5 @@ class DepositCard extends StatelessWidget {
             )),
       ),
     );
-  }
-
-  Widget getStatus() {
-    if (loan.status == 1) {
-      return statusChip(text: "LOAN FULLY PAID", textColor: Colors.lightBlueAccent, backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
-    } else if (loan.status == 3) {
-      return statusChip(text: "LOAN DEFAULTED", textColor: Colors.red, backgroundColor: Colors.red.withOpacity(.2));
-    } else {
-      return statusChip(text: "ONGOING", textColor: Colors.blueGrey, backgroundColor: Colors.blueGrey.withOpacity(.2));
-    }
   }
 }
