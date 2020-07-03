@@ -33,7 +33,8 @@ class _RecordIncomeState extends State<RecordIncome> {
   ScrollController _scrollController;
   final formKey = new GlobalKey<FormState>();
   bool toolTipIsVisible = true;
-  DateTime refundDate = DateTime.now();
+  DateTime incomeDate = DateTime.now();
+  DateTime now = DateTime.now();
   int refundMethod;
   NamesListItem depositMethodValue;
   int depositorId;
@@ -134,19 +135,22 @@ class _RecordIncomeState extends State<RecordIncome> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    DatePicker(
-                      labelText: 'Select Deposit Date',
-                      selectedDate:
-                          refundDate == null ? DateTime.now() : refundDate,
-                      selectDate: (selectedDate) {
-                        setState(() {
-                          refundDate = selectedDate;
-                        });
-                      },
+                    Expanded(
+                      flex: 2,
+                      child: DatePicker(
+                        labelText: 'Select Deposit Date',
+                        lastDate: DateTime.now(),
+                        selectedDate: incomeDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : incomeDate,
+                        selectDate: (selectedDate) {
+                          setState(() {
+                            incomeDate = selectedDate;
+                          });
+                        },
+                      ),
                     ),
                     CustomDropDownButton(
                       labelText: 'Select Depositor',
-                      listItems: depositors,
+                      listItems: formLoadData.containsKey("depositorOptions")?formLoadData["depositorOptions"]:[],
                       selectedItem: depositorId,
                       onChanged: (value) {
                         setState(() {
@@ -156,7 +160,7 @@ class _RecordIncomeState extends State<RecordIncome> {
                     ),
                     CustomDropDownButton(
                       labelText: 'Select Income Category',
-                      listItems: incomeCategories,
+                      listItems: formLoadData.containsKey("incomeCategoryOptions")?formLoadData["incomeCategoryOptions"]:[],
                       selectedItem: incomeCategoryId,
                       onChanged: (value) {
                         setState(() {
@@ -193,6 +197,7 @@ class _RecordIncomeState extends State<RecordIncome> {
                           });
                         }),
                     multilineTextField(
+                        maxLines : 3,
                         context: context,
                         labelText: 'Short Description (Optional)',
                         onChanged: (value) {
@@ -207,12 +212,7 @@ class _RecordIncomeState extends State<RecordIncome> {
                       context: context,
                       text: "SAVE",
                       onPressed: () {
-                        print('Refund date: $refundDate');
-                        print('Refund Method: $refundMethod');
-                        print('Depositor: $depositorId');
-                        print('Account: $accountId');
-                        print('Amount: $amount');
-                        print('Description: $description');
+                        
                       },
                     ),
                   ],

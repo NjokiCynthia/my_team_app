@@ -2208,7 +2208,9 @@ class Groups with ChangeNotifier {
       bool fineOptions = false
     }
   )async{
-    List<NamesListItem> contributionOptions = [],accountOptions=[],memberOptions=[],finesOptions=[];
+    List<NamesListItem> contributionOptions = [],
+      accountOptions=[],memberOptions=[],finesOptions=[],
+      incomeCategoryOptions=[];
     if(contr){
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2242,6 +2244,7 @@ class Groups with ChangeNotifier {
       "accountOptions" : accountOptions,
       "memberOptions" : memberOptions,
       "finesOptions" : finesOptions,
+      "incomeCategoryOptions" : incomeCategoryOptions,
     };
     return result;
   }
