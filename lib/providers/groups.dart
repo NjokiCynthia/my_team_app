@@ -226,7 +226,7 @@ class GroupContributionSummary {
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
 
-  List<Group> _groups = [];
+
   List<Account> _accounts = [];
   List<Contribution> _contributions = [];
   List<Expense> _expenses = [];
@@ -257,17 +257,17 @@ class Groups with ChangeNotifier {
       _groupRolesStatusAndCurrentMemberStatus;
 
   String _userId;
-
   String _identity;
+  List<Group> _groups = [];
   String _currentGroupId;
+
   Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
     this._groups = _groups;
     this._userId = _userId;
     this._identity = _identity;
-
     this._currentGroupId = _currentGroupId;
-    print(" currentGroupId $currentGroupId and length ${_groups.length}");
+    print(" currentGroupId $currentGroupId and length ${_groups.length} userid: $_userId and identity $_identity");
   }
 
   List<Group> get item {
@@ -450,7 +450,6 @@ class Groups with ChangeNotifier {
       [bool replace = false, int position = 0, bool isNewGroup = false]) async {
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
-
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
         var group = parseSingleGroup(groupJSON);
@@ -468,8 +467,8 @@ class Groups with ChangeNotifier {
       setSelectedGroupId(loadedNewGroup.groupId);
     } else {
       _groups = loadedGroups;
-      print("Groups : ${_groups.length}");
     }
+    print("Groups : ${_groups.length}");
     notifyListeners();
   }
 
