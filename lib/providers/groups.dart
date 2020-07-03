@@ -226,7 +226,6 @@ class GroupContributionSummary {
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
 
-  List<Group> _groups = [];
   List<Account> _accounts = [];
   List<Contribution> _contributions = [];
   List<Expense> _expenses = [];
@@ -257,17 +256,16 @@ class Groups with ChangeNotifier {
   GroupRolesStatusAndCurrentMemberStatus _groupRolesStatusAndCurrentMemberStatus;
 
   String _userId;
-
   String _identity;
+  List<Group> _groups = [];
   String _currentGroupId;
 
   Groups(List<Group> _groups, String _userId, String _identity, String _currentGroupId) {
     this._groups = _groups;
     this._userId = _userId;
     this._identity = _identity;
-
     this._currentGroupId = _currentGroupId;
-    print(" currentGroupId $currentGroupId and length ${_groups.length}");
+    print(" currentGroupId $currentGroupId and length ${_groups.length} userid: $_userId and identity $_identity");
   }
 
   List<Group> get item {
@@ -450,7 +448,6 @@ class Groups with ChangeNotifier {
   Future<void> addGroups(List<dynamic> groupObject, [bool replace = false, int position = 0, bool isNewGroup = false]) async {
     final List<Group> loadedGroups = [];
     Group loadedNewGroup;
-
     if (groupObject.length > 0) {
       for (var groupJSON in groupObject) {
         var group = parseSingleGroup(groupJSON);
@@ -468,8 +465,8 @@ class Groups with ChangeNotifier {
       setSelectedGroupId(loadedNewGroup.groupId);
     } else {
       _groups = loadedGroups;
-      print("Groups : ${_groups.length}");
     }
+    print("Groups : ${_groups.length}");
     notifyListeners();
   }
 
@@ -530,7 +527,7 @@ class Groups with ChangeNotifier {
       for (var bankAccountJSON in groupBankAccounts) {
         ++position;
         final newAccount =
-        Account(id: bankAccountJSON['id'].toString(), name: bankAccountJSON['name'].toString(), uniqueId: position, typeId: accountType);
+            Account(id: bankAccountJSON['id'].toString(), name: bankAccountJSON['name'].toString(), uniqueId: position, typeId: accountType);
         bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
@@ -611,28 +608,17 @@ class Groups with ChangeNotifier {
     if (groupLoanTypes.length > 0) {
       for (var groupLoanTypesJSON in groupLoanTypes) {
         final newLoanType = LoanType(
-          id: groupLoanTypesJSON['id']
-            ..toString,
-          name: groupLoanTypesJSON['name']
-            ..toString,
-          repaymentPeriod: groupLoanTypesJSON['repayment_period']
-            ..toString,
-          loanAmount: groupLoanTypesJSON['loan_amount']
-            ..toString,
-          interestRate: groupLoanTypesJSON['interest_rate']
-            ..toString,
-          loanProcessing: groupLoanTypesJSON['loan_processing']
-            ..toString,
-          disbursementDate: groupLoanTypesJSON['disbursement_date']
-            ..toString,
-          guarantors: groupLoanTypesJSON['guarantors']
-            ..toString,
-          latePaymentFines: groupLoanTypesJSON['late_payment_fines']
-            ..toString,
-          outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines']
-            ..toString,
-          isHidden: groupLoanTypesJSON['is_hidden']
-            ..toString,
+          id: groupLoanTypesJSON['id']..toString,
+          name: groupLoanTypesJSON['name']..toString,
+          repaymentPeriod: groupLoanTypesJSON['repayment_period']..toString,
+          loanAmount: groupLoanTypesJSON['loan_amount']..toString,
+          interestRate: groupLoanTypesJSON['interest_rate']..toString,
+          loanProcessing: groupLoanTypesJSON['loan_processing']..toString,
+          disbursementDate: groupLoanTypesJSON['disbursement_date']..toString,
+          guarantors: groupLoanTypesJSON['guarantors']..toString,
+          latePaymentFines: groupLoanTypesJSON['late_payment_fines']..toString,
+          outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines']..toString,
+          isHidden: groupLoanTypesJSON['is_hidden']..toString,
         );
         _loanTypes.add(newLoanType);
       }
@@ -2191,11 +2177,8 @@ class Groups with ChangeNotifier {
   }
 
   /************************Load Form initial Data**********/
-
-  Future<Map<String, dynamic>> loadInitialFormData({bool contr = false, bool acc = false, bool member = false}) async {
-    List<NamesListItem> contributionOptions = [],
-        accountOptions = [],
-        memberOptions = [];
+  Future<Map<String, dynamic>> loadInitialFormData({bool contr = false, bool acc = false, bool member = false, bool fineOptions = false}) async {
+    List<NamesListItem> contributionOptions = [], accountOptions = [], memberOptions = [], finesOptions = [], incomeCategoryOptions = [];
     if (contr) {
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2218,10 +2201,19 @@ class Groups with ChangeNotifier {
       }
       _members.map((member) => memberOptions.add(NamesListItem(id: int.tryParse(member.id), name: member.name))).toList();
     }
+
+    if (fineOptions) {
+      if (_fineTypes.length == 0) {
+        await fetchFineTypes();
+      }
+      _fineTypes.map((fine) => finesOptions.add(NamesListItem(id: int.tryParse(fine.id), name: fine.name))).toList();
+    }
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
       "memberOptions": memberOptions,
+      "finesOptions": finesOptions,
+      "incomeCategoryOptions": incomeCategoryOptions,
     };
     return result;
   }
@@ -2241,6 +2233,32 @@ class Groups with ChangeNotifier {
         final postRequest = json.encode(formData);
         print(postRequest);
         await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> recordFinePayments(Map<String, dynamic> formData) async {
+    try {
+      //const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
+      print(formData['account_id']);
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+
+      formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
+
+      try {
+        final postRequest = json.encode(formData);
+        print(postRequest);
+        //await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {

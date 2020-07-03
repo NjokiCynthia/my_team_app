@@ -41,22 +41,19 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (ctx) => Auth(),
+          create: (_) => Auth(),
         ),
-        ChangeNotifierProvider(
-          create: (_) {
+        ChangeNotifierProvider(create: (_) {
             return themeChangeProvider;
           },
         ),
-
-        // ChangeNotifierProvider(
-        //   create: (ctx) => Groups(),
-        // ),
         ChangeNotifierProxyProvider<Auth, Groups>(
-          update: (ctx, auth, previousGroups) => Groups(previousGroups == null ? [] : previousGroups.item, auth.id, auth.userIdentity,
-              previousGroups == null ? '' : previousGroups.currentGroupId),
-          create: (BuildContext context) {},
-        ),
+            update: (ctx, auth, previousGroups) => Groups(
+                previousGroups == null ? [] : previousGroups.item,
+                auth.id,
+                auth.userIdentity,
+                previousGroups == null ? '': previousGroups.currentGroupId,
+            )),
       ],
       child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
