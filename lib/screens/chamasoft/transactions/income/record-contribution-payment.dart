@@ -64,11 +64,23 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     //       child: CircularProgressIndicator(),
     //     );
     // });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      );
+    });
 
     formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(contr: true,acc:true); 
     setState(() {
       _isInit = false;
     });
+    Navigator.of(context,rootNavigator: true).pop();
   }
 
   void _submit(BuildContext context) async {
@@ -116,17 +128,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      // WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //   await showDialog<String>(
-      //     context: context,
-      //     barrierDismissible: false,
-      //     builder: (BuildContext context){
-      //       return Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     }
-      //   );
-      // });
       _fetchDefaultValues(context);
     }
     super.didChangeDependencies();
