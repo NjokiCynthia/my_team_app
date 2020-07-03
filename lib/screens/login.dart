@@ -42,6 +42,8 @@ class _LoginState extends State<Login> {
 
   @override
   void dispose() {
+    _emailController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
