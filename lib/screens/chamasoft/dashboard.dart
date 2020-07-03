@@ -17,6 +17,8 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 
 class ChamasoftDashboard extends StatefulWidget {
+
+  static const namedRoute = "/dashboard";
   @override
   _ChamasoftDashboardState createState() => _ChamasoftDashboardState();
 }

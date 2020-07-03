@@ -10,7 +10,9 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:chamasoft/providers/groups.dart';
 
 import '../select-member.dart';
 
@@ -30,6 +32,9 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
   ScrollController _scrollController;
   List<MembersFilterEntry> selectedMembersList = [];
   int memberTypeId;
+  Map <String,dynamic> formLoadData = {};
+  bool _isInit = true;
+  bool _isLoading = false;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -52,6 +57,40 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      // WidgetsBinding.instance.addPostFrameCallback((_) async {
+      //   await showDialog<String>(
+      //     context: context,
+      //     barrierDismissible: false,
+      //     builder: (BuildContext context){
+      //       return Center(
+      //         child: CircularProgressIndicator(),
+      //       );
+      //     }
+      //   );
+      // });
+      _fetchDefaultValues(context);
+    }
+    super.didChangeDependencies();
+  }
+
+
+  Future<void> _fetchDefaultValues(BuildContext context) async {
+    // showDialog(
+    //   context: context,
+    //   builder: (BuildContext context) {
+    //     return Center(
+    //       child: CircularProgressIndicator(),
+    //     );
+    // });
+
+    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(contr: true,acc:true); 
+    setState(() {
+      _isInit = false;
+    });
   }
 
   Iterable<Widget> get memberWidgets sync* {
@@ -238,13 +277,19 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                     ),
                     CustomDropDownButton(
                       labelText: "Select Deposit Account",
-                      listItems: accounts,
+                      listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                       selectedItem: accountId,
                       onChanged: (value) {
                         setState(() {
                           accountId = value;
                         });
                       },
+                      validator: (value){
+                          if(value==null){
+                            return "This field is required";
+                          }
+                          return null;
+                        },
                     ),
                     SizedBox(
                       height: 10,

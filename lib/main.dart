@@ -2,6 +2,7 @@ import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,7 @@ class _MyAppState extends State<MyApp> {
             Login.namedRoute: (ctx) => Login(),
             MyGroups.namedRoute: (ctx) => MyGroups(),
             SignUp.namedRoute: (ctx) => SignUp(),
+            ChamasoftDashboard.namedRoute:(ctx) => ChamasoftDashboard(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => IntroScreen());
