@@ -94,8 +94,8 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   style: new TextStyle(color: Colors.red),
                 ),
                 onPressed: () {
-                  // Navigator.of(context).pop();
-                  // StatusHandler().logout(context);
+                  Navigator.of(context).pop();
+                  StatusHandler().logout(context);
                 }
 
                 // Navigator.of(context).pushReplacement(
