@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
                 auth.id,
                 auth.userIdentity,
                 previousGroups == null ? '': previousGroups.currentGroupId,
-            )),
+            ), create: (BuildContext context) {  },),
       ],
       child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
