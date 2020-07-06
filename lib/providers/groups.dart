@@ -166,6 +166,20 @@ class FineType {
   });
 }
 
+class IncomeCategories{
+  @required final String id;
+  @required final String name;
+  final String description;
+  final bool ishidden;
+
+  IncomeCategories({
+    this.id,
+    this.name,
+    this.description,
+    this.ishidden,
+  });
+}
+
 class LoanType {
   final String id;
   final String name;
@@ -210,6 +224,15 @@ class Member {
   });
 }
 
+class Depositor{
+  final String id;
+  final String name;
+  final String email;
+  final String phone;
+
+  Depositor({this.id,this.name,this.email,this.phone});
+}
+
 class GroupContributionSummary {
   final String memberId;
   final String memberName;
@@ -231,8 +254,10 @@ class Groups with ChangeNotifier {
   List<Contribution> _contributions = [];
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
+  List<IncomeCategories> _incomeCategories = [];
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
+  List<Depositor> _depositors = [];
   List<List<Account>> _allAccounts = [];
   List<Country> _countryOptions = [];
   List<Currency> _currencyOptions = [];
@@ -610,6 +635,21 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
+  void addIncomeCategoriesTypes(List<dynamic> incomeCategories) {
+    if (incomeCategories.length > 0) {
+      for (var incomeCategoryJson in incomeCategories) {
+        final income = IncomeCategories(
+            id: incomeCategoryJson['id'].toString(),
+            name: incomeCategoryJson['name'].toString(),
+            description: "",
+            ishidden: false,
+        );
+        _incomeCategories.add(income);
+      }
+    }
+    notifyListeners();
+  }
+
   void addLoanTypes(List<dynamic> groupLoanTypes) {
     if (groupLoanTypes.length > 0) {
       for (var groupLoanTypesJSON in groupLoanTypes) {
@@ -642,6 +682,19 @@ class Groups with ChangeNotifier {
             identity: groupMembersJSON['identity'].toString(),
             avatar: groupMembersJSON['avatar'].toString());
         _members.add(newMember);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addDepositors(List<dynamic> groupDepositors) {
+    if (groupDepositors.length > 0) {
+      for (var groupDepositorsJSON in groupDepositors) {
+        final newDepositor = Depositor(
+            id: groupDepositorsJSON['id'].toString(),
+            name: groupDepositorsJSON['name'].toString(),
+        );
+        _depositors.add(newDepositor);
       }
     }
     notifyListeners();
@@ -1087,6 +1140,31 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> fetchIncomeCategories()async{
+    const url = EndpointUrl.GET_GROUP_INCOME_CATEGORIES;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        _incomeCategories = []; //clear accounts
+        final incomeCategoriesTypes = response['income_categories'] as List<dynamic>;
+        addIncomeCategoriesTypes(incomeCategoriesTypes);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchLoanTypes() async {
     const url = EndpointUrl.GET_GROUP_LOAN_TYPES;
     try {
@@ -1123,6 +1201,30 @@ class Groups with ChangeNotifier {
         _members = []; //clear
         final groupMembers = response['members'] as List<dynamic>;
         addMembers(groupMembers);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchGroupDepositors()async{
+    const url = EndpointUrl.GET_GROUP_DEPOSITOR_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _depositors = []; //clear
+        final groupDepositors = response['depositors'] as List<dynamic>;
+        addDepositors(groupDepositors);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -2210,8 +2312,18 @@ class Groups with ChangeNotifier {
   }
 
   /************************Load Form initial Data**********/
-  Future<Map<String, dynamic>> loadInitialFormData({bool contr = false, bool acc = false, bool member = false, bool fineOptions = false}) async {
-    List<NamesListItem> contributionOptions = [], accountOptions = [], memberOptions = [], finesOptions = [], incomeCategoryOptions = [];
+  Future<Map<String, dynamic>> loadInitialFormData(
+    {
+      bool contr = false, 
+      bool acc = false, 
+      bool member = false, 
+      bool fineOptions = false,
+      bool incomeCats = false,
+      bool depositor = false,
+    }) async {
+    List<NamesListItem> contributionOptions = [], accountOptions = [], 
+      memberOptions = [], finesOptions = [], depositorOptions=[], 
+      incomeCategoryOptions = [];
     if (contr) {
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2241,12 +2353,27 @@ class Groups with ChangeNotifier {
       }
       _fineTypes.map((fine) => finesOptions.add(NamesListItem(id: int.tryParse(fine.id), name: fine.name))).toList();
     }
+
+    if(incomeCats){
+      if(_incomeCategories.length==0){
+        await fetchIncomeCategories();
+      }
+      _incomeCategories.map((income) => incomeCategoryOptions.add(NamesListItem(id:int.tryParse(income.id),name:income.name))).toList();
+    }
+
+    if(depositor){
+      if(_depositors.length ==0){
+        await fetchGroupDepositors();
+      }
+      _depositors.map((depositor) => depositorOptions.add(NamesListItem(id: int.tryParse(depositor.id),name:"${depositor.name}"))).toList();
+    }
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
       "memberOptions": memberOptions,
       "finesOptions": finesOptions,
       "incomeCategoryOptions": incomeCategoryOptions,
+      "depositorOptions" : depositorOptions,
     };
     return result;
   }
@@ -2303,4 +2430,30 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
+  Future<void> recordIncomePayment(Map<String, dynamic> formData) async {
+    try {
+      const url = EndpointUrl.RECORD_INCOME;
+      print(formData['account_id']);
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        print(postRequest);
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  
 }

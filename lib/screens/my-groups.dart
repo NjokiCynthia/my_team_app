@@ -70,6 +70,46 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
     );
   }
 
+  void _logoutDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: new Text("Logout"),
+          content: new Text("Are you sure you want to log out? You'll have to login again to continue."),
+          actions: <Widget>[
+            new FlatButton(
+              child: new Text(
+                "Cancel",
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            new FlatButton(
+                child: new Text(
+                  "Logout",
+                  style: new TextStyle(color: Colors.red),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  StatusHandler().logout(context);
+                }
+
+                // Navigator.of(context).pushReplacement(
+                //   MaterialPageRoute(
+                //     builder: (BuildContext context) => Login(),
+                //   ),
+                // ),
+                ),
+          ],
+        );
+      },
+    );
+  }
+
   Future<bool> _onWillPop() {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null || 
@@ -162,6 +202,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                   ),
                                   builder: (ctx, groups, ch) => buildContainer(
                                       ListView.builder(
+                                          padding: EdgeInsets.only(top: 15,bottom:5),
                                           shrinkWrap: true,
                                           //physics: NeverScrollableScrollPhysics(),
                                           itemCount: groups.item.length,
@@ -198,9 +239,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                           textColor: Colors.red,
                           buttonHeight: 36.0,
                           textSize: 15.0,
-                          action: () {
-                            StatusHandler().logout(context);
-                          },
+                          action: () => _logoutDialog(),
                         ),
                       ),
                     ),
