@@ -228,7 +228,7 @@ class _ContributionTransferState extends State<ContributionTransfer> {
                           memberTransferToOptionId == 2,
                       child: CustomDropDownButton(
                         labelText: 'Select Fine To',
-                        listItems: fineOptions,
+                        listItems: [],
                         selectedItem: fineToId,
                         onChanged: (value) {
                           setState(() {

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CustomDropDownButton extends StatelessWidget {
   final int selectedItem;
   final String labelText;
-  final Function onChanged,validator;
+  final Function onChanged, validator;
   final List<NamesListItem> listItems;
 
   const CustomDropDownButton({
@@ -18,13 +18,15 @@ class CustomDropDownButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormField(
-      builder: (FormFieldState state) {
-        return DropdownButtonHideUnderline(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              //InputDecorator(
+    return Padding(
+      padding: EdgeInsets.only(top: 10),
+      child: FormField(
+        builder: (FormFieldState state) {
+          return DropdownButtonHideUnderline(
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                //InputDecorator(
                 // decoration: InputDecoration(
                 //   icon: const Icon(Icons.laptop),
                 //   border: InputBorder.none,
@@ -57,11 +59,12 @@ class CustomDropDownButton extends StatelessWidget {
                   onChanged: onChanged,
                   validator: validator,
                 )
-              //)
-            ],
-          ),
-        );
-      },
+                //)
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 }

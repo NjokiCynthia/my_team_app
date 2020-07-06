@@ -147,10 +147,7 @@ class ActiveLoanCard extends StatelessWidget {
                         child: Text(
                           loan.name,
                           style: TextStyle(
-                            fontWeight: FontWeight.w500,
-                            fontSize: 16.0,
-                            color: Theme.of(context).textSelectionHandleColor,
-                          ),
+                              fontWeight: FontWeight.w500, fontSize: 16.0, color: Theme.of(context).textSelectionHandleColor, fontFamily: 'SegoeUI'),
                           textAlign: TextAlign.start,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,

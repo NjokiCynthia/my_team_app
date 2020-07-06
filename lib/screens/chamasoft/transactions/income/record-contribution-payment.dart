@@ -1,7 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -58,18 +57,22 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   }
 
   Future<void> _fetchDefaultValues(BuildContext context) async {
-    // showDialog(
-    //   context: context,
-    //   builder: (BuildContext context) {
-    //     return Center(
-    //       child: CircularProgressIndicator(),
-    //     );
-    // });
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      );
+    });
     formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(contr: true,acc:true); 
     setState(() {
       _isInit = false;
     });
+    Navigator.of(context,rootNavigator: true).pop();
   }
 
   void _submit(BuildContext context) async {
@@ -117,17 +120,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      // WidgetsBinding.instance.addPostFrameCallback((_) async {
-      //   await showDialog<String>(
-      //     context: context,
-      //     barrierDismissible: false,
-      //     builder: (BuildContext context){
-      //       return Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     }
-      //   );
-      // });
       _fetchDefaultValues(context);
     }
     super.didChangeDependencies();
@@ -136,13 +128,9 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   Iterable<Widget> get memberWidgets sync* {
     for (MembersFilterEntry member in selectedMembersList) {
       yield ListTile(
-//          avatar: CircleAvatar(child: Text(member.initials)),
-          // Color(0xFFB3C7D9)
         title: Container(
           width: 200,
           child: Text(member.name, style: TextStyle(
-          //color:Theme.of(context).textSelectionColor, 
-          //fontWeight: FontWeight.w700
           fontSize: 17
         ))),
         contentPadding: EdgeInsets.all(4.0),
@@ -151,7 +139,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
           child: Text(
           member.phoneNumber,
           style: TextStyle(
-            //color: Color(0xFFB3C7D9)
             fontSize: 12
           ),
           
@@ -277,7 +264,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       ),
                       CustomDropDownButton(
                         labelText: "Select Contribution",
-                        listItems: formLoadData["contributionOptions"],
+                        listItems: formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
                         selectedItem: contributionId,
                         validator: (value){
                           if(value==null){
@@ -296,7 +283,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                       ),
                       CustomDropDownButton(
                         labelText: "Select Account",
-                        listItems: formLoadData["accountOptions"],
+                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                         selectedItem: accountId,
                         onChanged: (value) {
                           setState(() {

@@ -164,7 +164,11 @@ class _ListContactsState extends State<ListContacts> {
               ),
             )
           : Center(
-              child: CircularProgressIndicator(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[CircularProgressIndicator(), subtitle1(text: "Retrieving contact list")],
+              ),
             ),
     );
   }
@@ -207,7 +211,7 @@ class _ListContactsState extends State<ListContacts> {
     setState(() {
       _isLoading = true;
     });
-    var contacts = await ContactsService.getContacts();
+    var contacts = await ContactsService.getContacts(withThumbnails: false);
     return contacts;
   }
 
