@@ -166,9 +166,11 @@ class FineType {
   });
 }
 
-class IncomeCategories{
-  @required final String id;
-  @required final String name;
+class IncomeCategories {
+  @required
+  final String id;
+  @required
+  final String name;
   final String description;
   final bool ishidden;
 
@@ -224,13 +226,13 @@ class Member {
   });
 }
 
-class Depositor{
+class Depositor {
   final String id;
   final String name;
   final String email;
   final String phone;
 
-  Depositor({this.id,this.name,this.email,this.phone});
+  Depositor({this.id, this.name, this.email, this.phone});
 }
 
 class GroupContributionSummary {
@@ -639,10 +641,10 @@ class Groups with ChangeNotifier {
     if (incomeCategories.length > 0) {
       for (var incomeCategoryJson in incomeCategories) {
         final income = IncomeCategories(
-            id: incomeCategoryJson['id'].toString(),
-            name: incomeCategoryJson['name'].toString(),
-            description: "",
-            ishidden: false,
+          id: incomeCategoryJson['id'].toString(),
+          name: incomeCategoryJson['name'].toString(),
+          description: "",
+          ishidden: false,
         );
         _incomeCategories.add(income);
       }
@@ -691,8 +693,8 @@ class Groups with ChangeNotifier {
     if (groupDepositors.length > 0) {
       for (var groupDepositorsJSON in groupDepositors) {
         final newDepositor = Depositor(
-            id: groupDepositorsJSON['id'].toString(),
-            name: groupDepositorsJSON['name'].toString(),
+          id: groupDepositorsJSON['id'].toString(),
+          name: groupDepositorsJSON['name'].toString(),
         );
         _depositors.add(newDepositor);
       }
@@ -897,12 +899,19 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> createGroup({String groupName}) async {
+  Future<void> createGroup({String groupName, int countryId, dynamic avatar}) async {
     const url = EndpointUrl.CREATE_GROUP;
 
     try {
-      final postRequest = json.encode({"user_id": _userId, "group_name": groupName});
+      String newAvatar;
+      if (avatar != null) {
+        print("Avatar available");
+        final resizedImage = await CustomHelper.resizeFileImage(avatar, 300);
+        newAvatar = base64Encode(resizedImage.readAsBytesSync());
+      }
 
+      final postRequest = json.encode({"user_id": _userId, "group_name": groupName, "country_id": countryId, "avatar": newAvatar});
+      print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final userGroups = response["user_groups"] as List<dynamic>;
@@ -1140,7 +1149,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchIncomeCategories()async{
+  Future<void> fetchIncomeCategories() async {
     const url = EndpointUrl.GET_GROUP_INCOME_CATEGORIES;
     try {
       final postRequest = json.encode({
@@ -1213,7 +1222,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchGroupDepositors()async{
+  Future<void> fetchGroupDepositors() async {
     const url = EndpointUrl.GET_GROUP_DEPOSITOR_OPTIONS;
     try {
       final postRequest = json.encode({
@@ -2312,18 +2321,20 @@ class Groups with ChangeNotifier {
   }
 
   /************************Load Form initial Data**********/
-  Future<Map<String, dynamic>> loadInitialFormData(
-    {
-      bool contr = false, 
-      bool acc = false, 
-      bool member = false, 
-      bool fineOptions = false,
-      bool incomeCats = false,
-      bool depositor = false,
-    }) async {
-    List<NamesListItem> contributionOptions = [], accountOptions = [], 
-      memberOptions = [], finesOptions = [], depositorOptions=[], 
-      incomeCategoryOptions = [];
+  Future<Map<String, dynamic>> loadInitialFormData({
+    bool contr = false,
+    bool acc = false,
+    bool member = false,
+    bool fineOptions = false,
+    bool incomeCats = false,
+    bool depositor = false,
+  }) async {
+    List<NamesListItem> contributionOptions = [],
+        accountOptions = [],
+        memberOptions = [],
+        finesOptions = [],
+        depositorOptions = [],
+        incomeCategoryOptions = [];
     if (contr) {
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2354,18 +2365,18 @@ class Groups with ChangeNotifier {
       _fineTypes.map((fine) => finesOptions.add(NamesListItem(id: int.tryParse(fine.id), name: fine.name))).toList();
     }
 
-    if(incomeCats){
-      if(_incomeCategories.length==0){
+    if (incomeCats) {
+      if (_incomeCategories.length == 0) {
         await fetchIncomeCategories();
       }
-      _incomeCategories.map((income) => incomeCategoryOptions.add(NamesListItem(id:int.tryParse(income.id),name:income.name))).toList();
+      _incomeCategories.map((income) => incomeCategoryOptions.add(NamesListItem(id: int.tryParse(income.id), name: income.name))).toList();
     }
 
-    if(depositor){
-      if(_depositors.length ==0){
+    if (depositor) {
+      if (_depositors.length == 0) {
         await fetchGroupDepositors();
       }
-      _depositors.map((depositor) => depositorOptions.add(NamesListItem(id: int.tryParse(depositor.id),name:"${depositor.name}"))).toList();
+      _depositors.map((depositor) => depositorOptions.add(NamesListItem(id: int.tryParse(depositor.id), name: "${depositor.name}"))).toList();
     }
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
@@ -2373,7 +2384,7 @@ class Groups with ChangeNotifier {
       "memberOptions": memberOptions,
       "finesOptions": finesOptions,
       "incomeCategoryOptions": incomeCategoryOptions,
-      "depositorOptions" : depositorOptions,
+      "depositorOptions": depositorOptions,
     };
     return result;
   }
@@ -2454,6 +2465,4 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
-
-  
 }
