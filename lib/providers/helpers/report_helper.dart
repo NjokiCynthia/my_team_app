@@ -7,6 +7,7 @@ import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:intl/intl.dart';
 
@@ -214,7 +215,7 @@ List<Deposit> getDepositList(List<dynamic> data) {
       double amount = ParseHelper.getDoubleFromJson(deposit, "amount");
       String reconciliation = deposit["reconciliation"].toString();
       String narrative = deposit["narrative"].toString();
-      String name = "Monthly Savings";
+      String name = "--";
 
       final parts = depositType.split("made by");
 
@@ -229,13 +230,56 @@ List<Deposit> getDepositList(List<dynamic> data) {
       }
 
       final depositItem = Deposit(
-          id: id, type: type, name: name, depositor: depositor, date: date, reconciliation: reconciliation, narrative: narrative, amount: amount);
+          id: id, type: type, name: name, depositor: depositor, date: date, reconciliation: reconciliation, narration: narrative, amount: amount);
 
       depositList.add(depositItem);
     }
   }
 
   return depositList;
+}
+
+List<Withdrawal> getWithdrawalList(List<dynamic> data) {
+  List<Withdrawal> withdrawalList = [];
+  if (data.length > 0) {
+    for (var withdrawal in data) {
+      String id = withdrawal["id"].toString();
+      String withdrawalType = withdrawal["type"].toString();
+      String withdrawalDate = withdrawal["withdrawal_date"].toString();
+      String recordedOn = withdrawal["recorded_on"].toString();
+      double amount = ParseHelper.getDoubleFromJson(withdrawal, "amount");
+      String reconciliation = withdrawal["reconciliation"].toString();
+      String narration = withdrawal["narration"].toString();
+      String name = "--";
+
+//      final parts = depositType.split("made by");
+//
+//      String depositor = "";
+//      String type = "";
+//      try {
+//        type = parts[0].trim();
+//        depositor = parts[1].trim();
+//      } catch (_) {
+//        type = depositType;
+//        depositor = "--";
+//      }
+
+      final withdrawalItem = Withdrawal(
+          id: id,
+          type: withdrawalType,
+          name: name,
+          recipient: "--",
+          withdrawalDate: withdrawalDate,
+          recordedOn: recordedOn,
+          reconciliation: reconciliation,
+          narration: narration,
+          amount: amount);
+
+      withdrawalList.add(withdrawalItem);
+    }
+  }
+
+  return withdrawalList;
 }
 
 class ParseHelper {

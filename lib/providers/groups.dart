@@ -12,6 +12,7 @@ import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/endpoint-url.dart';
@@ -250,6 +251,7 @@ class Groups with ChangeNotifier {
   List<GroupContributionSummary> _groupContributionSummary = [];
   List<GroupContributionSummary> _groupFinesSummary = [];
   List<Deposit> _depositList = [];
+  List<Withdrawal> _withdrawalList = [];
   List<ActiveLoan> _memberLoanList = [];
   double _totalGroupContributionSummary = 0, _totalGroupFinesSummary = 0;
   List<CategorisedAccount> _categorisedAccounts = [];
@@ -370,6 +372,10 @@ class Groups with ChangeNotifier {
 
   List<Deposit> get getDeposits {
     return _depositList;
+  }
+
+  List<Withdrawal> get getWithdrawals {
+    return _withdrawalList;
   }
 
   double groupTotalContributionSummary() {
@@ -761,6 +767,11 @@ class Groups with ChangeNotifier {
 
   void addDepositList(List<dynamic> data) {
     _depositList = getDepositList(data);
+    notifyListeners();
+  }
+
+  void addWithdrawalList(List<dynamic> data) {
+    _withdrawalList = getWithdrawalList(data);
     notifyListeners();
   }
 
@@ -2140,6 +2151,28 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
         addDepositList(data);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchWithdrawals() async {
+    const url = EndpointUrl.GET_GROUP_WITHDRAWAL_LIST;
+
+    try {
+      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId});
+
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final data = response['withdrawals'] as List<dynamic>;
+        addWithdrawalList(data);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

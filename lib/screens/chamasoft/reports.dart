@@ -5,6 +5,7 @@ import 'package:chamasoft/screens/chamasoft/reports/group-reports-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
@@ -109,6 +110,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
             settings: RouteSettings(arguments: index + 1)));
         break;
       case 5:
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) {
+              return WithdrawalReceipts();
+            },
+            settings: RouteSettings(arguments: index + 1)));
         break;
       case 6:
         Navigator.of(context).push(MaterialPageRoute(

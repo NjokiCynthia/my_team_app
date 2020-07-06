@@ -1,5 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
+import 'package:chamasoft/screens/chamasoft/models/withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -11,12 +11,12 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class DepositReceipts extends StatefulWidget {
+class WithdrawalReceipts extends StatefulWidget {
   @override
-  _DepositReceiptsState createState() => _DepositReceiptsState();
+  _WithdrawalReceiptsState createState() => _WithdrawalReceiptsState();
 }
 
-class _DepositReceiptsState extends State<DepositReceipts> {
+class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -31,15 +31,15 @@ class _DepositReceiptsState extends State<DepositReceipts> {
     }
   }
 
-  Future<void> _getDeposits(BuildContext context) async {
+  Future<void> _getWithdrawals(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchDeposits();
+      await Provider.of<Groups>(context, listen: false).fetchWithdrawals();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _getDeposits(context);
+            _getWithdrawals(context);
           });
     }
   }
@@ -48,7 +48,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getDeposits(context);
+    _future = _getWithdrawals(context);
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
     return Scaffold(
         appBar: secondaryPageAppbar(
             context: context,
-            title: "Deposit Receipts",
+            title: "Withdrawals Receipts",
             action: () => Navigator.of(context).pop(),
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left),
@@ -74,27 +74,27 @@ class _DepositReceiptsState extends State<DepositReceipts> {
             builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                 ? Center(child: CircularProgressIndicator())
                 : RefreshIndicator(
-                    onRefresh: () => _getDeposits(context),
+                    onRefresh: () => _getWithdrawals(context),
                     child: Consumer<Groups>(builder: (context, data, child) {
-                      if (data.getDeposits != null) {
-                        List<Deposit> deposits = data.getDeposits;
+                      if (data.getWithdrawals != null) {
+                        List<Withdrawal> withdrawals = data.getWithdrawals;
                         return Container(
                           decoration: primaryGradient(context),
                           width: double.infinity,
                           height: double.infinity,
-                          child: deposits.length > 0
+                          child: withdrawals.length > 0
                               ? ListView.builder(
                                   itemBuilder: (context, index) {
-                                    Deposit deposit = deposits[index];
-                                    return DepositCard(
-                                      deposit: deposit,
+                                    Withdrawal withdrawal = withdrawals[index];
+                                    return WithdrawalCard(
+                                      withdrawal: withdrawal,
                                       details: () {},
                                       voidItem: () {},
                                     );
                                   },
-                                  itemCount: deposits.length)
+                                  itemCount: withdrawals.length)
                               : emptyList(
-                                  color: Colors.blue[400], iconData: LineAwesomeIcons.angle_double_down, text: "There are no deposits to display"),
+                                  color: Colors.blue[400], iconData: LineAwesomeIcons.angle_double_up, text: "There are no withdrawals to display"),
                         );
                       } else
                         return Container();
@@ -102,10 +102,10 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   }
 }
 
-class DepositCard extends StatelessWidget {
-  const DepositCard({Key key, @required this.deposit, this.details, this.voidItem}) : super(key: key);
+class WithdrawalCard extends StatelessWidget {
+  const WithdrawalCard({Key key, @required this.withdrawal, this.details, this.voidItem}) : super(key: key);
 
-  final Deposit deposit;
+  final Withdrawal withdrawal;
   final Function details, voidItem;
 
   @override
@@ -132,13 +132,13 @@ class DepositCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             customTitle(
-                              text: deposit.type,
+                              text: withdrawal.type,
                               fontSize: 16.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.start,
                             ),
                             subtitle2(
-                              text: deposit.name,
+                              text: withdrawal.name,
                               textAlign: TextAlign.start,
                               color: Theme.of(context).textSelectionHandleColor,
                             )
@@ -159,7 +159,7 @@ class DepositCard extends StatelessWidget {
                             fontWeight: FontWeight.w400,
                           ),
                           heading2(
-                            text: currencyFormat.format(deposit.amount),
+                            text: currencyFormat.format(withdrawal.amount),
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.end,
                           ),
@@ -177,15 +177,15 @@ class DepositCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        subtitle2(text: "Paid By", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle1(text: deposit.depositor, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
+                        subtitle2(text: "Recipient", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                        subtitle1(text: withdrawal.recipient, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       ],
                     ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        subtitle2(text: "Paid On", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-                        subtitle1(text: deposit.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end)
+                        subtitle2(text: "Withdrawal Date", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                        subtitle1(text: withdrawal.withdrawalDate, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end)
                       ],
                     ),
                   ]),
