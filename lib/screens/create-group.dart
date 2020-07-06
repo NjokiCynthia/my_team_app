@@ -1,12 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chamasoft/providers/auth.dart';
+import 'dart:io';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +21,11 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
+  File avatar;
+  int countryId = 1;
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _isFormInputEnabled = true;
   bool _isLoading = false;
-
   String _groupName;
 
   void _submit(BuildContext context) async {
@@ -37,7 +40,7 @@ class _CreateGroupState extends State<CreateGroup> {
     });
 
     try {
-      await Provider.of<Groups>(context, listen: false).createGroup(groupName: _groupName);
+      await Provider.of<Groups>(context, listen: false).createGroup(groupName: _groupName, countryId: countryId, avatar: avatar);
       Navigator.of(context).push(MaterialPageRoute(
         builder: (BuildContext context) => ConfigureGroup(),
       ));
@@ -68,7 +71,6 @@ class _CreateGroupState extends State<CreateGroup> {
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<Auth>(context);
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Builder(
@@ -87,34 +89,40 @@ class _CreateGroupState extends State<CreateGroup> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           heading1(text: "Create Group", color: Theme.of(context).textSelectionHandleColor),
-                          subtitle1(text: "Give your group a name", color: Theme.of(context).textSelectionHandleColor),
+                          subtitle1(text: "Give your group a name, profile photo and country", color: Theme.of(context).textSelectionHandleColor),
                           SizedBox(
-                            height: 40,
+                            height: 24,
                           ),
                           Padding(
-                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                            child: auth.displayAvatar != null
-                                ? CachedNetworkImage(
-                                    imageUrl: auth.displayAvatar,
-                                    placeholder: (context, image) => const CircleAvatar(
-                                      radius: 45.0,
-                                      backgroundImage: const AssetImage('assets/no-user.png'),
+                            padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
+                            child: Stack(
+                              alignment: AlignmentDirectional.bottomEnd,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  backgroundImage: avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar),
+                                  backgroundColor: Colors.transparent,
+                                  radius: 50,
+                                ),
+                                Positioned(
+                                  bottom: -12.0,
+                                  right: -12.0,
+                                  child: IconButton(
+                                    icon: Icon(
+                                      Icons.camera_alt,
+                                      color: Colors.black,
+                                      size: 30.0,
                                     ),
-                                    imageBuilder: (context, image) => CircleAvatar(
-                                      backgroundImage: image,
-                                      radius: 45.0,
-                                    ),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                                    fadeOutDuration: const Duration(seconds: 1),
-                                    fadeInDuration: const Duration(seconds: 3),
-                                  )
-                                : const CircleAvatar(
-                                    backgroundImage: const AssetImage('assets/no-user.png'),
-                                    radius: 45.0,
+                                    onPressed: () async {
+                                      File newAvatar = await FilePicker.getFile(type: FileType.image);
+                                      setState(() {
+                                        avatar = newAvatar;
+                                      });
+                                    },
                                   ),
+                                )
+                              ],
+                            ),
                           ),
-                          heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
-                          subtitle1(text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
                           SizedBox(
                             height: 20,
                           ),
@@ -141,6 +149,21 @@ class _CreateGroupState extends State<CreateGroup> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Consumer<Groups>(builder: (context, groupData, child) {
+                            return CountryDropdown(
+                              labelText: 'Select Country',
+                              listItems: groupData.countryOptions,
+                              selectedItem: countryId,
+                              onChanged: (value) {
+                                setState(() {
+                                  countryId = value;
+                                });
+                              },
+                            );
+                          }),
                           SizedBox(
                             height: 24,
                           ),
