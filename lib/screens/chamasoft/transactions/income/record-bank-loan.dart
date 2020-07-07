@@ -146,12 +146,19 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                           context: context,
                           labelText: "Bank loan description",
                           validator: (value){
+                            print("Length is here");
                             if(value==""||value==null){
                               return "This field is required";
+                            }else if(value.toString().length < 10){
+                              return "Description is too short";
                             }
                             return null;
                           },
-                          onChanged: (value) {}),
+                          onChanged: (value) {
+                            setState(() {
+                              loanDescription = value;
+                            });
+                          }),
                       amountTextInputField(
                           context: context,
                           validator: (value){
