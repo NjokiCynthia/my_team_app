@@ -2509,7 +2509,6 @@ class Groups with ChangeNotifier {
           "${formData['request_id']}_${_userId}_$_identity";
 
       try {
-        print(formData);
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
@@ -2533,6 +2532,7 @@ class Groups with ChangeNotifier {
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
       try {
+        print(formData);
         final postRequest = json.encode(formData);
         print(postRequest);
         await PostToServer.post(postRequest, url);

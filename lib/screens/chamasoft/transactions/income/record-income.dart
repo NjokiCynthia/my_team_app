@@ -201,7 +201,7 @@ class _RecordIncomeState extends State<RecordIncome> {
                             flex: 3,
                             child: CustomDropDownButton(
                               labelText: 'Select Deposit Method',
-                              listItems: depositMethods,
+                              listItems: !_isFormInputEnabled?[]:depositMethods,
                               selectedItem: depositMethod,
                               validator: (value) {
                                 if (value == null || value == "") {
@@ -220,7 +220,7 @@ class _RecordIncomeState extends State<RecordIncome> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Depositor',
-                        listItems: formLoadData.containsKey("depositorOptions")
+                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("depositorOptions")
                             ? formLoadData["depositorOptions"]
                             : [],
                         selectedItem: depositorId,
@@ -238,7 +238,7 @@ class _RecordIncomeState extends State<RecordIncome> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Income Category',
-                        listItems:
+                        listItems:!_isFormInputEnabled?[]:
                             formLoadData.containsKey("incomeCategoryOptions")
                                 ? formLoadData["incomeCategoryOptions"]
                                 : [],
@@ -257,7 +257,7 @@ class _RecordIncomeState extends State<RecordIncome> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Account',
-                        listItems: formLoadData.containsKey("accountOptions")
+                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")
                             ? formLoadData["accountOptions"]
                             : [],
                         selectedItem: accountId,
