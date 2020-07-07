@@ -171,7 +171,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     _formKey.currentState.save();
     _formData['deposit_date'] = finePaymentDate.toString();
     _formData['deposit_method'] = depositMethod;
-    _formData['fine_id'] = fineId;
+    _formData['fine_category_id'] = "fine_category-$fineId";
     _formData['account_id'] = accountId;
     _formData['request_id'] = requestId;
     _formData['amount'] = amountInputValue;
@@ -295,7 +295,6 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                         selectedItem: accountId,
                         onChanged: (value) {
                           setState(() {
-                            print("value $value");
                             accountId = value;
                           });
                         },
@@ -364,6 +363,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                           visible: memberTypeId == 2,
                           child: amountTextInputField(
                               context: context,
+                              enabled: _isFormInputEnabled,
                               labelText: "Enter Amount(for each member)",
                               onChanged: (value) {
                                 setState(() {

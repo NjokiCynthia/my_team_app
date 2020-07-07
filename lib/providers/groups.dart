@@ -2501,18 +2501,17 @@ class Groups with ChangeNotifier {
 
   Future<void> recordFinePayments(Map<String, dynamic> formData) async {
     try {
-      //const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
+      const url = EndpointUrl.NEW_RECORD_FINE_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
-
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
 
       try {
+        print(formData);
         final postRequest = json.encode(formData);
-        print(postRequest);
-        //await PostToServer.post(postRequest, url);
+        await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
