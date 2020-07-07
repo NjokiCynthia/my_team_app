@@ -158,16 +158,7 @@ class _RecordIncomeState extends State<RecordIncome> {
           controller: _scrollController,
           child: Column(
             children: <Widget>[
-              toolTip(
-                  context: context,
-                  title: "Manually record income payments",
-                  message: "",
-                  visible: toolTipIsVisible,
-                  toggleToolTip: () {
-                    setState(() {
-                      toolTipIsVisible = !toolTipIsVisible;
-                    });
-                  }),
+              toolTip(context: context, message: "", title: "Manually record income payment", showTitle: true),
               Container(
                 padding: inputPagePadding,
                 height: MediaQuery.of(context).size.height,
