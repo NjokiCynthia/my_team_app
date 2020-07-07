@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -15,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../select-member.dart';
 
@@ -179,7 +179,15 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     _formData['individual_payments'] = _individualMemberContributions;
     try {
       await Provider.of<Groups>(context, listen: false).recordFinePayments(_formData);
-      //Navigator.of(context).pop();
+      FlutterToast.showToast( msg: "This is Center Short Toast",  
+          toastLength: Toast.LENGTH_SHORT,  
+          gravity: ToastGravity.CENTER,  
+          timeInSecForIosWeb: 1,  
+          backgroundColor: Colors.red,  
+          textColor: Colors.white,  
+          fontSize: 16.0  
+      );  
+      Navigator.of(context).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -251,7 +259,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                               flex: 3,
                               child: CustomDropDownButton(
                                 labelText: "Select Deposit Method",
-                                listItems: depositMethods,
+                                listItems: _isFormInputEnabled?[]:depositMethods,
                                 selectedItem: depositMethod,
                                 validator: (value){
                                   if(value==null){
@@ -272,7 +280,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                       ),
                       CustomDropDownButton(
                         labelText: "Select Fine",
-                        listItems: formLoadData.containsKey("finesOptions")?formLoadData["finesOptions"]:[],
+                        listItems: _isFormInputEnabled?[]:formLoadData.containsKey("finesOptions")?formLoadData["finesOptions"]:[],
                         selectedItem: fineId,
                         onChanged: (value) {
                           setState(() {
@@ -291,7 +299,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                       ),
                       CustomDropDownButton(
                         labelText: "Select Deposit Account",
-                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
+                        listItems: _isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                         selectedItem: accountId,
                         onChanged: (value) {
                           setState(() {
@@ -310,7 +318,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Member',
-                        listItems: memberTypes,
+                        listItems: _isFormInputEnabled?[]:memberTypes,
                         selectedItem: memberTypeId,
                         onChanged: (value) {
                           setState(() {

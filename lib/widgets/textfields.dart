@@ -46,6 +46,7 @@ Widget amountTextInputField(
     Function onSaved,
     bool enabled = true}) {
   return TextFormField(
+    enabled: enabled!=null?enabled:true,
     onChanged: onChanged,
     style: inputTextStyle(),
     controller: controller,
@@ -65,7 +66,6 @@ Widget amountTextInputField(
       )),
       hintText: hintText,
       labelText: labelText,
-      enabled: enabled!=null?enabled:true,
     ),
   );
 }
