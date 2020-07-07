@@ -102,7 +102,6 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
     _formData["loan_start_date"] = loanFromDate.toString();
     _formData["loan_end_date"] = loanToDate.toString();
     _formData["account_id"] = accountId;
-    print(_formData);
     try {
       await Provider.of<Groups>(context, listen: false)
           .recordBankLoanIncome(_formData);
@@ -266,7 +265,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                       ),
                       CustomDropDownButton(
                         labelText: "Account loan deposited to",
-                        listItems: formLoadData.containsKey("accountOptions")
+                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")
                             ? formLoadData["accountOptions"]
                             : [],
                         selectedItem: accountId,
