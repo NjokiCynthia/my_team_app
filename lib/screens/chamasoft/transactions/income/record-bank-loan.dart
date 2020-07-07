@@ -32,6 +32,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
   bool  _isLoading = false,_isFormInputEnabled = true;
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
+  String loanDescription;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -83,7 +84,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
     Navigator.of(context,rootNavigator: true).pop();
   }
 
-  void _submit(BuildContext context){
+  void _submit(BuildContext context) async{
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -93,8 +94,10 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
     });
     _formKey.currentState.save();
     _formData["request_id"] = requestId;
+    _formData["description"] = loanDescription;
     try{
-
+      await Provider.of<Groups>(context, listen: false).recordBankLoanIncome(_formData);
+      Navigator.of(context).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
