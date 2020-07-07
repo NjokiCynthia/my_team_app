@@ -6,7 +6,7 @@ import 'common.dart';
 
 class DatePicker extends StatelessWidget {
   final String labelText;
-  final DateTime selectedDate, lastDate;
+  final DateTime selectedDate, lastDate,firstDate;
   final ValueChanged<DateTime> selectDate;
 
   const DatePicker({
@@ -15,13 +15,14 @@ class DatePicker extends StatelessWidget {
     this.selectedDate,
     this.selectDate,
     this.lastDate,
+    this.firstDate,
   }) : super(key: key);
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
         context: context,
         initialDate: selectedDate,
-        firstDate: new DateTime(1970, 8),
+        firstDate: firstDate==null?new DateTime(1970, 8):firstDate,
         lastDate:
             lastDate.isAfter(selectedDate) ? lastDate : new DateTime(2101));
     if (picked != null && picked != selectedDate) selectDate(picked);

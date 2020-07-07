@@ -96,6 +96,13 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
     });
     _formKey.currentState.save();
     _formData['request_id'] = requestId;
+    _formData["deposit_date"] = depositDate.toString();
+    _formData["deposit_method"] = depositMethod;
+    _formData["member_id"] = memberId;
+    _formData["account_id"] = accountId;
+    _formData["amount"] = amount;
+    _formData["description"] = description;
+
     try {
       await Provider.of<Groups>(context, listen: false).recordMiscellaneousPayments(_formData);
       Navigator.of(context).pop();

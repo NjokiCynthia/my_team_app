@@ -2502,7 +2502,6 @@ class Groups with ChangeNotifier {
   Future<void> recordFinePayments(Map<String, dynamic> formData) async {
     try {
       //const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
-      print(formData['account_id']);
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
@@ -2529,7 +2528,6 @@ class Groups with ChangeNotifier {
   Future<void> recordIncomePayment(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.RECORD_INCOME;
-      print(formData['account_id']);
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
@@ -2554,7 +2552,6 @@ class Groups with ChangeNotifier {
   Future<void> recordMiscellaneousPayments(Map<String, dynamic> formData)async{
     try {
       const url = EndpointUrl.RECORD_MISCELLANEOUS_PAYMENTS;
-      print(formData['account_id']);
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
@@ -2573,5 +2570,9 @@ class Groups with ChangeNotifier {
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
+  }
+
+  Future<void>recordBankLoanIncome()async{
+    
   }
 }
