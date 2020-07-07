@@ -8,6 +8,7 @@ final _amountValidator =
 Widget simpleTextInputField(
     {BuildContext context,
     String labelText,
+    bool enabled,
     Function onChanged,
     String hintText = '',
       TextEditingController controller,
@@ -30,6 +31,7 @@ Widget simpleTextInputField(
       )),
       hintText: hintText,
       labelText: labelText,
+      enabled: enabled??true,
     ),
   );
 }

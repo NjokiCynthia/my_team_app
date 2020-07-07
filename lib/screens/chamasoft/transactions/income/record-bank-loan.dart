@@ -33,7 +33,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
   String loanDescription;
-  double amountLoaned, totalLoanAmountPayable, loanBalance;
+  String amountLoaned, totalLoanAmountPayable, loanBalance;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -94,7 +94,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
       _isFormInputEnabled = false;
     });
     _formKey.currentState.save();
-    //_formData["request_id"] = requestId;
+    _formData["request_id"] = requestId;
     _formData["description"] = loanDescription;
     _formData["amount_loaned"] = amountLoaned;
     _formData["total_loan_amount_payable"] = totalLoanAmountPayable;
@@ -161,40 +161,44 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                           validator: (value) {
                             if (value == "" || value == null) {
                               return "This field is required";
-                            } else if (value.toString().length < 8) {
+                            } 
+                            else if (value.toString().length < 8) {
                               return "Description is too short";
                             }
                             return null;
                           },
+                          enabled: _isFormInputEnabled,
                           onChanged: (value) {
                             setState(() {
                               loanDescription = value;
                             });
                           }),
                       amountTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              print("Empty value2");
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Total amount received",
-                          onChanged: (value) {
-                            setState(() {
-                              amountLoaned = value;
-                            });
-                          }),
+                        context: context,
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            print("Empty value2");
+                            return "Field is required";
+                          }
+                          return null;
+                        },
+                        enabled: _isFormInputEnabled,
+                        labelText: "Total amount received",
+                        onChanged: (value) {
+                          setState(() {
+                            amountLoaned = value;
+                          });
+                        }
+                      ),
                       amountTextInputField(
                           context: context,
                           validator: (value) {
                             if (value == null || value == "") {
-                              print("Empty value");
                               return "Field is required";
                             }
                             return null;
                           },
+                          enabled: _isFormInputEnabled,
                           labelText: "Total amount payable",
                           onChanged: (value) {
                             setState(() {
@@ -202,20 +206,21 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                             });
                           }),
                       amountTextInputField(
-                          context: context,
-                          validator: (value) {
-                            print("Empty value3");
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Total loan balance as at date",
-                          onChanged: (value) {
-                            setState(() {
-                              loanBalance = value;
-                            });
-                          }),
+                        context: context,
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            return "Field is required";
+                          }
+                          return null;
+                        },
+                        labelText: "Total loan balance as at date",
+                        enabled: _isFormInputEnabled,
+                        onChanged: (value) {
+                          setState(() {
+                            loanBalance = value;
+                          });
+                        }
+                      ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
