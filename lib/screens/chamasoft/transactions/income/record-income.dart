@@ -155,32 +155,68 @@ class _RecordIncomeState extends State<RecordIncome> {
           FocusScope.of(context).unfocus();
         },
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          scrollDirection: Axis.vertical,
           controller: _scrollController,
           child: Column(
             children: <Widget>[
-              toolTip(context: context, message: "", title: "Manually record income payment", showTitle: true),
-              Container(
+              toolTip(
+                  context: context,
+                  message: "",
+                  title: "Manually record income payment",
+                  showTitle: true),
+              Padding(
                 padding: inputPagePadding,
-                height: MediaQuery.of(context).size.height,
-                color: Theme.of(context).backgroundColor,
+                // height: MediaQuery.of(context).size.height,
+                // color: Theme.of(context).backgroundColor,
                 child: Form(
                   key: _formKey,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      DatePicker(
-                        labelText: 'Select Deposit Date',
-                        lastDate: DateTime.now(),
-                        selectedDate: incomeDate == null
-                            ? new DateTime(
-                                now.year, now.month, now.day - 1, 6, 30)
-                            : incomeDate,
-                        selectDate: (selectedDate) {
-                          setState(() {
-                            incomeDate = selectedDate;
-                          });
-                        },
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 2,
+                            child: DatePicker(
+                              labelText: 'Select Deposit Date',
+                              lastDate: DateTime.now(),
+                              selectedDate: incomeDate == null
+                                  ? new DateTime(
+                                      now.year, now.month, now.day - 1, 6, 30)
+                                  : incomeDate,
+                              selectDate: (selectedDate) {
+                                setState(() {
+                                  incomeDate = selectedDate;
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: CustomDropDownButton(
+                              labelText: 'Select Deposit Method',
+                              listItems: depositMethods,
+                              selectedItem: depositMethod,
+                              validator: (value) {
+                                if (value == null || value == "") {
+                                  return "Field required";
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  depositMethod = value;
+                                });
+                              },
+                            ),
+                          )
+                        ],
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Depositor',
@@ -234,22 +270,6 @@ class _RecordIncomeState extends State<RecordIncome> {
                         onChanged: (value) {
                           setState(() {
                             accountId = value;
-                          });
-                        },
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Deposit Method',
-                        listItems: depositMethods,
-                        selectedItem: depositMethod,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            depositMethod = value;
                           });
                         },
                       ),
