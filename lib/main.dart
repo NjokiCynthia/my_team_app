@@ -1,8 +1,10 @@
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/configure-group.dart';
+import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
-import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
@@ -43,17 +45,20 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) => Auth(),
         ),
-        ChangeNotifierProvider(create: (_) {
+        ChangeNotifierProvider(
+          create: (_) {
             return themeChangeProvider;
           },
         ),
         ChangeNotifierProxyProvider<Auth, Groups>(
-            update: (ctx, auth, previousGroups) => Groups(
-                previousGroups == null ? [] : previousGroups.item,
-                auth.id,
-                auth.userIdentity,
-                previousGroups == null ? '': previousGroups.currentGroupId,
-            ), create: (BuildContext context) {  },),
+          update: (ctx, auth, previousGroups) => Groups(
+            previousGroups == null ? [] : previousGroups.item,
+            auth.id,
+            auth.userIdentity,
+            previousGroups == null ? '' : previousGroups.currentGroupId,
+          ),
+          create: (BuildContext context) {},
+        ),
       ],
       child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
@@ -67,7 +72,9 @@ class _MyAppState extends State<MyApp> {
             Login.namedRoute: (ctx) => Login(),
             MyGroups.namedRoute: (ctx) => MyGroups(),
             SignUp.namedRoute: (ctx) => SignUp(),
-            ChamasoftDashboard.namedRoute:(ctx) => ChamasoftDashboard(),
+            CreateGroup.namedRoute: (ctx) => CreateGroup(),
+            ConfigureGroup.namedRoute: (ctx) => ConfigureGroup(),
+            ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => IntroScreen());

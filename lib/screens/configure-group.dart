@@ -21,6 +21,7 @@ Map<String, String> roles = {
 };
 
 class ConfigureGroup extends StatefulWidget {
+  static const String namedRoute = "/configure-group";
   @override
   _ConfigureGroupState createState() => _ConfigureGroupState();
 }

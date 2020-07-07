@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/configure-group.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -13,9 +14,9 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'configure-group.dart';
-
 class CreateGroup extends StatefulWidget {
+  static const String namedRoute = "/create-group";
+
   @override
   _CreateGroupState createState() => _CreateGroupState();
 }
@@ -41,9 +42,8 @@ class _CreateGroupState extends State<CreateGroup> {
 
     try {
       await Provider.of<Groups>(context, listen: false).createGroup(groupName: _groupName, countryId: countryId, avatar: avatar);
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => ConfigureGroup(),
-      ));
+
+      Navigator.of(context).pushReplacementNamed(ConfigureGroup.namedRoute);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
