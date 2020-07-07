@@ -76,13 +76,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
               toolTip(
                   context: context,
                   title: "Manually record miscellanoues payments",
-                  message: "",
-                  visible: toolTipIsVisible,
-                  toggleToolTip: () {
-                    setState(() {
-                      toolTipIsVisible = !toolTipIsVisible;
-                    });
-                  }),
+                  message: ""),
               Container(
                 padding: inputPagePadding,
                 height: MediaQuery.of(context).size.height,
@@ -91,15 +85,38 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    DatePicker(
-                      labelText: 'Select Deposit Date',
-                      selectedDate:
-                          refundDate == null ? DateTime.now() : refundDate,
-                      selectDate: (selectedDate) {
-                        setState(() {
-                          refundDate = selectedDate;
-                        });
-                      },
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: DatePicker(
+                            labelText: 'Select Deposit Date',
+                            selectedDate: refundDate == null
+                                ? DateTime.now()
+                                : refundDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                refundDate = selectedDate;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(width: 5),
+                        Expanded(
+                          flex: 3,
+                          child: CustomDropDownButton(
+                            labelText: 'Select Deposit Method',
+                            listItems: depositMethods,
+                            selectedItem: refundMethod,
+                            onChanged: (value) {
+                              setState(() {
+                                refundMethod = value;
+                              });
+                            },
+                          ),
+                        )
+                      ],
                     ),
                     CustomDropDownButton(
                       labelText: 'Select Member',
@@ -118,16 +135,6 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                       onChanged: (value) {
                         setState(() {
                           accountId = value;
-                        });
-                      },
-                    ),
-                    CustomDropDownButton(
-                      labelText: 'Select Deposit Method',
-                      listItems: depositMethods,
-                      selectedItem: refundMethod,
-                      onChanged: (value) {
-                        setState(() {
-                          refundMethod = value;
                         });
                       },
                     ),
