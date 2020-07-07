@@ -144,29 +144,27 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     Expanded(
                                       child: FutureBuilder(
                                           future: _memberFuture,
-                                          builder: (context, snapshot) =>
-                                          snapshot.connectionState == ConnectionState.waiting
+                                          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                               ? Center(child: CircularProgressIndicator())
                                               : RefreshIndicator(
-                                              onRefresh: () => _getMembers(context),
-                                              child: Consumer<Groups>(builder: (context, data, child) {
-                                                List<Member> members = data.members;
-                                                return MembersTabView(members: members);
-                                              }))),
+                                                  onRefresh: () => _getMembers(context),
+                                                  child: Consumer<Groups>(builder: (context, data, child) {
+                                                    List<Member> members = data.members;
+                                                    return MembersTabView(members: members);
+                                                  }))),
                                     ),
                                   ],
                                 ),
                                 FutureBuilder(
                                   future: _accountFuture,
-                                  builder: (context, snapshot) =>
-                                  snapshot.connectionState == ConnectionState.waiting
+                                  builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                       ? Center(child: CircularProgressIndicator())
                                       : RefreshIndicator(
-                                    onRefresh: () => _getAccounts(context),
-                                    child: Consumer<Groups>(
-                                      builder: (context, data, child) {
-                                        List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
-                                        return AccountsTabView(accounts: accounts);
+                                          onRefresh: () => _getAccounts(context),
+                                          child: Consumer<Groups>(
+                                            builder: (context, data, child) {
+                                              List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
+                                              return AccountsTabView(accounts: accounts);
                                             },
                                           ),
                                         ),
