@@ -173,7 +173,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                             flex: 3,
                             child: CustomDropDownButton(
                               labelText: 'Select Deposit Method',
-                              listItems: depositMethods,
+                              listItems: !_isFormInputEnabled?[]:depositMethods,
                               selectedItem: depositMethod,
                               validator: (value){
                                 if(value==""||value==null){
@@ -192,7 +192,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Member',
-                        listItems: formLoadData.containsKey("memberOptions")?formLoadData["memberOptions"]:[],
+                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("memberOptions")?formLoadData["memberOptions"]:[],
                         selectedItem: memberId,
                         validator: (value){
                           if(value==""||value==null){
@@ -208,7 +208,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Account',
-                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
+                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                         selectedItem: accountId,
                         validator: (value){
                           if(value==""||value==null){
