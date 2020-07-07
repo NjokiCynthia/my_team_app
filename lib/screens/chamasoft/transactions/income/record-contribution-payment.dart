@@ -245,7 +245,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               flex: 3,
                               child: CustomDropDownButton(
                                 labelText: "Select Deposit Method",
-                                listItems: depositMethods,
+                                listItems: !_isFormInputEnabled?[]:depositMethods,
                                 selectedItem: depositMethod,
                                 validator: (value){
                                   if(value==null){
@@ -267,7 +267,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         ),
                         CustomDropDownButton(
                           labelText: "Select Contribution",
-                          listItems: formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
+                          listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
                           selectedItem: contributionId,
                           validator: (value){
                             if(value==null){
@@ -286,7 +286,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         ),
                         CustomDropDownButton(
                           labelText: "Select Account",
-                          listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
+                          listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                           selectedItem: accountId,
                           onChanged: (value) {
                             setState(() {
@@ -305,7 +305,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         ),
                         CustomDropDownButton(
                           labelText: 'Select Member',
-                          listItems: memberTypes,
+                          listItems: !_isFormInputEnabled?[]:memberTypes,
                           selectedItem: memberTypeId,
                           onChanged: (value) {
                             setState(() {
