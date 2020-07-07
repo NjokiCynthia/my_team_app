@@ -135,7 +135,7 @@ List<NamesListItem> depositMethods = [
   NamesListItem(id: 2, name: "Cash"),
   NamesListItem(id: 3, name: "FundsTransfer"),
   NamesListItem(id: 4, name: "Equitel"),
-  NamesListItem(id: 4, name: "Standing Order"),
+  NamesListItem(id: 5, name: "Standing Order"),
 ];
 
 List<NamesListItem> withdrawalMethods = [
