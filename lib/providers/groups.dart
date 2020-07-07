@@ -2525,7 +2525,7 @@ class Groups with ChangeNotifier {
 
   Future<void> recordIncomePayment(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.RECORD_INCOME;
+      const url = EndpointUrl.NEW_RECORD_INCOME;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
