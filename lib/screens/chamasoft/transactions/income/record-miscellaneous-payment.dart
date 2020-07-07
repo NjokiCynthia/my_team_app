@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -9,6 +10,7 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class RecordMiscellaneousPayment extends StatefulWidget {
   @override
@@ -18,6 +20,11 @@ class RecordMiscellaneousPayment extends StatefulWidget {
 class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  bool _isInit = true;
+  Map <String,dynamic> formLoadData = {};
+  DateTime now = DateTime.now();
+  DateTime depositDate = DateTime.now();
+
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -40,6 +47,33 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchDefaultValues(context);
+    }
+    super.didChangeDependencies();
+  }
+
+  Future<void> _fetchDefaultValues(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      );
+    });
+    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(member: true,acc:true); 
+    setState(() {
+      _isInit = false;
+    });
+    Navigator.of(context,rootNavigator: true).pop();
   }
 
   final formKey = new GlobalKey<FormState>();
@@ -92,12 +126,11 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                           flex: 2,
                           child: DatePicker(
                             labelText: 'Select Deposit Date',
-                            selectedDate: refundDate == null
-                                ? DateTime.now()
-                                : refundDate,
+                            lastDate: DateTime.now(),
+                            selectedDate: depositDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : depositDate,
                             selectDate: (selectedDate) {
                               setState(() {
-                                refundDate = selectedDate;
+                                depositDate = selectedDate;
                               });
                             },
                           ),
@@ -120,7 +153,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                     ),
                     CustomDropDownButton(
                       labelText: 'Select Member',
-                      listItems: groupMembers,
+                      listItems: formLoadData.containsKey("memberOptions")?formLoadData["memberOptions"]:[],
                       selectedItem: groupMemberId,
                       onChanged: (value) {
                         setState(() {
@@ -130,7 +163,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                     ),
                     CustomDropDownButton(
                       labelText: 'Select Account',
-                      listItems: accounts,
+                      listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                       selectedItem: accountId,
                       onChanged: (value) {
                         setState(() {

@@ -218,181 +218,184 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                   padding: inputPagePadding,
                   child: Form(
                     key: _formKey,
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: DatePicker(
-                              labelText: 'Select Deposit Date',
-                              lastDate: DateTime.now(),
-                              selectedDate: contributionDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : contributionDate,
-                              selectDate: (selectedDate) {
-                                setState(() {
-                                  contributionDate = selectedDate;
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: CustomDropDownButton(
-                              labelText: "Select Deposit Method",
-                              listItems: depositMethods,
-                              selectedItem: depositMethod,
-                              validator: (value){
-                                if(value==null){
-                                  return "This field is required";
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                setState(() {
-                                  depositMethod = value;
-                                });
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomDropDownButton(
-                        labelText: "Select Contribution",
-                        listItems: formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
-                        selectedItem: contributionId,
-                        validator: (value){
-                          if(value==null){
-                            return "This field is required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            contributionId = value;
-                          });
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomDropDownButton(
-                        labelText: "Select Account",
-                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
-                        selectedItem: accountId,
-                        onChanged: (value) {
-                          setState(() {
-                            accountId = value;
-                          });
-                        },
-                        validator: (value){
-                          if(value==null){
-                            return "This field is required";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Member',
-                        listItems: memberTypes,
-                        selectedItem: memberTypeId,
-                        onChanged: (value) {
-                          setState(() {
-                            memberTypeId = value;
-                          });
-                        },
-                        validator: (value){
-                          if(value==null){
-                            return "This field is required";
-                          }
-                          return null;
-                        },
-                      ),
-                      Visibility(
-                        visible: memberTypeId == 1,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Column(
-                                children: memberWidgets.toList(),
-                              ),
-                              FlatButton(
-                                onPressed: () async {
-                                  //open select members dialog
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SelectMember(
-                                          initialMembersList: selectedMembersList,
-                                          //membersList: memberOptions,
-                                        )
-                                      )
-                                    ).then((value){
-                                        setState(() {
-                                          selectedMembersList = value;
-                                        });   
-                                    }
-                                  );
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch, 
+                      mainAxisSize: MainAxisSize.min, 
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 2,
+                              child: DatePicker(
+                                labelText: 'Select Deposit Date',
+                                lastDate: DateTime.now(),
+                                selectedDate: contributionDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : contributionDate,
+                                selectDate: (selectedDate) {
+                                  setState(() {
+                                    contributionDate = selectedDate;
+                                  });
                                 },
-                                child: Text(
-                                  'Select members',
-                                  style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontSize: 15.0,
-                                  ),
-                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                              flex: 3,
+                              child: CustomDropDownButton(
+                                labelText: "Select Deposit Method",
+                                listItems: depositMethods,
+                                selectedItem: depositMethod,
+                                validator: (value){
+                                  if(value==null){
+                                    return "This field is required";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    depositMethod = value;
+                                  });
+                                },
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Visibility(
-                        visible: memberTypeId == 2,
-                        child: amountTextInputField(
-                          enabled: _isFormInputEnabled,
-                          context: context,
-                          labelText: 'Enter Amount',
-                          onChanged: (value) {
-                            contributionAmount = value;
-                          },
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomDropDownButton(
+                          labelText: "Select Contribution",
+                          listItems: formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
+                          selectedItem: contributionId,
                           validator: (value){
-                            if(value==null || value==""){
-                              return "Field is required";
+                            if(value==null){
+                              return "This field is required";
                             }
                             return null;
-                          }
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              contributionId = value;
+                            });
+                          },
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _isLoading
-                          ? Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Center(
-                                child: CircularProgressIndicator()
-                              ),
-                          )
-                          : defaultButton(
-                              context: context,
-                              text: "SAVE",
-                              onPressed: () {
-                                _submit(context);
-                              },
-                            )
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomDropDownButton(
+                          labelText: "Select Account",
+                          listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
+                          selectedItem: accountId,
+                          onChanged: (value) {
+                            setState(() {
+                              accountId = value;
+                            });
+                          },
+                          validator: (value){
+                            if(value==null){
+                              return "This field is required";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomDropDownButton(
+                          labelText: 'Select Member',
+                          listItems: memberTypes,
+                          selectedItem: memberTypeId,
+                          onChanged: (value) {
+                            setState(() {
+                              memberTypeId = value;
+                            });
+                          },
+                          validator: (value){
+                            if(value==null){
+                              return "This field is required";
+                            }
+                            return null;
+                          },
+                        ),
+                        Visibility(
+                          visible: memberTypeId == 1,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Column(
+                                  children: memberWidgets.toList(),
+                                ),
+                                FlatButton(
+                                  onPressed: () async {
+                                    //open select members dialog
+                                    await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => SelectMember(
+                                            initialMembersList: selectedMembersList,
+                                            //membersList: memberOptions,
+                                          )
+                                        )
+                                      ).then((value){
+                                          setState(() {
+                                            selectedMembersList = value;
+                                          });   
+                                      }
+                                    );
+                                  },
+                                  child: Text(
+                                    'Select members',
+                                    style: TextStyle(
+                                      color: Colors.blueAccent,
+                                      fontSize: 15.0,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Visibility(
+                          visible: memberTypeId == 2,
+                          child: amountTextInputField(
+                            enabled: _isFormInputEnabled,
+                            context: context,
+                            labelText: 'Enter Amount',
+                            onChanged: (value) {
+                              contributionAmount = value;
+                            },
+                            validator: (value){
+                              if(value==null || value==""){
+                                return "Field is required";
+                              }
+                              return null;
+                            }
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _isLoading
+                        ? Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Center(
+                              child: CircularProgressIndicator()
+                            ),
+                        ): 
+                        defaultButton(
+                          context: context,
+                          text: "SAVE",
+                          onPressed: () {
+                            _submit(context);
+                          },
+                        )
                     ]),
                   ),
                 ),
