@@ -936,7 +936,6 @@ class Groups with ChangeNotifier {
     try {
       String newAvatar;
       if (avatar != null) {
-        print("Avatar available");
         final resizedImage = await CustomHelper.resizeFileImage(avatar, 300);
         newAvatar = base64Encode(resizedImage.readAsBytesSync());
       }
@@ -947,7 +946,6 @@ class Groups with ChangeNotifier {
         "country_id": countryId,
         "avatar": newAvatar
       });
-      print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final userGroups = response["user_groups"] as List<dynamic>;
@@ -1021,7 +1019,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1051,7 +1048,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1082,7 +1078,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1113,7 +1108,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1205,7 +1199,6 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        print(response);
         _incomeCategories = []; //clear accounts
         final incomeCategoriesTypes =
             response['income_categories'] as List<dynamic>;
@@ -1324,10 +1317,8 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "members": members
       });
-
-      print("PostRequest: " + postRequest);
       try {
-        final response = await PostToServer.post(postRequest, url);
+        await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -1581,7 +1572,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1607,7 +1597,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -2485,7 +2474,6 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -2532,9 +2520,7 @@ class Groups with ChangeNotifier {
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
       try {
-        print(formData);
         final postRequest = json.encode(formData);
-        print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -2579,7 +2565,6 @@ class Groups with ChangeNotifier {
       formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
