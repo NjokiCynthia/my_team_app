@@ -263,6 +263,7 @@ Widget plainButton({String text, Function action, double size, Color color, doub
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     onPressed: action,
     highlightColor: Colors.blueGrey.withOpacity(0.1),
+    splashColor: primaryColor,
   );
 }
 
@@ -417,5 +418,40 @@ Widget circleIconButton({IconData icon, Color color, Color backgroundColor, Func
       onPressed: onPressed,
       color: color,
     ),
+  );
+}
+
+Widget negativeActionDialogButton({String text = "Cancel", Color color, Function action}) {
+  return FlatButton(
+    padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        customTitle(
+          text: text,
+          color: color,
+          fontWeight: FontWeight.w600,
+        )
+      ],
+    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+    onPressed: action,
+    highlightColor: Colors.blueGrey.withOpacity(0.1),
+    splashColor: primaryColor.withOpacity(0.2),
+  );
+}
+
+Widget positiveActionDialogButton({String text, Color color, Function action}) {
+  return FlatButton(
+    padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+    child: customTitle(
+      text: text,
+      color: color,
+      fontWeight: FontWeight.w600,
+    ),
+    onPressed: action,
+    shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(4.0)),
+    textColor: primaryColor,
+    color: primaryColor.withOpacity(0.2),
   );
 }

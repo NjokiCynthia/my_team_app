@@ -5,13 +5,12 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:provider/provider.dart';
-
-import 'chamasoft/settings/group-setup/list-contacts.dart';
 
 Map<String, String> roles = {
   "1": "Chairperson",
@@ -61,6 +60,50 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
     _contributionFuture = _getContributions(context);
   }
 
+  _showPopup() => PopupMenuButton<int>(
+        itemBuilder: (context) => [
+          PopupMenuItem(
+            value: 1,
+            child: customTitle(text: "Select from Contacts", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+          ),
+          PopupMenuItem(
+            value: 2,
+            child: customTitle(text: "Add Manually", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+          ),
+        ],
+        child: ButtonTheme(
+          height: 36,
+          child: FlatButton(
+            padding: EdgeInsets.only(left: 4, right: 4),
+            shape: RoundedRectangleBorder(
+                side: BorderSide(color: Theme.of(context).hintColor, width: 1.0, style: BorderStyle.solid), borderRadius: BorderRadius.circular(4)),
+            child: Row(
+              children: <Widget>[
+                Icon(
+                  LineAwesomeIcons.plus,
+                  color: Theme.of(context).hintColor,
+                  size: 16,
+                ),
+                customTitle(text: "SELECT MEMBERS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+                Container(
+                  height: 36,
+                  child: VerticalDivider(
+                    thickness: 1.0,
+                    color: Theme.of(context).hintColor,
+                  ),
+                ),
+                Icon(
+                  LineAwesomeIcons.angle_down,
+                  color: Theme.of(context).hintColor,
+                  size: 16,
+                ),
+              ],
+            ),
+          ),
+        ),
+        offset: Offset(0, 100),
+      );
+
   @override
   void dispose() {
     super.dispose();
@@ -87,26 +130,43 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                             decoration: primaryGradient(context),
                             child: TabBarView(
                               children: <Widget>[
-                                FutureBuilder(
-                                    future: _memberFuture,
-                                    builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                        ? Center(child: CircularProgressIndicator())
-                                        : RefreshIndicator(
-                                            onRefresh: () => _getMembers(context),
-                                            child: Consumer<Groups>(builder: (context, data, child) {
-                                              List<Member> members = data.members;
-                                              return MembersTabView(members: members);
-                                            }))),
+                                Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                                          child: _showPopup(),
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: FutureBuilder(
+                                          future: _memberFuture,
+                                          builder: (context, snapshot) =>
+                                          snapshot.connectionState == ConnectionState.waiting
+                                              ? Center(child: CircularProgressIndicator())
+                                              : RefreshIndicator(
+                                              onRefresh: () => _getMembers(context),
+                                              child: Consumer<Groups>(builder: (context, data, child) {
+                                                List<Member> members = data.members;
+                                                return MembersTabView(members: members);
+                                              }))),
+                                    ),
+                                  ],
+                                ),
                                 FutureBuilder(
                                   future: _accountFuture,
-                                  builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                                  builder: (context, snapshot) =>
+                                  snapshot.connectionState == ConnectionState.waiting
                                       ? Center(child: CircularProgressIndicator())
                                       : RefreshIndicator(
-                                          onRefresh: () => _getAccounts(context),
-                                          child: Consumer<Groups>(
-                                            builder: (context, data, child) {
-                                              List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
-                                              return AccountsTabView(accounts: accounts);
+                                    onRefresh: () => _getAccounts(context),
+                                    child: Consumer<Groups>(
+                                      builder: (context, data, child) {
+                                        List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
+                                        return AccountsTabView(accounts: accounts);
                                             },
                                           ),
                                         ),
@@ -221,9 +281,10 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                   print("Current Index $currentIndex");
                   print(currentIndex);
                   if (currentIndex == 0) {
-                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                      return ListContacts();
-                    }));
+                    addMemberDialog(context: context);
+//                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+//                      return ListContacts();
+//                    }));
                   }
                 },
                 backgroundColor: primaryColor,

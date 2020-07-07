@@ -53,8 +53,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _groupAvatar = Provider.of<Groups>(context, listen: false)
-        .getCurrentGroupDisplayAvatar();
+    _groupAvatar = Provider.of<Groups>(context, listen: false).getCurrentGroupDisplayAvatar();
     super.initState();
   }
 
@@ -68,8 +67,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateName(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false)
-          .updateGroupName(groupName);
+      final response = await Provider.of<Groups>(context, listen: false).updateGroupName(groupName);
       if (response['status'] == 1) {
         Navigator.of(context).pop();
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -94,8 +92,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateEmail(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false)
-          .updateGroupEmail(emailAddress);
+      final response = await Provider.of<Groups>(context, listen: false).updateGroupEmail(emailAddress);
       if (response['status'] == 1) {
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
@@ -114,11 +111,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdatePhone(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false)
-          .updateGroupPhoneNumber(phoneNumber);
+      final response = await Provider.of<Groups>(context, listen: false).updateGroupPhoneNumber(phoneNumber);
       if (response['status'] == 1) {
-        Navigator.of(context)
-            .push(new MaterialPageRoute(builder: (context) => Verification()));
+        Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
       } else {
         errorText = response['message'];
       }
@@ -131,8 +126,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateCurrency(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false)
-          .updateGroupCurrency(currencyId);
+      final response = await Provider.of<Groups>(context, listen: false).updateGroupCurrency(currencyId);
       if (response['status'] == 1) {
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
@@ -151,8 +145,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateCountry(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false)
-          .updateGroupCountry(countryId);
+      final response = await Provider.of<Groups>(context, listen: false).updateGroupCountry(countryId);
       if (response['status'] == 1) {
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
@@ -187,9 +180,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   ),
                 ),
                 TextFormField(
-                  initialValue: Provider.of<Groups>(context, listen: false)
-                      .getCurrentGroup()
-                      .groupPhone,
+                  initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone,
                   keyboardType: TextInputType.phone,
                   onChanged: (value) {
                     setState(() {
@@ -220,8 +211,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -264,9 +254,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               Form(
                 key: _formKey,
                 child: TextFormField(
-                  initialValue: Provider.of<Groups>(context, listen: false)
-                      .getCurrentGroup()
-                      .groupName,
+                  initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName,
                   keyboardType: TextInputType.text,
                   onChanged: (value) {
                     setState(() {
@@ -286,7 +274,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                       color: Theme.of(context).hintColor,
                       width: 2.0,
                     )),
-                    labelText: "Your Group  Name",
+                    labelText: "Your Group Name",
                   ),
                 ),
               ),
@@ -296,8 +284,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -330,9 +317,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           content: Form(
             key: _formKey,
             child: TextFormField(
-              initialValue: Provider.of<Groups>(context, listen: false)
-                  .getCurrentGroup()
-                  .groupEmail,
+              initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail,
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
                 setState(() {
@@ -360,8 +345,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -399,8 +383,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   key: _formKey,
                   child: CurrencyDropdown(
                     labelText: 'Select Currency',
-                    listItems: Provider.of<Groups>(context, listen: false)
-                        .currencyOptions,
+                    listItems: Provider.of<Groups>(context, listen: false).currencyOptions,
                     selectedItem: currencyId,
                     onChanged: (value) {
                       setState(() {
@@ -415,8 +398,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               new FlatButton(
                 child: new Text(
                   "Cancel",
-                  style: TextStyle(
-                      color: Theme.of(context).textSelectionHandleColor),
+                  style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -470,8 +452,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               new FlatButton(
                 child: new Text(
                   "Cancel",
-                  style: TextStyle(
-                      color: Theme.of(context).textSelectionHandleColor),
+                  style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -499,8 +480,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         _isLoadingImage = true;
       });
       try {
-        await Provider.of<Groups>(context, listen: false)
-            .updateGroupAvatar(avatar);
+        await Provider.of<Groups>(context, listen: false).updateGroupAvatar(avatar);
         setState(() {
           _groupAvatar = null;
         });
@@ -526,8 +506,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final currentGroup =
-        Provider.of<Groups>(context, listen: true).getCurrentGroup();
+    final currentGroup = Provider.of<Groups>(context, listen: true).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -548,12 +527,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 SizedBox(
                   height: 40.0,
                 ),
-                heading1(
-                    text: "Update Group Profile",
-                    color: Theme.of(context).textSelectionHandleColor),
-                subtitle2(
-                    text: "Update the profile info for your Group",
-                    color: Theme.of(context).textSelectionHandleColor),
+                heading1(text: "Update Group Profile", color: Theme.of(context).textSelectionHandleColor),
+                subtitle2(text: "Update the profile info for your Group", color: Theme.of(context).textSelectionHandleColor),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -570,28 +545,22 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                           : _groupAvatar != null
                               ? CachedNetworkImage(
                                   imageUrl: _groupAvatar,
-                                  placeholder: (context, url) =>
-                                      const CircleAvatar(
+                                  placeholder: (context, url) => const CircleAvatar(
                                     radius: 45.0,
-                                    backgroundImage:
-                                        const AssetImage('assets/no-user.png'),
+                                    backgroundImage: const AssetImage('assets/no-user.png'),
                                   ),
-                                  imageBuilder: (context, image) =>
-                                      CircleAvatar(
+                                  imageBuilder: (context, image) => CircleAvatar(
                                     backgroundImage: image,
                                     radius: 45.0,
                                   ),
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
+                                  errorWidget: (context, url, error) => const Icon(Icons.error),
                                   fadeOutDuration: const Duration(seconds: 1),
                                   fadeInDuration: const Duration(seconds: 3),
                                 )
                               : CircleAvatar(
                                   backgroundImage: _groupAvatar != null
                                       ? NetworkImage(_groupAvatar)
-                                      : (avatar == null
-                                          ? AssetImage('assets/no-user.png')
-                                          : FileImage(avatar)),
+                                      : (avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar)),
                                   backgroundColor: Colors.transparent,
                                 ),
                       Positioned(
@@ -604,8 +573,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                             size: 30.0,
                           ),
                           onPressed: () async {
-                            File newAvatar =
-                                await FilePicker.getFile(type: FileType.image);
+                            File newAvatar = await FilePicker.getFile(type: FileType.image);
                             setState(() {
                               avatar = newAvatar;
                             });
@@ -646,10 +614,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   icon: Icons.edit,
                   onPressed: () async {
                     setState(() {
-                      currencyId = int.parse(
-                          Provider.of<Groups>(context, listen: false)
-                              .getCurrentGroup()
-                              .groupCurrencyId);
+                      currencyId = int.parse(Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCurrencyId);
                     });
                     _updateCurrency(context);
                   },
@@ -660,10 +625,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   icon: Icons.edit,
                   onPressed: () {
                     setState(() {
-                      countryId = int.parse(
-                          Provider.of<Groups>(context, listen: false)
-                              .getCurrentGroup()
-                              .groupCountryId);
+                      countryId = int.parse(Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCountryId);
                     });
 
                     _updateCountry(context);

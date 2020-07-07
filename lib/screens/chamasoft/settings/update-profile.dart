@@ -29,7 +29,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   String name = 'Jane Doe';
   String _oldName;
   String phoneNumber = '+254 701 234 567';
-  String emailAddress,_oldEmailAddress;
+  String emailAddress, _oldEmailAddress;
   final _formKey = GlobalKey<FormState>();
   bool _isLoadingImage = false;
 
@@ -63,33 +63,33 @@ class _UpdateProfileState extends State<UpdateProfile> {
     super.dispose();
   }
 
-  Future<void> _uploadUserAvatar(BuildContext context)async{
-    if(avatar!=null){
+  Future<void> _uploadUserAvatar(BuildContext context) async {
+    if (avatar != null) {
       setState(() {
         _isLoadingImage = true;
       });
-      try{
+      try {
         await Provider.of<Auth>(context, listen: false).updateUserAvatar(avatar);
         setState(() {
           _userAvatar = null;
         });
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("You have successfully updated your profile picture",)));
-      
-      }on CustomException catch (error) {
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated your profile picture",
+        )));
+      } on CustomException catch (error) {
         setState(() {
           avatar = null;
         });
         StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _uploadUserAvatar(context);
-          }
-        );
-      }finally{
-        _isLoadingImage=false;
+            context: context,
+            error: error,
+            callback: () {
+              _uploadUserAvatar(context);
+            });
+      } finally {
+        _isLoadingImage = false;
       }
-      
     }
   }
 
@@ -97,7 +97,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
     try {
       if (name != _oldName) {
         await Provider.of<Auth>(context, listen: false).updateUserName(name);
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("Name successfully updated",)));
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Name successfully updated",
+        )));
       }
     } on CustomException catch (error) {
       setState(() {
@@ -116,7 +119,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
     try {
       if (emailAddress != _oldEmailAddress) {
         await Provider.of<Auth>(context, listen: false).updateUserEmailAddress(emailAddress);
-        Scaffold.of(context).showSnackBar(SnackBar(content: Text("You have successfully updated your email address",)));
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated your email address",
+        )));
       }
     } on CustomException catch (error) {
       setState(() {
@@ -178,27 +184,23 @@ class _UpdateProfileState extends State<UpdateProfile> {
             ),
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Continue",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
+            negativeActionDialogButton(
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Continue",
+                color: primaryColor,
+                action: () {
+                  if (_formKey.currentState.validate()) {
 //                  Navigator.of(context).pop();
-                  Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
-                }
-              },
-            ),
+                    Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
+                  }
+                }),
+            SizedBox(
+              width: 10,
+            )
           ],
         );
       },
@@ -242,25 +244,21 @@ class _UpdateProfileState extends State<UpdateProfile> {
             ),
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Save",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                _updateUserName(context);
-              },
-            ),
+            negativeActionDialogButton(
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Save",
+                color: primaryColor,
+                action: () {
+                  Navigator.of(context).pop();
+                  _updateUserName(context);
+                }),
+            SizedBox(
+              width: 10,
+            )
           ],
         );
       },
@@ -279,12 +277,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
             child: TextFormField(
               initialValue: emailAddress,
               keyboardType: TextInputType.emailAddress,
-              onChanged: (_) {
-              },
+              onChanged: (_) {},
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Your email address is required';
-                }else if(!CustomHelper.validEmail(value)){
+                } else if (!CustomHelper.validEmail(value)) {
                   return "Enter a valid email address";
                 }
                 setState(() {
@@ -305,33 +302,26 @@ class _UpdateProfileState extends State<UpdateProfile> {
             ),
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Save",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () {
-                if (_formKey.currentState.validate()) {
+            negativeActionDialogButton(
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Save",
+                color: primaryColor,
+                action: () {
                   Navigator.of(context).pop();
                   _updateUserEmailAdress(context);
-                }
-              },
-            ),
+                }),
+            SizedBox(
+              width: 10,
+            )
           ],
         );
       },
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -364,29 +354,31 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     child: Stack(
                       fit: StackFit.expand,
                       children: <Widget>[
-                        _isLoadingImage?Center(child: CircularProgressIndicator(),):
-                        _userAvatar != null?
-                        CachedNetworkImage(
-                          imageUrl: _userAvatar,
-                          placeholder: (context, url) => const CircleAvatar(
-                            radius: 45.0,
-                            backgroundImage: const AssetImage('assets/no-user.png'),
-                          ),
-                          imageBuilder: (context, image) => CircleAvatar(
-                            backgroundImage: image,
-                            radius: 45.0,
-                          ),
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                          fadeOutDuration: const Duration(seconds: 1),
-                          fadeInDuration: const Duration(seconds: 3),
-                        ):
-                        CircleAvatar(
-                          backgroundImage:_userAvatar!=null?NetworkImage(_userAvatar):
-                            (avatar == null ? AssetImage('assets/no-user.png') : 
-                              FileImage(avatar)
-                            ),
-                          backgroundColor: Colors.transparent,
-                        ),
+                        _isLoadingImage
+                            ? Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : _userAvatar != null
+                                ? CachedNetworkImage(
+                                    imageUrl: _userAvatar,
+                                    placeholder: (context, url) => const CircleAvatar(
+                                      radius: 45.0,
+                                      backgroundImage: const AssetImage('assets/no-user.png'),
+                                    ),
+                                    imageBuilder: (context, image) => CircleAvatar(
+                                      backgroundImage: image,
+                                      radius: 45.0,
+                                    ),
+                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    fadeOutDuration: const Duration(seconds: 1),
+                                    fadeInDuration: const Duration(seconds: 3),
+                                  )
+                                : CircleAvatar(
+                                    backgroundImage: _userAvatar != null
+                                        ? NetworkImage(_userAvatar)
+                                        : (avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar)),
+                                    backgroundColor: Colors.transparent,
+                                  ),
                         Positioned(
                           bottom: -12.0,
                           right: -12.0,
