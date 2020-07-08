@@ -1,5 +1,4 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -25,11 +24,9 @@ class RecordExpenseState extends State<RecordExpense> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   bool _isFormInputEnabled = true;
-  final formKey = new GlobalKey<FormState>();
   bool toolTipIsVisible = true;
   DateTime expenseDate = DateTime.now();
   int withdrawalMethod;
-  NamesListItem depositMethodValue;
   int expenseCategoryId;
   int accountId;
   String description;
@@ -100,7 +97,7 @@ class RecordExpenseState extends State<RecordExpense> {
       _isFormInputEnabled = false;
     });
     _formKey.currentState.save();
-    _formData['deposit_date'] = expenseDate.toString();
+    _formData['withdrawal_date'] = expenseDate.toString();
     _formData["expense_category_id"] = expenseCategoryId;
     _formData["amount"] = amount;
     _formData["account_id"] = accountId;
