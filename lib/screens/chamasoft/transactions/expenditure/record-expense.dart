@@ -180,7 +180,7 @@ class RecordExpenseState extends State<RecordExpense> {
                               selectedItem: withdrawalMethod,
                               validator: (value){
                                 if(value==null||value==""){
-                                    return "Field required";
+                                    return "Field is required";
                                   }
                                   return null;
                               },
@@ -199,7 +199,7 @@ class RecordExpenseState extends State<RecordExpense> {
                         selectedItem: expenseCategoryId,
                         validator: (value){
                           if(value==null||value==""){
-                              return "Field required";
+                              return "Field is required";
                             }
                             return null;
                         },
@@ -215,7 +215,7 @@ class RecordExpenseState extends State<RecordExpense> {
                         selectedItem: accountId,
                         validator: (value){
                           if(value==null||value==""){
-                              return "Field required";
+                              return "Field is required";
                             }
                             return null;
                         },
