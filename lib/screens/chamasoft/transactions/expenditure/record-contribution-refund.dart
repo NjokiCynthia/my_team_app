@@ -108,7 +108,7 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
     _formData["description"] = description;
     _formData["request_id"] = requestId;
     try{
-      await Provider.of<Groups>(context).recordContributionRefund(_formData);
+      await Provider.of<Groups>(context,listen: false).recordContributionRefund(_formData);
       Navigator.of(context).pop();
     }on CustomException catch (error) {
       StatusHandler().handleStatus(

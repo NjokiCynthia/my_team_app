@@ -104,7 +104,7 @@ class RecordExpenseState extends State<RecordExpense> {
     _formData["description"] = description;
     _formData["request_id"] = requestId;
     try{
-      await Provider.of<Groups>(context).recordExpensePayment(_formData);
+      await Provider.of<Groups>(context,listen: false).recordExpensePayment(_formData);
       Navigator.of(context).pop();
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -120,6 +120,7 @@ class RecordExpenseState extends State<RecordExpense> {
       });
     }
   }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -177,6 +178,12 @@ class RecordExpenseState extends State<RecordExpense> {
                               labelText: 'Select Withdrawal Method',
                               listItems: !_isFormInputEnabled?[]:withdrawalMethods,
                               selectedItem: withdrawalMethod,
+                              validator: (value){
+                                if(value==null||value==""){
+                                    return "Field required";
+                                  }
+                                  return null;
+                              },
                               onChanged: (value) {
                                 setState(() {
                                   withdrawalMethod = value;
@@ -190,6 +197,12 @@ class RecordExpenseState extends State<RecordExpense> {
                         labelText: 'Select Expense Category',
                         listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("expenseCategories")?formLoadData["expenseCategories"]:[],
                         selectedItem: expenseCategoryId,
+                        validator: (value){
+                          if(value==null||value==""){
+                              return "Field required";
+                            }
+                            return null;
+                        },
                         onChanged: (value) {
                           setState(() {
                             expenseCategoryId = value;
