@@ -233,6 +233,13 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                       SizedBox(
                         height: 24,
                       ),
+                      _isLoading
+                      ? Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Center(
+                            child: CircularProgressIndicator()
+                          ),
+                      ):
                       defaultButton(
                         context: context,
                         text: "SAVE",
