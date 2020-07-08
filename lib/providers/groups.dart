@@ -2578,4 +2578,26 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
+  Future<void> recordExpensePayment(Map<String, dynamic> formData)async{
+    try {
+      const url = EndpointUrl.RECORD_EXPENSES;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
 }

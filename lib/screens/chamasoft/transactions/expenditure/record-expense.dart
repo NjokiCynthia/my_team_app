@@ -1,7 +1,9 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -36,6 +38,8 @@ class RecordExpenseState extends State<RecordExpense> {
   Map <String,dynamic> formLoadData = {},_formData = {};
   final _formKey = new GlobalKey<FormState>();
   DateTime now = DateTime.now();
+  static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
+  String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -97,7 +101,27 @@ class RecordExpenseState extends State<RecordExpense> {
     });
     _formKey.currentState.save();
     _formData['deposit_date'] = expenseDate.toString();
-
+    _formData["expense_category_id"] = expenseCategoryId;
+    _formData["amount"] = amount;
+    _formData["account_id"] = accountId;
+    _formData["description"] = description;
+    _formData["request_id"] = requestId;
+    try{
+      await Provider.of<Groups>(context).recordExpensePayment(_formData);
+      Navigator.of(context).pop();
+    }on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormInputEnabled = true;
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -194,7 +218,7 @@ class RecordExpenseState extends State<RecordExpense> {
                       amountTextInputField(
                           context: context,
                           enabled: _isFormInputEnabled,
-                          labelText: 'Enter Amount refunded',
+                          labelText: 'Enter Amount Expensed',
                           onChanged: (value) {
                             setState(() {
                               amount = double.parse(value);
