@@ -178,8 +178,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                               listItems: !_isFormInputEnabled?[]:withdrawalMethods,
                               selectedItem: withdrawalMethod,
                               validator: (value){
-                                if(value.toString().isEmpty){
-                                  return "Field required";
+                                if(value.toString().isEmpty|| value==null){
+                                  return "Field is required";
                                 }
                                 return null;
                               },
@@ -197,8 +197,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                         listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
                         selectedItem: contributionId,
                         validator: (value){
-                          if(value.toString().isEmpty){
-                            return "Field required";
+                          if(value.toString().isEmpty || value==null){
+                            return "Field is required";
                           }
                           return null;
                         },
@@ -213,8 +213,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                         listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                         selectedItem: accountId,
                         validator: (value){
-                          if(value.toString().isEmpty){
-                            return "Field required";
+                          if(value.toString().isEmpty || value==null){
+                            return "Field is required";
                           }
                           return null;
                         },
@@ -226,11 +226,11 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Member to refund',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("memberOptions")?formLoadData["memberOPtions"]:[],
+                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("memberOptions")?formLoadData["memberOptions"]:[],
                         selectedItem: groupMemberId,
                         validator: (value){
-                          if(value.toString().isEmpty){
-                            return "Field required";
+                          if(value.toString().isEmpty || value==null){
+                            return "Field is required";
                           }
                           return null;
                         },
@@ -244,8 +244,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                           context: context,
                           labelText: 'Enter Amount refunded',
                           validator: (value){
-                            if(value.toString().isEmpty){
-                              return "Field required";
+                            if(value.toString().isEmpty || value==null){
+                              return "Field is required";
                             }
                             return null;
                           },
