@@ -95,12 +95,40 @@ class _LoginState extends State<Login> {
   }
 
   void _submit(BuildContext context) async {
+    _formKey.currentState.save();
+
+    if (_identity.contains("@")) {
+      if (!CustomHelper.validEmail(_identity)) {
+        setState(() {
+          print("Invalid Email");
+          _isValid = false;
+        });
+        return;
+      }
+      setState(() {
+        print("Valid Email");
+        _isValid = true;
+      });
+    } else {
+      bool value = await CustomHelper.validPhoneNumber(_identity, _countryCode);
+      if (!value) {
+        print("Invalid");
+        setState(() {
+          _isValid = false;
+        });
+      } else {
+        setState(() {
+          print("Valid");
+          _isValid = true;
+        });
+      }
+    }
+
     if (!_formKey.currentState.validate() || !_isValid) {
       // Invalid!
       return;
     }
-    
-    _formKey.currentState.save();
+
     String title = "Confirm Email Address";
     if (!_identity.contains("@")) {
       _identity = _identity.startsWith("0") ? _identity.replaceFirst("0", "") : _identity;
@@ -182,7 +210,7 @@ class _LoginState extends State<Login> {
                     ),
                     subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
                     subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
-                    
+
                     Row(
                       children: <Widget>[
                         Expanded(
@@ -203,14 +231,17 @@ class _LoginState extends State<Login> {
                                       CountryCodePicker(
                                         // key: _countryKey,
                                         initialSelection: 'KE',
-                                        favorite: ['KE','UG', 'TZ', 'RW'],
+                                        favorite: ['KE', 'UG', 'TZ', 'RW'],
                                         showCountryOnly: false,
                                         showOnlyCountryWhenClosed: false,
                                         alignLeft: false,
                                         flagWidth: 28.0,
                                         enabled: _isFormInputEnabled,
-                                        textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/ ),
-                                        searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                                        textStyle: TextStyle(
+                                          fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                        ),
+                                        searchStyle:
+                                            TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
                                         onChanged: (countryCode) {
                                           setState(() {
                                             _countryCode = countryCode;
@@ -238,18 +269,6 @@ class _LoginState extends State<Login> {
                                     ),
                                     enabled: _isFormInputEnabled,
                                     focusNode: _focusNode,
-                                    // ignore: missing_return
-                                    validator: (value) {
-                                      if (!CustomHelper.validIdentity(value.trim())) {
-                                        setState(() {
-                                          _isValid = false;
-                                        });
-                                        return;
-                                      }
-                                      setState(() {
-                                        _isValid = true;
-                                      });
-                                    },
                                     style: TextStyle(fontFamily: 'SegoeUI'),
                                     onSaved: (value) {
                                       _identity = value.trim();

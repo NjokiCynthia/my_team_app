@@ -2,7 +2,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:chamasoft/utilities/common.dart';
+import 'package:country_code_picker/country_code.dart';
 import 'package:image/image.dart';
+import 'package:libphonenumber/libphonenumber.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart' as syspaths;
 
@@ -31,6 +33,13 @@ class CustomHelper {
 
   static bool validIdentity(String identity) {
     return validEmail(identity) || validPhone(identity);
+  }
+
+  static Future<bool> validPhoneNumber(String phone, CountryCode countryCode) async {
+    String number = countryCode.dialCode + (phone.startsWith("0") ? phone.replaceFirst("0", "") : phone);
+    bool isValid = await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: number, isoCode: countryCode.code);
+    print("Number: $number");
+    return isValid;
   }
 
   static String generateRandomStringCharacterPair(int length) {
