@@ -936,7 +936,6 @@ class Groups with ChangeNotifier {
     try {
       String newAvatar;
       if (avatar != null) {
-        print("Avatar available");
         final resizedImage = await CustomHelper.resizeFileImage(avatar, 300);
         newAvatar = base64Encode(resizedImage.readAsBytesSync());
       }
@@ -947,7 +946,6 @@ class Groups with ChangeNotifier {
         "country_id": countryId,
         "avatar": newAvatar
       });
-      print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final userGroups = response["user_groups"] as List<dynamic>;
@@ -1021,7 +1019,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1051,7 +1048,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1082,7 +1078,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1113,7 +1108,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error.message);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1205,7 +1199,6 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        print(response);
         _incomeCategories = []; //clear accounts
         final incomeCategoriesTypes =
             response['income_categories'] as List<dynamic>;
@@ -1324,10 +1317,8 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "members": members
       });
-
-      print("PostRequest: " + postRequest);
       try {
-        final response = await PostToServer.post(postRequest, url);
+        await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -1581,7 +1572,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -1607,7 +1597,6 @@ class Groups with ChangeNotifier {
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
-        print(error);
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
@@ -2388,9 +2377,10 @@ class Groups with ChangeNotifier {
     bool contr = false,
     bool acc = false,
     bool member = false,
-    bool fineOptions = false,
+    bool  = false,
     bool incomeCats = false,
     bool depositor = false,
+    bool fineOptions = false,
   }) async {
     List<NamesListItem> contributionOptions = [],
         accountOptions = [],
@@ -2485,7 +2475,6 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -2501,19 +2490,16 @@ class Groups with ChangeNotifier {
 
   Future<void> recordFinePayments(Map<String, dynamic> formData) async {
     try {
-      //const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
-      print(formData['account_id']);
+      const url = EndpointUrl.NEW_RECORD_FINE_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
-
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
 
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
-        //await PostToServer.post(postRequest, url);
+        await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -2528,8 +2514,7 @@ class Groups with ChangeNotifier {
 
   Future<void> recordIncomePayment(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.RECORD_INCOME;
-      print(formData['account_id']);
+      const url = EndpointUrl.NEW_RECORD_INCOME;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
@@ -2537,7 +2522,116 @@ class Groups with ChangeNotifier {
           "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> recordMiscellaneousPayments(Map<String, dynamic> formData)async{
+    try {
+      const url = EndpointUrl.NEW_RECORD_MISCELLANEOUS_PAYMENTS;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void>recordBankLoanIncome(Map<String, dynamic> formData)async{
+    try {
+      const url = EndpointUrl.RECORD_BANK_LOAN;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> recordExpensePayment(Map<String, dynamic> formData)async{
+    try {
+      const url = EndpointUrl.RECORD_EXPENSES;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void>recordBankLoanRepayment(Map<String,dynamic> formData)async{
+    try {
+      const url = EndpointUrl.RECORD_BANK_LOAN_REPAYMENT;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void>recordContributionRefund(Map<String,dynamic> formData)async{
+    try {
+      const url = EndpointUrl.RECORD_CONTRIBUTION_REFUND;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);

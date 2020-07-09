@@ -30,6 +30,7 @@ dependencies:
   tuple: ^1.0.3
   cached_network_image: ^2.2.0+1
   country_code_picker: ^1.4.0
+  fluttertoast: ^5.0.1
 
 dev_dependencies:
   flutter_test:

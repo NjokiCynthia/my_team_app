@@ -49,9 +49,12 @@ class EndpointUrl {
   static const String RECORD_CONTRIBUTION_PAYMENTS = CustomHelper.baseUrl + "/mobile/deposits/record_contribution_payments";
   static const String NEW_RECORD_CONTRIBUTION_PAYMENTS = CustomHelper.baseUrl + "/mobile/deposits/new_record_contribution_payments";
   static const String RECORD_FINE_PAYMENTS = CustomHelper.baseUrl + "/mobile/deposits/record_fine_payments";
+  static const String NEW_RECORD_FINE_PAYMENTS = CustomHelper.baseUrl + "/mobile/deposits/new_record_fine_payments";
   static const String RECORD_LOAN_REPAYMENTS = CustomHelper.baseUrl + "/mobile/deposits/record_loan_repayments";
   static const String RECORD_MISCELLANEOUS_PAYMENTS = CustomHelper.baseUrl + "/mobile/deposits/record_miscellaneous_payments";
+  static const String NEW_RECORD_MISCELLANEOUS_PAYMENTS = CustomHelper.baseUrl + "/mobile/deposits/new_record_miscellaneous_payments";
   static const String RECORD_INCOME = CustomHelper.baseUrl + "/mobile/deposits/record_income";
+  static const String NEW_RECORD_INCOME = CustomHelper.baseUrl + "/mobile/deposits/new_record_income_payment";
   static const String RECORD_BANK_LOAN = CustomHelper.baseUrl + "/mobile/deposits/record_bank_loan";
   static const String RECORD_BANK_LOAN_REPAYMENT = CustomHelper.baseUrl + "/mobile/withdrawals/record_bank_loan_repayment";
   static const String RECORD_CONTRIBUTION_REFUND = CustomHelper.baseUrl + "/mobile/withdrawals/record_contribution_refund";
