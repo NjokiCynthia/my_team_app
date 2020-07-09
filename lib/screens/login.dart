@@ -5,6 +5,7 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -136,50 +137,34 @@ class _LoginState extends State<Login> {
       title = "Confirm Phone Number";
     }
 
-    showCupertinoDialog(
+    twoButtonAlertDialog(
         context: context,
-        builder: (ctx) => CupertinoAlertDialog(
-              content: Padding(
-                padding: const EdgeInsets.only(top: 16.0),
-                child: customTitleWithWrap(text: _identity, textAlign: TextAlign.center),
-              ),
-              title: heading2(text: title, textAlign: TextAlign.center, color: primaryColor),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  child: heading2(text: "Cancel", color: Theme.of(context).textSelectionHandleColor),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: heading2(text: "Continue", color: primaryColor),
-                  onPressed: () async {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      _isLoading = true;
-                      _isFormInputEnabled = false;
-                    });
-                    try {
-                      await Provider.of<Auth>(context, listen: false).generatePin(_identity);
-                      Navigator.of(context)
-                          .push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
-                    } on CustomException catch (error) {
-                      StatusHandler().handleStatus(
-                          context: context,
-                          error: error,
-                          callback: () {
-                            _submit(context);
-                          });
-                    } finally {
-                      setState(() {
-                        _isLoading = false;
-                        _isFormInputEnabled = true;
-                      });
-                    }
-                  },
-                )
-              ],
-            ));
+        message: _identity,
+        title: title,
+        action: () async {
+          Navigator.of(context).pop();
+          setState(() {
+            _isLoading = true;
+            _isFormInputEnabled = false;
+          });
+          try {
+            await Provider.of<Auth>(context, listen: false).generatePin(_identity);
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
+          } on CustomException catch (error) {
+            StatusHandler().handleStatus(
+                context: context,
+                error: error,
+                callback: () {
+                  _submit(context);
+                });
+          } finally {
+            setState(() {
+              _isLoading = false;
+              _isFormInputEnabled = true;
+            });
+          }
+        });
   }
 
   @override
