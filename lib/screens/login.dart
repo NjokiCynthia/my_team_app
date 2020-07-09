@@ -33,9 +33,16 @@ class _LoginState extends State<Login> {
   bool _isPhoneNumber = false;
   bool _setStateCalled = false;
 
+  FocusNode _focusNode;
+  bool _focused = false;
+  bool _isValid = true;
+  BorderSide _custInputBorderSide = BorderSide(
+    color: Colors.blueGrey,
+    width: 1.0,
+  );
+
   _printLatestValues() {
     final text = _phoneController.text;
-
     if (text.length >= 2 && CustomHelper.isNumeric(text)) {
       if (!_setStateCalled) {
         _setStateCalled = true;
@@ -48,6 +55,7 @@ class _LoginState extends State<Login> {
         _setStateCalled = false;
         setState(() {
           _isPhoneNumber = false;
+          _isValid = true;
         });
       }
     }
@@ -57,22 +65,41 @@ class _LoginState extends State<Login> {
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
     super.initState();
-
     _phoneController.addListener(_printLatestValues);
+    _focusNode = new FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+  }
+
+  void _handleFocusChange() {
+    setState(() {
+      _focused = _focusNode.hasFocus;
+      if (!_focused) {
+        _custInputBorderSide = BorderSide(
+          color: (!_isValid) ? Colors.red : Colors.blueGrey,
+          width: 1.0,
+        );
+      } else {
+        _custInputBorderSide = BorderSide(
+          color: (!_isValid) ? Colors.red : Colors.blue,
+          width: 2.0,
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
     _phoneController.dispose();
     super.dispose();
+    _focusNode.dispose();
   }
 
   void _submit(BuildContext context) async {
-    if (!_formKey.currentState.validate()) {
+    if (!_formKey.currentState.validate() || !_isValid) {
       // Invalid!
       return;
     }
-
+    
     _formKey.currentState.save();
     String title = "Confirm Email Address";
     if (!_identity.contains("@")) {
@@ -155,82 +182,188 @@ class _LoginState extends State<Login> {
                     ),
                     subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
                     subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
+                    
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         Expanded(
-                          flex: 1,
-                          child: Container(),
-                        ),
-                        _isPhoneNumber
-                            ? Flexible(
-                                flex: 2,
-                                child: CountryCodePicker(
-                                  key: _countryKey,
-                                  enabled: _isFormInputEnabled,
-                                  initialSelection: 'KE',
-                                  builder: (country) {
-                                    return TextFormField(
-                                      controller: _countryCodeController,
-                                      onTap: () => _countryKey.currentState.showCountryCodePickerDialog(),
-                                      style: TextStyle(fontFamily: 'SegoeUI'),
-                                      enabled: _isFormInputEnabled,
-                                      readOnly: true,
-                                      showCursor: false,
-                                      decoration: InputDecoration(
-                                        labelText: 'Code',
-                                        floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                      ),
-                                    );
-                                  },
-                                  favorite: ['+254', 'KE'],
-                                  showFlag: true,
-                                  textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,*/ color: Theme.of(context).textSelectionHandleColor),
-                                  showCountryOnly: false,
-                                  searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
-                                  showOnlyCountryWhenClosed: false,
-                                  alignLeft: true,
-                                  onChanged: (countryCode) {
-                                    setState(() {
-                                      _countryCode = countryCode;
-                                      _countryCodeController.text = countryCode.dialCode;
-                                      print("Code: " + countryCode.dialCode);
-                                    });
-                                  },
-                                ),
-                              )
-                            : Container(),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Expanded(
-                          flex: 5,
-                          child: TextFormField(
-                            controller: _phoneController,
-                            style: TextStyle(fontFamily: 'SegoeUI'),
-                            enabled: _isFormInputEnabled,
-                            decoration: InputDecoration(
-                              floatingLabelBehavior: FloatingLabelBehavior.auto,
-                              labelText: 'Phone Number or Email',
-                              labelStyle: TextStyle(fontFamily: 'SegoeUI'),
+                          child: Container(
+                            margin: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 8.0),
+                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: _custInputBorderSide,
+                              ),
                             ),
-                            validator: (value) {
-                              if (!CustomHelper.validIdentity(value.trim())) {
-                                return 'Enter valid phone or email';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _identity = value.trim();
-                            },
+                            child: Row(
+                              children: <Widget>[
+                                Visibility(
+                                  visible: _isPhoneNumber,
+                                  child: Row(
+                                    children: <Widget>[
+                                      CountryCodePicker(
+                                        // key: _countryKey,
+                                        initialSelection: 'KE',
+                                        favorite: ['KE','UG', 'TZ', 'RW'],
+                                        showCountryOnly: false,
+                                        showOnlyCountryWhenClosed: false,
+                                        alignLeft: false,
+                                        flagWidth: 28.0,
+                                        enabled: _isFormInputEnabled,
+                                        textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/ ),
+                                        searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                                        onChanged: (countryCode) {
+                                          setState(() {
+                                            _countryCode = countryCode;
+                                            _countryCodeController.text = countryCode.dialCode;
+                                            print("Code: " + countryCode.dialCode);
+                                          });
+                                        },
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: _phoneController,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,
+                                      hintText: 'Email or mobile number',
+                                    ),
+                                    enabled: _isFormInputEnabled,
+                                    focusNode: _focusNode,
+                                    // ignore: missing_return
+                                    validator: (value) {
+                                      if (!CustomHelper.validIdentity(value.trim())) {
+                                        setState(() {
+                                          _isValid = false;
+                                        });
+                                        return;
+                                      }
+                                      setState(() {
+                                        _isValid = true;
+                                      });
+                                    },
+                                    style: TextStyle(fontFamily: 'SegoeUI'),
+                                    onSaved: (value) {
+                                      _identity = value.trim();
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Container(),
-                        )
                       ],
                     ),
+                    Visibility(
+                      visible: !_isValid,
+                      child: Row(
+                        children: <Widget>[
+                          SizedBox(
+                            width: 20.0,
+                          ),
+                          Icon(
+                            Icons.info_outline,
+                            color: Colors.red,
+                            size: 16.0,
+                          ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.5),
+                            child: Text(
+                              'Enter valid email or mobile number',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.center,
+                    //   children: <Widget>[
+                    //     Expanded(
+                    //       flex: 1,
+                    //       child: Container(),
+                    //     ),
+                    //     _isPhoneNumber
+                    //         ? Flexible(
+                    //             flex: 2,
+                    //             child: CountryCodePicker(
+                    //               key: _countryKey,
+                    //               enabled: _isFormInputEnabled,
+                    //               initialSelection: 'KE',
+                    //               builder: (country) {
+                    //                 return TextFormField(
+                    //                   controller: _countryCodeController,
+                    //                   onTap: () => _countryKey.currentState.showCountryCodePickerDialog(),
+                    //                   style: TextStyle(fontFamily: 'SegoeUI'),
+                    //                   enabled: _isFormInputEnabled,
+                    //                   readOnly: true,
+                    //                   showCursor: false,
+                    //                   decoration: InputDecoration(
+                    //                     labelText: 'Code',
+                    //                     floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    //                   ),
+                    //                 );
+                    //               },
+                    //               favorite: ['+254', 'KE'],
+                    //               showFlag: true,
+                    //               textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,*/ color: Theme.of(context).textSelectionHandleColor),
+                    //               showCountryOnly: false,
+                    //               searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                    //               showOnlyCountryWhenClosed: false,
+                    //               alignLeft: true,
+                    //               onChanged: (countryCode) {
+                    //                 setState(() {
+                    //                   _countryCode = countryCode;
+                    //                   _countryCodeController.text = countryCode.dialCode;
+                    //                   print("Code: " + countryCode.dialCode);
+                    //                 });
+                    //               },
+                    //             ),
+                    //           )
+                    //         : Container(),
+                    //     SizedBox(
+                    //       width: 5,
+                    //     ),
+                    //     Expanded(
+                    //       flex: 5,
+                    //       child: TextFormField(
+                    //         controller: _phoneController,
+                    //         style: TextStyle(fontFamily: 'SegoeUI'),
+                    //         enabled: _isFormInputEnabled,
+                    //         decoration: InputDecoration(
+                    //           floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    //           labelText: 'Phone Number or Email',
+                    //           labelStyle: TextStyle(fontFamily: 'SegoeUI'),
+                    //         ),
+                    //         validator: (value) {
+                    //           if (!CustomHelper.validIdentity(value.trim())) {
+                    //             return 'Enter valid phone or email';
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onSaved: (value) {
+                    //           _identity = value.trim();
+                    //         },
+                    //       ),
+                    //     ),
+                    //     Expanded(
+                    //       flex: 1,
+                    //       child: Container(),
+                    //     )
+                    //   ],
+                    // ),
                     SizedBox(
                       height: 16,
                     ),
