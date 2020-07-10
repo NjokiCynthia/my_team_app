@@ -265,6 +265,19 @@ class GroupContributionSummary {
   });
 }
 
+class BankLoans{
+  final String id;
+  final String description;
+  final double amount,balance;
+
+  BankLoans({
+    @required this.id,
+    @required this.description,
+    this.amount,
+    this.balance
+  });
+}
+
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
 
