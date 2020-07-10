@@ -1,5 +1,6 @@
-import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
+import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -11,10 +12,8 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:chamasoft/providers/groups.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
 
 import '../select-member.dart';
 
@@ -179,14 +178,14 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     _formData['individual_payments'] = _individualMemberContributions;
     try {
       await Provider.of<Groups>(context, listen: false).recordFinePayments(_formData);
-      FlutterToast.showToast( msg: "This is Center Short Toast",  
-          toastLength: Toast.LENGTH_SHORT,  
-          gravity: ToastGravity.CENTER,  
-          timeInSecForIosWeb: 1,  
-          backgroundColor: Colors.red,  
-          textColor: Colors.white,  
-          fontSize: 16.0  
-      );  
+//      FlutterToast.showToast( msg: "This is Center Short Toast",
+//          toastLength: Toast.LENGTH_SHORT,
+//          gravity: ToastGravity.CENTER,
+//          timeInSecForIosWeb: 1,
+//          backgroundColor: Colors.red,
+//          textColor: Colors.white,
+//          fontSize: 16.0
+//      );
       Navigator.of(context).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(

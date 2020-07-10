@@ -296,25 +296,14 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
     final auth = Provider.of<Auth>(context);
     roles = Provider.of<Groups>(context).getCurrentGroup().groupRoles;
     return Scaffold(
-      appBar: tertiaryPageAppbar(
+      appBar: secondaryPageAppbar(
           context: context,
           title: "Add Members Manually",
           action: () {
             Navigator.of(context).pop();
           },
           elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          trailingIcon: LineAwesomeIcons.check,
-          trailingAction: () async {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                });
-            await _submitMembers(context);
-          }),
+          leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,

@@ -1,7 +1,10 @@
+import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -13,20 +16,75 @@ class AddMemberDialog extends StatefulWidget {
 
 class _AddMemberDialogState extends State<AddMemberDialog> {
   final _formKey = GlobalKey<FormState>();
-  List<GroupRoles> roles = [];
-  List<GroupRoles> tempRoles = [];
   GroupRoles memberRole = GroupRoles(roleId: "0", roleName: "Member");
   String _firstName, _lastName;
   String _phoneNumber, _email;
+  bool _isValid = true;
+  FocusNode _focusNode;
+  bool _focused = false;
 
   CountryCode _countryCode = CountryCode.fromCode("KE");
-  final _countryCodeController = TextEditingController(text: "+254");
   final _phoneController = TextEditingController();
 
   BorderSide _customInputBorderSide = BorderSide(
     color: Colors.blueGrey,
     width: 1.0,
   );
+
+  void _submitMember() async {
+    _formKey.currentState.save();
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    bool value = await CustomHelper.validPhoneNumber(_phoneNumber, _countryCode);
+    if (!value) {
+      setState(() {
+        _isValid = false;
+      });
+    } else {
+      setState(() {
+        _isValid = true;
+      });
+    }
+
+    List<Item> item = [];
+    item.add(Item(value: _phoneNumber));
+    CustomContact customContact = CustomContact.simpleContact(
+        simpleContact: SimpleContact(firstName: _firstName, lastName: _lastName, phoneNumber: _countryCode.dialCode + _phoneNumber, email: _email),
+        role: memberRole);
+
+    print(customContact.simpleContact.firstName);
+    print(customContact.simpleContact.lastName);
+    print(customContact.simpleContact.email);
+    print(customContact.simpleContact.phoneNumber);
+  }
+
+  void _handleFocusChange() {
+    setState(() {
+      _focused = _focusNode.hasFocus;
+      if (!_focused) {
+        _customInputBorderSide = BorderSide(
+          color: (!_isValid) ? Colors.red : Colors.blueGrey,
+          width: 1.0,
+        );
+      } else {
+        _customInputBorderSide = BorderSide(
+          color: (!_isValid) ? Colors.red : Colors.blue,
+          width: 2.0,
+        );
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _focusNode = new FocusNode();
+    _focusNode.addListener(_handleFocusChange);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,9 +122,6 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                   return null;
                 },
               ),
-              SizedBox(
-                height: 10,
-              ),
               TextFormField(
                 keyboardType: TextInputType.text,
                 textCapitalization: TextCapitalization.words,
@@ -88,27 +143,16 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
               SizedBox(
                 height: 10,
               ),
-              TextFormField(
-                keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
-                    labelText: "Phone Number",
-                    labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                onChanged: (value) {
-                  _phoneNumber = value;
-                },
-                validator: (value) {},
-              ),
-              SizedBox(
-                height: 10,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  customTitle(text: "Phone Number", textAlign: TextAlign.start, fontSize: 11, color: Theme.of(context).textSelectionHandleColor),
+                ],
               ),
               Row(
                 children: <Widget>[
                   Expanded(
                     child: Container(
-                      margin: EdgeInsets.fromLTRB(20.0, 24.0, 20.0, 8.0),
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                       decoration: BoxDecoration(
                         border: Border(
                           bottom: _customInputBorderSide,
@@ -118,25 +162,28 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              CountryCodePicker(
-                                // key: _countryKey,
-                                initialSelection: 'KE',
-                                favorite: ['KE', 'UG', 'TZ', 'RW'],
-                                showCountryOnly: false,
-                                showOnlyCountryWhenClosed: false,
-                                alignLeft: false,
-                                flagWidth: 28.0,
-                                textStyle: TextStyle(
-                                  fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                              Container(
+                                height: 34,
+                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                child: CountryCodePicker(
+                                  // key: _countryKey,
+                                  initialSelection: 'KE',
+                                  favorite: ['KE', 'UG', 'TZ', 'RW'],
+                                  showCountryOnly: false,
+                                  showOnlyCountryWhenClosed: false,
+                                  alignLeft: false,
+                                  flagWidth: 28.0,
+                                  textStyle: TextStyle(
+                                    fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                  ),
+                                  searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                                  onChanged: (countryCode) {
+                                    setState(() {
+                                      _countryCode = countryCode;
+                                      print("Code: " + countryCode.dialCode);
+                                    });
+                                  },
                                 ),
-                                searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
-                                onChanged: (countryCode) {
-                                  setState(() {
-                                    _countryCode = countryCode;
-                                    _countryCodeController.text = countryCode.dialCode;
-                                    print("Code: " + countryCode.dialCode);
-                                  });
-                                },
                               ),
                               SizedBox(
                                 width: 10,
@@ -144,21 +191,26 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                             ],
                           ),
                           Expanded(
-                            child: TextFormField(
-                              controller: _phoneController,
-                              decoration: InputDecoration(
-                                border: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                errorBorder: InputBorder.none,
-                                disabledBorder: InputBorder.none,
-                                hintText: 'Phone Number',
+                            child: Container(
+                              height: 34,
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 3.0),
+                              child: TextFormField(
+                                controller: _phoneController,
+                                decoration: InputDecoration(
+                                  border: InputBorder.none,
+                                  isDense: true,
+                                  focusedBorder: InputBorder.none,
+                                  enabledBorder: InputBorder.none,
+                                  errorBorder: InputBorder.none,
+                                  disabledBorder: InputBorder.none,
+                                  hintText: '',
+                                ),
+                                focusNode: _focusNode,
+                                style: TextStyle(fontFamily: 'SegoeUI', fontSize: 16),
+                                onSaved: (value) {
+                                  _phoneNumber = value.trim();
+                                },
                               ),
-                              //focusNode: _focusNode,
-                              style: TextStyle(fontFamily: 'SegoeUI'),
-                              onSaved: (value) {
-                                _phoneNumber = value.trim();
-                              },
                             ),
                           )
                         ],
@@ -166,6 +218,26 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                     ),
                   ),
                 ],
+              ),
+              Visibility(
+                visible: !_isValid,
+                child: Row(
+                  children: <Widget>[
+                    SizedBox(
+                      width: 20.0,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.5),
+                      child: Text(
+                        'Enter valid phone number',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 12.0,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
               TextFormField(
                 keyboardType: TextInputType.emailAddress,
@@ -187,7 +259,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
               SizedBox(
                 height: 20,
               ),
-              defaultButton(context: context, text: "Add Member", onPressed: () {})
+              defaultButton(context: context, text: "Add Member", onPressed: () => _submitMember())
             ],
           ),
         ),
