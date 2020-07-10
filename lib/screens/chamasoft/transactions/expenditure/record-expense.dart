@@ -97,8 +97,9 @@ class RecordExpenseState extends State<RecordExpense> {
       _isFormInputEnabled = false;
     });
     _formKey.currentState.save();
-    _formData['withdrawal_date'] = expenseDate.toString();
+    _formData['expense_date'] = expenseDate.toString();
     _formData["expense_category_id"] = expenseCategoryId;
+    _formData["withdrawal_method"] = withdrawalMethod;
     _formData["amount"] = amount;
     _formData["account_id"] = accountId;
     _formData["description"] = description;
