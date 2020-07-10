@@ -315,6 +315,8 @@ class Groups with ChangeNotifier {
   GroupRolesStatusAndCurrentMemberStatus
       _groupRolesStatusAndCurrentMemberStatus;
 
+  List<BankLoans> _bankLoans = [];
+
   String _userId;
   String _identity;
   List<Group> _groups = [];
@@ -920,8 +922,8 @@ class Groups with ChangeNotifier {
                 memberId: object['member_id'].toString(),
                 memberName: object['name'].toString(),
                 paidAmount: amountpaid,
-                balanceAmount: double.tryParse(object['arrears'].toString())) ??
-            0.0;
+                balanceAmount: double.tryParse(object['arrears'].toString())??0.0,
+        );
         contributionSummary.add(newData);
         total += amountpaid;
       }
@@ -941,14 +943,31 @@ class Groups with ChangeNotifier {
                 memberId: object['member_id'].toString(),
                 memberName: object['name'].toString(),
                 paidAmount: amountpaid,
-                balanceAmount: double.tryParse(object['arrears'].toString())) ??
-            0.0;
+                balanceAmount: double.tryParse(object['arrears'].toString())??0.0,
+        );
         finesSummary.add(newData);
         total += amountpaid;
       }
     }
     _totalGroupFinesSummary = total;
     _groupFinesSummary = finesSummary;
+    notifyListeners();
+  }
+
+  void addBankLoans(List<dynamic> bankLoansList){
+    final List<BankLoans> bankLoansSummary = [];
+    if (bankLoansList.length > 0) {
+      for (var object in bankLoansList) {
+        final newData = BankLoans(
+                id: object['id'].toString(),
+                description: object['description'].toString(),
+                amount: double.tryParse(object['amount'].toString()) ?? 0.0,
+                balance: double.tryParse(object['balance'].toString()) ??0.0,
+        );
+        bankLoansSummary.add(newData);
+      }
+    }
+    _bankLoans = bankLoansSummary;
     notifyListeners();
   }
 
