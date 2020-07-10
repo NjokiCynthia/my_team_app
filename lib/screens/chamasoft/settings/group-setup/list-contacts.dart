@@ -16,18 +16,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 
 class ListContacts extends StatefulWidget {
-  final String reloadLabel = 'Reload!';
-  final String fireLabel = 'Fire in the hole!';
-  final Color floatingButtonColor = Colors.red;
-  final IconData reloadIcon = Icons.refresh;
-  final IconData fireIcon = Icons.filter_center_focus;
-
+  static const namedRoute = "/list-contacts";
   @override
-  _ListContactsState createState() => _ListContactsState(
-        floatingButtonLabel: this.fireLabel,
-        icon: this.fireIcon,
-        floatingButtonColor: this.floatingButtonColor,
-      );
+  _ListContactsState createState() => _ListContactsState();
 }
 
 class _ListContactsState extends State<ListContacts> {
