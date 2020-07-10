@@ -225,7 +225,14 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                       multilineTextField(
                           context: context,
                           maxLines: 5,
-                          labelText: 'Short Description (Optional)',
+                          enabled: _isFormInputEnabled,
+                          labelText: 'Short Description',
+                          validator: (value){
+                             if(value==null||value.toString().isEmpty){
+                              return "Field is required";
+                            }
+                            return null;
+                          },
                           onChanged: (value) {
                             setState(() {
                               description = value;
