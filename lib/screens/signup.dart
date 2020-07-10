@@ -146,7 +146,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       validator: (value) {
                         if (value.trim() == '' || value.trim() == null) {
-                          return 'Enter a valid last name';
+                          return 'Enter a valid first name';
                         }
                         return null;
                       },

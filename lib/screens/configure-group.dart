@@ -1,16 +1,19 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:provider/provider.dart';
+
+import 'chamasoft/settings/group-setup/list-contacts.dart';
 
 Map<String, String> roles = {
   "1": "Chairperson",
@@ -52,6 +55,22 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
     }
   }
 
+  Future<void> _getUnAssignedGroupRoles(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchUnAssignedGroupRoles();
+      Navigator.of(context).pop();
+      Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
+    } on CustomException catch (error) {
+      Navigator.of(context).pop();
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getUnAssignedGroupRoles(context);
+          });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -61,14 +80,28 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
   }
 
   _showPopup() => PopupMenuButton<int>(
+        onSelected: (position) async {
+          if (position == 1) {
+            Navigator.of(context).pushNamed(ListContacts.namedRoute);
+          } else {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                });
+            _getUnAssignedGroupRoles(context);
+          }
+        },
         itemBuilder: (context) => [
           PopupMenuItem(
             value: 1,
-            child: customTitle(text: "Select from Contacts", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+            child: customTitle(text: "SELECT FROM CONTACTS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
           ),
           PopupMenuItem(
             value: 2,
-            child: customTitle(text: "Add Manually", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+            child: customTitle(text: "ADD MANUALLY", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
           ),
         ],
         child: ButtonTheme(
@@ -273,24 +306,6 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                   );
                 },
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: () {
-                  int currentIndex = DefaultTabController.of(context).index;
-                  print("Current Index $currentIndex");
-                  print(currentIndex);
-                  if (currentIndex == 0) {
-                    addMemberDialog(context: context);
-//                    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-//                      return ListContacts();
-//                    }));
-                  }
-                },
-                backgroundColor: primaryColor,
-                child: Icon(
-                  Icons.add,
-                ),
-              ),
-              floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             );
           },
         ));

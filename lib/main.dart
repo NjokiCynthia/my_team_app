@@ -1,4 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
 import 'package:chamasoft/screens/configure-group.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/intro.dart';
@@ -74,6 +76,8 @@ class _MyAppState extends State<MyApp> {
             SignUp.namedRoute: (ctx) => SignUp(),
             CreateGroup.namedRoute: (ctx) => CreateGroup(),
             ConfigureGroup.namedRoute: (ctx) => ConfigureGroup(),
+            ListContacts.namedRoute: (ctx) => ListContacts(),
+            AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
           },
           onGenerateRoute: (settings) {
