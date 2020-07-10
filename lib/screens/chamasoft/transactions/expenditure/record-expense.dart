@@ -81,7 +81,7 @@ class RecordExpenseState extends State<RecordExpense> {
         }
       );
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true); 
+    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true,exp:true); 
     setState(() {
       _isInit = false;
     });

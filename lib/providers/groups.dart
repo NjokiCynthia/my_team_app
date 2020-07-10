@@ -182,6 +182,22 @@ class IncomeCategories {
   });
 }
 
+class ExpenseCategories {
+  @required
+  final String id;
+  @required
+  final String name;
+  final String description;
+  final bool ishidden;
+
+  ExpenseCategories({
+    this.id,
+    this.name,
+    this.description,
+    this.ishidden,
+  });
+}
+
 class LoanType {
   final String id;
   final String name;
@@ -257,6 +273,7 @@ class Groups with ChangeNotifier {
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
   List<IncomeCategories> _incomeCategories = [];
+  List<ExpenseCategories> _expenseCategories = [];
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
   List<Depositor> _depositors = [];
@@ -661,6 +678,21 @@ class Groups with ChangeNotifier {
           ishidden: false,
         );
         _incomeCategories.add(income);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addExpenseCategories(List<dynamic> expenseCategories) {
+    if (expenseCategories.length > 0) {
+      for (var expenseCategoryJson in expenseCategories) {
+        final expense = ExpenseCategories(
+          id: expenseCategoryJson['id'].toString(),
+          name: expenseCategoryJson['name'].toString(),
+          description: "",
+          ishidden: false,
+        );
+        _expenseCategories.add(expense);
       }
     }
     notifyListeners();
@@ -1178,6 +1210,31 @@ class Groups with ChangeNotifier {
         final groupFineTypes =
             response['fine_category_options'] as List<dynamic>;
         addFineTypes(groupFineTypes);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchExpenseCategories() async {
+    const url = EndpointUrl.GET_GROUP_EXPENSE_CATEGORIES;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _expenseCategories = [];
+        final expenseCategoriesTypes =
+            response['expense_categories'] as List<dynamic>;
+        addExpenseCategories(expenseCategoriesTypes);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -2381,13 +2438,15 @@ class Groups with ChangeNotifier {
     bool incomeCats = false,
     bool depositor = false,
     bool fineOptions = false,
+    bool exp = false,
   }) async {
     List<NamesListItem> contributionOptions = [],
         accountOptions = [],
         memberOptions = [],
         finesOptions = [],
         depositorOptions = [],
-        incomeCategoryOptions = [];
+        incomeCategoryOptions = [],
+        expenseCategories= [];
 
     if (contr) {
       if (_contributions.length == 0) {
@@ -2450,6 +2509,13 @@ class Groups with ChangeNotifier {
           .toList();
     }
 
+    if(exp){
+      if(_expenseCategories.length==0){
+        await fetchExpenseCategories();
+      }
+      _expenseCategories.map((expense) => expenseCategories.add(NamesListItem(id:int.tryParse(expense.id),name:expense.name))).toList();
+    }
+
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
@@ -2457,6 +2523,7 @@ class Groups with ChangeNotifier {
       "finesOptions": finesOptions,
       "incomeCategoryOptions": incomeCategoryOptions,
       "depositorOptions": depositorOptions,
+      'expenseCategories' : expenseCategories,
     };
     return result;
   }
@@ -2581,7 +2648,7 @@ class Groups with ChangeNotifier {
 
   Future<void> recordExpensePayment(Map<String, dynamic> formData)async{
     try {
-      const url = EndpointUrl.RECORD_EXPENSES;
+      const url = EndpointUrl.NEW_RECORD_EXPENSES;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
