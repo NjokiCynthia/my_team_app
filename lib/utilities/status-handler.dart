@@ -60,7 +60,7 @@ class StatusHandler {
 
   void logout(BuildContext context) {
     Provider.of<Auth>(context, listen: false).logout();
-    Provider.of<Groups>(context, listen: false).switchGroupValuesToDefault();
+    Provider.of<Groups>(context, listen: false).switchGroupValuesToDefault(removeGroups:true);
     Navigator.of(context).pushNamedAndRemoveUntil(Login.namedRoute, ModalRoute.withName("/"));
   }
 }
