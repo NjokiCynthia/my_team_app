@@ -11,6 +11,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -32,23 +33,19 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
   List<CustomContact> selectedContacts = [];
   Map<String, int> roleStatus = {};
   bool addedCurrentUser = false;
-  final _formKey = GlobalKey<FormState>();
+  bool _isInit = true;
+  GroupRolesStatusAndCurrentMemberStatus _rolesStatusAndCurrentMemberStatus;
 
   Future<void> _submitMembers(BuildContext context) async {
     List<Map<String, String>> members = [];
     for (CustomContact customContact in selectedContacts) {
       Map<String, String> map = {};
-      var phoneList = customContact.contact.phones.toList();
 
-      String email = "";
-      String phone = phoneList[0].value;
-      if (phone.contains("@")) {
-        email = phone;
-        phone = "";
-      }
+      String email = customContact.simpleContact.email;
+      String phone = customContact.simpleContact.phoneNumber;
 
-      String firstName = customContact.contact.givenName;
-      String lastName = customContact.contact.familyName;
+      String firstName = customContact.simpleContact.firstName;
+      String lastName = customContact.simpleContact.lastName;
 
       String roleId = customContact.role.roleId;
 
@@ -77,8 +74,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                 child: subtitle1(text: "Okay", color: primaryColor),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  int count = 0;
-                  Navigator.of(context).popUntil((_) => count++ >= 2);
+                  Navigator.of(context).pop(true);
                 },
               )
             ]),
@@ -94,113 +90,33 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
     }
   }
 
-  void addMember(BuildContext context) {
-    var width = MediaQuery.of(context).size.width;
-    String firstName = "";
-    String lastName = "";
-    String phoneNumber = "";
-    String email = "";
-    showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (ctx) => AlertDialog(
-              title: heading2(textAlign: TextAlign.start, text: "Add Member", color: Theme.of(context).textSelectionHandleColor),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              content: Builder(
-                builder: (context) {
-                  //var height = MediaQuery.of(context).size.height;
-                  return SingleChildScrollView(
-                    child: Container(
-                      width: width * 3 / 4,
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            TextFormField(
-                              keyboardType: TextInputType.text,
-                              textCapitalization: TextCapitalization.words,
-                              decoration: InputDecoration(
-                                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 2.0)),
-                                  labelText: "First Name",
-                                  labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                              onChanged: (value) {
-                                firstName = value;
-                              },
-                              validator: (value) {
-                                if (value.trim() == '' || value.trim() == null) {
-                                  return 'Enter a valid first name';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              keyboardType: TextInputType.text,
-                              textCapitalization: TextCapitalization.words,
-                              decoration: InputDecoration(
-                                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 2.0)),
-                                  labelText: "Last Name",
-                                  labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                              onChanged: (value) {
-                                firstName = value;
-                              },
-                              validator: (value) {
-                                if (value.trim() == '' || value.trim() == null) {
-                                  return 'Enter a valid last name';
-                                }
-                                return null;
-                              },
-                            ),
-                            TextFormField(
-                              keyboardType: TextInputType.phone,
-                              decoration: InputDecoration(
-                                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 2.0)),
-                                  labelText: "Phone Number",
-                                  labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                            ),
-                            TextFormField(
-                              keyboardType: TextInputType.emailAddress,
-                              decoration: InputDecoration(
-                                  floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                  enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 2.0)),
-                                  labelText: "Email Address",
-                                  labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                            ),
-                            SizedBox(
-                              height: 4,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              actions: <Widget>[
-                negativeActionDialogButton(
-                    text: "Cancel",
-                    color: Theme.of(context).textSelectionHandleColor,
-                    action: () {
-                      Navigator.of(context).pop();
-                    }),
-                positiveActionDialogButton(
-                    text: "Add",
-                    color: primaryColor,
-                    action: () {
-                      if (_formKey.currentState.validate()) {
-                        print("Valid stuff");
-                      } else {
-                        print("You shall not pass");
-                      }
-                    }),
-                SizedBox(
-                  width: 10,
-                ),
-              ],
-            ));
+  Future<void> _getUnAssignedGroupRoles(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchUnAssignedGroupRoles();
+      setState(() {
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    } on CustomException catch (error) {
+      Navigator.of(context, rootNavigator: true).pop();
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getUnAssignedGroupRoles(context);
+          });
+    }
   }
 
   void _updateRoleStatus(GroupRoles currentRole, GroupRoles newRole) {
@@ -294,16 +210,55 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
+    _rolesStatusAndCurrentMemberStatus = Provider.of<Groups>(context).getGroupRolesAndCurrentMemberStatus;
     roles = Provider.of<Groups>(context).getCurrentGroup().groupRoles;
+
+    if (_rolesStatusAndCurrentMemberStatus != null) {
+      roleStatus = _rolesStatusAndCurrentMemberStatus.roleStatus;
+      if (!addedCurrentUser) {
+        if (_rolesStatusAndCurrentMemberStatus.currentMemberStatus == 0) {
+          addedCurrentUser = true;
+          List<Item> item = [];
+          item.add(Item(value: auth.userIdentity));
+          CustomContact customContact = CustomContact(
+              contact: Contact(displayName: auth.userName, givenName: auth.firstNameOnly, familyName: auth.lastNameOnly, phones: item),
+              role: memberRole);
+          selectedContacts.insert(0, customContact);
+        }
+      }
+      tempRoles = [];
+      tempRoles.add(memberRole);
+      _cleanRolesList();
+    } else {
+      if (_isInit) {
+        _getUnAssignedGroupRoles(context);
+      }
+    }
+
+//    selectedContacts.add(CustomContact.simpleContact(
+//        simpleContact: SimpleContact(
+//            name: "The" + " " + "Shrike", firstName: "The", lastName: "Shrike", phoneNumber: "+254722000000", email: "dev.kapkei@gmail.com"),
+//        role: memberRole));
     return Scaffold(
-      appBar: secondaryPageAppbar(
+      appBar: tertiaryPageAppbar(
           context: context,
           title: "Add Members Manually",
           action: () {
             Navigator.of(context).pop();
           },
           elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.arrow_left),
+          leadingIcon: LineAwesomeIcons.arrow_left,
+          trailingIcon: LineAwesomeIcons.check,
+          trailingAction: () async {
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                });
+            await _submitMembers(context);
+          }),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
@@ -317,11 +272,19 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                 Container(
                   margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
                   child: FlatButton(
-                    onPressed: () {
+                    onPressed: () async {
                       //addMember(context);
-                      Navigator.of(context).push(new MaterialPageRoute<Null>(builder: (BuildContext context) {
+                      CustomContact contact = await Navigator.of(context).push(new MaterialPageRoute<CustomContact>(builder: (BuildContext context) {
                         return AddMemberDialog();
                       }));
+
+                      if (contact != null) {
+                        setState(() {
+                          selectedContacts.add(contact);
+                        });
+                      } else {
+                        print("Contact is null");
+                      }
                     },
                     padding: EdgeInsets.only(left: 4, right: 4),
                     shape: RoundedRectangleBorder(
@@ -345,23 +308,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
               ],
             ),
             Expanded(
-              child: Consumer<Groups>(builder: (context, data, child) {
-                roleStatus = data.getGroupRolesAndCurrentMemberStatus.roleStatus;
-//                if (!addedCurrentUser) {
-//                  if (data.getGroupRolesAndCurrentMemberStatus.currentMemberStatus == 0) {
-//                    addedCurrentUser = true;
-//                    List<Item> item = [];
-//                    item.add(Item(value: auth.userIdentity));
-//                    CustomContact customContact = CustomContact(
-//                        contact: Contact(displayName: auth.userName, givenName: auth.firstNameOnly, familyName: auth.lastNameOnly, phones: item),
-//                        role: memberRole);
-//                    selectedContacts.insert(0, customContact);
-//                  }
-//                }
-                tempRoles = [];
-                tempRoles.add(memberRole);
-                _cleanRolesList();
-                return selectedContacts.length > 0
+                child: selectedContacts.length > 0
                     ? ListView.separated(
                         separatorBuilder: (BuildContext context, int index) => Divider(
                               color: Theme.of(context).dividerColor,
@@ -369,8 +316,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                         itemCount: selectedContacts.length,
                         itemBuilder: (BuildContext context, int index) {
                           CustomContact customContact = selectedContacts[index];
-                          String displayName = customContact.contact.displayName;
-                          var phoneList = customContact.contact.phones.toList();
+                          String displayName = customContact.simpleContact.name;
                           return Container(
                             padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
                             child: Row(
@@ -383,27 +329,44 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                   width: 10,
                                 ),
                                 Expanded(
-                                  flex: 3,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      subtitle1(text: displayName ?? "", textAlign: TextAlign.start),
-                                      phoneList.length >= 1 && phoneList[0]?.value != null
-                                          ? subtitle1(text: phoneList[0].value, textAlign: TextAlign.start)
-                                          : Text(''),
-                                    ],
-                                  ),
-                                ),
+                                    flex: 2,
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        subtitle1(text: displayName, textAlign: TextAlign.start),
+                                        subtitle1(text: customContact.simpleContact.phoneNumber, textAlign: TextAlign.start)
+                                      ],
+                                    )),
                                 Expanded(
-                                  flex: 2,
-                                  child: smallBadgeButton(
-                                    backgroundColor: Colors.blueGrey.withOpacity(0.2),
-                                    textColor: Colors.blueGrey,
-                                    text: customContact.role.roleName,
-                                    // == null ? "Member" : customContact.role.roleName,
-                                    action: () => _showGroupRoles(context, index),
-                                    buttonHeight: 24.0,
-                                    textSize: 12.0,
+                                  flex: 1,
+                                  child: FittedBox(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        smallBadgeButton(
+                                          backgroundColor: Colors.blueGrey.withOpacity(0.2),
+                                          textColor: Colors.blueGrey,
+                                          text: customContact.role.roleName,
+                                          action: () => _showGroupRoles(context, index),
+                                          buttonHeight: 24.0,
+                                          textSize: 12.0,
+                                        ),
+                                        SizedBox(width: 10.0),
+                                        screenActionButton(
+                                          icon: LineAwesomeIcons.close,
+                                          backgroundColor: Colors.red.withOpacity(0.1),
+                                          textColor: Colors.red,
+                                          action: () {
+                                            setState(() {
+                                              _updateRoleStatus(selectedContacts[index].role, memberRole);
+                                              selectedContacts.removeAt(index);
+                                            });
+                                          },
+                                          buttonSize: 30.0,
+                                          iconSize: 16.0,
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -416,9 +379,10 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                           child: customTitleWithWrap(
                               text: "Start adding members by clicking on the button above", color: Theme.of(context).textSelectionHandleColor),
                         ),
-                      );
-              }),
-            ),
+                      )),
+            SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),

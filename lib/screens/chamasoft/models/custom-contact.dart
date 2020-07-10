@@ -12,8 +12,8 @@ class CustomContact {
 }
 
 class SimpleContact {
-  String firstName, lastName;
+  String name, firstName, lastName;
   String phoneNumber, email;
 
-  SimpleContact({this.firstName, this.lastName, this.phoneNumber, this.email});
+  SimpleContact({this.name, this.firstName, this.lastName, this.phoneNumber, this.email});
 }

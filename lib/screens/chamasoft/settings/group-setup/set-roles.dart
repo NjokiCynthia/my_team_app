@@ -33,6 +33,8 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
   List<CustomContact> selectedContacts = [];
   Map<String, int> roleStatus = {};
   bool addedCurrentUser = false;
+  bool _isInit = true;
+  GroupRolesStatusAndCurrentMemberStatus _rolesStatusAndCurrentMemberStatus;
 
   Future<void> _submitMembers(BuildContext context) async {
     List<Map<String, String>> members = [];
@@ -177,6 +179,35 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
             ));
   }
 
+  Future<void> _getUnAssignedGroupRoles(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchUnAssignedGroupRoles();
+      setState(() {
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    } on CustomException catch (error) {
+      Navigator.of(context, rootNavigator: true).pop();
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getUnAssignedGroupRoles(context);
+          });
+    }
+  }
+
   @override
   void initState() {
     selectedContacts = widget.initialSelectedContacts;
@@ -189,7 +220,31 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
+    _rolesStatusAndCurrentMemberStatus = Provider.of<Groups>(context).getGroupRolesAndCurrentMemberStatus;
     roles = Provider.of<Groups>(context).getCurrentGroup().groupRoles;
+
+    if (_rolesStatusAndCurrentMemberStatus != null) {
+      roleStatus = _rolesStatusAndCurrentMemberStatus.roleStatus;
+      if (!addedCurrentUser) {
+        if (_rolesStatusAndCurrentMemberStatus.currentMemberStatus == 0) {
+          addedCurrentUser = true;
+          List<Item> item = [];
+          item.add(Item(value: auth.userIdentity));
+          CustomContact customContact = CustomContact(
+              contact: Contact(displayName: auth.userName, givenName: auth.firstNameOnly, familyName: auth.lastNameOnly, phones: item),
+              role: memberRole);
+          selectedContacts.insert(0, customContact);
+        }
+      }
+      tempRoles = [];
+      tempRoles.add(memberRole);
+      _cleanRolesList();
+    } else {
+      if (_isInit) {
+        _getUnAssignedGroupRoles(context);
+      }
+    }
+
     return Scaffold(
       appBar: tertiaryPageAppbar(
           context: context,
@@ -215,71 +270,54 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
         width: double.infinity,
         height: double.infinity,
         margin: EdgeInsets.only(top: 8.0),
-        child: Consumer<Groups>(builder: (context, data, child) {
-          roleStatus = data.getGroupRolesAndCurrentMemberStatus.roleStatus;
-          if (!addedCurrentUser) {
-            if (data.getGroupRolesAndCurrentMemberStatus.currentMemberStatus == 0) {
-              addedCurrentUser = true;
-              List<Item> item = [];
-              item.add(Item(value: auth.userIdentity));
-              CustomContact customContact = CustomContact(
-                  contact: Contact(displayName: auth.userName, givenName: auth.firstNameOnly, familyName: auth.lastNameOnly, phones: item),
-                  role: memberRole);
-              selectedContacts.insert(0, customContact);
-            }
-          }
-          tempRoles = [];
-          tempRoles.add(memberRole);
-          _cleanRolesList();
-          return ListView.separated(
-              separatorBuilder: (BuildContext context, int index) => Divider(
-                    color: Theme.of(context).dividerColor,
-                  ),
-              itemCount: selectedContacts.length,
-              itemBuilder: (BuildContext context, int index) {
-                CustomContact customContact = selectedContacts[index];
-                String displayName = customContact.contact.displayName;
-                var phoneList = customContact.contact.phones.toList();
-                return Container(
-                  padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
-                  child: Row(
-                    children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                        child: Text(displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24)),
+        child: ListView.separated(
+            separatorBuilder: (BuildContext context, int index) => Divider(
+                  color: Theme.of(context).dividerColor,
+                ),
+            itemCount: selectedContacts.length,
+            itemBuilder: (BuildContext context, int index) {
+              CustomContact customContact = selectedContacts[index];
+              String displayName = customContact.contact.displayName;
+              var phoneList = customContact.contact.phones.toList();
+              return Container(
+                padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+                child: Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                      child: Text(displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24)),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle1(text: displayName ?? "", textAlign: TextAlign.start),
+                          phoneList.length >= 1 && phoneList[0]?.value != null
+                              ? subtitle1(text: phoneList[0].value, textAlign: TextAlign.start)
+                              : Text(''),
+                        ],
                       ),
-                      SizedBox(
-                        width: 10,
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: smallBadgeButton(
+                        backgroundColor: Colors.blueGrey.withOpacity(0.2),
+                        textColor: Colors.blueGrey,
+                        text: customContact.role.roleName,
+                        // == null ? "Member" : customContact.role.roleName,
+                        action: () => _showGroupRoles(context, index),
+                        buttonHeight: 24.0,
+                        textSize: 12.0,
                       ),
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            subtitle1(text: displayName ?? "", textAlign: TextAlign.start),
-                            phoneList.length >= 1 && phoneList[0]?.value != null
-                                ? subtitle1(text: phoneList[0].value, textAlign: TextAlign.start)
-                                : Text(''),
-                          ],
-                        ),
-                      ),
-                      Expanded(
-                        flex: 2,
-                        child: smallBadgeButton(
-                          backgroundColor: Colors.blueGrey.withOpacity(0.2),
-                          textColor: Colors.blueGrey,
-                          text: customContact.role.roleName,
-                          // == null ? "Member" : customContact.role.roleName,
-                          action: () => _showGroupRoles(context, index),
-                          buttonHeight: 24.0,
-                          textSize: 12.0,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              });
-        }),
+                    ),
+                  ],
+                ),
+              );
+            }),
       ),
     );
   }

@@ -3,7 +3,6 @@ import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -55,22 +54,6 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
     }
   }
 
-  Future<void> _getUnAssignedGroupRoles(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchUnAssignedGroupRoles();
-      Navigator.of(context).pop();
-      Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
-    } on CustomException catch (error) {
-      Navigator.of(context).pop();
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _getUnAssignedGroupRoles(context);
-          });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -84,14 +67,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
           if (position == 1) {
             Navigator.of(context).pushNamed(ListContacts.namedRoute);
           } else {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                });
-            _getUnAssignedGroupRoles(context);
+            Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
           }
         },
         itemBuilder: (context) => [

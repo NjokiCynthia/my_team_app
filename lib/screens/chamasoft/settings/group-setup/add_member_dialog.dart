@@ -51,13 +51,15 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
     List<Item> item = [];
     item.add(Item(value: _phoneNumber));
     CustomContact customContact = CustomContact.simpleContact(
-        simpleContact: SimpleContact(firstName: _firstName, lastName: _lastName, phoneNumber: _countryCode.dialCode + _phoneNumber, email: _email),
+        simpleContact: SimpleContact(
+            name: _firstName + " " + _lastName,
+            firstName: _firstName,
+            lastName: _lastName,
+            phoneNumber: _countryCode.dialCode + _phoneNumber,
+            email: _email),
         role: memberRole);
 
-    print(customContact.simpleContact.firstName);
-    print(customContact.simpleContact.lastName);
-    print(customContact.simpleContact.email);
-    print(customContact.simpleContact.phoneNumber);
+    Navigator.of(context).pop(customContact);
   }
 
   void _handleFocusChange() {

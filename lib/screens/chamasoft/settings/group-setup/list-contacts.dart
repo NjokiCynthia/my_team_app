@@ -1,19 +1,15 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-roles.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:provider/provider.dart';
 
 class ListContacts extends StatefulWidget {
   static const namedRoute = "/list-contacts";
@@ -56,25 +52,6 @@ class _ListContactsState extends State<ListContacts> {
     });
   }
 
-  Future<void> _getUnAssignedGroupRoles(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchUnAssignedGroupRoles();
-      Navigator.of(context).pop();
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => SetMemberRoles(
-                initialSelectedContacts: _selectedContacts.toList(),
-              )));
-    } on CustomException catch (error) {
-      Navigator.of(context).pop();
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _getUnAssignedGroupRoles(context);
-          });
-    }
-  }
-
   @override
   void initState() {
     // TODO: implement initState
@@ -107,16 +84,12 @@ class _ListContactsState extends State<ListContacts> {
           leadingIcon: LineAwesomeIcons.close,
           title: "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,
-          trailingAction: () async {
+          trailingAction: () {
             if (_selectedContacts.length > 0) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  });
-              await _getUnAssignedGroupRoles(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => SetMemberRoles(
+                        initialSelectedContacts: _selectedContacts.toList(),
+                      )));
             }
           }),
       backgroundColor: Theme.of(context).backgroundColor,
