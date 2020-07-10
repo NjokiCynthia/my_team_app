@@ -100,8 +100,9 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
       _isFormInputEnabled = false;
     });
     _formKey.currentState.save();
-    _formData['withdrawal_date'] = refundDate.toString();
+    _formData['refund_date'] = refundDate.toString();
     _formData["contribution_id"] = contributionId;
+    _formData["refund_method"] = withdrawalMethod;
     _formData["member_id"] = groupMemberId;
     _formData["amount"] = amount;
     _formData["account_id"] = accountId;
@@ -242,6 +243,7 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       ),
                       amountTextInputField(
                           context: context,
+                          enabled: _isFormInputEnabled,
                           labelText: 'Enter Amount refunded',
                           validator: (value){
                             if(value.toString().isEmpty || value==null){

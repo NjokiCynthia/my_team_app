@@ -81,7 +81,7 @@ class RecordExpenseState extends State<RecordExpense> {
         }
       );
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true); 
+    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true,exp:true); 
     setState(() {
       _isInit = false;
     });
@@ -97,8 +97,9 @@ class RecordExpenseState extends State<RecordExpense> {
       _isFormInputEnabled = false;
     });
     _formKey.currentState.save();
-    _formData['withdrawal_date'] = expenseDate.toString();
+    _formData['expense_date'] = expenseDate.toString();
     _formData["expense_category_id"] = expenseCategoryId;
+    _formData["withdrawal_method"] = withdrawalMethod;
     _formData["amount"] = amount;
     _formData["account_id"] = accountId;
     _formData["description"] = description;

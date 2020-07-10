@@ -60,6 +60,7 @@ class EndpointUrl {
   static const String RECORD_CONTRIBUTION_REFUND = CustomHelper.baseUrl + "/mobile/withdrawals/record_contribution_refund";
   static const String RECORD_FUNDS_TRANSFER = CustomHelper.baseUrl + "/mobile/withdrawals/record_funds_transfer";
   static const String RECORD_EXPENSES = CustomHelper.baseUrl + "/mobile/withdrawals/record_expenses";
+  static const String NEW_RECORD_EXPENSES = CustomHelper.baseUrl + "/mobile/withdrawals/new_record_expenses";
   static const String FINE_MEMBERS = CustomHelper.baseUrl + "/mobile/fines/fine_members";
   static const String RECORD_CONTRIBUTION_TRANSFER = CustomHelper.baseUrl + "/mobile/deposits/record_contribution_transfer";
 

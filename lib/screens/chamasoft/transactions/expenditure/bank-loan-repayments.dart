@@ -79,7 +79,7 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
         }
       );
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true); 
+    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true,bankLoans: true); 
     setState(() {
       _isInit = false;
     });
@@ -95,14 +95,15 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
       _isFormInputEnabled = false;
     });
     _formKey.currentState.save();
-    _formData['withdrawal_date'] = withdrawalDate.toString();
+    _formData['repayment_date'] = withdrawalDate.toString();
     _formData["bank_loan_id"] = bankLoanId;
     _formData["amount"] = amount;
+    _formData["repayment_method"] = withdrawalMethod;
     _formData["account_id"] = accountId;
     _formData["description"] = description;
     _formData["request_id"] = requestId;
     try{
-      await Provider.of<Groups>(context).recordBankLoanRepayment(_formData);
+      await Provider.of<Groups>(context,listen: false).recordBankLoanRepayment(_formData);
       Navigator.of(context).pop();
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -224,7 +225,14 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                       multilineTextField(
                           context: context,
                           maxLines: 5,
-                          labelText: 'Short Description (Optional)',
+                          enabled: _isFormInputEnabled,
+                          labelText: 'Short Description',
+                          validator: (value){
+                             if(value==null||value.toString().isEmpty){
+                              return "Field is required";
+                            }
+                            return null;
+                          },
                           onChanged: (value) {
                             setState(() {
                               description = value;

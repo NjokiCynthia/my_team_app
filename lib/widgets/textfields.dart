@@ -109,12 +109,16 @@ Widget multilineTextField(
     {BuildContext context,
     String labelText,
     Function onChanged,
+    Function validator,
+    bool enabled,
     int maxLines}) {
   return TextFormField(
     keyboardType: TextInputType.multiline,
     maxLines: maxLines,
     minLines: 3,
     onChanged: onChanged,
+    validator: validator,
+    enabled: enabled??true,
     decoration: InputDecoration(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: inputTextStyle(),

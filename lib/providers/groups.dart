@@ -182,6 +182,22 @@ class IncomeCategories {
   });
 }
 
+class ExpenseCategories {
+  @required
+  final String id;
+  @required
+  final String name;
+  final String description;
+  final bool ishidden;
+
+  ExpenseCategories({
+    this.id,
+    this.name,
+    this.description,
+    this.ishidden,
+  });
+}
+
 class LoanType {
   final String id;
   final String name;
@@ -249,6 +265,19 @@ class GroupContributionSummary {
   });
 }
 
+class BankLoans{
+  final String id;
+  final String description;
+  final double amount,balance;
+
+  BankLoans({
+    @required this.id,
+    @required this.description,
+    this.amount,
+    this.balance
+  });
+}
+
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
 
@@ -257,6 +286,7 @@ class Groups with ChangeNotifier {
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
   List<IncomeCategories> _incomeCategories = [];
+  List<ExpenseCategories> _expenseCategories = [];
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
   List<Depositor> _depositors = [];
@@ -284,6 +314,8 @@ class Groups with ChangeNotifier {
   List<CategorisedAccount> _categorisedAccounts = [];
   GroupRolesStatusAndCurrentMemberStatus
       _groupRolesStatusAndCurrentMemberStatus;
+
+  List<BankLoans> _bankLoans = [];
 
   String _userId;
   String _identity;
@@ -427,7 +459,7 @@ class Groups with ChangeNotifier {
 
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
-    _switchGroupValuesToDefault();
+    switchGroupValuesToDefault();
     _currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(selectedGroupId)) {
@@ -436,23 +468,6 @@ class Groups with ChangeNotifier {
     prefs.setString(selectedGroupId, groupId);
   }
 
-  void _switchGroupValuesToDefault() {
-    _groupContributionSummary = [];
-    _groupFinesSummary = [];
-    _totalGroupFinesSummary = 0;
-    _totalGroupContributionSummary = 0;
-    _accounts = [];
-    _members = [];
-    _allAccounts = [];
-    _contributions = [];
-    _countryOptions = [];
-    _currencyOptions = [];
-    _bankOptions = [];
-    _bankBranchOptions = [];
-    _mobileMoneyProviderOptions = [];
-    _saccoOptions = [];
-    _saccoBranchOptions = [];
-  }
 
   getCurrentGroupId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -661,6 +676,21 @@ class Groups with ChangeNotifier {
           ishidden: false,
         );
         _incomeCategories.add(income);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addExpenseCategories(List<dynamic> expenseCategories) {
+    if (expenseCategories.length > 0) {
+      for (var expenseCategoryJson in expenseCategories) {
+        final expense = ExpenseCategories(
+          id: expenseCategoryJson['id'].toString(),
+          name: expenseCategoryJson['name'].toString(),
+          description: "",
+          ishidden: false,
+        );
+        _expenseCategories.add(expense);
       }
     }
     notifyListeners();
@@ -875,8 +905,8 @@ class Groups with ChangeNotifier {
                 memberId: object['member_id'].toString(),
                 memberName: object['name'].toString(),
                 paidAmount: amountpaid,
-                balanceAmount: double.tryParse(object['arrears'].toString())) ??
-            0.0;
+                balanceAmount: double.tryParse(object['arrears'].toString())??0.0,
+        );
         contributionSummary.add(newData);
         total += amountpaid;
       }
@@ -896,14 +926,31 @@ class Groups with ChangeNotifier {
                 memberId: object['member_id'].toString(),
                 memberName: object['name'].toString(),
                 paidAmount: amountpaid,
-                balanceAmount: double.tryParse(object['arrears'].toString())) ??
-            0.0;
+                balanceAmount: double.tryParse(object['arrears'].toString())??0.0,
+        );
         finesSummary.add(newData);
         total += amountpaid;
       }
     }
     _totalGroupFinesSummary = total;
     _groupFinesSummary = finesSummary;
+    notifyListeners();
+  }
+
+  void addBankLoans(List<dynamic> bankLoansList){
+    final List<BankLoans> bankLoansSummary = [];
+    if (bankLoansList.length > 0) {
+      for (var object in bankLoansList) {
+        final newData = BankLoans(
+                id: object['id'].toString(),
+                description: object['description'].toString(),
+                amount: double.tryParse(object['amount'].toString()) ?? 0.0,
+                balance: double.tryParse(object['balance'].toString()) ??0.0,
+        );
+        bankLoansSummary.add(newData);
+      }
+    }
+    _bankLoans = bankLoansSummary;
     notifyListeners();
   }
 
@@ -1178,6 +1225,31 @@ class Groups with ChangeNotifier {
         final groupFineTypes =
             response['fine_category_options'] as List<dynamic>;
         addFineTypes(groupFineTypes);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchExpenseCategories() async {
+    const url = EndpointUrl.GET_GROUP_EXPENSE_CATEGORIES;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _expenseCategories = [];
+        final expenseCategoriesTypes =
+            response['expense_categories'] as List<dynamic>;
+        addExpenseCategories(expenseCategoriesTypes);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -2114,6 +2186,30 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> fetchGroupBankLoans()async{
+    //addBankLoans
+    const url = EndpointUrl.GET_GROUP_BANK_LOAN_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final data = response['loans'] as List<dynamic>;
+        addBankLoans(data);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   /*************************Contributions Summary and Fines Summary*****************************/
 
   Future<dynamic> getGroupContributionSummary() async {
@@ -2381,14 +2477,17 @@ class Groups with ChangeNotifier {
     bool incomeCats = false,
     bool depositor = false,
     bool fineOptions = false,
+    bool exp = false,
+    bool bankLoans = false,
   }) async {
     List<NamesListItem> contributionOptions = [],
         accountOptions = [],
         memberOptions = [],
         finesOptions = [],
         depositorOptions = [],
-        incomeCategoryOptions = [];
-
+        incomeCategoryOptions = [],
+        expenseCategories= [],
+        bankLoansOptions=[];
     if (contr) {
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2450,6 +2549,20 @@ class Groups with ChangeNotifier {
           .toList();
     }
 
+    if(exp){
+      if(_expenseCategories.length==0){
+        await fetchExpenseCategories();
+      }
+      _expenseCategories.map((expense) => expenseCategories.add(NamesListItem(id:int.tryParse(expense.id),name:expense.name))).toList();
+    }
+
+    if(bankLoans){
+      if(_bankLoans.length==0){
+        await fetchGroupBankLoans();
+      }
+      _bankLoans.map((bankLoan) => bankLoansOptions.add(NamesListItem(id:int.tryParse(bankLoan.id),name:"${bankLoan.description} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.balance)}"))).toList();
+    }
+
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
@@ -2457,6 +2570,9 @@ class Groups with ChangeNotifier {
       "finesOptions": finesOptions,
       "incomeCategoryOptions": incomeCategoryOptions,
       "depositorOptions": depositorOptions,
+      'expenseCategories' : expenseCategories,
+      'bankLoansOptions' : bankLoansOptions,
+      
     };
     return result;
   }
@@ -2581,7 +2697,7 @@ class Groups with ChangeNotifier {
 
   Future<void> recordExpensePayment(Map<String, dynamic> formData)async{
     try {
-      const url = EndpointUrl.RECORD_EXPENSES;
+      const url = EndpointUrl.NEW_RECORD_EXPENSES;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
@@ -2643,5 +2759,42 @@ class Groups with ChangeNotifier {
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
+  }
+
+
+  void switchGroupValuesToDefault({bool removeGroups=false}) {
+    if(removeGroups){
+      _groups = [];
+    }
+    _groupContributionSummary = [];
+    _groupFinesSummary = [];
+    _totalGroupFinesSummary = 0;
+    _totalGroupContributionSummary = 0;
+    _accounts = [];
+    _members = [];
+    _allAccounts = [];
+    _contributions = [];
+    _countryOptions = [];
+    _currencyOptions = [];
+    _bankOptions = [];
+    _bankBranchOptions = [];
+    _mobileMoneyProviderOptions = [];
+    _saccoOptions = [];
+    _saccoBranchOptions = [];
+    _expenses = [];
+    _fineTypes = [];
+    _incomeCategories = [];
+    _expenseCategories = [];
+    _loanTypes = [];
+    _depositors = [];
+    _groupContributionSummary = [];
+    _groupFinesSummary = [];
+    _depositList = [];
+    _withdrawalList = [];
+    _memberLoanList = [];
+    _totalGroupContributionSummary = 0;
+    _totalGroupFinesSummary = 0;
+    _categorisedAccounts = [];
+    _bankLoans = []; 
   }
 }
