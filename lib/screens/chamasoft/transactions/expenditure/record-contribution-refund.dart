@@ -242,6 +242,7 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       ),
                       amountTextInputField(
                           context: context,
+                          enabled: _isFormInputEnabled,
                           labelText: 'Enter Amount refunded',
                           validator: (value){
                             if(value.toString().isEmpty || value==null){
