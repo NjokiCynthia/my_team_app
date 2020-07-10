@@ -2203,6 +2203,30 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> fetchGroupBankLoans()async{
+    //addBankLoans
+    const url = EndpointUrl.GET_GROUP_BANK_LOAN_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final data = response['loans'] as List<dynamic>;
+        addBankLoans(data);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   /*************************Contributions Summary and Fines Summary*****************************/
 
   Future<dynamic> getGroupContributionSummary() async {
@@ -2471,6 +2495,7 @@ class Groups with ChangeNotifier {
     bool depositor = false,
     bool fineOptions = false,
     bool exp = false,
+    bool bankLoans = false,
   }) async {
     List<NamesListItem> contributionOptions = [],
         accountOptions = [],
@@ -2478,8 +2503,8 @@ class Groups with ChangeNotifier {
         finesOptions = [],
         depositorOptions = [],
         incomeCategoryOptions = [],
-        expenseCategories= [];
-
+        expenseCategories= [],
+        bankLoansOptions=[];
     if (contr) {
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2548,6 +2573,13 @@ class Groups with ChangeNotifier {
       _expenseCategories.map((expense) => expenseCategories.add(NamesListItem(id:int.tryParse(expense.id),name:expense.name))).toList();
     }
 
+    if(bankLoans){
+      if(_bankLoans.length==0){
+        await fetchGroupBankLoans();
+      }
+      _bankLoans.map((bankLoan) => bankLoansOptions.add(NamesListItem(id:int.tryParse(bankLoan.id),name:"${bankLoan.description} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.balance)}"))).toList();
+    }
+
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
@@ -2556,6 +2588,8 @@ class Groups with ChangeNotifier {
       "incomeCategoryOptions": incomeCategoryOptions,
       "depositorOptions": depositorOptions,
       'expenseCategories' : expenseCategories,
+      'bankLoansOptions' : bankLoansOptions,
+      
     };
     return result;
   }
