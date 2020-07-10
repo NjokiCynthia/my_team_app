@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -59,6 +60,7 @@ class StatusHandler {
 
   void logout(BuildContext context) {
     Provider.of<Auth>(context, listen: false).logout();
+    Provider.of<Groups>(context, listen: false).switchGroupValuesToDefault();
     Navigator.of(context).pushNamedAndRemoveUntil(Login.namedRoute, ModalRoute.withName("/"));
   }
 }

@@ -459,7 +459,7 @@ class Groups with ChangeNotifier {
 
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
-    _switchGroupValuesToDefault();
+    switchGroupValuesToDefault();
     _currentGroupId = groupId;
     final prefs = await SharedPreferences.getInstance();
     if (prefs.containsKey(selectedGroupId)) {
@@ -468,23 +468,6 @@ class Groups with ChangeNotifier {
     prefs.setString(selectedGroupId, groupId);
   }
 
-  void _switchGroupValuesToDefault() {
-    _groupContributionSummary = [];
-    _groupFinesSummary = [];
-    _totalGroupFinesSummary = 0;
-    _totalGroupContributionSummary = 0;
-    _accounts = [];
-    _members = [];
-    _allAccounts = [];
-    _contributions = [];
-    _countryOptions = [];
-    _currencyOptions = [];
-    _bankOptions = [];
-    _bankBranchOptions = [];
-    _mobileMoneyProviderOptions = [];
-    _saccoOptions = [];
-    _saccoBranchOptions = [];
-  }
 
   getCurrentGroupId() async {
     final prefs = await SharedPreferences.getInstance();
@@ -2776,5 +2759,42 @@ class Groups with ChangeNotifier {
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
+  }
+
+
+  void switchGroupValuesToDefault({bool removeGroups=false}) {
+    if(removeGroups){
+      _groups = [];
+    }
+    _groupContributionSummary = [];
+    _groupFinesSummary = [];
+    _totalGroupFinesSummary = 0;
+    _totalGroupContributionSummary = 0;
+    _accounts = [];
+    _members = [];
+    _allAccounts = [];
+    _contributions = [];
+    _countryOptions = [];
+    _currencyOptions = [];
+    _bankOptions = [];
+    _bankBranchOptions = [];
+    _mobileMoneyProviderOptions = [];
+    _saccoOptions = [];
+    _saccoBranchOptions = [];
+    _expenses = [];
+    _fineTypes = [];
+    _incomeCategories = [];
+    _expenseCategories = [];
+    _loanTypes = [];
+    _depositors = [];
+    _groupContributionSummary = [];
+    _groupFinesSummary = [];
+    _depositList = [];
+    _withdrawalList = [];
+    _memberLoanList = [];
+    _totalGroupContributionSummary = 0;
+    _totalGroupFinesSummary = 0;
+    _categorisedAccounts = [];
+    _bankLoans = []; 
   }
 }
