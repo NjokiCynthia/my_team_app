@@ -319,7 +319,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  void logout() async {
+  Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     prefs.remove(isLoggedIn);
     prefs.remove(user);
