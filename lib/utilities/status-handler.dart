@@ -58,9 +58,9 @@ class StatusHandler {
     //Navigator.popUntil(context, ModalRoute.withName("/"));
   }
 
-  void logout(BuildContext context) {
+  void logout(BuildContext context) async{
+    await Provider.of<Auth>(context, listen: false).logout();
+    await Navigator.of(context).pushNamedAndRemoveUntil(Login.namedRoute, ModalRoute.withName("/"));
     Provider.of<Groups>(context, listen: false).switchGroupValuesToDefault(removeGroups:true);
-    Provider.of<Auth>(context, listen: false).logout();
-    Navigator.of(context).pushNamedAndRemoveUntil(Login.namedRoute, ModalRoute.withName("/"));
   }
 }

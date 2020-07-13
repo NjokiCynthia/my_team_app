@@ -486,7 +486,11 @@ class Groups with ChangeNotifier {
     if (groupFound) {
       return group;
     } else {
-      return this._groups[0];
+      if(_groups.length>0){
+        return _groups[0];
+      }else{
+        return null;
+      }
     }
   }
 
