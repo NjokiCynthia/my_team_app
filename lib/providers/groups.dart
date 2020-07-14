@@ -2766,7 +2766,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fineMembers(Map<String,dynamic> formData)async{
     try {
-      const url = EndpointUrl.FINE_MEMBERS;
+      const url = EndpointUrl.NEW_FINE_MEMBERS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
