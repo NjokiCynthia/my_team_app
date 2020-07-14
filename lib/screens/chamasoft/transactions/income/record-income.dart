@@ -201,7 +201,8 @@ class _RecordIncomeState extends State<RecordIncome> {
                             flex: 3,
                             child: CustomDropDownButton(
                               labelText: 'Select Deposit Method',
-                              listItems: !_isFormInputEnabled?[]:depositMethods,
+                              enabled: _isFormInputEnabled,
+                              listItems: depositMethods,
                               selectedItem: depositMethod,
                               validator: (value) {
                                 if (value == null || value == "") {
@@ -220,7 +221,8 @@ class _RecordIncomeState extends State<RecordIncome> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Depositor',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("depositorOptions")
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("depositorOptions")
                             ? formLoadData["depositorOptions"]
                             : [],
                         selectedItem: depositorId,
@@ -238,8 +240,8 @@ class _RecordIncomeState extends State<RecordIncome> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Income Category',
-                        listItems:!_isFormInputEnabled?[]:
-                            formLoadData.containsKey("incomeCategoryOptions")
+                        enabled: _isFormInputEnabled,
+                        listItems:formLoadData.containsKey("incomeCategoryOptions")
                                 ? formLoadData["incomeCategoryOptions"]
                                 : [],
                         selectedItem: incomeCategoryId,
@@ -257,7 +259,8 @@ class _RecordIncomeState extends State<RecordIncome> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Account',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("accountOptions")
                             ? formLoadData["accountOptions"]
                             : [],
                         selectedItem: accountId,
