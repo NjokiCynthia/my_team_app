@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -29,12 +30,12 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
   int toAccountId;
   double amount;
   String description;
-  bool _isInit=true,_isLoading=false,_isFormInputEnabled=true;
-  Map<String,dynamic> _formData = {},_formLoadData={};
-  
+  bool _isInit = true, _isLoading = false, _isFormInputEnabled = true;
+  Map<String, dynamic> _formData = {}, _formLoadData = {};
+  int _ratingController;
+
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
-
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -70,23 +71,23 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      );
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
     });
-    _formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc: true); 
+    _formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(acc: true);
     setState(() {
       _isInit = false;
     });
-    Navigator.of(context,rootNavigator: true).pop();
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
-  void _submit(BuildContext context)async{
+  void _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -94,8 +95,8 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
       _isLoading = true;
       _isFormInputEnabled = false;
     });
-     _formKey.currentState.save();
-     FocusScope.of(context).unfocus();
+    _formKey.currentState.save();
+    FocusScope.of(context).unfocus();
     _formData['transfer_date'] = transferDate.toString();
     _formData['request_id'] = requestId;
     _formData['amount'] = amount;
@@ -103,7 +104,8 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
     _formData['to_account_id'] = toAccountId;
     _formData['description'] = description;
     try {
-      await Provider.of<Groups>(context, listen: false).recordAccountToAccountTransfer(_formData);
+      await Provider.of<Groups>(context, listen: false)
+          .recordAccountToAccountTransfer(_formData);
       Navigator.of(context).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -119,6 +121,7 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -138,7 +141,11 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
           controller: _scrollController,
           child: Column(
             children: <Widget>[
-              toolTip(context: context,title: "Funds transfer from one account to another",message: "",),
+              toolTip(
+                context: context,
+                title: "Funds transfer from one account to another",
+                message: "",
+              ),
               Padding(
                 padding: inputPagePadding,
                 child: Form(
@@ -150,7 +157,10 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                       DatePicker(
                         labelText: 'Select Deposit Date',
                         lastDate: DateTime.now(),
-                        selectedDate: transferDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : transferDate,
+                        selectedDate: transferDate == null
+                            ? new DateTime(
+                                now.year, now.month, now.day - 1, 6, 30)
+                            : transferDate,
                         selectDate: (selectedDate) {
                           setState(() {
                             transferDate = selectedDate;
@@ -159,7 +169,8 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select account to transfer from',
-                        listItems: !_isFormInputEnabled?[]:_formLoadData.containsKey("accountOptions")?_formLoadData["accountOptions"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: _formLoadData.containsKey("accountOptions")?_formLoadData["accountOptions"]:[],
                         selectedItem: fromAccountId,
                         validator: (value){
                           if(value==""||value==null){
@@ -178,8 +189,9 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select account to transfer to',
-                        listItems: !_isFormInputEnabled?[]:_formLoadData.containsKey("accountOptions")?_formLoadData["accountOptions"]:[],
+                        listItems: _formLoadData.containsKey("accountOptions")?_formLoadData["accountOptions"]:[],
                         selectedItem: toAccountId,
+                        enabled: _isFormInputEnabled,
                         validator: (value){
                           if(value==""||value==null){
                             return "This field is required";
@@ -199,12 +211,12 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                           context: context,
                           labelText: 'Enter Amount',
                           enabled: _isFormInputEnabled,
-                          validator: (value){
-                          if(value==""||value==null){
-                            return "This field is required";
-                          }
-                          return null;
-                        },
+                          validator: (value) {
+                            if (value == "" || value == null) {
+                              return "This field is required";
+                            }
+                            return null;
+                          },
                           onChanged: (value) {
                             setState(() {
                               amount = double.parse(value);
@@ -222,17 +234,15 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                         height: 24,
                       ),
                       _isLoading
-                      ? Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Center(
-                            child: CircularProgressIndicator()
-                          ),
-                      ):
-                      defaultButton(
-                        context: context,
-                        text: "SAVE",
-                        onPressed: ()=>_submit(context),
-                      ),
+                          ? Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Center(child: CircularProgressIndicator()),
+                            )
+                          : defaultButton(
+                              context: context,
+                              text: "SAVE",
+                              onPressed: () => _submit(context),
+                            ),
                     ],
                   ),
                 ),

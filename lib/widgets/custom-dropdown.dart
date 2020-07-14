@@ -7,6 +7,7 @@ class CustomDropDownButton extends StatelessWidget {
   final String labelText;
   final Function onChanged, validator;
   final List<NamesListItem> listItems;
+  final bool enabled;
 
   const CustomDropDownButton({
     this.selectedItem,
@@ -14,6 +15,7 @@ class CustomDropDownButton extends StatelessWidget {
     this.onChanged,
     this.validator,
     this.listItems,
+    this.enabled,
   });
 
   @override
@@ -26,24 +28,7 @@ class CustomDropDownButton extends StatelessWidget {
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                //InputDecorator(
-                // decoration: InputDecoration(
-                //   icon: const Icon(Icons.laptop),
-                //   border: InputBorder.none,
-                //   focusedBorder: InputBorder.none,
-                //   enabledBorder: InputBorder.none,
-                //   errorBorder: InputBorder.none,
-                //   disabledBorder: InputBorder.none,
-                //   contentPadding:EdgeInsets.all(0.0),
-                //   hintText: labelText,
-                //   filled: false,
-                //   labelStyle: inputTextStyle(),
-                //   hintStyle: inputTextStyle(),
-                //   errorStyle: inputTextStyle(),
-                //   labelText: selectedItem == 0 ? labelText : labelText,
-                // ),
                 DropdownButtonFormField(
-                  hint: Text(labelText),
                   isExpanded: true,
                   value: selectedItem,
                   items: listItems.map((NamesListItem item) {
@@ -55,11 +40,27 @@ class CustomDropDownButton extends StatelessWidget {
                       ),
                     );
                   }).toList(),
-                  isDense: true,
-                  onChanged: onChanged,
+                  decoration: InputDecoration(
+                    isDense: true,
+                    filled: false,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    labelStyle: inputTextStyle(),
+                    hintStyle: inputTextStyle(),
+                    errorStyle: inputTextStyle(),
+                    hintText: labelText,
+                    labelText: selectedItem == 0 ? labelText : labelText,
+                    enabled: enabled??true,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).hintColor,
+                        width: 1.0,
+                      ),
+                    )
+                  ),
+                        
                   validator: validator,
-                )
-                //)
+                  onChanged: onChanged,
+                ),
               ],
             ),
           );
