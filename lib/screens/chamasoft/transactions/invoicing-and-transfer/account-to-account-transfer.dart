@@ -19,6 +19,15 @@ class AccountToAccountTransfer extends StatefulWidget {
 class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  final _formKey = new GlobalKey<FormState>();
+  DateTime depositDate = DateTime.now();
+  DateTime now = DateTime.now();
+  int depositMethod;
+  int fromAccountId;
+  int toAccountId;
+  double amount;
+  String description;
+
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -42,19 +51,6 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
     _scrollController?.dispose();
     super.dispose();
   }
-
-  final formKey = new GlobalKey<FormState>();
-  bool toolTipIsVisible = true;
-  DateTime depositDate = DateTime.now();
-  int depositMethod;
-  NamesListItem depositMethodValue;
-  int groupMemberId;
-  int loanId;
-  int fromAccountId;
-  int toAccountId;
-  double amount;
-  String description;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,86 +70,72 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
           controller: _scrollController,
           child: Column(
             children: <Widget>[
-              toolTip(
-                  context: context,
-                  title: "Manually record account to account money transfer",
-                  message: "",
-                  visible: toolTipIsVisible,
-                  toggleToolTip: () {
-                    setState(() {
-                      toolTipIsVisible = !toolTipIsVisible;
-                    });
-                  }),
-              Container(
+              toolTip(context: context,title: "Funds transfer from one account to another",message: "",),
+              Padding(
                 padding: inputPagePadding,
-                height: MediaQuery.of(context).size.height,
-                color: Theme.of(context).backgroundColor,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: <Widget>[
-                    DatePicker(
-                      labelText: 'Select Transfer Date',
-                      selectedDate:
-                          depositDate == null ? DateTime.now() : depositDate,
-                      selectDate: (selectedDate) {
-                        setState(() {
-                          depositDate = selectedDate;
-                        });
-                      },
-                    ),
-                    CustomDropDownButton(
-                      labelText: 'Select account to transfer from',
-                      listItems: accounts,
-                      selectedItem: fromAccountId,
-                      onChanged: (value) {
-                        setState(() {
-                          fromAccountId = value;
-                        });
-                      },
-                    ),
-                    CustomDropDownButton(
-                      labelText: 'Select account to transfer to',
-                      listItems: accounts,
-                      selectedItem: toAccountId,
-                      onChanged: (value) {
-                        setState(() {
-                          toAccountId = value;
-                        });
-                      },
-                    ),
-                    amountTextInputField(
-                        context: context,
-                        labelText: 'Enter Amount',
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      DatePicker(
+                        labelText: 'Select Transfer Date',
+                        selectedDate:
+                            depositDate == null ? DateTime.now() : depositDate,
+                        selectDate: (selectedDate) {
+                          setState(() {
+                            depositDate = selectedDate;
+                          });
+                        },
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select account to transfer from',
+                        listItems: accounts,
+                        selectedItem: fromAccountId,
                         onChanged: (value) {
                           setState(() {
-                            amount = double.parse(value);
+                            fromAccountId = value;
                           });
-                        }),
-                    multilineTextField(
-                        context: context,
-                        labelText: 'Short Description (Optional)',
+                        },
+                      ),
+                      CustomDropDownButton(
+                        labelText: 'Select account to transfer to',
+                        listItems: accounts,
+                        selectedItem: toAccountId,
                         onChanged: (value) {
                           setState(() {
-                            description = value;
+                            toAccountId = value;
                           });
-                        }),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    defaultButton(
-                      context: context,
-                      text: "SAVE",
-                      onPressed: () {
-                        print('Deposit date: $depositDate');
-                        print('Deposit Method: $depositMethod');
-                        print('Member: $groupMemberId');
-                        print('Loan: $loanId');
-                        print('Account: $fromAccountId');
-                        print('Amount: $amount');
-                      },
-                    ),
-                  ],
+                        },
+                      ),
+                      amountTextInputField(
+                          context: context,
+                          labelText: 'Enter Amount',
+                          onChanged: (value) {
+                            setState(() {
+                              amount = double.parse(value);
+                            });
+                          }),
+                      multilineTextField(
+                          context: context,
+                          labelText: 'Short Description (Optional)',
+                          onChanged: (value) {
+                            setState(() {
+                              description = value;
+                            });
+                          }),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      defaultButton(
+                        context: context,
+                        text: "SAVE",
+                        onPressed: () {
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],
