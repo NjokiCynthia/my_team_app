@@ -176,7 +176,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                           Expanded(
                             child: CustomDropDownButton(
                               labelText: 'Select Refund Method',
-                              listItems: !_isFormInputEnabled?[]:withdrawalMethods,
+                              enabled: _isFormInputEnabled,
+                              listItems: withdrawalMethods,
                               selectedItem: withdrawalMethod,
                               validator: (value){
                                 if(value.toString().isEmpty|| value==null){
@@ -195,7 +196,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Contribution to refund from',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
                         selectedItem: contributionId,
                         validator: (value){
                           if(value.toString().isEmpty || value==null){
@@ -211,7 +213,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select account to refund from',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                         selectedItem: accountId,
                         validator: (value){
                           if(value.toString().isEmpty || value==null){
@@ -227,7 +230,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Member to refund',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("memberOptions")?formLoadData["memberOptions"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("memberOptions")?formLoadData["memberOptions"]:[],
                         selectedItem: groupMemberId,
                         validator: (value){
                           if(value.toString().isEmpty || value==null){
