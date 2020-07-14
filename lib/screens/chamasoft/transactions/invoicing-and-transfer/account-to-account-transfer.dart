@@ -96,11 +96,14 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
     });
      _formKey.currentState.save();
      FocusScope.of(context).unfocus();
-    _formData['fine_date'] = transferDate.toString();
+    _formData['transfer_date'] = transferDate.toString();
     _formData['request_id'] = requestId;
     _formData['amount'] = amount;
+    _formData['from_account_id'] = fromAccountId;
+    _formData['to_account_id'] = toAccountId;
+    _formData['description'] = description;
     try {
-      await Provider.of<Groups>(context, listen: false).fineMembers(_formData);
+      await Provider.of<Groups>(context, listen: false).recordAccountToAccountTransfer(_formData);
       Navigator.of(context).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
