@@ -264,8 +264,9 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
                         ],
                       ),
                       CustomDropDownButton(
+                        enabled: _isFormInputEnabled,
                         labelText: "Account loan deposited to",
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")
+                        listItems: formLoadData.containsKey("accountOptions")
                             ? formLoadData["accountOptions"]
                             : [],
                         selectedItem: accountId,
