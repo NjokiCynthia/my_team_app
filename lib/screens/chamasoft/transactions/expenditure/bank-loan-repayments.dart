@@ -151,7 +151,8 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                     children: <Widget>[
                       CustomDropDownButton(
                         labelText: 'Select Bank Loan',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("bankLoansOptions")?formLoadData["bankLoansOptions"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("bankLoansOptions")?formLoadData["bankLoansOptions"]:[],
                         selectedItem: bankLoanId,
                         validator: (value){
                           if(value==null||value.toString().isEmpty){
@@ -177,7 +178,8 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Account Withdrawn',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                         selectedItem: accountId,
                         validator: (value){
                           if(value==null||value.toString().isEmpty){
@@ -193,6 +195,7 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Repayment Method',
+                        enabled: _isFormInputEnabled,
                         validator: (value){
                           if(value==null||value.toString().isEmpty){
                             return "Field is required";
