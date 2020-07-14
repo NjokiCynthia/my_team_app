@@ -244,8 +244,9 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                             Expanded(
                               flex: 3,
                               child: CustomDropDownButton(
+                                enabled: _isFormInputEnabled,
                                 labelText: "Select Deposit Method",
-                                listItems: !_isFormInputEnabled?[]:depositMethods,
+                                listItems: depositMethods,
                                 selectedItem: depositMethod,
                                 validator: (value){
                                   if(value==null){
@@ -267,7 +268,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         ),
                         CustomDropDownButton(
                           labelText: "Select Contribution",
-                          listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
+                          enabled: _isFormInputEnabled,
+                          listItems: formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
                           selectedItem: contributionId,
                           validator: (value){
                             if(value==null){
@@ -286,7 +288,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         ),
                         CustomDropDownButton(
                           labelText: "Select Account",
-                          listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
+                          enabled: _isFormInputEnabled,
+                          listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                           selectedItem: accountId,
                           onChanged: (value) {
                             setState(() {
@@ -305,7 +308,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                         ),
                         CustomDropDownButton(
                           labelText: 'Select Member',
-                          listItems: !_isFormInputEnabled?[]:memberTypes,
+                          enabled: _isFormInputEnabled,
+                          listItems: memberTypes,
                           selectedItem: memberTypeId,
                           onChanged: (value) {
                             setState(() {
