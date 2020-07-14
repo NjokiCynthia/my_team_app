@@ -116,7 +116,6 @@ class FineMemberState extends State<FineMember> {
     }).toList();
     _formData['members'] = _individualMembers;
     try {
-      print(_formData);
       await Provider.of<Groups>(context, listen: false).fineMembers(_formData);
       // Navigator.of(context).pop();
     } on CustomException catch (error) {

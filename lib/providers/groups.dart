@@ -2772,6 +2772,7 @@ class Groups with ChangeNotifier {
       formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
+        print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
