@@ -29,7 +29,7 @@ class CustomDropDownButton extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(top:3.0),
+                  padding: const EdgeInsets.only(top:0.0),
                   child: DropdownButtonFormField(
                     isExpanded: true,
                     value: selectedItem,
