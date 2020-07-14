@@ -333,7 +333,7 @@ class Groups with ChangeNotifier {
   }
 
   List<Group> get item {
-    return _groups;
+    return [..._groups];
   }
 
   String get currentGroupId {
@@ -341,55 +341,55 @@ class Groups with ChangeNotifier {
   }
 
   List<Account> get accounts {
-    return _accounts;
+    return [..._accounts];
   }
 
   List<Contribution> get contributions {
-    return _contributions;
+    return [..._contributions];
   }
 
   List<Expense> get expenses {
-    return _expenses;
+    return [..._expenses];
   }
 
   List<FineType> get fineTypes {
-    return _fineTypes;
+    return [..._fineTypes];
   }
 
   List<LoanType> get loanTypes {
-    return _loanTypes;
+    return [..._loanTypes];
   }
 
   List<Member> get members {
-    return _members;
+    return [..._members];
   }
 
   List<Country> get countryOptions {
-    return _countryOptions;
+    return [..._countryOptions];
   }
 
   List<Bank> get bankOptions {
-    return _bankOptions;
+    return [..._bankOptions];
   }
 
   List<BankBranch> get bankBranchOptions {
-    return _bankBranchOptions;
+    return [..._bankBranchOptions];
   }
 
   List<MobileMoneyProvider> get mobileMoneyProviderOptions {
-    return _mobileMoneyProviderOptions;
+    return [..._mobileMoneyProviderOptions];
   }
 
   List<Sacco> get saccoOptions {
-    return _saccoOptions;
+    return [..._saccoOptions];
   }
 
   List<SaccoBranch> get saccoBranchOptions {
-    return _saccoBranchOptions;
+    return [..._saccoBranchOptions];
   }
 
   List<Currency> get currencyOptions {
-    return _currencyOptions;
+    return [..._currencyOptions];
   }
 
   List<List<Account>> get allAccounts {
@@ -409,11 +409,11 @@ class Groups with ChangeNotifier {
   }
 
   List<GroupContributionSummary> get groupContributionSummary {
-    return _groupContributionSummary;
+    return [..._groupContributionSummary];
   }
 
   List<GroupContributionSummary> get groupFinesSummary {
-    return _groupFinesSummary;
+    return [..._groupFinesSummary];
   }
 
   LoansSummaryList get getLoansSummaryList {
@@ -425,7 +425,7 @@ class Groups with ChangeNotifier {
   }
 
   List<ActiveLoan> get getMemberLoans {
-    return _memberLoanList;
+    return [..._memberLoanList];
   }
 
   LoanStatementModel get getLoanStatements {
@@ -433,11 +433,11 @@ class Groups with ChangeNotifier {
   }
 
   List<Deposit> get getDeposits {
-    return _depositList;
+    return [..._depositList];
   }
 
   List<Withdrawal> get getWithdrawals {
-    return _withdrawalList;
+    return [..._withdrawalList];
   }
 
   double groupTotalContributionSummary() {
@@ -449,7 +449,7 @@ class Groups with ChangeNotifier {
   }
 
   List<CategorisedAccount> get getAllCategorisedAccounts {
-    return _categorisedAccounts;
+    return [..._categorisedAccounts];
   }
 
   GroupRolesStatusAndCurrentMemberStatus
