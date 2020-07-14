@@ -194,7 +194,8 @@ class FineMemberState extends State<FineMember> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Fine type',
-                        listItems: !_isFormInputEnabled?[]:_formLoadData.containsKey("finesOptions")?_formLoadData["finesOptions"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: _formLoadData.containsKey("finesOptions")?_formLoadData["finesOptions"]:[],
                         selectedItem: fineTypeId,
                         validator: (value){
                           if(value==null||value==""){
@@ -212,6 +213,7 @@ class FineMemberState extends State<FineMember> {
                         labelText: 'Select Member',
                         listItems: memberTypes,
                         selectedItem: memberTypeId,
+                        enabled: _isFormInputEnabled,
                         validator: (value){
                           if(value==null||value==""){
                             return "This field is required";
