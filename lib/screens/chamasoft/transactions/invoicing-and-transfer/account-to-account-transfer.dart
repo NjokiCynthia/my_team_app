@@ -1,7 +1,8 @@
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -9,6 +10,7 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class AccountToAccountTransfer extends StatefulWidget {
   @override
@@ -20,13 +22,18 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   final _formKey = new GlobalKey<FormState>();
-  DateTime depositDate = DateTime.now();
+  DateTime transferDate = DateTime.now();
   DateTime now = DateTime.now();
   int depositMethod;
   int fromAccountId;
   int toAccountId;
   double amount;
   String description;
+  bool _isInit=true,_isLoading=false,_isFormInputEnabled=true;
+  Map<String,dynamic> _formData = {},_formLoadData={};
+  
+  static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
+  String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
 
 
   void _scrollListener() {
@@ -50,6 +57,64 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchDefaultValues(context);
+    }
+    super.didChangeDependencies();
+  }
+
+  Future<void> _fetchDefaultValues(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context){
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+      );
+    });
+    _formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc: true); 
+    setState(() {
+      _isInit = false;
+    });
+    Navigator.of(context,rootNavigator: true).pop();
+  }
+
+  void _submit(BuildContext context)async{
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    setState(() {
+      _isLoading = true;
+      _isFormInputEnabled = false;
+    });
+     _formKey.currentState.save();
+     FocusScope.of(context).unfocus();
+    _formData['fine_date'] = transferDate.toString();
+    _formData['request_id'] = requestId;
+    _formData['amount'] = amount;
+    try {
+      await Provider.of<Groups>(context, listen: false).fineMembers(_formData);
+      Navigator.of(context).pop();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormInputEnabled = true;
+      });
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -80,19 +145,28 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
                       DatePicker(
-                        labelText: 'Select Transfer Date',
-                        selectedDate:
-                            depositDate == null ? DateTime.now() : depositDate,
+                        labelText: 'Select Deposit Date',
+                        lastDate: DateTime.now(),
+                        selectedDate: transferDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : transferDate,
                         selectDate: (selectedDate) {
                           setState(() {
-                            depositDate = selectedDate;
+                            transferDate = selectedDate;
                           });
                         },
                       ),
                       CustomDropDownButton(
                         labelText: 'Select account to transfer from',
-                        listItems: accounts,
+                        listItems: !_isFormInputEnabled?[]:_formLoadData.containsKey("accountOptions")?_formLoadData["accountOptions"]:[],
                         selectedItem: fromAccountId,
+                        validator: (value){
+                          if(value==""||value==null){
+                            return "This field is required";
+                          }
+                          if(value==toAccountId){
+                            return "Select different account";
+                          }
+                          return null;
+                        },
                         onChanged: (value) {
                           setState(() {
                             fromAccountId = value;
@@ -101,8 +175,17 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select account to transfer to',
-                        listItems: accounts,
+                        listItems: !_isFormInputEnabled?[]:_formLoadData.containsKey("accountOptions")?_formLoadData["accountOptions"]:[],
                         selectedItem: toAccountId,
+                        validator: (value){
+                          if(value==""||value==null){
+                            return "This field is required";
+                          }
+                          if(value==fromAccountId){
+                            return "Select different account";
+                          }
+                          return null;
+                        },
                         onChanged: (value) {
                           setState(() {
                             toAccountId = value;
@@ -112,6 +195,13 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                       amountTextInputField(
                           context: context,
                           labelText: 'Enter Amount',
+                          enabled: _isFormInputEnabled,
+                          validator: (value){
+                          if(value==""||value==null){
+                            return "This field is required";
+                          }
+                          return null;
+                        },
                           onChanged: (value) {
                             setState(() {
                               amount = double.parse(value);
@@ -128,11 +218,17 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
                       SizedBox(
                         height: 24,
                       ),
+                      _isLoading
+                      ? Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Center(
+                            child: CircularProgressIndicator()
+                          ),
+                      ):
                       defaultButton(
                         context: context,
                         text: "SAVE",
-                        onPressed: () {
-                        },
+                        onPressed: ()=>_submit(context),
                       ),
                     ],
                   ),
