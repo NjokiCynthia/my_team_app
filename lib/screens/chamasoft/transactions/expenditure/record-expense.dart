@@ -177,7 +177,8 @@ class RecordExpenseState extends State<RecordExpense> {
                             flex: 3,
                             child: CustomDropDownButton(
                               labelText: 'Select Withdrawal Method',
-                              listItems: !_isFormInputEnabled?[]:withdrawalMethods,
+                              enabled: _isFormInputEnabled,
+                              listItems: withdrawalMethods,
                               selectedItem: withdrawalMethod,
                               validator: (value){
                                 if(value==null||value==""){
@@ -196,7 +197,8 @@ class RecordExpenseState extends State<RecordExpense> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Expense Category',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("expenseCategories")?formLoadData["expenseCategories"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("expenseCategories")?formLoadData["expenseCategories"]:[],
                         selectedItem: expenseCategoryId,
                         validator: (value){
                           if(value==null||value==""){
@@ -212,7 +214,8 @@ class RecordExpenseState extends State<RecordExpense> {
                       ),
                       CustomDropDownButton(
                         labelText: 'Select Account',
-                        listItems: !_isFormInputEnabled?[]:formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
+                        enabled: _isFormInputEnabled,
+                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
                         selectedItem: accountId,
                         validator: (value){
                           if(value==null||value==""){
