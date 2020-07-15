@@ -28,41 +28,38 @@ class CustomDropDownButton extends StatelessWidget {
             child: new Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top:0.0),
-                  child: DropdownButtonFormField(
-                    isExpanded: true,
-                    value: selectedItem,
-                    items: listItems.map((NamesListItem item) {
-                      return new DropdownMenuItem(
-                        value: item.id,
-                        child: new Text(
-                          item.name,
-                          style: inputTextStyle(),
-                        ),
-                      );
-                    }).toList(),
-                    decoration: InputDecoration(
-                      isDense: true,
-                      filled: false,
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      labelStyle: inputTextStyle(),
-                      hintStyle: inputTextStyle(),
-                      errorStyle: inputTextStyle(),
-                      hintText: labelText,
-                      labelText: selectedItem == 0 ? labelText : labelText,
-                      enabled: enabled??true,
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                          color: Theme.of(context).hintColor,
-                          width: 1.0,
-                        ),
-                      )
-                    ),
-                          
-                    validator: validator,
-                    onChanged: onChanged,
+                DropdownButtonFormField(
+                  isExpanded: true,
+                  value: selectedItem,
+                  items: listItems.map((NamesListItem item) {
+                    return new DropdownMenuItem(
+                      value: item.id,
+                      child: new Text(
+                        item.name,
+                        style: inputTextStyle(),
+                      ),
+                    );
+                  }).toList(),
+                  decoration: InputDecoration(
+                    isDense: true,
+                    filled: false,
+                    floatingLabelBehavior: FloatingLabelBehavior.auto,
+                    labelStyle: inputTextStyle(),
+                    hintStyle: inputTextStyle(),
+                    errorStyle: inputTextStyle(),
+                    hintText: labelText,
+                    labelText: selectedItem == 0 ? labelText : labelText,
+                    enabled: enabled??true,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Theme.of(context).hintColor,
+                        width: 1.0,
+                      ),
+                    )
                   ),
+                        
+                  validator: validator,
+                  onChanged: onChanged,
                 ),
               ],
             ),

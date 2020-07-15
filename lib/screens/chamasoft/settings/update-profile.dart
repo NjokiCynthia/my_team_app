@@ -30,7 +30,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
   String _oldName;
   String phoneNumber = '+254 701 234 567';
   String emailAddress, _oldEmailAddress;
-  final _formKey = GlobalKey<FormState>();
+  final _phoneNumberFormKey = GlobalKey<FormState>();
+  final _userNameFormKey = GlobalKey<FormState>();
+  final _emailFormKey = GlobalKey<FormState>();
   bool _isLoadingImage = false;
 
   void _scrollListener() {
@@ -95,6 +97,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   Future<void> _updateUserName(BuildContext context) async {
     try {
+      if(!_userNameFormKey.currentState.validate()){
+        return;
+      }
+      _userNameFormKey.currentState.save();
+      Navigator.of(context).pop();
       if (name != _oldName) {
         await Provider.of<Auth>(context, listen: false).updateUserName(name);
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -117,6 +124,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   Future<void> _updateUserEmailAdress(BuildContext context) async {
     try {
+      if(!_emailFormKey.currentState.validate()){
+        return;
+      }
+      _emailFormKey.currentState.save();
       if (emailAddress != _oldEmailAddress) {
         await Provider.of<Auth>(context, listen: false).updateUserEmailAddress(emailAddress);
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -145,7 +156,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Phone Number"),
           content: Form(
-            key: _formKey,
+            key: _phoneNumberFormKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -193,7 +204,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 text: "Continue",
                 color: primaryColor,
                 action: () {
-                  if (_formKey.currentState.validate()) {
+                  if (_phoneNumberFormKey.currentState.validate()) {
 //                  Navigator.of(context).pop();
                     Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
                   }
@@ -215,19 +226,27 @@ class _UpdateProfileState extends State<UpdateProfile> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Name"),
           content: Form(
-            key: _formKey,
+            key: _userNameFormKey,
             child: TextFormField(
               initialValue: name,
               keyboardType: TextInputType.text,
               textCapitalization: TextCapitalization.words,
               onChanged: (value) {
                 setState(() {
-                  name = value;
+                  if (value.isEmpty) {
+                    name = _oldName;
+                  }else if(value.trim().split(" ").length<2){
+                    name = _oldName;
+                  }else{
+                    name = value;
+                  }
                 });
               },
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Your name is required';
+                }else if(value.trim().split(" ").length<2){
+                  return "Enter atleast 2 names";
                 }
                 return null;
               },
@@ -253,7 +272,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 text: "Save",
                 color: primaryColor,
                 action: () {
-                  Navigator.of(context).pop();
                   _updateUserName(context);
                 }),
             SizedBox(
@@ -273,20 +291,26 @@ class _UpdateProfileState extends State<UpdateProfile> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Update Email Address"),
           content: Form(
-            key: _formKey,
+            key: _emailFormKey,
             child: TextFormField(
               initialValue: emailAddress,
+              key: ValueKey("email"),
               keyboardType: TextInputType.emailAddress,
-              onChanged: (_) {},
-              validator: (value) {
-                if (value.isEmpty) {
-                  return 'Your email address is required';
-                } else if (!CustomHelper.validEmail(value)) {
-                  return "Enter a valid email address";
-                }
+              onChanged: (value) {
                 setState(() {
-                  emailAddress = value;
+                  if(CustomHelper.validEmail(value)){
+                    emailAddress = value;
+                  }
                 });
+              },
+              validator: (email) {
+                if (email.isEmpty) {
+                  return "Field is required";
+                }else{
+                  if(!CustomHelper.validEmail(email)){
+                    return "Enter a valid email address";
+                  }
+                }
                 return null;
               },
               decoration: InputDecoration(
@@ -296,7 +320,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
                   color: Theme.of(context).hintColor,
                   width: 2.0,
                 )),
-                // hintText: 'Phone Number or Email Address',
                 labelText: "Your Email Address",
               ),
             ),
@@ -413,7 +436,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     updateText: phoneNumber,
                     icon: Icons.edit,
                     onPressed: () {
-                      _updatePhoneNumber();
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                        "Coming soon",
+                      )));
+                      //_updatePhoneNumber();
                     },
                   ),
                   InfoUpdateTile(
