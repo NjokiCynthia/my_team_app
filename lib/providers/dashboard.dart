@@ -90,7 +90,7 @@ class Dashboard with ChangeNotifier{
         });
         final response = await PostToServer.post(postRequest, url);
         _dashboardData = response;
-        //_updateDashboardData();
+        _updateDashboardData();
       } on CustomException catch (error) {
         print(error.toString());
         throw CustomException(message: error.toString(), status: error.status);
