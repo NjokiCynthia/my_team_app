@@ -11,6 +11,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 
 class ChamasoftHome extends StatefulWidget {
   ChamasoftHome({
@@ -25,6 +26,8 @@ class ChamasoftHome extends StatefulWidget {
 
 class _ChamasoftHomeState extends State<ChamasoftHome> {
   ScrollController _scrollController;
+  Group _currentGroup;
+  bool _onlineBankingEnabled = true;
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -47,6 +50,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   @override
   void didChangeDependencies(){
     _getGroupDashboardData();
+    _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
+    setState(() {
+      _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
+    });
     super.didChangeDependencies();
   }
 
@@ -316,6 +323,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
+                        if(_onlineBankingEnabled)
                         Expanded(
                           child: Padding(
                             padding: EdgeInsets.symmetric(
