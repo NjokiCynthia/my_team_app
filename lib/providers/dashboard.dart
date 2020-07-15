@@ -6,10 +6,20 @@ import 'package:chamasoft/utilities/endpoint-url.dart';
 import 'package:chamasoft/utilities/post-to-server.dart';
 import 'package:flutter/cupertino.dart';
 
-class Dashboard with ChangeNotifier{
+class BankAccountDashboardSummary{
+    final String accountName;
+    final double balance;
+    
+    BankAccountDashboardSummary({
+      @required this.accountName,
+      @required this.balance
+    });
+}
 
+class Dashboard with ChangeNotifier{
   String _userId;
   Map<String,dynamic> _dashboardData;
+  List<BankAccountDashboardSummary> _bankAccountDashboardSummary = [];
   //final String _currentGroupId;
 
   Dashboard(String _userId,Map<String,dynamic> _dashboardData){
@@ -38,21 +48,36 @@ class Dashboard with ChangeNotifier{
   }
 
   double get totalBankBalances{
-    print("total ${_cashBalances+_bankBalances}");
     return _cashBalances+_bankBalances;
+  }
+
+  List<BankAccountDashboardSummary> get bankAccountDashboardSummary{
+    return [..._bankAccountDashboardSummary];
   }
 
   void _updateDashboardData()async{
     if(_dashboardData.containsKey("member_details")){
-        var memberDetails = _dashboardData["member_details"] as Map<String,dynamic>;
-        _memberContributionAmount = double.tryParse(memberDetails["total_contributions"].toString());
+      var memberDetails = _dashboardData["member_details"] as Map<String,dynamic>;
+      _memberContributionAmount = double.tryParse(memberDetails["total_contributions"].toString());
+    }
+    if(_dashboardData.containsKey("group_details")){
+      var groupDetails = _dashboardData["group_details"] as Map<String,dynamic>;
+      _cashBalances = double.tryParse(groupDetails["cash_balances"].toString());
+      _bankBalances = double.tryParse(groupDetails["bank_balances"].toString());
+      
+      var accountBalances = groupDetails["account_balances"];
+      _bankAccountDashboardSummary = [];
+      if(accountBalances.length>0){
+        accountBalances.map((accountBalance){
+          var accountName = accountBalance["description"].toString();
+          var balance = double.tryParse(accountBalance["balance"].toString())??0.0;
+          if(balance > 1.0){
+            _bankAccountDashboardSummary.add(BankAccountDashboardSummary(accountName: accountName,balance: balance));
+          }
+        }).toList();
       }
-      if(_dashboardData.containsKey("group_details")){
-        var groupDetails = _dashboardData["group_details"] as Map<String,dynamic>;
-        _cashBalances = double.tryParse(groupDetails["cash_balances"].toString());
-        _bankBalances = double.tryParse(groupDetails["bank_balances"].toString());
-        print("total ${_cashBalances+_bankBalances}");
-      }
+    }
+    notifyListeners();
   }
 
   Future<void> getGroupDashboardData(String groupId)async{
@@ -65,7 +90,7 @@ class Dashboard with ChangeNotifier{
         });
         final response = await PostToServer.post(postRequest, url);
         _dashboardData = response;
-        await _updateDashboardData();
+        //_updateDashboardData();
       } on CustomException catch (error) {
         print(error.toString());
         throw CustomException(message: error.toString(), status: error.status);

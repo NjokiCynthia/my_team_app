@@ -21,6 +21,8 @@ class ChamasoftGroup extends StatefulWidget {
 
 class _ChamasoftGroupState extends State<ChamasoftGroup> {
   ScrollController _scrollController;
+  List<BankAccountDashboardSummary> _iteratableData = [];
+  String _groupCurrency = "Ksh";
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -45,9 +47,40 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     return null;
   }
 
+  Iterable<Widget> get accountSummary sync* {
+      for(var data in _iteratableData){
+        yield  Row(
+          children: <Widget>[
+            Container(
+              width: 160.0,
+              height: 165.0,
+              padding: EdgeInsets.all(16.0),
+              margin: EdgeInsets.all(0.0),
+              decoration: cardDecoration(
+                  gradient: plainCardGradient(context),
+                  context: context),
+              child: accountBalance(
+                color: primaryColor,
+                cardIcon: Feather.credit_card,
+                cardAmount: currencyFormat.format(data.balance),
+                currency: _groupCurrency,
+                accountName: data.accountName,
+              ),
+            ),
+            SizedBox(
+              width: 16.0,
+            ),
+          ],
+        );
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
+    setState(() {
+      _iteratableData = dashboardData.bankAccountDashboardSummary;
+    });
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
@@ -92,7 +125,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
+                                  currency: _groupCurrency,
                                   amount: "21,000",
                                   size: 16.0,
                                   color: Theme.of(context)
@@ -116,7 +149,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
+                                  currency: _groupCurrency,
                                   amount: "2,350",
                                   size: 14.0,
                                   color: Colors.red[400],
@@ -172,44 +205,47 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                             color: Colors.white,
                             cardIcon: Feather.globe,
                             cardAmount: currencyFormat.format(dashboardData.totalBankBalances),
-                            currency: "Ksh",
+                            currency: _groupCurrency,
                             accountName: "Total",
                           ),
                         ),
                         SizedBox(
                           width: 16.0,
                         ),
-                        Container(
-                          width: 160.0,
-                          padding: EdgeInsets.all(16.0),
-                          decoration: cardDecoration(
-                              gradient: plainCardGradient(context),
-                              context: context),
-                          child: accountBalance(
-                            color: primaryColor,
-                            cardIcon: Feather.credit_card,
-                            cardAmount: "100,000",
-                            currency: "Ksh",
-                            accountName: "Finnlemm Bank Account",
-                          ),
+                        Row(
+                          children: accountSummary.toList(),
                         ),
-                        SizedBox(
-                          width: 16.0,
-                        ),
-                        Container(
-                          width: 160.0,
-                          padding: EdgeInsets.all(16.0),
-                          decoration: cardDecoration(
-                              gradient: plainCardGradient(context),
-                              context: context),
-                          child: accountBalance(
-                            color: primaryColor,
-                            cardIcon: Feather.credit_card,
-                            cardAmount: "10,000,000",
-                            currency: "Ksh",
-                            accountName: "E-Wall",
-                          ),
-                        )
+                        // Container(
+                        //   width: 160.0,
+                        //   padding: EdgeInsets.all(16.0),
+                        //   decoration: cardDecoration(
+                        //       gradient: plainCardGradient(context),
+                        //       context: context),
+                        //   child: accountBalance(
+                        //     color: primaryColor,
+                        //     cardIcon: Feather.credit_card,
+                        //     cardAmount: "100,000",
+                        //     currency: "Ksh",
+                        //     accountName: "Finnlemm Bank",
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   width: 16.0,
+                        // ),
+                        // Container(
+                        //   width: 160.0,
+                        //   padding: EdgeInsets.all(16.0),
+                        //   decoration: cardDecoration(
+                        //       gradient: plainCardGradient(context),
+                        //       context: context),
+                        //   child: accountBalance(
+                        //     color: primaryColor,
+                        //     cardIcon: Feather.credit_card,
+                        //     cardAmount: "10,000,000",
+                        //     currency: "Ksh",
+                        //     accountName: "E-Wall",
+                        //   ),
+                        // )
                       ],
                     ),
                   ),
@@ -253,7 +289,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
+                                  currency: _groupCurrency,
                                   amount: "21,000",
                                   size: 16.0,
                                   color: Theme.of(context)
@@ -277,7 +313,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
+                                  currency: _groupCurrency,
                                   amount: "2,350",
                                   size: 14.0,
                                   color: Theme.of(context)
@@ -301,7 +337,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
+                                  currency: _groupCurrency,
                                   amount: "5,500",
                                   size: 14.0,
                                   color: Theme.of(context)

@@ -78,8 +78,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             _getGroupDashboardData(currentGroupId);
           });
     } finally {
-      setState(() {
-      });
+      // setState(() {
+      // });
     }
   }
 
