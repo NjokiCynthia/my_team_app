@@ -420,7 +420,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     );
   }
 
-  void _updateCountry(BuildContext ctx) {
+  void _updateCountry(BuildContext ctx,int oldCountryId) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -437,7 +437,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                     return CountryDropdown(
                       labelText: 'Select Country',
                       listItems: groupData.countryOptions,
-                      selectedItem: countryId,
+                      selectedItem: oldCountryId,
                       onChanged: (value) {
                         setState(() {
                           countryId = value;
@@ -594,7 +594,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Group Phone Number",
-                  updateText: currentGroup.groupPhone,
+                  updateText: currentGroup.groupPhone=="null"?"":currentGroup.groupPhone,
                   icon: Icons.edit,
                   onPressed: () {
                     _updatePhoneNumber(context);
@@ -602,7 +602,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Group Email Address",
-                  updateText: currentGroup.groupEmail,
+                  updateText: currentGroup.groupEmail=="null"?"":currentGroup.groupEmail,
                   icon: Icons.edit,
                   onPressed: () {
                     _updateEmailAddress(context);
@@ -610,7 +610,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Currency",
-                  updateText: currentGroup.groupCurrency,
+                  updateText: currentGroup.groupCurrency=="null"?"":currentGroup.groupCurrency,
                   icon: Icons.edit,
                   onPressed: () async {
                     setState(() {
@@ -621,14 +621,14 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Country",
-                  updateText: currentGroup.groupCountryName,
+                  updateText: currentGroup.groupCountryName=="null"?"":currentGroup.groupCountryName,
                   icon: Icons.edit,
                   onPressed: () {
                     setState(() {
-                      countryId = int.parse(Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCountryId);
+                      //countryId = int.parse(Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCountryId);
                     });
 
-                    _updateCountry(context);
+                    _updateCountry(context,int.tryParse(currentGroup.groupCountryId));
                   },
                 ),
               ],
