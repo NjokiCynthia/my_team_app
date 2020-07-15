@@ -53,7 +53,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   @override
   void didChangeDependencies(){
     _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
-    if(!_isInit){
+    if(_isInit){
       _getGroupDashboardData(_currentGroup.groupId);
     }
     setState(() {
@@ -78,8 +78,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             _getGroupDashboardData(currentGroupId);
           });
     } finally {
-      // setState(() {
-      // });
+      setState(() {
+        _isInit = false;
+      });
     }
   }
 
