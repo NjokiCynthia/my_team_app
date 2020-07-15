@@ -142,9 +142,17 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     }
   }
 
+
   Future<void> doUpdateCountry(BuildContext context) async {
     errorText = '';
     try {
+      showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      });
       final response = await Provider.of<Groups>(context, listen: false).updateGroupCountry(countryId);
       if (response['status'] == 1) {
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -158,6 +166,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     } on CustomException catch (error) {
       print(error.message);
       errorText = 'Network Error occurred: could not update group country';
+    }finally{
+      Navigator.of(context).pop();
     }
   }
 
@@ -464,6 +474,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   style: new TextStyle(color: primaryColor),
                 ),
                 onPressed: () async {
+                  Navigator.of(context).pop();
                   await doUpdateCountry(ctx);
                 },
               ),
@@ -625,9 +636,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   icon: Icons.edit,
                   onPressed: () {
                     setState(() {
-                      //countryId = int.parse(Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCountryId);
+                      countryId = int.tryParse(currentGroup.groupCountryId);
                     });
-
                     _updateCountry(context,int.tryParse(currentGroup.groupCountryId));
                   },
                 ),
