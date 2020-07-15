@@ -2811,30 +2811,6 @@ class Groups with ChangeNotifier {
     }
   }
 
-  /**********************Dashboard data************************/
-
-  Future<void> getGroupDashboardData()async{
-    try{
-      const url = EndpointUrl.GET_MEMBER_DASHBOARD;
-      try {
-        final postRequest = json.encode({
-          "user_id" : _userId,
-          "group_id" : currentGroupId,
-        });
-        final response = await PostToServer.post(postRequest, url);
-        print(response);
-      } on CustomException catch (error) {
-        throw CustomException(message: error.toString(), status: error.status);
-      } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
-      }
-    } on CustomException catch (error) {
-      throw CustomException(message: error.toString(), status: error.status);
-    } catch (error) {
-      throw CustomException(message: ERROR_MESSAGE);
-    }
-  }
-
   void switchGroupValuesToDefault({bool removeGroups=false}) {
     if(removeGroups){
       _groups = [];

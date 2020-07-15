@@ -52,7 +52,6 @@ Group parseSingleGroup(dynamic groupJSON) {
       groupRoleObject.add(newRole);
     });
   }
-  print("groupJSON['country_name'].toString() ${groupJSON['country_name'].toString()}");
   final newGroup = Group(
     groupId: groupJSON['id'].toString(),
     groupName: groupJSON['name'].toString(),

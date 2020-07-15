@@ -1,7 +1,9 @@
+import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
 import 'package:chamasoft/screens/my-groups.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -28,6 +30,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   ScrollController _scrollController;
   Group _currentGroup;
   bool _onlineBankingEnabled = true;
+  bool _isInit = true;
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -49,11 +52,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   @override
   void didChangeDependencies(){
-    _getGroupDashboardData();
     _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
+    if(_isInit){
+      _getGroupDashboardData(_currentGroup.groupId);
+    }
     setState(() {
       _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
-    });
+    });    
     super.didChangeDependencies();
   }
 
@@ -62,15 +67,15 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
-  void _getGroupDashboardData()async{
+  void _getGroupDashboardData(String currentGroupId)async{
     try{
-      await Provider.of<Groups>(context,listen:false).getGroupDashboardData();
+      await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(currentGroupId);
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _getGroupDashboardData();
+            _getGroupDashboardData(currentGroupId);
           });
     } finally {
       setState(() {
@@ -80,6 +85,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   @override
   Widget build(BuildContext context) {
+    final dashboardData = Provider.of<Dashboard>(context);
     return WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
@@ -127,7 +133,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               height: 22,
                               child: cardAmountButton(
                                   currency: "Ksh",
-                                  amount: "21,000",
+                                  amount: currencyFormat.format(dashboardData.memberContributionAmount),
                                   size: 16.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,

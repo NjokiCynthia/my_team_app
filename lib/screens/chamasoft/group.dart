@@ -1,11 +1,14 @@
+import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/bar_chart_sample4.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 
 class ChamasoftGroup extends StatefulWidget {
   final ValueChanged<double> appBarElevation;
@@ -44,6 +47,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
 
   @override
   Widget build(BuildContext context) {
+    final dashboardData = Provider.of<Dashboard>(context);
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
@@ -167,7 +171,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                           child: accountBalance(
                             color: Colors.white,
                             cardIcon: Feather.globe,
-                            cardAmount: "19,000,000",
+                            cardAmount: currencyFormat.format(dashboardData.totalBankBalances),
                             currency: "Ksh",
                             accountName: "Total",
                           ),
@@ -246,16 +250,6 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               fontWeight: FontWeight.w500,
                               color: Theme.of(context).textSelectionHandleColor,
                             ),
-//                        Text(
-//                          "Contributions",
-//                          style: TextStyle(
-//                            color: Theme.of(context)
-//                                .textSelectionHandleColor
-//                                .withOpacity(0.8),
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.w800,
-//                          ),
-//                        ),
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
