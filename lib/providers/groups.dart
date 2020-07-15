@@ -1599,6 +1599,7 @@ class Groups with ChangeNotifier {
     String disableMemberEditProfile,
     String enableAbsoluteLoanRecalculation,
   }) async {
+    print("orderMembersBy $orderMembersBy");
     const url = EndpointUrl.UPDATE_GROUP_SETTINGS;
 
     try {

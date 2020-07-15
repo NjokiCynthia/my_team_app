@@ -116,6 +116,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
   Future<void> doUpdateSettings(BuildContext context) async {
     errorText = '';
     try {
+      print("selectedMemberOrderDirection : $selectedMemberOrderDirection");
       await Provider.of<Groups>(context, listen: false).updateGroupSettings(
         orderMembersBy: selectedMemberOrderDirection,
         memberListingOrderBy: orderByFieldId,
@@ -185,7 +186,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                           child: CustomDropDownStringOnlyButton(
                             labelText: "List Members By",
                             listItems: orderByFields,
-                            selectedItem: orderByFieldId,
+                            selectedItem: orderByFieldId==""?"users.first_name":orderByFieldId,
                             onChanged: (value) async {
                               showDialog(
                                   context: context,
@@ -194,10 +195,10 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                                       child: CircularProgressIndicator(),
                                     );
                                   });
-                              await doUpdateSettings(context);
                               setState(() {
                                 orderByFieldId = value;
                               });
+                              await doUpdateSettings(context);
                             },
                           ),
                         ),
@@ -207,7 +208,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                           child: CustomDropDownStringOnlyButton(
                             labelText: "Order Members Direction",
                             listItems: orderMembersDirection,
-                            selectedItem: selectedMemberOrderDirection,
+                            selectedItem: selectedMemberOrderDirection==""?"ASC":selectedMemberOrderDirection,
                             onChanged: (value) async {
                               showDialog(
                                   context: context,
@@ -216,10 +217,10 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                                       child: CircularProgressIndicator(),
                                     );
                                   });
-                              await doUpdateSettings(context);
                               setState(() {
                                 selectedMemberOrderDirection = value;
                               });
+                              await doUpdateSettings(context);
                             },
                           ),
                         ),
@@ -245,10 +246,10 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-                            await doUpdateSettings(context);
                             setState(() {
                               memberPrivacyEnabled = value;
                             });
+                            await doUpdateSettings(context);
                           },
                         ),
                         SwitchListTile(
@@ -273,10 +274,10 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-                            await doUpdateSettings(context);
                             setState(() {
                               showContributionArrears = value;
                             });
+                            await doUpdateSettings(context);
                           },
                         ),
                         SwitchListTile(
@@ -301,10 +302,10 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-                            await doUpdateSettings(context);
                             setState(() {
                               ignoringContributionTransfersEnabled = value;
                             });
+                            await doUpdateSettings(context);
                           },
                         ),
                         SwitchListTile(
@@ -329,10 +330,10 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-                            await doUpdateSettings(context);
                             setState(() {
                               monthlyStatementsSendingEnabled = value;
                             });
+                            await doUpdateSettings(context);
                           },
                         ),
                         SwitchListTile(
@@ -357,10 +358,10 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-                            await doUpdateSettings(context);
                             setState(() {
                               reducingBalanceRecalculationEnabled = value;
                             });
+                            await doUpdateSettings(context);
                           },
                         ),
                         SwitchListTile(
@@ -385,10 +386,10 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                                     child: CircularProgressIndicator(),
                                   );
                                 });
-                            await doUpdateSettings(context);
                             setState(() {
                               disableMemberEditProfile = value;
                             });
+                            await doUpdateSettings(context);
                           },
                         ),
                       ]),
