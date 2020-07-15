@@ -120,7 +120,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP'),
       child: Scaffold(
         key: dashboardScaffoldKey,
-        backgroundColor: Colors.transparent,
+        backgroundColor: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[900]
+              : Colors.blue[50],
         appBar: AppBar(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[900]

@@ -1,12 +1,16 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
 import 'package:chamasoft/screens/my-groups.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 
 class ChamasoftHome extends StatefulWidget {
   ChamasoftHome({
@@ -40,9 +44,31 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies(){
+    _getGroupDashboardData();
+    super.didChangeDependencies();
+  }
+
   Future<bool> _onWillPop() async {
     await Navigator.of(context).pushReplacementNamed(MyGroups.namedRoute);
     return null;
+  }
+
+  void _getGroupDashboardData()async{
+    try{
+      await Provider.of<Groups>(context,listen:false).getGroupDashboardData();
+    }on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getGroupDashboardData();
+          });
+    } finally {
+      setState(() {
+      });
+    }
   }
 
   @override
@@ -90,16 +116,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               fontWeight: FontWeight.w500,
                               color: Theme.of(context).textSelectionHandleColor,
                             ),
-//                        Text(
-//                          "Contributions",
-//                          style: TextStyle(
-//                            color: Theme.of(context)
-//                                .textSelectionHandleColor
-//                                .withOpacity(0.8),
-//                            fontSize: 18.0,
-//                            fontWeight: FontWeight.w800,
-//                          ),
-//                        ),
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
