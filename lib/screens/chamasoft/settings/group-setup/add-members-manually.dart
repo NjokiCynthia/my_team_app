@@ -10,6 +10,7 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -62,23 +63,10 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
       await Provider.of<Groups>(context, listen: false).addGroupMembers(members);
       Navigator.of(context).pop();
 
-      showCupertinoDialog(
-        context: context,
-        builder: (ctx) => CupertinoAlertDialog(
-            content: heading2(
-                text: "You have successfully added members to your group",
-                textAlign: TextAlign.center,
-                color: Theme.of(context).textSelectionHandleColor),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: subtitle1(text: "Okay", color: primaryColor),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pop(true);
-                },
-              )
-            ]),
-      );
+      alertDialogWithAction(context, "You have successfully added members to your group", () {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop(true);
+      });
     } on CustomException catch (error) {
       Navigator.of(context).pop();
       StatusHandler().handleStatus(
@@ -235,10 +223,6 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
       }
     }
 
-//    selectedContacts.add(CustomContact.simpleContact(
-//        simpleContact: SimpleContact(
-//            name: "The" + " " + "Shrike", firstName: "The", lastName: "Shrike", phoneNumber: "+254722000000", email: "dev.kapkei@gmail.com"),
-//        role: memberRole));
     return Scaffold(
       appBar: tertiaryPageAppbar(
           context: context,
@@ -249,16 +233,18 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.arrow_left,
           trailingIcon: LineAwesomeIcons.check,
-          trailingAction: () async {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                });
-            await _submitMembers(context);
-          }),
+          trailingAction: selectedContacts.length > 0
+              ? () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await _submitMembers(context);
+                }
+              : null),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,

@@ -65,9 +65,11 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
   _showPopup() => PopupMenuButton<int>(
         onSelected: (position) async {
           if (position == 1) {
-            Navigator.of(context).pushNamed(ListContacts.namedRoute);
+            final result = await Navigator.of(context).pushNamed(ListContacts.namedRoute);
+            if (result) _getMembers(context);
           } else {
-            Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
+            final result = await Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
+            if (result) _getMembers(context);
           }
         },
         itemBuilder: (context) => [
@@ -255,29 +257,6 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                             ),
                           ),
                         ),
-//              Positioned(
-//                bottom: 30.0,
-//                right: 20.0,
-//                child: Container(
-//                  height: 60.0,
-//                  child: FloatingActionButton(
-//                    onPressed: () {
-//                      int currentIndex = DefaultTabController.of(context).index;
-//                      print(currentIndex);
-//                      if (currentIndex == 0) {
-//                        Navigator.of(context).push(
-//                            MaterialPageRoute(builder: (BuildContext context) {
-//                          return ListContacts();
-//                        }));
-//                      }
-//                    },
-//                    backgroundColor: primaryColor,
-//                    child: Icon(
-//                      Icons.add,
-//                    ),
-//                  ),
-//                ),
-//              ),
                       ],
                     ),
                   );
