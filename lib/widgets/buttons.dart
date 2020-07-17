@@ -455,3 +455,28 @@ Widget positiveActionDialogButton({String text, Color color, Function action}) {
     color: primaryColor.withOpacity(0.2),
   );
 }
+
+ButtonTheme groupSetupButton(BuildContext context, String text, Function action) {
+  return ButtonTheme(
+    height: 36,
+    child: FlatButton(
+      onPressed: action,
+      padding: EdgeInsets.only(left: 4, right: 4),
+      shape: RoundedRectangleBorder(
+          side: BorderSide(color: Theme.of(context).hintColor, width: 1.0, style: BorderStyle.solid), borderRadius: BorderRadius.circular(4)),
+      child: Row(
+        children: <Widget>[
+          Icon(
+            LineAwesomeIcons.plus,
+            color: Theme.of(context).hintColor,
+            size: 16,
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          customTitle(text: text, fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+        ],
+      ),
+    ),
+  );
+}

@@ -1,12 +1,15 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
+import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
@@ -28,6 +31,7 @@ class ConfigureGroup extends StatefulWidget {
 }
 
 class _ConfigureGroupState extends State<ConfigureGroup> {
+  final GlobalKey<RefreshIndicatorState> _memberRefreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
   Future<void> _memberFuture, _accountFuture, _contributionFuture;
 
   Future<void> _getMembers(BuildContext context) async {
@@ -66,16 +70,22 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         onSelected: (position) async {
           if (position == 1) {
             final result = await Navigator.of(context).pushNamed(ListContacts.namedRoute);
-            if (result) _getMembers(context);
+            if (result) {
+              _memberRefreshIndicatorKey.currentState.show();
+              _getMembers(context);
+            }
           } else {
             final result = await Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
-            if (result) _getMembers(context);
+            if (result) {
+              _memberRefreshIndicatorKey.currentState.show();
+              _getMembers(context);
+            }
           }
         },
         itemBuilder: (context) => [
           PopupMenuItem(
             value: 1,
-            child: customTitle(text: "SELECT FROM CONTACTS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+            child: customTitle(text: "ADD FROM CONTACTS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
           ),
           PopupMenuItem(
             value: 2,
@@ -96,7 +106,10 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                   color: Theme.of(context).hintColor,
                   size: 16,
                 ),
-                customTitle(text: "SELECT MEMBERS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+                SizedBox(
+                  width: 5,
+                ),
+                customTitle(text: "ADD MEMBERS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
                 Container(
                   height: 36,
                   child: VerticalDivider(
@@ -159,6 +172,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                           builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                               ? Center(child: CircularProgressIndicator())
                                               : RefreshIndicator(
+                                                  key: _memberRefreshIndicatorKey,
                                                   onRefresh: () => _getMembers(context),
                                                   child: Consumer<Groups>(builder: (context, data, child) {
                                                     List<Member> members = data.members;
@@ -167,30 +181,60 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     ),
                                   ],
                                 ),
-                                FutureBuilder(
-                                  future: _accountFuture,
-                                  builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                      ? Center(child: CircularProgressIndicator())
-                                      : RefreshIndicator(
-                                          onRefresh: () => _getAccounts(context),
-                                          child: Consumer<Groups>(
-                                            builder: (context, data, child) {
-                                              List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
-                                              return AccountsTabView(accounts: accounts);
-                                            },
-                                          ),
+                                Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                                          child: groupSetupButton(context, "ADD BANK ACCOUNT", () {}),
                                         ),
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: FutureBuilder(
+                                        future: _accountFuture,
+                                        builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                                            ? Center(child: CircularProgressIndicator())
+                                            : RefreshIndicator(
+                                                onRefresh: () => _getAccounts(context),
+                                                child: Consumer<Groups>(
+                                                  builder: (context, data, child) {
+                                                    List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
+                                                    return AccountsTabView(accounts: accounts);
+                                                  },
+                                                ),
+                                              ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                FutureBuilder(
-                                    future: _contributionFuture,
-                                    builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                        ? Center(child: CircularProgressIndicator())
-                                        : RefreshIndicator(
-                                            onRefresh: () => _getContributions(context),
-                                            child: Consumer<Groups>(builder: (context, data, child) {
-                                              List<Contribution> contributions = data.contributions;
-                                              return ContributionsTabView(contributions: contributions);
-                                            }))),
+                                Column(
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                          margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                                          child: groupSetupButton(context, "ADD CONTRIBUTION", () {}),
+                                        ),
+                                      ],
+                                    ),
+                                    Expanded(
+                                      child: FutureBuilder(
+                                          future: _contributionFuture,
+                                          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                                              ? Center(child: CircularProgressIndicator())
+                                              : RefreshIndicator(
+                                                  onRefresh: () => _getContributions(context),
+                                                  child: Consumer<Groups>(builder: (context, data, child) {
+                                                    List<Contribution> contributions = data.contributions;
+                                                    return ContributionsTabView(contributions: contributions);
+                                                  }))),
+                                    ),
+                                  ],
+                                ),
                               ],
                             )),
                         Positioned(
@@ -203,7 +247,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                               title: Padding(
                                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     screenActionButton(
                                       icon: LineAwesomeIcons.arrow_left,
@@ -211,10 +255,25 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       textColor: primaryColor,
                                       action: () => Navigator.of(context).pop(),
                                     ),
-                                    SizedBox(width: 20.0),
-                                    heading2(
-                                        color: primaryColor,
-                                        text: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName + " Setup"),
+                                    SizedBox(width: 10.0),
+                                    Expanded(
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        child: heading2(
+                                            color: primaryColor,
+                                            text: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName + " Setup"),
+                                      ),
+                                    ),
+                                    SizedBox(width: 10.0),
+                                    smallBadgeButtonWithIcon(
+                                        text: "Dashboard",
+                                        backgroundColor: primaryColor.withOpacity(0.1),
+                                        textColor: primaryColor,
+                                        buttonHeight: 30.0,
+                                        textSize: 12.0,
+                                        iconData: LineAwesomeIcons.arrow_right,
+                                        action: () => Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(ChamasoftDashboard.namedRoute, ModalRoute.withName(MyGroups.namedRoute)))
                                   ],
                                 ),
                               ),
@@ -386,7 +445,7 @@ class AccountsTabView extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(SPACING_HUGE),
                   child: customTitleWithWrap(
-                      text: "Press the button on the bottom to add an account",
+                      text: "Add your first Bank Account",
                       fontWeight: FontWeight.w700,
                       fontSize: 14.0,
                       textAlign: TextAlign.center,
@@ -539,7 +598,7 @@ class ContributionsTabView extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.all(SPACING_HUGE),
                   child: customTitleWithWrap(
-                      text: "Press the button on the bottom to create your first contribution",
+                      text: "Add your first Contribution",
                       fontWeight: FontWeight.w700,
                       fontSize: 14.0,
                       textAlign: TextAlign.center,
