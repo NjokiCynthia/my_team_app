@@ -153,7 +153,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
               decoration: primaryGradient(context),
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
-                padding: EdgeInsets.all(40.0),
+                padding: EdgeInsets.only(top: 30, left: 40, right: 40, bottom: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
@@ -161,7 +161,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     heading1(text: "My Groups", color: Theme.of(context).textSelectionHandleColor),
                     subtitle1(text: "All groups I belong to", color: Theme.of(context).textSelectionHandleColor),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 10.0),
+                      padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                       child: auth.displayAvatar != null
                           ? CachedNetworkImage(
                               imageUrl: auth.displayAvatar,
@@ -185,7 +185,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
                     subtitle1(text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(2, 20, 2, 0),
+                      padding: EdgeInsets.fromLTRB(2, 10, 2, 0),
                       child: groupInfoButton(
                         context: context,
                         leadingIcon: LineAwesomeIcons.plus,
@@ -222,7 +222,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                       ),
                                       builder: (ctx, groups, ch) => buildContainer(
                                           ListView.builder(
-                                              padding: EdgeInsets.only(top: 15, bottom: 5, left: 2, right: 2),
+                                              padding: EdgeInsets.only(top: 10, bottom: 5, left: 2, right: 2),
                                               shrinkWrap: true,
                                               physics: BouncingScrollPhysics(),
                                               itemCount: groups.item.length,
