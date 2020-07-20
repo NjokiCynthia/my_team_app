@@ -160,11 +160,8 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   children: [
                     heading1(text: "My Groups", color: Theme.of(context).textSelectionHandleColor),
                     subtitle1(text: "All groups I belong to", color: Theme.of(context).textSelectionHandleColor),
-                    SizedBox(
-                      height: 20,
-                    ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                      padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 10.0),
                       child: auth.displayAvatar != null
                           ? CachedNetworkImage(
                               imageUrl: auth.displayAvatar,
@@ -187,17 +184,16 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     ),
                     heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
                     subtitle1(text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    groupInfoButton(
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(2, 20, 2, 0),
+                      child: groupInfoButton(
                         context: context,
                         leadingIcon: LineAwesomeIcons.plus,
                         trailingIcon: LineAwesomeIcons.angle_right,
                         hideTrailingIcon: true,
                         backgroundColor: primaryColor.withOpacity(0.2),
-                        title: "ADD NEW GROUP",
-                        subtitle: "Social Group, Merry-go-round, Fundraiser",
+                        title: "ADD NEW",
+                        subtitle: "Chama, Merry-go-round, Fundraiser",
                         textColor: primaryColor,
                         borderColor: primaryColor,
                         action: () async {
@@ -210,6 +206,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                               });
                           await fetchCountryOptions(context);
                         }),
+                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -225,9 +222,9 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                       ),
                                       builder: (ctx, groups, ch) => buildContainer(
                                           ListView.builder(
-                                              padding: EdgeInsets.only(top: 15, bottom: 5),
+                                              padding: EdgeInsets.only(top: 15, bottom: 5, left: 2, right: 2),
                                               shrinkWrap: true,
-                                              //physics: NeverScrollableScrollPhysics(),
+                                              physics: BouncingScrollPhysics(),
                                               itemCount: groups.item.length,
                                               itemBuilder: (ctx2, index) {
                                                 return groupInfoButton(
