@@ -10,6 +10,7 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -67,24 +68,10 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
       await Provider.of<Groups>(context, listen: false).addGroupMembers(members);
       Navigator.of(context).pop();
 
-      showCupertinoDialog(
-        context: context,
-        builder: (ctx) => CupertinoAlertDialog(
-            content: heading2(
-                text: "You have successfully added members to your group",
-                textAlign: TextAlign.center,
-                color: Theme.of(context).textSelectionHandleColor),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: subtitle1(text: "Okay", color: primaryColor),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  int count = 0;
-                  Navigator.of(context).popUntil((_) => count++ >= 2);
-                },
-              )
-            ]),
-      );
+      alertDialogWithAction(context, "You have successfully added members to your group", () {
+        Navigator.of(context).pop();
+        Navigator.of(context).pop(true);
+      });
     } on CustomException catch (error) {
       Navigator.of(context).pop();
       StatusHandler().handleStatus(

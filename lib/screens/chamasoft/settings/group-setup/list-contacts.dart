@@ -84,12 +84,13 @@ class _ListContactsState extends State<ListContacts> {
           leadingIcon: LineAwesomeIcons.close,
           title: "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,
-          trailingAction: () {
+          trailingAction: () async {
             if (_selectedContacts.length > 0) {
-              Navigator.of(context).push(MaterialPageRoute(
+              final result = await Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => SetMemberRoles(
                         initialSelectedContacts: _selectedContacts.toList(),
                       )));
+              result ? Navigator.of(context).pop(true) : Navigator.of(context).pop(false);
             }
           }),
       backgroundColor: Theme.of(context).backgroundColor,

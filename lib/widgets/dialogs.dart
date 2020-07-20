@@ -22,6 +22,16 @@ void alertDialog(BuildContext context, String message, [String title = "Somethin
           ));
 }
 
+void alertDialogWithAction(BuildContext context, String message, Function action) {
+  showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+            content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            actions: <Widget>[negativeActionDialogButton(text: "OKAY", color: Theme.of(context).textSelectionHandleColor, action: action)],
+          ));
+}
+
 void twoButtonAlertDialog(
     {BuildContext context, String message, String title, Function action, String yesText = "Continue", String noText = "Cancel"}) {
   showDialog(
