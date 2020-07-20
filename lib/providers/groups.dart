@@ -1735,6 +1735,7 @@ class Groups with ChangeNotifier {
         "initial_balance": initialBalance
       });
 
+      print(postRequest);
       try {
         await PostToServer.post(postRequest, url);
         await fetchAccounts();

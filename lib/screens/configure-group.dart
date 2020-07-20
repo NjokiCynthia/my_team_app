@@ -16,6 +16,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:provider/provider.dart';
 
+import 'chamasoft/settings/create-bank-account.dart';
 import 'chamasoft/settings/group-setup/list-contacts.dart';
 
 Map<String, String> roles = {
@@ -132,6 +133,16 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         offset: Offset(0, 100),
       );
 
+  Future<bool> fetchBankOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchBankOptions();
+      return true;
+    } on CustomException catch (error) {
+      print(error.message);
+      return false;
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -191,7 +202,25 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       children: <Widget>[
                                         Container(
                                           margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                                          child: groupSetupButton(context, "ADD BANK ACCOUNT", () {}),
+                                          child: groupSetupButton(context, "ADD BANK ACCOUNT", () async {
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return Center(
+                                                    child: CircularProgressIndicator(),
+                                                  );
+                                                });
+                                            final response = await fetchBankOptions(context);
+                                            Navigator.pop(context);
+
+                                            if (response) {
+                                              final result = await Navigator.of(context).pushNamed(CreateBankAccount.namedRoute);
+                                              if (result != null && result) {
+                                                _accountRefreshIndicatorKey.currentState.show();
+                                                _getAccounts(context);
+                                              }
+                                            }
+                                          }),
                                         ),
                                       ],
                                     ),
