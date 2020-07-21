@@ -25,9 +25,15 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   AnimationController _controller;
   DateTime currentBackPressTime;
 
-  Future<void> _getUserCheckinData(BuildContext context) async {
+  Future<void> _getUserCheckinData(BuildContext context,[bool refresh=false]) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
+      if(Provider.of<Groups>(context, listen: false).item.length>0){
+      }else{
+        refresh = true;
+      }
+      if(refresh){
+        await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
+      }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -96,12 +102,6 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   Navigator.of(context).pop();
                   StatusHandler().logout(context);
                 }
-
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => Login(),
-                //   ),
-                // ),
                 ),
           ],
         );
@@ -218,7 +218,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                             builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                 ? buildContainer(Center(child: CircularProgressIndicator()), 0, true)
                                 : RefreshIndicator(
-                                    onRefresh: () => _getUserCheckinData(context),
+                                    onRefresh: () => _getUserCheckinData(context,true),
                                     child: Consumer<Groups>(
                                       child: Center(
                                         child: Text("Groups"),
