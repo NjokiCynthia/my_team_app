@@ -36,9 +36,12 @@ class CustomHelper {
   }
 
   static Future<bool> validPhoneNumber(String phone, CountryCode countryCode) async {
-    String number = countryCode.dialCode + (phone.startsWith("0") ? phone.replaceFirst("0", "") : phone);
-    bool isValid = await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: number, isoCode: countryCode.code);
-    return isValid;
+    if (phone.trim().isNotEmpty) {
+      String number = countryCode.dialCode + (phone.startsWith("0") ? phone.replaceFirst("0", "") : phone);
+      bool isValid = await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: number, isoCode: countryCode.code);
+      return isValid;
+    } else
+      return false;
   }
 
   static String generateRandomStringCharacterPair(int length) {
