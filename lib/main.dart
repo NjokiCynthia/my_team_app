@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/create-bank-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contribution-dialog.dart';
@@ -63,6 +64,13 @@ class _MyAppState extends State<MyApp> {
           ),
           create: (BuildContext context) {},
         ),
+        ChangeNotifierProxyProvider<Auth, Dashboard>(
+          update: (ctx, auth,dashboardData) => Dashboard(
+            auth.id,
+            dashboardData==null?{}:dashboardData.dashboardData
+          ),
+          create: (BuildContext context) {},
+        )
       ],
       child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
         return MaterialApp(

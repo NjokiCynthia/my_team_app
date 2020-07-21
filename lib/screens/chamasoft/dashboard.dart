@@ -250,14 +250,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             return SafeArea(
               child: Container(
                 decoration: primaryGradient(context),
-                child:ChangeNotifierProxyProvider<Auth, Dashboard>(
-                  update: (ctx, auth,dashboardData) => Dashboard(
-                    auth.id,
-                    dashboardData==null?{}:dashboardData.dashboardData
-                  ),
-                  create: (BuildContext context) {},
-                  child: getPage(_currentPage),
-                )
+                child:getPage(_currentPage),
               ),
             );
           },
