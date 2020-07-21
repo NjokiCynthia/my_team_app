@@ -167,9 +167,9 @@ class _AppSwitcherState extends State<AppSwitcher> {
                                     ),
                                     child: Icon(
                                       _listItems[ndx]["id"] == widget.currentGroup["id"] ? Feather.check : Feather.plus,
-                                      color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
+                                      color: (_listItems[ndx]["id"] == widget.currentGroup["id"])
                                           ? primaryColor
-                                          : (_listItems[ndx]["id"] != widget.currentGroup["id"]) ? Colors.transparent : Colors.blueGrey[300],
+                                          : (_listItems[ndx]["id"] != widget.currentGroup["id"] && _listItems[ndx]["id"] != '0') ? Colors.transparent : Colors.blueGrey[300],
                                       size: 20.0,
                                     ),
                                   ),

@@ -52,10 +52,10 @@ List<BoxShadow> appSwitcherShadow(Color color) {
   return [
     BoxShadow(
       color: color,
-      blurRadius: 2.0,
+      blurRadius: 0.0,
       offset: Offset(
         0.0,
-        2.0,
+        1.0,
       ),
     ),
   ];
