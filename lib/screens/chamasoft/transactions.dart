@@ -58,7 +58,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         builder: (context, orientation) {
           return GridView.count(
             controller: _scrollController,
-            padding: EdgeInsets.all(12.0),
+            padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
             crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
             children: List.generate(list.length, (index) {
               return gridButton(
@@ -69,7 +69,10 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                 isHighlighted: (index == 0) ? true : false,
                 action: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) => TransactionMenuDetails(),
-                    settings: RouteSettings(arguments: index))),
+                    settings: RouteSettings(arguments: index)
+                  )
+                ),
+                margin: 12
               );
             }),
           );

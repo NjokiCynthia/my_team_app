@@ -66,7 +66,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           builder: (context, orientation) {
             return GridView.count(
               controller: _scrollController,
-              padding: EdgeInsets.all(12.0),
+              padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
               children: List.generate(list.length, (index) {
                 ReportMenu menu = list[index];
@@ -78,6 +78,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   color: (index == 6) ? Colors.white : Colors.blue[400],
                   isHighlighted: (index == 6) ? true : false,
                   action: () => navigate(index),
+                  margin: 12
                 );
               }),
             );
