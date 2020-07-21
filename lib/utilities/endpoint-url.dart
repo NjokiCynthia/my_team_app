@@ -4,6 +4,8 @@ class EndpointUrl {
   //Dashboard
   static const String GET_MEMBERS_AND_DETAILS = CustomHelper.baseUrl + "/mobile/members/get_members_and_details";
   static const String GET_MEMBER_DASHBOARD = CustomHelper.baseUrl + "/mobile/get_member_dashboard";
+  static const String GET_MEMBER_DASHBOARD_DATA = CustomHelper.baseUrl + "/mobile/get_member_dashboard_data";
+  static const String GET_GROUP_DASHBOARD_DATA = CustomHelper.baseUrl + "/mobile/get_group_dashboard_data";
 
   //On-boarding
   static const String GENERATE_OTP = CustomHelper.baseUrl + "/mobile/generate_pin";
