@@ -512,7 +512,7 @@ class Groups with ChangeNotifier {
     } else {
       _groups = loadedGroups;
     }
-    print("Groups : ${_groups.length}");
+    print("Groups loaded : ${_groups.length}");
     notifyListeners();
   }
 
