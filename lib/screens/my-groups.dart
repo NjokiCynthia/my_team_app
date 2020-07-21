@@ -109,27 +109,6 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
     );
   }
 
-  Future<void> fetchCountryOptions(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
-      Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup()));
-    } on CustomException catch (error) {
-      print(error.message);
-      final snackBar = SnackBar(
-        content: Text('Network Error occurred: could not fetch countries'),
-        action: SnackBarAction(
-          label: 'Retry',
-          onPressed: () async {
-            fetchCountryOptions(context);
-          },
-        ),
-      );
-      Navigator.pop(context);
-      Scaffold.of(context).showSnackBar(snackBar);
-    }
-  }
-
   Future<bool> _onWillPop() {
     DateTime now = DateTime.now();
     if (currentBackPressTime == null || now.difference(currentBackPressTime) > Duration(seconds: 2)) {
@@ -200,16 +179,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                         subtitle: "Social Group, Merry-go-round, Fundraiser",
                         textColor: primaryColor,
                         borderColor: primaryColor,
-                        action: () async {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              });
-                          await fetchCountryOptions(context);
-                        }),
+                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup()))),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
