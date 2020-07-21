@@ -43,12 +43,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     super.initState();
   }
 
-  // @override
-  // void dispose() {
-  //   _scrollController?.removeListener(_scrollListener);
-  //   _scrollController?.dispose();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
+    super.dispose();
+  }
 
   @override
   void didChangeDependencies(){
@@ -75,7 +75,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           context: context,
           error: error,
           callback: () {
-            //_getGroupDashboardData(currentGroupId);
+            _getGroupDashboardData(currentGroupId);
           });
     } finally {
       setState(() {

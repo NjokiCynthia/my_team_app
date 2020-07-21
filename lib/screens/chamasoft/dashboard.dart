@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
