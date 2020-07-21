@@ -81,7 +81,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     _overlayItems.insert(0, {
       "id": '0',
       "title": "Create New",
-      "role": "Group, Merry-go-round, fundraiser"
+      "role": "Chama, Merry-go-round, fundraiser"
     });
     _groups.map((group) => {
       _overlayItems.add(

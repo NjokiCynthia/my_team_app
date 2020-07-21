@@ -61,7 +61,7 @@ class _CustomOverlay extends StatelessWidget {
         child: new CustomSingleChildLayout(
           delegate: new _CustomDelegate(
             target: target,
-            verticalOffset: -5.0,
+            verticalOffset: -4.0,
           ),
           child: new Padding(
               padding: const EdgeInsets.symmetric(
@@ -71,7 +71,7 @@ class _CustomOverlay extends StatelessWidget {
                 children: <Widget>[
                   new Container(
                     width: width,
-                    constraints: BoxConstraints(maxHeight: height),
+                    constraints: BoxConstraints(maxHeight: (height - 6)),
                     alignment: Alignment.topLeft,
                     color: Colors.transparent,
 //                    decoration: new BoxDecoration(
@@ -90,6 +90,13 @@ class _CustomOverlay extends StatelessWidget {
   }
 }
 
+class SwitcherScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
+}
 class _AppSwitcherState extends State<AppSwitcher> {
   List<dynamic> _listItems;
   OverlayState _overlay;
@@ -140,148 +147,92 @@ class _AppSwitcherState extends State<AppSwitcher> {
                   child: Container(
                     decoration: new BoxDecoration(
                       color: Theme.of(context).backgroundColor,
-                      boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
+                      boxShadow: appSwitcherShadow(Theme.of(context).unselectedWidgetColor),
                       // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
                     ),
-                    child: ListView.builder(
-                      padding: const EdgeInsets.all(0.0),
-                      itemBuilder: (BuildContext context, int ndx) {
-                        return new Container(
-                          color: (_listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue[200].withOpacity(0.2) : Colors.transparent,
-                          child: new ListTile(
-                            dense: true,
-                            title: Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                    right: 10.0,
+                    child: ScrollConfiguration(
+                      behavior: SwitcherScrollBehavior(),
+                      child:ListView.builder(
+                        padding: const EdgeInsets.all(0.0),
+                        itemBuilder: (BuildContext context, int ndx) {
+                          return new Container(
+                            color: (_listItems[ndx]["id"] == widget.currentGroup["id"]) ? Colors.blue[200].withOpacity(0.2) : Colors.transparent,
+                            child: new ListTile(
+                              dense: true,
+                              title: Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                      right: 10.0,
+                                    ),
+                                    child: Icon(
+                                      _listItems[ndx]["id"] == widget.currentGroup["id"] ? Feather.check : Feather.plus,
+                                      color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
+                                          ? primaryColor
+                                          : (_listItems[ndx]["id"] != widget.currentGroup["id"]) ? Colors.transparent : Colors.blueGrey[300],
+                                      size: 20.0,
+                                    ),
                                   ),
-                                  child: Icon(
-                                    _listItems[ndx]["id"] == widget.currentGroup["id"] ? Feather.check : Feather.plus,
-                                    color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
-                                        ? primaryColor
-                                        : (_listItems[ndx]["id"] != widget.currentGroup["id"]) ? Colors.transparent : Colors.blueGrey[300],
-                                    size: 20.0,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Text(
-                                        _listItems[ndx]["title"].toString().toUpperCase(),
-                                        style: TextStyle(
-                                          color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
-                                              ? primaryColor
-                                              : Colors.blueGrey[400], //Theme.of(context).textSelectionHandleColor,
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.w600,
-                                          fontFamily: 'SegoeUI',
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          _listItems[ndx]["title"].toString().toUpperCase(),
+                                          style: TextStyle(
+                                            color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
+                                                ? primaryColor
+                                                : Colors.blueGrey[400], //Theme.of(context).textSelectionHandleColor,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.w600,
+                                            fontFamily: 'SegoeUI',
+                                          ),
+                                          softWrap: false,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.fade,
                                         ),
-                                        softWrap: false,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.fade,
-                                      ),
-                                      Text(
-                                        _listItems[ndx]["role"],
-                                        style: TextStyle(
-                                          color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
-                                              ? primaryColor.withOpacity(0.7)
-                                              : Colors.blueGrey[300], //Theme.of(context).indicatorColor,
-                                          fontSize: 12.0,
-                                          fontFamily: 'SegoeUI',
-//                                    fontWeight: FontWeight.w600,
-                                        ),
-                                        softWrap: false,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.fade,
-                                      )
-                                    ],
+                                        Text(
+                                          _listItems[ndx]["role"],
+                                          style: TextStyle(
+                                            color: (_listItems[ndx]["id"] == 0 || _listItems[ndx]["id"] == widget.currentGroup["id"])
+                                                ? primaryColor.withOpacity(0.7)
+                                                : Colors.blueGrey[300], //Theme.of(context).indicatorColor,
+                                            fontSize: 12.0,
+                                            fontFamily: 'SegoeUI',
+  //                                    fontWeight: FontWeight.w600,
+                                          ),
+                                          softWrap: false,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.fade,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
+                              onTap: () {
+                                // print('Chose: ${_listItems[ndx]["title"]}');
+                                _handleSelection(_listItems[ndx]["id"]);
+                              },
                             ),
-                            onTap: () {
-                              // print('Chose: ${_listItems[ndx]["title"]}');
-                              _handleSelection(_listItems[ndx]["id"]);
-                            },
-                          ),
-                        );
-                      },
-                      itemCount: _listItems.length,
+                          );
+                        },
+                        itemCount: _listItems.length,
+                      ),
                     ),
                   ),
                 ),
                 Container(
                   color: null,
                   decoration: BoxDecoration(
-                    boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
+                    boxShadow: appSwitcherShadow(Theme.of(context).unselectedWidgetColor),
                     color: Theme.of(context).buttonColor,
                     borderRadius: new BorderRadius.only(
                       bottomRight: Radius.circular(20.0),
                       bottomLeft: Radius.circular(20.0),
                     ),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Flexible(
-                                fit: FlexFit.tight,
-                                child: customTitle(
-                                  text: 'Learn more about groups',
-                                  fontFamily: 'SegoeUI',
-                                  fontWeight: FontWeight.w200,
-                                  fontSize: 10.0,
-                                  color: primaryColor,
-                                ),
-                              ),
-                              Icon(
-                                Icons.chevron_right,
-                                size: 10.0,
-                                color: primaryColor,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 2.0,
-                      ),
-                      Flexible(
-                        flex: 1,
-                        child: FittedBox(
-                          child: FlatButton(
-                            onPressed: () {},
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: <Widget>[
-                                customTitle(
-                                  text: 'Pricing',
-                                  fontFamily: 'SegoeUI',
-                                  fontWeight: FontWeight.w200,
-                                  fontSize: 10.0,
-                                  color: primaryColor,
-                                ),
-                                Icon(
-                                  Icons.chevron_right,
-                                  size: 10.0,
-                                  color: primaryColor,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
                 ),
               ],
             ),
@@ -331,25 +282,28 @@ class _AppSwitcherState extends State<AppSwitcher> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Icon(
-                          Icons.beenhere,
-                          size: 12.0,
-                        ),
-                        SizedBox(width: 4.0),
+                        // Icon(
+                        //   Icons.beenhere,
+                        //   size: 12.0,
+                        // ),
+                        // SizedBox(width: 4.0),
                         Flexible(
                           fit: FlexFit.loose,
-                          child: Text(
-                            role.toUpperCase(),
-                            style: TextStyle(
-                              color: primaryColor,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 11.0,
-                              fontFamily: 'SegoeUI',
+                          child: Padding(
+                            padding: EdgeInsets.only(bottom: 2),
+                            child: Text(
+                              role,//.toUpperCase(),
+                              style: TextStyle(
+                                color: primaryColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 11.0,
+                                fontFamily: 'SegoeUI',
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.fade,
+                              softWrap: false,
+                              textAlign: TextAlign.end,
                             ),
-                            maxLines: 1,
-                            overflow: TextOverflow.fade,
-                            softWrap: false,
-                            textAlign: TextAlign.end,
                           ),
                         ),
                       ],
