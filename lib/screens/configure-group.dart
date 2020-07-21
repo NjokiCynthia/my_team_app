@@ -74,13 +74,13 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         onSelected: (position) async {
           if (position == 1) {
             final result = await Navigator.of(context).pushNamed(ListContacts.namedRoute);
-            if (result) {
+            if (result != null && result) {
               _memberRefreshIndicatorKey.currentState.show();
               _getMembers(context);
             }
           } else {
             final result = await Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
-            if (result) {
+            if (result != null && result) {
               _memberRefreshIndicatorKey.currentState.show();
               _getMembers(context);
             }

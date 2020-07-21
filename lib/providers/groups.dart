@@ -2784,5 +2784,6 @@ class Groups with ChangeNotifier {
     _totalGroupFinesSummary = 0;
     _categorisedAccounts = [];
     _bankLoans = [];
+    _groupRolesStatusAndCurrentMemberStatus = null;
   }
 }

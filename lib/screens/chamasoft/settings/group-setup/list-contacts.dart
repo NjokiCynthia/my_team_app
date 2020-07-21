@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-roles.dart';
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-member-roles.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -90,7 +90,9 @@ class _ListContactsState extends State<ListContacts> {
                   builder: (BuildContext context) => SetMemberRoles(
                         initialSelectedContacts: _selectedContacts.toList(),
                       )));
-              result ? Navigator.of(context).pop(true) : Navigator.of(context).pop(false);
+              if (result != null && result) {
+                Navigator.of(context).pop(true);
+              }
             }
           }),
       backgroundColor: Theme.of(context).backgroundColor,
