@@ -97,8 +97,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                   child: Container(
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(
-                        gradient: plainCardGradient(context), context: context),
+                    decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[

@@ -226,7 +226,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                   color: null,
                   decoration: BoxDecoration(
                     boxShadow: appSwitcherShadow(Theme.of(context).unselectedWidgetColor),
-                    color: Theme.of(context).buttonColor,
+                    color: Theme.of(context).backgroundColor,
                     borderRadius: new BorderRadius.only(
                       bottomRight: Radius.circular(20.0),
                       bottomLeft: Radius.circular(20.0),
