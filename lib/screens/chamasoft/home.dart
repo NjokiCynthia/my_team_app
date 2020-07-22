@@ -65,11 +65,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   void didChangeDependencies(){
     _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
     if(_isInit){
-      _getMemberDashboardData(_currentGroup.groupId);
-    }
-    setState(() {
-      _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
-    });    
+      _getMemberDashboardData();
+    }   
     _groupCurrency = _currentGroup.groupCurrency;
     super.didChangeDependencies();
   }
@@ -79,7 +76,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
-  void _getMemberDashboardData(String currentGroupId)async{
+  void _getMemberDashboardData()async{
     // WidgetsBinding.instance.addPostFrameCallback((_) async {
     //   showDialog<String>(
     //       context: context,
@@ -91,17 +88,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     //       });
     // });
     try{
-      await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(currentGroupId);
+      await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(_currentGroup.groupId);
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _getMemberDashboardData(currentGroupId);
+            _getMemberDashboardData();
           });
     } finally {
       setState(() {
         _isInit = false;
+        _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
       });
     }
     //Navigator.of(context, rootNavigator: true).pop();

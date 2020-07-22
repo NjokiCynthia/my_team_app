@@ -122,7 +122,7 @@ class BarChartSample4State extends State<BarChartSample4> {
             borderData: FlBorderData(
               show: false,
             ),
-            //groupsSpace: 4,
+            groupsSpace: 4,
             barGroups: list,
           ),
         ),
