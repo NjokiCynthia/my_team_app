@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
@@ -250,14 +248,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             return SafeArea(
               child: Container(
                 decoration: primaryGradient(context),
-                child:ChangeNotifierProxyProvider<Auth, Dashboard>(
-                  update: (ctx, auth,dashboardData) => Dashboard(
-                    auth.id,
-                    dashboardData==null?{}:dashboardData.dashboardData
-                  ),
-                  create: (BuildContext context) {},
-                  child: getPage(_currentPage),
-                )
+                child:getPage(_currentPage),
               ),
             );
           },

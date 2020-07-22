@@ -208,9 +208,13 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
           addedCurrentUser = true;
           List<Item> item = [];
           item.add(Item(value: auth.userIdentity));
-          CustomContact customContact = CustomContact(
-              contact: Contact(displayName: auth.userName, givenName: auth.firstNameOnly, familyName: auth.lastNameOnly, phones: item),
-              role: memberRole);
+          SimpleContact simpleContact = SimpleContact(
+              name: auth.userName,
+              firstName: auth.firstNameOnly,
+              lastName: auth.lastNameOnly,
+              phoneNumber: auth.phoneNumber,
+              email: auth.emailAddress);
+          CustomContact customContact = CustomContact.simpleContact(simpleContact: simpleContact, role: memberRole);
           selectedContacts.insert(0, customContact);
         }
       }
@@ -338,18 +342,21 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                           textSize: 12.0,
                                         ),
                                         SizedBox(width: 10.0),
-                                        screenActionButton(
-                                          icon: LineAwesomeIcons.close,
-                                          backgroundColor: Colors.red.withOpacity(0.1),
-                                          textColor: Colors.red,
-                                          action: () {
-                                            setState(() {
-                                              _updateRoleStatus(selectedContacts[index].role, memberRole);
-                                              selectedContacts.removeAt(index);
-                                            });
-                                          },
-                                          buttonSize: 30.0,
-                                          iconSize: 16.0,
+                                        Visibility(
+                                          visible: !(addedCurrentUser && index == 0),
+                                          child: screenActionButton(
+                                            icon: LineAwesomeIcons.close,
+                                            backgroundColor: Colors.red.withOpacity(0.1),
+                                            textColor: Colors.red,
+                                            action: () {
+                                              setState(() {
+                                                _updateRoleStatus(selectedContacts[index].role, memberRole);
+                                                selectedContacts.removeAt(index);
+                                              });
+                                            },
+                                            buttonSize: 30.0,
+                                            iconSize: 16.0,
+                                          ),
                                         ),
                                       ],
                                     ),

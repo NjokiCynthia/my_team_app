@@ -1,4 +1,7 @@
+import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/chamasoft/settings/create-bank-account.dart';
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contribution-dialog.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
 import 'package:chamasoft/screens/configure-group.dart';
@@ -61,6 +64,14 @@ class _MyAppState extends State<MyApp> {
           ),
           create: (BuildContext context) {},
         ),
+        ChangeNotifierProxyProvider<Auth, Dashboard>(
+          update: (ctx, auth,dashboardData) => Dashboard(
+            auth.id,
+            dashboardData==null?{}:dashboardData.memberDashboardData,
+            dashboardData==null?{}:dashboardData.groupDashboardData
+          ),
+          create: (BuildContext context) {},
+        )
       ],
       child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
@@ -77,6 +88,8 @@ class _MyAppState extends State<MyApp> {
             CreateGroup.namedRoute: (ctx) => CreateGroup(),
             ConfigureGroup.namedRoute: (ctx) => ConfigureGroup(),
             ListContacts.namedRoute: (ctx) => ListContacts(),
+            CreateBankAccount.namedRoute: (ctx) => CreateBankAccount(),
+            AddContributionDialog.namedRoute: (ctx) => AddContributionDialog(),
             AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
           },

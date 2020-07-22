@@ -214,6 +214,10 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 });
               },
             ),
+<<<<<<< HEAD
+=======
+            //tobe implemented in next phase
+>>>>>>> bc1fb1513cfca8f7bfddeedcc82916940d07bff7
             // PopupMenuButton(
             //   child: ListTile(
             //     dense: true,

@@ -25,9 +25,15 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   AnimationController _controller;
   DateTime currentBackPressTime;
 
-  Future<void> _getUserCheckinData(BuildContext context) async {
+  Future<void> _getUserCheckinData(BuildContext context,[bool refresh=false]) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
+      if(Provider.of<Groups>(context, listen: false).item.length>0){
+      }else{
+        refresh = true;
+      }
+      if(refresh){
+        await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
+      }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -96,38 +102,11 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   Navigator.of(context).pop();
                   StatusHandler().logout(context);
                 }
-
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => Login(),
-                //   ),
-                // ),
                 ),
           ],
         );
       },
     );
-  }
-
-  Future<void> fetchCountryOptions(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
-      Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup()));
-    } on CustomException catch (error) {
-      print(error.message);
-      final snackBar = SnackBar(
-        content: Text('Network Error occurred: could not fetch countries'),
-        action: SnackBarAction(
-          label: 'Retry',
-          onPressed: () async {
-            fetchCountryOptions(context);
-          },
-        ),
-      );
-      Navigator.pop(context);
-      Scaffold.of(context).showSnackBar(snackBar);
-    }
   }
 
   Future<bool> _onWillPop() {
@@ -196,6 +175,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                         subtitle: "Chama, Merry-go-round, Fundraiser",
                         textColor: primaryColor,
                         borderColor: primaryColor,
+<<<<<<< HEAD
                         action: () async {
                           showDialog(
                               context: context,
@@ -207,6 +187,9 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                           await fetchCountryOptions(context);
                         }),
                     ),
+=======
+                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup()))),
+>>>>>>> bc1fb1513cfca8f7bfddeedcc82916940d07bff7
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -215,7 +198,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                             builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                 ? buildContainer(Center(child: CircularProgressIndicator()), 0, true)
                                 : RefreshIndicator(
-                                    onRefresh: () => _getUserCheckinData(context),
+                                    onRefresh: () => _getUserCheckinData(context,true),
                                     child: Consumer<Groups>(
                                       child: Center(
                                         child: Text("Groups"),

@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contribution-dialog.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -15,6 +16,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:provider/provider.dart';
 
+import 'chamasoft/settings/create-bank-account.dart';
 import 'chamasoft/settings/group-setup/list-contacts.dart';
 
 Map<String, String> roles = {
@@ -32,6 +34,8 @@ class ConfigureGroup extends StatefulWidget {
 
 class _ConfigureGroupState extends State<ConfigureGroup> {
   final GlobalKey<RefreshIndicatorState> _memberRefreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _accountRefreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _contributionRefreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
   Future<void> _memberFuture, _accountFuture, _contributionFuture;
 
   Future<void> _getMembers(BuildContext context) async {
@@ -70,13 +74,13 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         onSelected: (position) async {
           if (position == 1) {
             final result = await Navigator.of(context).pushNamed(ListContacts.namedRoute);
-            if (result) {
+            if (result != null && result) {
               _memberRefreshIndicatorKey.currentState.show();
               _getMembers(context);
             }
           } else {
             final result = await Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
-            if (result) {
+            if (result != null && result) {
               _memberRefreshIndicatorKey.currentState.show();
               _getMembers(context);
             }
@@ -128,6 +132,16 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         ),
         offset: Offset(0, 100),
       );
+
+  Future<bool> fetchBankOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchBankOptions();
+      return true;
+    } on CustomException catch (error) {
+      print(error.message);
+      return false;
+    }
+  }
 
   @override
   void dispose() {
@@ -188,7 +202,25 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       children: <Widget>[
                                         Container(
                                           margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                                          child: groupSetupButton(context, "ADD BANK ACCOUNT", () {}),
+                                          child: groupSetupButton(context, "ADD BANK ACCOUNT", () async {
+                                            showDialog(
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return Center(
+                                                    child: CircularProgressIndicator(),
+                                                  );
+                                                });
+                                            final response = await fetchBankOptions(context);
+                                            Navigator.pop(context);
+
+                                            if (response) {
+                                              final result = await Navigator.of(context).pushNamed(CreateBankAccount.namedRoute);
+                                              if (result != null && result) {
+                                                _accountRefreshIndicatorKey.currentState.show();
+                                                _getAccounts(context);
+                                              }
+                                            }
+                                          }),
                                         ),
                                       ],
                                     ),
@@ -198,6 +230,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                         builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                             ? Center(child: CircularProgressIndicator())
                                             : RefreshIndicator(
+                                                key: _accountRefreshIndicatorKey,
                                                 onRefresh: () => _getAccounts(context),
                                                 child: Consumer<Groups>(
                                                   builder: (context, data, child) {
@@ -217,7 +250,13 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       children: <Widget>[
                                         Container(
                                           margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                                          child: groupSetupButton(context, "ADD CONTRIBUTION", () {}),
+                                          child: groupSetupButton(context, "ADD CONTRIBUTION", () async {
+                                            final result = await Navigator.of(context).pushNamed(AddContributionDialog.namedRoute);
+                                            if (result != null && result) {
+                                              _contributionRefreshIndicatorKey.currentState.show();
+                                              _getContributions(context);
+                                            }
+                                          }),
                                         ),
                                       ],
                                     ),
@@ -227,6 +266,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                           builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                               ? Center(child: CircularProgressIndicator())
                                               : RefreshIndicator(
+                                                  key: _contributionRefreshIndicatorKey,
                                                   onRefresh: () => _getContributions(context),
                                                   child: Consumer<Groups>(builder: (context, data, child) {
                                                     List<Contribution> contributions = data.contributions;
