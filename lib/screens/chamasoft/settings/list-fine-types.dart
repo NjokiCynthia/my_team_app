@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'create-contribution.dart';
+import 'contribution/create-contribution.dart';
 
 class ListFineTypes extends StatefulWidget {
   @override
@@ -81,15 +81,13 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                     Text(
                                       '${fineType.name}',
                                       style: TextStyle(
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
+                                        color: Theme.of(context).textSelectionHandleColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 18.0,
                                       ),
                                     ),
                                     Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                      crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
@@ -97,9 +95,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                               'Balance: ',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor
-                                                    .withOpacity(0.5),
+                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                 fontSize: 12.0,
                                               ),
                                             ),
@@ -107,9 +103,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                               '${fineType.balance}',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w900,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor
-                                                    .withOpacity(0.5),
+                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                 fontSize: 12.0,
                                               ),
                                             ),
@@ -133,8 +127,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
                                 smallBadgeButton(
-                                  backgroundColor:
-                                      primaryColor.withOpacity(0.2),
+                                  backgroundColor: primaryColor.withOpacity(0.2),
                                   textColor: primaryColor,
                                   text: '${fineType.amount}',
                                   action: () {},

@@ -22,9 +22,10 @@ void alertDialog(BuildContext context, String message, [String title = "Somethin
           ));
 }
 
-void alertDialogWithAction(BuildContext context, String message, Function action) {
+void alertDialogWithAction(BuildContext context, String message, Function action, [bool dismissible = true]) {
   showDialog(
       context: context,
+      barrierDismissible: dismissible,
       builder: (ctx) => AlertDialog(
             content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
