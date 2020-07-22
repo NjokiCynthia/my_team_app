@@ -53,7 +53,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
   void didChangeDependencies(){
     _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
     if(_isInit){
-      _getGroupDashboardData(_currentGroup.groupId);
+      _getGroupDashboardData();
     }
     _groupCurrency = _currentGroup.groupCurrency;
     super.didChangeDependencies();
@@ -64,7 +64,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     return null;
   }
 
-  void _getGroupDashboardData(String currentGroupId)async{
+  void _getGroupDashboardData()async{
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
           context: context,
@@ -76,13 +76,13 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
           });
     });
     try{
-      await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(currentGroupId);
+      await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(_currentGroup.groupId);
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _getGroupDashboardData(currentGroupId);
+            _getGroupDashboardData();
           });
     } finally {
       setState(() {
@@ -450,7 +450,10 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   onPressed: () {})
                             ],
                           ),
-                          BarChartSample4()
+                          Expanded(
+                            flex: 1,
+                            child: BarChartSample4(),
+                          )
                         ],
                       ),
                     ))
