@@ -1,8 +1,17 @@
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/settings/contribution/validate-contribution-settings.dart';
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/contribution-setup-list.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/date-picker.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textfields.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class ContributionSettings extends StatefulWidget {
   final VoidCallback onButtonPressed;
@@ -14,71 +23,138 @@ class ContributionSettings extends StatefulWidget {
 }
 
 class _ContributionSettingsState extends State<ContributionSettings> {
-  double contributionAmount = 0;
+  final _formKey = GlobalKey<FormState>();
+  bool _isFormEnabled = true;
+  var _isLoading = false;
+
+  String requestId = ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
+
+  String _contributionAmount;
   int startingMonthId;
-  int dayOfMonthId;
-  String contributionName = '';
 
-//  "one_time_invoicing_active": 1,
-  int contributionTypeId;
-
-//  "regular_invoicing_active": 1,
-//  "week_number_fortnight": 0,
-  int weekdayId;
+  //int dayOfMonthId;
+  String _contributionName;
+  int _contributionTypeId;
+  int _daysOfTheMonth;
+  int _weekDay = 0;
+  DateTime now = DateTime.now();
+  DateTime _invoiceDate = DateTime.now();
+  DateTime _contributionDate = DateTime.now();
+  final dateFormat = DateFormat('dd-MM-y');
+  int _weekDayWeeklyId;
   int weekNumberId;
   int twoWeekdayId;
-  int dateOfMonthId;
-
-//  "week_day_fortnight": 0,
-//  "week_day_weekly": 0,
-//  "week_day_monthly": 0,
-//  "month_day_monthly": 10,
-//  "invoice_days": 1,
   int contributionFrequencyId;
 
-//  "contribution_date": "01-01-1970",
-//  "invoice_date": "01-01-1970"
+  void _submit(BuildContext context) async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    setState(() {
+      _isFormEnabled = false;
+      _isLoading = true;
+    });
+
+    Map<String, dynamic> formData = {};
+
+    formData["request_id"] = requestId;
+    formData["amount"] = _contributionAmount;
+    formData["name"] = _contributionName;
+    formData["type"] = _contributionTypeId;
+    formData['contribution_frequency'] = contributionFrequencyId;
+    formData["month_day_monthly"] = _daysOfTheMonth;
+    formData['month_day_multiple'] = _daysOfTheMonth;
+    formData["start_month_multiple"] = startingMonthId;
+    formData["week_number_fortnight"] = weekNumberId;
+    formData["week_day_multiple"] = _weekDay;
+    formData["week_day_monthly"] = _weekDay;
+    formData["week_day_fortnight"] = _weekDayWeeklyId;
+    formData["week_day_weekly"] = _weekDayWeeklyId;
+    formData["contribution_date"] = dateFormat.format(_contributionDate);
+    formData["invoice_date"] = dateFormat.format(_invoiceDate);
+    formData['regular_invoicing_active'] = 1;
+    formData['one_time_invoicing_active'] = 1;
+    formData['invoice_days'] = 1;
+    //formData["id"] = null; //TODO: Editing
+
+    print(formData);
+
+    try {
+      final response = await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData);
+      print(response);
+      requestId = null;
+      alertDialogWithAction(context, response["message"].toString(), () {
+        Navigator.of(context).pop();
+        widget.onButtonPressed.call();
+      }, false);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormEnabled = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       height: MediaQuery.of(context).size.height,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ListTile(
-            title: Text(
-              "Settings",
-              style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-            ),
-            subtitle: Text(
-              "Configure the behaviour of your contribution",
-              style: TextStyle(color: Theme.of(context).bottomAppBarColor),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              customTitle(
+                  text: "Settings", color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w400, textAlign: TextAlign.start),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              subtitle2(
+                  text: "Configure the behaviour of your contribution",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.start),
+            ],
           ),
           Expanded(
             child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-//                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      CustomDropDownButton(
-                        labelText: "Select Contribution Type",
-                        listItems: contributionTypeOptions,
-                        selectedItem: contributionTypeId,
-                        onChanged: (value) {
-                          setState(() {
-                            contributionTypeId = value;
-                          });
-                        },
-                      ),
-                      Visibility(
-                        visible: contributionTypeId == 1,
-                        child: CustomDropDownButton(
+              child: Form(
+                key: _formKey,
+                child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                  CustomDropDownButton(
+                    labelText: "Select Contribution Type",
+                    listItems: contributionTypeOptions,
+                    selectedItem: _contributionTypeId,
+                    onChanged: (value) {
+                      setState(() {
+                        _contributionTypeId = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return "This field is required";
+                      }
+                      return null;
+                    },
+                  ),
+                  Visibility(
+                    visible: _contributionTypeId == 1,
+                    child: Column(
+                      children: <Widget>[
+                        CustomDropDownButton(
                           labelText: "Select Frequency",
+                          enabled: _isFormEnabled,
                           listItems: getContributionFrequencyOptions,
                           selectedItem: contributionFrequencyId,
                           onChanged: (value) {
@@ -86,134 +162,235 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                               contributionFrequencyId = value;
                             });
                           },
-                        ),
-                      ),
-                      Visibility(
-                        visible: contributionFrequencyId == 1 ||
-                            contributionFrequencyId == 2 ||
-                            contributionFrequencyId == 3 ||
-                            contributionFrequencyId == 4 ||
-                            contributionFrequencyId == 5 ||
-                            contributionFrequencyId == 9,
-                        child: CustomDropDownButton(
-                          labelText: "Select Day of Month",
-                          listItems: getDaysOfTheMonth,
-                          selectedItem: dateOfMonthId,
-                          onChanged: (value) {
-                            setState(() {
-                              dateOfMonthId = value;
-                            });
+                          validator: (value) {
+                            if (_contributionTypeId == 1) if (value == null) {
+                              return "This field is required";
+                            }
+                            return null;
                           },
                         ),
-                      ),
-                      Visibility(
-                        visible: contributionFrequencyId == 7,
-                        child: CustomDropDownButton(
-                          labelText: "Select Day of Week",
-                          listItems: getEveryTwoWeekDays,
-                          selectedItem: twoWeekdayId,
-                          onChanged: (value) {
-                            setState(() {
-                              twoWeekdayId = value;
-                            });
-                          },
+                        Visibility(
+                          visible: contributionFrequencyId == 1 ||
+                              contributionFrequencyId == 2 ||
+                              contributionFrequencyId == 3 ||
+                              contributionFrequencyId == 4 ||
+                              contributionFrequencyId == 5 ||
+                              contributionFrequencyId == 9,
+                          child: CustomDropDownButton(
+                            labelText: "Select Day of Month",
+                            listItems: getDaysOfTheMonth,
+                            enabled: _isFormEnabled,
+                            selectedItem: _daysOfTheMonth,
+                            onChanged: (value) {
+                              setState(() {
+                                _daysOfTheMonth = value;
+                              });
+                            },
+                            validator: (value) {
+                              if (!ValidateSettings().validate(
+                                  contributionType: _contributionTypeId,
+                                  selectedFrequency: contributionFrequencyId,
+                                  daysOfTheMonth: _daysOfTheMonth,
+                                  weekDayWeekly: _weekDayWeeklyId,
+                                  weekNumberFortnight: weekNumberId,
+                                  startingMonth: startingMonthId)) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: contributionFrequencyId == 6,
-                        child: CustomDropDownButton(
-                          labelText: "Select Day of Month",
-                          listItems: getWeekDays,
-                          selectedItem: dayOfMonthId,
-                          onChanged: (value) {
-                            setState(() {
-                              dayOfMonthId = value;
-                            });
-                          },
+                        Visibility(
+                          visible: (_daysOfTheMonth != null && (_daysOfTheMonth < 5 || _daysOfTheMonth == 32)) &&
+                              (contributionFrequencyId != 6 && contributionFrequencyId != 7 && contributionFrequencyId != 8),
+                          child: CustomDropDownButton(
+                            labelText: "Select Day",
+                            listItems: getMonthDays,
+                            enabled: _isFormEnabled,
+                            selectedItem: _weekDay,
+                            onChanged: (value) {
+                              setState(() {
+                                _weekDay = value;
+                              });
+                            },
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: (dateOfMonthId != null && (dateOfMonthId == 1 || dateOfMonthId == 2 || dateOfMonthId == 3 || dayOfMonthId == 4) ||
-                                dateOfMonthId == 32) &&
-                            (contributionFrequencyId != 6 && contributionFrequencyId != 7 && contributionFrequencyId != 8),
-                        child: CustomDropDownButton(
-                          labelText: "Select Day of the Month",
-                          listItems: getMonthDays,
-                          selectedItem: weekdayId,
-                          onChanged: (value) {
-                            setState(() {
-                              weekdayId = value;
-                            });
-                          },
+                        Visibility(
+                          visible: contributionFrequencyId == 6 || contributionFrequencyId == 7,
+                          child: CustomDropDownButton(
+                            labelText: "Select Day of Week",
+                            listItems: getWeekDays,
+                            enabled: _isFormEnabled,
+                            selectedItem: _weekDayWeeklyId,
+                            onChanged: (value) {
+                              setState(() {
+                                _weekDayWeeklyId = value;
+                              });
+                            },
+                            validator: (value) {
+                              if (!ValidateSettings().validate(
+                                  contributionType: _contributionTypeId,
+                                  selectedFrequency: contributionFrequencyId,
+                                  daysOfTheMonth: _daysOfTheMonth,
+                                  weekDayWeekly: _weekDayWeeklyId,
+                                  weekNumberFortnight: weekNumberId,
+                                  startingMonth: startingMonthId)) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: contributionFrequencyId == 2 ||
-                            contributionFrequencyId == 3 ||
-                            contributionFrequencyId == 4 ||
-                            contributionFrequencyId == 5 ||
-                            contributionFrequencyId == 9,
-                        child: CustomDropDownButton(
-                          labelText: "Starting Month",
-                          listItems: getStartingMonths,
-                          selectedItem: startingMonthId,
-                          onChanged: (value) {
-                            setState(() {
-                              startingMonthId = value;
-                            });
-                          },
+                        Visibility(
+                          visible: contributionFrequencyId == 7,
+                          child: CustomDropDownButton(
+                            labelText: "Select Week",
+                            listItems: getWeekNumbers,
+                            enabled: _isFormEnabled,
+                            selectedItem: weekNumberId,
+                            onChanged: (value) {
+                              setState(() {
+                                weekNumberId = value;
+                              });
+                            },
+                            validator: (_) {
+                              if (!ValidateSettings().validate(
+                                  contributionType: _contributionTypeId,
+                                  selectedFrequency: contributionFrequencyId,
+                                  daysOfTheMonth: _daysOfTheMonth,
+                                  weekDayWeekly: _weekDayWeeklyId,
+                                  weekNumberFortnight: weekNumberId,
+                                  startingMonth: startingMonthId)) {
+                                return 'This field is required';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
-                      ),
-                      Visibility(
-                        visible: contributionFrequencyId == 7,
-                        child: CustomDropDownButton(
-                          labelText: "Select Week",
-                          listItems: getWeekNumbers,
-                          selectedItem: weekNumberId,
-                          onChanged: (value) {
-                            setState(() {
-                              weekNumberId = value;
-                            });
-                          },
+                        Visibility(
+                          visible: contributionFrequencyId == 2 ||
+                              contributionFrequencyId == 3 ||
+                              contributionFrequencyId == 4 ||
+                              contributionFrequencyId == 5 ||
+                              contributionFrequencyId == 9,
+                          child: CustomDropDownButton(
+                              labelText: "Starting Month",
+                              listItems: getStartingMonths,
+                              enabled: _isFormEnabled,
+                              selectedItem: startingMonthId,
+                              onChanged: (value) {
+                                setState(() {
+                                  startingMonthId = value;
+                                });
+                              },
+                              validator: (value) {
+                                if (!ValidateSettings().validate(
+                                    contributionType: _contributionTypeId,
+                                    selectedFrequency: contributionFrequencyId,
+                                    daysOfTheMonth: _daysOfTheMonth,
+                                    weekDayWeekly: _weekDayWeeklyId,
+                                    weekNumberFortnight: weekNumberId,
+                                    startingMonth: startingMonthId)) {
+                                  return 'This field is required';
+                                }
+                                return null;
+                              }),
                         ),
-                      ),
-                      simpleTextInputField(
-                        context: context,
-                        labelText: 'Contribution Name',
-                        hintText: 'Monthly Contributions'.toUpperCase(),
-                        onChanged: (value) {
-                          setState(() {
-                            contributionName = value;
-                          });
-                        },
-                      ),
-                      amountTextInputField(
-                        context: context,
-                        labelText: 'Contribution Amount',
-                        hintText: '1,500',
-                        onChanged: (value) {
-                          setState(() {
-                            contributionAmount = double.parse(value);
-                          });
-                        },
-                      ),
-                    ]),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: _contributionTypeId == 2,
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: DatePicker(
+                            labelText: "Select Invoice Date",
+                            firstDate: DateTime.now(),
+                            lastDate: new DateTime(2099),
+                            selectedDate: _invoiceDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                _invoiceDate = selectedDate;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: DatePicker(
+                            labelText: "Select Contribution Date",
+                            firstDate: DateTime.now(),
+                            lastDate: new DateTime(2099),
+                            selectedDate: _contributionDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                _contributionDate = selectedDate;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
+                    style: TextStyle(fontFamily: 'SegoeUI'),
+                    enabled: _isFormEnabled,
+                    decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                        labelText: "Contribution Name",
+                        labelStyle: TextStyle(fontFamily: 'SegoeUI')),
+                    onChanged: (value) {
+                      _contributionName = value;
+                    },
+                    validator: (value) {
+                      if (value.trim() == '' || value.trim() == null) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
+                  ),
+                  amountTextInputField(
+                      context: context,
+                      labelText: 'Contribution Amount',
+                      enabled: _isFormEnabled,
+                      onChanged: (value) {
+                        setState(() {
+                          _contributionAmount = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.trim() == '') {
+                          return "This field is required";
+                        }
+                        return null;
+                      }),
+                ]),
               ),
             ),
           ),
-          RaisedButton(
-            onPressed: widget.onButtonPressed,
-            color: primaryColor,
-            child: Text(
-              'Save & Continue',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-          ),
+          _isLoading
+              ? Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              : defaultButton(
+                  context: context,
+                  text: "Save & Continue",
+                  onPressed: () {
+                    _submit(context);
+                  },
+                ),
+          SizedBox(
+            height: 10,
+          )
         ],
       ),
     );

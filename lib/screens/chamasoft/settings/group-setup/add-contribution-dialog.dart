@@ -64,7 +64,6 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
     formData['one_time_invoicing_active'] = 1;
     formData['invoice_days'] = 1;
 
-    print(formData);
     try {
       await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData);
       requestId = null;
