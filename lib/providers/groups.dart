@@ -265,17 +265,16 @@ class GroupContributionSummary {
   });
 }
 
-class BankLoans{
+class BankLoans {
   final String id;
   final String description;
-  final double amount,balance;
+  final double amount, balance;
 
-  BankLoans({
-    @required this.id,
-    @required this.description,
-    this.amount,
-    this.balance
-  });
+  BankLoans(
+      {@required this.id,
+      @required this.description,
+      this.amount,
+      this.balance});
 }
 
 class Groups with ChangeNotifier {
@@ -468,7 +467,6 @@ class Groups with ChangeNotifier {
     prefs.setString(selectedGroupId, groupId);
   }
 
-
   getCurrentGroupId() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(selectedGroupId);
@@ -486,9 +484,9 @@ class Groups with ChangeNotifier {
     if (groupFound) {
       return group;
     } else {
-      if(_groups.length>0){
+      if (_groups.length > 0) {
         return _groups[0];
-      }else{
+      } else {
         return null;
       }
     }
@@ -906,10 +904,10 @@ class Groups with ChangeNotifier {
       for (var object in contributionSummaryList) {
         double amountpaid = double.tryParse(object['paid'].toString()) ?? 0.0;
         final newData = GroupContributionSummary(
-                memberId: object['member_id'].toString(),
-                memberName: object['name'].toString(),
-                paidAmount: amountpaid,
-                balanceAmount: double.tryParse(object['arrears'].toString())??0.0,
+          memberId: object['member_id'].toString(),
+          memberName: object['name'].toString(),
+          paidAmount: amountpaid,
+          balanceAmount: double.tryParse(object['arrears'].toString()) ?? 0.0,
         );
         contributionSummary.add(newData);
         total += amountpaid;
@@ -927,10 +925,10 @@ class Groups with ChangeNotifier {
       for (var object in finesSummaryList) {
         double amountpaid = double.tryParse(object['paid'].toString()) ?? 0.0;
         final newData = GroupContributionSummary(
-                memberId: object['member_id'].toString(),
-                memberName: object['name'].toString(),
-                paidAmount: amountpaid,
-                balanceAmount: double.tryParse(object['arrears'].toString())??0.0,
+          memberId: object['member_id'].toString(),
+          memberName: object['name'].toString(),
+          paidAmount: amountpaid,
+          balanceAmount: double.tryParse(object['arrears'].toString()) ?? 0.0,
         );
         finesSummary.add(newData);
         total += amountpaid;
@@ -941,15 +939,15 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addBankLoans(List<dynamic> bankLoansList){
+  void addBankLoans(List<dynamic> bankLoansList) {
     final List<BankLoans> bankLoansSummary = [];
     if (bankLoansList.length > 0) {
       for (var object in bankLoansList) {
         final newData = BankLoans(
-                id: object['id'].toString(),
-                description: object['description'].toString(),
-                amount: double.tryParse(object['amount'].toString()) ?? 0.0,
-                balance: double.tryParse(object['balance'].toString()) ??0.0,
+          id: object['id'].toString(),
+          description: object['description'].toString(),
+          amount: double.tryParse(object['amount'].toString()) ?? 0.0,
+          balance: double.tryParse(object['balance'].toString()) ?? 0.0,
         );
         bankLoansSummary.add(newData);
       }
@@ -2141,6 +2139,92 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> addMembersToContribution(
+      {String contributionId,
+      String allMembers,
+      List<Map<String, String>> contributingMembers}) async {
+    const url = EndpointUrl.CREATE_CONTRIBUTION_SETTING;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "request_id": "1558509049_13678_0712234345",
+        "contribution_id": contributionId,
+        "all_members": allMembers,
+        "contributing_members": contributingMembers,
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchContributions();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> addFineSettingsToContribution(
+      {String fineType,
+      String fixedFineFrequency,
+      String fixedAmount,
+      String fixedFineMode,
+      String percentageFineMode,
+      String fixedFineChargeableOn,
+      String fineLimit,
+      String percentageRate,
+      String percentageFineOn,
+      String percentageFineFrequency,
+      String percentageFineChargeableOn,
+      String smsNotificationsEnabled,
+      String emailNotificationsEnabled,
+      String enableFines,
+      String contributionId}) async {
+    const url = EndpointUrl.EDIT_CONTRIBUTION_SETTING;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "request_id": "1558509106_13678_0712234345",
+        "fine_settings": {
+          "fine_type": fineType,
+          "fixed_fine_frequency": fixedFineFrequency,
+          "fixed_amount": fixedAmount,
+          "fixed_fine_mode": fixedFineMode,
+          "percentage_fine_mode": percentageFineMode,
+          "fixed_fine_chargeable_on": fixedFineChargeableOn,
+          "fine_limit": fineLimit,
+          "percentage_rate": percentageRate,
+          "percentage_fine_on": percentageFineOn,
+          "percentage_fine_frequency": percentageFineFrequency,
+          "percentage_fine_chargeable_on": percentageFineChargeableOn,
+          "sms_notifications_enabled": smsNotificationsEnabled,
+          "email_notifications_enabled": emailNotificationsEnabled
+        },
+        "enable_fines": enableFines,
+        "contribution_id": contributionId
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchContributions();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchReportAccountBalances() async {
     const url = EndpointUrl.GET_ACCOUNT_BALANCES;
 
@@ -2191,7 +2275,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchGroupBankLoans()async{
+  Future<void> fetchGroupBankLoans() async {
     //addBankLoans
     const url = EndpointUrl.GET_GROUP_BANK_LOAN_OPTIONS;
     try {
@@ -2478,7 +2562,7 @@ class Groups with ChangeNotifier {
     bool contr = false,
     bool acc = false,
     bool member = false,
-    bool  = false,
+    bool = false,
     bool incomeCats = false,
     bool depositor = false,
     bool fineOptions = false,
@@ -2491,8 +2575,8 @@ class Groups with ChangeNotifier {
         finesOptions = [],
         depositorOptions = [],
         incomeCategoryOptions = [],
-        expenseCategories= [],
-        bankLoansOptions=[];
+        expenseCategories = [],
+        bankLoansOptions = [];
     if (contr) {
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2554,18 +2638,26 @@ class Groups with ChangeNotifier {
           .toList();
     }
 
-    if(exp){
-      if(_expenseCategories.length==0){
+    if (exp) {
+      if (_expenseCategories.length == 0) {
         await fetchExpenseCategories();
       }
-      _expenseCategories.map((expense) => expenseCategories.add(NamesListItem(id:int.tryParse(expense.id),name:expense.name))).toList();
+      _expenseCategories
+          .map((expense) => expenseCategories.add(
+              NamesListItem(id: int.tryParse(expense.id), name: expense.name)))
+          .toList();
     }
 
-    if(bankLoans){
-      if(_bankLoans.length==0){
+    if (bankLoans) {
+      if (_bankLoans.length == 0) {
         await fetchGroupBankLoans();
       }
-      _bankLoans.map((bankLoan) => bankLoansOptions.add(NamesListItem(id:int.tryParse(bankLoan.id),name:"${bankLoan.description} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.balance)}"))).toList();
+      _bankLoans
+          .map((bankLoan) => bankLoansOptions.add(NamesListItem(
+              id: int.tryParse(bankLoan.id),
+              name:
+                  "${bankLoan.description} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.balance)}")))
+          .toList();
     }
 
     Map<String, dynamic> result = {
@@ -2575,8 +2667,8 @@ class Groups with ChangeNotifier {
       "finesOptions": finesOptions,
       "incomeCategoryOptions": incomeCategoryOptions,
       "depositorOptions": depositorOptions,
-      'expenseCategories' : expenseCategories,
-      'bankLoansOptions' : bankLoansOptions,     
+      'expenseCategories': expenseCategories,
+      'bankLoansOptions': bankLoansOptions,
     };
     return result;
   }
@@ -2655,13 +2747,15 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordMiscellaneousPayments(Map<String, dynamic> formData)async{
+  Future<void> recordMiscellaneousPayments(
+      Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_RECORD_MISCELLANEOUS_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
-      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2677,13 +2771,14 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void>recordBankLoanIncome(Map<String, dynamic> formData)async{
+  Future<void> recordBankLoanIncome(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.RECORD_BANK_LOAN;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
-      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2699,13 +2794,14 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordExpensePayment(Map<String, dynamic> formData)async{
+  Future<void> recordExpensePayment(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_RECORD_EXPENSES;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
-      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2721,13 +2817,14 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void>recordBankLoanRepayment(Map<String,dynamic> formData)async{
+  Future<void> recordBankLoanRepayment(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.RECORD_BANK_LOAN_REPAYMENT;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
-      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2743,13 +2840,14 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void>recordContributionRefund(Map<String,dynamic> formData)async{
+  Future<void> recordContributionRefund(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.RECORD_CONTRIBUTION_REFUND;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
-      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2765,12 +2863,13 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fineMembers(Map<String,dynamic> formData)async{
+  Future<void> fineMembers(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_FINE_MEMBERS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
         print(postRequest);
@@ -2787,14 +2886,17 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordAccountToAccountTransfer(Map<String,dynamic> formData)async{
+  Future<void> recordAccountToAccountTransfer(
+      Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.RECORD_FUNDS_TRANSFER;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['from_account_id'] = _getAccountFormId(formData['from_account_id']);
+      formData['from_account_id'] =
+          _getAccountFormId(formData['from_account_id']);
       formData['to_account_id'] = _getAccountFormId(formData['to_account_id']);
-      formData['request_id'] ="${formData['request_id']}_${_userId}_$_identity";
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
         print(postRequest);
@@ -2811,8 +2913,8 @@ class Groups with ChangeNotifier {
     }
   }
 
-  void switchGroupValuesToDefault({bool removeGroups=false}) {
-    if(removeGroups){
+  void switchGroupValuesToDefault({bool removeGroups = false}) {
+    if (removeGroups) {
       _groups = [];
     }
     _groupContributionSummary = [];
@@ -2844,6 +2946,6 @@ class Groups with ChangeNotifier {
     _totalGroupContributionSummary = 0;
     _totalGroupFinesSummary = 0;
     _categorisedAccounts = [];
-    _bankLoans = []; 
+    _bankLoans = [];
   }
 }
