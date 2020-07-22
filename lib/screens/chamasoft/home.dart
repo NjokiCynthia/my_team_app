@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'dart:async';
 
 class ChamasoftHome extends StatefulWidget {
   ChamasoftHome({
@@ -31,13 +33,21 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Group _currentGroup;
   bool _onlineBankingEnabled = true;
   bool _isInit = true;
+  bool _isLoading = true;
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
   }
 
+  void _doneLoading(){
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   void initState() {
+    Timer(const Duration(seconds: 3), _doneLoading);
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     super.initState();
@@ -91,7 +101,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         child: SafeArea(
           child: SingleChildScrollView(
             controller: _scrollController,
-            child: Column(
+            child: !_isLoading ? Column(
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
@@ -479,8 +489,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   ),
                 ),
               ],
-            ),
-          ),
+            ) : chamasoftHomeLoadingData(context: context)
+          )
         ));
   }
 }
