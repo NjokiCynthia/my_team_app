@@ -40,15 +40,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     widget.appBarElevation(_scrollController.offset);
   }
 
-  void _doneLoading(){
-    setState(() {
-      _isLoading = false;
-    });
-  }
 
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), _doneLoading);
+    //Timer(const Duration(seconds: 3), _doneLoading);
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     super.initState();
@@ -101,6 +96,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         setState(() {
           _isInit = false;
           _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
+          _isLoading = false;
         });
       }
     }
