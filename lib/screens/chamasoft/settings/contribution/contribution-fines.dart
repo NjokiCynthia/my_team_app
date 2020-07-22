@@ -5,6 +5,11 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:flutter/material.dart';
 
 class ContributionFineSettings extends StatefulWidget {
+  final dynamic responseData;
+  final Function(dynamic) onButtonPressed;
+
+  ContributionFineSettings({@required this.responseData, @required this.onButtonPressed});
+
   @override
   _ContributionFineSettingsState createState() => _ContributionFineSettingsState();
 }

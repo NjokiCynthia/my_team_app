@@ -17,7 +17,7 @@ class CreateContribution extends StatefulWidget {
 
 class _CreateContributionState extends State<CreateContribution> with SingleTickerProviderStateMixin {
   double _appBarElevation = 0;
-
+  dynamic responseData;
   PageController _pageController;
   int selectedTabIndex = 0;
   int currentPage = 0;
@@ -96,7 +96,7 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                     physics: NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     children: [
-                      new ContributionSettings(onButtonPressed: () {
+                      new ContributionSettings(onButtonPressed: (response) {
                         if (_pageController.hasClients) {
                           _pageController.animateToPage(
                             1,
@@ -106,23 +106,30 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                         }
 
                         setState(() {
+                          responseData = response;
                           currentPage = 1;
                         });
                       }),
-                      new ContributionMembers(onButtonPressed: () {
-                        if (_pageController.hasClients) {
-                          _pageController.animateToPage(
-                            2,
-                            duration: const Duration(milliseconds: 400),
-                            curve: Curves.easeInOut,
-                          );
-                        }
+                      new ContributionMembers(
+                          responseData: responseData,
+                          onButtonPressed: (response) {
+                            if (_pageController.hasClients) {
+                              _pageController.animateToPage(
+                                2,
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,
+                              );
+                            }
 
-                        setState(() {
-                          currentPage = 2;
-                        });
-                      }),
-                      new ContributionFineSettings(),
+                            setState(() {
+                              responseData = response;
+                              currentPage = 2;
+                            });
+                          }),
+                      new ContributionFineSettings(
+                        responseData: responseData,
+                        onButtonPressed: (response) {},
+                      ),
                     ],
                   ),
                 ),

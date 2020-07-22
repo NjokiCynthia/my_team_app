@@ -4,9 +4,10 @@ import 'package:chamasoft/widgets/dashed-divider.dart';
 import 'package:flutter/material.dart';
 
 class ContributionMembers extends StatefulWidget {
-  final VoidCallback onButtonPressed;
+  final dynamic responseData;
+  final Function(dynamic) onButtonPressed;
 
-  ContributionMembers({@required this.onButtonPressed});
+  ContributionMembers({@required this.responseData, @required this.onButtonPressed});
 
   @override
   _ContributionMembersState createState() => _ContributionMembersState();
@@ -82,7 +83,7 @@ class _ContributionMembersState extends State<ContributionMembers> {
         FittedBox(
             fit: BoxFit.scaleDown,
             child: RaisedButton(
-              onPressed: widget.onButtonPressed,
+              onPressed: widget.onButtonPressed(null),
               color: primaryColor,
               child: Text(
                 'Save & Continue',
