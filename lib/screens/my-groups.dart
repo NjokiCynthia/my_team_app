@@ -175,21 +175,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                         subtitle: "Chama, Merry-go-round, Fundraiser",
                         textColor: primaryColor,
                         borderColor: primaryColor,
-<<<<<<< HEAD
-                        action: () async {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              });
-                          await fetchCountryOptions(context);
-                        }),
-                    ),
-=======
-                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup()))),
->>>>>>> bc1fb1513cfca8f7bfddeedcc82916940d07bff7
+                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup())))),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
