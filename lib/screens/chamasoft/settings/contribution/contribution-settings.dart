@@ -14,7 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ContributionSettings extends StatefulWidget {
-  final VoidCallback onButtonPressed;
+  final Function(dynamic) onButtonPressed;
 
   ContributionSettings({@required this.onButtonPressed});
 
@@ -86,7 +86,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
       requestId = null;
       alertDialogWithAction(context, response["message"].toString(), () {
         Navigator.of(context).pop();
-        widget.onButtonPressed.call();
+        widget.onButtonPressed(response);
       }, false);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
