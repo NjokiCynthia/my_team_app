@@ -97,10 +97,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             _getMemberDashboardData();
           });
     } finally {
-      setState(() {
-        _isInit = false;
-        _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
-      });
+      if(this.mounted){
+        setState(() {
+          _isInit = false;
+          _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
+        });
+      }
     }
     //Navigator.of(context, rootNavigator: true).pop();
   }
