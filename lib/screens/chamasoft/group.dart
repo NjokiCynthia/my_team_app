@@ -1,7 +1,10 @@
 import 'package:chamasoft/providers/dashboard.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/bar_chart_sample4.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -9,6 +12,8 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
+
+import 'models/group-model.dart';
 
 class ChamasoftGroup extends StatefulWidget {
   final ValueChanged<double> appBarElevation;
@@ -23,6 +28,8 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
   ScrollController _scrollController;
   List<BankAccountDashboardSummary> _iteratableData = [];
   String _groupCurrency = "Ksh";
+  Group _currentGroup;
+  bool _isInit = true;
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -42,9 +49,47 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies(){
+    _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
+    if(_isInit){
+      _getGroupDashboardData();
+    }
+    _groupCurrency = _currentGroup.groupCurrency;
+    super.didChangeDependencies();
+  }
+
   Future<bool> _onWillPop() async {
     await Navigator.of(context).pushReplacementNamed(ChamasoftDashboard.namedRoute);
     return null;
+  }
+
+  void _getGroupDashboardData()async{
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+    try{
+      await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(_currentGroup.groupId);
+    }on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getGroupDashboardData();
+          });
+    } finally {
+      setState(() {
+        _isInit = false;
+      });
+    }
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   Iterable<Widget> get accountSummary sync* {
@@ -126,7 +171,32 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               height: 22,
                               child: cardAmountButton(
                                   currency: _groupCurrency,
-                                  amount: "21,000",
+                                  amount: currencyFormat.format(dashboardData.groupContributionAmount),
+                                  size: 16.0,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
+                                  action: () {}),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            customTitle(
+                              text: "Total Fine Payments",
+                              textAlign: TextAlign.start,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: Theme.of(context).textSelectionHandleColor,
+                            ),
+                            SizedBox(
+                              height: 22,
+                              child: cardAmountButton(
+                                  currency: _groupCurrency,
+                                  amount: currencyFormat.format(dashboardData.groupFinePaymentAmount),
                                   size: 16.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
@@ -150,7 +220,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               height: 22,
                               child: cardAmountButton(
                                   currency: _groupCurrency,
-                                  amount: "2,350",
+                                  amount: currencyFormat.format(dashboardData.groupExpensesAmount),
                                   size: 14.0,
                                   color: Colors.red[400],
                                   action: () {}),
@@ -290,7 +360,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               height: 22,
                               child: cardAmountButton(
                                   currency: _groupCurrency,
-                                  amount: "21,000",
+                                  amount: currencyFormat.format(dashboardData.groupLoanedAmount),
                                   size: 16.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
@@ -314,7 +384,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               height: 22,
                               child: cardAmountButton(
                                   currency: _groupCurrency,
-                                  amount: "2,350",
+                                  amount: currencyFormat.format(dashboardData.groupLoanPaid),
                                   size: 14.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
@@ -338,7 +408,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               height: 22,
                               child: cardAmountButton(
                                   currency: _groupCurrency,
-                                  amount: "5,500",
+                                  amount: currencyFormat.format(dashboardData.groupPendingLoanBalance),
                                   size: 14.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
@@ -380,7 +450,10 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   onPressed: () {})
                             ],
                           ),
-                          BarChartSample4()
+                          Expanded(
+                            flex: 1,
+                            child: BarChartSample4(),
+                          )
                         ],
                       ),
                     ))

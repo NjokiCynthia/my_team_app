@@ -18,33 +18,100 @@ class BankAccountDashboardSummary{
 
 class Dashboard with ChangeNotifier{
   String _userId;
-  Map<String,dynamic> _dashboardData;
+  Map<String,dynamic> _memberDashboardData;
+  Map<String,dynamic> _groupDashboardData;
   List<BankAccountDashboardSummary> _bankAccountDashboardSummary = [];
   //final String _currentGroupId;
 
-  Dashboard(String _userId,Map<String,dynamic> _dashboardData){
-    this._dashboardData = _dashboardData;
+  Dashboard(String _userId,Map<String,dynamic> _memberDashboardData,Map<String,dynamic> _groupDashboardData){
+    this._memberDashboardData = _memberDashboardData;
+    this._groupDashboardData = _groupDashboardData;
     this._userId = _userId;
-    print("Passed data userId : $_userId and data: $_dashboardData");
-    if(_dashboardData.isNotEmpty){
-      _updateDashboardData();
+    if(_memberDashboardData.isNotEmpty){
+      _updateMemberDashboardData();
+    }
+    if(_groupDashboardData.isNotEmpty){
+      _updateGroupDashboardData();
     }
   }
-
+  //***************member****************/
   double _memberContributionAmount = 0.0;
   double _memberFinesAmount = 0.0;
-  double _memberLoansAmount = 0.0;
-  double _memberLoanBalanceAmount = 0.0;
+  double _memberContributionArrears = 0.0;
+  double _memberFineArrears = 0.0;
+  double _memberLoanArrears = 0.0;
+  double _memberTotalLoanBalance = 0.0;
+
+
+  //***************Group****************/
 
   double _cashBalances=0.0;
   double _bankBalances=0.0;
+  double _groupContributionAmount = 0.0;
+  double _groupExpenses = 0.0;
+  double _groupPendingLoan = 0.0;
+  double _groupFinePayments = 0.0;
+  double _groupLoanedAmount = 0.0;
+  double _groupLoanPaid = 0.0;
 
-  Map<String,dynamic> get dashboardData{
-    return _dashboardData;
+  Map<String,dynamic> get memberDashboardData{
+    return _memberDashboardData;
+  }
+
+  Map<String,dynamic> get groupDashboardData{
+    return _groupDashboardData;
   }
 
   double get memberContributionAmount{
     return _memberContributionAmount;
+  }
+
+  double get memberFineAmount{
+    return _memberFinesAmount;
+  }
+
+  double get memberTotalLoanBalance{
+    return _memberTotalLoanBalance;
+  }
+
+  double get memberLoanArrears{
+    return _memberLoanArrears;
+  }
+
+  double get memberFineArrears{
+    return _memberFineArrears;
+  }
+
+  double get memberContributionArrears{
+    return _memberContributionArrears;
+  }
+
+
+
+  //********Group********/
+
+  double get groupContributionAmount{
+    return _groupContributionAmount;
+  }
+
+  double get groupExpensesAmount{
+    return _groupExpenses;
+  }
+
+  double get groupFinePaymentAmount{
+    return _groupFinePayments;
+  }
+
+  double get groupPendingLoanBalance{
+    return _groupPendingLoan;
+  }
+
+  double get groupLoanedAmount{
+    return _groupLoanedAmount;
+  }
+
+  double get groupLoanPaid{
+    return _groupLoanPaid;
   }
 
   double get totalBankBalances{
@@ -55,16 +122,30 @@ class Dashboard with ChangeNotifier{
     return [..._bankAccountDashboardSummary];
   }
 
-  void _updateDashboardData()async{
-    if(_dashboardData.containsKey("member_details")){
-      var memberDetails = _dashboardData["member_details"] as Map<String,dynamic>;
-      _memberContributionAmount = double.tryParse(memberDetails["total_contributions"].toString());
+  void _updateMemberDashboardData()async{
+    if(_memberDashboardData.containsKey("member_details")){
+      var memberDetails = _memberDashboardData["member_details"] as Map<String,dynamic>;
+      _memberContributionAmount = double.tryParse(memberDetails["total_contributions"].toString())??0.0;
+      _memberContributionArrears = double.tryParse(memberDetails["contribution_arrears"].toString())??0.0;
+      _memberFineArrears = double.tryParse(memberDetails["fine_arrears"].toString())??0.0;
+      _memberLoanArrears = double.tryParse(memberDetails["loan_arrears"].toString())??0.0;
+      _memberTotalLoanBalance = double.tryParse(memberDetails["total_loan_balances"].toString())??0.0;
     }
-    if(_dashboardData.containsKey("group_details")){
-      var groupDetails = _dashboardData["group_details"] as Map<String,dynamic>;
-      _cashBalances = double.tryParse(groupDetails["cash_balances"].toString());
-      _bankBalances = double.tryParse(groupDetails["bank_balances"].toString());
-      
+    notifyListeners();
+  }
+
+  void _updateGroupDashboardData()async{
+    if(_groupDashboardData.containsKey("group_details")){
+      var groupDetails = _groupDashboardData["group_details"] as Map<String,dynamic>;
+      _cashBalances = double.tryParse(groupDetails["cash_balances"].toString())??0.0;
+      _bankBalances = double.tryParse(groupDetails["bank_balances"].toString())??0.0;
+      _groupContributionAmount = double.tryParse(groupDetails["total_contributions"].toString())??0.0;
+      _groupExpenses = double.tryParse(groupDetails["total_expense_payments"].toString())??0.0;
+      _groupPendingLoan = double.tryParse(groupDetails["total_loan_balances"].toString())??0.0;
+      _groupFinePayments = double.tryParse(groupDetails["total_fines"].toString())??0.0;
+      _groupLoanedAmount = double.tryParse(groupDetails["total_loaned_amount"].toString())??0.0;
+      _groupLoanPaid = double.tryParse(groupDetails["total_loan_repaid"].toString())??0.0;
+
       var accountBalances = groupDetails["account_balances"];
       _bankAccountDashboardSummary = [];
       if(accountBalances.length>0){
@@ -80,17 +161,44 @@ class Dashboard with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> getGroupDashboardData(String groupId)async{
+  Future<void> getMemberDashboardData(String groupId)async{
     try{
-      const url = EndpointUrl.GET_MEMBER_DASHBOARD;
+      const url = EndpointUrl.GET_MEMBER_DASHBOARD_DATA;
       try {
         final postRequest = json.encode({
           "user_id" : _userId,
           "group_id" : groupId,
         });
         final response = await PostToServer.post(postRequest, url);
-        _dashboardData = response;
-        _updateDashboardData();
+        _memberDashboardData = response;
+        _updateMemberDashboardData();
+      } on CustomException catch (error) {
+        print(error.toString());
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        print(error.toString());
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      print(error.toString());
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      print(error.toString());
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> getGroupDashboardData(String groupId)async{
+    try{
+      const url = EndpointUrl.GET_GROUP_DASHBOARD_DATA;
+      try {
+        final postRequest = json.encode({
+          "user_id" : _userId,
+          "group_id" : groupId,
+        });
+        final response = await PostToServer.post(postRequest, url);
+        _groupDashboardData = response;
+        _updateGroupDashboardData();
       } on CustomException catch (error) {
         print(error.toString());
         throw CustomException(message: error.toString(), status: error.status);

@@ -327,9 +327,9 @@ Widget paymentActionButton({bool isFlat = false, String text, IconData icon, dou
         );
 }
 
-Widget gridButton({BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted}) {
+Widget gridButton({BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
   return Container(
-    margin: EdgeInsets.all(16),
+    margin: EdgeInsets.all(margin),
     height: 150,
     decoration: cardDecoration(gradient: isHighlighted ? csCardGradient() : plainCardGradient(context), context: context),
     child: FlatButton(

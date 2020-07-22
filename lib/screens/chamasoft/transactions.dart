@@ -6,18 +6,34 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class ChamasoftTransactions extends StatefulWidget {
+  ChamasoftTransactions({
+    this.appBarElevation,
+  });
+
+  final ValueChanged<double> appBarElevation;
+
   @override
   _ChamasoftTransactionsState createState() => _ChamasoftTransactionsState();
 }
 
 class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
+  ScrollController _scrollController;
+
+  void _scrollListener() {
+    widget.appBarElevation(_scrollController.offset);
+  }
+
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   @override
   void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
     super.dispose();
   }
 
@@ -41,7 +57,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
       child: OrientationBuilder(
         builder: (context, orientation) {
           return GridView.count(
-            padding: EdgeInsets.all(12.0),
+            controller: _scrollController,
+            padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
             crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
             children: List.generate(list.length, (index) {
               return gridButton(
@@ -52,7 +69,10 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                 isHighlighted: (index == 0) ? true : false,
                 action: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) => TransactionMenuDetails(),
-                    settings: RouteSettings(arguments: index))),
+                    settings: RouteSettings(arguments: index)
+                  )
+                ),
+                margin: 12
               );
             }),
           );

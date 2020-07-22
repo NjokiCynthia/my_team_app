@@ -523,7 +523,7 @@ class Groups with ChangeNotifier {
     } else {
       _groups = loadedGroups;
     }
-    print("Groups : ${_groups.length}");
+    print("Groups loaded : ${_groups.length}");
     notifyListeners();
   }
 
@@ -1405,6 +1405,28 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<dynamic> addContributionStepOne(Map<String, dynamic> formData) async {
+    const url = EndpointUrl.CREATE_CONTRIBUTION_SETTING;
+    try {
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        return await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchCountryOptions() async {
     const url = EndpointUrl.GET_COUNTRY_LIST;
     try {
@@ -1774,6 +1796,7 @@ class Groups with ChangeNotifier {
         "initial_balance": initialBalance
       });
 
+      print(postRequest);
       try {
         await PostToServer.post(postRequest, url);
         await fetchAccounts();
@@ -2756,6 +2779,7 @@ class Groups with ChangeNotifier {
       formData['account_id'] = _getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
+
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2777,8 +2801,10 @@ class Groups with ChangeNotifier {
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
+
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
+
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2823,8 +2849,10 @@ class Groups with ChangeNotifier {
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = _getAccountFormId(formData['account_id']);
+
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
+
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2848,6 +2876,7 @@ class Groups with ChangeNotifier {
       formData['account_id'] = _getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
+
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
@@ -2868,8 +2897,10 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.NEW_FINE_MEMBERS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
+
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
+
       try {
         final postRequest = json.encode(formData);
         print(postRequest);
@@ -2895,8 +2926,10 @@ class Groups with ChangeNotifier {
       formData['from_account_id'] =
           _getAccountFormId(formData['from_account_id']);
       formData['to_account_id'] = _getAccountFormId(formData['to_account_id']);
+
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
+
       try {
         final postRequest = json.encode(formData);
         print(postRequest);
@@ -2947,5 +2980,6 @@ class Groups with ChangeNotifier {
     _totalGroupFinesSummary = 0;
     _categorisedAccounts = [];
     _bankLoans = [];
+    _groupRolesStatusAndCurrentMemberStatus = null;
   }
 }

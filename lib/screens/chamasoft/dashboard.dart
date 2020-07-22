@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
@@ -81,7 +79,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     _overlayItems.insert(0, {
       "id": '0',
       "title": "Create New",
-      "role": "Group, Merry-go-round, fundraiser"
+      "role": "Chama, Merry-go-round, fundraiser"
     });
     _groups.map((group) => {
       _overlayItems.add(
@@ -250,14 +248,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             return SafeArea(
               child: Container(
                 decoration: primaryGradient(context),
-                child:ChangeNotifierProxyProvider<Auth, Dashboard>(
-                  update: (ctx, auth,dashboardData) => Dashboard(
-                    auth.id,
-                    dashboardData==null?{}:dashboardData.dashboardData
-                  ),
-                  create: (BuildContext context) {},
-                  child: getPage(_currentPage),
-                )
+                child:getPage(_currentPage),
               ),
             );
           },
@@ -277,9 +268,13 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           appBarElevation: (elevation) => _setElevation(elevation),
         );
       case 2:
-        return ChamasoftTransactions();
+        return ChamasoftTransactions(
+          appBarElevation: (elevation) => _setElevation(elevation),
+        );
       case 3:
-        return ChamasoftReports();
+        return ChamasoftReports(
+          appBarElevation: (elevation) => _setElevation(elevation),
+        );
     }
   }
 }

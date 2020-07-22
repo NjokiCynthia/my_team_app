@@ -33,9 +33,6 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
 
   void _submitMember() async {
     _formKey.currentState.save();
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
 
     bool value = await CustomHelper.validPhoneNumber(_phoneNumber, _countryCode);
     if (!value) {
@@ -46,6 +43,10 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
       setState(() {
         _isValid = true;
       });
+    }
+
+    if (!_formKey.currentState.validate() || !_isValid) {
+      return;
     }
 
     List<Item> item = [];
@@ -198,6 +199,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 3.0),
                               child: TextFormField(
                                 controller: _phoneController,
+                                keyboardType: TextInputType.phone,
                                 decoration: InputDecoration(
                                   border: InputBorder.none,
                                   isDense: true,
@@ -223,22 +225,13 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
               ),
               Visibility(
                 visible: !_isValid,
-                child: Row(
-                  children: <Widget>[
-                    SizedBox(
-                      width: 20.0,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.5),
-                      child: Text(
-                        'Enter valid phone number',
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 12.0,
-                        ),
-                      ),
-                    )
-                  ],
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.5),
+                  child: customTitle(
+                    text: 'Enter valid phone number',
+                    color: Colors.red,
+                    fontSize: 12.0,
+                  ),
                 ),
               ),
               TextFormField(

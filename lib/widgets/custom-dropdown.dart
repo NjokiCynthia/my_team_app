@@ -41,23 +41,21 @@ class CustomDropDownButton extends StatelessWidget {
                     );
                   }).toList(),
                   decoration: InputDecoration(
-                    isDense: true,
-                    filled: false,
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    labelStyle: inputTextStyle(),
-                    hintStyle: inputTextStyle(),
-                    errorStyle: inputTextStyle(),
-                    hintText: labelText,
-                    labelText: selectedItem == 0 ? labelText : labelText,
-                    enabled: enabled??true,
-                    enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(
-                        color: Theme.of(context).hintColor,
-                        width: 1.0,
-                      ),
-                    )
-                  ),
-                        
+                      isDense: true,
+                      filled: false,
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      labelStyle: inputTextStyle(),
+                      hintStyle: inputTextStyle(),
+                      errorStyle: inputTextStyle(),
+                      hintText: labelText,
+                      labelText: selectedItem == 0 ? labelText : labelText,
+                      enabled: enabled ?? true,
+                      enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Theme.of(context).hintColor,
+                          width: 1.0,
+                        ),
+                      )),
                   validator: validator,
                   onChanged: onChanged,
                 ),

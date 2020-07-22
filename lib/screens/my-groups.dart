@@ -25,9 +25,15 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   AnimationController _controller;
   DateTime currentBackPressTime;
 
-  Future<void> _getUserCheckinData(BuildContext context) async {
+  Future<void> _getUserCheckinData(BuildContext context,[bool refresh=false]) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
+      if(Provider.of<Groups>(context, listen: false).item.length>0){
+      }else{
+        refresh = true;
+      }
+      if(refresh){
+        await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
+      }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -96,38 +102,11 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   Navigator.of(context).pop();
                   StatusHandler().logout(context);
                 }
-
-                // Navigator.of(context).pushReplacement(
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => Login(),
-                //   ),
-                // ),
                 ),
           ],
         );
       },
     );
-  }
-
-  Future<void> fetchCountryOptions(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
-      Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup()));
-    } on CustomException catch (error) {
-      print(error.message);
-      final snackBar = SnackBar(
-        content: Text('Network Error occurred: could not fetch countries'),
-        action: SnackBarAction(
-          label: 'Retry',
-          onPressed: () async {
-            fetchCountryOptions(context);
-          },
-        ),
-      );
-      Navigator.pop(context);
-      Scaffold.of(context).showSnackBar(snackBar);
-    }
   }
 
   Future<bool> _onWillPop() {
@@ -153,18 +132,15 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
               decoration: primaryGradient(context),
               height: MediaQuery.of(context).size.height,
               child: SingleChildScrollView(
-                padding: EdgeInsets.all(40.0),
+                padding: EdgeInsets.only(top: 30, left: 40, right: 40, bottom: 20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     heading1(text: "My Groups", color: Theme.of(context).textSelectionHandleColor),
                     subtitle1(text: "All groups I belong to", color: Theme.of(context).textSelectionHandleColor),
-                    SizedBox(
-                      height: 20,
-                    ),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                      padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
                       child: auth.displayAvatar != null
                           ? CachedNetworkImage(
                               imageUrl: auth.displayAvatar,
@@ -187,29 +163,19 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     ),
                     heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
                     subtitle1(text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    groupInfoButton(
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(2, 10, 2, 0),
+                      child: groupInfoButton(
                         context: context,
                         leadingIcon: LineAwesomeIcons.plus,
                         trailingIcon: LineAwesomeIcons.angle_right,
                         hideTrailingIcon: true,
                         backgroundColor: primaryColor.withOpacity(0.2),
-                        title: "ADD NEW GROUP",
-                        subtitle: "Social Group, Merry-go-round, Fundraiser",
+                        title: "ADD NEW",
+                        subtitle: "Chama, Merry-go-round, Fundraiser",
                         textColor: primaryColor,
                         borderColor: primaryColor,
-                        action: () async {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              });
-                          await fetchCountryOptions(context);
-                        }),
+                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup())))),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -218,16 +184,16 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                             builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                 ? buildContainer(Center(child: CircularProgressIndicator()), 0, true)
                                 : RefreshIndicator(
-                                    onRefresh: () => _getUserCheckinData(context),
+                                    onRefresh: () => _getUserCheckinData(context,true),
                                     child: Consumer<Groups>(
                                       child: Center(
                                         child: Text("Groups"),
                                       ),
                                       builder: (ctx, groups, ch) => buildContainer(
                                           ListView.builder(
-                                              padding: EdgeInsets.only(top: 15, bottom: 5),
+                                              padding: EdgeInsets.only(top: 10, bottom: 5, left: 2, right: 2),
                                               shrinkWrap: true,
-                                              //physics: NeverScrollableScrollPhysics(),
+                                              physics: BouncingScrollPhysics(),
                                               itemCount: groups.item.length,
                                               itemBuilder: (ctx2, index) {
                                                 return groupInfoButton(

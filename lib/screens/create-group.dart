@@ -22,6 +22,8 @@ class CreateGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<CreateGroup> {
+  bool _isInit = true;
+  List<Country> _countryOptions = [];
   File avatar;
   int countryId = 1;
   final GlobalKey<FormState> _formKey = GlobalKey();
@@ -59,6 +61,34 @@ class _CreateGroupState extends State<CreateGroup> {
     }
   }
 
+  Future<void> _fetchCountryOptions(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
+      setState(() {
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    } on CustomException catch (error) {
+      Navigator.of(context, rootNavigator: true).pop();
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchCountryOptions(context);
+          });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -71,6 +101,11 @@ class _CreateGroupState extends State<CreateGroup> {
 
   @override
   Widget build(BuildContext context) {
+    _countryOptions = Provider.of<Groups>(context).countryOptions;
+    if (_countryOptions == null || _countryOptions.isEmpty) {
+      if (_isInit) _fetchCountryOptions(context);
+    }
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Builder(
@@ -152,18 +187,16 @@ class _CreateGroupState extends State<CreateGroup> {
                           SizedBox(
                             height: 10,
                           ),
-                          Consumer<Groups>(builder: (context, groupData, child) {
-                            return CountryDropdown(
-                              labelText: 'Select Country',
-                              listItems: groupData.countryOptions,
-                              selectedItem: countryId,
-                              onChanged: (value) {
-                                setState(() {
-                                  countryId = value;
-                                });
-                              },
-                            );
-                          }),
+                          CountryDropdown(
+                            labelText: 'Select Country',
+                            listItems: _countryOptions,
+                            selectedItem: countryId,
+                            onChanged: (value) {
+                              setState(() {
+                                countryId = value;
+                              });
+                            },
+                          ),
                           SizedBox(
                             height: 24,
                           ),

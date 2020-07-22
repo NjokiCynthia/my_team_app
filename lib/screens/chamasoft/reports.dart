@@ -12,18 +12,34 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class ChamasoftReports extends StatefulWidget {
+  ChamasoftReports({
+    this.appBarElevation,
+  });
+
+  final ValueChanged<double> appBarElevation;
+
   @override
   _ChamasoftReportsState createState() => _ChamasoftReportsState();
 }
 
 class _ChamasoftReportsState extends State<ChamasoftReports> {
+  ScrollController _scrollController;
+
+  void _scrollListener() {
+    widget.appBarElevation(_scrollController.offset);
+  }
+
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   @override
   void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
     super.dispose();
   }
 
@@ -49,7 +65,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
         child: OrientationBuilder(
           builder: (context, orientation) {
             return GridView.count(
-              padding: EdgeInsets.all(12.0),
+              controller: _scrollController,
+              padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
               children: List.generate(list.length, (index) {
                 ReportMenu menu = list[index];
@@ -61,6 +78,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   color: (index == 6) ? Colors.white : Colors.blue[400],
                   isHighlighted: (index == 6) ? true : false,
                   action: () => navigate(index),
+                  margin: 12
                 );
               }),
             );
