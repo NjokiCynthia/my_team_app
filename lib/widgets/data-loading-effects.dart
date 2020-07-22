@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:chamasoft/utilities/theme.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'backgrounds.dart';
 
-Widget dataLoadingEffect({BuildContext context, double width, double height, double borderRadius = 16.0 }) {
+Widget dataLoadingEffect(
+    {BuildContext context,
+    double width,
+    double height,
+    double borderRadius = 16.0}) {
   return SizedBox(
     child: Shimmer.fromColors(
       baseColor: Theme.of(context).hintColor.withOpacity(0.1),
@@ -29,13 +30,18 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
         padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         child: Container(
           padding: EdgeInsets.all(16.0),
-          decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+          decoration: cardDecoration(
+              gradient: plainCardGradient(context), context: context),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  dataLoadingEffect(context: context, width: 200, height: 20, borderRadius: 16.0)
+                  dataLoadingEffect(
+                      context: context,
+                      width: 200,
+                      height: 20,
+                      borderRadius: 16.0)
                 ],
               ),
               SizedBox(
@@ -51,8 +57,16 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  dataLoadingEffect(context: context, width: 120, height: 20, borderRadius: 16.0),
-                  dataLoadingEffect(context: context, width: 80, height: 20, borderRadius: 16.0),
+                  dataLoadingEffect(
+                      context: context,
+                      width: 120,
+                      height: 20,
+                      borderRadius: 16.0),
+                  dataLoadingEffect(
+                      context: context,
+                      width: 80,
+                      height: 20,
+                      borderRadius: 16.0),
                 ],
               ),
               SizedBox(
@@ -61,8 +75,16 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  dataLoadingEffect(context: context, width: 80, height: 16, borderRadius: 16.0),
-                  dataLoadingEffect(context: context, width: 100, height: 16, borderRadius: 16.0),
+                  dataLoadingEffect(
+                      context: context,
+                      width: 80,
+                      height: 16,
+                      borderRadius: 16.0),
+                  dataLoadingEffect(
+                      context: context,
+                      width: 100,
+                      height: 16,
+                      borderRadius: 16.0),
                 ],
               ),
               SizedBox(
@@ -71,8 +93,16 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  dataLoadingEffect(context: context, width: 50, height: 16, borderRadius: 16.0),
-                  dataLoadingEffect(context: context, width: 80, height: 16, borderRadius: 16.0),
+                  dataLoadingEffect(
+                      context: context,
+                      width: 50,
+                      height: 16,
+                      borderRadius: 16.0),
+                  dataLoadingEffect(
+                      context: context,
+                      width: 80,
+                      height: 16,
+                      borderRadius: 16.0),
                 ],
               ),
               SizedBox(
@@ -81,10 +111,31 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  dataLoadingEffect(context: context, width: 140, height: 16, borderRadius: 16.0),
-                  dataLoadingEffect(context: context, width: 100, height: 16, borderRadius: 16.0),
+                  dataLoadingEffect(
+                      context: context,
+                      width: 140,
+                      height: 16,
+                      borderRadius: 16.0),
+                  dataLoadingEffect(
+                      context: context,
+                      width: 100,
+                      height: 16,
+                      borderRadius: 16.0),
                 ],
               ),
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+        child: Container(
+          padding: EdgeInsets.only(left:16.0,top:10.0,bottom: 10.0,right: 16.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              dataLoadingEffect(context: context, width: 140, height: 16, borderRadius: 16.0),
+              dataLoadingEffect(context: context, width: 40, height: 16, borderRadius: 16.0),
             ],
           ),
         ),
@@ -105,9 +156,7 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                 width: 160.0,
                 padding: EdgeInsets.all(16.0),
                 decoration: cardDecoration(
-                  gradient: plainCardGradient(context),
-                  context: context
-                ),
+                    gradient: plainCardGradient(context), context: context),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -115,7 +164,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            dataLoadingEffect(context: context, width: 20, height: 20, borderRadius: 16.0)
+                            dataLoadingEffect(
+                                context: context,
+                                width: 20,
+                                height: 20,
+                                borderRadius: 16.0)
                           ],
                         ),
                         Row(
@@ -126,7 +179,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
-                                    dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                                    dataLoadingEffect(
+                                        context: context,
+                                        width: 90,
+                                        height: 20,
+                                        borderRadius: 16.0)
                                   ],
                                 )
                               ],
@@ -140,7 +197,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                     ),
                     Row(
                       children: <Widget>[
-                        dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                        dataLoadingEffect(
+                            context: context,
+                            width: 90,
+                            height: 20,
+                            borderRadius: 16.0)
                       ],
                     ),
                     SizedBox(
@@ -154,7 +215,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 60, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 60,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -162,7 +227,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 100, height: 20, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 100,
+                                    height: 20,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -170,7 +239,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 50, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 50,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                           ],
@@ -187,9 +260,7 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                 width: 160.0,
                 padding: EdgeInsets.all(16.0),
                 decoration: cardDecoration(
-                  gradient: plainCardGradient(context),
-                  context: context
-                ),
+                    gradient: plainCardGradient(context), context: context),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -197,7 +268,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            dataLoadingEffect(context: context, width: 20, height: 20, borderRadius: 16.0)
+                            dataLoadingEffect(
+                                context: context,
+                                width: 20,
+                                height: 20,
+                                borderRadius: 16.0)
                           ],
                         ),
                         Row(
@@ -208,7 +283,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
-                                    dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                                    dataLoadingEffect(
+                                        context: context,
+                                        width: 90,
+                                        height: 20,
+                                        borderRadius: 16.0)
                                   ],
                                 )
                               ],
@@ -222,7 +301,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                     ),
                     Row(
                       children: <Widget>[
-                        dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                        dataLoadingEffect(
+                            context: context,
+                            width: 90,
+                            height: 20,
+                            borderRadius: 16.0)
                       ],
                     ),
                     SizedBox(
@@ -236,7 +319,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 60, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 60,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -244,7 +331,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 100, height: 20, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 100,
+                                    height: 20,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -252,7 +343,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 50, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 50,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                           ],
@@ -269,9 +364,7 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                 width: 160.0,
                 padding: EdgeInsets.all(16.0),
                 decoration: cardDecoration(
-                  gradient: plainCardGradient(context),
-                  context: context
-                ),
+                    gradient: plainCardGradient(context), context: context),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -279,7 +372,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            dataLoadingEffect(context: context, width: 20, height: 20, borderRadius: 16.0)
+                            dataLoadingEffect(
+                                context: context,
+                                width: 20,
+                                height: 20,
+                                borderRadius: 16.0)
                           ],
                         ),
                         Row(
@@ -290,7 +387,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
-                                    dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                                    dataLoadingEffect(
+                                        context: context,
+                                        width: 90,
+                                        height: 20,
+                                        borderRadius: 16.0)
                                   ],
                                 )
                               ],
@@ -304,7 +405,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                     ),
                     Row(
                       children: <Widget>[
-                        dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                        dataLoadingEffect(
+                            context: context,
+                            width: 90,
+                            height: 20,
+                            borderRadius: 16.0)
                       ],
                     ),
                     SizedBox(
@@ -318,7 +423,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 60, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 60,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -326,7 +435,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 100, height: 20, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 100,
+                                    height: 20,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -334,7 +447,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 50, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 50,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                           ],
@@ -364,7 +481,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      dataLoadingEffect(context: context, width: 190, height: 42, borderRadius: 10.0),
+                      dataLoadingEffect(
+                          context: context,
+                          width: 190,
+                          height: 42,
+                          borderRadius: 10.0),
                     ],
                   ),
                 ),
@@ -381,13 +502,18 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                dataLoadingEffect(context: context, width: 160, height: 20, borderRadius: 16.0)
+                dataLoadingEffect(
+                    context: context,
+                    width: 160,
+                    height: 20,
+                    borderRadius: 16.0)
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                dataLoadingEffect(context: context, width: 60, height: 20, borderRadius: 16.0)
+                dataLoadingEffect(
+                    context: context, width: 60, height: 20, borderRadius: 16.0)
               ],
             )
           ],
@@ -409,9 +535,7 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                 width: 160.0,
                 padding: EdgeInsets.all(16.0),
                 decoration: cardDecoration(
-                  gradient: plainCardGradient(context),
-                  context: context
-                ),
+                    gradient: plainCardGradient(context), context: context),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -419,7 +543,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            dataLoadingEffect(context: context, width: 20, height: 20, borderRadius: 16.0)
+                            dataLoadingEffect(
+                                context: context,
+                                width: 20,
+                                height: 20,
+                                borderRadius: 16.0)
                           ],
                         ),
                         Row(
@@ -430,7 +558,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
-                                    dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                                    dataLoadingEffect(
+                                        context: context,
+                                        width: 90,
+                                        height: 20,
+                                        borderRadius: 16.0)
                                   ],
                                 )
                               ],
@@ -444,7 +576,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                     ),
                     Row(
                       children: <Widget>[
-                        dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                        dataLoadingEffect(
+                            context: context,
+                            width: 90,
+                            height: 20,
+                            borderRadius: 16.0)
                       ],
                     ),
                     SizedBox(
@@ -458,7 +594,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 60, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 60,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -466,7 +606,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 100, height: 20, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 100,
+                                    height: 20,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -474,7 +618,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 50, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 50,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                           ],
@@ -491,9 +639,7 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                 width: 160.0,
                 padding: EdgeInsets.all(16.0),
                 decoration: cardDecoration(
-                  gradient: plainCardGradient(context),
-                  context: context
-                ),
+                    gradient: plainCardGradient(context), context: context),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -501,7 +647,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            dataLoadingEffect(context: context, width: 20, height: 20, borderRadius: 16.0)
+                            dataLoadingEffect(
+                                context: context,
+                                width: 20,
+                                height: 20,
+                                borderRadius: 16.0)
                           ],
                         ),
                         Row(
@@ -512,7 +662,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
-                                    dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                                    dataLoadingEffect(
+                                        context: context,
+                                        width: 90,
+                                        height: 20,
+                                        borderRadius: 16.0)
                                   ],
                                 )
                               ],
@@ -526,7 +680,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                     ),
                     Row(
                       children: <Widget>[
-                        dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                        dataLoadingEffect(
+                            context: context,
+                            width: 90,
+                            height: 20,
+                            borderRadius: 16.0)
                       ],
                     ),
                     SizedBox(
@@ -540,7 +698,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 60, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 60,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -548,7 +710,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 100, height: 20, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 100,
+                                    height: 20,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -556,7 +722,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 50, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 50,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                           ],
@@ -573,9 +743,7 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                 width: 160.0,
                 padding: EdgeInsets.all(16.0),
                 decoration: cardDecoration(
-                  gradient: plainCardGradient(context),
-                  context: context
-                ),
+                    gradient: plainCardGradient(context), context: context),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -583,7 +751,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                       children: <Widget>[
                         Row(
                           children: <Widget>[
-                            dataLoadingEffect(context: context, width: 20, height: 20, borderRadius: 16.0)
+                            dataLoadingEffect(
+                                context: context,
+                                width: 20,
+                                height: 20,
+                                borderRadius: 16.0)
                           ],
                         ),
                         Row(
@@ -594,7 +766,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
-                                    dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                                    dataLoadingEffect(
+                                        context: context,
+                                        width: 90,
+                                        height: 20,
+                                        borderRadius: 16.0)
                                   ],
                                 )
                               ],
@@ -608,7 +784,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                     ),
                     Row(
                       children: <Widget>[
-                        dataLoadingEffect(context: context, width: 90, height: 20, borderRadius: 16.0)
+                        dataLoadingEffect(
+                            context: context,
+                            width: 90,
+                            height: 20,
+                            borderRadius: 16.0)
                       ],
                     ),
                     SizedBox(
@@ -622,7 +802,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                           children: <Widget>[
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 60, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 60,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -630,7 +814,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 100, height: 20, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 100,
+                                    height: 20,
+                                    borderRadius: 16.0)
                               ],
                             ),
                             SizedBox(
@@ -638,7 +826,11 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
                             ),
                             Row(
                               children: <Widget>[
-                                dataLoadingEffect(context: context, width: 50, height: 12, borderRadius: 16.0)
+                                dataLoadingEffect(
+                                    context: context,
+                                    width: 50,
+                                    height: 12,
+                                    borderRadius: 16.0)
                               ],
                             ),
                           ],
@@ -652,7 +844,6 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
           ),
         ),
       ),
-      
     ],
   );
 }

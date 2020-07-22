@@ -72,16 +72,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   }
 
   void _getMemberDashboardData()async{
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   showDialog<String>(
-    //       context: context,
-    //       barrierDismissible: false,
-    //       builder: (BuildContext context) {
-    //         return Center(
-    //           child: CircularProgressIndicator(),
-    //         );
-    //       });
-    // });
     try{
       await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(_currentGroup.groupId);
     }on CustomException catch (error) {
@@ -100,7 +90,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         });
       }
     }
-    //Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
