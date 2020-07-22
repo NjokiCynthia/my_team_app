@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'create-contribution.dart';
+import 'contribution/create-contribution.dart';
 
 class ListMembers extends StatefulWidget {
   @override
@@ -61,9 +61,8 @@ class _ListMembersState extends State<ListMembers> {
                 return ListTile(
                   dense: true,
                   leading: CircleAvatar(
-                    backgroundImage: member.avatar.length > 0
-                        ? NetworkImage(CustomHelper.imageUrl + member.avatar)
-                        : AssetImage('assets/no-user.png'),
+                    backgroundImage:
+                        member.avatar.length > 0 ? NetworkImage(CustomHelper.imageUrl + member.avatar) : AssetImage('assets/no-user.png'),
                   ),
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,15 +79,13 @@ class _ListMembersState extends State<ListMembers> {
                                   Text(
                                     '${member.name}',
                                     style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textSelectionHandleColor,
+                                      color: Theme.of(context).textSelectionHandleColor,
                                       fontWeight: FontWeight.w800,
                                       fontSize: 18.0,
                                     ),
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Row(
                                         children: <Widget>[
@@ -96,9 +93,7 @@ class _ListMembersState extends State<ListMembers> {
                                             '${member.identity}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w900,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor
-                                                  .withOpacity(0.5),
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                               fontSize: 12.0,
                                             ),
                                           ),
