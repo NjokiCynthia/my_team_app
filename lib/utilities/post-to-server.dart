@@ -131,7 +131,7 @@ class PostToServer {
             });
             try {
               final responseBody = await generateResponse(response.body);
-              //print("Server Response: $responseBody");
+              print("Server Response: $responseBody");
               String message = responseBody["message"].toString();
               switch (responseBody['status']) {
                 case 0:

@@ -1,6 +1,6 @@
-# app
+# Chamasoft Android & iOS App
 
-The new Chamasoft app
+The new Chamasoft Android & iOS app
 
 ## You should know:
 

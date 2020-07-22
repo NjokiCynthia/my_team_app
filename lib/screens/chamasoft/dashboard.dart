@@ -79,7 +79,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     _overlayItems.insert(0, {
       "id": '0',
       "title": "Create New",
-      "role": "Group, Merry-go-round, fundraiser"
+      "role": "Chama, Merry-go-round, fundraiser"
     });
     _groups.map((group) => {
       _overlayItems.add(
@@ -268,9 +268,13 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           appBarElevation: (elevation) => _setElevation(elevation),
         );
       case 2:
-        return ChamasoftTransactions();
+        return ChamasoftTransactions(
+          appBarElevation: (elevation) => _setElevation(elevation),
+        );
       case 3:
-        return ChamasoftReports();
+        return ChamasoftReports(
+          appBarElevation: (elevation) => _setElevation(elevation),
+        );
     }
   }
 }

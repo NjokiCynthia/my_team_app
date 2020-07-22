@@ -48,6 +48,19 @@ List<BoxShadow> mildShadow(Color color) {
   ];
 }
 
+List<BoxShadow> appSwitcherShadow(Color color) {
+  return [
+    BoxShadow(
+      color: color,
+      blurRadius: 0.0,
+      offset: Offset(
+        0.0,
+        1.0,
+      ),
+    ),
+  ];
+}
+
 BoxDecoration cardDecoration({Gradient gradient, BuildContext context}) {
   return BoxDecoration(
     color: Colors.white,

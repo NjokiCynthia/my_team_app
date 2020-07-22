@@ -67,7 +67,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProxyProvider<Auth, Dashboard>(
           update: (ctx, auth,dashboardData) => Dashboard(
             auth.id,
-            dashboardData==null?{}:dashboardData.dashboardData
+            dashboardData==null?{}:dashboardData.memberDashboardData,
+            dashboardData==null?{}:dashboardData.groupDashboardData
           ),
           create: (BuildContext context) {},
         )

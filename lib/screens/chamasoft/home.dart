@@ -14,6 +14,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'dart:async';
 
 class ChamasoftHome extends StatefulWidget {
   ChamasoftHome({
@@ -31,13 +33,22 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Group _currentGroup;
   bool _onlineBankingEnabled = true;
   bool _isInit = true;
+  bool _isLoading = true;
+  String _groupCurrency = "Ksh";
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
   }
 
+  void _doneLoading(){
+    setState(() {
+      _isLoading = false;
+    });
+  }
+
   @override
   void initState() {
+    Timer(const Duration(seconds: 3), _doneLoading);
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     super.initState();
@@ -54,11 +65,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   void didChangeDependencies(){
     _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
     if(_isInit){
-      _getGroupDashboardData(_currentGroup.groupId);
+      _getMemberDashboardData(_currentGroup.groupId);
     }
     setState(() {
       _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
     });    
+    _groupCurrency = _currentGroup.groupCurrency;
     super.didChangeDependencies();
   }
 
@@ -67,21 +79,32 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
-  void _getGroupDashboardData(String currentGroupId)async{
+  void _getMemberDashboardData(String currentGroupId)async{
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
     try{
-      await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(currentGroupId);
+      await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(currentGroupId);
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _getGroupDashboardData(currentGroupId);
+            _getMemberDashboardData(currentGroupId);
           });
     } finally {
       setState(() {
         _isInit = false;
       });
     }
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
@@ -92,14 +115,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         child: SafeArea(
           child: SingleChildScrollView(
             controller: _scrollController,
-            child: Column(
+            child: !_isLoading ? Column(
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                   child: Container(
                     padding: EdgeInsets.all(16.0),
-                    decoration: cardDecoration(
-                        gradient: plainCardGradient(context), context: context),
+                    decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: <Widget>[
@@ -133,8 +155,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
-                                  amount: currencyFormat.format(dashboardData.memberContributionAmount),
+                                  currency: _groupCurrency,
+                                  amount: currencyFormat.format(dashboardData.memberContributionArrears),
                                   size: 16.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
@@ -157,8 +179,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
-                                  amount: "2,350",
+                                  currency: _groupCurrency,
+                                  amount: currencyFormat.format(dashboardData.memberFineArrears),
                                   size: 14.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
@@ -181,8 +203,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
-                                  amount: "13,500",
+                                  currency: _groupCurrency,
+                                  amount: currencyFormat.format(dashboardData.memberTotalLoanBalance),
                                   size: 14.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
@@ -205,8 +227,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             SizedBox(
                               height: 22,
                               child: cardAmountButton(
-                                  currency: "Ksh",
-                                  amount: "5,500",
+                                  currency: _groupCurrency,
+                                  amount: currencyFormat.format(dashboardData.memberLoanArrears),
                                   size: 14.0,
                                   color: Theme.of(context)
                                       .textSelectionHandleColor,
@@ -265,7 +287,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               cardIcon: Feather.bar_chart_2,
                               amountDue: "7,500",
                               cardAmount: "10,050",
-                              currency: "Ksh",
+                              currency: _groupCurrency,
                               dueDate: "14 Apr 20",
                               contributionName: "Monthly Savings",
                             ),
@@ -287,7 +309,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               cardIcon: Feather.bar_chart,
                               amountDue: "4,050",
                               cardAmount: "4,050",
-                              currency: "Ksh",
+                              currency: _groupCurrency,
                               dueDate: "4 Apr 20",
                               contributionName: "Welfare",
                             ),
@@ -309,7 +331,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               cardIcon: Feather.bar_chart_2,
                               amountDue: "7,500",
                               cardAmount: "10,050",
-                              currency: "Ksh",
+                              currency: _groupCurrency,
                               dueDate: "14 Apr 20",
                               contributionName: "Insurance",
                             ),
@@ -423,7 +445,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               cardIcon: Feather.pie_chart,
                               amountDue: "1,500",
                               cardAmount: "1,500",
-                              currency: "Ksh",
+                              currency: _groupCurrency,
                               dueDate: "14 Apr 20",
                               contributionName: "Contribution Payment",
                             ),
@@ -445,7 +467,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               cardIcon: Feather.bar_chart_2,
                               amountDue: "10,050",
                               cardAmount: "4,050",
-                              currency: "Ksh",
+                              currency: _groupCurrency,
                               dueDate: "4 Apr 20",
                               contributionName: "Loan Repayment",
                             ),
@@ -467,7 +489,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               cardIcon: Feather.bar_chart_2,
                               amountDue: "10,050",
                               cardAmount: "4,050",
-                              currency: "Ksh",
+                              currency: _groupCurrency,
                               dueDate: "4 Apr 20",
                               contributionName: "Loan Repaymentfhghgh",
                             ),
@@ -481,8 +503,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   ),
                 ),
               ],
-            ),
-          ),
+            ) : chamasoftHomeLoadingData(context: context)
+          )
         ));
   }
 }
