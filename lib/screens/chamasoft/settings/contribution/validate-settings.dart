@@ -63,4 +63,52 @@ class ValidateSettings {
     }
     return isValid;
   }
+
+  bool validateFines(
+      {@required int fineType,
+      @required int fineFor,
+      @required String fineChargeableOn,
+      @required int fineFrequency,
+      @required int fineLimit,
+      @required int percentageFineOn}) {
+    bool isValid = true;
+
+    if (fineType == null) {
+      isValid = false;
+    } else {
+      if (fineFor == 0) {
+        isValid = false;
+      }
+
+      if (fineChargeableOn == null) {
+        isValid = false;
+      }
+
+      if (fineFrequency == null) {
+        isValid = false;
+      }
+
+      if (fineType == 1) {
+        //Fixed
+        if (fineFor == 1) {
+          if (fineLimit == null) {
+            isValid = false;
+          }
+        }
+      } else if (fineType == 2) {
+        //Percentage
+        if (percentageFineOn == null) {
+          isValid = false;
+        }
+
+        if (fineFor == 1) {
+          if (fineLimit == null) {
+            isValid = false;
+          }
+        }
+      }
+    }
+
+    return isValid;
+  }
 }

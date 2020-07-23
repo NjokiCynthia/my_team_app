@@ -1,5 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/settings/contribution/validate-contribution-settings.dart';
+import 'package:chamasoft/screens/chamasoft/settings/contribution/validate-settings.dart';
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/contribution-setup-list.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -77,8 +77,6 @@ class _ContributionSettingsState extends State<ContributionSettings> {
     formData['one_time_invoicing_active'] = 1;
     formData['invoice_days'] = 1;
     //formData["id"] = null; //TODO: Editing
-
-    print(formData);
 
     try {
       final response = await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData);

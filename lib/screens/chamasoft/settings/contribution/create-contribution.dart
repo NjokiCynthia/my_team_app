@@ -128,7 +128,9 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                           }),
                       new ContributionFineSettings(
                         responseData: responseData,
-                        onButtonPressed: (response) {},
+                        onButtonPressed: (response) {
+                          Navigator.of(context).pop(true);
+                        },
                       ),
                     ],
                   ),
