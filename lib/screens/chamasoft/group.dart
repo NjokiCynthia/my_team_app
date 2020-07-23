@@ -450,11 +450,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                       ),
                     ))
               ],
-<<<<<<< HEAD
             ) : chamasoftGroupLoadingData(context: context),
-=======
-            ):chamasoftHomeLoadingData(context: context),
->>>>>>> e2b471d59b2b23df1b1a76345797ce42b0d15545
           ),
         ));
   }

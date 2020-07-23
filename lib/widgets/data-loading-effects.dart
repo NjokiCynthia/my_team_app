@@ -150,19 +150,6 @@ Widget chamasoftHomeLoadingData({BuildContext context}) {
       Padding(
         padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
         child: Container(
-          padding: EdgeInsets.only(left:16.0,top:10.0,bottom: 10.0,right: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              dataLoadingEffect(context: context, width: 140, height: 16, borderRadius: 16.0),
-              dataLoadingEffect(context: context, width: 40, height: 16, borderRadius: 16.0),
-            ],
-          ),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-        child: Container(
           height: 180.0,
           child: ListView(
             scrollDirection: Axis.horizontal,
