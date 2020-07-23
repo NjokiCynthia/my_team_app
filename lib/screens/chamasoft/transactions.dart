@@ -46,7 +46,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   Widget build(BuildContext context) {
     final List<TransactionMenu> list = [
       TransactionMenu("E-WALLET", LineAwesomeIcons.google_wallet),
-      TransactionMenu("LOANS", LineAwesomeIcons.file_text),
+      // TransactionMenu("LOANS", LineAwesomeIcons.file_text),
       TransactionMenu("RECORD PAYMENTS", LineAwesomeIcons.bar_chart_o),
       TransactionMenu("RECORD EXPENDITURE", LineAwesomeIcons.pie_chart),
       TransactionMenu("INVOICING & TRANSFER", LineAwesomeIcons.send),
