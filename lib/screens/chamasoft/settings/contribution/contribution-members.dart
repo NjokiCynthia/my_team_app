@@ -95,8 +95,6 @@ class _ContributionMembersState extends State<ContributionMembers> {
       formData["contributing_members"] = theChosen;
     }
 
-    print(formData);
-
     setState(() {
       _isLoading = true;
     });

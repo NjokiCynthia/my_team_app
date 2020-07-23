@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/screens/chamasoft/settings/contribution/validate-settings.dart';
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/fine-setup-list.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -14,9 +15,11 @@ import 'package:provider/provider.dart';
 
 class ContributionFineSettings extends StatefulWidget {
   final dynamic responseData;
+  final bool isEditMode;
+  final dynamic contributionDetails;
   final Function(dynamic) onButtonPressed;
 
-  ContributionFineSettings({@required this.responseData, @required this.onButtonPressed});
+  ContributionFineSettings({@required this.responseData, this.isEditMode, this.contributionDetails, @required this.onButtonPressed});
 
   @override
   _ContributionFineSettingsState createState() => _ContributionFineSettingsState();
@@ -42,6 +45,36 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
 
   void _getFineSettings() {
     contributionId = widget.responseData['contribution_id'].toString();
+
+    if (widget.isEditMode) {
+      dynamic settings = widget.contributionDetails['contribution_settings'] as dynamic;
+      final enableFines = ParseHelper.getIntFromJson(settings, 'enable_fines');
+      if (enableFines == 1) {
+        List<dynamic> list = widget.contributionDetails['contribution_fine_settings'] as List<dynamic>;
+        if (list.length > 0) {
+          dynamic fineSettings = list[0];
+          setState(() {
+            fineTypeId = int.tryParse(fineSettings["fine_type"].toString()) ?? null;
+
+            if (fineTypeId == 1) {
+              fineAmount = double.tryParse(fineSettings["fixed_amount"].toString()) ?? null;
+              fineForId = int.tryParse(fineSettings["fixed_fine_mode"].toString()) ?? null;
+              fineFrequencyId = int.tryParse(fineSettings["fixed_fine_frequency"].toString()) ?? null;
+              fineChargeableOn = fineSettings["fixed_fine_chargeable_on"].toString();
+            } else {
+              fineAmount = double.tryParse(fineSettings["percentage_rate"].toString()) ?? null;
+              fineForId = int.tryParse(fineSettings["percentage_fine_mode"].toString()) ?? null;
+              fineFrequencyId = int.tryParse(fineSettings["percentage_fine_frequency"].toString()) ?? null;
+              fineChargeableOn = fineSettings["percentage_fine_chargeable_on"].toString();
+              percentageFineOptionId = int.tryParse(fineSettings["percentage_fine_on"].toString()) ?? null;
+            }
+
+            fineLimitId = int.tryParse(fineSettings["fine_limit"].toString()) ?? null;
+            fineSettingsEnabled = true;
+          });
+        }
+      }
+    }
   }
 
   void _submit(BuildContext context) async {
@@ -173,6 +206,7 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
                     Visibility(
                       visible: (fineTypeId == 1 || fineTypeId == 2),
                       child: amountTextInputField(
+                        initialValue: fineAmount > 0.1 ? fineAmount.toString() : '',
                         context: context,
                         enabled: _isFormEnabled,
                         labelText: fineTypeId == 1 ? 'Fixed Amount' : "Percentage Rate",

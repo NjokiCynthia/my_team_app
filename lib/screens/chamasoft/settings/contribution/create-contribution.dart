@@ -138,6 +138,8 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                           }),
                       new ContributionFineSettings(
                         responseData: responseData,
+                        isEditMode: widget.isEditMode == null ? false : true,
+                        contributionDetails: widget.contributionDetails,
                         onButtonPressed: (response) {
                           Navigator.of(context).pop(true);
                         },
