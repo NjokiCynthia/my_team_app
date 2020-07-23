@@ -313,6 +313,7 @@ List<Widget> contributionSummary(
             ),
             Row(
               children: <Widget>[
+                if(currency!=null)
                 Text(
                   "$currency ",
                   style: TextStyle(
@@ -321,6 +322,7 @@ List<Widget> contributionSummary(
                     fontWeight: FontWeight.w400,
                   ),
                 ),
+                if(amountDue!=null)
                 Text(
                   amountDue,
                   style: TextStyle(
@@ -331,6 +333,7 @@ List<Widget> contributionSummary(
                 )
               ],
             ),
+            if(dueDate!=null)
             Text(
               dueDate,
               style: TextStyle(

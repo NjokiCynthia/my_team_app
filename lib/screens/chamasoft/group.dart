@@ -8,6 +8,7 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -65,16 +66,6 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
   }
 
   void _getGroupDashboardData()async{
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      showDialog<String>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          });
-    });
     try{
       await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(_currentGroup.groupId);
     }on CustomException catch (error) {
@@ -85,11 +76,12 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
             _getGroupDashboardData();
           });
     } finally {
-      setState(() {
-        _isInit = false;
-      });
+      if(this.mounted){
+        setState(() {
+          _isInit = false;
+        });
+      }
     }
-    Navigator.of(context, rootNavigator: true).pop();
   }
 
   Iterable<Widget> get accountSummary sync* {
@@ -131,7 +123,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
         child: SafeArea(
           child: SingleChildScrollView(
             controller: _scrollController,
-            child: Column(
+            child: !_isInit ? Column(
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
@@ -458,7 +450,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                       ),
                     ))
               ],
-            ),
+            ) : chamasoftGroupLoadingData(context: context),
           ),
         ));
   }
