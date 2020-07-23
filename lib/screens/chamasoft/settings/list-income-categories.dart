@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'create-contribution.dart';
+import 'contribution/create-contribution.dart';
 
 class ListIncomeCategories extends StatefulWidget {
   @override
@@ -81,8 +81,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                     Text(
                                       '${expense.name}',
                                       style: TextStyle(
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
+                                        color: Theme.of(context).textSelectionHandleColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 18.0,
                                       ),
@@ -103,8 +102,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
                                 smallBadgeButton(
-                                  backgroundColor:
-                                      primaryColor.withOpacity(0.2),
+                                  backgroundColor: primaryColor.withOpacity(0.2),
                                   textColor: primaryColor,
                                   text: '${expense.amount}',
                                   action: () {},

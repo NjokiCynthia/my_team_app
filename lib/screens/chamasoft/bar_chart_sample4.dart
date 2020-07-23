@@ -13,6 +13,7 @@ class BarChartSample4State extends State<BarChartSample4> {
   double maxY = 0;
   double divider = 1;
   List<ChartData> depositsVsWithdrawals = [
+    ChartData(month: "Mar", deposit: 100000, withdrawal: 22000),
     ChartData(month: "Apr", deposit: 10000, withdrawal: 4000),
     ChartData(month: "May", deposit: 14000, withdrawal: 10000),
     ChartData(month: "Jun", deposit: 22000, withdrawal: 11000),
@@ -79,16 +80,18 @@ class BarChartSample4State extends State<BarChartSample4> {
                 getTitles: (double value) {
                   switch (value.toInt()) {
                     case 0:
-                      return 'Apr';
+                      return 'Mar';
                     case 1:
-                      return 'May';
+                      return 'Apr';
                     case 2:
-                      return 'Jun';
+                      return 'May';
                     case 3:
-                      return 'Jul';
+                      return 'Jun';
                     case 4:
-                      return 'Aug';
+                      return 'Jul';
                     case 5:
+                      return 'Aug';
+                    case 6:
                       return 'Aug';
                     default:
                       return '';
@@ -122,7 +125,7 @@ class BarChartSample4State extends State<BarChartSample4> {
             borderData: FlBorderData(
               show: false,
             ),
-            //groupsSpace: 4,
+            groupsSpace: 4,
             barGroups: list,
           ),
         ),

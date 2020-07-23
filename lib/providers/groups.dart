@@ -1348,7 +1348,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> addContributionStepOne(Map<String, dynamic> formData) async {
+  Future<dynamic> addContributionStepOne(Map<String, dynamic> formData) async {
     const url = EndpointUrl.CREATE_CONTRIBUTION_SETTING;
     try {
       formData['user_id'] = _userId;
@@ -1356,7 +1356,28 @@ class Groups with ChangeNotifier {
       formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        return await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> addContributionStepTwo(Map<String, dynamic> formData) async {
+    const url = EndpointUrl.ADD_MEMBERS_CONTRIBUTION_SETTING;
+    try {
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        return await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

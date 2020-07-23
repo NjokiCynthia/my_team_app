@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'create-contribution.dart';
+import 'contribution/create-contribution.dart';
 
 class ListContributions extends StatefulWidget {
   @override
@@ -79,21 +79,18 @@ class _ListContributionsState extends State<ListContributions> {
                                   ),
                                   SizedBox(width: 10.0),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         '${contribution.name}',
                                         style: TextStyle(
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor,
+                                          color: Theme.of(context).textSelectionHandleColor,
                                           fontWeight: FontWeight.w800,
                                           fontSize: 18.0,
                                         ),
                                       ),
                                       Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Row(
                                             children: <Widget>[
@@ -101,9 +98,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                 'Contribution Type: ',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  color: Theme.of(context)
-                                                      .textSelectionHandleColor
-                                                      .withOpacity(0.5),
+                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                   fontSize: 12.0,
                                                 ),
                                               ),
@@ -111,9 +106,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                 '${contribution.type}',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w900,
-                                                  color: Theme.of(context)
-                                                      .textSelectionHandleColor
-                                                      .withOpacity(0.5),
+                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                   fontSize: 12.0,
                                                 ),
                                               ),
@@ -125,9 +118,7 @@ class _ListContributionsState extends State<ListContributions> {
                                                 'Frequency: ',
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w600,
-                                                  color: Theme.of(context)
-                                                      .textSelectionHandleColor
-                                                      .withOpacity(0.5),
+                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                                   fontSize: 12.0,
                                                 ),
                                               ),
@@ -137,9 +128,7 @@ class _ListContributionsState extends State<ListContributions> {
                                             '${contribution.frequency}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w900,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor
-                                                  .withOpacity(0.5),
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                               fontSize: 12.0,
                                             ),
                                           ),
@@ -147,9 +136,7 @@ class _ListContributionsState extends State<ListContributions> {
                                             'Amount: ${contribution.amount}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w900,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor
-                                                  .withOpacity(0.5),
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                               fontSize: 18.0,
                                             ),
                                           ),
@@ -174,8 +161,7 @@ class _ListContributionsState extends State<ListContributions> {
                                     children: <Widget>[
                                       circleIconButton(
                                         icon: Icons.edit,
-                                        backgroundColor:
-                                            primaryColor.withOpacity(.3),
+                                        backgroundColor: primaryColor.withOpacity(.3),
                                         color: primaryColor,
                                         iconSize: 18.0,
                                         padding: 0.0,
