@@ -2,8 +2,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-final _amountValidator =
-    RegExInputFormatter.withRegex('^\$|^(0|([1-9][0-9]{0,}))(\\.[0-9]{0,})?\$');
+final _amountValidator = RegExInputFormatter.withRegex('^\$|^(0|([1-9][0-9]{0,}))(\\.[0-9]{0,})?\$');
 
 Widget simpleTextInputField(
     {BuildContext context,
@@ -11,7 +10,7 @@ Widget simpleTextInputField(
     bool enabled,
     Function onChanged,
     String hintText = '',
-      TextEditingController controller,
+    TextEditingController controller,
     Function validator,
     Function onSaved}) {
   return TextFormField(
@@ -31,23 +30,25 @@ Widget simpleTextInputField(
       )),
       hintText: hintText,
       labelText: labelText,
-      enabled: enabled??true,
+      enabled: enabled ?? true,
     ),
   );
 }
 
 Widget amountTextInputField(
     {BuildContext context,
+    String initialValue,
     String labelText,
     Function onChanged,
     String hintText = '',
-      TextEditingController controller,
+    TextEditingController controller,
     Function validator,
     Function onSaved,
     bool enabled = true}) {
   return TextFormField(
-    enabled: enabled!=null?enabled:true,
+    enabled: enabled != null ? enabled : true,
     onChanged: onChanged,
+    initialValue: initialValue != null ? initialValue : '',
     style: inputTextStyle(),
     controller: controller,
     inputFormatters: [_amountValidator],
@@ -75,12 +76,12 @@ Widget numberTextInputField(
     String labelText,
     Function onChanged,
     String hintText = '',
-      TextEditingController controller,
+    TextEditingController controller,
     Function validator,
     Function onSaved}) {
   return Padding(
-      padding: EdgeInsets.only(top: 10),
-      child: TextFormField(
+    padding: EdgeInsets.only(top: 10),
+    child: TextFormField(
       onChanged: onChanged,
       style: inputTextStyle(),
       inputFormatters: [_amountValidator],
@@ -105,20 +106,14 @@ Widget numberTextInputField(
   );
 }
 
-Widget multilineTextField(
-    {BuildContext context,
-    String labelText,
-    Function onChanged,
-    Function validator,
-    bool enabled,
-    int maxLines}) {
+Widget multilineTextField({BuildContext context, String labelText, Function onChanged, Function validator, bool enabled, int maxLines}) {
   return TextFormField(
     keyboardType: TextInputType.multiline,
     maxLines: maxLines,
     minLines: 3,
     onChanged: onChanged,
     validator: validator,
-    enabled: enabled??true,
+    enabled: enabled ?? true,
     decoration: InputDecoration(
       floatingLabelBehavior: FloatingLabelBehavior.auto,
       labelStyle: inputTextStyle(),
@@ -151,8 +146,7 @@ class RegExInputFormatter implements TextInputFormatter {
   }
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     final oldValueValid = _isValid(oldValue.text);
     final newValueValid = _isValid(newValue.text);
     if (oldValueValid && !newValueValid) {

@@ -1,4 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -15,6 +17,25 @@ class ListContributions extends StatefulWidget {
 }
 
 class _ListContributionsState extends State<ListContributions> {
+  Future<void> _getContributionSettings(BuildContext context, String contributionId) async {
+    try {
+      final response = await Provider.of<Groups>(context, listen: false).getContributionDetails(contributionId);
+      print(response);
+      Navigator.pop(context);
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => CreateContribution(isEditMode: true, contributionDetails: response),
+      ));
+    } on CustomException catch (error) {
+      Navigator.pop(context);
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getContributionSettings(context, contributionId);
+          });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -165,7 +186,16 @@ class _ListContributionsState extends State<ListContributions> {
                                         color: primaryColor,
                                         iconSize: 18.0,
                                         padding: 0.0,
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Center(
+                                                  child: CircularProgressIndicator(),
+                                                );
+                                              });
+                                          await _getContributionSettings(context, contribution.id);
+                                        },
                                       ),
                                     ],
                                   ),

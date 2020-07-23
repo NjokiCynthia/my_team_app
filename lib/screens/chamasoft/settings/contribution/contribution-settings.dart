@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/screens/chamasoft/settings/contribution/validate-settings.dart';
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/contribution-setup-list.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -14,9 +17,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ContributionSettings extends StatefulWidget {
+  final bool isEditMode;
+  final dynamic contributionDetails;
   final Function(dynamic) onButtonPressed;
 
-  ContributionSettings({@required this.onButtonPressed});
+  ContributionSettings({this.isEditMode, this.contributionDetails, @required this.onButtonPressed});
 
   @override
   _ContributionSettingsState createState() => _ContributionSettingsState();
@@ -26,13 +31,10 @@ class _ContributionSettingsState extends State<ContributionSettings> {
   final _formKey = GlobalKey<FormState>();
   bool _isFormEnabled = true;
   var _isLoading = false;
-
+  String contributionId;
   String requestId = ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
-
   String _contributionAmount;
   int startingMonthId;
-
-  //int dayOfMonthId;
   String _contributionName;
   int _contributionTypeId;
   int _daysOfTheMonth;
@@ -76,10 +78,10 @@ class _ContributionSettingsState extends State<ContributionSettings> {
     formData['regular_invoicing_active'] = 1;
     formData['one_time_invoicing_active'] = 1;
     formData['invoice_days'] = 1;
-    //formData["id"] = null; //TODO: Editing
+    formData["id"] = contributionId; //TODO: Editing
 
     try {
-      final response = await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData);
+      final response = await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData, widget.isEditMode);
       print(response);
       requestId = null;
       alertDialogWithAction(context, response["message"].toString(), () {
@@ -99,6 +101,40 @@ class _ContributionSettingsState extends State<ContributionSettings> {
         _isFormEnabled = true;
       });
     }
+  }
+
+  void _prepareForm() {
+    log('${widget.contributionDetails}');
+    dynamic settings = widget.contributionDetails['contribution_settings'] as dynamic;
+
+    setState(() {
+      contributionId = settings['id'].toString();
+      _contributionAmount = settings['amount'].toString();
+      _contributionName = settings['name'].toString();
+      _contributionTypeId = int.tryParse(settings['type'].toString()) ?? null;
+      contributionFrequencyId = int.tryParse(settings['contribution_frequency'].toString()) ?? null;
+      _daysOfTheMonth = int.tryParse(settings['month_day_monthly'].toString()) ?? null;
+      startingMonthId = int.tryParse(settings['start_month_multiple'].toString()) ?? null;
+      weekNumberId = int.tryParse(settings['week_number_fortnight'].toString()) ?? null;
+      _weekDay = int.tryParse(settings['week_day_monthly'].toString()) ?? null;
+      _weekDayWeeklyId = int.tryParse(settings['week_day_weekly'].toString()) ?? null;
+
+      int contributionTimestamp = ParseHelper.getIntFromJson(settings, "contribution_date");
+      print('contributionTimestamp: $contributionTimestamp');
+      int contributionDate = contributionTimestamp != 0 ? contributionTimestamp : int.parse(requestId);
+      int invoiceTimestamp = ParseHelper.getIntFromJson(settings, "invoice_date");
+      int invoiceDate = invoiceTimestamp != 0 ? invoiceTimestamp : int.parse(requestId);
+      _contributionDate = new DateTime.fromMillisecondsSinceEpoch(contributionDate * 1000);
+      _invoiceDate = new DateTime.fromMillisecondsSinceEpoch(invoiceDate * 1000);
+    });
+  }
+
+  @override
+  void initState() {
+    if (widget.isEditMode) {
+      _prepareForm();
+    }
+    super.initState();
   }
 
   @override
@@ -336,6 +372,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                     ),
                   ),
                   TextFormField(
+                    initialValue: _contributionName != null ? _contributionName : '',
                     keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.words,
                     style: TextStyle(fontFamily: 'SegoeUI'),
@@ -359,6 +396,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                       context: context,
                       labelText: 'Contribution Amount',
                       enabled: _isFormEnabled,
+                      initialValue: _contributionAmount,
                       onChanged: (value) {
                         setState(() {
                           _contributionAmount = value;

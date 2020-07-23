@@ -9,9 +9,11 @@ import 'package:provider/provider.dart';
 
 class ContributionMembers extends StatefulWidget {
   final dynamic responseData;
+  final bool isEditMode;
+  final dynamic contributionDetails;
   final Function(dynamic) onButtonPressed;
 
-  ContributionMembers({@required this.responseData, @required this.onButtonPressed});
+  ContributionMembers({@required this.responseData, this.isEditMode, this.contributionDetails, @required this.onButtonPressed});
 
   @override
   _ContributionMembersState createState() => _ContributionMembersState();
@@ -44,6 +46,26 @@ class _ContributionMembersState extends State<ContributionMembers> {
           identity: identity,
           avatar: memberJson['avatar'].toString());
       _members.add(member);
+    }
+
+    if (widget.isEditMode) {
+      final members = widget.contributionDetails['selected_group_members'] as List<dynamic>;
+      if (members.length == _members.length) {
+        setState(() {
+          selectAll = true;
+          _selectedMembers.clear();
+          _selectedMembers.addAll(_members);
+        });
+      } else {
+        for (var id in members) {
+          for (var member in _members) {
+            if (id == member.id) {
+              _selectedMembers.add(member);
+            }
+          }
+        }
+        setState(() {});
+      }
     }
   }
 

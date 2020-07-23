@@ -65,7 +65,7 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
     formData['invoice_days'] = 1;
 
     try {
-      await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData);
+      await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData, false);
       requestId = null;
       Navigator.of(context).pop(true);
     } on CustomException catch (error) {

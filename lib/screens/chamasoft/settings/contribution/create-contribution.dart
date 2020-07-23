@@ -11,6 +11,11 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 List<NamesListItem> daysOfMonthList = [];
 
 class CreateContribution extends StatefulWidget {
+  final bool isEditMode;
+  final dynamic contributionDetails;
+
+  CreateContribution({this.isEditMode, this.contributionDetails});
+
   @override
   _CreateContributionState createState() => _CreateContributionState();
 }
@@ -39,7 +44,7 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
     return Scaffold(
         appBar: secondaryPageTabbedAppbar(
           context: context,
-          title: "Create Contribution",
+          title: widget.isEditMode == null ? "Create Contribution" : "Edit Contribution",
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
@@ -96,22 +101,27 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                     physics: NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     children: [
-                      new ContributionSettings(onButtonPressed: (response) {
-                        if (_pageController.hasClients) {
-                          _pageController.animateToPage(
-                            1,
-                            duration: const Duration(milliseconds: 400),
-                            curve: Curves.easeInOut,
-                          );
-                        }
+                      new ContributionSettings(
+                          isEditMode: widget.isEditMode == null ? false : true,
+                          contributionDetails: widget.contributionDetails,
+                          onButtonPressed: (response) {
+                            if (_pageController.hasClients) {
+                              _pageController.animateToPage(
+                                1,
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,
+                              );
+                            }
 
-                        setState(() {
-                          responseData = response;
-                          currentPage = 1;
-                        });
-                      }),
+                            setState(() {
+                              responseData = response;
+                              currentPage = 1;
+                            });
+                          }),
                       new ContributionMembers(
                           responseData: responseData,
+                          isEditMode: widget.isEditMode == null ? false : true,
+                          contributionDetails: widget.contributionDetails,
                           onButtonPressed: (response) {
                             if (_pageController.hasClients) {
                               _pageController.animateToPage(
