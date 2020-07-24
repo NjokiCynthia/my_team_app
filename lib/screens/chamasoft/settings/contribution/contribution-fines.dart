@@ -8,7 +8,6 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown-strings-only.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
-import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -205,15 +204,21 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
                     ),
                     Visibility(
                       visible: (fineTypeId == 1 || fineTypeId == 2),
-                      child: amountTextInputField(
+                      child: TextFormField(
                         initialValue: fineAmount > 0.1 ? fineAmount.toString() : '',
-                        context: context,
+                        style: TextStyle(fontFamily: 'SegoeUI'),
                         enabled: _isFormEnabled,
-                        labelText: fineTypeId == 1 ? 'Fixed Amount' : "Percentage Rate",
+                        keyboardType: TextInputType.numberWithOptions(
+                          decimal: true,
+                          signed: false,
+                        ),
+                        decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                            labelText: fineTypeId == 1 ? 'Fixed Amount' : "Percentage Rate",
+                            labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                         onChanged: (value) {
-                          setState(() {
-                            fineAmount = double.parse(value);
-                          });
+                          fineAmount = double.tryParse(value) ?? 0;
                         },
                         validator: (_) {
                           if (fineAmount == null) {

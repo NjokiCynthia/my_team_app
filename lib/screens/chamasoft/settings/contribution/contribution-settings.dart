@@ -10,7 +10,6 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
-import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -392,22 +391,29 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                       return null;
                     },
                   ),
-                  amountTextInputField(
-                      context: context,
-                      labelText: 'Contribution Amount',
-                      enabled: _isFormEnabled,
-                      initialValue: _contributionAmount,
-                      onChanged: (value) {
-                        setState(() {
-                          _contributionAmount = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.trim() == '') {
-                          return "This field is required";
-                        }
-                        return null;
-                      }),
+                  TextFormField(
+                    initialValue: _contributionAmount != null ? _contributionAmount : '',
+                    style: TextStyle(fontFamily: 'SegoeUI'),
+                    enabled: _isFormEnabled,
+                    keyboardType: TextInputType.numberWithOptions(
+                      decimal: true,
+                      signed: false,
+                    ),
+                    decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                        labelText: "Contribution Amount",
+                        labelStyle: TextStyle(fontFamily: 'SegoeUI')),
+                    onChanged: (value) {
+                      _contributionAmount = value;
+                    },
+                    validator: (value) {
+                      if (value.trim() == '' || value.trim() == null) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
+                  ),
                 ]),
               ),
             ),

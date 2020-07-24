@@ -91,7 +91,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 
   Future<void> fetchAccounts(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchAccounts();
+      await Provider.of<Groups>(context, listen: false).temporaryFetchAccounts();
       Navigator.pop(context);
       Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListAccounts()));
     } on CustomException catch (error) {

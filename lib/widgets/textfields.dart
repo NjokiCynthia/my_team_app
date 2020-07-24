@@ -37,7 +37,6 @@ Widget simpleTextInputField(
 
 Widget amountTextInputField(
     {BuildContext context,
-    String initialValue,
     String labelText,
     Function onChanged,
     String hintText = '',
@@ -48,7 +47,6 @@ Widget amountTextInputField(
   return TextFormField(
     enabled: enabled != null ? enabled : true,
     onChanged: onChanged,
-    initialValue: initialValue != null ? initialValue : '',
     style: inputTextStyle(),
     controller: controller,
     inputFormatters: [_amountValidator],
