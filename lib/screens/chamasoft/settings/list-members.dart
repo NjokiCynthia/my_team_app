@@ -4,11 +4,13 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'contribution/create-contribution.dart';
+import 'group-setup/add-members-manually.dart';
+import 'group-setup/list-contacts.dart';
 
 class ListMembers extends StatefulWidget {
   @override
@@ -16,6 +18,76 @@ class ListMembers extends StatefulWidget {
 }
 
 class _ListMembersState extends State<ListMembers> {
+  void _showActions(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Material(
+                  color: Theme.of(context).backgroundColor,
+                  child: InkWell(
+                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                    onTap: () async {
+                      final result = await Navigator.of(context).pushNamed(ListContacts.namedRoute);
+                      Navigator.pop(context); // pop bottom sheet
+                      if (result != null && result) {
+                        //_memberRefreshIndicatorKey.currentState.show();
+                        //_getMembers(context);
+                      }
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.group_add,
+                        color: Colors.blueGrey,
+                      ),
+                      title: customTitle(
+                          text: "Select From Contacts",
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start,
+                          color: Theme.of(context).textSelectionHandleColor),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: Theme.of(context).backgroundColor,
+                  child: InkWell(
+                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                    onTap: () async {
+                      final result = await Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
+                      Navigator.pop(context); // pop bottom sheet
+                      if (result != null && result) {
+//                        _memberRefreshIndicatorKey.currentState.show();
+//                        _getMembers(context);
+                      }
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.person_add,
+                        color: Colors.blueGrey,
+                      ),
+                      title: customTitle(
+                          text: "Add Manually",
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start,
+                          color: Theme.of(context).textSelectionHandleColor),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     super.initState();
@@ -42,11 +114,7 @@ class _ListMembersState extends State<ListMembers> {
           color: Colors.white,
         ),
         backgroundColor: primaryColor,
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CreateContribution(),
-          ));
-        },
+        onPressed: () => _showActions(context),
       ),
       body: Container(
           height: MediaQuery.of(context).size.height,
