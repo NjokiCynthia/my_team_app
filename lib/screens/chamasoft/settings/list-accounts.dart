@@ -308,13 +308,20 @@ class _ListAccountsState extends State<ListAccounts> {
                                   color: primaryColor,
                                   iconSize: 18.0,
                                   padding: 0.0,
-                                  onPressed: () {
+                                  onPressed: () async {
                                     if (account.typeId == 1) {
-                                      Navigator.of(context).push(MaterialPageRoute(
+                                      final result = await Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => EditBankAccount(
                                           bankAccountId: int.parse(account.id),
                                         ),
                                       ));
+                                      if (result != null) {
+                                        int status = int.tryParse(result.toString()) ?? 0;
+                                        if (status == 1) {
+                                          _refreshIndicatorKey.currentState.show();
+                                          _fetchAccounts(context);
+                                        }
+                                      }
                                     } else if (account.typeId == 2) {
                                       Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => EditSaccoAccount(
