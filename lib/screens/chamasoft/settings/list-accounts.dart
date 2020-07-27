@@ -4,6 +4,7 @@ import 'package:chamasoft/screens/chamasoft/settings/create-mobile-money-account
 import 'package:chamasoft/screens/chamasoft/settings/create-sacco-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/edit-sacco-account.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -64,6 +65,19 @@ class _ListAccountsState extends State<ListAccounts> {
     } on CustomException catch (error) {
       print(error.message);
       return false;
+    }
+  }
+
+  Future<void> _fetchAccounts(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).temporaryFetchAccounts();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchAccounts(context);
+          });
     }
   }
 
@@ -193,118 +207,123 @@ class _ListAccountsState extends State<ListAccounts> {
           );
         },
       ),
-      body: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          decoration: primaryGradient(context),
-          child: Consumer<Groups>(builder: (context, groupData, child) {
-            List<CategorisedAccount> accounts = groupData.getAllCategorisedAccounts;
-            return accounts.length > 0
-                ? ListView.separated(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
-                    itemCount: groupData.getAllCategorisedAccounts.length,
-                    itemBuilder: (context, index) {
-                      CategorisedAccount account = accounts[index];
-
-                      if (account.isHeader) {
-                        return Padding(
-                          padding: index == 0 ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0) : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                          child: customTitle(
-                            text: account.title,
-                            fontWeight: FontWeight.w600,
-                            textAlign: TextAlign.start,
-                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
-                            fontSize: 13.0,
-                          ),
-                        );
-                      } else
-                        return ListTile(
-                          contentPadding: EdgeInsets.only(left: 16.0),
-                          leading: Icon(
-                            Icons.credit_card,
-                            color: Colors.blueGrey,
-                          ),
-                          title: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    customTitleWithWrap(
-                                      text: account.name,
-                                      color: Theme.of(context).textSelectionHandleColor,
-                                      textAlign: TextAlign.start,
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 15.0,
+      body: Builder(builder: (BuildContext context) {
+        return RefreshIndicator(
+          onRefresh: () => _fetchAccounts(context),
+          child: Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              decoration: primaryGradient(context),
+              child: Consumer<Groups>(builder: (context, groupData, child) {
+                List<CategorisedAccount> accounts = groupData.getAllCategorisedAccounts;
+                return accounts.length > 0
+                    ? ListView.separated(
+                        shrinkWrap: true,
+                        padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
+                        itemCount: groupData.getAllCategorisedAccounts.length,
+                        itemBuilder: (context, index) {
+                          CategorisedAccount account = accounts[index];
+                          if (account.isHeader) {
+                            return Padding(
+                              padding:
+                                  index == 0 ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0) : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                              child: customTitle(
+                                text: account.title,
+                                fontWeight: FontWeight.w600,
+                                textAlign: TextAlign.start,
+                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
+                                fontSize: 13.0,
+                              ),
+                            );
+                          } else
+                            return ListTile(
+                              contentPadding: EdgeInsets.only(left: 16.0),
+                              leading: Icon(
+                                Icons.credit_card,
+                                color: Colors.blueGrey,
+                              ),
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        customTitleWithWrap(
+                                          text: account.name,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          textAlign: TextAlign.start,
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 15.0,
+                                        ),
+                                        account.accountNumber.isNotEmpty
+                                            ? customTitle(
+                                                text: account.accountNumber,
+                                                fontWeight: FontWeight.w600,
+                                                textAlign: TextAlign.start,
+                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                fontSize: 12.0,
+                                              )
+                                            : Container(),
+                                      ],
                                     ),
-                                    account.accountNumber.isNotEmpty
-                                        ? customTitle(
-                                            text: account.accountNumber,
-                                            fontWeight: FontWeight.w600,
-                                            textAlign: TextAlign.start,
-                                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                            fontSize: 12.0,
-                                          )
-                                        : Container(),
-                                  ],
+                                  ),
+                                ],
+                              ),
+                              trailing: Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: circleIconButton(
+                                  icon: Icons.edit,
+                                  backgroundColor: primaryColor.withOpacity(.3),
+                                  color: primaryColor,
+                                  iconSize: 18.0,
+                                  padding: 0.0,
+                                  onPressed: () {
+                                    if (account.typeId == 1) {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => EditBankAccount(
+                                          bankAccountId: int.parse(account.id),
+                                        ),
+                                      ));
+                                    } else if (account.typeId == 2) {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => EditSaccoAccount(
+                                          saccoAccountId: int.parse(account.id),
+                                        ),
+                                      ));
+                                    } else if (account.typeId == 3) {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => EditMobileMoneyAccount(
+                                          mobileMoneyAccountId: int.parse(account.id),
+                                        ),
+                                      ));
+                                    } else if (account.typeId == 4) {
+                                      Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (context) => EditPettyCashAccount(
+                                          pettyCashAccountId: int.parse(account.id),
+                                        ),
+                                      ));
+                                    }
+                                  },
                                 ),
                               ),
-                            ],
-                          ),
-                          trailing: Padding(
-                            padding: EdgeInsets.all(12.0),
-                            child: circleIconButton(
-                              icon: Icons.edit,
-                              backgroundColor: primaryColor.withOpacity(.3),
-                              color: primaryColor,
-                              iconSize: 18.0,
-                              padding: 0.0,
-                              onPressed: () {
-                                if (account.typeId == 1) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => EditBankAccount(
-                                      bankAccountId: int.parse(account.id),
-                                    ),
-                                  ));
-                                } else if (account.typeId == 2) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => EditSaccoAccount(
-                                      saccoAccountId: int.parse(account.id),
-                                    ),
-                                  ));
-                                } else if (account.typeId == 3) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => EditMobileMoneyAccount(
-                                      mobileMoneyAccountId: int.parse(account.id),
-                                    ),
-                                  ));
-                                } else if (account.typeId == 4) {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => EditPettyCashAccount(
-                                      pettyCashAccountId: int.parse(account.id),
-                                    ),
-                                  ));
-                                }
-                              },
-                            ),
-                          ),
-                        );
-                    },
-                    separatorBuilder: (context, index) {
-                      CategorisedAccount account = accounts[index];
-                      if (account.isHeader) {
-                        return Container();
-                      } else
-                        return Divider(
-                          color: Theme.of(context).dividerColor,
-                          height: 2.0,
-                        );
-                    },
-                  )
-                : Container();
-          })),
+                            );
+                        },
+                        separatorBuilder: (context, index) {
+                          CategorisedAccount account = accounts[index];
+                          if (account.isHeader) {
+                            return Container();
+                          } else
+                            return Divider(
+                              color: Theme.of(context).dividerColor,
+                              height: 2.0,
+                            );
+                        },
+                      )
+                    : Container();
+              })),
+        );
+      }),
     );
   }
 }

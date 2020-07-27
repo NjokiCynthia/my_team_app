@@ -19,6 +19,8 @@ class ListContributions extends StatefulWidget {
 }
 
 class _ListContributionsState extends State<ListContributions> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _groupCurrency = "Ksh";
 
   Future<void> _getContributionSettings(BuildContext context, String contributionId) async {
@@ -27,9 +29,18 @@ class _ListContributionsState extends State<ListContributions> {
       print(response);
       Navigator.pop(context);
       Navigator.pop(context); // pop bottom sheet
-      Navigator.of(context).push(MaterialPageRoute(
+      final result = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => CreateContribution(isEditMode: true, contributionDetails: response),
       ));
+
+      print(result);
+      if (result != null) {
+        int status = int.tryParse(result.toString()) ?? 0;
+        if (status == 1) {
+          _refreshIndicatorKey.currentState.show();
+          _fetchContributions(context);
+        }
+      }
     } on CustomException catch (error) {
       Navigator.pop(context);
       Navigator.pop(context); // pop bottom sheet
@@ -42,10 +53,23 @@ class _ListContributionsState extends State<ListContributions> {
     }
   }
 
+  Future<void> _fetchContributions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchContributions();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchContributions(context);
+          });
+    }
+  }
+
   void _showActions(BuildContext context, Contribution contribution) {
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) {
+      builder: (_) {
         return Container(
           height: 200,
           color: Colors.white,
@@ -61,7 +85,7 @@ class _ListContributionsState extends State<ListContributions> {
                     onTap: () async {
                       showDialog(
                           context: context,
-                          builder: (BuildContext context) {
+                          builder: (_) {
                             return Center(
                               child: CircularProgressIndicator(),
                             );
@@ -124,6 +148,7 @@ class _ListContributionsState extends State<ListContributions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
@@ -136,106 +161,118 @@ class _ListContributionsState extends State<ListContributions> {
           color: Colors.white,
         ),
         backgroundColor: primaryColor,
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CreateContribution(),
+        onPressed: () async {
+          final result = Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
+            builder: (_) => CreateContribution(),
           ));
+
+          if (result != null) {
+            int status = int.tryParse(result.toString()) ?? 0;
+            if (status == 1) {
+              _refreshIndicatorKey.currentState.show();
+              _fetchContributions(_scaffoldKey.currentContext);
+            }
+          }
         },
       ),
       //backgroundColor: Theme.of(context).backgroundColor,
       backgroundColor: Colors.transparent,
       body: Builder(
         builder: (BuildContext context) {
-          return Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              decoration: primaryGradient(context),
-              child: Consumer<Groups>(builder: (context, groupData, child) {
-                return ListView.separated(
-                  padding: EdgeInsets.only(bottom: 50.0, top: 10.0),
-                  itemCount: groupData.contributions.length,
-                  itemBuilder: (context, index) {
-                    Contribution contribution = groupData.contributions[index];
-                    return ListTile(
-                      contentPadding: EdgeInsets.all(12.0),
-                      dense: true,
-                      title: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 3,
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.label,
-                                  color: Colors.blueGrey,
-                                ),
-                                SizedBox(width: 10.0),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      heading2(
-                                        text: '${contribution.name}',
-                                        textAlign: TextAlign.start,
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                      ),
-                                      customTitleWithWrap(
-                                        text: 'Contribution Type: ${contribution.type}',
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12.0,
-                                        textAlign: TextAlign.start,
-                                      ),
-                                      customTitleWithWrap(
-                                        text: 'Frequency: ${contribution.frequency}',
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: 12.0,
-                                        textAlign: TextAlign.start,
-                                      ),
-                                      customTitle(
-                                        text: '$_groupCurrency ${currencyFormat.format(double.tryParse(contribution.amount) ?? 0)}',
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12.0,
-                                        textAlign: TextAlign.start,
-                                      ),
-                                    ],
+          return RefreshIndicator(
+            key: _refreshIndicatorKey,
+            onRefresh: () => _fetchContributions(_scaffoldKey.currentContext),
+            child: Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: primaryGradient(context),
+                child: Consumer<Groups>(builder: (context, groupData, child) {
+                  return ListView.separated(
+                    padding: EdgeInsets.only(bottom: 50.0, top: 10.0),
+                    itemCount: groupData.contributions.length,
+                    itemBuilder: (context, index) {
+                      Contribution contribution = groupData.contributions[index];
+                      return ListTile(
+                        contentPadding: EdgeInsets.all(12.0),
+                        dense: true,
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 3,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  Icon(
+                                    Icons.label,
+                                    color: Colors.blueGrey,
                                   ),
-                                ),
-                              ],
+                                  SizedBox(width: 10.0),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        heading2(
+                                          text: '${contribution.name}',
+                                          textAlign: TextAlign.start,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                        ),
+                                        customTitleWithWrap(
+                                          text: 'Contribution Type: ${contribution.type}',
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12.0,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        customTitleWithWrap(
+                                          text: 'Frequency: ${contribution.frequency}',
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 12.0,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                        customTitle(
+                                          text: '$_groupCurrency ${currencyFormat.format(double.tryParse(contribution.amount) ?? 0)}',
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12.0,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                            height: 40,
-                            width: 40,
-                            child: circleIconButton(
-                              icon: Icons.edit,
-                              backgroundColor: primaryColor.withOpacity(.3),
-                              color: primaryColor,
-                              iconSize: 16.0,
-                              padding: 0.0,
-                              onPressed: () => _showActions(context, contribution),
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  separatorBuilder: (context, index) {
-                    return Divider(
-                      color: Theme.of(context).dividerColor,
-                      height: 6.0,
-                    );
-                  },
-                );
-              }));
+                            SizedBox(
+                              height: 40,
+                              width: 40,
+                              child: circleIconButton(
+                                icon: Icons.edit,
+                                backgroundColor: primaryColor.withOpacity(.3),
+                                color: primaryColor,
+                                iconSize: 16.0,
+                                padding: 0.0,
+                                onPressed: () => _showActions(_scaffoldKey.currentContext, contribution),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        color: Theme.of(context).dividerColor,
+                        height: 6.0,
+                      );
+                    },
+                  );
+                })),
+          );
         },
       ),
     );

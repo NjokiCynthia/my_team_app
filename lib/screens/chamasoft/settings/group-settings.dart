@@ -122,7 +122,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         action: SnackBarAction(
           label: 'Retry',
           onPressed: () async {
-            fetchAccounts(context);
+            fetchContributions(context);
           },
         ),
       );
