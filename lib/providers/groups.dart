@@ -1696,6 +1696,7 @@ class Groups with ChangeNotifier {
         "bank_id": bankId,
       });
       try {
+        print(postRequest);
         final response = await PostToServer.post(postRequest, url);
         _bankBranchOptions = []; //clear
         final bankBranches = response['bank_branches'] as List<dynamic>;

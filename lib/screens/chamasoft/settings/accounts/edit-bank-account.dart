@@ -91,7 +91,6 @@ class _EditBankAccountState extends State<EditBankAccount> {
       final response = await Provider.of<Groups>(context, listen: false).fetchBankAccount(widget.bankAccountId);
       if (response != null) {
         await fetchBankOptions(context);
-        await fetchBankBranchOptions(context);
 
         this.setState(() {
           selectedBankId = int.parse(response['bank_id'].toString());
@@ -111,6 +110,8 @@ class _EditBankAccountState extends State<EditBankAccount> {
 
           pageLoaded = true;
         });
+
+        await fetchBankBranchOptions(context);
       }
     } on CustomException catch (error) {
       print(error.message);
@@ -233,6 +234,10 @@ class _EditBankAccountState extends State<EditBankAccount> {
                                     bankTextController.text = bank.name;
                                     selectedBankId = bank.id;
                                     selectedBankName = bank.name;
+
+                                    selectedBankBranchId = 0;
+                                    selectedBankBranchName = "";
+                                    bankBranchTextController.text = selectedBankBranchName;
                                   });
                                 }
                               },
