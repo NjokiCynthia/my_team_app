@@ -211,11 +211,20 @@ class _ListAccountsState extends State<ListAccounts> {
                       fontSize: 16.0,
                     ),
                   ),
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.pop(context); //pop bottom sheet
-                    Navigator.of(context).push(MaterialPageRoute(
+
+                    final result = await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreatePettyCashAccount(),
                     ));
+
+                    if (result != null) {
+                      int status = int.tryParse(result.toString()) ?? 0;
+                      if (status == 1) {
+                        _refreshIndicatorKey.currentState.show();
+                        _fetchAccounts(context);
+                      }
+                    }
                   },
                 ),
               ],
@@ -331,23 +340,44 @@ class _ListAccountsState extends State<ListAccounts> {
                                         }
                                       }
                                     } else if (account.typeId == 2) {
-                                      Navigator.of(context).push(MaterialPageRoute(
+                                      final result = await Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => EditSaccoAccount(
                                           saccoAccountId: int.parse(account.id),
                                         ),
                                       ));
+                                      if (result != null) {
+                                        int status = int.tryParse(result.toString()) ?? 0;
+                                        if (status == 1) {
+                                          _refreshIndicatorKey.currentState.show();
+                                          _fetchAccounts(context);
+                                        }
+                                      }
                                     } else if (account.typeId == 3) {
-                                      Navigator.of(context).push(MaterialPageRoute(
+                                      final result = await Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => EditMobileMoneyAccount(
                                           mobileMoneyAccountId: int.parse(account.id),
                                         ),
                                       ));
+                                      if (result != null) {
+                                        int status = int.tryParse(result.toString()) ?? 0;
+                                        if (status == 1) {
+                                          _refreshIndicatorKey.currentState.show();
+                                          _fetchAccounts(context);
+                                        }
+                                      }
                                     } else if (account.typeId == 4) {
-                                      Navigator.of(context).push(MaterialPageRoute(
+                                      final result = await Navigator.of(context).push(MaterialPageRoute(
                                         builder: (context) => EditPettyCashAccount(
                                           pettyCashAccountId: int.parse(account.id),
                                         ),
                                       ));
+                                      if (result != null) {
+                                        int status = int.tryParse(result.toString()) ?? 0;
+                                        if (status == 1) {
+                                          _refreshIndicatorKey.currentState.show();
+                                          _fetchAccounts(context);
+                                        }
+                                      }
                                     }
                                   },
                                 ),

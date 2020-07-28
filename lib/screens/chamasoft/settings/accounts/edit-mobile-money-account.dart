@@ -31,6 +31,8 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
 
   final _formKey = GlobalKey<FormState>();
 
+  int _formModified = 0;
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -131,8 +133,12 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
           content: Text(
         "You have successfully updated the Mobile Money Account",
       )));
-      Navigator.of(context)
-          .push(new MaterialPageRoute(builder: (context) => ListAccounts()));
+
+      _formModified = 1;
+      Future.delayed(const Duration(seconds: 4), () {
+        Navigator.of(context).pop(_formModified);
+      });
+
     } on CustomException catch (error) {
       Navigator.pop(context);
 
