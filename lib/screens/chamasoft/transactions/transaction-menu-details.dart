@@ -47,10 +47,8 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
     switch (originFlag) {
       case 0:
         title = "E-Wallet Transactions";
-        list.add(TransactionMenu(
-            "CREATE WITHDRAWAL REQUEST", LineAwesomeIcons.google_wallet));
-        list.add(TransactionMenu(
-            "REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("CREATE WITHDRAWAL REQUEST", LineAwesomeIcons.google_wallet));
+        list.add(TransactionMenu("REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file_text));
         break;
       // case 1:
       //   title = "Loan Transactions";
@@ -70,19 +68,15 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
       case 2:
         title = "Record Expenditure";
         list.add(TransactionMenu("EXPENSES", LineAwesomeIcons.file_text));
-        list.add(TransactionMenu(
-            "BANK LOAN REPAYMENTS", LineAwesomeIcons.file_text));
-        list.add(
-            TransactionMenu("CONTRIBUTION REFUND", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("BANK LOAN REPAYMENTS", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("CONTRIBUTION REFUND", LineAwesomeIcons.file_text));
         break;
       case 3:
         title = "Invoicing and Transfer";
         list.add(TransactionMenu("INVOICE MEMBERS", LineAwesomeIcons.file_text));
         list.add(TransactionMenu("FINE MEMBER", LineAwesomeIcons.file_text));
-        list.add(TransactionMenu(
-            "CONTRIBUTION TRANSFER", LineAwesomeIcons.file_text));
-        list.add(TransactionMenu(
-            "ACCOUNT TO ACCOUNT TRANSFER", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("CONTRIBUTION TRANSFER", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu("ACCOUNT TO ACCOUNT TRANSFER", LineAwesomeIcons.file_text));
         break;
     }
 
@@ -100,7 +94,7 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         child: OrientationBuilder(
           builder: (context, orientation) {
             return GridView.count(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
               children: List.generate(list.length, (index) {
                 return gridButton(
@@ -109,7 +103,9 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
                     title: list[index].title,
                     color: (index == 0) ? Colors.white : Colors.blue[400],
                     isHighlighted: (index == 0) ? true : false,
-                    action: () => navigate(originFlag, index));
+                    action: () => navigate(originFlag, index),
+                    margin: 12
+                  );
               }),
             );
           },
