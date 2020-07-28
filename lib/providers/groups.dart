@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
@@ -1125,6 +1126,7 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
+        log('$response');
         _contributions = []; //clear
         final groupContributions = response['contributions'] as List<dynamic>;
         addContributions(groupContributions);
@@ -1348,8 +1350,33 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<dynamic> addContributionStepOne(Map<String, dynamic> formData) async {
-    const url = EndpointUrl.CREATE_CONTRIBUTION_SETTING;
+  Future<dynamic> getContributionDetails(String id) async {
+    const url = EndpointUrl.GET_CONTRIBUTION_DETAILS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "id": id,
+      });
+      try {
+        return await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> addContributionStepOne(Map<String, dynamic> formData, bool isEditMode) async {
+    var url = EndpointUrl.CREATE_CONTRIBUTION_SETTING;
+    if (isEditMode) {
+      url = EndpointUrl.EDIT_CONTRIBUTION_SETTING;
+    }
     try {
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
@@ -1669,6 +1696,7 @@ class Groups with ChangeNotifier {
         "bank_id": bankId,
       });
       try {
+        print(postRequest);
         final response = await PostToServer.post(postRequest, url);
         _bankBranchOptions = []; //clear
         final bankBranches = response['bank_branches'] as List<dynamic>;

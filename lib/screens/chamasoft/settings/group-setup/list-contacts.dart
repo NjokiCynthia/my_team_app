@@ -119,11 +119,7 @@ class _ListContactsState extends State<ListContacts> {
                         String displayName = _contact.displayName;
                         var _phonesList = _contact.phones.toList();
 
-                        return filter == null || filter == ""
-                            ? _buildListTile(index, _contact, _phonesList)
-                            : displayName.toLowerCase().contains(filter.toLowerCase())
-                                ? _buildListTile(index, _contact, _phonesList)
-                                : Visibility(visible: false, child: new Container());
+                        return filter == null || filter == "" ? _buildListTile(index, _contact, _phonesList) : displayName.toLowerCase().contains(filter.toLowerCase()) ? _buildListTile(index, _contact, _phonesList) : Visibility(visible: false, child: new Container());
                       },
                     ),
                   ),

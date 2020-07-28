@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
-import 'package:chamasoft/screens/chamasoft/settings/create-bank-account.dart';
+import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
+import 'package:chamasoft/screens/chamasoft/settings/accounts/list-institutions.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contribution-dialog.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
@@ -65,11 +66,8 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) {},
         ),
         ChangeNotifierProxyProvider<Auth, Dashboard>(
-          update: (ctx, auth,dashboardData) => Dashboard(
-            auth.id,
-            dashboardData==null?{}:dashboardData.memberDashboardData,
-            dashboardData==null?{}:dashboardData.groupDashboardData
-          ),
+          update: (ctx, auth, dashboardData) => Dashboard(
+              auth.id, dashboardData == null ? {} : dashboardData.memberDashboardData, dashboardData == null ? {} : dashboardData.groupDashboardData),
           create: (BuildContext context) {},
         )
       ],
@@ -91,6 +89,7 @@ class _MyAppState extends State<MyApp> {
             CreateBankAccount.namedRoute: (ctx) => CreateBankAccount(),
             AddContributionDialog.namedRoute: (ctx) => AddContributionDialog(),
             AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
+            ListInstitutions.namedRoute: (ctx) => ListInstitutions(),
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
           },
           onGenerateRoute: (settings) {

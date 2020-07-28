@@ -285,7 +285,7 @@ List<Withdrawal> getWithdrawalList(List<dynamic> data) {
 class ParseHelper {
   static double getDoubleFromJson(dynamic object, String key) {
     try {
-      return double.tryParse(object[key].toString());
+      return double.parse(object[key].toString());
     } catch (error) {
       return 0;
     }
@@ -293,7 +293,15 @@ class ParseHelper {
 
   static int getIntFromJson(dynamic object, String key) {
     try {
-      return int.tryParse(object[key].toString());
+      return int.parse(object[key].toString());
+    } catch (error) {
+      return 0;
+    }
+  }
+
+  static int getIntOrNullFromJson(dynamic object, String key) {
+    try {
+      return int.parse(object[key].toString());
     } catch (error) {
       return 0;
     }
@@ -310,7 +318,7 @@ class ParseHelper {
 
   static double stringToDouble(String amount) {
     try {
-      return double.tryParse(amount);
+      return double.parse(amount);
     } catch (_) {
       return 0;
     }
