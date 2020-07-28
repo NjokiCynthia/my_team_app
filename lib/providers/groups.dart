@@ -807,7 +807,7 @@ class Groups with ChangeNotifier {
   void addSaccoBranchOptions(List<dynamic> saccoBranches) {
     if (saccoBranches.length > 0) {
       for (var saccoBranchJSON in saccoBranches) {
-        final newSaccoBranch = SaccoBranch(id: int.parse(saccoBranchJSON['id']), name: saccoBranchJSON['name'].toString());
+        final newSaccoBranch = SaccoBranch(id: int.parse(saccoBranchJSON['id'].toString()), name: saccoBranchJSON['name'].toString());
         _saccoBranchOptions.add(newSaccoBranch);
         notifyListeners();
       }
@@ -1769,6 +1769,7 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "sacco_id": saccoId,
       });
+      print(postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
         _saccoBranchOptions = []; //clear

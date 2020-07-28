@@ -26,6 +26,8 @@ class ListInstitutions extends StatefulWidget {
 class _ListInstitutionsState extends State<ListInstitutions> {
   List<Bank> _banksList = [];
   List<BankBranch> _branchList = [];
+  List<Sacco> _saccoList = [];
+  List<SaccoBranch> _saccoBranchList = [];
   List<dynamic> _list = [];
   InstitutionArguments _arguments;
   String filter;
@@ -37,12 +39,29 @@ class _ListInstitutionsState extends State<ListInstitutions> {
       Navigator.of(context).pop();
       Navigator.of(context).pop(_arguments);
     } on CustomException catch (error) {
+      Navigator.of(context).pop();
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
             _fetchBankBranchOptions(context, id);
           });
+    }
+  }
+
+  Future<void> _fetchSaccoBranchOptions(BuildContext context, String id) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchSaccoBranchOptions(id);
+      Navigator.of(context).pop();
+      Navigator.of(context).pop(_arguments);
+    } on CustomException catch (error) {
+      Navigator.of(context).pop();
+//      StatusHandler().handleStatus(
+//          context: context,
+//          error: error,
+//          callback: () {
+//            _fetchSaccoBranchOptions(context, id);
+//          });
     }
   }
 
@@ -72,9 +91,13 @@ class _ListInstitutionsState extends State<ListInstitutions> {
     } else if (flag == InstitutionFlag.flagSaccos) {
       title = "Select Sacco";
       labelText = "Search Sacco";
+      _saccoList = Provider.of<Groups>(context).saccoOptions;
+      _list = _saccoList;
     } else if (flag == InstitutionFlag.flagSaccoBranches) {
       title = "Select Sacco Branch";
       labelText = "Search Sacco Branch";
+      _saccoBranchList = Provider.of<Groups>(context).saccoBranchOptions;
+      _list = _saccoBranchList;
     }
 
     return Scaffold(
@@ -110,7 +133,12 @@ class _ListInstitutionsState extends State<ListInstitutions> {
                           name = _branchList[index].name;
                           id = _branchList[index].id;
                         } else if (flag == InstitutionFlag.flagSaccos) {
-                        } else if (flag == InstitutionFlag.flagSaccoBranches) {}
+                          name = _saccoList[index].name;
+                          id = _saccoList[index].id;
+                        } else if (flag == InstitutionFlag.flagSaccoBranches) {
+                          name = _saccoBranchList[index].name;
+                          id = _saccoBranchList[index].id;
+                        }
 
                         return filter == null || filter.isEmpty
                             ? buildListTile(index, name, context, flag, id)
@@ -153,7 +181,14 @@ class _ListInstitutionsState extends State<ListInstitutions> {
                   child: CircularProgressIndicator(),
                 );
               });
-        } else if (flag == InstitutionFlag.flagBankBranches) {}
+          _arguments = InstitutionArguments(_saccoList[index], InstitutionFlag.flagSaccos);
+          print("Sacco: $name");
+          print("Id: $id");
+          await _fetchSaccoBranchOptions(context, id.toString());
+        } else if (flag == InstitutionFlag.flagSaccoBranches) {
+          _arguments = InstitutionArguments(_saccoBranchList[index], InstitutionFlag.flagSaccoBranches);
+          Navigator.of(context).pop(_arguments);
+        }
       },
     );
   }

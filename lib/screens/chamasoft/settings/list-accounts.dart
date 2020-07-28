@@ -155,9 +155,17 @@ class _ListAccountsState extends State<ListAccounts> {
                     Navigator.pop(context);
                     Navigator.pop(context); //pop bottom sheet
 
-                    Navigator.of(context).push(MaterialPageRoute(
+                    final result = await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateSaccoAccount(),
                     ));
+
+                    if (result != null) {
+                      int status = int.tryParse(result.toString()) ?? 0;
+                      if (status == 1) {
+                        _refreshIndicatorKey.currentState.show();
+                        _fetchAccounts(context);
+                      }
+                    }
                   },
                 ),
                 FlatButton(
