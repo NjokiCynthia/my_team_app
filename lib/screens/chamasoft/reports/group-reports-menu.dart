@@ -5,6 +5,7 @@ import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-application
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -31,14 +32,14 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final List<ReportMenu> list = [
-      ReportMenu("ACCOUNT", "BALANCES", LineAwesomeIcons.bank),
-      ReportMenu("CONTRIBUTION", "SUMMARY", LineAwesomeIcons.file_text),
-      ReportMenu("FINE", "SUMMARY", LineAwesomeIcons.file),
-      ReportMenu("LOAN", "SUMMARY", LineAwesomeIcons.bar_chart),
-      ReportMenu("LOAN", "APPLICATIONS", LineAwesomeIcons.list),
-      ReportMenu("EXPENSE", "SUMMARY", LineAwesomeIcons.pie_chart),
-      ReportMenu("TRANSACTION", "STATEMENT", LineAwesomeIcons.list_ol),
+    final List<ReportMenuSvg> list = [
+      ReportMenuSvg("ACCOUNT", "BALANCES", customIcons['bank-cards']),
+      ReportMenuSvg("CONTRIBUTION", "SUMMARY", customIcons['money-bag']),
+      ReportMenuSvg("FINE", "SUMMARY", customIcons['expense']),
+      ReportMenuSvg("LOAN", "SUMMARY", customIcons['transaction']),
+      ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
+      ReportMenuSvg("EXPENSE", "SUMMARY", customIcons['card-payment']),
+      ReportMenuSvg("TRANSACTION", "STATEMENT", customIcons['invoice']),
     ];
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -54,11 +55,11 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
         child: OrientationBuilder(
           builder: (context, orientation) {
             return GridView.count(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
               children: List.generate(list.length, (index) {
-                ReportMenu menu = list[index];
-                return gridButton(
+                ReportMenuSvg menu = list[index];
+                return svgGridButton(
                   context: context,
                   icon: menu.icon,
                   title: menu.title,
@@ -66,6 +67,7 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
                   color: Colors.blue[400],
                   isHighlighted: false,
                   action: () => navigate(index),
+                  margin: 12
                 );
               }),
             );

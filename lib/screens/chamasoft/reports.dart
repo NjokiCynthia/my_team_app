@@ -7,9 +7,9 @@ import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statemen
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class ChamasoftReports extends StatefulWidget {
   ChamasoftReports({
@@ -50,14 +50,14 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
 
   @override
   Widget build(BuildContext context) {
-    final List<ReportMenu> list = [
-      ReportMenu("CONTRIBUTION", "STATEMENT", LineAwesomeIcons.file_text),
-      ReportMenu("FINE", "STATEMENT", LineAwesomeIcons.file),
-      ReportMenu("LOAN", "APPLICATIONS", LineAwesomeIcons.bar_chart_o),
-      ReportMenu("LOAN", "SUMMARY", LineAwesomeIcons.pie_chart),
-      ReportMenu("DEPOSIT", "RECEIPTS", LineAwesomeIcons.angle_double_down),
-      ReportMenu("WITHDRAWAL", "RECEIPTS", LineAwesomeIcons.angle_double_up),
-      ReportMenu("MORE GROUP", "REPORTS", LineAwesomeIcons.arrow_right),
+    final List<ReportMenuSvg> list = [
+      ReportMenuSvg("CONTRIBUTION", "STATEMENT", customIcons['transaction']),
+      ReportMenuSvg("FINE", "STATEMENT", customIcons['invoice']),
+      ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
+      ReportMenuSvg("LOAN", "SUMMARY", customIcons['expense']),
+      ReportMenuSvg("DEPOSIT", "RECEIPTS", customIcons['cash-in-hand']),
+      ReportMenuSvg("WITHDRAWAL", "RECEIPTS", customIcons['cash-register']),
+      ReportMenuSvg("MORE GROUP", "REPORTS", customIcons['group']),
     ];
 
     return new WillPopScope(
@@ -69,8 +69,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
               children: List.generate(list.length, (index) {
-                ReportMenu menu = list[index];
-                return gridButton(
+                ReportMenuSvg menu = list[index];
+                return svgGridButton(
                   context: context,
                   icon: menu.icon,
                   title: menu.title,
