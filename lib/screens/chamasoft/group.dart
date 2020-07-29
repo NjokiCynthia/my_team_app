@@ -67,7 +67,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
 
   void _getGroupDashboardData()async{
     try{
-      await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData();
+      if(!Provider.of<Dashboard>(context,listen:false).groupDataExists(_currentGroup.groupId)){
+        await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(_currentGroup.groupId);
+      }
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,

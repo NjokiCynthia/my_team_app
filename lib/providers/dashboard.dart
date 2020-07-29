@@ -30,13 +30,13 @@ class Dashboard with ChangeNotifier{
     this._currentGroupId = _currentGroupId;
     if(_memberDashboardData.containsKey(_currentGroupId)){
       if(_memberDashboardData[_currentGroupId].isNotEmpty){
-        _updateMemberDashboardData();
+        _updateMemberDashboardData(_currentGroupId);
       }
     }
       
     if(_groupDashboardData.containsKey(_currentGroupId)){
       if(_groupDashboardData[_currentGroupId].isNotEmpty){
-        _updateGroupDashboardData();
+        _updateGroupDashboardData(_currentGroupId);
       }
     }
   }
@@ -128,9 +128,9 @@ class Dashboard with ChangeNotifier{
     return [..._bankAccountDashboardSummary];
   }
 
-  bool memberGroupDataExists(){
-    if(_memberDashboardData.containsKey(_currentGroupId)){
-      if(_memberDashboardData[_currentGroupId].length<=0){
+  bool memberGroupDataExists(String groupId){
+    if(_memberDashboardData.containsKey(groupId)){
+      if(_memberDashboardData[groupId].length<=0){
         return false;
       }{
         return true;
@@ -140,9 +140,9 @@ class Dashboard with ChangeNotifier{
     }
   }
 
-  bool groupDataExists(){
-    if(_groupDashboardData.containsKey(_currentGroupId)){
-      if(_groupDashboardData[_currentGroupId].length<=0){
+  bool groupDataExists(String groupId){
+    if(_groupDashboardData.containsKey(groupId)){
+      if(_groupDashboardData[groupId].length<=0){
         return false;
       }else{
         return true;
@@ -152,9 +152,9 @@ class Dashboard with ChangeNotifier{
     }
   }
 
-  void _updateMemberDashboardData()async{
-    if(_memberDashboardData[_currentGroupId].containsKey("member_details")){
-      var memberDetails = _memberDashboardData[_currentGroupId]["member_details"] as Map<String,dynamic>;
+  void _updateMemberDashboardData(String groupId)async{
+    if(_memberDashboardData[groupId].containsKey("member_details")){
+      var memberDetails = _memberDashboardData[groupId]["member_details"] as Map<String,dynamic>;
       _memberContributionAmount = double.tryParse(memberDetails["total_contributions"].toString())??0.0;
       _memberContributionArrears = double.tryParse(memberDetails["contribution_arrears"].toString())??0.0;
       _memberFineArrears = double.tryParse(memberDetails["fine_arrears"].toString())??0.0;
@@ -164,9 +164,9 @@ class Dashboard with ChangeNotifier{
     notifyListeners();
   }
 
-  void _updateGroupDashboardData()async{
-    if(_groupDashboardData[_currentGroupId].containsKey("group_details")){
-      var groupDetails = _groupDashboardData[_currentGroupId]["group_details"] as Map<String,dynamic>;
+  void _updateGroupDashboardData(String groupId)async{
+    if(_groupDashboardData[groupId].containsKey("group_details")){
+      var groupDetails = _groupDashboardData[groupId]["group_details"] as Map<String,dynamic>;
       _cashBalances = double.tryParse(groupDetails["cash_balances"].toString())??0.0;
       _bankBalances = double.tryParse(groupDetails["bank_balances"].toString())??0.0;
       _groupContributionAmount = double.tryParse(groupDetails["total_contributions"].toString())??0.0;
@@ -191,17 +191,17 @@ class Dashboard with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> getMemberDashboardData()async{
+  Future<void> getMemberDashboardData(String groupId)async{
     try{
       const url = EndpointUrl.GET_MEMBER_DASHBOARD_DATA;
       try {
-        if(!memberGroupDataExists()){
+        if(!memberGroupDataExists(groupId)){
           final postRequest = json.encode({
             "user_id" : _userId,
-            "group_id" : _currentGroupId,
+            "group_id" : groupId,
           });
           final response = await PostToServer.post(postRequest, url);
-          _memberDashboardData[_currentGroupId] = response;
+          _memberDashboardData[groupId] = response;
         }
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -215,18 +215,18 @@ class Dashboard with ChangeNotifier{
     }
   }
 
-  Future<void> getGroupDashboardData()async{
+  Future<void> getGroupDashboardData(String groupId)async{
     try{
       const url = EndpointUrl.GET_GROUP_DASHBOARD_DATA;
       try {
-        if(!groupDataExists()){
+        if(!groupDataExists(groupId)){
           final postRequest = json.encode({
             "user_id" : _userId,
-            "group_id" : _currentGroupId,
+            "group_id" : groupId,
           });
           final response = await PostToServer.post(postRequest, url);
-          _groupDashboardData[_currentGroupId] = response;
-          _updateGroupDashboardData();
+          _groupDashboardData[groupId] = response;
+          _updateGroupDashboardData(groupId);
         }
       } on CustomException catch (error) {
         print(error.toString());
