@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -352,23 +353,23 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               dense: true,
               onTap: () => launchURL("https://help.chamasoft.com/"),
             ),
-            ListTile(
-              title: Text("Chat Support",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              trailing: Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                child: Icon(
-                  Icons.chat,
-                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                ),
-              ),
-              dense: true,
-              onTap: () {},
-            ),
+//            ListTile(
+//              title: Text("Chat Support",
+//                  style: TextStyle(
+//                    fontWeight: FontWeight.w500,
+//                    fontSize: 16,
+//                    color: Theme.of(context).textSelectionHandleColor,
+//                  )),
+//              trailing: Padding(
+//                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+//                child: Icon(
+//                  Icons.chat,
+//                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+//                ),
+//              ),
+//              dense: true,
+//              onTap: () {},
+//            ),
             ListTile(
               title: Text("Call Support",
                   style: TextStyle(
@@ -384,7 +385,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () {},
+              onTap: () {
+                CustomHelper.callNumber("+254733366240");
+              },
             ),
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
