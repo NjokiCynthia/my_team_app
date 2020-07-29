@@ -462,6 +462,7 @@ class Groups with ChangeNotifier {
       prefs.remove(selectedGroupId);
     }
     prefs.setString(selectedGroupId, groupId);
+    notifyListeners();
   }
 
   getCurrentGroupId() async {
