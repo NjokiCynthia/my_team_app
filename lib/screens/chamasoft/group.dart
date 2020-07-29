@@ -67,7 +67,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
 
   void _getGroupDashboardData()async{
     try{
-      await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(_currentGroup.groupId);
+      if(!Provider.of<Dashboard>(context,listen:false).groupDataExists(_currentGroup.groupId)){
+        await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(_currentGroup.groupId);
+      }
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -274,40 +276,47 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                         SizedBox(
                           width: 16.0,
                         ),
-                        Row(
-                          children: accountSummary.toList(),
-                        ),
-                        // Container(
-                        //   width: 160.0,
-                        //   padding: EdgeInsets.all(16.0),
-                        //   decoration: cardDecoration(
-                        //       gradient: plainCardGradient(context),
-                        //       context: context),
-                        //   child: accountBalance(
-                        //     color: primaryColor,
-                        //     cardIcon: Feather.credit_card,
-                        //     cardAmount: "100,000",
-                        //     currency: "Ksh",
-                        //     accountName: "Finnlemm Bank",
-                        //   ),
-                        // ),
-                        // SizedBox(
-                        //   width: 16.0,
-                        // ),
-                        // Container(
-                        //   width: 160.0,
-                        //   padding: EdgeInsets.all(16.0),
-                        //   decoration: cardDecoration(
-                        //       gradient: plainCardGradient(context),
-                        //       context: context),
-                        //   child: accountBalance(
-                        //     color: primaryColor,
-                        //     cardIcon: Feather.credit_card,
-                        //     cardAmount: "10,000,000",
-                        //     currency: "Ksh",
-                        //     accountName: "E-Wall",
-                        //   ),
-                        // )
+                        _iteratableData.length>0?
+                          Row(
+                            children: accountSummary.toList(),
+                          ):
+                          Row(
+                            children: <Widget>[
+                              Container(
+                                width: 160.0,
+                                height: 165.0,
+                                padding: EdgeInsets.all(16.0),
+                                decoration: cardDecoration(
+                                    gradient: plainCardGradient(context),
+                                    context: context),
+                                child: accountBalance(
+                                  color: primaryColor,
+                                  cardIcon: Feather.credit_card,
+                                  cardAmount: currencyFormat.format(dashboardData.bankBalances),
+                                  currency: _groupCurrency,
+                                  accountName: "Cash at Bank",
+                                ),
+                              ),
+                              SizedBox(
+                                width: 16.0,
+                              ),
+                              Container(
+                                width: 160.0,
+                                height: 165.0,
+                                padding: EdgeInsets.all(16.0),
+                                decoration: cardDecoration(
+                                    gradient: plainCardGradient(context),
+                                    context: context),
+                                child: accountBalance(
+                                  color: primaryColor,
+                                  cardIcon: Feather.credit_card,
+                                  cardAmount: currencyFormat.format(dashboardData.cashBalances),
+                                  currency: _groupCurrency,
+                                  accountName: "Cash at Hand",
+                                ),
+                              )
+                            ]
+                          ),
                       ],
                     ),
                   ),

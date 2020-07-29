@@ -329,6 +329,10 @@ class Groups with ChangeNotifier {
     return [..._groups];
   }
 
+  String get userId{
+    return _userId;
+  }
+
   String get currentGroupId {
     return _currentGroupId;
   }
@@ -458,6 +462,7 @@ class Groups with ChangeNotifier {
       prefs.remove(selectedGroupId);
     }
     prefs.setString(selectedGroupId, groupId);
+    notifyListeners();
   }
 
   getCurrentGroupId() async {
@@ -513,7 +518,6 @@ class Groups with ChangeNotifier {
     } else {
       _groups = loadedGroups;
     }
-    print("Groups loaded : ${_groups.length}");
     notifyListeners();
   }
 
