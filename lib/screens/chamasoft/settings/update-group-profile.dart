@@ -8,7 +8,6 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/currency-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -142,17 +141,16 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     }
   }
 
-
   Future<void> doUpdateCountry(BuildContext context) async {
     errorText = '';
     try {
       showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      });
+          context: context,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
       final response = await Provider.of<Groups>(context, listen: false).updateGroupCountry(countryId);
       if (response['status'] == 1) {
         Scaffold.of(context).showSnackBar(SnackBar(
@@ -166,8 +164,6 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     } on CustomException catch (error) {
       print(error.message);
       errorText = 'Network Error occurred: could not update group country';
-    }finally{
-      Navigator.of(context).pop();
     }
   }
 
@@ -190,7 +186,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   ),
                 ),
                 TextFormField(
-                  initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone,
+                  initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone == null
+                      ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone
+                      : "",
                   keyboardType: TextInputType.phone,
                   onChanged: (value) {
                     setState(() {
@@ -327,7 +325,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           content: Form(
             key: _formKey,
             child: TextFormField(
-              initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail,
+              initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail == null
+                  ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail
+                  : "",
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
                 setState(() {
@@ -430,7 +430,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     );
   }
 
-  void _updateCountry(BuildContext ctx,int oldCountryId) {
+  void _updateCountry(BuildContext ctx) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -447,7 +447,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                     return CountryDropdown(
                       labelText: 'Select Country',
                       listItems: groupData.countryOptions,
-                      selectedItem: oldCountryId,
+                      selectedItem: countryId,
                       onChanged: (value) {
                         setState(() {
                           countryId = value;
@@ -605,7 +605,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Group Phone Number",
-                  updateText: currentGroup.groupPhone=="null"?"":currentGroup.groupPhone,
+                  updateText: currentGroup.groupPhone == "null" ? "Set group phone number" : currentGroup.groupPhone,
                   icon: Icons.edit,
                   onPressed: () {
                     _updatePhoneNumber(context);
@@ -613,7 +613,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Group Email Address",
-                  updateText: currentGroup.groupEmail=="null"?"":currentGroup.groupEmail,
+                  updateText: currentGroup.groupEmail == 'null' ? "Set group email address" : currentGroup.groupEmail,
                   icon: Icons.edit,
                   onPressed: () {
                     _updateEmailAddress(context);
@@ -621,7 +621,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Currency",
-                  updateText: currentGroup.groupCurrency=="null"?"":currentGroup.groupCurrency,
+                  updateText: currentGroup.groupCurrency == "null" ? "Set group currency" : currentGroup.groupCurrency,
                   icon: Icons.edit,
                   onPressed: () async {
                     setState(() {
@@ -632,13 +632,13 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Country",
-                  updateText: currentGroup.groupCountryName=="null"?"":currentGroup.groupCountryName,
+                  updateText: currentGroup.groupCountryName == "null" ? "Set country" : currentGroup.groupCountryName,
                   icon: Icons.edit,
                   onPressed: () {
                     setState(() {
                       countryId = int.tryParse(currentGroup.groupCountryId);
                     });
-                    _updateCountry(context,int.tryParse(currentGroup.groupCountryId));
+                    _updateCountry(context);
                   },
                 ),
               ],
@@ -665,23 +665,34 @@ class InfoUpdateTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text("$labelText",
-          style: TextStyle(
-            fontSize: 14.0,
-            color: Theme.of(context).bottomAppBarColor,
-          )),
-      subtitle: Text(
-        "$updateText",
-        style: TextStyle(
-          color: Theme.of(context).textSelectionHandleColor,
-          fontSize: 20.0,
-        ),
+      title: customTitle(
+        text: "$labelText",
+        textAlign: TextAlign.start,
+        fontSize: 14.0,
+        color: Theme.of(context).bottomAppBarColor,
       ),
-      trailing: circleIconButton(
-        icon: icon,
-        color: primaryColor,
-        backgroundColor: primaryColor.withOpacity(.1),
-        onPressed: onPressed,
+      subtitle: customTitle(
+        text: "$updateText",
+        textAlign: TextAlign.start,
+        color: Theme.of(context).textSelectionHandleColor,
+        fontSize: 20.0,
+      ),
+      trailing: Container(
+        width: 32,
+        height: 32,
+        padding: EdgeInsets.all(2),
+        decoration: ShapeDecoration(
+          color: primaryColor.withOpacity(.1),
+          shape: CircleBorder(),
+        ),
+        child: IconButton(
+          icon: Icon(
+            icon,
+            size: 14,
+          ),
+          onPressed: onPressed,
+          color: primaryColor,
+        ),
       ),
       onTap: () {},
     );

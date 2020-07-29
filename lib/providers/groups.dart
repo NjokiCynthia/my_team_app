@@ -1574,8 +1574,6 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        //final name = response['name'];
-        //final countryId = response['country_id'];
         if (response['status'] == 1) {
           await updateGroupProfile();
         }

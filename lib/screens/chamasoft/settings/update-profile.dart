@@ -97,7 +97,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   Future<void> _updateUserName(BuildContext context) async {
     try {
-      if(!_userNameFormKey.currentState.validate()){
+      if (!_userNameFormKey.currentState.validate()) {
         return;
       }
       _userNameFormKey.currentState.save();
@@ -124,7 +124,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   Future<void> _updateUserEmailAdress(BuildContext context) async {
     try {
-      if(!_emailFormKey.currentState.validate()){
+      if (!_emailFormKey.currentState.validate()) {
         return;
       }
       _emailFormKey.currentState.save();
@@ -235,9 +235,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 setState(() {
                   if (value.isEmpty) {
                     name = _oldName;
-                  }else if(value.trim().split(" ").length<2){
+                  } else if (value.trim().split(" ").length < 2) {
                     name = _oldName;
-                  }else{
+                  } else {
                     name = value;
                   }
                 });
@@ -245,7 +245,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               validator: (value) {
                 if (value.isEmpty) {
                   return 'Your name is required';
-                }else if(value.trim().split(" ").length<2){
+                } else if (value.trim().split(" ").length < 2) {
                   return "Enter atleast 2 names";
                 }
                 return null;
@@ -298,7 +298,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
                 setState(() {
-                  if(CustomHelper.validEmail(value)){
+                  if (CustomHelper.validEmail(value)) {
                     emailAddress = value;
                   }
                 });
@@ -306,8 +306,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
               validator: (email) {
                 if (email.isEmpty) {
                   return "Field is required";
-                }else{
-                  if(!CustomHelper.validEmail(email)){
+                } else {
+                  if (!CustomHelper.validEmail(email)) {
                     return "Enter a valid email address";
                   }
                 }
@@ -488,11 +488,22 @@ class InfoUpdateTile extends StatelessWidget {
           fontSize: 20.0,
         ),
       ),
-      trailing: circleIconButton(
-        icon: icon,
-        color: primaryColor,
-        backgroundColor: primaryColor.withOpacity(.1),
-        onPressed: onPressed,
+      trailing: Container(
+        width: 32,
+        height: 32,
+        padding: EdgeInsets.all(2),
+        decoration: ShapeDecoration(
+          color: primaryColor.withOpacity(.1),
+          shape: CircleBorder(),
+        ),
+        child: IconButton(
+          icon: Icon(
+            icon,
+            size: 14,
+          ),
+          onPressed: onPressed,
+          color: primaryColor,
+        ),
       ),
       onTap: () {},
     );

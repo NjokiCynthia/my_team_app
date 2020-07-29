@@ -203,14 +203,15 @@ class PostToServer {
                   throw CustomException(message: ERROR_MESSAGE);
               }
             } catch (error) {
-              print(response.body);
+              print("1: ${response.body}");
               throw error;
             }
           } catch (error) {
-            print(error.toString());
+            print("2: ${error.toString()}");
             throw error;
           }
         } catch (error) {
+          print("3: ${error.toString()}");
           throw (error);
         }
       } else {

@@ -295,7 +295,10 @@ class _GroupSettingsState extends State<GroupSettings> {
                               backgroundImage: image,
                               radius: 45.0,
                             ),
-                            errorWidget: (context, url, error) => const Icon(Icons.error),
+                            errorWidget: (context, url, error) => const CircleAvatar(
+                              backgroundImage: const AssetImage('assets/no-user.png'),
+                              radius: 45.0,
+                            ),
                             fadeOutDuration: const Duration(seconds: 1),
                             fadeInDuration: const Duration(seconds: 3),
                           )
