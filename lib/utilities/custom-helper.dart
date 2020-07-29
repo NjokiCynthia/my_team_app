@@ -9,7 +9,8 @@ import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart' as syspaths;
 
 class CustomHelper {
-  static const String baseUrl = "https://chamasoftbeta.com";
+  //static const String baseUrl = "https://chamasoftbeta.com";
+  static const String baseUrl = "https://app.chamasoft.com";
   static const String prodBaseUrl = "https://app.chamasoft.com";
   static const String imageUrl = baseUrl + "/uploads/groups/";
 

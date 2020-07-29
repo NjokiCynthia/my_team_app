@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:http/http.dart' as http;
-import 'package:simple_rsa/simple_rsa.dart';
 
 import '../utilities/custom-helper.dart';
 import 'common.dart';
@@ -35,19 +34,58 @@ class PostToServer {
 
   static Future<String> _encryptSecretKey(String randomKey) async {
     try {
-      final publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST" +
-          "0FfZzEXiPCC6i8RtA5pyS/orSBa1Ds3PMnF4qU+Z+HlBB9apKG/pYK73mXR8v1cX" +
-          "jZCFxg08Gq/dwam1O5ehNXtEHKhembXdZC2zdFyVVg8emgbyDxaP1oEWwQOqoUI7" +
-          "1e1lPqDMrFTUeS65YO2ayWeEKEnY12nE6pgyopSdEo5Boz4RzxCL8jLIhTwRouhi" +
-          "MOA9UyWBYuQEp8P1yj8zVoB20WyB6qOazPIiCEUz4MK0/yiVTR6B8hWwQydvMGKu" +
-          "QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd" +
-          "3QIDAQAB";
-      final encrypted = await encryptString(randomKey, publicKey);
-      Codec<String, String> stringToBase64 = utf8.fuse(base64);
-      return stringToBase64.encode(encrypted);
+      final publicKey = '''MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST
+0FfZzEXiPCC6i8RtA5pyS/orSBa1Ds3PMnF4qU+Z+HlBB9apKG/pYK73mXR8v1cX
+jZCFxg08Gq/dwam1O5ehNXtEHKhembXdZC2zdFyVVg8emgbyDxaP1oEWwQOqoUI7
+1e1lPqDMrFTUeS65YO2ayWeEKEnY12nE6pgyopSdEo5Boz4RzxCL8jLIhTwRouhi
+MOA9UyWBYuQEp8P1yj8zVoB20WyB6qOazPIiCEUz4MK0/yiVTR6B8hWwQydvMGKu
+QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
+3QIDAQAB''';
+
+      final parser = RSAKeyParser();
+      final key = parser.parse(splitStr(publicKey));
+      final encrypter = Encrypter(RSA(publicKey: key));
+      final encrypted = encrypter.encrypt(randomKey);
+      return encrypted.base64;
+//      final encrypted = await encryptString(randomKey, publicKey);
+//      Codec<String, String> stringToBase64 = utf8.fuse(base64);
+//      return stringToBase64.encode(encrypted);
     } catch (error) {
+      print("Encryption error: $error");
       throw error;
     }
+  }
+
+  static splitStr(String str) {
+    var begin = '-----BEGIN PUBLIC KEY-----\n';
+    var end = '\n-----END PUBLIC KEY-----';
+    int splitCount = str.length ~/ 64;
+    List<String> strList = List();
+
+    for (int i = 0; i < splitCount; i++) {
+      strList.add(str.substring(64 * i, 64 * (i + 1)));
+    }
+    if (str.length % 64 != 0) {
+      strList.add(str.substring(64 * splitCount));
+    }
+
+    return begin + strList.join('\n') + end;
+  }
+
+  static splitPrivateStr(String str) {
+    var begin = '-----BEGIN PRIVATE KEY-----\n';
+    var end = '\n-----END PRIVATE KEY-----';
+    int splitCount = str.length ~/ 64;
+    List<String> strList = List();
+
+    for (int i = 0; i < splitCount; i++) {
+      strList.add(str.substring(64 * i, 64 * (i + 1)));
+    }
+    if (str.length % 64 != 0) {
+      strList.add(str.substring(64 * splitCount));
+    }
+
+    return begin + strList.join('\n') + end;
   }
 
   static Future<String> _decryptSecretKey(String encryptedSecretKey) async {
@@ -78,7 +116,13 @@ class PostToServer {
           "cdXW2XtPie7zVwJHjtpqNBeY0cZQ59afWR3wXuamdGMgRLBPMi+0M9NJT0ljorj7" +
           "Ay/pWc2QlVxxiYr7k8AO8upqb0hrb4eg8kkf5njp7SGT1Mr7Bc3cMBwj6HBz3VZT" +
           "LbklZ8LTNYtSPV7UrLazVYqN";
-      final decrypted = await decryptString(encryptedSecretKey, privateKey);
+
+      final parser = RSAKeyParser();
+      final key = parser.parse(splitPrivateStr(privateKey));
+      final decrypter = Encrypter(RSA(privateKey: key));
+
+      final decrypted = decrypter.decrypt64(encryptedSecretKey);
+      //final decrypted = await decryptString(encryptedSecretKey, privateKey);
       return decrypted;
     } catch (error) {
       throw error;
@@ -114,7 +158,10 @@ class PostToServer {
         final String randomKey = CustomHelper.generateRandomString(16);
         print(url);
         try {
-          final String secretKey = await _encryptSecretKey(randomKey);
+          final String secretKey =
+              /*'OGMxRkVYcFUvR1RXVWRsRnlKd2YyTElmNU1KRTBrWTNhUGRTc0tEMHU3L2NEdlUwV2k1TTJRNEVRUC8wRVF2cWpvWVJTQldiL2R1M2V0TTREV2x0Rm8reHd2MlhVUTl2L29XbSs1YnRTNERvVWZLUkk0MEkrNU0wR1cyT1ZPQVdXM0VmUTAyKzhMeWk0Y04wYWltYUlSZGRRL05YYm1zTWhlT1NIV0hHYklYQ29NZ2RWUHVUK3B4Vm1vR2hRWnBCbDdvdjZMVlI2L1dORmFuRkx6aTdpei9GT2NFczZ5ZGZ5VmZ2ZXhtdG03Y09uTXZRVVp1bEdkRUZmVjhBVDFITk9lOTZ3K01nS2FuaWhLRmZDN0hHM3hTRGVzU09neXZxWFpQaEFPelJIenc5Skp4KzNRM0hzS2VqY205ZVB2NVkvN1BEcDdZRkQra0N3UDZORndFU0FBPT0='; */ await _encryptSecretKey(
+                  randomKey);
+          print("secret: $secretKey");
           final String versionCode = await CustomHelper.getApplicationBuildNumber();
           final String userAccessTokenKey = await Auth.getAccessToken();
           final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
@@ -130,7 +177,8 @@ class PostToServer {
               throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
-              final responseBody = await generateResponse(response.body);
+              final tempResponse = await generateResponse(response.body);
+              final responseBody = /*await generateResponse(response.body);*/ tempResponse['response'];
               print("Server Response: $responseBody");
               String message = responseBody["message"].toString();
               switch (responseBody['status']) {
@@ -204,6 +252,7 @@ class PostToServer {
               }
             } catch (error) {
               print(response.body);
+              print("Error: $error");
               throw error;
             }
           } catch (error) {
@@ -211,6 +260,7 @@ class PostToServer {
             throw error;
           }
         } catch (error) {
+          print("Error: $error");
           throw (error);
         }
       } else {

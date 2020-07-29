@@ -33,6 +33,7 @@ dependencies:
   libphonenumber: ^1.0.1
   shimmer: ^1.1.1
   flutter_svg: ^0.17.4
+  steel_crypt: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -52,6 +53,7 @@ flutter:
    - assets/tiles/
    - assets/certificates/mpesachama.crt
    - assets/certificates/mobile.key
+   - assets/certificates/pubkey.pem
   fonts:
     - family: SegoeUI
       fonts:
