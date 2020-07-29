@@ -128,6 +128,30 @@ class Dashboard with ChangeNotifier{
     return [..._bankAccountDashboardSummary];
   }
 
+  bool memberGroupDataExists(){
+    if(_memberDashboardData.containsKey(_currentGroupId)){
+      if(_memberDashboardData[_currentGroupId].length<=0){
+        return false;
+      }{
+        return true;
+      }
+    }else{
+      return false;
+    }
+  }
+
+  bool groupDataExists(){
+    if(_groupDashboardData.containsKey(_currentGroupId)){
+      if(_groupDashboardData[_currentGroupId].length<=0){
+        return false;
+      }else{
+        return true;
+      }
+    }else{
+      return false;
+    }
+  }
+
   void _updateMemberDashboardData()async{
     if(_memberDashboardData[_currentGroupId].containsKey("member_details")){
       var memberDetails = _memberDashboardData[_currentGroupId]["member_details"] as Map<String,dynamic>;
@@ -167,25 +191,17 @@ class Dashboard with ChangeNotifier{
     notifyListeners();
   }
 
-  Future<void> getMemberDashboardData(String groupId)async{
+  Future<void> getMemberDashboardData()async{
     try{
       const url = EndpointUrl.GET_MEMBER_DASHBOARD_DATA;
       try {
-        bool reload = false;
-        if(_memberDashboardData.containsKey(groupId)){
-          if(_memberDashboardData[groupId].length<=0){
-            reload = true;
-          }
-        }else{
-          reload = true;
-        }
-        if(reload){
+        if(!memberGroupDataExists()){
           final postRequest = json.encode({
             "user_id" : _userId,
-            "group_id" : groupId,
+            "group_id" : _currentGroupId,
           });
           final response = await PostToServer.post(postRequest, url);
-          _memberDashboardData[groupId] = response;
+          _memberDashboardData[_currentGroupId] = response;
         }
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -199,25 +215,17 @@ class Dashboard with ChangeNotifier{
     }
   }
 
-  Future<void> getGroupDashboardData(String groupId)async{
+  Future<void> getGroupDashboardData()async{
     try{
       const url = EndpointUrl.GET_GROUP_DASHBOARD_DATA;
       try {
-        bool reload = false;
-        if(_groupDashboardData.containsKey(groupId)){
-          if(_groupDashboardData[groupId].length<=0){
-            reload = true;
-          }
-        }else{
-          reload = true;
-        }
-        if(reload){
+        if(!groupDataExists()){
           final postRequest = json.encode({
             "user_id" : _userId,
-            "group_id" : groupId,
+            "group_id" : _currentGroupId,
           });
           final response = await PostToServer.post(postRequest, url);
-          _groupDashboardData[groupId] = response;
+          _groupDashboardData[_currentGroupId] = response;
           _updateGroupDashboardData();
         }
       } on CustomException catch (error) {

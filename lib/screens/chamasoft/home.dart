@@ -33,6 +33,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Group _currentGroup;
   bool _onlineBankingEnabled = true;
   bool _isInit = true;
+  //bool _isLoading = false;
   String _groupCurrency = "Ksh";
 
   void _scrollListener() {
@@ -70,7 +71,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   void _getMemberDashboardData()async{
     try{
-      await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(_currentGroup.groupId);
+      if(!Provider.of<Dashboard>(context,listen:false).memberGroupDataExists()){
+        await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData();
+      }
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -82,6 +85,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       if(this.mounted){
         setState(() {
           _isInit = false;
+          //_isLoading = false;
           _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
         });
       }
