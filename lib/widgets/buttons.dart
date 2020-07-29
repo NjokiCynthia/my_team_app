@@ -402,7 +402,8 @@ Widget svgGridButton({BuildContext context, Color color, String icon, String tit
       child: Stack(fit: StackFit.expand, alignment: Alignment.center, children: <Widget>[
         Positioned(
           top: 0.0,
-          right: 30.0,
+          right: 0.0,
+          left: 0.0,
           child: SvgPicture.asset(
               icon,
               semanticsLabel: 'icon',
