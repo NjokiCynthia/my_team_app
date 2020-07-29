@@ -124,6 +124,14 @@ class Dashboard with ChangeNotifier{
     return _cashBalances+_bankBalances;
   }
 
+  double get cashBalances{
+    return _cashBalances;
+  }
+
+  double get bankBalances{
+    return _bankBalances;
+  }
+
   List<BankAccountDashboardSummary> get bankAccountDashboardSummary{
     return [..._bankAccountDashboardSummary];
   }
