@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
@@ -312,7 +310,7 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                             child: Row(
                               children: <Widget>[
                                 CircleAvatar(
-                                  backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                                  backgroundColor: primaryColor, // Colors.primaries[Random().nextInt(Colors.primaries.length)],
                                   child: Text(displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24)),
                                 ),
                                 SizedBox(

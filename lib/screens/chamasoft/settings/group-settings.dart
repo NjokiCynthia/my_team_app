@@ -394,7 +394,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                 },
               ),
               DashedDivider(
-                color: Color(0xFFECECEC),
+                color: Theme.of(context).dividerColor,
                 thickness: 1.0,
                 height: 5.0,
               ),
@@ -426,11 +426,10 @@ class _GroupSettingsState extends State<GroupSettings> {
                         );
                       });
                   await fetchContributions(context);
-//                  Navigator.pop(context);
                 },
               ),
               DashedDivider(
-                color: Color(0xFFECECEC),
+                color: Theme.of(context).dividerColor,
                 thickness: 1.0,
                 height: 5.0,
               ),
@@ -466,7 +465,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                },
 //              ),
 //              DashedDivider(
-//                color: Color(0xFFECECEC),
+//                   color: Theme.of(context).dividerColor,
 //                thickness: 1.0,
 //                height: 5.0,
 //              ),
@@ -502,7 +501,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                },
 //              ),
 //              DashedDivider(
-//                color: Color(0xFFECECEC),
+//                   color: Theme.of(context).dividerColor,
 //                thickness: 1.0,
 //                height: 5.0,
 //              ),
@@ -537,7 +536,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                },
 //              ),
 //              DashedDivider(
-//                color: Color(0xFFECECEC),
+//                   color: Theme.of(context).dividerColor,
 //                thickness: 1.0,
 //                height: 5.0,
 //              ),
@@ -572,7 +571,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                },
 //              ),
 //              DashedDivider(
-//                color: Color(0xFFECECEC),
+//                   color: Theme.of(context).dividerColor,
 //                thickness: 1.0,
 //                height: 5.0,
 //              ),
@@ -607,7 +606,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                },
 //              ),
 //              DashedDivider(
-//                color: Color(0xFFECECEC),
+//                   color: Theme.of(context).dividerColor,
 //                thickness: 1.0,
 //                height: 5.0,
 //              ),
@@ -642,7 +641,7 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                },
 //              ),
 //              DashedDivider(
-//                color: Color(0xFFECECEC),
+//                   color: Theme.of(context).dividerColor,
 //                thickness: 1.0,
 //                height: 5.0,
 //              ),
@@ -677,7 +676,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                 },
               ),
               DashedDivider(
-                color: Color(0xFFECECEC),
+                color: Theme.of(context).dividerColor,
                 thickness: 1.0,
                 height: 5.0,
               ),
@@ -707,7 +706,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                 },
               ),
               DashedDivider(
-                color: Color(0xFFECECEC),
+                color: Theme.of(context).dividerColor,
                 thickness: 1.0,
                 height: 5.0,
               ),
