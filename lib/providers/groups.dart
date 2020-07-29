@@ -329,6 +329,10 @@ class Groups with ChangeNotifier {
     return [..._groups];
   }
 
+  String get userId{
+    return _userId;
+  }
+
   String get currentGroupId {
     return _currentGroupId;
   }

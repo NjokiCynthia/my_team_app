@@ -18,20 +18,26 @@ class BankAccountDashboardSummary{
 
 class Dashboard with ChangeNotifier{
   String _userId;
-  Map<String,dynamic> _memberDashboardData;
-  Map<String,dynamic> _groupDashboardData;
+  Map<String,Map<String,dynamic>> _memberDashboardData;
+  Map<String,Map<String,dynamic>> _groupDashboardData;
   List<BankAccountDashboardSummary> _bankAccountDashboardSummary = [];
-  //final String _currentGroupId;
+  String _currentGroupId;
 
-  Dashboard(String _userId,Map<String,dynamic> _memberDashboardData,Map<String,dynamic> _groupDashboardData){
+  Dashboard(String _userId,String _currentGroupId,Map<String,Map<String,dynamic>> _memberDashboardData,Map<String,Map<String,dynamic>> _groupDashboardData){
     this._memberDashboardData = _memberDashboardData;
     this._groupDashboardData = _groupDashboardData;
     this._userId = _userId;
-    if(_memberDashboardData.isNotEmpty){
-      _updateMemberDashboardData();
+    this._currentGroupId = _currentGroupId;
+    if(_memberDashboardData.containsKey(_currentGroupId)){
+      if(_memberDashboardData[_currentGroupId].isNotEmpty){
+        _updateMemberDashboardData();
+      }
     }
-    if(_groupDashboardData.isNotEmpty){
-      _updateGroupDashboardData();
+      
+    if(_groupDashboardData.containsKey(_currentGroupId)){
+      if(_groupDashboardData[_currentGroupId].isNotEmpty){
+        _updateGroupDashboardData();
+      }
     }
   }
   //***************member****************/
@@ -54,11 +60,11 @@ class Dashboard with ChangeNotifier{
   double _groupLoanedAmount = 0.0;
   double _groupLoanPaid = 0.0;
 
-  Map<String,dynamic> get memberDashboardData{
+  Map<String,Map<String,dynamic>> get memberDashboardData{
     return _memberDashboardData;
   }
 
-  Map<String,dynamic> get groupDashboardData{
+  Map<String,Map<String,dynamic>> get groupDashboardData{
     return _groupDashboardData;
   }
 
@@ -123,8 +129,8 @@ class Dashboard with ChangeNotifier{
   }
 
   void _updateMemberDashboardData()async{
-    if(_memberDashboardData.containsKey("member_details")){
-      var memberDetails = _memberDashboardData["member_details"] as Map<String,dynamic>;
+    if(_memberDashboardData[_currentGroupId].containsKey("member_details")){
+      var memberDetails = _memberDashboardData[_currentGroupId]["member_details"] as Map<String,dynamic>;
       _memberContributionAmount = double.tryParse(memberDetails["total_contributions"].toString())??0.0;
       _memberContributionArrears = double.tryParse(memberDetails["contribution_arrears"].toString())??0.0;
       _memberFineArrears = double.tryParse(memberDetails["fine_arrears"].toString())??0.0;
@@ -135,8 +141,8 @@ class Dashboard with ChangeNotifier{
   }
 
   void _updateGroupDashboardData()async{
-    if(_groupDashboardData.containsKey("group_details")){
-      var groupDetails = _groupDashboardData["group_details"] as Map<String,dynamic>;
+    if(_groupDashboardData[_currentGroupId].containsKey("group_details")){
+      var groupDetails = _groupDashboardData[_currentGroupId]["group_details"] as Map<String,dynamic>;
       _cashBalances = double.tryParse(groupDetails["cash_balances"].toString())??0.0;
       _bankBalances = double.tryParse(groupDetails["bank_balances"].toString())??0.0;
       _groupContributionAmount = double.tryParse(groupDetails["total_contributions"].toString())??0.0;
@@ -165,25 +171,30 @@ class Dashboard with ChangeNotifier{
     try{
       const url = EndpointUrl.GET_MEMBER_DASHBOARD_DATA;
       try {
-        final postRequest = json.encode({
-          "user_id" : _userId,
-          "group_id" : groupId,
-        });
-        final response = await PostToServer.post(postRequest, url);
-        _memberDashboardData = response;
-        _updateMemberDashboardData();
+        bool reload = false;
+        if(_memberDashboardData.containsKey(groupId)){
+          if(_memberDashboardData[groupId].length<=0){
+            reload = true;
+          }
+        }else{
+          reload = true;
+        }
+        if(reload){
+          final postRequest = json.encode({
+            "user_id" : _userId,
+            "group_id" : groupId,
+          });
+          final response = await PostToServer.post(postRequest, url);
+          _memberDashboardData[groupId] = response;
+        }
       } on CustomException catch (error) {
-        print(error.toString());
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
-        print(error.toString());
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      print(error.toString());
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
-      print(error.toString());
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
@@ -192,13 +203,23 @@ class Dashboard with ChangeNotifier{
     try{
       const url = EndpointUrl.GET_GROUP_DASHBOARD_DATA;
       try {
-        final postRequest = json.encode({
-          "user_id" : _userId,
-          "group_id" : groupId,
-        });
-        final response = await PostToServer.post(postRequest, url);
-        _groupDashboardData = response;
-        _updateGroupDashboardData();
+        bool reload = false;
+        if(_groupDashboardData.containsKey(groupId)){
+          if(_groupDashboardData[groupId].length<=0){
+            reload = true;
+          }
+        }else{
+          reload = true;
+        }
+        if(reload){
+          final postRequest = json.encode({
+            "user_id" : _userId,
+            "group_id" : groupId,
+          });
+          final response = await PostToServer.post(postRequest, url);
+          _groupDashboardData[groupId] = response;
+          _updateGroupDashboardData();
+        }
       } on CustomException catch (error) {
         print(error.toString());
         throw CustomException(message: error.toString(), status: error.status);
