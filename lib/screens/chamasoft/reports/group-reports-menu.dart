@@ -45,7 +45,7 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 1,
-        leadingIcon: LineAwesomeIcons.arrow_left,
+        leadingIcon: LineAwesomeIcons.close,
         title: "Group Reports",
       ),
       backgroundColor: Colors.transparent,
