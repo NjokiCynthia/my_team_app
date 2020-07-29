@@ -71,8 +71,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   void _getMemberDashboardData()async{
     try{
-      if(!Provider.of<Dashboard>(context,listen:false).memberGroupDataExists()){
-        await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData();
+      if(!Provider.of<Dashboard>(context,listen:false).memberGroupDataExists(_currentGroup.groupId)){
+        await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(_currentGroup.groupId);
       }
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
