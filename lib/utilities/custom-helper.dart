@@ -7,6 +7,7 @@ import 'package:image/image.dart';
 import 'package:libphonenumber/libphonenumber.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart' as syspaths;
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomHelper {
   static const String baseUrl = "https://chamasoftbeta.com";
@@ -120,6 +121,10 @@ class CustomHelper {
       return false;
     }
     return double.tryParse(s) != null;
+  }
+
+  static void callNumber(String number) {
+    launch("tel://$number");
   }
 }
 
