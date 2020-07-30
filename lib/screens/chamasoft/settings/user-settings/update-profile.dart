@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/screens/verification.dart';
+import 'package:chamasoft/screens/chamasoft/settings/user-settings/change-number-verification.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -122,7 +122,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     } finally {}
   }
 
-  Future<void> _updateUserEmailAdress(BuildContext context) async {
+  Future<void> _updateUserEmailAddress(BuildContext context) async {
     try {
       if (!_emailFormKey.currentState.validate()) {
         return;
@@ -143,7 +143,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
           context: context,
           error: error,
           callback: () {
-            _updateUserEmailAdress(context);
+            _updateUserEmailAddress(context);
           });
     } finally {}
   }
@@ -154,18 +154,16 @@ class _UpdateProfileState extends State<UpdateProfile> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Phone Number"),
+          title: heading2(text: "Update Phone Number", textAlign: TextAlign.start),
           content: Form(
             key: _phoneNumberFormKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(
-                  'Before updating your number kindly ensure you can receive SMS on your new number',
-                  style: TextStyle(
+                customTitleWithWrap(
+                    text: 'Before updating your number kindly ensure you can receive SMS on your new number',
                     fontSize: 12,
-                  ),
-                ),
+                    textAlign: TextAlign.start),
                 TextFormField(
                   initialValue: phoneNumber,
                   keyboardType: TextInputType.phone,
@@ -205,8 +203,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 color: primaryColor,
                 action: () {
                   if (_phoneNumberFormKey.currentState.validate()) {
-//                  Navigator.of(context).pop();
-                    Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
+                    Navigator.of(context).pop();
+                    Navigator.of(context).push(
+                        new MaterialPageRoute(builder: (context) => ChangeNumberVerification(), settings: RouteSettings(arguments: phoneNumber)));
                   }
                 }),
             SizedBox(
@@ -335,7 +334,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                 color: primaryColor,
                 action: () {
                   Navigator.of(context).pop();
-                  _updateUserEmailAdress(context);
+                  _updateUserEmailAddress(context);
                 }),
             SizedBox(
               width: 10,
@@ -436,11 +435,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     updateText: phoneNumber,
                     icon: Icons.edit,
                     onPressed: () {
-                      Scaffold.of(context).showSnackBar(SnackBar(
-                          content: Text(
-                        "Coming soon",
-                      )));
-                      //_updatePhoneNumber();
+                      _updatePhoneNumber();
                     },
                   ),
                   InfoUpdateTile(

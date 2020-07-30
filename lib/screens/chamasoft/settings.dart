@@ -13,7 +13,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'settings/group-settings.dart';
-import 'settings/update-profile.dart';
+import 'settings/user-settings/update-profile.dart';
 
 class ChamasoftSettings extends StatefulWidget {
   @override
