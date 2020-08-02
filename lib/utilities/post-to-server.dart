@@ -177,8 +177,9 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
               throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
-              final tempResponse = await generateResponse(response.body);
-              final responseBody = /*await generateResponse(response.body);*/ tempResponse['response'];
+              //final tempResponse = await generateResponse(response.body);
+              //print("Temp: $tempResponse");
+              final responseBody = await generateResponse(response.body); //tempResponse['response'];
               print("Server Response: $responseBody");
               String message = responseBody["message"].toString();
               switch (responseBody['status']) {
