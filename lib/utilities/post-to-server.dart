@@ -44,14 +44,10 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
 
       final parser = RSAKeyParser();
       final key = parser.parse(splitStr(publicKey));
-      final encrypter = Encrypter(RSA(publicKey: key));
-      final encrypted = encrypter.encrypt(randomKey);
+      final encryptProtocol = Encrypter(RSA(publicKey: key));
+      final encrypted = encryptProtocol.encrypt(randomKey);
       return encrypted.base64;
-//      final encrypted = await encryptString(randomKey, publicKey);
-//      Codec<String, String> stringToBase64 = utf8.fuse(base64);
-//      return stringToBase64.encode(encrypted);
     } catch (error) {
-      print("Encryption error: $error");
       throw error;
     }
   }
@@ -119,10 +115,9 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
 
       final parser = RSAKeyParser();
       final key = parser.parse(splitPrivateStr(privateKey));
-      final decrypter = Encrypter(RSA(privateKey: key));
+      final decryptProtocol = Encrypter(RSA(privateKey: key));
 
-      final decrypted = decrypter.decrypt64(encryptedSecretKey);
-      //final decrypted = await decryptString(encryptedSecretKey, privateKey);
+      final decrypted = decryptProtocol.decrypt64(encryptedSecretKey);
       return decrypted;
     } catch (error) {
       throw error;
@@ -158,9 +153,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
         final String randomKey = CustomHelper.generateRandomString(16);
         print(url);
         try {
-          final String secretKey =
-              /*'OGMxRkVYcFUvR1RXVWRsRnlKd2YyTElmNU1KRTBrWTNhUGRTc0tEMHU3L2NEdlUwV2k1TTJRNEVRUC8wRVF2cWpvWVJTQldiL2R1M2V0TTREV2x0Rm8reHd2MlhVUTl2L29XbSs1YnRTNERvVWZLUkk0MEkrNU0wR1cyT1ZPQVdXM0VmUTAyKzhMeWk0Y04wYWltYUlSZGRRL05YYm1zTWhlT1NIV0hHYklYQ29NZ2RWUHVUK3B4Vm1vR2hRWnBCbDdvdjZMVlI2L1dORmFuRkx6aTdpei9GT2NFczZ5ZGZ5VmZ2ZXhtdG03Y09uTXZRVVp1bEdkRUZmVjhBVDFITk9lOTZ3K01nS2FuaWhLRmZDN0hHM3hTRGVzU09neXZxWFpQaEFPelJIenc5Skp4KzNRM0hzS2VqY205ZVB2NVkvN1BEcDdZRkQra0N3UDZORndFU0FBPT0='; */ await _encryptSecretKey(
-                  randomKey);
+          final String secretKey = await _encryptSecretKey(randomKey);
           final String versionCode = await CustomHelper.getApplicationBuildNumber();
           final String userAccessTokenKey = await Auth.getAccessToken();
           final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
@@ -169,7 +162,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             "Versioncode": versionCode,
             "Authorization": userAccessToken,
           };
-          
+
           print("headers: $headers");
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
@@ -178,9 +171,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
               throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
-              //final tempResponse = await generateResponse(response.body);
-              //print("Temp: $tempResponse");
-              final responseBody = await generateResponse(response.body); //tempResponse['response'];
+              final responseBody = await generateResponse(response.body);
               print("Server Response: $responseBody");
               String message = responseBody["message"].toString();
               switch (responseBody['status']) {
