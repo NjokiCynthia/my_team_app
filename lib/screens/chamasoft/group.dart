@@ -53,9 +53,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
   @override
   void didChangeDependencies(){
     _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
-    if(_isInit){
+    //if(_isInit){
       _getGroupDashboardData();
-    }
+    //}
     _groupCurrency = _currentGroup.groupCurrency;
     super.didChangeDependencies();
   }
@@ -68,6 +68,13 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
   void _getGroupDashboardData()async{
     try{
       if(!Provider.of<Dashboard>(context,listen:false).groupDataExists(_currentGroup.groupId)){
+        if(this.mounted){
+          if(_isInit == false){
+            setState(() {
+              _isInit = true;
+            });
+          }
+        }
         await Provider.of<Dashboard>(context,listen:false).getGroupDashboardData(_currentGroup.groupId);
       }
     }on CustomException catch (error) {
