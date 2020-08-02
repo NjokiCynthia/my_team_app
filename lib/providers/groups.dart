@@ -329,6 +329,10 @@ class Groups with ChangeNotifier {
     return [..._groups];
   }
 
+  String get userId {
+    return _userId;
+  }
+
   String get currentGroupId {
     return _currentGroupId;
   }
@@ -458,6 +462,7 @@ class Groups with ChangeNotifier {
       prefs.remove(selectedGroupId);
     }
     prefs.setString(selectedGroupId, groupId);
+    notifyListeners();
   }
 
   getCurrentGroupId() async {
@@ -513,7 +518,6 @@ class Groups with ChangeNotifier {
     } else {
       _groups = loadedGroups;
     }
-    print("Groups loaded : ${_groups.length}");
     notifyListeners();
   }
 
@@ -546,6 +550,7 @@ class Groups with ChangeNotifier {
     });
     try {
       final response = await PostToServer.post(postRequest, url);
+      log(response.toString());
       final group = response['user_groups'];
       if (group.length > 0) {
         int i = 0;
@@ -1126,7 +1131,6 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        log('$response');
         _contributions = []; //clear
         final groupContributions = response['contributions'] as List<dynamic>;
         addContributions(groupContributions);
@@ -1574,8 +1578,6 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        //final name = response['name'];
-        //final countryId = response['country_id'];
         if (response['status'] == 1) {
           await updateGroupProfile();
         }

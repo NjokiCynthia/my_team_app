@@ -252,16 +252,15 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   throw CustomException(message: ERROR_MESSAGE);
               }
             } catch (error) {
-              print(response.body);
-              print("Error: $error");
+              print("1: ${response.body}");
               throw error;
             }
           } catch (error) {
-            print(error.toString());
+            print("2: ${error.toString()}");
             throw error;
           }
         } catch (error) {
-          print("Error: $error");
+          print("3: ${error.toString()}");
           throw (error);
         }
       } else {

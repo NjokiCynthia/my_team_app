@@ -1,27 +1,22 @@
-import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/my-groups.dart';
+import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/auth.dart';
-import '../screens/signup.dart';
-import '../utilities/common.dart';
-import '../utilities/theme.dart';
-import '../widgets/backgrounds.dart';
-import '../widgets/buttons.dart';
-import '../widgets/textstyles.dart';
-
-class Verification extends StatefulWidget {
-  static const namedRoute = '/verification-screen';
+class ChangeNumberVerification extends StatefulWidget {
   @override
-  _VerificationState createState() => _VerificationState();
+  _ChangeNumberVerification createState() => _ChangeNumberVerification();
 }
 
-class _VerificationState extends State<Verification> {
+class _ChangeNumberVerification extends State<ChangeNumberVerification> {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
@@ -58,18 +53,6 @@ class _VerificationState extends State<Verification> {
       _authData["pin"] = _pinEditingController.text;
       final response = await Provider.of<Auth>(context, listen: false).verifyPin(_authData) as Map<String, dynamic>;
       print(response);
-      if (response['userExists'] == 1) {
-        if (response.containsKey('userGroups')) {
-          Provider.of<Groups>(context, listen: false).addGroups(response['userGroups']);
-        }
-        Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'), arguments: 0);
-      } else {
-        final uniqueCode = response['uniqueCode'];
-        Navigator.pushReplacementNamed(context, SignUp.namedRoute, arguments: {
-          "identity": _identity,
-          "uniqueCode": uniqueCode,
-        });
-      }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -142,7 +125,7 @@ class _VerificationState extends State<Verification> {
                               height: 100.0,
                             ),
                           ),
-                          heading1(text: "Verification", color: Theme.of(context).textSelectionHandleColor),
+                          heading2(text: "Change Phone Number", color: Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 10,
                           ),
@@ -230,7 +213,7 @@ class _VerificationState extends State<Verification> {
                   top: 50.0,
                   left: 20.0,
                   child: screenActionButton(
-                    icon: LineAwesomeIcons.arrow_left,
+                    icon: LineAwesomeIcons.close,
                     backgroundColor: primaryColor.withOpacity(0.2),
                     textColor: primaryColor,
                     action: () => Navigator.of(context).pop(),

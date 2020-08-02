@@ -7,6 +7,7 @@ import 'package:image/image.dart';
 import 'package:libphonenumber/libphonenumber.dart';
 import 'package:package_info/package_info.dart';
 import 'package:path_provider/path_provider.dart' as syspaths;
+import 'package:url_launcher/url_launcher.dart';
 
 class CustomHelper {
   static const String baseUrl = "https://chamasoftbeta.com";
@@ -40,6 +41,9 @@ class CustomHelper {
     if (phone.trim().isNotEmpty) {
       String number = countryCode.dialCode + (phone.startsWith("0") ? phone.replaceFirst("0", "") : phone);
       bool isValid = await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: number, isoCode: countryCode.code);
+
+      print("number $number");
+      print("isvalid??? $isValid");
       return isValid;
     } else
       return false;
@@ -121,6 +125,10 @@ class CustomHelper {
       return false;
     }
     return double.tryParse(s) != null;
+  }
+
+  static void callNumber(String number) {
+    launch("tel://$number");
   }
 }
 

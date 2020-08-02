@@ -1,7 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
-import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -37,7 +36,7 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
       ReportMenuSvg("CONTRIBUTION", "SUMMARY", customIcons['money-bag']),
       ReportMenuSvg("FINE", "SUMMARY", customIcons['expense']),
       ReportMenuSvg("LOAN", "SUMMARY", customIcons['transaction']),
-      ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
+      //ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
       ReportMenuSvg("EXPENSE", "SUMMARY", customIcons['card-payment']),
       ReportMenuSvg("TRANSACTION", "STATEMENT", customIcons['invoice']),
     ];
@@ -46,7 +45,7 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 1,
-        leadingIcon: LineAwesomeIcons.arrow_left,
+        leadingIcon: LineAwesomeIcons.close,
         title: "Group Reports",
       ),
       backgroundColor: Colors.transparent,
@@ -60,15 +59,14 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
               children: List.generate(list.length, (index) {
                 ReportMenuSvg menu = list[index];
                 return svgGridButton(
-                  context: context,
-                  icon: menu.icon,
-                  title: menu.title,
-                  subtitle: menu.subtitle,
-                  color: Colors.blue[400],
-                  isHighlighted: false,
-                  action: () => navigate(index),
-                  margin: 12
-                );
+                    context: context,
+                    icon: menu.icon,
+                    title: menu.title,
+                    subtitle: menu.subtitle,
+                    color: Colors.blue[400],
+                    isHighlighted: false,
+                    action: () => navigate(index),
+                    margin: 12);
               }),
             );
           },
@@ -103,17 +101,17 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
           return GroupLoansSummary();
         }));
         break;
+//      case 4:
+//        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+//          return GroupLoanApplications();
+//        }));
+//        break;
       case 4:
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-          return GroupLoanApplications();
-        }));
-        break;
-      case 5:
         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
           return ExpenseSummary();
         }));
         break;
-      case 6:
+      case 5:
         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
           return TransactionStatement();
         }));
