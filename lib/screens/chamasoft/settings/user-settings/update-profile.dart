@@ -10,6 +10,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -29,8 +30,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
   String name = 'Jane Doe';
   String _oldName;
   String phoneNumber = '+254 701 234 567';
+  String newNumber;
   String emailAddress, _oldEmailAddress;
-  final _phoneNumberFormKey = GlobalKey<FormState>();
   final _userNameFormKey = GlobalKey<FormState>();
   final _emailFormKey = GlobalKey<FormState>();
   bool _isLoadingImage = false;
@@ -44,6 +45,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
     }
   }
 
+  BorderSide _customInputBorderSide = BorderSide(
+    color: Colors.blueGrey,
+    width: 1.0,
+  );
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -55,6 +61,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     emailAddress = auth.emailAddress;
     _oldEmailAddress = emailAddress;
     _userAvatar = auth.displayAvatar;
+
     super.initState();
   }
 
@@ -122,6 +129,30 @@ class _UpdateProfileState extends State<UpdateProfile> {
     } finally {}
   }
 
+  Future<void> _updateNumber(BuildContext context, String number) async {
+    try {
+      String temp = number.startsWith("+") ? number.replaceFirst("+", "") : number;
+      print("Temp: $temp");
+      print("Actual: $phoneNumber");
+      if (temp != phoneNumber) {
+        //await Provider.of<Auth>(context, listen: false).updateUserName(name);
+        Navigator.of(context)
+            .push(new MaterialPageRoute(builder: (context) => ChangeNumberVerification(), settings: RouteSettings(arguments: number)));
+      }
+    } on CustomException catch (error) {
+      setState(() {
+        name = _oldName;
+      });
+
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _updateUserName(context);
+          });
+    } finally {}
+  }
+
   Future<void> _updateUserEmailAddress(BuildContext context) async {
     try {
       if (!_emailFormKey.currentState.validate()) {
@@ -149,69 +180,152 @@ class _UpdateProfileState extends State<UpdateProfile> {
   }
 
   void _updatePhoneNumber() {
+    bool _isValid = true;
+    CountryCode _countryCode = CountryCode.fromCode("KE");
+    final _phoneController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(text: "Update Phone Number", textAlign: TextAlign.start),
-          content: Form(
-            key: _phoneNumberFormKey,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                customTitleWithWrap(
-                    text: 'Before updating your number kindly ensure you can receive SMS on your new number',
-                    fontSize: 12,
-                    textAlign: TextAlign.start),
-                TextFormField(
-                  initialValue: phoneNumber,
-                  keyboardType: TextInputType.phone,
-                  onChanged: (value) {
-                    setState(() {
-                      phoneNumber = value;
-                    });
-                  },
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'Your phone number is required';
-                    }
-                    return null;
-                  },
-                  decoration: InputDecoration(
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                      color: Theme.of(context).hintColor,
-                      width: 2.0,
-                    )),
-                    // hintText: 'Phone Number or Email Address',
-                    labelText: "Phone Number",
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  customTitleWithWrap(
+                      text: 'Before updating your number kindly ensure you can receive SMS on your new number',
+                      fontSize: 12,
+                      textAlign: TextAlign.start),
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-              ],
-            ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      customTitle(
+                          text: "New Phone Number", textAlign: TextAlign.start, fontSize: 11, color: Theme.of(context).textSelectionHandleColor),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: _customInputBorderSide,
+                            ),
+                          ),
+                          child: Row(
+                            children: <Widget>[
+                              Row(
+                                children: <Widget>[
+                                  Container(
+                                    height: 34,
+                                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                    child: CountryCodePicker(
+                                      // key: _countryKey,
+                                      initialSelection: 'KE',
+                                      favorite: ['KE', 'UG', 'TZ', 'RW'],
+                                      showCountryOnly: false,
+                                      showOnlyCountryWhenClosed: false,
+                                      alignLeft: false,
+                                      flagWidth: 28.0,
+                                      textStyle: TextStyle(
+                                        fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                      ),
+                                      searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                                      onChanged: (countryCode) {
+                                        setState(() {
+                                          _countryCode = countryCode;
+                                          print("Code: " + countryCode.dialCode);
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                ],
+                              ),
+                              Expanded(
+                                child: Container(
+                                  height: 34,
+                                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 3.0),
+                                  child: TextFormField(
+                                    controller: _phoneController,
+                                    keyboardType: TextInputType.phone,
+                                    decoration: InputDecoration(
+                                      border: InputBorder.none,
+                                      isDense: true,
+                                      focusedBorder: InputBorder.none,
+                                      enabledBorder: InputBorder.none,
+                                      errorBorder: InputBorder.none,
+                                      disabledBorder: InputBorder.none,
+                                      hintText: '',
+                                    ),
+                                    style: TextStyle(fontFamily: 'SegoeUI', fontSize: 16),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: !_isValid,
+                    child: Padding(
+                      padding: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.5),
+                      child: customTitle(
+                        text: 'Enter valid phone number',
+                        color: Colors.red,
+                        fontSize: 12.0,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      negativeActionDialogButton(
+                          color: Theme.of(context).textSelectionHandleColor,
+                          action: () {
+                            Navigator.of(context).pop();
+                          }),
+                      positiveActionDialogButton(
+                          text: "Continue",
+                          color: primaryColor,
+                          action: () async {
+                            bool value = await CustomHelper.validPhoneNumber(_phoneController.text, _countryCode);
+                            print("valid $value");
+                            if (!value) {
+                              setState(() {
+                                _isValid = false;
+                              });
+                            } else {
+                              setState(() {
+                                _isValid = true;
+                              });
+                            }
+
+                            if (!_isValid) return;
+
+                            final identity = _countryCode.dialCode + _phoneController.text;
+                            Navigator.of(context).pop();
+                            _updateNumber(context, identity);
+                          }),
+                    ],
+                  )
+                ],
+              );
+            },
           ),
-          actions: <Widget>[
-            negativeActionDialogButton(
-                color: Theme.of(context).textSelectionHandleColor,
-                action: () {
-                  Navigator.of(context).pop();
-                }),
-            positiveActionDialogButton(
-                text: "Continue",
-                color: primaryColor,
-                action: () {
-                  if (_phoneNumberFormKey.currentState.validate()) {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).push(
-                        new MaterialPageRoute(builder: (context) => ChangeNumberVerification(), settings: RouteSettings(arguments: phoneNumber)));
-                  }
-                }),
-            SizedBox(
-              width: 10,
-            )
-          ],
         );
       },
     );
@@ -435,7 +549,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
                     updateText: phoneNumber,
                     icon: Icons.edit,
                     onPressed: () {
-                      _updatePhoneNumber();
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                        "Coming Soon",
+                      )));
+                      //_updatePhoneNumber();
                     },
                   ),
                   InfoUpdateTile(
