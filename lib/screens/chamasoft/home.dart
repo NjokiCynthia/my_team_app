@@ -57,9 +57,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   @override
   void didChangeDependencies(){
     _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
-    if(_isInit){
+    //if(_isInit){
       _getMemberDashboardData();
-    }   
+    //}   
     _groupCurrency = _currentGroup.groupCurrency;
     super.didChangeDependencies();
   }
@@ -72,6 +72,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   void _getMemberDashboardData()async{
     try{
       if(!Provider.of<Dashboard>(context,listen:false).memberGroupDataExists(_currentGroup.groupId)){
+        if(this.mounted){
+          if(_isInit == false){
+            setState(() {
+              _isInit = true;
+            });
+          }
+        }
         await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(_currentGroup.groupId);
       }
     }on CustomException catch (error) {
@@ -143,7 +150,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   currency: _groupCurrency,
                                   amount: currencyFormat.format(dashboardData.memberContributionArrears),
                                   size: 16.0,
-                                  color: Theme.of(context)
+                                  color: (dashboardData.memberContributionArrears)>0?
+                                  Colors.red[400]
+                                  :Theme.of(context)
                                       .textSelectionHandleColor,
                                   action: () {}),
                             ),
@@ -167,7 +176,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   currency: _groupCurrency,
                                   amount: currencyFormat.format(dashboardData.memberFineArrears),
                                   size: 14.0,
-                                  color: Theme.of(context)
+                                  color: (dashboardData.memberFineArrears)>0?Colors.red[400]:Theme.of(context)
                                       .textSelectionHandleColor,
                                   action: () {}),
                             ),
@@ -191,7 +200,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   currency: _groupCurrency,
                                   amount: currencyFormat.format(dashboardData.memberTotalLoanBalance),
                                   size: 14.0,
-                                  color: Theme.of(context)
+                                  color: (dashboardData.memberTotalLoanBalance)>0?Colors.red[400]:Theme.of(context)
                                       .textSelectionHandleColor,
                                   action: () {}),
                             ),
@@ -204,7 +213,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             customTitle(
-                              text: "Pending Loan Balance",
+                              text: "Pending Installment Balance",
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).textSelectionHandleColor,
@@ -215,7 +224,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   currency: _groupCurrency,
                                   amount: currencyFormat.format(dashboardData.memberLoanArrears),
                                   size: 14.0,
-                                  color: Theme.of(context)
+                                  color: (dashboardData.memberLoanArrears)>0?Colors.red[400]:Theme.of(context)
                                       .textSelectionHandleColor,
                                   action: () {}),
                             ),
