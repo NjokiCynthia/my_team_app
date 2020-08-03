@@ -179,6 +179,7 @@ Widget cardAmountButton({String currency, String amount, Function action, double
           "$currency ",
           style: TextStyle(
             color: color,
+            fontFamily: 'SegoeUI',
             fontSize: (size - 2.0),
             fontWeight: FontWeight.w400,
           ),
@@ -188,6 +189,7 @@ Widget cardAmountButton({String currency, String amount, Function action, double
           style: TextStyle(
             color: color,
             fontSize: size,
+            fontFamily: 'SegoeUI',
             fontWeight: FontWeight.w800,
           ),
           textAlign: TextAlign.end,
@@ -328,7 +330,8 @@ Widget paymentActionButton({bool isFlat = false, String text, IconData icon, dou
         );
 }
 
-Widget gridButton({BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
+Widget gridButton(
+    {BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
   return Container(
     margin: EdgeInsets.all(margin),
     height: 150,
@@ -392,7 +395,8 @@ Widget gridButton({BuildContext context, Color color, IconData icon, String titl
   );
 }
 
-Widget svgGridButton({BuildContext context, Color color, String icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
+Widget svgGridButton(
+    {BuildContext context, Color color, String icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
   return Container(
     margin: EdgeInsets.all(margin),
     height: 150,
@@ -404,10 +408,10 @@ Widget svgGridButton({BuildContext context, Color color, String icon, String tit
           top: 0.0,
           right: 30.0,
           child: SvgPicture.asset(
-              icon,
-              semanticsLabel: 'icon',
-              height: 120.0,
-            ),
+            icon,
+            semanticsLabel: 'icon',
+            height: 120.0,
+          ),
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.center,

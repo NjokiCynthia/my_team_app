@@ -296,7 +296,7 @@ class AccountBody extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         customTitle(text: account.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle2(text: account.accountNumber, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
+                        //subtitle2(text: account.accountNumber, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       ],
                     ),
                   ),
