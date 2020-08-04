@@ -148,6 +148,13 @@ class Dashboard with ChangeNotifier{
     }
   }
 
+  void resetMemberDashboardData(String groupId){
+     if(_memberDashboardData.containsKey(groupId)){
+       print(_memberDashboardData);
+       _memberDashboardData.removeWhere((key, value) => key==groupId);
+    }
+  }
+
   bool groupDataExists(String groupId){
     if(_groupDashboardData.containsKey(groupId)){
       if(_groupDashboardData[groupId].length<=0){
@@ -157,6 +164,13 @@ class Dashboard with ChangeNotifier{
       }
     }else{
       return false;
+    }
+  }
+
+  void resetGroupDashboardData(String groupId){
+     if(_groupDashboardData.containsKey(groupId)){
+       print(_groupDashboardData);
+       _groupDashboardData.removeWhere((key, value) => key==groupId);
     }
   }
 

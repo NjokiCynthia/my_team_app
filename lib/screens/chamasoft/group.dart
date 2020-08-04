@@ -65,8 +65,11 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     return null;
   }
 
-  void _getGroupDashboardData() async {
+  Future<void> _getGroupDashboardData([bool hardRefresh = false]) async {
     try {
+      if(hardRefresh){
+        Provider.of<Dashboard>(context, listen: false).resetGroupDashboardData(_currentGroup.groupId);
+      }
       if (!Provider.of<Dashboard>(context, listen: false).groupDataExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -127,305 +130,210 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     });
     return new WillPopScope(
         onWillPop: _onWillPop,
-        child: SafeArea(
-          child: SingleChildScrollView(
-            controller: _scrollController,
-            child: !_isInit
-                ? Column(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
-                        child: Container(
-                          padding: EdgeInsets.all(16.0),
-                          decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  customTitle(
-                                    text: "Contributions & Expenses",
-                                    color: Colors.blueGrey[400],
-                                    fontFamily: 'SegoeUI',
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ],
-                              ),
-                              Divider(
-                                color: Theme.of(context).hintColor.withOpacity(0.1),
-                                thickness: 2.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  customTitle(
-                                    text: "Group Contributions",
-                                    textAlign: TextAlign.start,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Theme.of(context).textSelectionHandleColor,
-                                  ),
-                                  SizedBox(
-                                    height: 22,
-                                    child: cardAmountButton(
-                                        currency: _groupCurrency,
-                                        amount: currencyFormat.format(dashboardData.groupContributionAmount),
-                                        size: 16.0,
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        action: () {}),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 4.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  customTitle(
-                                    text: "Total Fine Payments",
-                                    textAlign: TextAlign.start,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Theme.of(context).textSelectionHandleColor,
-                                  ),
-                                  SizedBox(
-                                    height: 22,
-                                    child: cardAmountButton(
-                                        currency: _groupCurrency,
-                                        amount: currencyFormat.format(dashboardData.groupFinePaymentAmount),
-                                        size: 16.0,
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        action: () {}),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 4.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  customTitle(
-                                    text: "Group Expenses",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).textSelectionHandleColor,
-                                  ),
-                                  SizedBox(
-                                    height: 22,
-                                    child: cardAmountButton(
-                                        currency: _groupCurrency,
-                                        amount: currencyFormat.format(dashboardData.groupExpensesAmount),
-                                        size: 14.0,
-                                        color: Colors.red[400],
-                                        action: () {}),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Account Balances",
-                              style: TextStyle(
-                                color: Colors.blueGrey[400],
-                                fontFamily: 'SegoeUI',
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Feather.more_horizontal,
-                                  color: Colors.blueGrey,
-                                ),
-                                onPressed: () {})
-                          ],
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                        child: Container(
-                          height: 180.0,
-                          child: ListView(
-                            scrollDirection: Axis.horizontal,
-                            padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                            physics: BouncingScrollPhysics(),
-                            children: <Widget>[
-                              SizedBox(
-                                width: 16.0,
-                              ),
-                              Container(
-                                width: 160.0,
-                                padding: EdgeInsets.all(16.0),
-                                decoration: cardDecoration(gradient: csCardGradient(), context: context),
-                                child: accountBalance(
-                                  color: Colors.white,
-                                  cardIcon: Feather.globe,
-                                  cardAmount: currencyFormat.format(dashboardData.totalBankBalances),
-                                  currency: _groupCurrency,
-                                  accountName: "Total",
-                                ),
-                              ),
-                              SizedBox(
-                                width: 16.0,
-                              ),
-                              _iteratableData.length > 0
-                                  ? Row(
-                                      children: accountSummary.toList(),
-                                    )
-                                  : Row(children: <Widget>[
-                                      Container(
-                                        width: 160.0,
-                                        height: 165.0,
-                                        padding: EdgeInsets.all(16.0),
-                                        decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
-                                        child: accountBalance(
-                                          color: primaryColor,
-                                          cardIcon: Feather.credit_card,
-                                          cardAmount: currencyFormat.format(dashboardData.bankBalances),
-                                          currency: _groupCurrency,
-                                          accountName: "Cash at Bank",
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 16.0,
-                                      ),
-                                      Container(
-                                        width: 160.0,
-                                        height: 165.0,
-                                        padding: EdgeInsets.all(16.0),
-                                        decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
-                                        child: accountBalance(
-                                          color: primaryColor,
-                                          cardIcon: Feather.credit_card,
-                                          cardAmount: currencyFormat.format(dashboardData.cashBalances),
-                                          currency: _groupCurrency,
-                                          accountName: "Cash at Hand",
-                                        ),
-                                      )
-                                    ]),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-                        child: Container(
-                          padding: EdgeInsets.all(16.0),
-                          decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Row(
-                                children: <Widget>[
-                                  Text(
-                                    "Loan Balances",
-                                    style: TextStyle(
+        child: RefreshIndicator(
+          onRefresh: ()=>_getGroupDashboardData(true),
+          child: SafeArea(
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: !_isInit
+                  ? Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                          child: Container(
+                            padding: EdgeInsets.all(16.0),
+                            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
+                                    customTitle(
+                                      text: "Contributions & Expenses",
                                       color: Colors.blueGrey[400],
                                       fontFamily: 'SegoeUI',
                                       fontSize: 16.0,
                                       fontWeight: FontWeight.w600,
                                     ),
-                                  ),
-                                ],
-                              ),
-                              Divider(
-                                color: Theme.of(context).hintColor.withOpacity(0.1),
-                                thickness: 2.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  customTitle(
-                                    text: "Loaned Out",
-                                    textAlign: TextAlign.start,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Theme.of(context).textSelectionHandleColor,
-                                  ),
-                                  SizedBox(
-                                    height: 22,
-                                    child: cardAmountButton(
-                                        currency: _groupCurrency,
-                                        amount: currencyFormat.format(dashboardData.groupLoanedAmount),
-                                        size: 16.0,
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        action: () {}),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 4.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  customTitle(
-                                    text: "Total Repaid",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).textSelectionHandleColor,
-                                  ),
-                                  SizedBox(
-                                    height: 22,
-                                    child: cardAmountButton(
-                                        currency: _groupCurrency,
-                                        amount: currencyFormat.format(dashboardData.groupLoanPaid),
-                                        size: 14.0,
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        action: () {}),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 4.0,
-                              ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  customTitle(
-                                    text: "Pending Loan Balance",
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).textSelectionHandleColor,
-                                  ),
-                                  SizedBox(
-                                    height: 22,
-                                    child: cardAmountButton(
-                                        currency: _groupCurrency,
-                                        amount: currencyFormat.format(dashboardData.groupPendingLoanBalance),
-                                        size: 14.0,
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        action: () {}),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
-                          child: Container(
-                            height: 300,
-                            padding: EdgeInsets.all(16.0),
-                            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
-                            child: Column(
-                              children: <Widget>[
+                                  ],
+                                ),
+                                Divider(
+                                  color: Theme.of(context).hintColor.withOpacity(0.1),
+                                  thickness: 2.0,
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
+                                    customTitle(
+                                      text: "All Group Contributions",
+                                      textAlign: TextAlign.start,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                    ),
+                                    SizedBox(
+                                      height: 22,
+                                      child: cardAmountButton(
+                                          currency: _groupCurrency,
+                                          amount: currencyFormat.format(dashboardData.groupContributionAmount),
+                                          size: 16.0,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          action: () {}),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 4.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    customTitle(
+                                      text: "Total Fine Payments",
+                                      textAlign: TextAlign.start,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                    ),
+                                    SizedBox(
+                                      height: 22,
+                                      child: cardAmountButton(
+                                          currency: _groupCurrency,
+                                          amount: currencyFormat.format(dashboardData.groupFinePaymentAmount),
+                                          size: 16.0,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          action: () {}),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 4.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    customTitle(
+                                      text: "Group Expenses",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                    ),
+                                    SizedBox(
+                                      height: 22,
+                                      child: cardAmountButton(
+                                          currency: _groupCurrency,
+                                          amount: currencyFormat.format(dashboardData.groupExpensesAmount),
+                                          size: 14.0,
+                                          color: Colors.red[400],
+                                          action: () {}),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Account Balances",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontFamily: 'SegoeUI',
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(
+                                    Feather.more_horizontal,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  onPressed: () {})
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                          child: Container(
+                            height: 180.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                              physics: BouncingScrollPhysics(),
+                              children: <Widget>[
+                                SizedBox(
+                                  width: 16.0,
+                                ),
+                                Container(
+                                  width: 160.0,
+                                  padding: EdgeInsets.all(16.0),
+                                  decoration: cardDecoration(gradient: csCardGradient(), context: context),
+                                  child: accountBalance(
+                                    color: Colors.white,
+                                    cardIcon: Feather.globe,
+                                    cardAmount: currencyFormat.format(dashboardData.totalBankBalances),
+                                    currency: _groupCurrency,
+                                    accountName: "Total",
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 16.0,
+                                ),
+                                _iteratableData.length > 0
+                                    ? Row(
+                                        children: accountSummary.toList(),
+                                      )
+                                    : Row(children: <Widget>[
+                                        Container(
+                                          width: 160.0,
+                                          height: 165.0,
+                                          padding: EdgeInsets.all(16.0),
+                                          decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                                          child: accountBalance(
+                                            color: primaryColor,
+                                            cardIcon: Feather.credit_card,
+                                            cardAmount: currencyFormat.format(dashboardData.bankBalances),
+                                            currency: _groupCurrency,
+                                            accountName: "Cash at Bank",
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 16.0,
+                                        ),
+                                        Container(
+                                          width: 160.0,
+                                          height: 165.0,
+                                          padding: EdgeInsets.all(16.0),
+                                          decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                                          child: accountBalance(
+                                            color: primaryColor,
+                                            cardIcon: Feather.credit_card,
+                                            cardAmount: currencyFormat.format(dashboardData.cashBalances),
+                                            currency: _groupCurrency,
+                                            accountName: "Cash at Hand",
+                                          ),
+                                        )
+                                      ]),
+                              ],
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                          child: Container(
+                            padding: EdgeInsets.all(16.0),
+                            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Row(
+                                  children: <Widget>[
                                     Text(
-                                      "Deposits vs Withdrawals",
+                                      "Loan Balances",
                                       style: TextStyle(
                                         color: Colors.blueGrey[400],
                                         fontFamily: 'SegoeUI',
@@ -433,24 +341,122 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
-                                    IconButton(
-                                        icon: Icon(
-                                          Feather.more_horizontal,
-                                          color: Colors.blueGrey,
-                                        ),
-                                        onPressed: () {})
                                   ],
                                 ),
-                                Expanded(
-                                  flex: 1,
-                                  child: BarChartSample4(),
-                                )
+                                Divider(
+                                  color: Theme.of(context).hintColor.withOpacity(0.1),
+                                  thickness: 2.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    customTitle(
+                                      text: "Loaned Out",
+                                      textAlign: TextAlign.start,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                    ),
+                                    SizedBox(
+                                      height: 22,
+                                      child: cardAmountButton(
+                                          currency: _groupCurrency,
+                                          amount: currencyFormat.format(dashboardData.groupLoanedAmount),
+                                          size: 16.0,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          action: () {}),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 4.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    customTitle(
+                                      text: "Total Repaid",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                    ),
+                                    SizedBox(
+                                      height: 22,
+                                      child: cardAmountButton(
+                                          currency: _groupCurrency,
+                                          amount: currencyFormat.format(dashboardData.groupLoanPaid),
+                                          size: 14.0,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          action: () {}),
+                                    ),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 4.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    customTitle(
+                                      text: "Pending Loan Balance",
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                    ),
+                                    SizedBox(
+                                      height: 22,
+                                      child: cardAmountButton(
+                                          currency: _groupCurrency,
+                                          amount: currencyFormat.format(dashboardData.groupPendingLoanBalance),
+                                          size: 14.0,
+                                          color: Theme.of(context).textSelectionHandleColor,
+                                          action: () {}),
+                                    ),
+                                  ],
+                                ),
                               ],
                             ),
-                          ))
-                    ],
-                  )
-                : chamasoftGroupLoadingData(context: context),
+                          ),
+                        ),
+                        Padding(
+                            padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                            child: Container(
+                              height: 300,
+                              padding: EdgeInsets.all(16.0),
+                              decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                              child: Column(
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        "Deposits vs Withdrawals",
+                                        style: TextStyle(
+                                          color: Colors.blueGrey[400],
+                                          fontFamily: 'SegoeUI',
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      IconButton(
+                                          icon: Icon(
+                                            Feather.more_horizontal,
+                                            color: Colors.blueGrey,
+                                          ),
+                                          onPressed: () {})
+                                    ],
+                                  ),
+                                  Expanded(
+                                    flex: 1,
+                                    child: BarChartSample4(),
+                                  )
+                                ],
+                              ),
+                            ))
+                      ],
+                    )
+                  : chamasoftGroupLoadingData(context: context),
+            ),
           ),
         ));
   }
