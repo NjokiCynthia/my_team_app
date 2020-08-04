@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
 import 'package:chamasoft/screens/my-groups.dart';
@@ -364,11 +365,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 isFlat: false,
                                 text: "PAY NOW",
                                 iconSize: 12.0,
-                                action: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) => PayNow(),
-                                  ),
-                                ),
+                                action: () => _openPayNowTray(context),
                               ),
                             ),
                           ),
@@ -506,5 +503,15 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             )
           ),
         ));
+  }
+
+  void _openPayNowTray(BuildContext context) {
+    // Navigator.of(context).push(
+                                //   MaterialPageRoute(
+                                //     builder: (BuildContext context) => PayNow(),
+                                //   ),
+                                // ),
+    void _applyFilter() {}
+    showModalBottomSheet(context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 }
