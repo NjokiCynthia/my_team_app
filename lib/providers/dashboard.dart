@@ -210,6 +210,7 @@ class Dashboard with ChangeNotifier{
           });
           final response = await PostToServer.post(postRequest, url);
           _memberDashboardData[groupId] = response;
+          _updateMemberDashboardData(groupId);
         }
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);

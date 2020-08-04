@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:http/http.dart' as http;
-import 'package:simple_rsa/simple_rsa.dart';
 
 import '../utilities/custom-helper.dart';
 import 'common.dart';
@@ -35,19 +34,54 @@ class PostToServer {
 
   static Future<String> _encryptSecretKey(String randomKey) async {
     try {
-      final publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST" +
-          "0FfZzEXiPCC6i8RtA5pyS/orSBa1Ds3PMnF4qU+Z+HlBB9apKG/pYK73mXR8v1cX" +
-          "jZCFxg08Gq/dwam1O5ehNXtEHKhembXdZC2zdFyVVg8emgbyDxaP1oEWwQOqoUI7" +
-          "1e1lPqDMrFTUeS65YO2ayWeEKEnY12nE6pgyopSdEo5Boz4RzxCL8jLIhTwRouhi" +
-          "MOA9UyWBYuQEp8P1yj8zVoB20WyB6qOazPIiCEUz4MK0/yiVTR6B8hWwQydvMGKu" +
-          "QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd" +
-          "3QIDAQAB";
-      final encrypted = await encryptString(randomKey, publicKey);
-      Codec<String, String> stringToBase64 = utf8.fuse(base64);
-      return stringToBase64.encode(encrypted);
+      final publicKey = '''MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST
+0FfZzEXiPCC6i8RtA5pyS/orSBa1Ds3PMnF4qU+Z+HlBB9apKG/pYK73mXR8v1cX
+jZCFxg08Gq/dwam1O5ehNXtEHKhembXdZC2zdFyVVg8emgbyDxaP1oEWwQOqoUI7
+1e1lPqDMrFTUeS65YO2ayWeEKEnY12nE6pgyopSdEo5Boz4RzxCL8jLIhTwRouhi
+MOA9UyWBYuQEp8P1yj8zVoB20WyB6qOazPIiCEUz4MK0/yiVTR6B8hWwQydvMGKu
+QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
+3QIDAQAB''';
+
+      final parser = RSAKeyParser();
+      final key = parser.parse(splitStr(publicKey));
+      final encryptProtocol = Encrypter(RSA(publicKey: key));
+      final encrypted = encryptProtocol.encrypt(randomKey);
+      return encrypted.base64;
     } catch (error) {
       throw error;
     }
+  }
+
+  static splitStr(String str) {
+    var begin = '-----BEGIN PUBLIC KEY-----\n';
+    var end = '\n-----END PUBLIC KEY-----';
+    int splitCount = str.length ~/ 64;
+    List<String> strList = List();
+
+    for (int i = 0; i < splitCount; i++) {
+      strList.add(str.substring(64 * i, 64 * (i + 1)));
+    }
+    if (str.length % 64 != 0) {
+      strList.add(str.substring(64 * splitCount));
+    }
+
+    return begin + strList.join('\n') + end;
+  }
+
+  static splitPrivateStr(String str) {
+    var begin = '-----BEGIN PRIVATE KEY-----\n';
+    var end = '\n-----END PRIVATE KEY-----';
+    int splitCount = str.length ~/ 64;
+    List<String> strList = List();
+
+    for (int i = 0; i < splitCount; i++) {
+      strList.add(str.substring(64 * i, 64 * (i + 1)));
+    }
+    if (str.length % 64 != 0) {
+      strList.add(str.substring(64 * splitCount));
+    }
+
+    return begin + strList.join('\n') + end;
   }
 
   static Future<String> _decryptSecretKey(String encryptedSecretKey) async {
@@ -78,7 +112,12 @@ class PostToServer {
           "cdXW2XtPie7zVwJHjtpqNBeY0cZQ59afWR3wXuamdGMgRLBPMi+0M9NJT0ljorj7" +
           "Ay/pWc2QlVxxiYr7k8AO8upqb0hrb4eg8kkf5njp7SGT1Mr7Bc3cMBwj6HBz3VZT" +
           "LbklZ8LTNYtSPV7UrLazVYqN";
-      final decrypted = await decryptString(encryptedSecretKey, privateKey);
+
+      final parser = RSAKeyParser();
+      final key = parser.parse(splitPrivateStr(privateKey));
+      final decryptProtocol = Encrypter(RSA(privateKey: key));
+
+      final decrypted = decryptProtocol.decrypt64(encryptedSecretKey);
       return decrypted;
     } catch (error) {
       throw error;
@@ -123,6 +162,8 @@ class PostToServer {
             "Versioncode": versionCode,
             "Authorization": userAccessToken,
           };
+
+          print("headers: $headers");
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
             final http.Response response =
@@ -203,14 +244,15 @@ class PostToServer {
                   throw CustomException(message: ERROR_MESSAGE);
               }
             } catch (error) {
-              print(response.body);
+              print("1: ${response.body}");
               throw error;
             }
           } catch (error) {
-            print(error.toString());
+            print("2: ${error.toString()}");
             throw error;
           }
         } catch (error) {
+          print("3: ${error.toString()}");
           throw (error);
         }
       } else {

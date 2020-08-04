@@ -82,7 +82,6 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _focusNode = new FocusNode();

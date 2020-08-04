@@ -2,7 +2,6 @@ import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group-reports-menu.dart';
-import 'package:chamasoft/screens/chamasoft/reports/loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
@@ -53,7 +52,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
     final List<ReportMenuSvg> list = [
       ReportMenuSvg("CONTRIBUTION", "STATEMENT", customIcons['transaction']),
       ReportMenuSvg("FINE", "STATEMENT", customIcons['invoice']),
-      ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
+      //ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
       ReportMenuSvg("LOAN", "SUMMARY", customIcons['expense']),
       ReportMenuSvg("DEPOSIT", "RECEIPTS", customIcons['cash-in-hand']),
       ReportMenuSvg("WITHDRAWAL", "RECEIPTS", customIcons['cash-register']),
@@ -71,15 +70,14 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               children: List.generate(list.length, (index) {
                 ReportMenuSvg menu = list[index];
                 return svgGridButton(
-                  context: context,
-                  icon: menu.icon,
-                  title: menu.title,
-                  subtitle: menu.subtitle,
-                  color: (index == 6) ? Colors.white : Colors.blue[400],
-                  isHighlighted: (index == 6) ? true : false,
-                  action: () => navigate(index),
-                  margin: 12
-                );
+                    context: context,
+                    icon: menu.icon,
+                    title: menu.title,
+                    subtitle: menu.subtitle,
+                    color: (index == list.length - 1) ? Colors.white : Colors.blue[400],
+                    isHighlighted: (index == list.length - 1) ? true : false,
+                    action: () => navigate(index),
+                    margin: 12);
               }),
             );
           },
@@ -106,35 +104,35 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
             },
             settings: RouteSettings(arguments: index + 1)));
         break;
+//      case 2:
+//        Navigator.of(context).push(MaterialPageRoute(
+//            builder: (BuildContext context) {
+//              return LoanApplications();
+//            },
+//            settings: RouteSettings(arguments: index + 1)));
+//        break;
       case 2:
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) {
-              return LoanApplications();
-            },
-            settings: RouteSettings(arguments: index + 1)));
-        break;
-      case 3:
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) {
               return LoanSummary();
             },
             settings: RouteSettings(arguments: index + 1)));
         break;
-      case 4:
+      case 3:
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) {
               return DepositReceipts();
             },
             settings: RouteSettings(arguments: index + 1)));
         break;
-      case 5:
+      case 4:
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) {
               return WithdrawalReceipts();
             },
             settings: RouteSettings(arguments: index + 1)));
         break;
-      case 6:
+      case 5:
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) {
               return GroupReportsMenu();

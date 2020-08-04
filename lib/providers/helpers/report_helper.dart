@@ -22,7 +22,7 @@ AccountBalanceModel getAccountBalances(dynamic data) {
       final accounts = balance['account_balances'] as List<dynamic>;
       for (var account in accounts) {
         final accountBalance = AccountBalance(
-            isHeader: false, name: account['account_name'].toString(), accountNumber: '10010012123', balance: account['account_balance'].toString());
+            isHeader: false, name: account['account_name'].toString(), accountNumber: '--', balance: account['account_balance'].toString());
         bankAccounts.add(accountBalance);
       }
     }

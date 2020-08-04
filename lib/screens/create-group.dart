@@ -44,7 +44,6 @@ class _CreateGroupState extends State<CreateGroup> {
 
     try {
       await Provider.of<Groups>(context, listen: false).createGroup(groupName: _groupName, countryId: countryId, avatar: avatar);
-
       Navigator.of(context).pushReplacementNamed(ConfigureGroup.namedRoute);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -206,9 +205,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                   context: context,
                                   text: "Continue",
                                   onPressed: () {
-                                    if (_formKey.currentState.validate()) {
-                                      _submit(context);
-                                    }
+                                    _submit(context);
                                   }),
                         ],
                       ),
