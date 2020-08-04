@@ -160,7 +160,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   customTitle(
-                                    text: "All Group Contributions",
+                                    text: "Group Contributions",
                                     textAlign: TextAlign.start,
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,
