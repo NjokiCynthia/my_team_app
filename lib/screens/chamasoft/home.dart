@@ -106,7 +106,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   Iterable<Widget> get recentTransactionSummary sync* {
     final List<Color> colorsList = [primaryColor,Colors.blueGrey];
-    print(colorsList.length);
     int i = 0;
     for (var data in _iteratableRecentTransactionSummary) {
       yield Row(
