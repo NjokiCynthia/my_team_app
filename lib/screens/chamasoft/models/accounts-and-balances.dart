@@ -1,12 +1,12 @@
 class CategorisedAccount {
   String id, name, accountNumber;
-  int typeId,uniqueId;
+  int typeId, uniqueId;
   String title;
   bool isHeader;
 
   CategorisedAccount.header({this.isHeader, this.title});
 
-  CategorisedAccount({this.isHeader, this.id, this.name, this.accountNumber, this.typeId,this.uniqueId});
+  CategorisedAccount({this.isHeader, this.id, this.name, this.accountNumber, this.typeId, this.uniqueId});
 }
 
 class AccountBalance {

@@ -62,12 +62,12 @@ class _VerificationState extends State<Verification> {
         if (response.containsKey('userGroups')) {
           Provider.of<Groups>(context, listen: false).addGroups(response['userGroups']);
         }
-        Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'),arguments:0);
+        Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'), arguments: 0);
       } else {
         final uniqueCode = response['uniqueCode'];
-        Navigator.pushReplacementNamed(context, SignUp.namedRoute,arguments:{
+        Navigator.pushReplacementNamed(context, SignUp.namedRoute, arguments: {
           "identity": _identity,
-          "uniqueCode" : uniqueCode,
+          "uniqueCode": uniqueCode,
         });
       }
     } on CustomException catch (error) {
@@ -79,6 +79,7 @@ class _VerificationState extends State<Verification> {
           });
     } finally {
       setState(() {
+        _pinEditingController.clear();
         _isLoading = false;
         _isFormInputEnabled = true;
       });
@@ -93,11 +94,14 @@ class _VerificationState extends State<Verification> {
     return true;
   }
 
-  void _resendOtp()async{
-    print("sending otp.......");
-    try{
+  void _resendOtp(BuildContext context) async {
+    final snackBar = SnackBar(content: subtitle2(text: "Resending verification code", textAlign: TextAlign.start));
+    Scaffold.of(context).showSnackBar(snackBar);
+    try {
       await Provider.of<Auth>(context, listen: false).resendPin(_identity);
-    }on CustomException catch (error) {
+      final snackBar = SnackBar(content: subtitle2(text: "Verification code has been sent", textAlign: TextAlign.start));
+      Scaffold.of(context).showSnackBar(snackBar);
+    } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
@@ -151,7 +155,6 @@ class _VerificationState extends State<Verification> {
                           Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                             child: PinInputTextFormField(
-                              //child: PinInputTextField(
                               pinLength: 4,
                               decoration: UnderlineDecoration(
                                 enteredColor: primaryColor,
@@ -193,7 +196,7 @@ class _VerificationState extends State<Verification> {
                               ? CircularProgressIndicator()
                               : defaultButton(
                                   context: context,
-                                  text: "Verify Phone",
+                                  text: "Verify Code",
                                   onPressed: () => _submit(context),
                                 ),
                           SizedBox(
@@ -202,30 +205,22 @@ class _VerificationState extends State<Verification> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Text(
-                                "Didn't receive verification code? ",
-                                style: TextStyle(
-                                  color: Theme.of(context).textSelectionHandleColor,
-                                  //fontSize: 12.0
-                                ),
-                              ),
+                              customTitle(
+                                  text: "Didn't receive verification code? ", color: Theme.of(context).textSelectionHandleColor, fontSize: 13.0),
                               InkWell(
                                 child: Text(
                                   'Resend',
                                   style: TextStyle(
+                                    fontFamily: 'SegoeUI',
                                     color: primaryColor,
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                onTap: _resendOtp,
+                                onTap: () => _resendOtp(context),
                               )
                             ],
                           ),
-                          // textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
-                          //   "Didn't receive verification code?": {},
-                          //   'Resend': {"url": () => _resendOtp , "color": primaryColor, "weight": FontWeight.w700},
-                          // }),
                         ],
                       ),
                     ),

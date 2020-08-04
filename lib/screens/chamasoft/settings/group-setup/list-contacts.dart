@@ -1,9 +1,9 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-member-roles.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
@@ -157,7 +157,7 @@ class _ListContactsState extends State<ListContacts> {
   CheckboxListTile _buildListTile(int index, Contact contact, List<Item> list) {
     return CheckboxListTile(
       secondary: CircleAvatar(
-          backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          backgroundColor: primaryColor, //Colors.primaries[Random().nextInt(Colors.primaries.length)],
           child: Text(contact.displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24))),
       value: _selectedContacts.contains(_contacts[index]),
       onChanged: (value) {

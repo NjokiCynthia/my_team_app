@@ -1,10 +1,10 @@
 import 'package:chamasoft/screens/chamasoft/models/report-menu.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
-import 'package:chamasoft/screens/chamasoft/reports/group/group-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -31,21 +31,21 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
 
   @override
   Widget build(BuildContext context) {
-    final List<ReportMenu> list = [
-      ReportMenu("ACCOUNT", "BALANCES", LineAwesomeIcons.bank),
-      ReportMenu("CONTRIBUTION", "SUMMARY", LineAwesomeIcons.file_text),
-      ReportMenu("FINE", "SUMMARY", LineAwesomeIcons.file),
-      ReportMenu("LOAN", "SUMMARY", LineAwesomeIcons.bar_chart),
-      ReportMenu("LOAN", "APPLICATIONS", LineAwesomeIcons.list),
-      ReportMenu("EXPENSE", "SUMMARY", LineAwesomeIcons.pie_chart),
-      ReportMenu("TRANSACTION", "STATEMENT", LineAwesomeIcons.list_ol),
+    final List<ReportMenuSvg> list = [
+      ReportMenuSvg("ACCOUNT", "BALANCES", customIcons['bank-cards']),
+      ReportMenuSvg("CONTRIBUTION", "SUMMARY", customIcons['money-bag']),
+      ReportMenuSvg("FINE", "SUMMARY", customIcons['expense']),
+      ReportMenuSvg("LOAN", "SUMMARY", customIcons['transaction']),
+      //ReportMenuSvg("LOAN", "APPLICATIONS", customIcons['refund']),
+      ReportMenuSvg("EXPENSE", "SUMMARY", customIcons['card-payment']),
+      ReportMenuSvg("TRANSACTION", "STATEMENT", customIcons['invoice']),
     ];
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: 1,
-        leadingIcon: LineAwesomeIcons.arrow_left,
+        leadingIcon: LineAwesomeIcons.close,
         title: "Group Reports",
       ),
       backgroundColor: Colors.transparent,
@@ -54,19 +54,19 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
         child: OrientationBuilder(
           builder: (context, orientation) {
             return GridView.count(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
               children: List.generate(list.length, (index) {
-                ReportMenu menu = list[index];
-                return gridButton(
-                  context: context,
-                  icon: menu.icon,
-                  title: menu.title,
-                  subtitle: menu.subtitle,
-                  color: Colors.blue[400],
-                  isHighlighted: false,
-                  action: () => navigate(index),
-                );
+                ReportMenuSvg menu = list[index];
+                return svgGridButton(
+                    context: context,
+                    icon: menu.icon,
+                    title: menu.title,
+                    subtitle: menu.subtitle,
+                    color: Colors.blue[400],
+                    isHighlighted: false,
+                    action: () => navigate(index),
+                    margin: 12);
               }),
             );
           },
@@ -101,17 +101,17 @@ class _GroupReportsMenuState extends State<GroupReportsMenu> {
           return GroupLoansSummary();
         }));
         break;
+//      case 4:
+//        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+//          return GroupLoanApplications();
+//        }));
+//        break;
       case 4:
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-          return GroupLoanApplications();
-        }));
-        break;
-      case 5:
         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
           return ExpenseSummary();
         }));
         break;
-      case 6:
+      case 5:
         Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
           return TransactionStatement();
         }));

@@ -70,11 +70,11 @@ class Auth with ChangeNotifier {
     return _userId;
   }
 
-  String get userIdentity{
-    return _phoneNumber!=null?_phoneNumber:_emailAddress;
-  } 
+  String get userIdentity {
+    return _phoneNumber != null ? _phoneNumber : _emailAddress;
+  }
 
-  String get token{
+  String get token {
     return accessToken;
   }
 
@@ -328,6 +328,28 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> updateUserName(String name) async {
+    const url = EndpointUrl.UPDATE_USER_NAME;
+    final postRequest = json.encode({
+      "name": name.trim(),
+      "user_id": _userId,
+    });
+    try {
+      final response = await PostToServer.post(postRequest, url);
+      String userFirstName = response["first_name"]..toString();
+      String userLastName = response["last_name"]..toString();
+      _firstName = userFirstName;
+      _lastName = userLastName;
+      await updateUserDetails(firstName, userFirstName);
+      await updateUserDetails(lastName, userLastName);
+      notifyListeners();
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> updatePhoneNumber(String name) async {
     const url = EndpointUrl.UPDATE_USER_NAME;
     final postRequest = json.encode({
       "name": name.trim(),

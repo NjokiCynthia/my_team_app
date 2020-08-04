@@ -33,22 +33,15 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Group _currentGroup;
   bool _onlineBankingEnabled = true;
   bool _isInit = true;
-  bool _isLoading = true;
+  //bool _isLoading = false;
   String _groupCurrency = "Ksh";
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
   }
 
-  void _doneLoading(){
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
   @override
   void initState() {
-    Timer(const Duration(seconds: 3), _doneLoading);
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     super.initState();
@@ -64,9 +57,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   @override
   void didChangeDependencies(){
     _currentGroup = Provider.of<Groups>(context,listen:false).getCurrentGroup();
-    if(_isInit){
+    //if(_isInit){
       _getMemberDashboardData();
-    }   
+    //}   
     _groupCurrency = _currentGroup.groupCurrency;
     super.didChangeDependencies();
   }
@@ -77,18 +70,17 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   }
 
   void _getMemberDashboardData()async{
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //   showDialog<String>(
-    //       context: context,
-    //       barrierDismissible: false,
-    //       builder: (BuildContext context) {
-    //         return Center(
-    //           child: CircularProgressIndicator(),
-    //         );
-    //       });
-    // });
     try{
-      await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(_currentGroup.groupId);
+      if(!Provider.of<Dashboard>(context,listen:false).memberGroupDataExists(_currentGroup.groupId)){
+        if(this.mounted){
+          if(_isInit == false){
+            setState(() {
+              _isInit = true;
+            });
+          }
+        }
+        await Provider.of<Dashboard>(context,listen:false).getMemberDashboardData(_currentGroup.groupId);
+      }
     }on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -97,12 +89,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             _getMemberDashboardData();
           });
     } finally {
-      setState(() {
-        _isInit = false;
-        _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
-      });
+      if(this.mounted){
+        setState(() {
+          _isInit = false;
+          //_isLoading = false;
+          _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
+        });
+      }
     }
-    //Navigator.of(context, rootNavigator: true).pop();
   }
 
   @override
@@ -113,7 +107,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         child: SafeArea(
           child: SingleChildScrollView(
             controller: _scrollController,
-            child: !_isLoading ? Column(
+            child: !_isInit ? Column(
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
@@ -156,7 +150,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   currency: _groupCurrency,
                                   amount: currencyFormat.format(dashboardData.memberContributionArrears),
                                   size: 16.0,
-                                  color: Theme.of(context)
+                                  color: (dashboardData.memberContributionArrears)>0?
+                                  Colors.red[400]
+                                  :Theme.of(context)
                                       .textSelectionHandleColor,
                                   action: () {}),
                             ),
@@ -180,7 +176,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   currency: _groupCurrency,
                                   amount: currencyFormat.format(dashboardData.memberFineArrears),
                                   size: 14.0,
-                                  color: Theme.of(context)
+                                  color: (dashboardData.memberFineArrears)>0?Colors.red[400]:Theme.of(context)
                                       .textSelectionHandleColor,
                                   action: () {}),
                             ),
@@ -204,7 +200,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   currency: _groupCurrency,
                                   amount: currencyFormat.format(dashboardData.memberTotalLoanBalance),
                                   size: 14.0,
-                                  color: Theme.of(context)
+                                  color: (dashboardData.memberTotalLoanBalance)>0?Colors.red[400]:Theme.of(context)
                                       .textSelectionHandleColor,
                                   action: () {}),
                             ),
@@ -217,7 +213,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             customTitle(
-                              text: "Pending Loan Balance",
+                              text: "Pending Installment Balance",
                               fontSize: 14,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).textSelectionHandleColor,
@@ -228,7 +224,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   currency: _groupCurrency,
                                   amount: currencyFormat.format(dashboardData.memberLoanArrears),
                                   size: 14.0,
-                                  color: Theme.of(context)
+                                  color: (dashboardData.memberLoanArrears)>0?Colors.red[400]:Theme.of(context)
                                       .textSelectionHandleColor,
                                   action: () {}),
                             ),

@@ -6,3 +6,9 @@ class TransactionMenu{
 
   TransactionMenu(this.title, this.icon);
 }
+
+class TransactionMenuSvg{
+  String title, icon;
+
+  TransactionMenuSvg(this.title, this.icon);
+}

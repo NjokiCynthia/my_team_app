@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io' as io;
 
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
@@ -335,6 +336,10 @@ class Groups with ChangeNotifier {
     return [..._groups];
   }
 
+  String get userId {
+    return _userId;
+  }
+
   String get currentGroupId {
     return _currentGroupId;
   }
@@ -465,6 +470,7 @@ class Groups with ChangeNotifier {
       prefs.remove(selectedGroupId);
     }
     prefs.setString(selectedGroupId, groupId);
+    notifyListeners();
   }
 
   getCurrentGroupId() async {
@@ -523,7 +529,6 @@ class Groups with ChangeNotifier {
     } else {
       _groups = loadedGroups;
     }
-    print("Groups loaded : ${_groups.length}");
     notifyListeners();
   }
 
@@ -556,6 +561,7 @@ class Groups with ChangeNotifier {
     });
     try {
       final response = await PostToServer.post(postRequest, url);
+      log(response.toString());
       final group = response['user_groups'];
       if (group.length > 0) {
         int i = 0;
@@ -839,8 +845,9 @@ class Groups with ChangeNotifier {
     if (saccoBranches.length > 0) {
       for (var saccoBranchJSON in saccoBranches) {
         final newSaccoBranch = SaccoBranch(
-            id: int.parse(saccoBranchJSON['id']),
+            id: int.parse(saccoBranchJSON['id'].toString()),
             name: saccoBranchJSON['name'].toString());
+
         _saccoBranchOptions.add(newSaccoBranch);
         notifyListeners();
       }
@@ -1405,8 +1412,79 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<dynamic> addContributionStepOne(Map<String, dynamic> formData) async {
-    const url = EndpointUrl.CREATE_CONTRIBUTION_SETTING;
+  Future<dynamic> getContributionDetails(String id) async {
+    const url = EndpointUrl.GET_CONTRIBUTION_DETAILS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "id": id,
+      });
+      try {
+        return await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> addContributionStepOne(
+      Map<String, dynamic> formData, bool isEditMode) async {
+    var url = EndpointUrl.CREATE_CONTRIBUTION_SETTING;
+    if (isEditMode) {
+      url = EndpointUrl.EDIT_CONTRIBUTION_SETTING;
+    }
+    try {
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        return await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> addContributionStepTwo(Map<String, dynamic> formData) async {
+    const url = EndpointUrl.ADD_MEMBERS_CONTRIBUTION_SETTING;
+    try {
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['request_id'] =
+          "${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        return await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> addContributionStepThree(
+      Map<String, dynamic> formData) async {
+    const url = EndpointUrl.FINE_CONTRIBUTION_SETTING;
     try {
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
@@ -1563,8 +1641,6 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        //final name = response['name'];
-        //final countryId = response['country_id'];
         if (response['status'] == 1) {
           await updateGroupProfile();
         }
@@ -1687,6 +1763,7 @@ class Groups with ChangeNotifier {
         "bank_id": bankId,
       });
       try {
+        print(postRequest);
         final response = await PostToServer.post(postRequest, url);
         _bankBranchOptions = []; //clear
         final bankBranches = response['bank_branches'] as List<dynamic>;
@@ -1760,6 +1837,7 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "sacco_id": saccoId,
       });
+      print(postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
         _saccoBranchOptions = []; //clear

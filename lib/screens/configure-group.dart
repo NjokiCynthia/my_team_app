@@ -16,7 +16,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:provider/provider.dart';
 
-import 'chamasoft/settings/create-bank-account.dart';
+import 'chamasoft/settings/accounts/create-bank-account.dart';
 import 'chamasoft/settings/group-setup/list-contacts.dart';
 
 Map<String, String> roles = {
@@ -603,15 +603,6 @@ class ContributionsTabView extends StatelessWidget {
                             buttonHeight: 24.0,
                             textSize: 12.0,
                           ),
-//                                                          SizedBox(width: 10.0),
-//                                                          screenActionButton(
-//                                                            icon: LineAwesomeIcons.close,
-//                                                            backgroundColor: Colors.red.withOpacity(0.1),
-//                                                            textColor: Colors.red,
-//                                                            action: () {},
-//                                                            buttonSize: 30.0,
-//                                                            iconSize: 16.0,
-//                                                          ),
                         ],
                       ),
                     ),

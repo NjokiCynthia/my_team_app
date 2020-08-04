@@ -28,7 +28,6 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   int _statementType = 1;
   double _totalAmount = 0;
 
-
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -61,7 +60,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   @override
   void didChangeDependencies() {
     final summaryFlag = ModalRoute.of(context).settings.arguments;
-    if(_isInit){
+    if (_isInit) {
       setState(() {
         _isLoading = true;
       });
@@ -69,33 +68,32 @@ class _ContributionSummaryState extends State<ContributionSummary> {
         appbarTitle = "Fine Summary";
         defaultTitle = "Fines";
         _statementType = 2;
-        _totalAmount = Provider.of<Groups>(context,listen: false).groupTotalFinesSummary();
-        _fetchGroupFineSummary(context).then((_){
+        _totalAmount = Provider.of<Groups>(context, listen: false).groupTotalFinesSummary();
+        _fetchGroupFineSummary(context).then((_) {
           setState(() {
             _isLoading = false;
-            _totalAmount = Provider.of<Groups>(context,listen: false).groupTotalFinesSummary();
+            _totalAmount = Provider.of<Groups>(context, listen: false).groupTotalFinesSummary();
           });
         });
-      }else{
-        _totalAmount = Provider.of<Groups>(context,listen: false).groupTotalContributionSummary();
-        _fetchGroupContributionSummary(context).then((_){
+      } else {
+        _totalAmount = Provider.of<Groups>(context, listen: false).groupTotalContributionSummary();
+        _fetchGroupContributionSummary(context).then((_) {
           setState(() {
             _isLoading = false;
-            _totalAmount = Provider.of<Groups>(context,listen: false).groupTotalContributionSummary();
+            _totalAmount = Provider.of<Groups>(context, listen: false).groupTotalContributionSummary();
           });
-        })
-        .catchError((error){
+        }).catchError((error) {
           print("${error.toString()}");
           StatusHandler().handleStatus(
-            context: context,
-            error: error,
-            callback: () {
-              _fetchGroupContributionSummary(context);
-          });
+              context: context,
+              error: error,
+              callback: () {
+                _fetchGroupContributionSummary(context);
+              });
         });
       }
     }
-    _isInit=false;
+    _isInit = false;
     super.didChangeDependencies();
   }
 
@@ -104,7 +102,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
       await Provider.of<Groups>(context, listen: false).getGroupContributionSummary();
     } catch (error) {
       StatusHandler().handleStatus(context: context, error: error, callback: () {});
-    } 
+    }
   }
 
   Future<void> _fetchGroupFineSummary(BuildContext context) async {
@@ -117,16 +115,16 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context,listen: false).getCurrentGroup();
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
-      appBar: tertiaryPageAppbar(
+      appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        trailingIcon: LineAwesomeIcons.filter,
+        //trailingIcon: LineAwesomeIcons.filter,
         title: appbarTitle,
-        trailingAction: () => _showFilter(context),
+        //trailingAction: () => _showFilter(context),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
@@ -195,7 +193,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                   textAlign: TextAlign.start,
                 ),
                 subtitle1(
-                  text: DateFormat('EEE, MMM d, ''yyyy').format(DateTime.now()),
+                  text: DateFormat('EEE, MMM d, ' 'yyyy').format(DateTime.now()),
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start,
                 ),
@@ -222,17 +220,17 @@ class _ContributionSummaryState extends State<ContributionSummary> {
               ],
             ),
           ),
-          _isLoading?LinearProgressIndicator(
-            backgroundColor: Colors.cyanAccent,
-            valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-          ):SizedBox(height: 0.0,),
-          Expanded(
-              child: _isLoading
-                  ? ContributionSummaryBody(_statementType)
-                  : ContributionSummaryBody(_statementType))
+          _isLoading
+              ? LinearProgressIndicator(
+                  backgroundColor: Colors.cyanAccent,
+                  valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+                )
+              : SizedBox(
+                  height: 0.0,
+                ),
+          Expanded(child: _isLoading ? ContributionSummaryBody(_statementType) : ContributionSummaryBody(_statementType))
         ],
       ),
     );
   }
-  
 }

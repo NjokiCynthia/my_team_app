@@ -2,6 +2,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
@@ -178,6 +179,7 @@ Widget cardAmountButton({String currency, String amount, Function action, double
           "$currency ",
           style: TextStyle(
             color: color,
+            fontFamily: 'SegoeUI',
             fontSize: (size - 2.0),
             fontWeight: FontWeight.w400,
           ),
@@ -187,6 +189,7 @@ Widget cardAmountButton({String currency, String amount, Function action, double
           style: TextStyle(
             color: color,
             fontSize: size,
+            fontFamily: 'SegoeUI',
             fontWeight: FontWeight.w800,
           ),
           textAlign: TextAlign.end,
@@ -327,7 +330,8 @@ Widget paymentActionButton({bool isFlat = false, String text, IconData icon, dou
         );
 }
 
-Widget gridButton({BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
+Widget gridButton(
+    {BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
   return Container(
     margin: EdgeInsets.all(margin),
     height: 150,
@@ -354,6 +358,71 @@ Widget gridButton({BuildContext context, Color color, IconData icon, String titl
             ),
             SizedBox(
               height: 10.0,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 14.0,
+                  fontFamily: 'SegoeUI',
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(
+                subtitle,
+                style: TextStyle(
+                  color: color.withOpacity(0.6),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'SegoeUI',
+                  fontSize: 12.0,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ]),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+      highlightColor: primaryColor.withOpacity(0.1),
+      onPressed: action,
+    ),
+  );
+}
+
+Widget svgGridButton(
+    {BuildContext context, Color color, String icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
+  return Container(
+    margin: EdgeInsets.all(margin),
+    height: 150,
+    decoration: cardDecoration(gradient: isHighlighted ? csCardGradient() : plainCardGradient(context), context: context),
+    child: FlatButton(
+      padding: EdgeInsets.all(0),
+      child: Stack(fit: StackFit.expand, alignment: Alignment.center, children: <Widget>[
+        Positioned(
+          top: 0.0,
+          right: 30.0,
+          child: SvgPicture.asset(
+            icon,
+            semanticsLabel: 'icon',
+            height: 120.0,
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // SvgPicture.asset(
+            //   icon,
+            //   semanticsLabel: 'icon',
+            //   height: 100.0,
+            // ),
+            SizedBox(
+              height: 100.0,
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 10.0),

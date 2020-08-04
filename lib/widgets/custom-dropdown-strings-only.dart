@@ -5,19 +5,16 @@ import 'package:flutter/material.dart';
 class CustomDropDownStringOnlyButton extends StatelessWidget {
   final String selectedItem;
   final String labelText;
-  final Function onChanged;
+  final Function onChanged, validator;
   final List<StringNamesListItem> listItems;
+  final bool enabled;
 
-  const CustomDropDownStringOnlyButton({
-    this.selectedItem,
-    this.labelText,
-    this.onChanged,
-    this.listItems,
-  });
+  const CustomDropDownStringOnlyButton({this.selectedItem, this.labelText, this.onChanged, this.listItems, this.validator, this.enabled});
 
   @override
   Widget build(BuildContext context) {
     return FormField(
+      validator: validator,
       builder: (FormFieldState state) {
         return DropdownButtonHideUnderline(
           child: new Column(

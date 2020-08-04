@@ -81,14 +81,14 @@ class _ContributionStatementState extends State<ContributionStatement> {
     }
 
     return Scaffold(
-        appBar: tertiaryPageAppbar(
+        appBar: secondaryPageAppbar(
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          trailingIcon: LineAwesomeIcons.filter,
+          //trailingIcon: LineAwesomeIcons.filter,
           title: appbarTitle,
-          trailingAction: () => _showFilter(context),
+          //trailingAction: () => _showFilter(context),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: FutureBuilder(

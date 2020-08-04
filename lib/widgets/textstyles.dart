@@ -5,8 +5,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import 'buttons.dart';
 
-Widget heading1(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+Widget heading1({String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -18,41 +17,26 @@ Widget heading1(
   );
 }
 
-Widget heading2(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+Widget heading2({String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
-    style: TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 18.0,
-        color: color,
-        fontFamily: 'SegoeUI'),
+    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0, color: color, fontFamily: 'SegoeUI'),
     textAlign: textAlign,
   );
 }
 
-Widget subtitle1(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+Widget subtitle1({String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
-    style: TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: 16.0,
-        color: color,
-        fontFamily: 'SegoeUI'),
+    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.0, color: color, fontFamily: 'SegoeUI'),
     textAlign: textAlign,
   );
 }
 
-Widget subtitle2(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+Widget subtitle2({String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
-    style: TextStyle(
-        fontWeight: FontWeight.w300,
-        fontSize: 13.0,
-        color: color,
-        fontFamily: 'SegoeUI'),
+    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 13.0, color: color, fontFamily: 'SegoeUI'),
     textAlign: textAlign,
   );
 }
@@ -98,8 +82,7 @@ Widget customTitleWithWrap(
   );
 }
 
-Widget textWithExternalLinks(
-    {Map<String, Map<String, dynamic>> textData, Color color, double size}) {
+Widget textWithExternalLinks({Map<String, Map<String, dynamic>> textData, Color color, double size}) {
   if (textData.isNotEmpty) {
     List<TextSpan> _children = [];
     textData.forEach((text, options) {
@@ -108,11 +91,7 @@ Widget textWithExternalLinks(
             ? TextSpan(
                 text: text.trim() + ' ',
                 recognizer: TapGestureRecognizer()..onTap = options['url'],
-                style: TextStyle(
-                    decoration: TextDecoration.underline,
-                    color: options['color'],
-                    fontFamily: 'SegoeUI',
-                    fontWeight: options['weight']))
+                style: TextStyle(decoration: TextDecoration.underline, color: options['color'], fontFamily: 'SegoeUI', fontWeight: options['weight']))
             : TextSpan(
                 text: text.trim() + ' ',
               ),
@@ -134,13 +113,7 @@ Widget textWithExternalLinks(
 }
 
 List<Widget> contributionSummary(
-    {Color color,
-    IconData cardIcon,
-    String currency,
-    String cardAmount,
-    String amountDue,
-    String dueDate,
-    String contributionName}) {
+    {Color color, IconData cardIcon, String currency, String cardAmount, String amountDue, String dueDate, String contributionName}) {
   List<Widget> _data = [];
   List<String> _name = contributionName.split(" ");
   _data.clear();
@@ -313,32 +286,35 @@ List<Widget> contributionSummary(
             ),
             Row(
               children: <Widget>[
-                Text(
-                  "$currency ",
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w400,
+                if (currency != null)
+                  Text(
+                    "$currency ",
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                ),
-                Text(
-                  amountDue,
-                  style: TextStyle(
-                    color: color,
-                    fontSize: 14.0,
-                    fontWeight: FontWeight.w700,
-                  ),
-                )
+                if (amountDue != null)
+                  Text(
+                    amountDue,
+                    style: TextStyle(
+                      color: color,
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  )
               ],
             ),
-            Text(
-              dueDate,
-              style: TextStyle(
-                color: color.withOpacity(0.6),
-                fontSize: 10.0,
-                fontWeight: FontWeight.w600,
+            if (dueDate != null)
+              Text(
+                dueDate,
+                style: TextStyle(
+                  color: color.withOpacity(0.6),
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
           ],
         ),
       ],
@@ -348,19 +324,12 @@ List<Widget> contributionSummary(
 }
 
 Widget toolTip(
-    {BuildContext context,
-    @required String title,
-    @required String message,
-    bool showTitle = true,
-    bool visible = true,
-    Function toggleToolTip}) {
+    {BuildContext context, @required String title, @required String message, bool showTitle = true, bool visible = true, Function toggleToolTip}) {
   return Visibility(
     visible: visible,
     child: Container(
         padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-        color: (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[800]
-            : Color(0xffededfe),
+        color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -377,36 +346,23 @@ Widget toolTip(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  (showTitle)
-                      ? subtitle1(
-                          text: title,
-                          textAlign: TextAlign.start,
-                          color: Theme.of(context).textSelectionHandleColor)
-                      : Container(),
+                  (showTitle) ? subtitle1(text: title, textAlign: TextAlign.start, color: Theme.of(context).textSelectionHandleColor) : Container(),
                   (message.length > 0)
-                      ? subtitle2(
-                          text: message,
-                          color: Theme.of(context).textSelectionHandleColor,
-                          textAlign: TextAlign.start)
+                      ? subtitle2(text: message, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       : Container(),
                 ],
               ),
             ),
-            screenActionButton(
-                icon: LineAwesomeIcons.close,
-                textColor: Theme.of(context).textSelectionHandleColor,
-                action: toggleToolTip),
+            Visibility(
+              visible: false,
+              child: screenActionButton(icon: LineAwesomeIcons.close, textColor: Theme.of(context).textSelectionHandleColor, action: toggleToolTip),
+            ),
           ],
         )),
   );
 }
 
-Widget accountBalance(
-    {Color color,
-    IconData cardIcon,
-    String currency,
-    String cardAmount,
-    String accountName}) {
+Widget accountBalance({Color color, IconData cardIcon, String currency, String cardAmount, String accountName}) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -423,22 +379,11 @@ Widget accountBalance(
       RichText(
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
-        text: TextSpan(
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14.0,
-                color: color,
-                fontFamily: 'SegoeUI'),
-            children: [
-              TextSpan(text: accountName.toUpperCase()),
-              TextSpan(text: " "),
-              TextSpan(
-                  text: "BALANCE",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: color,
-                      fontFamily: 'SegoeUI'))
-            ]),
+        text: TextSpan(style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.0, color: color, fontFamily: 'SegoeUI'), children: [
+          TextSpan(text: accountName.toUpperCase()),
+          TextSpan(text: " "),
+          TextSpan(text: "BALANCE", style: TextStyle(fontWeight: FontWeight.w600, color: color, fontFamily: 'SegoeUI'))
+        ]),
       ),
       SizedBox(
         height: 5,
@@ -447,23 +392,11 @@ Widget accountBalance(
         child: FittedBox(
           child: RichText(
             overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 20.0,
-                    color: color,
-                    fontFamily: 'SegoeUI'),
-                children: [
-                  TextSpan(
-                      text: currency,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 18.0,
-                          color: color,
-                          fontFamily: 'SegoeUI')),
-                  TextSpan(text: " "),
-                  TextSpan(text: cardAmount),
-                ]),
+            text: TextSpan(style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20.0, color: color, fontFamily: 'SegoeUI'), children: [
+              TextSpan(text: currency, style: TextStyle(fontWeight: FontWeight.w400, fontSize: 18.0, color: color, fontFamily: 'SegoeUI')),
+              TextSpan(text: " "),
+              TextSpan(text: cardAmount),
+            ]),
           ),
         ),
       ),

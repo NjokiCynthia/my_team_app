@@ -1,9 +1,9 @@
 import 'package:chamasoft/screens/chamasoft/models/transaction-menu.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/transaction-menu-details.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class ChamasoftTransactions extends StatefulWidget {
   ChamasoftTransactions({
@@ -44,12 +44,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
 
   @override
   Widget build(BuildContext context) {
-    final List<TransactionMenu> list = [
-      TransactionMenu("E-WALLET", LineAwesomeIcons.google_wallet),
-      TransactionMenu("LOANS", LineAwesomeIcons.file_text),
-      TransactionMenu("RECORD PAYMENTS", LineAwesomeIcons.bar_chart_o),
-      TransactionMenu("RECORD EXPENDITURE", LineAwesomeIcons.pie_chart),
-      TransactionMenu("INVOICING & TRANSFER", LineAwesomeIcons.send),
+    final List<TransactionMenuSvg> list = [
+      TransactionMenuSvg("E-WALLET", customIcons['wallet']),
+      // TransactionMenuSvg("LOANS", customIcons['transaction']),
+      TransactionMenuSvg("RECORD PAYMENTS", customIcons['invoice']),
+      TransactionMenuSvg("RECORD EXPENDITURE", customIcons['expense']),
+      TransactionMenuSvg("INVOICING & TRANSFER", customIcons['transaction']),
     ];
 
     return new WillPopScope(
@@ -61,7 +61,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             padding: EdgeInsets.fromLTRB(6, 6, 6, 6),
             crossAxisCount: orientation == Orientation.portrait ? 2 : 4,
             children: List.generate(list.length, (index) {
-              return gridButton(
+              return svgGridButton(
                 context: context,
                 icon: list[index].icon,
                 title: list[index].title,

@@ -6,3 +6,9 @@ class ReportMenu {
 
   ReportMenu(this.title, this.subtitle, this.icon);
 }
+
+class ReportMenuSvg {
+  String title, subtitle, icon;
+
+  ReportMenuSvg(this.title, this.subtitle, this.icon);
+}
