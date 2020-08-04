@@ -247,7 +247,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             _eventDispatcher.add('ORIENTATION');
             return SafeArea(
               child: Container(
-                decoration: primaryGradient(context),
+                // decoration: primaryGradient(context),
                 child:getPage(_currentPage),
               ),
             );

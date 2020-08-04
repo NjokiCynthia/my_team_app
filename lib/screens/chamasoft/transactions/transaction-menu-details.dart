@@ -6,7 +6,6 @@ import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.da
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/contribution-transfer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan-applications.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -20,7 +19,6 @@ import 'expenditure/record-contribution-refund.dart';
 import 'expenditure/record-expense.dart';
 import 'invoicing-and-transfer/create-invoice.dart';
 import 'invoicing-and-transfer/fine-member.dart';
-import 'loans/record-loan-payment.dart';
 
 class TransactionMenuDetails extends StatefulWidget {
   @override
@@ -50,13 +48,13 @@ class _TransactionMenuDetailsState extends State<TransactionMenuDetails> {
         list.add(TransactionMenu("CREATE WITHDRAWAL REQUEST", LineAwesomeIcons.google_wallet));
         list.add(TransactionMenu("REVIEW WITHDRAWAL REQUESTS", LineAwesomeIcons.file_text));
         break;
-      // case 1:
-      //   title = "Loan Transactions";
-      //   list.add(TransactionMenu(
-      //       "REVIEW LOAN APPLICATIONS", LineAwesomeIcons.file_text));
-      //   list.add(TransactionMenu(
-      //       "RECORD LOAN REPAYMENTS", LineAwesomeIcons.file_text));
-      //   break;
+      case 1:
+        title = "Loan Transactions";
+        list.add(TransactionMenu(
+            "REVIEW LOAN APPLICATIONS", LineAwesomeIcons.file_text));
+        list.add(TransactionMenu(
+            "RECORD LOAN REPAYMENTS", LineAwesomeIcons.file_text));
+        break;
       case 1:
         title = "Record Payments";
         list.add(TransactionMenu("CONTRIBUTIONS", LineAwesomeIcons.file_text));
