@@ -244,9 +244,9 @@ class Dashboard with ChangeNotifier{
         accountBalances.map((accountBalance){
           var accountName = accountBalance["description"].toString();
           var balance = double.tryParse(accountBalance["balance"].toString())??0.0;
-          if(balance > 1.0){
+          //if(balance > 1.0){
             _bankAccountDashboardSummary.add(BankAccountDashboardSummary(accountName: accountName,balance: balance));
-          }
+          //}
         }).toList();
       }
     }
