@@ -403,7 +403,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                 child: Container(
                   height: 160.0,
                   child: ListView(
