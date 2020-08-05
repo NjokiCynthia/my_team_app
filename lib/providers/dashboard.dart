@@ -31,12 +31,27 @@ class RecentTransactionSummary{
     });
 }
 
+class ContributionSummary{
+    final String contributionName;
+    final double amountPaid;
+    final double balance;
+    final String dueDate;
+
+    ContributionSummary({
+      @required this.contributionName,
+      @required this.amountPaid,
+      this.balance,
+      this.dueDate,
+    });
+}
+
 class Dashboard with ChangeNotifier{
   String _userId;
   Map<String,Map<String,dynamic>> _memberDashboardData;
   Map<String,Map<String,dynamic>> _groupDashboardData;
   List<BankAccountDashboardSummary> _bankAccountDashboardSummary = [];
   List<RecentTransactionSummary> _recentTransactionSummary = [];
+  List<ContributionSummary> _memberContributionSummary = [];
   String _currentGroupId;
 
   Dashboard(String _userId,String _currentGroupId,Map<String,Map<String,dynamic>> _memberDashboardData,Map<String,Map<String,dynamic>> _groupDashboardData){
@@ -156,6 +171,10 @@ class Dashboard with ChangeNotifier{
     return [..._bankAccountDashboardSummary];
   }
 
+  List<ContributionSummary> get memberContributionSummary{
+    return [..._memberContributionSummary];
+  }
+
   bool memberGroupDataExists(String groupId){
     if(_memberDashboardData.containsKey(groupId)){
       if(_memberDashboardData[groupId].length<=0){
@@ -202,6 +221,7 @@ class Dashboard with ChangeNotifier{
       _memberFineArrears = double.tryParse(memberDetails["fine_arrears"].toString())??0.0;
       _memberLoanArrears = double.tryParse(memberDetails["loan_arrears"].toString())??0.0;
       _memberTotalLoanBalance = double.tryParse(memberDetails["total_loan_balances"].toString())??0.0;
+      String contributionDate = memberDetails["next_contribution_date"].toString();
       var recentTransactions = memberDetails["recent_transactions"];
       _recentTransactionSummary = [];
       if(recentTransactions.length>0){
@@ -220,6 +240,21 @@ class Dashboard with ChangeNotifier{
               paymentMethod: paymentMethod,
             ));
           }
+        }).toList();
+      }
+      var memberContributionSummary = memberDetails["member_contribution_summary"];
+      _memberContributionSummary = [];
+      if(memberContributionSummary.length > 0){
+        memberContributionSummary.map((summary){
+          var amountPaid = double.tryParse(summary["paid"].toString())??0.0;
+          var balance = double.tryParse(summary["balance"].toString())??0.0;
+          var contributionName = summary["name"].toString();
+          _memberContributionSummary.add(ContributionSummary(
+            contributionName: contributionName,
+            amountPaid: amountPaid,
+            balance: balance,
+            dueDate: contributionDate,
+          ));
         }).toList();
       }
     }
