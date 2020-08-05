@@ -16,11 +16,27 @@ class BankAccountDashboardSummary{
     });
 }
 
+class RecentTransactionSummary{
+    final String paymentTitle;
+    final double paymentAmount;
+    final String paymentDate;
+    final String paymentMethod;
+    final String description;
+    RecentTransactionSummary({
+      @required this.paymentTitle,
+      @required this.paymentAmount,
+      @required this.paymentDate,
+      this.paymentMethod,
+      this.description
+    });
+}
+
 class Dashboard with ChangeNotifier{
   String _userId;
   Map<String,Map<String,dynamic>> _memberDashboardData;
   Map<String,Map<String,dynamic>> _groupDashboardData;
   List<BankAccountDashboardSummary> _bankAccountDashboardSummary = [];
+  List<RecentTransactionSummary> _recentTransactionSummary = [];
   String _currentGroupId;
 
   Dashboard(String _userId,String _currentGroupId,Map<String,Map<String,dynamic>> _memberDashboardData,Map<String,Map<String,dynamic>> _groupDashboardData){
@@ -132,6 +148,10 @@ class Dashboard with ChangeNotifier{
     return _bankBalances;
   }
 
+  List<RecentTransactionSummary> get recentMemberTransactions{
+    return [..._recentTransactionSummary];
+  }
+
   List<BankAccountDashboardSummary> get bankAccountDashboardSummary{
     return [..._bankAccountDashboardSummary];
   }
@@ -148,6 +168,13 @@ class Dashboard with ChangeNotifier{
     }
   }
 
+  void resetMemberDashboardData(String groupId){
+     if(_memberDashboardData.containsKey(groupId)){
+       print(_memberDashboardData);
+       _memberDashboardData.removeWhere((key, value) => key==groupId);
+    }
+  }
+
   bool groupDataExists(String groupId){
     if(_groupDashboardData.containsKey(groupId)){
       if(_groupDashboardData[groupId].length<=0){
@@ -160,6 +187,13 @@ class Dashboard with ChangeNotifier{
     }
   }
 
+  void resetGroupDashboardData(String groupId){
+     if(_groupDashboardData.containsKey(groupId)){
+       print(_groupDashboardData);
+       _groupDashboardData.removeWhere((key, value) => key==groupId);
+    }
+  }
+
   void _updateMemberDashboardData(String groupId)async{
     if(_memberDashboardData[groupId].containsKey("member_details")){
       var memberDetails = _memberDashboardData[groupId]["member_details"] as Map<String,dynamic>;
@@ -168,6 +202,26 @@ class Dashboard with ChangeNotifier{
       _memberFineArrears = double.tryParse(memberDetails["fine_arrears"].toString())??0.0;
       _memberLoanArrears = double.tryParse(memberDetails["loan_arrears"].toString())??0.0;
       _memberTotalLoanBalance = double.tryParse(memberDetails["total_loan_balances"].toString())??0.0;
+      var recentTransactions = memberDetails["recent_transactions"];
+      _recentTransactionSummary = [];
+      if(recentTransactions.length>0){
+        recentTransactions.map((summary){
+          var description = summary["description"].toString();
+          var amount = double.tryParse(summary["amount"].toString())??0.0;
+          var date = summary["date"].toString();
+          var title = summary["type"].toString();
+          var paymentMethod = summary["payment_method"].toString();
+          if(amount > 1.0){
+            _recentTransactionSummary.add(RecentTransactionSummary(
+              paymentAmount: amount,
+              description: description,
+              paymentDate: date,
+              paymentTitle: title,
+              paymentMethod: paymentMethod,
+            ));
+          }
+        }).toList();
+      }
     }
     notifyListeners();
   }
