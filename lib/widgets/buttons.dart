@@ -396,7 +396,7 @@ Widget gridButton(
 }
 
 Widget svgGridButton(
-    {BuildContext context, Color color, String icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
+    {BuildContext context, Color color, String icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18, double imageHeight = 120}) {
   return Container(
     margin: EdgeInsets.all(margin),
     height: 150,
@@ -411,7 +411,7 @@ Widget svgGridButton(
           child: SvgPicture.asset(
             icon,
             semanticsLabel: 'icon',
-            height: 120.0,
+            height: imageHeight,
           ),
         ),
         Column(
