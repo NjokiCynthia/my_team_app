@@ -154,11 +154,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             width: 160.0,
             padding: EdgeInsets.all(16.0),
             decoration: cardDecoration(
-                gradient: csCardGradient(), context: context),
+                gradient: i==0?csCardGradient():plainCardGradient(context), context: context),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: contributionSummary(
-                color: Colors.white,
+                color: i==0?Colors.white:primaryColor,
                 cardIcon: Feather.bar_chart_2,
                 amountDue: currencyFormat.format(data.balance),
                 cardAmount: currencyFormat.format(data.amountPaid),
