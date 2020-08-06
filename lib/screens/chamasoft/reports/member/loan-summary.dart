@@ -126,6 +126,7 @@ class ActiveLoanCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
@@ -175,7 +176,7 @@ class ActiveLoanCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
                         customTitle(
-                          text: "Ksh ",
+                          text: "${groupObject.groupCurrency} ",
                           fontSize: 18.0,
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w400,

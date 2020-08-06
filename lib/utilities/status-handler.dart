@@ -11,7 +11,11 @@ import 'package:provider/provider.dart';
 import '../widgets/dialogs.dart';
 
 class StatusHandler {
-  void handleStatus({BuildContext context, CustomException error, VoidCallback callback}) {
+  void handleStatus(
+      {BuildContext context,
+      CustomException error,
+      VoidCallback callback,
+      ScaffoldState scaffoldState}) {
     switch (error.status) {
       case ErrorStatusCode.statusNormal:
         showErrorDialog(context, error.message);
@@ -23,10 +27,14 @@ class StatusHandler {
         restartApp(context);
         break;
       case ErrorStatusCode.statusNoInternet:
-        showRetrySnackBar(context, error.message, callback);
+        if (scaffoldState != null) {
+          showSpecialRetrySnackBar(scaffoldState, error.message, callback);
+        } else
+          showRetrySnackBar(context, error.message, callback);
         break;
       case ErrorStatusCode.statusFormValidationError:
-        showErrorDialogWithTitle(context, error.message, "Some values are missing");
+        showErrorDialogWithTitle(
+            context, error.message, "Some values are missing");
         break;
       default:
         break;
@@ -37,13 +45,15 @@ class StatusHandler {
     alertDialog(context, message);
   }
 
-  void showErrorDialogWithTitle(BuildContext context, String message, String title) {
+  void showErrorDialogWithTitle(
+      BuildContext context, String message, String title) {
     alertDialog(context, message, title);
   }
 
-  void showRetrySnackBar(BuildContext context, String message, VoidCallback voidCallback) {
+  void showRetrySnackBar(
+      BuildContext context, String message, VoidCallback voidCallback) {
     final snackBar = SnackBar(
-      content: subtitle2(text: message, textAlign: TextAlign.start),
+      content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
       action: SnackBarAction(
         label: "Retry",
         onPressed: () => voidCallback(),
@@ -53,14 +63,31 @@ class StatusHandler {
     Scaffold.of(context).showSnackBar(snackBar);
   }
 
+  void showSpecialRetrySnackBar(
+      ScaffoldState scaffoldState, String message, VoidCallback voidCallback) {
+    final snackBar = SnackBar(
+      duration: Duration(days: 1),
+      content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
+      action: SnackBarAction(
+        label: "Retry",
+        onPressed: () => voidCallback(),
+      ),
+    );
+
+    scaffoldState.showSnackBar(snackBar);
+  }
+
   void restartApp(BuildContext context) {
-    Navigator.of(context).pushNamedAndRemoveUntil(IntroScreen.namedRoute, ModalRoute.withName("/"));
+    Navigator.of(context).pushNamedAndRemoveUntil(
+        IntroScreen.namedRoute, ModalRoute.withName("/"));
     //Navigator.popUntil(context, ModalRoute.withName("/"));
   }
 
-  void logout(BuildContext context) async{
+  void logout(BuildContext context) async {
     await Provider.of<Auth>(context, listen: false).logout();
-    await Navigator.of(context).pushNamedAndRemoveUntil(Login.namedRoute, ModalRoute.withName("/"));
-    Provider.of<Groups>(context, listen: false).switchGroupValuesToDefault(removeGroups:true);
+    await Navigator.of(context)
+        .pushNamedAndRemoveUntil(Login.namedRoute, ModalRoute.withName("/"));
+    Provider.of<Groups>(context, listen: false)
+        .switchGroupValuesToDefault(removeGroups: true);
   }
 }

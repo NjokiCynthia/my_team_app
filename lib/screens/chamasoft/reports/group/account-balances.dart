@@ -58,6 +58,7 @@ class _AccountBalancesState extends State<AccountBalances> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -102,7 +103,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                                 ),
                               ),
                               heading2(
-                                  text: "Ksh " + currencyFormat.format(int.tryParse(totalBalance) ?? 0),
+                                  text: "${groupObject.groupCurrency} " + currencyFormat.format(int.tryParse(totalBalance) ?? 0),
                                   color: Theme.of(context).textSelectionHandleColor,
                                   textAlign: TextAlign.start)
                             ],

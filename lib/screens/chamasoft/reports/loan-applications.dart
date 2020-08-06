@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -7,6 +8,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class LoanApplications extends StatefulWidget {
   @override
@@ -119,6 +121,7 @@ class MyLoansCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: InkWell(
@@ -189,7 +192,7 @@ class MyLoansCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             Text(
-                              "Ksh ",
+                              "${groupObject.groupCurrency} ",
                               style: TextStyle(
                                 fontSize: 16.0,
                                 color:

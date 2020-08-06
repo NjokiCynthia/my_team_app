@@ -61,6 +61,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     String appbarTitle = "Group Loans Summary";
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -102,7 +103,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                     Row(
                                       children: <Widget>[
                                         customTitle(
-                                          text: "Ksh ",
+                                          text: "${groupObject.groupCurrency} ",
                                           fontWeight: FontWeight.w400,
                                           fontSize: 18.0,
                                           color: Theme.of(context).textSelectionHandleColor,
@@ -130,7 +131,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: <Widget>[
                                               subtitle2(
-                                                  text: "Payable: Ksh ",
+                                                  text: "Payable: ${groupObject.groupCurrency} ",
                                                   color: Theme.of(context).textSelectionHandleColor,
                                                   textAlign: TextAlign.start),
                                               customTitle(
@@ -144,7 +145,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: <Widget>[
                                               subtitle2(
-                                                  text: "Paid: Ksh ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                                  text: "Paid: ${groupObject.groupCurrency} ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                                               customTitle(
                                                   text: currencyFormat.format(data.getLoansSummaryList.totalPaid),
                                                   color: Theme.of(context).textSelectionHandleColor,
@@ -156,7 +157,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             crossAxisAlignment: CrossAxisAlignment.center,
                                             children: <Widget>[
                                               subtitle2(
-                                                  text: "Balance: Ksh ",
+                                                  text: "Balance: ${groupObject.groupCurrency} ",
                                                   color: Theme.of(context).textSelectionHandleColor,
                                                   textAlign: TextAlign.start),
                                               customTitle(

@@ -60,6 +60,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
@@ -112,7 +113,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                     Row(
                                       children: <Widget>[
                                         customTitle(
-                                          text: "Ksh ",
+                                          text: "${groupObject.groupCurrency} ",
                                           fontWeight: FontWeight.w400,
                                           fontSize: 18.0,
                                           color: Theme.of(context).textSelectionHandleColor,

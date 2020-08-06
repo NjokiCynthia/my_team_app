@@ -59,6 +59,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -117,7 +118,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                   ),
                                 ),
                                 heading2(
-                                    text: "Ksh " + currencyFormat.format(data.transactionStatement.totalBalance),
+                                    text: "${groupObject.groupCurrency} " + currencyFormat.format(data.transactionStatement.totalBalance),
                                     color: Theme.of(context).textSelectionHandleColor,
                                     textAlign: TextAlign.start)
                               ],

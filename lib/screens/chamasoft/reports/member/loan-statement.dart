@@ -65,6 +65,7 @@ class _LoanStatementState extends State<LoanStatement> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
@@ -108,7 +109,7 @@ class _LoanStatementState extends State<LoanStatement> {
                                     Row(
                                       children: <Widget>[
                                         customTitle(
-                                          text: "Ksh ",
+                                          text: "${groupObject.groupCurrency} ",
                                           fontSize: 18.0,
                                           color: Theme.of(context).textSelectionHandleColor,
                                           fontWeight: FontWeight.w400,
@@ -140,9 +141,13 @@ class _LoanStatementState extends State<LoanStatement> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-                                    subtitle2(text: "Amount Repaid ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                    subtitle2(
+                                        text: "Amount Repaid ",
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        textAlign: TextAlign.start),
                                     subtitle1(
-                                        text: "Ksh ${currencyFormat.format(data.getLoanStatements.paid)}",
+                                        text:
+                                            "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.paid)}",
                                         color: Theme.of(context).textSelectionHandleColor,
                                         textAlign: TextAlign.start),
                                   ],
@@ -150,9 +155,13 @@ class _LoanStatementState extends State<LoanStatement> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-                                    subtitle2(text: "Balance ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                    subtitle2(
+                                        text: "Balance ",
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        textAlign: TextAlign.start),
                                     subtitle1(
-                                        text: "Ksh ${currencyFormat.format(data.getLoanStatements.balance)}",
+                                        text:
+                                            "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.balance)}",
                                         color: Theme.of(context).textSelectionHandleColor,
                                         textAlign: TextAlign.start),
                                   ],
@@ -160,7 +169,10 @@ class _LoanStatementState extends State<LoanStatement> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
-                                    subtitle2(text: "Disbursed On ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                                    subtitle2(
+                                        text: "Disbursed On ",
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        textAlign: TextAlign.start),
                                     subtitle1(
                                         text: widget.loan.disbursementDate,
                                         color: Theme.of(context).textSelectionHandleColor,
@@ -182,11 +194,17 @@ class _LoanStatementState extends State<LoanStatement> {
                                       ),
                                       Expanded(
                                         flex: 1,
-                                        child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
+                                        child: subtitle1(
+                                            text: "Paid",
+                                            color: Theme.of(context).primaryColor,
+                                            textAlign: TextAlign.end),
                                       ),
                                       Expanded(
                                         flex: 1,
-                                        child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
+                                        child: subtitle1(
+                                            text: "Balance",
+                                            color: Theme.of(context).primaryColor,
+                                            textAlign: TextAlign.end),
                                       ),
                                     ],
                                   ),
@@ -207,7 +225,9 @@ class _LoanStatementState extends State<LoanStatement> {
                                     itemCount: statementRows.length,
                                   )
                                 : emptyList(
-                                    color: Colors.blue[400], iconData: LineAwesomeIcons.file_text, text: "There are no statements to display"),
+                                    color: Colors.blue[400],
+                                    iconData: LineAwesomeIcons.file_text,
+                                    text: "There are no statements to display"),
                           )
                         ],
                       );
