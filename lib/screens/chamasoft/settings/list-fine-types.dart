@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'contribution/create-contribution.dart';
+import 'create-fine-type.dart';
+import 'edit-fine-type.dart';
 
 class ListFineTypes extends StatefulWidget {
   @override
@@ -43,7 +44,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
         backgroundColor: primaryColor,
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CreateContribution(),
+            builder: (context) => CreateFineType(),
           ));
         },
       ),
@@ -81,13 +82,15 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                     Text(
                                       '${fineType.name}',
                                       style: TextStyle(
-                                        color: Theme.of(context).textSelectionHandleColor,
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 18.0,
                                       ),
                                     ),
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         Row(
                                           children: <Widget>[
@@ -95,7 +98,9 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                               'Balance: ',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w600,
-                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor
+                                                    .withOpacity(0.5),
                                                 fontSize: 12.0,
                                               ),
                                             ),
@@ -103,7 +108,9 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                               '${fineType.balance}',
                                               style: TextStyle(
                                                 fontWeight: FontWeight.w900,
-                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor
+                                                    .withOpacity(0.5),
                                                 fontSize: 12.0,
                                               ),
                                             ),
@@ -126,13 +133,25 @@ class _ListFineTypesState extends State<ListFineTypes> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                smallBadgeButton(
-                                  backgroundColor: primaryColor.withOpacity(0.2),
-                                  textColor: primaryColor,
-                                  text: '${fineType.amount}',
-                                  action: () {},
-                                  buttonHeight: 24.0,
-                                  textSize: 12.0,
+                                Padding(
+                                  padding: EdgeInsets.all(12.0),
+                                  child: circleIconButton(
+                                    icon: Icons.edit,
+                                    backgroundColor:
+                                        primaryColor.withOpacity(.3),
+                                    color: primaryColor,
+                                    iconSize: 18.0,
+                                    padding: 0.0,
+                                    onPressed: () async {
+                                      await Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) => EditFineType(
+                                          fineCategoryId:
+                                              int.parse(fineType.id),
+                                        ),
+                                      ));
+                                    },
+                                  ),
                                 ),
                               ],
                             )

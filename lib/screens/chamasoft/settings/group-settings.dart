@@ -51,12 +51,14 @@ class _GroupSettingsState extends State<GroupSettings> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: new Text("Delete Group"),
-          content: new Text("Are you sure you want to delete the group? You will lose all information regarding this group."),
+          content: new Text(
+              "Are you sure you want to delete the group? You will lose all information regarding this group."),
           actions: <Widget>[
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -91,9 +93,11 @@ class _GroupSettingsState extends State<GroupSettings> {
 
   Future<void> fetchAccounts(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).temporaryFetchAccounts();
+      await Provider.of<Groups>(context, listen: false)
+          .temporaryFetchAccounts();
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListAccounts()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListAccounts()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -114,7 +118,8 @@ class _GroupSettingsState extends State<GroupSettings> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchContributions();
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListContributions()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListContributions()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -135,7 +140,8 @@ class _GroupSettingsState extends State<GroupSettings> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchExpenses();
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListExpenses()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListExpenses()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -156,7 +162,8 @@ class _GroupSettingsState extends State<GroupSettings> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchFineTypes();
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListFineTypes()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListFineTypes()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -177,7 +184,8 @@ class _GroupSettingsState extends State<GroupSettings> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchLoanTypes();
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -217,7 +225,8 @@ class _GroupSettingsState extends State<GroupSettings> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => UpdateGroupProfile()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => UpdateGroupProfile()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -238,7 +247,8 @@ class _GroupSettingsState extends State<GroupSettings> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
       Navigator.pop(context);
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => ListMembers()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListMembers()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -289,21 +299,25 @@ class _GroupSettingsState extends State<GroupSettings> {
                             imageUrl: group.getCurrentGroupDisplayAvatar(),
                             placeholder: (context, url) => const CircleAvatar(
                               radius: 45.0,
-                              backgroundImage: const AssetImage('assets/no-user.png'),
+                              backgroundImage:
+                                  const AssetImage('assets/no-user.png'),
                             ),
                             imageBuilder: (context, image) => CircleAvatar(
                               backgroundImage: image,
                               radius: 45.0,
                             ),
-                            errorWidget: (context, url, error) => const CircleAvatar(
-                              backgroundImage: const AssetImage('assets/no-user.png'),
+                            errorWidget: (context, url, error) =>
+                                const CircleAvatar(
+                              backgroundImage:
+                                  const AssetImage('assets/no-user.png'),
                               radius: 45.0,
                             ),
                             fadeOutDuration: const Duration(seconds: 1),
                             fadeInDuration: const Duration(seconds: 3),
                           )
                         : const CircleAvatar(
-                            backgroundImage: const AssetImage('assets/no-user.png'),
+                            backgroundImage:
+                                const AssetImage('assets/no-user.png'),
                             radius: 45.0,
                           ),
                   ),
@@ -311,7 +325,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        heading2(text: currentGroup.groupName, color: Theme.of(context).textSelectionHandleColor),
+                        heading2(
+                            text: currentGroup.groupName,
+                            color: Theme.of(context).textSelectionHandleColor),
                         Row(
                           children: [
                             Padding(
@@ -353,7 +369,8 @@ class _GroupSettingsState extends State<GroupSettings> {
                                 textSize: 12.0,
                                 action: () => Navigator.of(context).push(
                                   MaterialPageRoute(
-                                    builder: (BuildContext context) => ConfigurePreferences(),
+                                    builder: (BuildContext context) =>
+                                        ConfigurePreferences(),
                                   ),
                                 ),
                               ),
@@ -472,42 +489,42 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                thickness: 1.0,
 //                height: 5.0,
 //              ),
-//              ListTile(
-//                leading: Icon(
-//                  FontAwesome.file_text,
-//                  size: 32,
-//                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-//                ),
-//                title: customTitle(
-//                  text: "Fine Types",
-//                  fontWeight: FontWeight.w700,
-//                  textAlign: TextAlign.start,
-//                  color: Theme.of(context).textSelectionHandleColor,
-//                ),
-//                subtitle: customTitle(
-//                  text: "Manage group fine categories",
-//                  textAlign: TextAlign.start,
-//                  fontSize: 13.0,
-//                  color: Theme.of(context).bottomAppBarColor,
-//                ),
-//                dense: true,
-//                onTap: () async {
-//                  showDialog(
-//                      context: context,
-//                      builder: (BuildContext context) {
-//                        return Center(
-//                          child: CircularProgressIndicator(),
-//                        );
-//                      });
-//                  await fetchFineTypes(context);
-//                  Navigator.pop(context);
-//                },
-//              ),
-//              DashedDivider(
-//                   color: Theme.of(context).dividerColor,
-//                thickness: 1.0,
-//                height: 5.0,
-//              ),
+
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Fine Types",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage group fine categories",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchFineTypes(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
 //              ListTile(
 //                leading: Icon(
 //                  FontAwesome.file_text,
