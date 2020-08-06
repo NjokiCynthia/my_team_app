@@ -139,7 +139,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.arrow_left,
         //trailingIcon: LineAwesomeIcons.filter,
         title: appbarTitle,
         //trailingAction: () => _showFilter(context),

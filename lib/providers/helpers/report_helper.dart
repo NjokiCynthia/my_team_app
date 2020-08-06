@@ -147,6 +147,23 @@ ContributionStatementModel getContributionStatement(dynamic data) {
   final String statementPeriodTo = data['statement_details']['statement_period_to'].toString();
   final List<ContributionStatementRow> statementList = [];
 
+//  final description = data['statement_header']['description'].toString();
+//  final date = ParseHelper.formatDate(data['statement_header']['date'].toString(), "dd-MM-yyyy");
+//  double amount = 0;
+//  String type = "Balance B/F";
+//
+//
+//    amount = ParseHelper.getDoubleFromJson(statement, 'payable');
+//    type = "Invoice";
+//  } else {
+//    amount = ParseHelper.getDoubleFromJson(statement, 'paid');
+//    type = "Payment";
+//  }
+//
+//  final statementRow =
+//      ContributionStatementRow(isHeader: false, title: description, description: type, amount: amount, date: date);
+//  statementList.add(statementRow);
+
   final statementBody = data['statement_body'] as List<dynamic>;
   if (statementBody.length > 0) {
     for (var statement in statementBody) {

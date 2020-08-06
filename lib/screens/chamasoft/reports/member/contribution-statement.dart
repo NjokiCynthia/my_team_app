@@ -252,7 +252,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                 customTitle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  text: _statementFrom + " to " + _statementTo,
+                                  text: _statementFrom.isNotEmpty ? "$_statementFrom to $_statementTo" : "",
                                   color: Theme.of(context).textSelectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),
@@ -290,9 +290,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                         : emptyList(
                             color: Colors.blue[400],
                             iconData: LineAwesomeIcons.file_text,
-                            text: widget.statementFlag == FINE_STATEMENT
-                                ? "There are no fine statements to display"
-                                : "There are no contribution statements to display"))
+                            text: "There are no statements for the period"))
               ],
             )));
   }
