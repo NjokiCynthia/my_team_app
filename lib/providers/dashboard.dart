@@ -31,13 +31,13 @@ class RecentTransactionSummary{
     });
 }
 
-class ContributionSummary{
+class ContributionsSummary{
     final String contributionName;
     final double amountPaid;
     final double balance;
     final String dueDate;
 
-    ContributionSummary({
+    ContributionsSummary({
       @required this.contributionName,
       @required this.amountPaid,
       this.balance,
@@ -51,7 +51,7 @@ class Dashboard with ChangeNotifier{
   Map<String,Map<String,dynamic>> _groupDashboardData;
   List<BankAccountDashboardSummary> _bankAccountDashboardSummary = [];
   List<RecentTransactionSummary> _recentTransactionSummary = [];
-  List<ContributionSummary> _memberContributionSummary = [];
+  List<ContributionsSummary> _memberContributionSummary = [];
   String _currentGroupId;
 
   Dashboard(String _userId,String _currentGroupId,Map<String,Map<String,dynamic>> _memberDashboardData,Map<String,Map<String,dynamic>> _groupDashboardData){
@@ -171,7 +171,7 @@ class Dashboard with ChangeNotifier{
     return [..._bankAccountDashboardSummary];
   }
 
-  List<ContributionSummary> get memberContributionSummary{
+  List<ContributionsSummary> get memberContributionSummary{
     return [..._memberContributionSummary];
   }
 
@@ -249,7 +249,7 @@ class Dashboard with ChangeNotifier{
           var amountPaid = double.tryParse(summary["paid"].toString())??0.0;
           var balance = double.tryParse(summary["balance"].toString())??0.0;
           var contributionName = summary["name"].toString();
-          _memberContributionSummary.add(ContributionSummary(
+          _memberContributionSummary.add(ContributionsSummary(
             contributionName: contributionName,
             amountPaid: amountPaid,
             balance: balance,

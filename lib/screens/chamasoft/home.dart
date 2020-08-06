@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
@@ -13,7 +14,6 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
@@ -37,6 +37,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   bool _isInit = true;
   String _groupCurrency = "Ksh";
   List<RecentTransactionSummary> _iteratableRecentTransactionSummary = [];
+  List<ContributionsSummary> _itableContributionSummary = [];
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -139,11 +140,46 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     }
   }
 
+  Iterable<Widget> get contributionsSummary sync* {
+    final List<Color> colorsList = [primaryColor,Colors.blueGrey];
+    int i = 0;
+    print(_itableContributionSummary.length);
+    for (var data in _itableContributionSummary) {
+      yield Row(
+        children: <Widget>[
+          SizedBox(
+            width: 16.0,
+          ),
+          Container(
+            width: 160.0,
+            padding: EdgeInsets.all(16.0),
+            decoration: cardDecoration(
+                gradient: csCardGradient(), context: context),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: contributionSummary(
+                color: Colors.white,
+                cardIcon: Feather.bar_chart_2,
+                amountDue: currencyFormat.format(data.balance),
+                cardAmount: currencyFormat.format(data.amountPaid),
+                currency: _groupCurrency,
+                dueDate: data.dueDate,
+                contributionName: data.contributionName,
+              ),
+            ),
+          ),
+        ],
+      );
+      ++i;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
     setState(() {
       _iteratableRecentTransactionSummary = dashboardData.recentMemberTransactions;
+      _itableContributionSummary = dashboardData.memberContributionSummary;
     });
     return WillPopScope(
         onWillPop: _onWillPop,
@@ -310,7 +346,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
                         physics: BouncingScrollPhysics(),
-                        children: <Widget>[
+                        children: _itableContributionSummary.length>0?contributionsSummary.toList():
+                        <Widget>[
                           SizedBox(
                             width: 16.0,
                           ),
@@ -324,8 +361,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               children: contributionSummary(
                                 color: Colors.white,
                                 cardIcon: Feather.bar_chart_2,
-                                amountDue: "7,500",
-                                cardAmount: "10,050",
+                                amountDue: "0",
+                                cardAmount: "0",
                                 currency: _groupCurrency,
                                 dueDate: "14 Apr 20",
                                 contributionName: "Monthly Savings",
@@ -346,8 +383,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               children: contributionSummary(
                                 color: primaryColor,
                                 cardIcon: Feather.bar_chart,
-                                amountDue: "4,050",
-                                cardAmount: "4,050",
+                                amountDue: "0",
+                                cardAmount: "0",
                                 currency: _groupCurrency,
                                 dueDate: "4 Apr 20",
                                 contributionName: "Welfare",
@@ -368,8 +405,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               children: contributionSummary(
                                 color: Colors.blueGrey,
                                 cardIcon: Feather.bar_chart_2,
-                                amountDue: "7,500",
-                                cardAmount: "10,050",
+                                amountDue: "0",
+                                cardAmount: "0",
                                 currency: _groupCurrency,
                                 dueDate: "14 Apr 20",
                                 contributionName: "Insurance",
