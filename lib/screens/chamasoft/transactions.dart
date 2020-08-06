@@ -63,11 +63,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['wallet'],
-          title: 'CREATE WITHDRAWAL REQUEST',
+          title: 'CREATE',
+          subtitle: 'WITHDRAWAL REQUEST',
           color: Colors.blue[400],
           isHighlighted: false,
           action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -75,18 +76,20 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['couple'],
-          title: 'REVIEW WITHDRAWAL REQUESTS',
+          title: 'REVIEW',
+          subtitle: 'WITHDRAWAL REQUESTS',
           color: Colors.blue[400],
           isHighlighted: false,
           action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -94,11 +97,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
     ];
 
@@ -107,7 +111,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['cash-register'],
@@ -119,14 +123,15 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['refund'],
@@ -138,14 +143,15 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['cash-in-hand'],
@@ -157,14 +163,15 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['transaction'],
@@ -176,14 +183,15 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['bank'],
@@ -195,11 +203,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
     ];
 
@@ -208,7 +217,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['invoice'],
@@ -220,18 +229,20 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['safe'],
-          title: 'BANK LOAN REPAYMENTS',
+          title: 'BANK LOAN',
+          subtitle: 'REPAYMENTS',
           color: Colors.blue[400],
           isHighlighted: false,
           action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -239,18 +250,20 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['money-bag'],
-          title: 'CONTRIBUTION REFUND',
+          title: 'CONTRIBUTION',
+          subtitle: 'REFUND',
           color: Colors.blue[400],
           isHighlighted: false,
           action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -258,11 +271,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
     ];
 
@@ -271,11 +285,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['group'],
-          title: 'INVOICE MEMBERS',
+          title: 'INVOICE',
+          subtitle: 'MEMBERS',
           color: Colors.blue[400],
           isHighlighted: false,
           action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -283,18 +298,20 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['account'],
-          title: 'FINE MEMBER',
+          title: 'FINE',
+          subtitle: 'MEMBER',
           color: Colors.blue[400],
           isHighlighted: false,
           action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -302,18 +319,20 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['blockchain'],
-          title: 'CONTRIBUTION TRANSFER',
+          title: 'CONTRIBUTION',
+          subtitle: 'TRANSFER',
           color: Colors.blue[400],
           isHighlighted: false,
           action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -321,18 +340,20 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
       Container(
-        width: 150.0,
+        width: 132.0,
         child: svgGridButton(
           context: context,
           icon: customIcons['bank-cards'],
-          title: 'ACCOUNT TO ACCOUNT TRANSFER',
+          title: 'ACCOUNT TO',
+          subtitle: 'ACCOUNT TRANSFER',
           color: Colors.blue[400],
           isHighlighted: false,
           action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -340,11 +361,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               settings: RouteSettings(arguments: 0)
             )
           ),
-          margin: 0
+          margin: 0,
+          imageHeight: 100.0
         )
       ),
       SizedBox(
-        width: 26.0,
+        width: 16.0,
       ),
     ];
 
@@ -381,7 +403,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                 child: Container(
-                  height: 180.0,
+                  height: 160.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
@@ -417,7 +439,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                 child: Container(
-                  height: 180.0,
+                  height: 160.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
@@ -453,7 +475,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                 child: Container(
-                  height: 180.0,
+                  height: 160.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
@@ -489,7 +511,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                 child: Container(
-                  height: 180.0,
+                  height: 160.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
