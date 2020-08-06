@@ -98,10 +98,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
       await Provider.of<Groups>(context, listen: false).fetchContributionStatement(widget.statementFlag);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () => _getContributionStatement(context),
-          scaffoldState: _scaffoldKey.currentState);
+          context: context, error: error, callback: () => _fetchData(), scaffoldState: _scaffoldKey.currentState);
     }
   }
 

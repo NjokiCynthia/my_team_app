@@ -66,7 +66,7 @@ class StatusHandler {
   void showSpecialRetrySnackBar(
       ScaffoldState scaffoldState, String message, VoidCallback voidCallback) {
     final snackBar = SnackBar(
-      duration: Duration(days: 1),
+      duration: Duration(seconds: 10),
       content: customTitleWithWrap(text: message, textAlign: TextAlign.start),
       action: SnackBarAction(
         label: "Retry",
