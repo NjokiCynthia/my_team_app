@@ -21,7 +21,7 @@ class AccountBalance {
 
 class AccountBalanceModel {
   List<AccountBalance> accounts;
-  String totalBalance;
+  double totalBalance;
 
   AccountBalanceModel({this.accounts, this.totalBalance});
 }

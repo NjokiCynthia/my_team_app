@@ -73,11 +73,13 @@ class _LoanSummaryState extends State<LoanSummary> {
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,
-        body: FutureBuilder(
-            future: _future,
-            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                ? Center(child: CircularProgressIndicator())
-                : RefreshIndicator(
+        body: Builder(
+          builder: (BuildContext context){
+            return FutureBuilder(
+                future: _future,
+                builder: (_, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                    ? Center(child: CircularProgressIndicator())
+                    : RefreshIndicator(
                     onRefresh: () => _getMemberLoans(context),
                     child: Consumer<Groups>(builder: (context, data, child) {
                       List<ActiveLoan> activeLoans = data.getMemberLoans;
@@ -87,34 +89,36 @@ class _LoanSummaryState extends State<LoanSummary> {
                         height: double.infinity,
                         child: activeLoans.length > 0
                             ? ListView.builder(
-                                itemBuilder: (context, index) {
-                                  ActiveLoan loan = activeLoans[index];
-                                  return ActiveLoanCard(
-                                    loan: loan,
-                                    repay: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) => RepayLoan(
-                                            loan: loan,
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    statement: () {
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) => LoanStatement(
-                                            loan: loan,
-                                          ),
-                                        ),
-                                      );
-                                    },
+                            itemBuilder: (context, index) {
+                              ActiveLoan loan = activeLoans[index];
+                              return ActiveLoanCard(
+                                loan: loan,
+                                repay: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) => RepayLoan(
+                                        loan: loan,
+                                      ),
+                                    ),
                                   );
                                 },
-                                itemCount: activeLoans.length)
+                                statement: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) => LoanStatement(
+                                        loan: loan,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            itemCount: activeLoans.length)
                             : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.pie_chart, text: "There are no loans to display"),
                       );
-                    }))));
+                    })));
+          },
+        ));
   }
 }
 

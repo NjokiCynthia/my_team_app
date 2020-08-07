@@ -17,8 +17,12 @@ class AccountBalances extends StatefulWidget {
 }
 
 class _AccountBalancesState extends State<AccountBalances> {
-  Future<void> _future;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   double _appBarElevation = 0;
+  bool _isInit = true;
+  double _totalBalance = 0;
+  AccountBalanceModel _accountBalanceModel;
+  List<AccountBalance> _accountBalances = [];
   ScrollController _scrollController;
   bool _isLoading = true;
 
@@ -31,11 +35,39 @@ class _AccountBalancesState extends State<AccountBalances> {
     }
   }
 
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _accountBalanceModel = Provider.of<Groups>(context, listen: false).accountBalances;
+
+    if (_accountBalanceModel != null) {
+      _totalBalance = _accountBalanceModel.totalBalance;
+      _accountBalances = _accountBalanceModel.accounts;
+    }
+
+    _getAccountBalances(context).then((_) {
+      _accountBalanceModel = Provider.of<Groups>(context, listen: false).accountBalances;
+      setState(() {
+        _isLoading = false;
+        if (_accountBalanceModel != null) {
+          _totalBalance = _accountBalanceModel.totalBalance;
+          _accountBalances = _accountBalanceModel.accounts;
+        }
+      });
+    });
+
+    _isInit = false;
+    return true;
+  }
+
   Future<void> _getAccountBalances(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchReportAccountBalances();
     } on CustomException catch (error) {
-      StatusHandler().handleStatus(context: context, error: error, callback: () {});
+      StatusHandler()
+          .handleStatus(context: context, error: error, callback: () {}, scaffoldState: _scaffoldKey.currentState);
     } finally {
       _isLoading = false;
     }
@@ -45,8 +77,13 @@ class _AccountBalancesState extends State<AccountBalances> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getAccountBalances(context);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
   }
 
   @override
@@ -60,76 +97,84 @@ class _AccountBalancesState extends State<AccountBalances> {
   Widget build(BuildContext context) {
     final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
-      appBar: secondaryPageAppbar(
-        context: context,
-        action: () => Navigator.of(context).pop(),
-        elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Account Balances",
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: FutureBuilder(
-          future: _future,
-          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-              ? Center(child: CircularProgressIndicator())
-              : RefreshIndicator(
-                  onRefresh: () => _getAccountBalances(context),
-                  child: Consumer<Groups>(builder: (context, data, child) {
-                    List<AccountBalance> accountBalances = data.accountBalances.accounts;
-                    String totalBalance = data.accountBalances.totalBalance;
-                    return Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.all(20.0),
-                          color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
+        key: _scaffoldKey,
+        appBar: secondaryPageAppbar(
+          context: context,
+          action: () => Navigator.of(context).pop(),
+          elevation: _appBarElevation,
+          leadingIcon: LineAwesomeIcons.arrow_left,
+          title: "Account Balances",
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: RefreshIndicator(
+          onRefresh: () => _fetchData(),
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(20.0),
+                color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Container(
+                      width: MediaQuery.of(context).size.width / 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          heading2(
+                              text: "Total ",
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.start),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
-                              Container(
-                                width: MediaQuery.of(context).size.width / 2,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    heading2(text: "Total ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children: <Widget>[
-                                        subtitle2(
-                                            text: "Account balances", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              heading2(
-                                  text: "${groupObject.groupCurrency} " + currencyFormat.format(int.tryParse(totalBalance) ?? 0),
+                              subtitle2(
+                                  text: "Account balances",
                                   color: Theme.of(context).textSelectionHandleColor,
-                                  textAlign: TextAlign.start)
+                                  textAlign: TextAlign.start),
                             ],
                           ),
-                        ),
-                        Expanded(
-                          child: accountBalances.length > 0
-                              ? ListView.builder(
-                                  controller: _scrollController,
-                                  shrinkWrap: true,
-                                  itemBuilder: (context, index) {
-                                    AccountBalance balance = accountBalances[index];
-                                    if (balance.isHeader) {
-                                      return AccountHeader(header: balance);
-                                    } else {
-                                      return AccountBody(account: balance);
-                                    }
-                                  },
-                                  itemCount: accountBalances.length,
-                                )
-                              : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.list, text: "No Account balances available"),
-                        ),
-                      ],
-                    );
-                  }),
-                )),
-    );
+                        ],
+                      ),
+                    ),
+                    heading2(
+                        text: "${groupObject.groupCurrency} " + currencyFormat.format(_totalBalance),
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.start)
+                  ],
+                ),
+              ),
+              _isLoading
+                  ? LinearProgressIndicator(
+                      backgroundColor: Colors.cyanAccent,
+                      valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
+                    )
+                  : SizedBox(
+                      height: 0.0,
+                    ),
+              Expanded(
+                child: _accountBalances.length > 0
+                    ? ListView.builder(
+                        controller: _scrollController,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          AccountBalance balance = _accountBalances[index];
+                          if (balance.isHeader) {
+                            return AccountHeader(header: balance);
+                          } else {
+                            return AccountBody(account: balance);
+                          }
+                        },
+                        itemCount: _accountBalances.length,
+                      )
+                    : emptyList(
+                        color: Colors.blue[400],
+                        iconData: LineAwesomeIcons.list,
+                        text: "No Account balances available"),
+              ),
+            ],
+          ),
+        ));
   }
 }

@@ -30,7 +30,7 @@ AccountBalanceModel getAccountBalances(dynamic data) {
       }
     }
   }
-  String totalBalance = data['grand_total_balance'].toString();
+  double totalBalance = ParseHelper.stringToDouble(data['grand_total_balance'].toString()) ;
   return AccountBalanceModel(accounts: bankAccounts, totalBalance: totalBalance);
 }
 
