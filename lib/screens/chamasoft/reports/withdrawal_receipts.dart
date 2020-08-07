@@ -5,6 +5,7 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,10 @@ class WithdrawalReceipts extends StatefulWidget {
 class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
-
-  Future<void> _future;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<Withdrawal> _withdrawals = [];
+  bool _isLoading = true;
+  bool _isInit = true;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -44,11 +47,33 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
     }
   }
 
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _withdrawals = Provider.of<Groups>(context, listen: false).getWithdrawals;
+    _getWithdrawals(context).then((_) {
+      _withdrawals = Provider.of<Groups>(context, listen: false).getWithdrawals;
+      setState(() {
+        _isLoading = false;
+      });
+    });
+
+    _isInit = false;
+    return true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getWithdrawals(context);
     super.initState();
   }
 
@@ -62,6 +87,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: secondaryPageAppbar(
             context: context,
             title: "Withdrawals Receipts",
@@ -69,36 +95,38 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,
-        body: FutureBuilder(
-            future: _future,
-            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                ? Center(child: CircularProgressIndicator())
-                : RefreshIndicator(
-                    onRefresh: () => _getWithdrawals(context),
-                    child: Consumer<Groups>(builder: (context, data, child) {
-                      if (data.getWithdrawals != null) {
-                        List<Withdrawal> withdrawals = data.getWithdrawals;
-                        return Container(
-                          decoration: primaryGradient(context),
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: withdrawals.length > 0
-                              ? ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    Withdrawal withdrawal = withdrawals[index];
-                                    return WithdrawalCard(
-                                      withdrawal: withdrawal,
-                                      details: () {},
-                                      voidItem: () {},
-                                    );
-                                  },
-                                  itemCount: withdrawals.length)
-                              : emptyList(
-                                  color: Colors.blue[400], iconData: LineAwesomeIcons.angle_double_up, text: "There are no withdrawals to display"),
-                        );
-                      } else
-                        return Container();
-                    }))));
+        body: RefreshIndicator(
+            onRefresh: () => _fetchData(),
+            child: Container(
+                decoration: primaryGradient(context),
+                width: double.infinity,
+                height: double.infinity,
+                child: Column(
+                  children: <Widget>[
+                    _isLoading
+                        ? showLinearProgressIndicator()
+                        : SizedBox(
+                            height: 0.0,
+                          ),
+                    Expanded(
+                      child: _withdrawals.length > 0
+                          ? ListView.builder(
+                              itemBuilder: (context, index) {
+                                Withdrawal withdrawal = _withdrawals[index];
+                                return WithdrawalCard(
+                                  withdrawal: withdrawal,
+                                  details: () {},
+                                  voidItem: () {},
+                                );
+                              },
+                              itemCount: _withdrawals.length)
+                          : emptyList(
+                              color: Colors.blue[400],
+                              iconData: LineAwesomeIcons.angle_double_up,
+                              text: "There are no withdrawals to display"),
+                    )
+                  ],
+                ))));
   }
 }
 
@@ -174,22 +202,37 @@ class WithdrawalCard extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 12.0, right: 12.0),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle2(text: "Recipient", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle1(text: withdrawal.recipient, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
-                      ],
-                    ),
-                    Column(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        subtitle2(text: "Withdrawal Date", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-                        subtitle1(text: withdrawal.withdrawalDate, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end)
-                      ],
-                    ),
-                  ]),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Recipient",
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start),
+                            subtitle1(
+                                text: withdrawal.recipient,
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start)
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Withdrawal Date",
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.end),
+                            subtitle1(
+                                text: withdrawal.withdrawalDate,
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.end)
+                          ],
+                        ),
+                      ]),
                 ),
                 SizedBox(
                   height: 10,

@@ -92,6 +92,7 @@ class _LoanSummaryState extends State<LoanSummary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: secondaryPageAppbar(
             context: context,
             title: "My Loans Summary",
