@@ -81,7 +81,8 @@ class _ListExpensesState extends State<ListExpenses> {
                                     Text(
                                       '${expense.name}',
                                       style: TextStyle(
-                                        color: Theme.of(context).textSelectionHandleColor,
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 18.0,
                                       ),
@@ -102,7 +103,8 @@ class _ListExpensesState extends State<ListExpenses> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
                                 smallBadgeButton(
-                                  backgroundColor: primaryColor.withOpacity(0.2),
+                                  backgroundColor:
+                                      primaryColor.withOpacity(0.2),
                                   textColor: primaryColor,
                                   text: '${expense.amount}',
                                   action: () {},
