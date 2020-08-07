@@ -7,6 +7,7 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,10 @@ class LoanSummary extends StatefulWidget {
 class _LoanSummaryState extends State<LoanSummary> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
-
-  Future<void> _future;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<ActiveLoan> _activeLoans = [];
+  bool _isLoading = true;
+  bool _isInit = true;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -44,15 +47,38 @@ class _LoanSummaryState extends State<LoanSummary> {
           error: error,
           callback: () {
             _getMemberLoans(context);
-          });
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
+  }
+
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _activeLoans = Provider.of<Groups>(context, listen: false).getMemberLoans;
+    _getMemberLoans(context).then((_) {
+      _activeLoans = Provider.of<Groups>(context, listen: false).getMemberLoans;
+      setState(() {
+        _isLoading = false;
+      });
+    });
+
+    _isInit = false;
+    return true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
   }
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getMemberLoans(context);
     super.initState();
   }
 
@@ -74,49 +100,57 @@ class _LoanSummaryState extends State<LoanSummary> {
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
-          builder: (BuildContext context){
-            return FutureBuilder(
-                future: _future,
-                builder: (_, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                    ? Center(child: CircularProgressIndicator())
-                    : RefreshIndicator(
-                    onRefresh: () => _getMemberLoans(context),
-                    child: Consumer<Groups>(builder: (context, data, child) {
-                      List<ActiveLoan> activeLoans = data.getMemberLoans;
-                      return Container(
-                        decoration: primaryGradient(context),
-                        width: double.infinity,
-                        height: double.infinity,
-                        child: activeLoans.length > 0
-                            ? ListView.builder(
-                            itemBuilder: (context, index) {
-                              ActiveLoan loan = activeLoans[index];
-                              return ActiveLoanCard(
-                                loan: loan,
-                                repay: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) => RepayLoan(
-                                        loan: loan,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                statement: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) => LoanStatement(
-                                        loan: loan,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            itemCount: activeLoans.length)
-                            : emptyList(color: Colors.blue[400], iconData: LineAwesomeIcons.pie_chart, text: "There are no loans to display"),
-                      );
-                    })));
+          builder: (BuildContext context) {
+            return RefreshIndicator(
+                onRefresh: () => _fetchData(),
+                child: Container(
+                    decoration: primaryGradient(context),
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Column(
+                      children: <Widget>[
+                        _isLoading
+                            ? showLinearProgressIndicator()
+                            : SizedBox(
+                                height: 0.0,
+                              ),
+                        Expanded(
+                          child: _activeLoans.length > 0
+                              ? ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    ActiveLoan loan = _activeLoans[index];
+                                    return ActiveLoanCard(
+                                      loan: loan,
+                                      repay: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) => RepayLoan(
+                                              loan: loan,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      statement: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) => LoanStatement(
+                                              loan: loan,
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  itemCount: _activeLoans.length)
+                              : Center(
+                                  child: emptyList(
+                                      color: Colors.blue[400],
+                                      iconData: LineAwesomeIcons.pie_chart,
+                                      text: "There are no loans to display"),
+                                ),
+                        )
+                      ],
+                    )));
           },
         ));
   }
@@ -152,7 +186,10 @@ class ActiveLoanCard extends StatelessWidget {
                         child: Text(
                           loan.name,
                           style: TextStyle(
-                              fontWeight: FontWeight.w500, fontSize: 16.0, color: Theme.of(context).textSelectionHandleColor, fontFamily: 'SegoeUI'),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16.0,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              fontFamily: 'SegoeUI'),
                           textAlign: TextAlign.start,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -167,32 +204,41 @@ class ActiveLoanCard extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 12.0, right: 12.0),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle2(text: "Disbursed On", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle1(text: loan.disbursementDate, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        customTitle(
-                          text: "${groupObject.groupCurrency} ",
-                          fontSize: 18.0,
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w400,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Disbursed On",
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start),
+                            subtitle1(
+                                text: loan.disbursementDate,
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start)
+                          ],
                         ),
-                        heading2(
-                          text: currencyFormat.format(loan.amount),
-                          color: Theme.of(context).textSelectionHandleColor,
-                          textAlign: TextAlign.end,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            customTitle(
+                              text: "${groupObject.groupCurrency} ",
+                              fontSize: 18.0,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              fontWeight: FontWeight.w400,
+                            ),
+                            heading2(
+                              text: currencyFormat.format(loan.amount),
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.end,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ]),
+                      ]),
                 ),
                 SizedBox(
                   height: 10,
@@ -224,7 +270,8 @@ class ActiveLoanCard extends StatelessWidget {
                             border: Border(
                                 top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
                                 left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-                        child: plainButton(text: "STATEMENT", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: statement),
+                        child: plainButton(
+                            text: "STATEMENT", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: statement),
                       ),
                     ),
                   ],
@@ -237,7 +284,10 @@ class ActiveLoanCard extends StatelessWidget {
 
   Widget getStatus() {
     if (loan.status == 1) {
-      return statusChip(text: "LOAN FULLY PAID", textColor: Colors.lightBlueAccent, backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
+      return statusChip(
+          text: "LOAN FULLY PAID",
+          textColor: Colors.lightBlueAccent,
+          backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
     } else if (loan.status == 3) {
       return statusChip(text: "LOAN DEFAULTED", textColor: Colors.red, backgroundColor: Colors.red.withOpacity(.2));
     } else {
