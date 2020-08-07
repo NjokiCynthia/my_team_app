@@ -39,7 +39,7 @@ TextStyle inputTextStyle() {
 const inputPagePadding = EdgeInsets.fromLTRB(SPACING_NORMAL, SPACING_NORMAL, SPACING_NORMAL, 0.0);
 
 final currencyFormat = new NumberFormat("#,##0", "en_US");
-final defaultDateFormat = new DateFormat("d MMM y");
+final defaultDateFormat = new DateFormat("d MMM, y");
 
 //Padding and margin
 const double SPACING_NORMAL = 16.0;

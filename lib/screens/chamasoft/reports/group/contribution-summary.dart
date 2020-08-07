@@ -169,15 +169,15 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             heading2(
-                              text: groupObject.groupName,
-                              color: Theme.of(context).textSelectionHandleColor,
-                            ),
-                            customTitle(
                               text: "Total " + defaultTitle,
                               color: Theme.of(context).textSelectionHandleColor,
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.w700,
                             ),
+//                            customTitle(
+//                              text: "Total " + defaultTitle,
+//                              color: Theme.of(context).textSelectionHandleColor,
+//                              fontSize: 14.0,
+//                              fontWeight: FontWeight.w700,
+//                            ),
                             customTitle(
                               text: "${groupObject.groupSize} Members",
                               textAlign: TextAlign.start,
@@ -205,19 +205,19 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  subtitle2(
-                    text: "Statement as at",
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.start,
-                  ),
-                  subtitle1(
-                    text: DateFormat('EEE, MMM d, ' 'yyyy').format(DateTime.now()),
-                    color: Theme.of(context).textSelectionHandleColor,
-                    textAlign: TextAlign.start,
-                  ),
+//                  SizedBox(
+//                    height: 8.0,
+//                  ),
+//                  subtitle2(
+//                    text: "Statement as at",
+//                    color: Theme.of(context).textSelectionHandleColor,
+//                    textAlign: TextAlign.start,
+//                  ),
+//                  subtitle1(
+//                    text: defaultDateFormat.format(DateTime.now()),
+//                    color: Theme.of(context).textSelectionHandleColor,
+//                    textAlign: TextAlign.start,
+//                  ),
                 ],
               ),
             ),
@@ -244,8 +244,8 @@ class _ContributionSummaryState extends State<ContributionSummary> {
             _isLoading
                 ? showLinearProgressIndicator()
                 : SizedBox(
-              height: 0.0,
-            ),
+                    height: 0.0,
+                  ),
             Expanded(
                 child: _isLoading ? ContributionSummaryBody(_statementType) : ContributionSummaryBody(_statementType))
           ],
