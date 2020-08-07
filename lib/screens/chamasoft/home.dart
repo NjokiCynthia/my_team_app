@@ -13,7 +13,6 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
@@ -105,7 +104,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   }
 
   Iterable<Widget> get recentTransactionSummary sync* {
-    final List<Color> colorsList = [primaryColor,Colors.blueGrey];
     int i = 0;
     for (var data in _iteratableRecentTransactionSummary) {
       yield Row(
@@ -564,10 +562,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   void _openPayNowTray(BuildContext context) {
     // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (BuildContext context) => PayNow(),
-                                //   ),
-                                // ),
+    //   MaterialPageRoute(
+    //     builder: (BuildContext context) => PayNow(),
+    //   ),
+    // );
     void _applyFilter() {}
     showModalBottomSheet(context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
   }
