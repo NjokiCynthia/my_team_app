@@ -158,8 +158,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: contributionSummary(
-                color: i==0?Colors.white:primaryColor,
-                cardIcon: Feather.bar_chart_2,
+                color: i==0?Colors.white:i==1?primaryColor:Colors.blueGrey,
+                cardIcon: i==0?Feather.bar_chart_2:Feather.bar_chart,
                 amountDue: currencyFormat.format(data.balance),
                 cardAmount: currencyFormat.format(data.amountPaid),
                 currency: _groupCurrency,
