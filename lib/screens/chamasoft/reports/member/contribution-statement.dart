@@ -5,6 +5,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -262,13 +263,10 @@ class _ContributionStatementState extends State<ContributionStatement> {
                   ),
                 ),
                 _isLoading
-                    ? LinearProgressIndicator(
-                        backgroundColor: Colors.cyanAccent,
-                        valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-                      )
+                    ? showLinearProgressIndicator()
                     : SizedBox(
-                        height: 0.0,
-                      ),
+                  height: 0.0,
+                ),
                 Expanded(
                     child: _statements.length > 0
                         ? ListView.builder(

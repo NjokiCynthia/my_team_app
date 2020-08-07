@@ -7,6 +7,7 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -241,13 +242,10 @@ class _ContributionSummaryState extends State<ContributionSummary> {
               ),
             ),
             _isLoading
-                ? LinearProgressIndicator(
-                    backgroundColor: Colors.cyanAccent,
-                    valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-                  )
+                ? showLinearProgressIndicator()
                 : SizedBox(
-                    height: 0.0,
-                  ),
+              height: 0.0,
+            ),
             Expanded(
                 child: _isLoading ? ContributionSummaryBody(_statementType) : ContributionSummaryBody(_statementType))
           ],

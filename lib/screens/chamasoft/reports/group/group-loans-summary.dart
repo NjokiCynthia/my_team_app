@@ -4,6 +4,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -118,12 +119,12 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.close,
+          leadingIcon: LineAwesomeIcons.arrow_left,
           title: appbarTitle,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
-            onRefresh: () => _getLoanSummary(context),
+            onRefresh: () => _fetchData(),
             child: Column(
               children: <Widget>[
                 Container(
@@ -272,10 +273,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                   ),
                 ),
                 _isLoading
-                    ? LinearProgressIndicator(
-                        backgroundColor: Colors.cyanAccent,
-                        valueColor: new AlwaysStoppedAnimation<Color>(Colors.blue),
-                      )
+                    ? showLinearProgressIndicator()
                     : SizedBox(
                         height: 0.0,
                       ),
