@@ -395,7 +395,7 @@ class LoanSummaryBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  customTitle(
+                  customTitleWithWrap(
                       text: row.name,
                       color: Theme.of(context).textSelectionHandleColor,
                       fontSize: 13,
