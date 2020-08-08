@@ -1,5 +1,6 @@
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
+import "package:provider/provider.dart";
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
@@ -7,17 +8,21 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:chamasoft/widgets/custom-dropdown.dart';
+import 'package:chamasoft/providers/helpers/setting_helper.dart';
+import 'package:chamasoft/providers/auth.dart';
 
 class PayNow extends StatefulWidget {
+  Function payNow;
+  PayNow(this.payNow);
   @override
-  State<StatefulWidget> createState() {
-    return PayNowState();
-  }
+  _PayNowState createState() => _PayNowState();
 }
 
-class PayNowState extends State<PayNow> {
+class _PayNowState extends State<PayNow> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  int depositMethod;
 
   double amountInputValue;
 
@@ -42,6 +47,11 @@ class PayNowState extends State<PayNow> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  void payNow() {
+    widget.payNow();
+    Navigator.of(context).pop();
   }
 
   static final List<String> _dropdownItems = <String>[
@@ -112,13 +122,13 @@ class PayNowState extends State<PayNow> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
-              text: "Confirm Mpesa Number",
+              text: "Confirm Number to Pay From",
               color: Theme.of(context).textSelectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
             //controller: controller,
             style: inputTextStyle(),
-            initialValue: "254712233344",
+            initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
               WhitelistingTextInputFormatter.digitsOnly
@@ -143,6 +153,7 @@ class PayNowState extends State<PayNow> {
                     fontFamily: 'SegoeUI'),
               ),
               onPressed: () {
+                
                 Navigator.of(context).pop();
               },
             ),
@@ -153,7 +164,7 @@ class PayNowState extends State<PayNow> {
                     new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
+                payNow();
               },
             ),
           ],
@@ -164,75 +175,63 @@ class PayNowState extends State<PayNow> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: secondaryPageAppbar(
-        context: context,
-        action: () => Navigator.of(context).pop(),
-        elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Contribution Payment",
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              toolTip(
-                  context: context,
-                  title: "Note that...",
-                  message:
-                      "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
-              Container(
-                padding: EdgeInsets.all(16.0),
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: <Widget>[
-                    buildDropDown(),
-                    amountTextInputField(
-                        context: context,
-                        labelText: "Amount to pay",
-                        onChanged: (value) {
-                          setState(() {
-                            amountInputValue = double.parse(value);
-                          });
-                        }),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                      child: textWithExternalLinks(
-                          color: Colors.blueGrey,
-                          size: 12.0,
-                          textData: {
-                            'Additional charges may be applied where necessary.':
-                                {},
-                            'Learn More': {
-                              "url": () => launchURL(
-                                  'https://chamasoft.com/terms-and-conditions/'),
-                              "color": primaryColor,
-                              "weight": FontWeight.w500
-                            },
+    return Container(
+        height: 300,
+        padding: EdgeInsets.all(10.0),
+        width: double.infinity,
+        color: Theme.of(context).backgroundColor,
+        child: Column(
+          children: [
+            Container(
+                height: 10,
+                width: 100,
+                decoration: BoxDecoration(
+                    color: Color(0xffededfe),
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.all(Radius.circular(5)))),
+            SizedBox(
+              height: 5,
+            ),
+            subtitle1(
+                text: "Pay Contribution",
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start),
+            SizedBox(
+              height: 5,
+            ),
+            Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      buildDropDown(),
+                      amountTextInputField(
+                          context: context,
+                          labelText: "Amount to pay",
+                          onChanged: (value) {
+                            setState(() {
+                              amountInputValue = double.parse(value);
+                            });
                           }),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    defaultButton(
-                        context: context,
-                        text: "Pay Now",
-                        onPressed: () => _numberToPrompt())
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
+                      SizedBox(
+                        height: 10,
+                      ),
+                      RaisedButton(
+                        color: primaryColor,
+                        child: Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                          child: Text("Pay Now"),
+                        ),
+                        textColor: Colors.white,
+                        onPressed: () => _numberToPrompt(),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ],
+        ));
   }
 }

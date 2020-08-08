@@ -1,6 +1,5 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
@@ -445,27 +444,27 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.0,
-                              ),
-                              child: paymentActionButton(
-                                color: primaryColor,
-                                textColor: Colors.white,
-                                icon: FontAwesome.chevron_right,
-                                isFlat: true,
-                                text: "APPLY LOAN",
-                                iconSize: 12.0,
-                                action: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ApplyLoan(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Expanded(
+                          //   child: Padding(
+                          //     padding: EdgeInsets.symmetric(
+                          //       horizontal: 16.0,
+                          //     ),
+                          //     child: paymentActionButton(
+                          //       color: primaryColor,
+                          //       textColor: Colors.white,
+                          //       icon: FontAwesome.chevron_right,
+                          //       isFlat: true,
+                          //       text: "APPLY LOAN",
+                          //       iconSize: 12.0,
+                          //       action: () => Navigator.of(context).push(
+                          //         MaterialPageRoute(
+                          //           builder: (BuildContext context) =>
+                          //               ApplyLoan(),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -606,6 +605,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 //   ),
                                 // ),
     void _applyFilter() {}
-    showModalBottomSheet(context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
+    showModalBottomSheet(context: context, builder: (_) => PayNow(_applyFilter));
   }
 }
