@@ -117,7 +117,7 @@ LoansSummaryList getLoanSummaryList(dynamic data) {
   if (statementBody.length > 0) {
     for (var statement in statementBody) {
       final member = statement['member'].toString();
-      final disbursementDate = statement['disbursement_date'].toString();
+      // final disbursementDate = statement['disbursement_date'].toString();
       final loan = ParseHelper.getDoubleFromJson(statement, 'amount');
       final interest = ParseHelper.getDoubleFromJson(statement, 'interest');
       final due = loan + interest;
