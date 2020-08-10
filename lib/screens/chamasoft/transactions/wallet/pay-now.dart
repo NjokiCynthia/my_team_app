@@ -118,10 +118,25 @@ class _PayNowState extends State<PayNow> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: heading2(
-              text: "Confirm Number to Pay From",
-              color: Theme.of(context).textSelectionHandleColor,
-              textAlign: TextAlign.start
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              heading2(
+                text: "Confirm Payment Number",
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start
+              ),
+              SizedBox(height: 10,),
+              Text(
+                "An M-Pesa STK Push will be initiated on this number. Stand by to confirm.",
+                style: TextStyle(
+                  color: Theme.of(context).hintColor,//Theme.of(context).textSelectionHandleColor,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+            ],
           ),
           content: TextFormField(
             //controller: controller,
@@ -139,7 +154,7 @@ class _PayNowState extends State<PayNow> {
                 width: 1.0,
               )),
               // hintText: 'Phone Number or Email Address',
-              labelText: "Mpesa Number",
+              labelText: "M-Pesa Number",
             ),
           ),
           actions: <Widget>[
@@ -171,14 +186,14 @@ class _PayNowState extends State<PayNow> {
         child: Column(
           children: [
             Container(
-                height: 10,
+                height: 8,
                 width: 100,
                 decoration: BoxDecoration(
-                    color: Color(0xffededfe),
+                    color: Theme.of(context).hintColor.withOpacity(0.3),//Color(0xffededfe),
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.all(Radius.circular(5)))),
             SizedBox(
-              height: 5,
+              height: 7,
             ),
             heading2(
                 text: "Contribution Payment",
