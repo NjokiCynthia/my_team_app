@@ -119,6 +119,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
   void _applyFilter() {}
 
+  // ignore: unused_element
   void _showFilter(BuildContext context) {
     showModalBottomSheet(
         context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));

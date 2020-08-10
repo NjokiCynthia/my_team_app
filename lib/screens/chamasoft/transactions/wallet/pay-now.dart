@@ -1,17 +1,14 @@
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
-import "package:provider/provider.dart";
-import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import "package:provider/provider.dart";
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:chamasoft/widgets/custom-dropdown.dart';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/providers/auth.dart';
 
+// ignore: must_be_immutable
 class PayNow extends StatefulWidget {
   Function payNow;
   PayNow(this.payNow);
@@ -124,7 +121,8 @@ class _PayNowState extends State<PayNow> {
           title: heading2(
               text: "Confirm Number to Pay From",
               color: Theme.of(context).textSelectionHandleColor,
-              textAlign: TextAlign.start),
+              textAlign: TextAlign.start
+          ),
           content: TextFormField(
             //controller: controller,
             style: inputTextStyle(),
@@ -145,27 +143,17 @@ class _PayNowState extends State<PayNow> {
             ),
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor,
-                    fontFamily: 'SegoeUI'),
-              ),
-              onPressed: () {
-                
+            negativeActionDialogButton(
+              text: "Cancel",
+              color: Theme.of(context).textSelectionHandleColor,
+              action: () {
                 Navigator.of(context).pop();
-              },
+              }
             ),
-            new FlatButton(
-              child: new Text(
-                "Pay Now",
-                style:
-                    new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
-              ),
-              onPressed: () {
-                payNow();
-              },
+            positiveActionDialogButton(
+              text: "Pay Now", 
+              color: primaryColor, 
+              action: (){ payNow(); }
             ),
           ],
         );
@@ -192,30 +180,36 @@ class _PayNowState extends State<PayNow> {
             SizedBox(
               height: 5,
             ),
-            subtitle1(
-                text: "Pay Contribution",
+            heading2(
+                text: "Contribution Payment",
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start),
             SizedBox(
-              height: 5,
+              height: 10,
             ),
             Column(
               children: <Widget>[
                 Container(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                   child: Column(
                     children: <Widget>[
                       buildDropDown(),
                       amountTextInputField(
                           context: context,
                           labelText: "Amount to pay",
+                          // validator: (value) {
+                          //   if (!CustomHelper.validIdentity(value.trim())) {
+                          //     return 'Enter valid phone or email';
+                          //   }
+                          //   return null;
+                          // },
                           onChanged: (value) {
                             setState(() {
                               amountInputValue = double.parse(value);
                             });
                           }),
                       SizedBox(
-                        height: 10,
+                        height: 20,
                       ),
                       RaisedButton(
                         color: primaryColor,
@@ -231,6 +225,23 @@ class _PayNowState extends State<PayNow> {
                 )
               ],
             ),
+            // SizedBox(
+            //   height: 10,
+            // ),
+            // textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
+            //   'By continuing you agree to our': {},
+            //   'terms & conditions': {
+            //     "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+            //     "color": primaryColor,
+            //     "weight": FontWeight.w500
+            //   },
+            //   'and': {},
+            //   'privacy policy.': {
+            //     "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+            //     "color": primaryColor,
+            //     "weight": FontWeight.w500
+            //   },
+            // }),
           ],
         ));
   }

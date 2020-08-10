@@ -1,5 +1,4 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -32,7 +31,7 @@ class _AccountToAccountTransferState extends State<AccountToAccountTransfer> {
   String description;
   bool _isInit = true, _isLoading = false, _isFormInputEnabled = true;
   Map<String, dynamic> _formData = {}, _formLoadData = {};
-  int _ratingController;
+  // int _ratingController;
 
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));

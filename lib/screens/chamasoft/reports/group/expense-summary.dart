@@ -19,7 +19,7 @@ class ExpenseSummary extends StatefulWidget {
 }
 
 class _ExpenseSummaryState extends State<ExpenseSummary> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isInit = true;
   bool _isLoading = true;
   double _appBarElevation = 0;

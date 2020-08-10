@@ -19,14 +19,14 @@ class TransactionStatement extends StatefulWidget {
 class _TransactionStatementState extends State<TransactionStatement> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isInit = true;
   bool _isLoading = true;
   TransactionStatementModel _transactionStatementModel;
   List<TransactionStatementRow> _transactions = [];
   double _totalBalance = 0;
-  double _deposits = 0;
-  double _withdrawals = 0;
+  // double _deposits = 0;
+  // double _withdrawals = 0;
   String _statementAsAt = '', _statementFrom = '', _statementTo = '';
 
   void _scrollListener() {

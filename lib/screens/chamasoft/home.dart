@@ -1,7 +1,5 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -139,7 +137,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   }
 
   Iterable<Widget> get contributionsSummary sync* {
-    final List<Color> colorsList = [primaryColor,Colors.blueGrey];
     int i = 0;
     print(_itableContributionSummary.length);
     for (var data in _itableContributionSummary) {

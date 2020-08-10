@@ -86,6 +86,7 @@ class _AddContributionDialogState extends State<AddContributionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unnecessary_brace_in_string_interps
     print('Request: ${requestId}');
     print('Now: ${(DateTime.now().millisecondsSinceEpoch / 1000).truncate()}');
     return Scaffold(
