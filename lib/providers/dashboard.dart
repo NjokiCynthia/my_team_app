@@ -52,6 +52,7 @@ class Dashboard with ChangeNotifier{
   List<BankAccountDashboardSummary> _bankAccountDashboardSummary = [];
   List<RecentTransactionSummary> _recentTransactionSummary = [];
   List<ContributionsSummary> _memberContributionSummary = [];
+  // ignore: unused_field
   String _currentGroupId;
 
   Dashboard(String _userId,String _currentGroupId,Map<String,Map<String,dynamic>> _memberDashboardData,Map<String,Map<String,dynamic>> _groupDashboardData){
