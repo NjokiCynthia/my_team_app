@@ -418,14 +418,17 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                     child: Container(
+                      width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
                       padding: EdgeInsets.symmetric(vertical: 10.0),
                       color: Theme.of(context).cardColor.withOpacity(0.1),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           if(_onlineBankingEnabled)
                           Expanded(
-                            child: Padding(
+                            child: 
+                            Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 16.0,
                               ),
@@ -465,7 +468,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       ),
                     ),
                   ),
-                  Padding(
+                  recentTransactionSummary.length > 0 ? Padding(
                     padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -486,8 +489,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             onPressed: () {})
                       ],
                     ),
-                  ),
-                  Padding(
+                  ) : SizedBox(),
+                  recentTransactionSummary.length > 0 ? Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                     child: Container(
                       height: 180.0,
@@ -586,7 +589,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         // ],
                       ),
                     ),
-                  ),
+                  ) : SizedBox(height: 10.0,),
                 ],
               ) : chamasoftHomeLoadingData(context: context)
             )
