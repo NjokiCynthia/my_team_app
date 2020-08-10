@@ -23,6 +23,7 @@ class StatementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
       child: Card(
@@ -47,8 +48,14 @@ class StatementBody extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        subtitle1(text: row.title, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle2(text: row.description, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
+                        subtitle1(
+                            text: row.title,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start),
+                        subtitle2(
+                            text: row.description,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start)
                       ],
                     ),
                   ),
@@ -59,8 +66,11 @@ class StatementBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 subtitle1(
-                    text: "Ksh " + currencyFormat.format(row.amount), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                subtitle2(text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    text: groupObject.groupCurrency + " " + currencyFormat.format(row.amount),
+                    color: Theme.of(context).textSelectionHandleColor,
+                    textAlign: TextAlign.start),
+                subtitle2(
+                    text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
               ],
             )
           ],
@@ -85,7 +95,8 @@ class StatementHeader extends StatelessWidget {
       child: Card(
         elevation: 0,
         color: Theme.of(context).backgroundColor,
-        child: subtitle2(text: row.month, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+        child:
+            subtitle2(text: row.month, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
       ),
     );
   }
@@ -101,6 +112,7 @@ class AmortizationBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
       child: Card(
@@ -113,15 +125,24 @@ class AmortizationBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 subtitle1(
-                    text: defaultDateFormat.format(installment.date), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                subtitle2(text: "Installment", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    text: defaultDateFormat.format(installment.date),
+                    color: Theme.of(context).textSelectionHandleColor,
+                    textAlign: TextAlign.start),
+                subtitle2(
+                    text: "Installment", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
               ],
             ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-                subtitle1(text: "Ksh " + installment.amount, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-                subtitle2(text: "Balance: Ksh " + installment.balance, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                subtitle1(
+                    text:groupObject.groupCurrency + " " + installment.amount,
+                    color: Theme.of(context).textSelectionHandleColor,
+                    textAlign: TextAlign.end),
+                subtitle2(
+                    text: "Balance: ${groupObject.groupCurrency} " + installment.balance,
+                    color: Theme.of(context).textSelectionHandleColor,
+                    textAlign: TextAlign.end),
               ],
             )
           ],
@@ -139,8 +160,11 @@ class LoanStatementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
-      color: position ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
+      color: position
+          ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+          : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
         child: Row(
@@ -151,20 +175,26 @@ class LoanStatementBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  subtitle1(text: row.type, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                  subtitle2(text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                  subtitle1(
+                      text: row.type, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                  subtitle2(
+                      text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                 ],
               ),
             ),
             Expanded(
               flex: 1,
               child: subtitle1(
-                  text: "Ksh " + currencyFormat.format(row.paid), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.paid),
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.end),
             ),
             Expanded(
               flex: 1,
               child: subtitle1(
-                  text: "Ksh " + currencyFormat.format(row.balance), color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
+                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.balance),
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.end),
             ),
           ],
         ),
@@ -177,14 +207,19 @@ class ContributionSummaryBody extends StatelessWidget {
   final int _statementType;
 
   ContributionSummaryBody(this._statementType);
+
   @override
   Widget build(BuildContext context) {
-    final contributionSummary =
-        _statementType == 1 ? Provider.of<Groups>(context).groupContributionSummary : Provider.of<Groups>(context).groupFinesSummary;
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final contributionSummary = _statementType == 1
+        ? Provider.of<Groups>(context).groupContributionSummary
+        : Provider.of<Groups>(context).groupFinesSummary;
     return Container(
       child: ListView.builder(
         itemBuilder: (ctx, index) => Container(
-          color: (index % 2 == 0) ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
+          color: (index % 2 == 0)
+              ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+              : Theme.of(context).backgroundColor,
           child: Padding(
             padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
             child: Row(
@@ -215,17 +250,23 @@ class ContributionSummaryBody extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: subtitle1(
-                      text: "Ksh " + currencyFormat.format(contributionSummary[index].paidAmount),
+                      text: groupObject.groupCurrency +
+                          " " +
+                          currencyFormat.format(contributionSummary[index].paidAmount),
                       color: Theme.of(context).textSelectionHandleColor,
                       textAlign: TextAlign.end),
                 ),
                 Expanded(
                   flex: 1,
                   child: subtitle1(
-                      text: "Ksh " + currencyFormat.format(contributionSummary[index].balanceAmount),
+                      text: groupObject.groupCurrency +
+                          " " +
+                          currencyFormat.format(contributionSummary[index].balanceAmount),
                       color: (contributionSummary[index].balanceAmount > 0)
                           ? Colors.red
-                          : (contributionSummary[index].balanceAmount < 0 ? Colors.green : Theme.of(context).textSelectionHandleColor),
+                          : (contributionSummary[index].balanceAmount < 0
+                              ? Colors.green
+                              : Theme.of(context).textSelectionHandleColor),
                       textAlign: TextAlign.end),
                 ),
               ],
@@ -253,7 +294,8 @@ class AccountHeader extends StatelessWidget {
       child: Card(
         elevation: 0,
         color: Theme.of(context).backgroundColor,
-        child: subtitle2(text: header.header, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+        child: subtitle2(
+            text: header.header, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
       ),
     );
   }
@@ -269,6 +311,7 @@ class AccountBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     final amount = int.tryParse(account.balance) ?? 0;
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
@@ -295,7 +338,10 @@ class AccountBody extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        customTitle(text: account.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                        customTitle(
+                            text: account.name,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start),
                         //subtitle2(text: account.accountNumber, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       ],
                     ),
@@ -307,12 +353,16 @@ class AccountBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 customTitle(
-                  text: "Ksh ",
+                  text: groupObject.groupCurrency + " ",
                   color: Theme.of(context).primaryColor,
                   textAlign: TextAlign.start,
                   fontWeight: FontWeight.w400,
                 ),
-                customTitle(text: currencyFormat.format(amount), color: Theme.of(context).primaryColor, textAlign: TextAlign.start, fontSize: 18),
+                customTitle(
+                    text: currencyFormat.format(amount),
+                    color: Theme.of(context).primaryColor,
+                    textAlign: TextAlign.start,
+                    fontSize: 18),
               ],
             )
           ],
@@ -330,8 +380,11 @@ class LoanSummaryBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
-      color: position ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
+      color: position
+          ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+          : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
         child: Row(
@@ -342,7 +395,11 @@ class LoanSummaryBody extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  customTitle(text: row.name, color: Theme.of(context).textSelectionHandleColor, fontSize: 13, textAlign: TextAlign.start),
+                  customTitleWithWrap(
+                      text: row.name,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontSize: 13,
+                      textAlign: TextAlign.start),
                   customTitle(
                       text: defaultDateFormat.format(row.date),
                       color: Theme.of(context).textSelectionHandleColor,
@@ -355,7 +412,7 @@ class LoanSummaryBody extends StatelessWidget {
             Expanded(
               flex: 2,
               child: customTitle(
-                  text: "Ksh " + currencyFormat.format(row.amountDue),
+                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.amountDue),
                   color: Theme.of(context).textSelectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
@@ -363,7 +420,7 @@ class LoanSummaryBody extends StatelessWidget {
             Expanded(
               flex: 2,
               child: customTitle(
-                  text: "Ksh " + currencyFormat.format(row.paid),
+                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.paid),
                   color: Theme.of(context).textSelectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
@@ -371,7 +428,7 @@ class LoanSummaryBody extends StatelessWidget {
             Expanded(
               flex: 2,
               child: customTitle(
-                  text: "Ksh " + currencyFormat.format(row.balance),
+                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.balance),
                   color: Theme.of(context).textSelectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
@@ -391,8 +448,11 @@ class ExpenseBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
-      color: position ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
+      color: position
+          ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+          : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
         child: Row(
@@ -410,12 +470,16 @@ class ExpenseBody extends StatelessWidget {
                   SizedBox(
                     width: 10,
                   ),
-                  Expanded(child: customTitleWithWrap(text: row.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)),
+                  Expanded(
+                      child: customTitleWithWrap(
+                          text: row.name,
+                          color: Theme.of(context).textSelectionHandleColor,
+                          textAlign: TextAlign.start)),
                 ],
               ),
             ),
             customTitle(
-                text: "Ksh " + currencyFormat.format(row.paid),
+                text: groupObject.groupCurrency + " " + currencyFormat.format(row.paid),
                 color: Theme.of(context).textSelectionHandleColor,
                 fontWeight: FontWeight.w400,
                 textAlign: TextAlign.end),
@@ -434,8 +498,11 @@ class TransactionStatementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
-      color: position ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe) : Theme.of(context).backgroundColor,
+      color: position
+          ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+          : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
         child: Column(
@@ -447,12 +514,16 @@ class TransactionStatementBody extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   flex: 1,
-                  child: customTitle(text: row.date, color: Theme.of(context).textSelectionHandleColor, fontSize: 13, textAlign: TextAlign.start),
+                  child: customTitle(
+                      text: row.date,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontSize: 13,
+                      textAlign: TextAlign.start),
                 ),
                 Expanded(
                   flex: 1,
                   child: customTitle(
-                      text: "Ksh " + currencyFormat.format(row.deposit),
+                      text: groupObject.groupCurrency + " " + currencyFormat.format(row.deposit),
                       color: row.deposit == 0 ? Theme.of(context).textSelectionHandleColor : Colors.green,
                       fontSize: 13,
                       textAlign: TextAlign.center),
@@ -460,7 +531,7 @@ class TransactionStatementBody extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: customTitle(
-                      text: "Ksh " + currencyFormat.format(row.withdrawal),
+                      text: groupObject.groupCurrency + " " + currencyFormat.format(row.withdrawal),
                       color: row.withdrawal == 0 ? Theme.of(context).textSelectionHandleColor : Colors.red,
                       fontSize: 13,
                       textAlign: TextAlign.center),
@@ -468,7 +539,7 @@ class TransactionStatementBody extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: customTitle(
-                      text: "Ksh " + currencyFormat.format(row.balance),
+                      text: groupObject.groupCurrency + " " + currencyFormat.format(row.balance),
                       color: Theme.of(context).primaryColor,
                       fontSize: 13,
                       textAlign: TextAlign.center),

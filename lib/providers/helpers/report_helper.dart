@@ -22,12 +22,15 @@ AccountBalanceModel getAccountBalances(dynamic data) {
       final accounts = balance['account_balances'] as List<dynamic>;
       for (var account in accounts) {
         final accountBalance = AccountBalance(
-            isHeader: false, name: account['account_name'].toString(), accountNumber: '--', balance: account['account_balance'].toString());
+            isHeader: false,
+            name: account['account_name'].toString(),
+            accountNumber: '--',
+            balance: account['account_balance'].toString());
         bankAccounts.add(accountBalance);
       }
     }
   }
-  String totalBalance = data['grand_total_balance'].toString();
+  double totalBalance = ParseHelper.stringToDouble(data['grand_total_balance'].toString()) ;
   return AccountBalanceModel(accounts: bankAccounts, totalBalance: totalBalance);
 }
 
@@ -63,8 +66,8 @@ TransactionStatementModel getTransactionStatement(dynamic data) {
       final deposited = ParseHelper.getDoubleFromJson(statement, 'deposited');
       final balance = ParseHelper.getDoubleFromJson(statement, 'balance');
 
-      final transactionRow =
-          TransactionStatementRow(date: date, description: description, deposit: deposited, withdrawal: withdrawn, balance: balance);
+      final transactionRow = TransactionStatementRow(
+          date: date, description: description, deposit: deposited, withdrawal: withdrawn, balance: balance);
       transactionStatements.add(transactionRow);
     }
   }
@@ -121,21 +124,45 @@ LoansSummaryList getLoanSummaryList(dynamic data) {
       final paid = ParseHelper.getDoubleFromJson(statement, 'amount_paid');
       final balance = ParseHelper.getDoubleFromJson(statement, 'balance');
 
-      final loanSummaryRow = LoanSummaryRow(name: member, amountDue: due, paid: paid, balance: balance, date: DateTime.now());
+      final loanSummaryRow =
+          LoanSummaryRow(name: member, amountDue: due, paid: paid, balance: balance, date: DateTime.now());
       summaryList.add(loanSummaryRow);
     }
   }
 
   return LoansSummaryList(
-      summaryList: summaryList, totalLoan: totalLoan, totalPayable: totalPayable, totalPaid: totalPaid, totalBalance: totalBalance);
+      summaryList: summaryList,
+      totalLoan: totalLoan,
+      totalPayable: totalPayable,
+      totalPaid: totalPaid,
+      totalBalance: totalBalance);
 }
 
 ContributionStatementModel getContributionStatement(dynamic data) {
   final double totalPayable = ParseHelper.getDoubleFromJson(data['statement_footer'], 'payable');
   final double totalPaid = ParseHelper.getDoubleFromJson(data['statement_footer'], 'paid');
   final double totalBalance = ParseHelper.getDoubleFromJson(data['statement_footer'], 'balance');
-
+  final String statementAsAt = data['statement_details']['statement_as_at'].toString();
+  final String statementPeriodFrom = data['statement_details']['statement_period_from'].toString();
+  final String statementPeriodTo = data['statement_details']['statement_period_to'].toString();
   final List<ContributionStatementRow> statementList = [];
+
+//  final description = data['statement_header']['description'].toString();
+//  final date = ParseHelper.formatDate(data['statement_header']['date'].toString(), "dd-MM-yyyy");
+//  double amount = 0;
+//  String type = "Balance B/F";
+//
+//
+//    amount = ParseHelper.getDoubleFromJson(statement, 'payable');
+//    type = "Invoice";
+//  } else {
+//    amount = ParseHelper.getDoubleFromJson(statement, 'paid');
+//    type = "Payment";
+//  }
+//
+//  final statementRow =
+//      ContributionStatementRow(isHeader: false, title: description, description: type, amount: amount, date: date);
+//  statementList.add(statementRow);
 
   final statementBody = data['statement_body'] as List<dynamic>;
   if (statementBody.length > 0) {
@@ -153,12 +180,20 @@ ContributionStatementModel getContributionStatement(dynamic data) {
         type = "Payment";
       }
 
-      final statementRow = ContributionStatementRow(isHeader: false, title: description, description: type, amount: amount, date: date);
+      final statementRow =
+          ContributionStatementRow(isHeader: false, title: description, description: type, amount: amount, date: date);
       statementList.add(statementRow);
     }
   }
 
-  return ContributionStatementModel(statements: statementList, totalPaid: totalPaid, totalDue: totalPayable, totalBalance: totalBalance);
+  return ContributionStatementModel(
+      statements: statementList,
+      totalPaid: totalPaid,
+      totalDue: totalPayable,
+      totalBalance: totalBalance,
+      statementAsAt: statementAsAt,
+      statementFrom: statementPeriodFrom,
+      statementTo: statementPeriodTo);
 }
 
 List<ActiveLoan> getMemberLoanList(List<dynamic> list) {
@@ -172,7 +207,8 @@ List<ActiveLoan> getMemberLoanList(List<dynamic> list) {
       final disbursementDate = loan["disbursement_date"].toString();
       final isFullPaid = ParseHelper.getIntFromJson(loan, "is_fully_paid");
 
-      final activeLoan = ActiveLoan(id: id, name: name, amount: amount, disbursementDate: disbursementDate, status: isFullPaid);
+      final activeLoan =
+          ActiveLoan(id: id, name: name, amount: amount, disbursementDate: disbursementDate, status: isFullPaid);
       loanList.add(activeLoan);
     }
   }
@@ -202,7 +238,8 @@ LoanStatementModel getLoanStatementModel(dynamic data) {
     }
   }
 
-  return LoanStatementModel(statementRows: statementRows, lumpSum: lumpSum, paid: paid, balance: balance, description: loanDescription);
+  return LoanStatementModel(
+      statementRows: statementRows, lumpSum: lumpSum, paid: paid, balance: balance, description: loanDescription);
 }
 
 List<Deposit> getDepositList(List<dynamic> data) {
@@ -230,7 +267,14 @@ List<Deposit> getDepositList(List<dynamic> data) {
       }
 
       final depositItem = Deposit(
-          id: id, type: type, name: name, depositor: depositor, date: date, reconciliation: reconciliation, narration: narrative, amount: amount);
+          id: id,
+          type: type,
+          name: name,
+          depositor: depositor,
+          date: date,
+          reconciliation: reconciliation,
+          narration: narrative,
+          amount: amount);
 
       depositList.add(depositItem);
     }

@@ -520,21 +520,21 @@ List<Widget> resetTransactions(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: <Widget>[
       Text(
-        paymentDate,
-        style: TextStyle(
-          color: color.withOpacity(0.6),
-          fontSize: 12.0,
-          fontWeight: FontWeight.w900,
-        ),
-      ),
-      SizedBox(
-        height: 3.0,
-      ),
-      Text(
         paymentMethod??"Cash Payment",
         style: TextStyle(
           color: color.withOpacity(0.6),
-          fontSize: 11.0,
+          fontSize: 10.0,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      SizedBox(
+        height: 5.0,
+      ),
+      Text(
+        paymentDate,
+        style: TextStyle(
+          color: color.withOpacity(0.6),
+          fontSize: 14.0,
           fontWeight: FontWeight.w600,
         ),
       ),
@@ -546,10 +546,10 @@ List<Widget> resetTransactions(
         maxLines: 1,
         text: TextSpan(
             style: TextStyle(
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
                 fontSize: 10.0,
                 color: color.withOpacity(0.6),
-                fontFamily: 'SegoeUI'),
+                ),
             children: [
               TextSpan(text: contributionType??""),
             ]),

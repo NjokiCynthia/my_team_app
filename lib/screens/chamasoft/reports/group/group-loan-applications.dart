@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-application.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -7,6 +8,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class GroupLoanApplications extends StatefulWidget {
   @override
@@ -44,35 +46,15 @@ class _GroupLoanApplicationsState extends State<GroupLoanApplications> {
   Widget build(BuildContext context) {
     List<LoanApplication> list = [
       LoanApplication(
-          loanApplicationId: 1,
-          requestDate: DateTime.now(),
-          amount: 2000,
-          loanName: 'Emergency Loan',
-          status: 1),
+          loanApplicationId: 1, requestDate: DateTime.now(), amount: 2000, loanName: 'Emergency Loan', status: 1),
       LoanApplication(
-          loanApplicationId: 2,
-          requestDate: DateTime.now(),
-          amount: 6000,
-          loanName: 'Chama Loan',
-          status: 2),
+          loanApplicationId: 2, requestDate: DateTime.now(), amount: 6000, loanName: 'Chama Loan', status: 2),
       LoanApplication(
-          loanApplicationId: 3,
-          requestDate: DateTime.now(),
-          amount: 15000,
-          loanName: 'Education Loan',
-          status: 3),
+          loanApplicationId: 3, requestDate: DateTime.now(), amount: 15000, loanName: 'Education Loan', status: 3),
       LoanApplication(
-          loanApplicationId: 4,
-          requestDate: DateTime.now(),
-          amount: 6000,
-          loanName: 'Shamba Loan',
-          status: 1),
+          loanApplicationId: 4, requestDate: DateTime.now(), amount: 6000, loanName: 'Shamba Loan', status: 1),
       LoanApplication(
-          loanApplicationId: 5,
-          requestDate: DateTime.now(),
-          amount: 8000,
-          loanName: 'Vacation Loan',
-          status: 1),
+          loanApplicationId: 5, requestDate: DateTime.now(), amount: 8000, loanName: 'Vacation Loan', status: 1),
     ];
 
     return Scaffold(
@@ -95,10 +77,8 @@ class _GroupLoanApplicationsState extends State<GroupLoanApplications> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          ReviewLoan(loanApplication: application),
-                      settings:
-                          RouteSettings(arguments: VIEW_APPLICATION_STATUS),
+                      builder: (BuildContext context) => ReviewLoan(loanApplication: application),
+                      settings: RouteSettings(arguments: VIEW_APPLICATION_STATUS),
                     ),
                   );
                 },
@@ -111,28 +91,25 @@ class _GroupLoanApplicationsState extends State<GroupLoanApplications> {
 }
 
 class GroupApplicationCard extends StatelessWidget {
-  const GroupApplicationCard(
-      {Key key, @required this.application, this.onPressed})
-      : super(key: key);
+  const GroupApplicationCard({Key key, @required this.application, this.onPressed}) : super(key: key);
 
   final LoanApplication application;
   final Function onPressed;
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: InkWell(
         onTap: () {},
         child: Card(
           elevation: 0.0,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
           borderOnForeground: false,
           child: Container(
               padding: EdgeInsets.all(12.0),
-              decoration: cardDecoration(
-                  gradient: plainCardGradient(context), context: context),
+              decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -152,8 +129,7 @@ class GroupApplicationCard extends StatelessWidget {
                             ),
                             subtitle2(
                                 text: "Applied By Jackie Chan",
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
+                                color: Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
                           ],
                         ),
@@ -179,14 +155,11 @@ class GroupApplicationCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle2(
                                 text: "Applied On",
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
+                                color: Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
-                                text: defaultDateFormat
-                                    .format(application.requestDate),
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
+                                text: defaultDateFormat.format(application.requestDate),
+                                color: Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
                         ),
@@ -195,7 +168,7 @@ class GroupApplicationCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             subtitle1(
-                              text: "Ksh ",
+                              text: "${groupObject.groupCurrency} ",
                               color: Theme.of(context).textSelectionHandleColor,
                             ),
                             customTitle(
@@ -221,19 +194,11 @@ class GroupApplicationCard extends StatelessWidget {
   Widget getStatus() {
     if (application.status == 2) {
       return statusChip(
-          text: "APPROVED",
-          textColor: Colors.lightBlueAccent,
-          backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
+          text: "APPROVED", textColor: Colors.lightBlueAccent, backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
     } else if (application.status == 3) {
-      return statusChip(
-          text: "REJECTED",
-          textColor: Colors.red,
-          backgroundColor: Colors.red.withOpacity(.2));
+      return statusChip(text: "REJECTED", textColor: Colors.red, backgroundColor: Colors.red.withOpacity(.2));
     } else {
-      return statusChip(
-          text: "PENDING",
-          textColor: Colors.blueGrey,
-          backgroundColor: Colors.blueGrey.withOpacity(.2));
+      return statusChip(text: "PENDING", textColor: Colors.blueGrey, backgroundColor: Colors.blueGrey.withOpacity(.2));
     }
   }
 }

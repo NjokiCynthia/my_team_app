@@ -5,6 +5,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -22,10 +23,17 @@ class ContributionStatement extends StatefulWidget {
 }
 
 class _ContributionStatementState extends State<ContributionStatement> {
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   double _appBarElevation = 0;
+  double _totalContributions = 0;
+  double _totalDue = 0;
+  double _balance = 0;
+  String _statementAsAt = '', _statementFrom = '', _statementTo = '';
+  List<ContributionStatementRow> _statements = [];
+  ContributionStatementModel _contributionStatementModel;
   ScrollController _scrollController;
-
-  Future<void> _future;
+  bool _isLoading = true;
+  bool _isInit = true;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -36,16 +44,62 @@ class _ContributionStatementState extends State<ContributionStatement> {
     }
   }
 
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    if (widget.statementFlag == FINE_STATEMENT) {
+      _contributionStatementModel = Provider.of<Groups>(context, listen: false).getFineStatements;
+    } else
+      _contributionStatementModel = Provider.of<Groups>(context, listen: false).getContributionStatements;
+
+    if (_contributionStatementModel != null) {
+      _statements = _contributionStatementModel.statements;
+      _totalContributions = _contributionStatementModel.totalPaid;
+      _totalDue = _contributionStatementModel.totalDue;
+      _balance = _contributionStatementModel.totalBalance;
+      _statementAsAt = _contributionStatementModel.statementAsAt;
+      _statementFrom = _contributionStatementModel.statementFrom;
+      _statementTo = _contributionStatementModel.statementTo;
+    }
+
+    _getContributionStatement(context).then((_) {
+      if (widget.statementFlag == FINE_STATEMENT) {
+        _contributionStatementModel = Provider.of<Groups>(context, listen: false).getFineStatements;
+      } else
+        _contributionStatementModel = Provider.of<Groups>(context, listen: false).getContributionStatements;
+
+      setState(() {
+        _isLoading = false;
+        if (_contributionStatementModel != null) {
+          _statements = _contributionStatementModel.statements;
+          _totalContributions = _contributionStatementModel.totalPaid;
+          _totalDue = _contributionStatementModel.totalDue;
+          _balance = _contributionStatementModel.totalBalance;
+          _statementAsAt = _contributionStatementModel.statementAsAt;
+          _statementFrom = _contributionStatementModel.statementFrom;
+          _statementTo = _contributionStatementModel.statementTo;
+        }
+      });
+    });
+
+    _isInit = false;
+    return true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
+
   Future<void> _getContributionStatement(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchContributionStatement(widget.statementFlag);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _getContributionStatement(context);
-          });
+          context: context, error: error, callback: () => _fetchData(), scaffoldState: _scaffoldKey.currentState);
     }
   }
 
@@ -53,7 +107,6 @@ class _ContributionStatementState extends State<ContributionStatement> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getContributionStatement(context);
     super.initState();
   }
 
@@ -67,11 +120,13 @@ class _ContributionStatementState extends State<ContributionStatement> {
   void _applyFilter() {}
 
   void _showFilter(BuildContext context) {
-    showModalBottomSheet(context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
+    showModalBottomSheet(
+        context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     String appbarTitle = "Contribution Statement";
     String defaultTitle = "Contributions";
 
@@ -81,6 +136,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
     }
 
     return Scaffold(
+        key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
           action: () => Navigator.of(context).pop(),
@@ -91,99 +147,146 @@ class _ContributionStatementState extends State<ContributionStatement> {
           //trailingAction: () => _showFilter(context),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
-        body: FutureBuilder(
-            future: _future,
-            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                ? Center(child: CircularProgressIndicator())
-                : RefreshIndicator(
-                    onRefresh: () => _getContributionStatement(context),
-                    child: Consumer<Groups>(builder: (context, data, child) {
-                      if (data.getContributionStatements != null) {
-                        List<ContributionStatementRow> statements = data.getContributionStatements.statements;
-                        return Column(
-                          children: <Widget>[
-                            Container(
-                              padding: EdgeInsets.all(16.0),
-                              color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  Container(
-                                    width: MediaQuery.of(context).size.width / 2,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        heading2(
-                                            text: "Total " + defaultTitle,
-                                            color: Theme.of(context).textSelectionHandleColor,
-                                            textAlign: TextAlign.start),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            subtitle2(
-                                                text: "Total amount due ",
-                                                color: Theme.of(context).textSelectionHandleColor,
-                                                textAlign: TextAlign.start),
-                                            subtitle1(
-                                                text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalDue),
-                                                color: Theme.of(context).textSelectionHandleColor,
-                                                textAlign: TextAlign.start),
-                                          ],
-                                        ),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            subtitle2(
-                                                text: "Balance ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                            subtitle1(
-                                                text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalBalance),
-                                                color: Theme.of(context).textSelectionHandleColor,
-                                                textAlign: TextAlign.start),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  heading2(
-                                      text: "Ksh " + currencyFormat.format(data.getContributionStatements.totalPaid),
+        body: RefreshIndicator(
+            onRefresh: () => _fetchData(),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                  child: Column(
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width / 2,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                heading2(
+                                    text: "Total " + defaultTitle,
+                                    color: Theme.of(context).textSelectionHandleColor,
+                                    textAlign: TextAlign.start),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    subtitle2(
+                                        text: "Total amount due ",
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        textAlign: TextAlign.start),
+                                    customTitle(
+                                        text: groupObject.groupCurrency + " " + currencyFormat.format(_totalDue),
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500,
+                                        textAlign: TextAlign.start)
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 4,
+                                ),
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: <Widget>[
+                                    subtitle2(
+                                        text: "Balance ",
+                                        color: Theme.of(context).textSelectionHandleColor,
+                                        textAlign: TextAlign.start),
+                                    customTitle(
+                                      text: groupObject.groupCurrency + " " + currencyFormat.format(_balance),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500,
                                       color: Theme.of(context).textSelectionHandleColor,
-                                      textAlign: TextAlign.start)
-                                ],
+                                      textAlign: TextAlign.start,
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                          heading2(
+                              text: groupObject.groupCurrency + " " + currencyFormat.format(_totalContributions),
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.start)
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              subtitle2(
+                                text: "Statement as At",
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start,
                               ),
+                              customTitle(
+                                text: _statementAsAt,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start,
+                              ),
+                            ],
+                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                subtitle2(
+                                  text: "Statement Period",
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.end,
+                                ),
+                                customTitle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                  text: _statementFrom.isNotEmpty ? "$_statementFrom to $_statementTo" : "",
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.end,
+                                ),
+                              ],
                             ),
-                            Expanded(
-                              child: statements.length > 0
-                                  ? ListView.builder(
-                                      controller: _scrollController,
-                                      shrinkWrap: true,
-                                      itemBuilder: (context, index) {
-                                        ContributionStatementRow row = statements[index];
-                                        if (row.isHeader) {
-                                          return StatementHeader(row: row);
-                                        } else {
-                                          return StatementBody(row: row);
-                                        }
-                                      },
-                                      itemCount: statements.length,
-                                    )
-                                  : emptyList(
-                                      color: Colors.blue[400],
-                                      iconData: LineAwesomeIcons.file_text,
-                                      text: widget.statementFlag == FINE_STATEMENT
-                                          ? "There are no fine statements to display"
-                                          : "There are no contribution statements to display"),
-                            ),
-                          ],
-                        );
-                      } else
-                        return Container(); //TODO: handle failed request
-                    }))));
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                _isLoading
+                    ? showLinearProgressIndicator()
+                    : SizedBox(
+                  height: 0.0,
+                ),
+                Expanded(
+                    child: _statements.length > 0
+                        ? ListView.builder(
+                            controller: _scrollController,
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              ContributionStatementRow row = _statements[index];
+                              if (row.isHeader) {
+                                return StatementHeader(row: row);
+                              } else {
+                                return StatementBody(row: row);
+                              }
+                            },
+                            itemCount: _statements.length,
+                          )
+                        : emptyList(
+                            color: Colors.blue[400],
+                            iconData: LineAwesomeIcons.file_text,
+                            text: "There are no statements for the period"))
+              ],
+            )));
   }
 }

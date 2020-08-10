@@ -12,6 +12,14 @@ class ContributionStatementRow {
 class ContributionStatementModel {
   List<ContributionStatementRow> statements = [];
   double totalPaid, totalDue, totalBalance;
+  String statementAsAt, statementFrom, statementTo;
 
-  ContributionStatementModel({this.statements, this.totalPaid, this.totalDue, this.totalBalance});
+  ContributionStatementModel(
+      {this.statements,
+      this.totalPaid,
+      this.totalDue,
+      this.totalBalance,
+      this.statementAsAt,
+      this.statementFrom,
+      this.statementTo});
 }

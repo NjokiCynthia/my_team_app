@@ -4,6 +4,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,15 @@ class TransactionStatement extends StatefulWidget {
 class _TransactionStatementState extends State<TransactionStatement> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
-  Future<void> _future;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isInit = true;
+  bool _isLoading = true;
+  TransactionStatementModel _transactionStatementModel;
+  List<TransactionStatementRow> _transactions = [];
+  double _totalBalance = 0;
+  double _deposits = 0;
+  double _withdrawals = 0;
+  String _statementAsAt = '', _statementFrom = '', _statementTo = '';
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -42,12 +51,50 @@ class _TransactionStatementState extends State<TransactionStatement> {
     }
   }
 
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _transactionStatementModel = Provider.of<Groups>(context, listen: false).transactionStatement;
+
+    if (_transactionStatementModel != null) {
+      _transactions = _transactionStatementModel.transactionStatements;
+      _totalBalance = _transactionStatementModel.totalBalance;
+      _statementFrom = _transactionStatementModel.statementPeriodFrom;
+      _statementTo = _transactionStatementModel.statementPeriodTo;
+      _statementAsAt = _transactionStatementModel.statementDate;
+    }
+
+    _getTransactionStatement(context).then((_) {
+      _transactionStatementModel = Provider.of<Groups>(context, listen: false).transactionStatement;
+      setState(() {
+        _isLoading = false;
+        if (_transactionStatementModel != null) {
+          _transactions = _transactionStatementModel.transactionStatements;
+          _totalBalance = _transactionStatementModel.totalBalance;
+          _statementFrom = _transactionStatementModel.statementPeriodFrom;
+          _statementTo = _transactionStatementModel.statementPeriodTo;
+          _statementAsAt = _transactionStatementModel.statementDate;
+        }
+      });
+    });
+
+    _isInit = false;
+    return true;
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getTransactionStatement(context);
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
   }
 
   @override
@@ -59,6 +106,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -68,155 +116,171 @@ class _TransactionStatementState extends State<TransactionStatement> {
         title: "Transaction Statement",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: FutureBuilder(
-        future: _future,
-        builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-            ? Center(child: CircularProgressIndicator())
-            : RefreshIndicator(
-                onRefresh: () => _getTransactionStatement(context),
-                child: Consumer<Groups>(builder: (context, data, child) {
-                  return Column(
+      body: RefreshIndicator(
+        onRefresh: () => _fetchData(),
+        child: Column(
+          children: <Widget>[
+            Container(
+              padding: EdgeInsets.all(16.0),
+              color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Container(
-                        padding: EdgeInsets.all(16.0),
-                        color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
-                        child: Column(
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Expanded(
-                                  child: Container(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        heading2(
-                                            text: "Total Balance", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                        SizedBox(
-                                          height: 4,
-                                        ),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            subtitle2(
-                                                text: "Deposits ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                            subtitle1(text: "-", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                          ],
-                                        ),
-                                        Row(
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          children: <Widget>[
-                                            subtitle2(
-                                                text: "Withdrawals ", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                            subtitle1(text: "-", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                heading2(
-                                    text: "Ksh " + currencyFormat.format(data.transactionStatement.totalBalance),
-                                    color: Theme.of(context).textSelectionHandleColor,
-                                    textAlign: TextAlign.start)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    subtitle2(
-                                      text: "Statement as At",
+                      Expanded(
+                        child: Container(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              heading2(
+                                  text: "Total Balance",
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.start),
+                              SizedBox(
+                                height: 4,
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  subtitle2(
+                                      text: "Deposits ",
                                       color: Theme.of(context).textSelectionHandleColor,
-                                      textAlign: TextAlign.start,
-                                    ),
-                                    customTitle(
-                                      text: data.transactionStatement.statementDate,
-                                      fontSize: 12,
-                                      fontWeight: FontWeight.w500,
+                                      textAlign: TextAlign.start),
+                                  subtitle1(
+                                      text: "-",
                                       color: Theme.of(context).textSelectionHandleColor,
-                                      textAlign: TextAlign.start,
-                                    ),
-                                  ],
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      subtitle2(
-                                        text: "Statement Period",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        textAlign: TextAlign.end,
-                                      ),
-                                      customTitle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w500,
-                                        text: data.transactionStatement.statementPeriodFrom + " to " + data.transactionStatement.statementPeriodTo,
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        textAlign: TextAlign.end,
-                                      ),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
-                          ],
+                                      textAlign: TextAlign.start),
+                                ],
+                              ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: <Widget>[
+                                  subtitle2(
+                                      text: "Withdrawals ",
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                      textAlign: TextAlign.start),
+                                  subtitle1(
+                                      text: "-",
+                                      color: Theme.of(context).textSelectionHandleColor,
+                                      textAlign: TextAlign.start),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                      Container(
-                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 1,
-                              child: Container(),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: customTitle(
-                                  text: "Deposits", fontSize: 13.0, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.center),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: customTitle(
-                                  text: "Withdrawals",
-                                  fontSize: 13.0,
-                                  color: Theme.of(context).textSelectionHandleColor,
-                                  textAlign: TextAlign.center),
-                            ),
-                            Expanded(
-                              flex: 1,
-                              child: customTitle(
-                                  text: "Balance", fontSize: 13.0, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.center),
-                            ),
-                          ],
-                        ),
+                      heading2(
+                          text: "${groupObject.groupCurrency} " + currencyFormat.format(_totalBalance),
+                          color: Theme.of(context).textSelectionHandleColor,
+                          textAlign: TextAlign.start)
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle2(
+                            text: "Statement as At",
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start,
+                          ),
+                          customTitle(
+                            text: _statementAsAt,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
                       ),
                       Expanded(
-                        child: ListView.builder(
-                          controller: _scrollController,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            TransactionStatementRow row = data.transactionStatement.transactionStatements[index];
-                            return TransactionStatementBody(
-                              row: row,
-                              position: index % 2 == 0,
-                            );
-                          },
-                          itemCount: data.transactionStatement.transactionStatements.length,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            subtitle2(
+                              text: "Statement Period",
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.end,
+                            ),
+                            customTitle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              text: _statementFrom + " to " + _statementTo,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.end,
+                            ),
+                          ],
                         ),
-                      ),
+                      )
                     ],
-                  );
-                }),
+                  )
+                ],
               ),
+            ),
+            _isLoading
+                ? showLinearProgressIndicator()
+                : SizedBox(
+                    height: 0.0,
+                  ),
+            Container(
+              padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    flex: 1,
+                    child: Container(),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: customTitle(
+                        text: "Deposits",
+                        fontSize: 13.0,
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.center),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: customTitle(
+                        text: "Withdrawals",
+                        fontSize: 13.0,
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.center),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: customTitle(
+                        text: "Balance",
+                        fontSize: 13.0,
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.center),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.builder(
+                controller: _scrollController,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  TransactionStatementRow row = _transactions[index];
+                  return TransactionStatementBody(
+                    row: row,
+                    position: index % 2 == 0,
+                  );
+                },
+                itemCount: _transactions.length,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

@@ -5,6 +5,7 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +20,10 @@ class DepositReceipts extends StatefulWidget {
 class _DepositReceiptsState extends State<DepositReceipts> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
-
-  Future<void> _future;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<Deposit> _deposits = [];
+  bool _isLoading = true;
+  bool _isInit = true;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -44,11 +47,33 @@ class _DepositReceiptsState extends State<DepositReceipts> {
     }
   }
 
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
+    _getDeposits(context).then((_) {
+      _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
+      setState(() {
+        _isLoading = false;
+      });
+    });
+
+    _isInit = false;
+    return true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _future = _getDeposits(context);
     super.initState();
   }
 
@@ -62,6 +87,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: secondaryPageAppbar(
             context: context,
             title: "Deposit Receipts",
@@ -69,36 +95,38 @@ class _DepositReceiptsState extends State<DepositReceipts> {
             elevation: _appBarElevation,
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,
-        body: FutureBuilder(
-            future: _future,
-            builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                ? Center(child: CircularProgressIndicator())
-                : RefreshIndicator(
-                    onRefresh: () => _getDeposits(context),
-                    child: Consumer<Groups>(builder: (context, data, child) {
-                      if (data.getDeposits != null) {
-                        List<Deposit> deposits = data.getDeposits;
-                        return Container(
-                          decoration: primaryGradient(context),
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: deposits.length > 0
-                              ? ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    Deposit deposit = deposits[index];
-                                    return DepositCard(
-                                      deposit: deposit,
-                                      details: () {},
-                                      voidItem: () {},
-                                    );
-                                  },
-                                  itemCount: deposits.length)
-                              : emptyList(
-                                  color: Colors.blue[400], iconData: LineAwesomeIcons.angle_double_down, text: "There are no deposits to display"),
-                        );
-                      } else
-                        return Container();
-                    }))));
+        body: RefreshIndicator(
+            onRefresh: () => _fetchData(),
+            child: Container(
+                decoration: primaryGradient(context),
+                width: double.infinity,
+                height: double.infinity,
+                child: Column(
+                  children: <Widget>[
+                    _isLoading
+                        ? showLinearProgressIndicator()
+                        : SizedBox(
+                            height: 0.0,
+                          ),
+                    Expanded(
+                      child: _deposits.length > 0
+                          ? ListView.builder(
+                              itemBuilder: (context, index) {
+                                Deposit deposit = _deposits[index];
+                                return DepositCard(
+                                  deposit: deposit,
+                                  details: () {},
+                                  voidItem: () {},
+                                );
+                              },
+                              itemCount: _deposits.length)
+                          : emptyList(
+                              color: Colors.blue[400],
+                              iconData: LineAwesomeIcons.angle_double_down,
+                              text: "There are no deposits to display"),
+                    )
+                  ],
+                ))));
   }
 }
 
@@ -110,6 +138,7 @@ class DepositCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
@@ -153,7 +182,7 @@ class DepositCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           customTitle(
-                            text: "Ksh ",
+                            text: "${groupObject.groupCurrency} ",
                             fontSize: 18.0,
                             color: Theme.of(context).textSelectionHandleColor,
                             fontWeight: FontWeight.w400,
@@ -173,22 +202,37 @@ class DepositCard extends StatelessWidget {
                 ),
                 Container(
                   padding: EdgeInsets.only(left: 12.0, right: 12.0),
-                  child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle2(text: "Paid By", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                        subtitle1(text: deposit.depositor, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
-                      ],
-                    ),
-                    Column(
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        subtitle2(text: "Paid On", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end),
-                        subtitle1(text: deposit.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.end)
-                      ],
-                    ),
-                  ]),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Paid By",
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start),
+                            subtitle1(
+                                text: deposit.depositor,
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start)
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            subtitle2(
+                                text: "Paid On",
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.end),
+                            subtitle1(
+                                text: deposit.date,
+                                color: Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.end)
+                          ],
+                        ),
+                      ]),
                 ),
                 SizedBox(
                   height: 10,

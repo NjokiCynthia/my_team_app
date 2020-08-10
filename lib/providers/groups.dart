@@ -304,6 +304,7 @@ class Groups with ChangeNotifier {
   ExpenseSummaryList _expenseSummaryList;
   LoansSummaryList _loansSummaryList;
   ContributionStatementModel _contributionStatement;
+  ContributionStatementModel _fineStatement;
   LoanStatementModel _loanStatements;
   List<GroupContributionSummary> _groupContributionSummary = [];
   List<GroupContributionSummary> _groupFinesSummary = [];
@@ -426,6 +427,10 @@ class Groups with ChangeNotifier {
 
   ContributionStatementModel get getContributionStatements {
     return _contributionStatement;
+  }
+
+  ContributionStatementModel get getFineStatements {
+    return _fineStatement;
   }
 
   List<ActiveLoan> get getMemberLoans {
@@ -874,8 +879,11 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addContributionStatement(dynamic data) {
-    _contributionStatement = getContributionStatement(data);
+  void addContributionStatement(int flag, dynamic data) {
+    if (flag == FINE_STATEMENT) {
+      _fineStatement = getContributionStatement(data);
+    } else
+      _contributionStatement = getContributionStatement(data);
     notifyListeners();
   }
 
@@ -2126,6 +2134,95 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> createFineCategory({
+    String name,
+    String amount,
+  }) async {
+    const url = EndpointUrl.CREATE_FINE_CATEGORY;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "id": "0",
+        "name": name,
+        "amount": amount,
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchFineTypes();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchFineCategory(int fineCategoryId) async {
+    const url = EndpointUrl.GET_GROUP_FINE_CATEGORIES_LIST;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupFineCategories =
+            response['fine_categories'] as List<dynamic>;
+        for (int i = 0; i < groupFineCategories.length; i++) {
+          if (groupFineCategories[i]['id'].toString() ==
+              fineCategoryId.toString()) {
+            return groupFineCategories[i];
+          }
+        }
+        return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> editFineCategory({
+    String id,
+    String name,
+    String amount,
+  }) async {
+    const url = EndpointUrl.EDIT_FINE_CATEGORY;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "id": id,
+        "name": name,
+        "amount": amount,
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+        await fetchFineTypes();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchReportAccountBalances() async {
     const url = EndpointUrl.GET_ACCOUNT_BALANCES;
 
@@ -2324,7 +2421,7 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        addContributionStatement(response);
+        addContributionStatement(statementFlag, response);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -2830,8 +2927,6 @@ class Groups with ChangeNotifier {
     }
     _groupContributionSummary = [];
     _groupFinesSummary = [];
-    _totalGroupFinesSummary = 0;
-    _totalGroupContributionSummary = 0;
     _accounts = [];
     _members = [];
     _allAccounts = [];
@@ -2858,6 +2953,8 @@ class Groups with ChangeNotifier {
     _totalGroupFinesSummary = 0;
     _categorisedAccounts = [];
     _bankLoans = [];
+    _contributionStatement = null;
+    _fineStatement = null;
     _groupRolesStatusAndCurrentMemberStatus = null;
   }
 }

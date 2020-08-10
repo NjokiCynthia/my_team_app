@@ -36,6 +36,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   bool _isInit = true;
   String _groupCurrency = "Ksh";
   List<RecentTransactionSummary> _iteratableRecentTransactionSummary = [];
+  List<ContributionsSummary> _itableContributionSummary = [];
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -137,11 +138,46 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     }
   }
 
+  Iterable<Widget> get contributionsSummary sync* {
+    final List<Color> colorsList = [primaryColor,Colors.blueGrey];
+    int i = 0;
+    print(_itableContributionSummary.length);
+    for (var data in _itableContributionSummary) {
+      yield Row(
+        children: <Widget>[
+          SizedBox(
+            width: 16.0,
+          ),
+          Container(
+            width: 160.0,
+            padding: EdgeInsets.all(16.0),
+            decoration: cardDecoration(
+                gradient: i==0?csCardGradient():plainCardGradient(context), context: context),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: contributionSummary(
+                color: i==0?Colors.white:i==1?primaryColor:Colors.blueGrey,
+                cardIcon: i==0?Feather.bar_chart_2:Feather.bar_chart,
+                amountDue: currencyFormat.format(data.balance),
+                cardAmount: currencyFormat.format(data.amountPaid),
+                currency: _groupCurrency,
+                dueDate: data.dueDate,
+                contributionName: data.contributionName,
+              ),
+            ),
+          ),
+        ],
+      );
+      ++i;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
     setState(() {
       _iteratableRecentTransactionSummary = dashboardData.recentMemberTransactions;
+      _itableContributionSummary = dashboardData.memberContributionSummary;
     });
     return WillPopScope(
         onWillPop: _onWillPop,
@@ -308,7 +344,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         scrollDirection: Axis.horizontal,
                         padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
                         physics: BouncingScrollPhysics(),
-                        children: <Widget>[
+                        children: _itableContributionSummary.length>0?contributionsSummary.toList():
+                        <Widget>[
                           SizedBox(
                             width: 16.0,
                           ),
@@ -322,8 +359,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               children: contributionSummary(
                                 color: Colors.white,
                                 cardIcon: Feather.bar_chart_2,
-                                amountDue: "7,500",
-                                cardAmount: "10,050",
+                                amountDue: "0",
+                                cardAmount: "0",
                                 currency: _groupCurrency,
                                 dueDate: "14 Apr 20",
                                 contributionName: "Monthly Savings",
@@ -344,8 +381,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               children: contributionSummary(
                                 color: primaryColor,
                                 cardIcon: Feather.bar_chart,
-                                amountDue: "4,050",
-                                cardAmount: "4,050",
+                                amountDue: "0",
+                                cardAmount: "0",
                                 currency: _groupCurrency,
                                 dueDate: "4 Apr 20",
                                 contributionName: "Welfare",
@@ -366,8 +403,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               children: contributionSummary(
                                 color: Colors.blueGrey,
                                 cardIcon: Feather.bar_chart_2,
-                                amountDue: "7,500",
-                                cardAmount: "10,050",
+                                amountDue: "0",
+                                cardAmount: "0",
                                 currency: _groupCurrency,
                                 dueDate: "14 Apr 20",
                                 contributionName: "Insurance",
@@ -406,27 +443,27 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 16.0,
-                              ),
-                              child: paymentActionButton(
-                                color: primaryColor,
-                                textColor: Colors.white,
-                                icon: FontAwesome.chevron_right,
-                                isFlat: true,
-                                text: "APPLY LOAN",
-                                iconSize: 12.0,
-                                action: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        ApplyLoan(),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
+                          // Expanded(
+                          //   child: Padding(
+                          //     padding: EdgeInsets.symmetric(
+                          //       horizontal: 16.0,
+                          //     ),
+                          //     child: paymentActionButton(
+                          //       color: primaryColor,
+                          //       textColor: Colors.white,
+                          //       icon: FontAwesome.chevron_right,
+                          //       isFlat: true,
+                          //       text: "APPLY LOAN",
+                          //       iconSize: 12.0,
+                          //       action: () => Navigator.of(context).push(
+                          //         MaterialPageRoute(
+                          //           builder: (BuildContext context) =>
+                          //               ApplyLoan(),
+                          //         ),
+                          //       ),
+                          //     ),
+                          //   ),
+                          // ),
                         ],
                       ),
                     ),
@@ -567,6 +604,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     //   ),
     // );
     void _applyFilter() {}
-    showModalBottomSheet(context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
+    showModalBottomSheet(context: context, builder: (_) => PayNow(_applyFilter));
   }
 }
