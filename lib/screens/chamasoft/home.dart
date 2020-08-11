@@ -598,27 +598,25 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   }
 
   void _openPayNowTray(BuildContext context) {
-    // Navigator.of(context).push(
-    //   MaterialPageRoute(
-    //     builder: (BuildContext context) => PayNow(),
-    //   ),
-    // );
-    void _initiatePayNow({int paymentFor, int paymentForId, double amount, String phoneNumber}) {
-      print("it is here");
+    void _initiatePayNow({int paymentFor, int paymentForId, double amount, String phoneNumber,String description}) {
       final Map<String,dynamic> _formData = {
-        "deposit_for_type" : [
-          paymentFor
-        ],
+        "payment_for" : paymentFor,
+        "contribution_id" : paymentForId,
+        "fine_category_id" : paymentForId,
+        "loan_id" : paymentForId,
+        "description": description,
+        "amount" : amount,
+        "phone_number" : phoneNumber
       };
+      Navigator.pop(context);
       Provider.of<Groups>(context,listen: false).makeGroupPayment(_formData);
     }
     showModalBottomSheet(
       isScrollControlled: true,
       context: context, 
-      
       builder: (_){
          return GestureDetector(
-          onTap: () {},
+          onTap: null,
           child: PayNow(_initiatePayNow),
           behavior: HitTestBehavior.opaque,
         );

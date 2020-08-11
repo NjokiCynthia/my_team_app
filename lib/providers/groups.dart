@@ -2926,12 +2926,12 @@ class Groups with ChangeNotifier {
   Future<void> makeGroupPayment(
       Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.MAKE_PAYMENT;
+      const url = EndpointUrl.MAKE_NEW_PAYMENT;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
+        print("request: $postRequest");
         var response = await PostToServer.post(postRequest, url);
         print(response);
       } on CustomException catch (error) {

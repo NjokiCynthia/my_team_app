@@ -18,7 +18,8 @@ class PayNow extends StatefulWidget {
       {int paymentFor,
       int paymentForId,
       double amount,
-      String phoneNumber}) payNowFunction;
+      String phoneNumber,
+      String description}) payNowFunction;
   @override
   _PayNowState createState() => _PayNowState();
 }
@@ -101,15 +102,13 @@ class _PayNowState extends State<PayNow> {
     if (_userPhoneNumber == null) {
       _userPhoneNumber = Provider.of<Auth>(context, listen: false).phoneNumber;
     }
-    print(
-        "phonenumber: $_userPhoneNumber and amount $amountInputValue and paymentfor $_paymentFor and valueid $_dropdownValue");
-
+    Navigator.of(context).pop();
     widget.payNowFunction(
         paymentFor: _paymentFor,
         paymentForId: _dropdownValue,
         amount: amountInputValue,
-        phoneNumber: _userPhoneNumber);
-    // Navigator.of(context).pop();
+        phoneNumber: _userPhoneNumber,
+        description:_description);
   }
 
   void _populatePaymentFor() {
@@ -370,7 +369,7 @@ class _PayNowState extends State<PayNow> {
             top:10,
             left:10,
             right:10,
-            bottom:MediaQuery.of(context).viewInsets.bottom+10,
+            bottom:MediaQuery.of(context).viewInsets.bottom+40,
           ),
           width: double.infinity,
           color: Theme.of(context).backgroundColor,
