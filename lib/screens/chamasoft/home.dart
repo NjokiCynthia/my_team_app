@@ -597,8 +597,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         ));
   }
 
-  void _openPayNowTray(BuildContext context) {
-    void _initiatePayNow({int paymentFor, int paymentForId, double amount, String phoneNumber,String description}) {
+  void _openPayNowTray(BuildContext context){
+    Future<void> _initiatePayNow({int paymentFor, int paymentForId, double amount, String phoneNumber,String description}) async{
       final Map<String,dynamic> _formData = {
         "payment_for" : paymentFor,
         "contribution_id" : paymentForId,
@@ -608,8 +608,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         "amount" : amount,
         "phone_number" : phoneNumber
       };
+      await Provider.of<Groups>(context,listen: false).makeGroupPayment(_formData);
       Navigator.pop(context);
-      Provider.of<Groups>(context,listen: false).makeGroupPayment(_formData);
     }
     showModalBottomSheet(
       isScrollControlled: true,

@@ -47,6 +47,7 @@ class _PayNowState extends State<PayNow> {
   int _paymentFor;
   String _errorText;
   int _dropdownValue;
+  bool _inputEnabled = true, _isLoading=false;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -103,6 +104,11 @@ class _PayNowState extends State<PayNow> {
       _userPhoneNumber = Provider.of<Auth>(context, listen: false).phoneNumber;
     }
     Navigator.of(context).pop();
+    setState(() {
+      _paymentForEnabled = false;
+      _inputEnabled = false;
+      _isLoading = true;
+    });
     widget.payNowFunction(
         paymentFor: _paymentFor,
         paymentForId: _dropdownValue,
@@ -211,7 +217,7 @@ class _PayNowState extends State<PayNow> {
                       return null;
                     },
                     listItems: _paymentForOption,
-                    enabled: true),
+                    enabled: _inputEnabled),
               ),
               Expanded(
                 flex: 1,
@@ -236,47 +242,6 @@ class _PayNowState extends State<PayNow> {
                     listItems: _dropdownItems,
                     enabled: _paymentForEnabled),
               ),
-
-              // new InputDecorator(
-              //   decoration: InputDecoration(
-              //       enabled: false,
-              //       labelStyle: inputTextStyle(),
-              //       hintStyle: inputTextStyle(),
-              //       errorStyle: inputTextStyle(),
-              //       filled: false,
-              //       hintText: 'Select payment for first--',
-              //       labelText: _dropdownValue == null
-              //           ? 'Select payment for first--'
-              //           : 'Select payment for first--',
-              //       errorText: _errorText,
-              //       enabledBorder: UnderlineInputBorder(
-              //           borderSide: BorderSide(
-              //               color: Theme.of(context).hintColor, width: 1.0))),
-              //   isEmpty: _dropdownValue == null,
-              //   child: new Theme(
-              //     data: Theme.of(context).copyWith(
-              //       canvasColor: Theme.of(context).cardColor,
-              //     ),
-              //     child: new DropdownButton<String>(
-              //       value: _dropdownValue,
-              //       isDense: true,
-              //       onChanged: (String newValue) {
-              //         setState(() {
-              //           _dropdownValue = newValue;
-              //         });
-              //       },
-              //       items: _dropdownItems.map((String value) {
-              //         return DropdownMenuItem<String>(
-              //           value: value,
-              //           child: Text(
-              //             value,
-              //             style: inputTextStyle(),
-              //           ),
-              //         );
-              //       }).toList(),
-              //     ),
-              //   ),
-              // ),
             ],
           ),
         );
@@ -369,7 +334,7 @@ class _PayNowState extends State<PayNow> {
             top:10,
             left:10,
             right:10,
-            bottom:MediaQuery.of(context).viewInsets.bottom+40,
+            bottom:MediaQuery.of(context).viewInsets.bottom+45,
           ),
           width: double.infinity,
           color: Theme.of(context).backgroundColor,
@@ -405,6 +370,7 @@ class _PayNowState extends State<PayNow> {
                         children: <Widget>[
                           buildDropDown(),
                           amountTextInputField(
+                              enabled:_inputEnabled,
                               context: context,
                               labelText: "Amount to pay",
                               onChanged: (value) {
@@ -415,7 +381,14 @@ class _PayNowState extends State<PayNow> {
                           SizedBox(
                             height: 20,
                           ),
-                          RaisedButton(
+                          _isLoading?
+                          Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Center(
+                                child: CircularProgressIndicator()
+                              ),
+                          )
+                          :RaisedButton(
                             color: primaryColor,
                             child: Padding(
                               padding:
