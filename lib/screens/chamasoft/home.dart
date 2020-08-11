@@ -612,6 +612,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       };
       Provider.of<Groups>(context,listen: false).makeGroupPayment(_formData);
     }
-    showModalBottomSheet(context: context, builder: (_) => PayNow(_initiatePayNow));
+    showModalBottomSheet(
+      isScrollControlled: true,
+      context: context, 
+      builder: (_) => PayNow(_initiatePayNow)
+    );
   }
 }

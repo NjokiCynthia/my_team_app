@@ -12,8 +12,9 @@ import 'package:chamasoft/providers/auth.dart';
 
 // ignore: must_be_immutable
 class PayNow extends StatefulWidget {
-  Function payNowFunction;
+  //Function payNowFunction;
   PayNow(this.payNowFunction);
+  final void Function({int paymentFor, int paymentForId, double amount, String phoneNumber}) payNowFunction;
   @override
   _PayNowState createState() => _PayNowState();
 }
@@ -98,7 +99,7 @@ class _PayNowState extends State<PayNow> {
     }
     print("phonenumber: $_userPhoneNumber and amount $amountInputValue and paymentfor $_paymentFor and valueid $_dropdownValue");
 
-    widget.payNowFunction();
+    widget.payNowFunction(paymentFor:_paymentFor,paymentForId:_dropdownValue,amount:amountInputValue,phoneNumber:_userPhoneNumber);
     // Navigator.of(context).pop();
   }
 
