@@ -14,7 +14,11 @@ import 'package:chamasoft/providers/auth.dart';
 class PayNow extends StatefulWidget {
   //Function payNowFunction;
   PayNow(this.payNowFunction);
-  final void Function({int paymentFor, int paymentForId, double amount, String phoneNumber}) payNowFunction;
+  final void Function(
+      {int paymentFor,
+      int paymentForId,
+      double amount,
+      String phoneNumber}) payNowFunction;
   @override
   _PayNowState createState() => _PayNowState();
 }
@@ -23,8 +27,8 @@ class _PayNowState extends State<PayNow> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   double amountInputValue;
-  bool _isInit=true;
-  Map <String,dynamic> formLoadData = {};
+  bool _isInit = true;
+  Map<String, dynamic> formLoadData = {};
   List<NamesListItem> _dropdownItems = [];
   String _labelText = 'Select payment for first--';
   bool _paymentForEnabled = false;
@@ -77,50 +81,59 @@ class _PayNowState extends State<PayNow> {
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      );
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(contr: true,fineOptions:true); 
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(contr: true, fineOptions: true);
     setState(() {
       _isInit = false;
     });
-    Navigator.of(context,rootNavigator: true).pop();
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   void payNow() {
-    if(_userPhoneNumber==null){
-      _userPhoneNumber = Provider.of<Auth>(context,listen: false).phoneNumber;
+    if (_userPhoneNumber == null) {
+      _userPhoneNumber = Provider.of<Auth>(context, listen: false).phoneNumber;
     }
-    print("phonenumber: $_userPhoneNumber and amount $amountInputValue and paymentfor $_paymentFor and valueid $_dropdownValue");
+    print(
+        "phonenumber: $_userPhoneNumber and amount $amountInputValue and paymentfor $_paymentFor and valueid $_dropdownValue");
 
-    widget.payNowFunction(paymentFor:_paymentFor,paymentForId:_dropdownValue,amount:amountInputValue,phoneNumber:_userPhoneNumber);
+    widget.payNowFunction(
+        paymentFor: _paymentFor,
+        paymentForId: _dropdownValue,
+        amount: amountInputValue,
+        phoneNumber: _userPhoneNumber);
     // Navigator.of(context).pop();
   }
 
-  void _populatePaymentFor(){
-    if(_paymentFor == 1){
+  void _populatePaymentFor() {
+    if (_paymentFor == 1) {
       setState(() {
-         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[];
+        _dropdownValue = null;
+        _dropdownItems = formLoadData.containsKey("contributionOptions")
+            ? formLoadData["contributionOptions"]
+            : [];
         _paymentForEnabled = true;
         _labelText = "Select Contribution";
       });
-    }else if(_paymentFor == 2){
+    } else if (_paymentFor == 2) {
       setState(() {
-         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("finesOptions")?formLoadData["finesOptions"]:[];
+        _dropdownValue = null;
+        _dropdownItems = formLoadData.containsKey("finesOptions")
+            ? formLoadData["finesOptions"]
+            : [];
         _paymentForEnabled = true;
         _labelText = "Select Fine Type";
       });
-    }else{
+    } else {
       setState(() {
-         _dropdownValue = null;
+        _dropdownValue = null;
         _dropdownItems = [];
         _paymentForEnabled = false;
         _labelText = "Select payment for first---";
@@ -128,7 +141,13 @@ class _PayNowState extends State<PayNow> {
     }
   }
 
-  Widget customDropDown({int selectedItem,String labelText,Function onChanged,Function validator,List<NamesListItem> listItems,bool enabled}) {
+  Widget customDropDown(
+      {int selectedItem,
+      String labelText,
+      Function onChanged,
+      Function validator,
+      List<NamesListItem> listItems,
+      bool enabled}) {
     return new Theme(
       data: Theme.of(context).copyWith(
         canvasColor: Theme.of(context).cardColor,
@@ -154,10 +173,8 @@ class _PayNowState extends State<PayNow> {
             hintStyle: inputTextStyle(),
             errorStyle: inputTextStyle(),
             hintText: labelText,
-            labelText: selectedItem == null
-                ? labelText
-                : labelText,
-            enabled: enabled??true,
+            labelText: selectedItem == null ? labelText : labelText,
+            enabled: enabled ?? true,
             enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: Theme.of(context).hintColor,
@@ -180,23 +197,22 @@ class _PayNowState extends State<PayNow> {
               Expanded(
                 flex: 7,
                 child: customDropDown(
-                  selectedItem:_paymentFor,
-                  labelText:'Select payment for',
-                  onChanged: (int newValue) {
-                    setState(() {
-                      _paymentFor = newValue;
-                      _populatePaymentFor();
-                    });
-                  },
-                  validator: (newValue) {
-                    if (newValue == null) {
-                      return "Field is required";
-                    }
-                    return null;
-                  },
-                  listItems:_paymentForOption,
-                  enabled: true
-                ),
+                    selectedItem: _paymentFor,
+                    labelText: 'Select payment for',
+                    onChanged: (int newValue) {
+                      setState(() {
+                        _paymentFor = newValue;
+                        _populatePaymentFor();
+                      });
+                    },
+                    validator: (newValue) {
+                      if (newValue == null) {
+                        return "Field is required";
+                      }
+                      return null;
+                    },
+                    listItems: _paymentForOption,
+                    enabled: true),
               ),
               Expanded(
                 flex: 1,
@@ -205,68 +221,63 @@ class _PayNowState extends State<PayNow> {
               Expanded(
                 flex: 7,
                 child: customDropDown(
-                  selectedItem:_dropdownValue,
-                  labelText: _labelText,
-                  onChanged: (int newValue) {
-                    setState(() {
-                      _dropdownValue = newValue;
-                    });
-                  },
-                  validator: (newValue) {
-                    if (newValue == null) {
-                      return "Field is required";
-                    }
-                    return null;
-                  },
-                  listItems:_dropdownItems,
-                  enabled: _paymentForEnabled
-                ),
+                    selectedItem: _dropdownValue,
+                    labelText: _labelText,
+                    onChanged: (int newValue) {
+                      setState(() {
+                        _dropdownValue = newValue;
+                      });
+                    },
+                    validator: (newValue) {
+                      if (newValue == null) {
+                        return "Field is required";
+                      }
+                      return null;
+                    },
+                    listItems: _dropdownItems,
+                    enabled: _paymentForEnabled),
               ),
-                
-                
-                
-                
-                
-                // new InputDecorator(
-                //   decoration: InputDecoration(
-                //       enabled: false,
-                //       labelStyle: inputTextStyle(),
-                //       hintStyle: inputTextStyle(),
-                //       errorStyle: inputTextStyle(),
-                //       filled: false,
-                //       hintText: 'Select payment for first--',
-                //       labelText: _dropdownValue == null
-                //           ? 'Select payment for first--'
-                //           : 'Select payment for first--',
-                //       errorText: _errorText,
-                //       enabledBorder: UnderlineInputBorder(
-                //           borderSide: BorderSide(
-                //               color: Theme.of(context).hintColor, width: 1.0))),
-                //   isEmpty: _dropdownValue == null,
-                //   child: new Theme(
-                //     data: Theme.of(context).copyWith(
-                //       canvasColor: Theme.of(context).cardColor,
-                //     ),
-                //     child: new DropdownButton<String>(
-                //       value: _dropdownValue,
-                //       isDense: true,
-                //       onChanged: (String newValue) {
-                //         setState(() {
-                //           _dropdownValue = newValue;
-                //         });
-                //       },
-                //       items: _dropdownItems.map((String value) {
-                //         return DropdownMenuItem<String>(
-                //           value: value,
-                //           child: Text(
-                //             value,
-                //             style: inputTextStyle(),
-                //           ),
-                //         );
-                //       }).toList(),
-                //     ),
-                //   ),
-                // ),
+
+              // new InputDecorator(
+              //   decoration: InputDecoration(
+              //       enabled: false,
+              //       labelStyle: inputTextStyle(),
+              //       hintStyle: inputTextStyle(),
+              //       errorStyle: inputTextStyle(),
+              //       filled: false,
+              //       hintText: 'Select payment for first--',
+              //       labelText: _dropdownValue == null
+              //           ? 'Select payment for first--'
+              //           : 'Select payment for first--',
+              //       errorText: _errorText,
+              //       enabledBorder: UnderlineInputBorder(
+              //           borderSide: BorderSide(
+              //               color: Theme.of(context).hintColor, width: 1.0))),
+              //   isEmpty: _dropdownValue == null,
+              //   child: new Theme(
+              //     data: Theme.of(context).copyWith(
+              //       canvasColor: Theme.of(context).cardColor,
+              //     ),
+              //     child: new DropdownButton<String>(
+              //       value: _dropdownValue,
+              //       isDense: true,
+              //       onChanged: (String newValue) {
+              //         setState(() {
+              //           _dropdownValue = newValue;
+              //         });
+              //       },
+              //       items: _dropdownItems.map((String value) {
+              //         return DropdownMenuItem<String>(
+              //           value: value,
+              //           child: Text(
+              //             value,
+              //             style: inputTextStyle(),
+              //           ),
+              //         );
+              //       }).toList(),
+              //     ),
+              //   ),
+              // ),
             ],
           ),
         );
@@ -320,7 +331,7 @@ class _PayNowState extends State<PayNow> {
               // hintText: 'Phone Number or Email Address',
               labelText: "M-Pesa Number",
             ),
-            onChanged: (newValue){
+            onChanged: (newValue) {
               _userPhoneNumber = newValue;
             },
           ),
@@ -353,69 +364,76 @@ class _PayNowState extends State<PayNow> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 300,
-        padding: EdgeInsets.all(10.0),
-        width: double.infinity,
-        color: Theme.of(context).backgroundColor,
-        child: Column(
-          children: [
-            Container(
-                height: 8,
-                width: 100,
-                decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .hintColor
-                        .withOpacity(0.3), //Color(0xffededfe),
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(5)))),
-            SizedBox(
-              height: 7,
-            ),
-            heading2(
-                text: "Wallet Payment",
-                color: Theme.of(context).textSelectionHandleColor,
-                textAlign: TextAlign.start),
-            SizedBox(
-              height: 10,
-            ),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: <Widget>[
-                  Container(
-                    padding:
-                        EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                    child: Column(
-                      children: <Widget>[
-                        buildDropDown(),
-                        amountTextInputField(
-                            context: context,
-                            labelText: "Amount to pay",
-                            onChanged: (value) {
-                              setState(() {
-                                amountInputValue = double.parse(value);
-                              });
-                            }),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        RaisedButton(
-                          color: primaryColor,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                            child: Text("Pay Now"),
-                          ),
-                          textColor: Colors.white,
-                          onPressed: () => _validatePayNowForm(),
-                        )
-                      ],
-                    ),
-                  )
-                ],
+    return SingleChildScrollView(
+      child: Container(
+          padding: EdgeInsets.only(
+            top:10,
+            left:10,
+            right:10,
+            bottom:MediaQuery.of(context).viewInsets.bottom+10,
+          ),
+          width: double.infinity,
+          color: Theme.of(context).backgroundColor,
+          child: Column(
+            children: [
+              Container(
+                  height: 8,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .hintColor
+                          .withOpacity(0.3), //Color(0xffededfe),
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(Radius.circular(5)))),
+              SizedBox(
+                height: 7,
               ),
-            ),
-          ],
-        ));
+              heading2(
+                  text: "Wallet Payment",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.start),
+              SizedBox(
+                height: 10,
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 16.0, right: 16.0, bottom: 16.0),
+                      child: Column(
+                        children: <Widget>[
+                          buildDropDown(),
+                          amountTextInputField(
+                              context: context,
+                              labelText: "Amount to pay",
+                              onChanged: (value) {
+                                setState(() {
+                                  amountInputValue = double.parse(value);
+                                });
+                              }),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          RaisedButton(
+                            color: primaryColor,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                              child: Text("Pay Now"),
+                            ),
+                            textColor: Colors.white,
+                            onPressed: () => _validatePayNowForm(),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )),
+    );
   }
 }

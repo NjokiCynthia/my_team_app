@@ -615,7 +615,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     showModalBottomSheet(
       isScrollControlled: true,
       context: context, 
-      builder: (_) => PayNow(_initiatePayNow)
+      
+      builder: (_){
+         return GestureDetector(
+          onTap: () {},
+          child: PayNow(_initiatePayNow),
+          behavior: HitTestBehavior.opaque,
+        );
+      } 
     );
   }
 }
