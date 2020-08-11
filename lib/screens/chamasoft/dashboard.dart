@@ -11,7 +11,6 @@ import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +38,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   int _currentPage;
   double _appBarElevation = 0;
   int _selectedGroupIndex = 0;
-  bool _updateSelectedGroup = false;
+  // bool _updateSelectedGroup = false;
 
   _setElevation(double elevation) {
     double newElevation = elevation > 1 ? appBarElevation : 0;

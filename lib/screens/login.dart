@@ -24,7 +24,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
-  final GlobalKey<CountryCodePickerState> _countryKey = GlobalKey();
+  // final GlobalKey<CountryCodePickerState> _countryKey = GlobalKey();
   String _identity;
   CountryCode _countryCode = CountryCode.fromCode("KE");
   final _countryCodeController = TextEditingController(text: "+254");

@@ -609,6 +609,7 @@ class Groups with ChangeNotifier {
     return position;
   }
 
+  // ignore: missing_return
   String _getAccountFormId(int position) {
     for (var accountOption in _allAccounts) {
       for (var account in accountOption) {
@@ -2297,7 +2298,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  /*************************Contributions Summary and Fines Summary*****************************/
+  ///*************************Contributions Summary and Fines Summary*****************************/
 
   Future<dynamic> getGroupContributionSummary() async {
     const url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
@@ -2554,7 +2555,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  /************************Load Form initial Data**********/
+  ///************************Load Form initial Data**********/
 
   Future<Map<String, dynamic>> loadInitialFormData({
     bool contr = false,
@@ -2671,7 +2672,7 @@ class Groups with ChangeNotifier {
     return result;
   }
 
-  /****************************Transaction****************/
+  ///****************************Transaction****************/
 
   Future<void> recordContibutionPayments(Map<String, dynamic> formData) async {
     try {

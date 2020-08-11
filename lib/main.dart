@@ -63,11 +63,13 @@ class _MyAppState extends State<MyApp> {
             auth.userIdentity,
             previousGroups == null ? '' : previousGroups.currentGroupId,
           ),
+          // ignore: missing_return
           create: (BuildContext context) {},
         ),
         ChangeNotifierProxyProvider<Groups,Dashboard>(
           update: (ctx, groups, dashboardData) => Dashboard(
               groups.userId, groups.currentGroupId,dashboardData == null ? {} : dashboardData.memberDashboardData, dashboardData == null ? {} : dashboardData.groupDashboardData),
+          // ignore: missing_return
           create: (BuildContext context) {},
         )
       ],

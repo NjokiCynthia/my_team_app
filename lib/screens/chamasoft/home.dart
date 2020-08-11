@@ -1,7 +1,5 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -105,7 +103,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   }
 
   Iterable<Widget> get recentTransactionSummary sync* {
-    final List<Color> colorsList = [primaryColor,Colors.blueGrey];
     int i = 0;
     for (var data in _iteratableRecentTransactionSummary) {
       yield Row(
@@ -140,7 +137,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   }
 
   Iterable<Widget> get contributionsSummary sync* {
-    final List<Color> colorsList = [primaryColor,Colors.blueGrey];
     int i = 0;
     print(_itableContributionSummary.length);
     for (var data in _itableContributionSummary) {
@@ -422,14 +418,17 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                   Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                     child: Container(
+                      width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
                       padding: EdgeInsets.symmetric(vertical: 10.0),
                       color: Theme.of(context).cardColor.withOpacity(0.1),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           if(_onlineBankingEnabled)
                           Expanded(
-                            child: Padding(
+                            child: 
+                            Padding(
                               padding: EdgeInsets.symmetric(
                                 horizontal: 16.0,
                               ),
@@ -469,7 +468,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       ),
                     ),
                   ),
-                  Padding(
+                  recentTransactionSummary.length > 0 ? Padding(
                     padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -490,8 +489,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             onPressed: () {})
                       ],
                     ),
-                  ),
-                  Padding(
+                  ) : SizedBox(),
+                  recentTransactionSummary.length > 0 ? Padding(
                     padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                     child: Container(
                       height: 180.0,
@@ -590,7 +589,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         // ],
                       ),
                     ),
-                  ),
+                  ) : SizedBox(height: 10.0,),
                 ],
               ) : chamasoftHomeLoadingData(context: context)
             )
@@ -600,10 +599,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   void _openPayNowTray(BuildContext context) {
     // Navigator.of(context).push(
-                                //   MaterialPageRoute(
-                                //     builder: (BuildContext context) => PayNow(),
-                                //   ),
-                                // ),
+    //   MaterialPageRoute(
+    //     builder: (BuildContext context) => PayNow(),
+    //   ),
+    // );
     void _applyFilter() {}
     showModalBottomSheet(context: context, builder: (_) => PayNow(_applyFilter));
   }

@@ -25,7 +25,7 @@ class _VerificationState extends State<Verification> {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
-  String _pin;
+  // String _pin;
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
   Map<String, String> _authData = {

@@ -25,6 +25,7 @@ class _LoanStatementState extends State<LoanStatement> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  // ignore: unused_field
   bool _isInit = true;
   Future<void> _future;
 

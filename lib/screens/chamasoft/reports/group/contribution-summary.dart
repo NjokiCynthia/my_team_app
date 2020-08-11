@@ -11,7 +11,6 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -42,6 +41,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   void _applyFilter() {}
 
+  // ignore: unused_element
   void _showFilter(BuildContext context) {
     showModalBottomSheet(
         context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));

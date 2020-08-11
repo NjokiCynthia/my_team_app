@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -57,7 +56,7 @@ class _ContributionTransferState extends State<ContributionTransfer> {
   int fineToId;
   double amount;
   String description;
-  Map<String,dynamic> _formData={},_formLoadData={};
+  Map<String,dynamic> _formData={};//,_formLoadData={};
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;

@@ -27,9 +27,9 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
   double _payable = 0;
   double _paid = 0;
   double _balance = 0;
-  double _activeLoans = 0;
-  double _fullyPaid = 0;
-  double _badLoans = 0;
+  // double _activeLoans = 0;
+  // double _fullyPaid = 0;
+  // double _badLoans = 0;
   double _appBarElevation = 0;
   ScrollController _scrollController;
 

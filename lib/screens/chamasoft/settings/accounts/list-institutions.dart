@@ -55,6 +55,7 @@ class _ListInstitutionsState extends State<ListInstitutions> {
       Navigator.of(context).pop();
       Navigator.of(context).pop(_arguments);
     } on CustomException catch (error) {
+      print(error);
       Navigator.of(context).pop();
 //      StatusHandler().handleStatus(
 //          context: context,
