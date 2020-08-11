@@ -28,6 +28,7 @@ class _PayNowState extends State<PayNow> {
   String _labelText = 'Select payment for first--';
   bool _paymentForEnabled = false;
   String _userPhoneNumber;
+  String _description = "";
 
   static final List<NamesListItem> _paymentForOption = [
     NamesListItem(id: 1, name: "Contribution Payment"),
@@ -92,10 +93,13 @@ class _PayNowState extends State<PayNow> {
   }
 
   void payNow() {
-    print("phonenumber: $_userPhoneNumber");
+    if(_userPhoneNumber==null){
+      _userPhoneNumber = Provider.of<Auth>(context,listen: false).phoneNumber;
+    }
+    print("phonenumber: $_userPhoneNumber and amount $amountInputValue and paymentfor $_paymentFor and valueid $_dropdownValue");
 
-    widget.payNow();
-    Navigator.of(context).pop();
+    // widget.payNow();
+    // Navigator.of(context).pop();
   }
 
   void _populatePaymentFor(){

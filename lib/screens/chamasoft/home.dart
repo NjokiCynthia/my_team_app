@@ -603,7 +603,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     //     builder: (BuildContext context) => PayNow(),
     //   ),
     // );
-    void _applyFilter() {}
-    showModalBottomSheet(context: context, builder: (_) => PayNow(_applyFilter));
+    void _initiatePayNow({int paymentFor, int paymentForId, double amount, String phoneNumber}) {
+      
+    }
+    showModalBottomSheet(context: context, builder: (_) => PayNow(_initiatePayNow));
   }
 }
