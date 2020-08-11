@@ -604,6 +604,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     //   ),
     // );
     void _applyFilter() {}
-    showModalBottomSheet(context: context, builder: (_) => PayNow(_applyFilter));
+    showModalBottomSheet(context: context,isScrollControlled: true, builder: (_) => PayNow(_applyFilter));
   }
 }

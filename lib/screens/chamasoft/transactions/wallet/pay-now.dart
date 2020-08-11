@@ -11,7 +11,9 @@ import 'package:chamasoft/providers/auth.dart';
 // ignore: must_be_immutable
 class PayNow extends StatefulWidget {
   Function payNow;
+
   PayNow(this.payNow);
+
   @override
   _PayNowState createState() => _PayNowState();
 }
@@ -123,15 +125,17 @@ class _PayNowState extends State<PayNow> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               heading2(
-                text: "Confirm Payment Number",
-                color: Theme.of(context).textSelectionHandleColor,
-                textAlign: TextAlign.start
+                  text: "Confirm Payment Number",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.start),
+              SizedBox(
+                height: 10,
               ),
-              SizedBox(height: 10,),
               Text(
                 "An M-Pesa STK Push will be initiated on this number. Stand by to confirm.",
                 style: TextStyle(
-                  color: Theme.of(context).hintColor,//Theme.of(context).textSelectionHandleColor,
+                  color: Theme.of(context)
+                      .hintColor, //Theme.of(context).textSelectionHandleColor,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
                 ),
@@ -159,17 +163,17 @@ class _PayNowState extends State<PayNow> {
           ),
           actions: <Widget>[
             negativeActionDialogButton(
-              text: "Cancel",
-              color: Theme.of(context).textSelectionHandleColor,
-              action: () {
-                Navigator.of(context).pop();
-              }
-            ),
+                text: "Cancel",
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
             positiveActionDialogButton(
-              text: "Pay Now", 
-              color: primaryColor, 
-              action: (){ payNow(); }
-            ),
+                text: "Pay Now",
+                color: primaryColor,
+                action: () {
+                  payNow();
+                }),
           ],
         );
       },
@@ -178,86 +182,98 @@ class _PayNowState extends State<PayNow> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 300,
-        padding: EdgeInsets.all(10.0),
-        width: double.infinity,
-        color: Theme.of(context).backgroundColor,
-        child: Column(
-          children: [
-            Container(
-                height: 8,
-                width: 100,
-                decoration: BoxDecoration(
-                    color: Theme.of(context).hintColor.withOpacity(0.3),//Color(0xffededfe),
-                    shape: BoxShape.rectangle,
-                    borderRadius: BorderRadius.all(Radius.circular(5)))),
-            SizedBox(
-              height: 7,
-            ),
-            heading2(
-                text: "Contribution Payment",
-                color: Theme.of(context).textSelectionHandleColor,
-                textAlign: TextAlign.start),
-            SizedBox(
-              height: 10,
-            ),
-            Column(
-              children: <Widget>[
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: SingleChildScrollView(
+        child: Container(
+            padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            width: double.infinity,
+            color: Theme.of(context).backgroundColor,
+            child: Column(
+              //mainAxisSize: MainAxisSize.min,
+              children: [
                 Container(
-                  padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                  child: Column(
-                    children: <Widget>[
-                      buildDropDown(),
-                      amountTextInputField(
-                          context: context,
-                          labelText: "Amount to pay",
-                          // validator: (value) {
-                          //   if (!CustomHelper.validIdentity(value.trim())) {
-                          //     return 'Enter valid phone or email';
-                          //   }
-                          //   return null;
-                          // },
-                          onChanged: (value) {
-                            setState(() {
-                              amountInputValue = double.parse(value);
-                            });
-                          }),
-                      SizedBox(
-                        height: 20,
+                    height: 8,
+                    width: 100,
+                    decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .hintColor
+                            .withOpacity(0.3), //Color(0xffededfe),
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.all(Radius.circular(5)))),
+                SizedBox(
+                  height: 7,
+                ),
+                heading2(
+                    text: "Contribution Payment",
+                    color: Theme.of(context).textSelectionHandleColor,
+                    textAlign: TextAlign.start),
+                SizedBox(
+                  height: 10,
+                ),
+                Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 16.0, right: 16.0, bottom: 16.0),
+                      child: Column(
+                        children: <Widget>[
+                          buildDropDown(),
+                          amountTextInputField(
+                              context: context,
+                              labelText: "Amount to pay",
+                              // validator: (value) {
+                              //   if (!CustomHelper.validIdentity(value.trim())) {
+                              //     return 'Enter valid phone or email';
+                              //   }
+                              //   return null;
+                              // },
+                              onChanged: (value) {
+                                setState(() {
+                                  amountInputValue = double.parse(value);
+                                });
+                              }),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          RaisedButton(
+                            color: primaryColor,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                              child: Text("Pay Now"),
+                            ),
+                            textColor: Colors.white,
+                            onPressed: () => _numberToPrompt(),
+                          )
+                        ],
                       ),
-                      RaisedButton(
-                        color: primaryColor,
-                        child: Padding(
-                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                          child: Text("Pay Now"),
-                        ),
-                        textColor: Colors.white,
-                        onPressed: () => _numberToPrompt(),
-                      )
-                    ],
-                  ),
-                )
+                    )
+                  ],
+                ),
+                // SizedBox(
+                //   height: 10,
+                // ),
+                // textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
+                //   'By continuing you agree to our': {},
+                //   'terms & conditions': {
+                //     "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                //     "color": primaryColor,
+                //     "weight": FontWeight.w500
+                //   },
+                //   'and': {},
+                //   'privacy policy.': {
+                //     "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                //     "color": primaryColor,
+                //     "weight": FontWeight.w500
+                //   },
+                // }),
               ],
-            ),
-            // SizedBox(
-            //   height: 10,
-            // ),
-            // textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
-            //   'By continuing you agree to our': {},
-            //   'terms & conditions': {
-            //     "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-            //     "color": primaryColor,
-            //     "weight": FontWeight.w500
-            //   },
-            //   'and': {},
-            //   'privacy policy.': {
-            //     "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-            //     "color": primaryColor,
-            //     "weight": FontWeight.w500
-            //   },
-            // }),
-          ],
-        ));
+            )),
+      ),
+    );
   }
 }
