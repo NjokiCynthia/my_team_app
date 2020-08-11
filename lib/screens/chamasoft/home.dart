@@ -604,7 +604,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     //   ),
     // );
     void _initiatePayNow({int paymentFor, int paymentForId, double amount, String phoneNumber}) {
-      
+      print("it is here");
+      final Map<String,dynamic> _formData = {
+        "deposit_for_type" : [
+          paymentFor
+        ],
+      };
+      Provider.of<Groups>(context,listen: false).makeGroupPayment(_formData);
     }
     showModalBottomSheet(context: context, builder: (_) => PayNow(_initiatePayNow));
   }

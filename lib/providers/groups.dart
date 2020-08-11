@@ -2922,6 +2922,30 @@ class Groups with ChangeNotifier {
     }
   }
 
+
+  Future<void> makeGroupPayment(
+      Map<String, dynamic> formData) async {
+    try {
+      const url = EndpointUrl.MAKE_PAYMENT;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      try {
+        final postRequest = json.encode(formData);
+        print(postRequest);
+        var response = await PostToServer.post(postRequest, url);
+        print(response);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   void switchGroupValuesToDefault({bool removeGroups = false}) {
     if (removeGroups) {
       _groups = [];
