@@ -29,6 +29,8 @@ class EndpointUrl {
 
   //Payment
   static const String MAKE_PAYMENT = CustomHelper.baseUrl + "/mobile/deposits/make_group_payment";
+  static const String MAKE_NEW_PAYMENT = CustomHelper.baseUrl + "/mobile/deposits/make_new_group_payment";
+  
   static const String MAKE_ARREARS_PAYMENT = CustomHelper.baseUrl + "/mobile/deposits/make_group_arrears_payment";
   static const String CALCULATE_CONVENIENCE_FEE = CustomHelper.baseUrl + "/mobile/deposits/calculate_convenience_charge";
 
