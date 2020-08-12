@@ -135,7 +135,16 @@ class _PayNowState extends State<PayNow> {
             : [];
         _paymentForEnabled = true;
         _labelText = "Select Fine Type";
-      });
+      }); 
+    }else if(_paymentFor == 3){
+      setState(() {
+        _dropdownValue = null;
+        _dropdownItems = formLoadData.containsKey("memberOngoingLoanOptions")
+            ? formLoadData["memberOngoingLoanOptions"]
+            : [];
+        _paymentForEnabled =  _dropdownItems.length>0?true:false;
+        _labelText = _dropdownItems.length>0?"Select Loan":"No ongoing loans";
+      }); 
     } else {
       setState(() {
         _dropdownValue = null;

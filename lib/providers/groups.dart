@@ -2489,7 +2489,8 @@ class Groups with ChangeNotifier {
       bool fineOptions = false,
       bool exp = false,
       bool bankLoans = false,
-      bool loanTypes = false}) async {
+      bool loanTypes = false,
+      bool memberOngoingLoans = false}) async {
     List<NamesListItem> contributionOptions = [],
         accountOptions = [],
         memberOptions = [],
@@ -2498,7 +2499,8 @@ class Groups with ChangeNotifier {
         incomeCategoryOptions = [],
         expenseCategories = [],
         bankLoansOptions = [],
-        loanTypeOptions = [];
+        loanTypeOptions = [],
+        memberOngoingLoanOptions = [];
     if (contr) {
       if (_contributions.length == 0) {
         await fetchContributions();
@@ -2593,6 +2595,7 @@ class Groups with ChangeNotifier {
       'expenseCategories': expenseCategories,
       'bankLoansOptions': bankLoansOptions,
       'loanTypeOptions': loanTypeOptions,
+      'memberOngoingLoanOptions': memberOngoingLoanOptions,
     };
     return result;
   }
