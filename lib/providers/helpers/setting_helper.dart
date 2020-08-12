@@ -2,6 +2,8 @@ import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 
+import '../groups.dart';
+
 List<CategorisedAccount> getCategorisedAccounts(dynamic response) {
   List<CategorisedAccount> accounts = [];
 
@@ -54,7 +56,8 @@ Group parseSingleGroup(dynamic groupJSON) {
     smsBalance: groupJSON["sms_balance"].toString(),
     accountNumber: groupJSON["account_number"].toString(),
     enableMemberInformationPrivacy: groupJSON["enable_member_information_privacy"].toString() == "1" ? true : false,
-    enableSendMonthlyEmailStatements: groupJSON["enable_send_monthly_email_statements"].toString() == "1" ? true : false,
+    enableSendMonthlyEmailStatements:
+        groupJSON["enable_send_monthly_email_statements"].toString() == "1" ? true : false,
     groupRoles: groupRoleObject,
     memberListingOrderBy: groupJSON["member_listing_order_by"]..toString(),
     orderMembersBy: groupJSON["order_members_by"]..toString(),
@@ -63,7 +66,8 @@ Group parseSingleGroup(dynamic groupJSON) {
     groupRole: groupJSON['role']..toString(),
     disableArrears: groupJSON['disable_arrears'].toString() == "1" ? true : false,
     enableAbsoluteLoanRecalculation: groupJSON['enable_absolute_loan_recalculation'].toString() == "1" ? true : false,
-    disableIgnoreContributionTransfers: groupJSON['disable_ignore_contribution_transfers'].toString() == "1" ? true : false,
+    disableIgnoreContributionTransfers:
+        groupJSON['disable_ignore_contribution_transfers'].toString() == "1" ? true : false,
     disableMemberEditProfile: groupJSON['disable_member_edit_profile'].toString() == "1" ? true : false,
     isGroupAdmin: groupJSON['is_admin'].toString() == "1" ? true : false,
     groupCurrency: groupJSON['group_currency'].toString(),
@@ -103,6 +107,30 @@ List<CategorisedAccount> parseAccountsJson(List<dynamic> accountsJson, int typeI
   }
 
   return accounts;
+}
+
+List<LoanType> parseLoanTypes(List<dynamic> groupLoanTypes) {
+  List<LoanType> loanTypes = [];
+  if (groupLoanTypes.length > 0) {
+    for (var groupLoanTypesJSON in groupLoanTypes) {
+      final newLoanType = LoanType(
+        id: groupLoanTypesJSON['id'].toString(),
+        name: groupLoanTypesJSON['name'].toString(),
+        repaymentPeriod: groupLoanTypesJSON['repayment_period'].toString(),
+        loanAmount: groupLoanTypesJSON['loan_amount'].toString(),
+        interestRate: groupLoanTypesJSON['interest_rate'].toString(),
+        loanProcessing: groupLoanTypesJSON['loan_processing'].toString(),
+        disbursementDate: groupLoanTypesJSON['disbursement_date'].toString(),
+        guarantors: groupLoanTypesJSON['guarantors'].toString(),
+        latePaymentFines: groupLoanTypesJSON['late_payment_fines'].toString(),
+        outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines'].toString(),
+        isHidden: groupLoanTypesJSON['is_hidden'].toString(),
+      );
+      loanTypes.add(newLoanType);
+    }
+  }
+
+  return loanTypes;
 }
 
 List<NamesListItem> depositMethods = [

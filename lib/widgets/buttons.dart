@@ -22,7 +22,12 @@ Widget defaultButton({BuildContext context, String text, Function onPressed}) {
 }
 
 Widget screenActionButton(
-    {IconData icon, Color backgroundColor, Color textColor, Function action, double buttonSize = 42.0, double iconSize = 22.0}) {
+    {IconData icon,
+    Color backgroundColor,
+    Color textColor,
+    Function action,
+    double buttonSize = 42.0,
+    double iconSize = 22.0}) {
   return Container(
     width: buttonSize,
     height: buttonSize,
@@ -114,7 +119,13 @@ Widget groupInfoButton(
   );
 }
 
-Widget smallBadgeButton({Color backgroundColor, String text, Color textColor, Function action, double buttonHeight = 24.0, double textSize = 12.0}) {
+Widget smallBadgeButton(
+    {Color backgroundColor,
+    String text,
+    Color textColor,
+    Function action,
+    double buttonHeight = 24.0,
+    double textSize = 12.0}) {
   return Container(
     height: buttonHeight,
     child: FlatButton(
@@ -270,7 +281,15 @@ Widget plainButton({String text, Function action, double size, Color color, doub
   );
 }
 
-Widget paymentActionButton({bool isFlat = false, String text, IconData icon, double iconSize = 12.0, Color color, Function action, Color textColor}) {
+Widget paymentActionButton(
+    {bool isFlat = false,
+    String text,
+    IconData icon,
+    double iconSize = 12.0,
+    Color color,
+    Function action,
+    Color textColor,
+    bool showIcon = true}) {
   return (!isFlat)
       ? OutlineButton(
           color: Colors.white,
@@ -284,13 +303,19 @@ Widget paymentActionButton({bool isFlat = false, String text, IconData icon, dou
                   fontSize: 15.0,
                 ),
               ),
-              SizedBox(
-                width: 5.0,
+              Visibility(
+                visible: showIcon,
+                child: SizedBox(
+                  width: 5.0,
+                ),
               ),
-              Icon(
-                icon,
-                color: textColor,
-                size: iconSize,
+              Visibility(
+                visible: showIcon,
+                child: Icon(
+                  icon,
+                  color: textColor,
+                  size: iconSize,
+                ),
               ),
             ],
           ),
@@ -315,13 +340,19 @@ Widget paymentActionButton({bool isFlat = false, String text, IconData icon, dou
                   fontSize: 15.0,
                 ),
               ),
-              SizedBox(
-                width: 5.0,
+              Visibility(
+                visible: showIcon,
+                child: SizedBox(
+                  width: 5.0,
+                ),
               ),
-              Icon(
-                icon,
-                color: textColor,
-                size: iconSize,
+              Visibility(
+                visible: showIcon,
+                child: Icon(
+                  icon,
+                  color: textColor,
+                  size: iconSize,
+                ),
               ),
             ],
           ),
@@ -331,11 +362,19 @@ Widget paymentActionButton({bool isFlat = false, String text, IconData icon, dou
 }
 
 Widget gridButton(
-    {BuildContext context, Color color, IconData icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18}) {
+    {BuildContext context,
+    Color color,
+    IconData icon,
+    String title,
+    String subtitle = "",
+    Function action,
+    bool isHighlighted,
+    double margin = 18}) {
   return Container(
     margin: EdgeInsets.all(margin),
     height: 150,
-    decoration: cardDecoration(gradient: isHighlighted ? csCardGradient() : plainCardGradient(context), context: context),
+    decoration:
+        cardDecoration(gradient: isHighlighted ? csCardGradient() : plainCardGradient(context), context: context),
     child: FlatButton(
       padding: EdgeInsets.all(0),
       child: Stack(fit: StackFit.expand, alignment: Alignment.center, children: <Widget>[
@@ -396,11 +435,20 @@ Widget gridButton(
 }
 
 Widget svgGridButton(
-    {BuildContext context, Color color, String icon, String title, String subtitle = "", Function action, bool isHighlighted, double margin = 18, double imageHeight = 120}) {
+    {BuildContext context,
+    Color color,
+    String icon,
+    String title,
+    String subtitle = "",
+    Function action,
+    bool isHighlighted,
+    double margin = 18,
+    double imageHeight = 120}) {
   return Container(
     margin: EdgeInsets.all(margin),
     height: 150,
-    decoration: cardDecoration(gradient: isHighlighted ? csCardGradient() : plainCardGradient(context), context: context),
+    decoration:
+        cardDecoration(gradient: isHighlighted ? csCardGradient() : plainCardGradient(context), context: context),
     child: FlatButton(
       padding: EdgeInsets.all(0),
       child: Stack(fit: StackFit.expand, alignment: Alignment.center, children: <Widget>[
@@ -473,7 +521,13 @@ Widget statusChip({String text, Color textColor, Color backgroundColor}) {
   );
 }
 
-Widget circleIconButton({IconData icon, Color color, Color backgroundColor, Function onPressed, double iconSize = 32.0, double padding = 2.0}) {
+Widget circleIconButton(
+    {IconData icon,
+    Color color,
+    Color backgroundColor,
+    Function onPressed,
+    double iconSize = 32.0,
+    double padding = 2.0}) {
   return Container(
     padding: EdgeInsets.all(padding),
     decoration: ShapeDecoration(
@@ -533,7 +587,8 @@ ButtonTheme groupSetupButton(BuildContext context, String text, Function action)
       onPressed: action,
       padding: EdgeInsets.only(left: 4, right: 4),
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: Theme.of(context).hintColor, width: 1.0, style: BorderStyle.solid), borderRadius: BorderRadius.circular(4)),
+          side: BorderSide(color: Theme.of(context).hintColor, width: 1.0, style: BorderStyle.solid),
+          borderRadius: BorderRadius.circular(4)),
       child: Row(
         children: <Widget>[
           Icon(

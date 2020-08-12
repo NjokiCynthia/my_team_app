@@ -1,10 +1,16 @@
+import 'dart:developer';
+
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/expense-categories-list.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/custom-dropdown.dart';
+import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -17,7 +23,37 @@ class WithdrawalPurpose extends StatefulWidget {
 }
 
 class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
-  Future<void> _fetchExpenseCategories(BuildContext context) async {
+  List<NamesListItem> _withdrawalPurposeList = [
+    NamesListItem(id: 1, name: "Expense Payment"),
+    NamesListItem(id: 2, name: "Contribution Refund"),
+    NamesListItem(id: 3, name: "Merry Go Round"),
+    NamesListItem(id: 4, name: "Loan Disbursement")
+  ];
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _isInit = true;
+  double _appBarElevation = 0;
+  ScrollController _scrollController;
+  final _formKey = new GlobalKey<FormState>();
+  Map<String, dynamic> _formLoadData = {};
+  bool _isFormInputEnabled = true;
+  int _withdrawalPurpose;
+  int _expenseCategoryId;
+  String _description;
+  int _memberId;
+  int _contributionId;
+  int _loanTypeId;
+
+  void _scrollListener() {
+    double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
+  }
+
+  Future<void> _fetchDefaultValues(BuildContext context) async {
     showDialog(
         context: context,
         barrierDismissible: false,
@@ -26,82 +62,296 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
             child: CircularProgressIndicator(),
           );
         });
-
     try {
-      await Provider.of<Groups>(context, listen: false).fetchExpenseCategories();
+      _formLoadData = await Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(contr: true, member: true, exp: true, loanTypes: true);
       Navigator.of(context).pop();
-      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ExpenseCategoriesList()));
+      setState(() {
+        _isInit = false;
+      });
     } on CustomException catch (error) {
       Navigator.of(context).pop();
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _fetchExpenseCategories(context);
-          });
+            _fetchDefaultValues(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
+
+    _isInit = false;
+  }
+
+  void _prepareSubmission() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    Map<String, String> formData = {};
+    formData['withdrawal_for'] = _withdrawalPurpose.toString();
+
+    List<NamesListItem> list = [];
+    switch (_withdrawalPurpose) {
+      case 1:
+        formData['expense_category_id'] = _expenseCategoryId.toString();
+        list = _formLoadData["expenseCategories"];
+        formData['name'] = _getOptionName(_expenseCategoryId, list);
+        formData['description'] = _description;
+        break;
+      case 2:
+        formData['contribution_id'] = _contributionId.toString();
+        formData['member_id'] = _memberId.toString();
+
+        list = _formLoadData["memberOptions"];
+        formData['member_name'] = _getOptionName(_memberId, list);
+
+        list = _formLoadData["contributionOptions"];
+        formData['name'] = _getOptionName(_contributionId, list);
+        break;
+      case 3:
+        formData['member_id'] = _memberId.toString();
+
+        list = _formLoadData["memberOptions"];
+        formData['name'] = _getOptionName(_memberId, list);
+        break;
+      case 4:
+        formData['loan_type_id'] = _loanTypeId.toString();
+
+        list = _formLoadData["memberOptions"];
+        formData['member_name'] = _getOptionName(_memberId, list);
+
+        list = _formLoadData["loanTypeOptions"];
+        formData['name'] = _getOptionName(_loanTypeId, list);
+        break;
+    }
+
+    print("Data: ${formData.toString()}");
+  }
+
+  String _getOptionName(int id, List<NamesListItem> list) {
+    var name = '';
+    for (final item in list) {
+      if (id == item.id) {
+        name = item.name;
+      }
+    }
+    return name;
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchDefaultValues(context));
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                screenActionButton(
-                  icon: LineAwesomeIcons.arrow_left,
-                  backgroundColor: primaryColor.withOpacity(0.1),
-                  textColor: primaryColor,
-                  action: () => Navigator.of(context).pop(),
-                ),
-                SizedBox(width: 20.0),
-                heading2(color: primaryColor, text: "Purpose of Withdrawal"),
-              ],
-            ),
-          ],
-        ),
+      key: _scaffoldKey,
+      appBar: secondaryPageAppbar(
+        context: context,
+        title: "Create Withdrawal Request",
+        action: () => Navigator.of(context).pop(),
         elevation: 1,
-        backgroundColor: Theme.of(context).backgroundColor,
-        automaticallyImplyLeading: false,
+        leadingIcon: LineAwesomeIcons.arrow_left,
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
         builder: (BuildContext context) {
-          return Container(
-            decoration: primaryGradient(context),
-            width: double.infinity,
-            height: double.infinity,
-            padding: EdgeInsets.all(16.0),
-            child: GridView.count(
-              crossAxisCount: 2,
-              children: List.generate(4, (index) {
-                String title = "Expense Payment";
-                IconData icon = Feather.shopping_cart;
-                if (index == 1) {
-                  title = "Contribution Refund";
-                  icon = Feather.git_pull_request;
-                } else if (index == 2) {
-                  title = "Loan Disbursement";
-                  icon = Feather.credit_card;
-                } else if (index == 3) {
-                  title = "Miscellaneous Payment";
-                }
-
-                return GridItem(
-                    title: title,
-                    icon: icon,
-                    onTapped: () {
-                      if (index == 0) {
-                        _fetchExpenseCategories(context);
-                      } else if (index == 1) {
-                      } else if (index == 2) {
-                      } else if (index == 3) {}
-                    });
-              }),
+          return SingleChildScrollView(
+            controller: _scrollController,
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            child: Column(
+              children: [
+                toolTip(
+                    context: context,
+                    title: "",
+                    message: "Withdrawal requests will be sent to the group signatories for approval",
+                    showTitle: false),
+                Padding(
+                  padding: inputPagePadding,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        CustomDropDownButton(
+                          enabled: _isFormInputEnabled,
+                          labelText: "Select Purpose of Withdrawal",
+                          listItems: _withdrawalPurposeList,
+                          selectedItem: _withdrawalPurpose,
+                          validator: (value) {
+                            if (value == null) {
+                              return "This field is required";
+                            }
+                            return null;
+                          },
+                          onChanged: (value) {
+                            setState(() {
+                              _withdrawalPurpose = value;
+                            });
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Visibility(
+                          visible: _withdrawalPurpose == 1,
+                          child: CustomDropDownButton(
+                            enabled: _isFormInputEnabled,
+                            labelText: "Select Expense Category",
+                            listItems: _formLoadData.containsKey("expenseCategories")
+                                ? _formLoadData["expenseCategories"]
+                                : [],
+                            selectedItem: _expenseCategoryId,
+                            validator: (value) {
+                              if (_withdrawalPurpose == 1 && value == null) {
+                                return "This field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _expenseCategoryId = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          visible: _withdrawalPurpose != null && _withdrawalPurpose != 1,
+                          child: CustomDropDownButton(
+                            enabled: _isFormInputEnabled,
+                            labelText: "Select Member",
+                            listItems: _formLoadData.containsKey("memberOptions") ? _formLoadData["memberOptions"] : [],
+                            selectedItem: _memberId,
+                            validator: (value) {
+                              if (_withdrawalPurpose != null && _withdrawalPurpose != 1 && value == null) {
+                                return "This field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _memberId = value;
+                              });
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Visibility(
+                          visible: _withdrawalPurpose == 2,
+                          child: CustomDropDownButton(
+                            enabled: _isFormInputEnabled,
+                            labelText: "Select Contribution",
+                            listItems: _formLoadData.containsKey("contributionOptions")
+                                ? _formLoadData["contributionOptions"]
+                                : [],
+                            selectedItem: _contributionId,
+                            validator: (value) {
+                              if (_withdrawalPurpose == 2 && value == null) {
+                                return "This field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _contributionId = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          visible: _withdrawalPurpose == 4,
+                          child: CustomDropDownButton(
+                            enabled: _isFormInputEnabled,
+                            labelText: "Select Loan Type",
+                            listItems:
+                                _formLoadData.containsKey("loanTypeOptions") ? _formLoadData["loanTypeOptions"] : [],
+                            selectedItem: _loanTypeId,
+                            validator: (value) {
+                              if (_withdrawalPurpose == 4 && value == null) {
+                                return "This field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                _loanTypeId = value;
+                              });
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          visible: _withdrawalPurpose == 1,
+                          child: simpleTextInputField(
+                              context: context,
+                              labelText: 'Short Description (Optional)',
+                              enabled: _isFormInputEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  _description = value;
+                                });
+                              }),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Visibility(
+                          visible: _withdrawalPurpose != null,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: paymentActionButton(
+                                    color: primaryColor,
+                                    textColor: primaryColor,
+                                    icon: FontAwesome.user,
+                                    isFlat: false,
+                                    text: "Send To Bank",
+                                    iconSize: 12.0,
+                                    action: () => _prepareSubmission(),
+                                    showIcon: false),
+                              ),
+                              SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
+                                child: paymentActionButton(
+                                    color: primaryColor,
+                                    textColor: Colors.white,
+                                    icon: FontAwesome.bank,
+                                    isFlat: true,
+                                    text: "Send To Mobile",
+                                    iconSize: 12.0,
+                                    action: () => _prepareSubmission(),
+                                    showIcon: false),
+                              )
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         },

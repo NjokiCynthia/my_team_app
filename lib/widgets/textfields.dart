@@ -26,7 +26,7 @@ Widget simpleTextInputField(
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
-        width: 1.0,
+        width: 1,
       )),
       hintText: hintText,
       labelText: labelText,
@@ -104,7 +104,8 @@ Widget numberTextInputField(
   );
 }
 
-Widget multilineTextField({BuildContext context, String labelText, Function onChanged, Function validator, bool enabled, int maxLines}) {
+Widget multilineTextField(
+    {BuildContext context, String labelText, Function onChanged, Function validator, bool enabled, int maxLines}) {
   return TextFormField(
     keyboardType: TextInputType.multiline,
     maxLines: maxLines,
