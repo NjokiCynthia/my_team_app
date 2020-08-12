@@ -4,6 +4,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-optio
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -67,32 +68,23 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
           content: simpleTextInputField(
               context: context, controller: _descriptionController, labelText: 'Short description(optional)'),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(fontFamily: 'SegoeUI', color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Proceed",
-                style: new TextStyle(
-                  color: primaryColor,
-                  fontFamily: 'SegoeUI',
-                ),
-              ),
-              onPressed: () {
-                print(_descriptionController.text);
-//                Navigator.of(context)
-//                    .push(MaterialPageRoute(builder: (BuildContext context) => WithdrawalOption()))
-//                    .then((result) {
-//                  Navigator.of(context).pop();
-//                });
-              },
-            ),
+            negativeActionDialogButton(
+                text: "Cancel",
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Proceed",
+                color: primaryColor,
+                action: () {
+                  print(_descriptionController.text);
+                Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) => WithdrawalOption()))
+                    .then((result) {
+                  Navigator.of(context).pop();
+                });
+                }),
           ],
         );
       },
@@ -111,10 +103,9 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
         leadingIcon: LineAwesomeIcons.close,
         title: "Select Expense Category",
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         //decoration: primaryGradient(context),
-        color: Theme.of(context).backgroundColor,
         width: double.infinity,
         height: double.infinity,
         child: Column(
