@@ -357,6 +357,10 @@ class Groups with ChangeNotifier {
     return [..._expenses];
   }
 
+  List<ExpenseCategories> get expenseCategories {
+    return [..._expenseCategories];
+  }
+
   List<FineType> get fineTypes {
     return [..._fineTypes];
   }
@@ -653,7 +657,7 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addExpenses(List<dynamic> groupExpenses) {
+  void parseExpenseData(List<dynamic> groupExpenses) {
     if (groupExpenses.length > 0) {
       for (var groupExpensesJSON in groupExpenses) {
         final newExpense = Expense(
@@ -1217,7 +1221,7 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         _expenses = []; //clear accounts
         final groupExpenses = response['data']['expenses'] as List<dynamic>;
-        addExpenses(groupExpenses);
+        parseExpenseData(groupExpenses);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

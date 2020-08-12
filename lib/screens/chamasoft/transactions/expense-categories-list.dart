@@ -1,12 +1,15 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-option.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class ExpenseCategoriesList extends StatefulWidget {
   @override
@@ -16,6 +19,10 @@ class ExpenseCategoriesList extends StatefulWidget {
 class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  List<ExpenseCategories> list = [];
+  TextEditingController _controller = new TextEditingController();
+  TextEditingController _descriptionController = new TextEditingController();
+  String filter;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -30,6 +37,12 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+
+    _controller.addListener(() {
+      setState(() {
+        filter = _controller.text;
+      });
+    });
     super.initState();
   }
 
@@ -40,54 +53,24 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
     super.dispose();
   }
 
-  final List<ExpenseCategory> list = [
-    ExpenseCategory("1", "Audit Fees"),
-    ExpenseCategory("1", "Annual Tax"),
-    ExpenseCategory("1", "Subscription Fees"),
-    ExpenseCategory("1", "Monthly Meeting Expenses"),
-    ExpenseCategory("1", "Audit Fees"),
-    ExpenseCategory("1", "Annual Tax"),
-    ExpenseCategory("1", "Subscription Fees"),
-    ExpenseCategory("1", "Monthly Meeting Expenses"),
-    ExpenseCategory("1", "Audit Fees"),
-    ExpenseCategory("1", "Annual Tax"),
-    ExpenseCategory("1", "Subscription Fees"),
-    ExpenseCategory("1", "Monthly Meeting Expenses"),
-  ];
-
-  void description() {
+  void descriptionDialog(ExpenseCategories category) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
-            text: "Expense Summary",
+            text: "Description for ${category.name}",
             textAlign: TextAlign.start,
             color: Theme.of(context).textSelectionHandleColor,
           ),
-          content: TextFormField(
-            //controller: controller,
-            keyboardType: TextInputType.text,
-            style: inputTextStyle(),
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.auto,
-              enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                color: Theme.of(context).hintColor,
-                width: 1.0,
-              )),
-              // hintText: 'Phone Number or Email Address',
-              labelText: "A short description(optional)",
-            ),
-          ),
+          content: simpleTextInputField(
+              context: context, controller: _descriptionController, labelText: 'Short description(optional)'),
           actions: <Widget>[
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    fontFamily: 'SegoeUI',
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(fontFamily: 'SegoeUI', color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -102,12 +85,12 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(
-                        builder: (BuildContext context) => WithdrawalOption()))
-                    .then((result) {
-                  Navigator.of(context).pop();
-                });
+                print(_descriptionController.text);
+//                Navigator.of(context)
+//                    .push(MaterialPageRoute(builder: (BuildContext context) => WithdrawalOption()))
+//                    .then((result) {
+//                  Navigator.of(context).pop();
+//                });
               },
             ),
           ],
@@ -118,6 +101,8 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
 
   @override
   Widget build(BuildContext context) {
+    list = Provider.of<Groups>(context).expenseCategories;
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -134,64 +119,57 @@ class _ExpenseCategoriesListState extends State<ExpenseCategoriesList> {
         height: double.infinity,
         child: Column(
           children: <Widget>[
-            Container(
-              height: 50,
-              margin: EdgeInsets.all(16.0),
-              child: TextField(
-                autocorrect: true,
-                decoration: InputDecoration(
-                  hintText: 'Search Category',
-                  hintStyle: TextStyle(color: Colors.blueGrey),
-                  filled: false,
-                  prefixIcon: Icon(
-                    Feather.search,
-                    size: 24,
-                    color: Colors.blueGrey,
-                  ),
-                  fillColor: Colors.white,
-                ),
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Search Expense Category",
+                prefixIcon: Icon(LineAwesomeIcons.search),
               ),
+              controller: _controller,
             ),
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
                 shrinkWrap: true,
                 itemBuilder: (context, index) {
-                  ExpenseCategory category = list[index];
-                  return Material(
-                    color: Theme.of(context).backgroundColor,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(22.0)),
-                    child: InkWell(
-                      child: Container(
-                        padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
-                        child: Row(
-                          children: <Widget>[
-                            Icon(
-                              LineAwesomeIcons.file_text,
-                              color: Colors.blueGrey,
-                              size: 32,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            subtitle1(
-                                text: category.name,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.start),
-                          ],
-                        ),
-                      ),
-                      onTap: description,
-                    ),
-                  );
+                  ExpenseCategories category = list[index];
+                  return filter == null || filter.isEmpty
+                      ? buildListTile(context, category)
+                      : category.name.toLowerCase().contains(filter.toLowerCase())
+                          ? buildListTile(context, category)
+                          : Visibility(visible: false, child: new Container());
                 },
                 itemCount: list.length,
               ),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Material buildListTile(BuildContext context, ExpenseCategories category) {
+    return Material(
+      color: Theme.of(context).backgroundColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(22.0)),
+      child: InkWell(
+        child: Container(
+          padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                LineAwesomeIcons.file_text,
+                color: Colors.blueGrey,
+                size: 32,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              subtitle1(
+                  text: category.name, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+            ],
+          ),
+        ),
+        onTap: () => descriptionDialog(category),
       ),
     );
   }

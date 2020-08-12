@@ -1,4 +1,7 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expense-categories-list.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -6,6 +9,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class WithdrawalPurpose extends StatefulWidget {
   @override
@@ -13,6 +17,31 @@ class WithdrawalPurpose extends StatefulWidget {
 }
 
 class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
+  Future<void> _fetchExpenseCategories(BuildContext context) async {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchExpenseCategories();
+      Navigator.of(context).pop();
+      Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ExpenseCategoriesList()));
+    } on CustomException catch (error) {
+      Navigator.of(context).pop();
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchExpenseCategories(context);
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,42 +69,49 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
         automaticallyImplyLeading: false,
       ),
       backgroundColor: Colors.transparent,
-      body: Container(
-        decoration: primaryGradient(context),
-        width: double.infinity,
-        height: double.infinity,
-        padding: EdgeInsets.all(16.0),
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(4, (index) {
-            String title = "Expense Payment";
-            IconData icon = Feather.shopping_cart;
-            if (index == 1) {
-              title = "Contribution Refund";
-              icon = Feather.git_pull_request;
-            } else if (index == 2) {
-              title = "Loan Disbursement";
-              icon = Feather.credit_card;
-            } else if (index == 3) {
-              title = "Miscellanous Payment";
-            }
+      body: Builder(
+        builder: (BuildContext context) {
+          return Container(
+            decoration: primaryGradient(context),
+            width: double.infinity,
+            height: double.infinity,
+            padding: EdgeInsets.all(16.0),
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: List.generate(4, (index) {
+                String title = "Expense Payment";
+                IconData icon = Feather.shopping_cart;
+                if (index == 1) {
+                  title = "Contribution Refund";
+                  icon = Feather.git_pull_request;
+                } else if (index == 2) {
+                  title = "Loan Disbursement";
+                  icon = Feather.credit_card;
+                } else if (index == 3) {
+                  title = "Miscellaneous Payment";
+                }
 
-            return GridItem(
-              title: title,
-              icon: icon,
-              onTapped: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => ExpenseCategoriesList())),
-            );
-          }),
-        ),
+                return GridItem(
+                    title: title,
+                    icon: icon,
+                    onTapped: () {
+                      if (index == 0) {
+                        _fetchExpenseCategories(context);
+                      } else if (index == 1) {
+                      } else if (index == 2) {
+                      } else if (index == 3) {}
+                    });
+              }),
+            ),
+          );
+        },
       ),
     );
   }
 }
 
 class GridItem extends StatelessWidget {
-  const GridItem({Key key, @required this.title, this.icon, this.onTapped})
-      : super(key: key);
+  const GridItem({Key key, @required this.title, this.icon, this.onTapped}) : super(key: key);
 
   final String title;
   final IconData icon;
@@ -87,8 +123,7 @@ class GridItem extends StatelessWidget {
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.all(4.0),
       height: 150,
-      decoration: cardDecoration(
-          gradient: plainCardGradient(context), context: context),
+      decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
@@ -105,10 +140,7 @@ class GridItem extends StatelessWidget {
               SizedBox(
                 height: 15.0,
               ),
-              subtitle1(
-                  text: title,
-                  color: primaryColor,
-                  textAlign: TextAlign.center),
+              subtitle1(text: title, color: primaryColor, textAlign: TextAlign.center),
             ],
           ),
         ),
