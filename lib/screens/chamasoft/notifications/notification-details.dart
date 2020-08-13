@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart' as GroupProvider;
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -8,6 +9,8 @@ import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class NotificationDetails extends StatefulWidget {
+  final GroupProvider.Notification notification;
+  NotificationDetails({this.notification});
   @override
   _NotificationDetailsState createState() => _NotificationDetailsState();
 }
@@ -75,7 +78,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
-          title: "Upcoming Payment",
+          title: widget.notification.subject,
           action: () => Navigator.pop(context),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.close),
@@ -100,7 +103,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
                     Expanded(
                       flex: 1,
                       child: heading2(
-                        text: "Monthly Contribution",
+                        text: widget.notification.message,
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
