@@ -1,6 +1,8 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import "package:provider/provider.dart";
@@ -91,12 +93,17 @@ class _PayNowState extends State<PayNow> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false)
-        .loadInitialFormData(contr: true, fineOptions: true);
-    setState(() {
-      _isInit = false;
-    });
-    Navigator.of(context, rootNavigator: true).pop();
+    try{
+      formLoadData = await Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(contr: true, fineOptions: true,memberOngoingLoans:true);
+      setState(() {
+        _isInit = false;
+      });
+    } on CustomException catch (error) {
+        StatusHandler().handleStatus(context: context, error: error);
+    }finally{
+      Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 
   void payNow() {
