@@ -2927,8 +2927,15 @@ class Groups with ChangeNotifier {
       if(_ongoingMemberLoans.length==0){
         await fetchGroupMembersOngoingLoans();
       }
-      _ongoingMemberLoans.map((key, value){
-        print("key $key value: $value");
+
+      _ongoingMemberLoans.forEach((key, value) {
+          value.map((element){
+            if(element.isSelected){
+              memberOngoingLoanOptions.add(NamesListItem(id: int.tryParse(element.id), 
+                name: "My Loan"
+              ));
+            }
+          }).toList();
       });
       
       // if(memberId!="0" || _currentMemberId!="0"){
