@@ -112,7 +112,6 @@ class _ListContactsState extends State<ListContacts> {
                   ),
                   Expanded(
                     child: ListView.builder(
-                      //separatorBuilder: (BuildContext context, int index) => Divider(),
                       itemCount: _contacts?.length,
                       itemBuilder: (BuildContext context, int index) {
                         Contact _contact = _contacts[index].contact;

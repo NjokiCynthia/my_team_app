@@ -3,8 +3,10 @@ import 'dart:math';
 
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
@@ -15,22 +17,17 @@ import 'package:permission_handler/permission_handler.dart';
 import 'amount-to-withdraw.dart';
 
 class ListPhoneContacts extends StatefulWidget {
-  final String reloadLabel = 'Reload!';
-  final String fireLabel = 'Fire in the hole!';
-  final Color floatingButtonColor = Colors.red;
-  final IconData reloadIcon = Icons.refresh;
-  final IconData fireIcon = Icons.filter_center_focus;
+  final Map<String, String> formData;
+
+  ListPhoneContacts({this.formData});
 
   @override
-  _ListPhoneContactsState createState() => _ListPhoneContactsState(
-        floatingButtonLabel: this.fireLabel,
-        icon: this.fireIcon,
-        floatingButtonColor: this.floatingButtonColor,
-      );
+  _ListPhoneContactsState createState() => _ListPhoneContactsState();
 }
 
 class _ListPhoneContactsState extends State<ListPhoneContacts> {
-  TextEditingController controller = new TextEditingController();
+  TextEditingController _controller = new TextEditingController();
+  TextEditingController _phoneController = new TextEditingController();
   StreamSubscription<Iterable<Contact>> contactSubscriber;
   String filter;
   int count = 0;
@@ -38,12 +35,11 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.undetermined;
   List<CustomContact> _contacts = new List<CustomContact>();
-  List<CustomContact> _selectedContacts = List<CustomContact>();
   bool _isLoading = false;
   String floatingButtonLabel;
   Color floatingButtonColor;
   IconData icon;
-  String selectedContactPhoneNumber = "";
+  Contact selectedContact;
 
   _ListPhoneContactsState({
     this.floatingButtonLabel,
@@ -65,6 +61,21 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
     });
   }
 
+  void _proceedToAmountPage(int flag) {
+    if (flag == 1) {
+      var _phonesList = selectedContact.phones.toList();
+      if (_phonesList.length >= 1 && _phonesList[0]?.value != null) {
+        widget.formData["phone"] = _phonesList[0].value.replaceAll(" ", "").replaceAll("+", "").replaceAll("-", "");
+      } else
+        return;
+    } else {
+      widget.formData["phone"] = _phoneController.text;
+    }
+
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) => AmountToWithdraw(formData: widget.formData)));
+  }
+
   void _numberPrompt() {
     showDialog(
       context: context,
@@ -76,13 +87,10 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
               color: Theme.of(context).textSelectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
-            //controller: controller,
+            controller: _phoneController,
             style: inputTextStyle(),
-            initialValue: selectedContactPhoneNumber,
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
+            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
@@ -95,28 +103,22 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
             ),
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Theme.of(context).textSelectionHandleColor,
-                    fontFamily: 'SegoeUI'),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Continue",
-                style:
-                    new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
-              ),
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => AmountToWithdraw()));
-              },
-            ),
+            negativeActionDialogButton(
+                text: "Cancel",
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Continue",
+                color: primaryColor,
+                action: () {
+                  print("Phone: ${_phoneController.text}");
+                  if (CustomHelper.validPhone(_phoneController.text)) {
+                    Navigator.of(context).pop();
+                    _proceedToAmountPage(2);
+                  }
+                })
           ],
         );
       },
@@ -129,9 +131,9 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
 
     _listenForPermissionStatus();
 
-    controller.addListener(() {
+    _controller.addListener(() {
       setState(() {
-        filter = controller.text;
+        filter = _controller.text;
       });
     });
   }
@@ -140,7 +142,8 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    controller.dispose();
+    _controller.dispose();
+    _phoneController.dispose();
     contactSubscriber.cancel();
   }
 
@@ -153,17 +156,8 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.close,
           title: "Select Recipient",
-          trailingIcon: LineAwesomeIcons.check,
-          trailingAction: () {
-            if (_selectedContacts.length > 0) {
-              String phone =
-                  _selectedContacts[0].contact.phones.elementAt(0).value;
-              setState(() {
-                selectedContactPhoneNumber = phone;
-              });
-              _numberPrompt();
-            }
-          }),
+          trailingIcon: LineAwesomeIcons.user_plus,
+          trailingAction: () => _numberPrompt()),
       backgroundColor: Theme.of(context).backgroundColor,
       body: !_isLoading
           ? Container(
@@ -177,12 +171,10 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
                       labelText: "Search Contact",
                       prefixIcon: Icon(LineAwesomeIcons.search),
                     ),
-                    controller: controller,
+                    controller: _controller,
                   ),
                   Expanded(
-                    child: ListView.separated(
-                      separatorBuilder: (BuildContext context, int index) =>
-                          Divider(),
+                    child: ListView.builder(
                       itemCount: _contacts?.length,
                       itemBuilder: (BuildContext context, int index) {
                         Contact _contact = _contacts[index].contact;
@@ -191,11 +183,9 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
 
                         return filter == null || filter == ""
                             ? _buildListTile(index, _contact, _phonesList)
-                            : displayName
-                                    .toLowerCase()
-                                    .contains(filter.toLowerCase())
+                            : displayName.toLowerCase().contains(filter.toLowerCase())
                                 ? _buildListTile(index, _contact, _phonesList)
-                                : new Container();
+                                : Visibility(visible: false, child: new Container());
                       },
                     ),
                   ),
@@ -203,7 +193,11 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
               ),
             )
           : Center(
-              child: CircularProgressIndicator(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[CircularProgressIndicator(), subtitle1(text: "Retrieving contact list")],
+              ),
             ),
     );
   }
@@ -222,24 +216,16 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
     });
   }
 
-  CheckboxListTile _buildListTile(int index, Contact contact, List<Item> list) {
-    return CheckboxListTile(
-      secondary: CircleAvatar(
-          backgroundColor:
-              Colors.primaries[Random().nextInt(Colors.primaries.length)],
-          child: Text(contact.displayName[0].toUpperCase(),
-              style: TextStyle(color: Colors.white, fontSize: 24))),
-      value: _selectedContacts.contains(_contacts[index]),
-      onChanged: (value) {
-        setState(() {
-          if (value) {
-            _selectedContacts.clear();
-            _selectedContacts.add(_contacts[index]);
-          }
-        });
+  ListTile _buildListTile(int index, Contact contact, List<Item> list) {
+    return ListTile(
+      leading: CircleAvatar(
+          backgroundColor: primaryColor, //Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          child: Text(contact.displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24))),
+      onTap: () {
+        selectedContact = contact;
+        _proceedToAmountPage(1);
       },
-      title: subtitle1(
-          text: contact.displayName ?? "", textAlign: TextAlign.start),
+      title: subtitle1(text: contact.displayName ?? "", textAlign: TextAlign.start),
       subtitle: list.length >= 1 && list[0]?.value != null
           ? subtitle1(text: list[0].value, textAlign: TextAlign.start)
           : Text(''),
@@ -250,7 +236,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
     setState(() {
       _isLoading = true;
     });
-    var contacts = await ContactsService.getContacts();
+    var contacts = await ContactsService.getContacts(withThumbnails: false);
     return contacts;
   }
 
@@ -262,8 +248,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
     }
 
     setState(() {
-      _contacts.sort(
-          (a, b) => a.contact.displayName.compareTo(b.contact.displayName));
+      _contacts.sort((a, b) => a.contact.displayName.compareTo(b.contact.displayName));
       _isLoading = false;
     });
   }
