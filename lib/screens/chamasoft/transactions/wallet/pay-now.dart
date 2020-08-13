@@ -49,7 +49,7 @@ class _PayNowState extends State<PayNow> {
   int _paymentFor;
   String _errorText;
   int _dropdownValue;
-  bool _inputEnabled = true, _isLoading=false;
+  bool _inputEnabled = true, _isLoading = false;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -93,15 +93,16 @@ class _PayNowState extends State<PayNow> {
             );
           });
     });
-    try{
+    try {
       formLoadData = await Provider.of<Groups>(context, listen: false)
-          .loadInitialFormData(contr: true, fineOptions: true,memberOngoingLoans:true);
+          .loadInitialFormData(
+              contr: true, fineOptions: true, memberOngoingLoans: true);
       setState(() {
         _isInit = false;
       });
     } on CustomException catch (error) {
-        StatusHandler().handleStatus(context: context, error: error);
-    }finally{
+      StatusHandler().handleStatus(context: context, error: error);
+    } finally {
       Navigator.of(context, rootNavigator: true).pop();
     }
   }
@@ -121,7 +122,7 @@ class _PayNowState extends State<PayNow> {
         paymentForId: _dropdownValue,
         amount: amountInputValue,
         phoneNumber: _userPhoneNumber,
-        description:_description);
+        description: _description);
   }
 
   void _populatePaymentFor() {
@@ -142,16 +143,17 @@ class _PayNowState extends State<PayNow> {
             : [];
         _paymentForEnabled = true;
         _labelText = "Select Fine Type";
-      }); 
-    }else if(_paymentFor == 3){
+      });
+    } else if (_paymentFor == 3) {
       setState(() {
         _dropdownValue = null;
         _dropdownItems = formLoadData.containsKey("memberOngoingLoanOptions")
             ? formLoadData["memberOngoingLoanOptions"]
             : [];
-        _paymentForEnabled =  _dropdownItems.length>0?true:false;
-        _labelText = _dropdownItems.length>0?"Select Loan":"No ongoing loans";
-      }); 
+        _paymentForEnabled = _dropdownItems.length > 0 ? true : false;
+        _labelText =
+            _dropdownItems.length > 0 ? "Select Loan" : "No ongoing loans";
+      });
     } else {
       setState(() {
         _dropdownValue = null;
@@ -235,10 +237,12 @@ class _PayNowState extends State<PayNow> {
                     listItems: _paymentForOption,
                     enabled: _inputEnabled),
               ),
+              if(_paymentFor!=4)
               Expanded(
                 flex: 1,
                 child: SizedBox(width: 10),
               ),
+              if(_paymentFor!=4)
               Expanded(
                 flex: 7,
                 child: customDropDown(
@@ -347,10 +351,10 @@ class _PayNowState extends State<PayNow> {
     return SingleChildScrollView(
       child: Container(
           padding: EdgeInsets.only(
-            top:10,
-            left:10,
-            right:10,
-            bottom:MediaQuery.of(context).viewInsets.bottom+45,
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 45,
           ),
           width: double.infinity,
           color: Theme.of(context).backgroundColor,
@@ -385,8 +389,27 @@ class _PayNowState extends State<PayNow> {
                       child: Column(
                         children: <Widget>[
                           buildDropDown(),
+                          if(_paymentFor==4)
+                          multilineTextField(
+                            context: context,
+                            labelText: 'Short Description (Optional)',
+                            maxLines: 3,
+                            onChanged: (value) {
+                              setState(() {
+                                _description = value;
+                              });
+                            },
+                            validator: (value) {
+                              if(value=="" || value=="null"){
+                                return "Field required";
+                              }else if(value.toString().length<8){
+                                return "Description atleast 8 characters";
+                              }
+                              return null;
+                            }
+                          ),
                           amountTextInputField(
-                              enabled:_inputEnabled,
+                              enabled: _inputEnabled,
                               context: context,
                               labelText: "Amount to pay",
                               onChanged: (value) {
@@ -397,23 +420,22 @@ class _PayNowState extends State<PayNow> {
                           SizedBox(
                             height: 20,
                           ),
-                          _isLoading?
-                          Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Center(
-                                child: CircularProgressIndicator()
-                              ),
-                          )
-                          :RaisedButton(
-                            color: primaryColor,
-                            child: Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                              child: Text("Pay Now"),
-                            ),
-                            textColor: Colors.white,
-                            onPressed: () => _validatePayNowForm(),
-                          )
+                          _isLoading
+                              ? Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                )
+                              : RaisedButton(
+                                  color: primaryColor,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        20.0, 0.0, 20.0, 0.0),
+                                    child: Text("Pay Now"),
+                                  ),
+                                  textColor: Colors.white,
+                                  onPressed: () => _validatePayNowForm(),
+                                )
                         ],
                       ),
                     )

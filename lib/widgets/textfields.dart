@@ -109,7 +109,7 @@ Widget multilineTextField(
   return TextFormField(
     keyboardType: TextInputType.multiline,
     maxLines: maxLines,
-    minLines: 3,
+    minLines: 2,
     onChanged: onChanged,
     validator: validator,
     enabled: enabled ?? true,

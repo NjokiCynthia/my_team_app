@@ -346,7 +346,7 @@ class BankLoans {
 
 class OngoingMemberLoanOptions{
   final String id,memberId;
-  final String description;
+  final String description,loanType;
   final double amount, balance;
   final isSelected;
 
@@ -355,7 +355,7 @@ class OngoingMemberLoanOptions{
       @required this.memberId,
       @required this.description,
       this.amount,
-      this.balance,this.isSelected});
+      this.balance,this.isSelected,this.loanType});
 }
 
 class Groups with ChangeNotifier {
@@ -1102,6 +1102,7 @@ class Groups with ChangeNotifier {
           description: object['description'].toString(),
           amount: double.tryParse(object['amount'].toString()) ?? 0.0,
           balance: double.tryParse(object['balance'].toString()) ?? 0.0,
+          loanType: object['name'].toString()
         ));
         memberLoansSummary[memberId] = newData;
       }
@@ -2932,16 +2933,11 @@ class Groups with ChangeNotifier {
           value.map((element){
             if(element.isSelected){
               memberOngoingLoanOptions.add(NamesListItem(id: int.tryParse(element.id), 
-                name: "My Loan"
+                name: "${element.loanType} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(element.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(element.balance)}"
               ));
             }
           }).toList();
       });
-      
-      // if(memberId!="0" || _currentMemberId!="0"){
-      //   final List<dynamic> memberLoans = _ongoingMemberLoans.containsKey(_currentMemberId)?_ongoingMemberLoans[_currentMemberId]:[];
-      //   print("memberloans $memberLoans");
-      // }
     }
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
