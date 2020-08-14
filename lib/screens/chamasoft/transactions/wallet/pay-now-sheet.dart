@@ -4,9 +4,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
-import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 import "package:provider/provider.dart";
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -15,13 +13,20 @@ import 'package:flutter/services.dart';
 import 'package:chamasoft/providers/auth.dart';
 
 // ignore: must_be_immutable
-class PayNow extends StatefulWidget {
+class PayNowSheet extends StatefulWidget {
   //Function payNowFunction;
+  PayNowSheet(this.payNowFunction);
+  final void Function(
+      {int paymentFor,
+      int paymentForId,
+      double amount,
+      String phoneNumber,
+      String description}) payNowFunction;
   @override
-  _PayNowState createState() => _PayNowState();
+  _PayNowSheetState createState() => _PayNowSheetState();
 }
 
-class _PayNowState extends State<PayNow> {
+class _PayNowSheetState extends State<PayNowSheet> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   double amountInputValue;
@@ -90,7 +95,8 @@ class _PayNowState extends State<PayNow> {
     });
     try {
       formLoadData = await Provider.of<Groups>(context, listen: false)
-          .loadInitialFormData(contr: true, fineOptions: true, memberOngoingLoans: true);
+          .loadInitialFormData(
+              contr: true, fineOptions: true, memberOngoingLoans: true);
       setState(() {
         _isInit = false;
       });
@@ -101,7 +107,7 @@ class _PayNowState extends State<PayNow> {
     }
   }
 
-  void payNow(BuildContext context) async {
+  void payNow() {
     if (_userPhoneNumber == null) {
       _userPhoneNumber = Provider.of<Auth>(context, listen: false).phoneNumber;
     }
@@ -111,60 +117,42 @@ class _PayNowState extends State<PayNow> {
       _inputEnabled = false;
       _isLoading = true;
     });
-
-    final Map<String, dynamic> _formData = {
-      "payment_for": _paymentFor,
-      "contribution_id": _dropdownValue,
-      "fine_category_id": _dropdownValue,
-      "loan_id": _dropdownValue,
-      "description": _description,
-      "amount": amountInputValue,
-      "phone_number": _userPhoneNumber
-    };
-    try {
-      await Provider.of<Groups>(context, listen: false).makeGroupPayment(_formData);
-      setState(() {
-        _paymentForEnabled = true;
-        _inputEnabled = true;
-        _isLoading = false;
-      });
-    } on CustomException catch (error) {
-      setState(() {
-        _paymentForEnabled = true;
-        _inputEnabled = true;
-        _isLoading = false;
-      });
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            payNow(context);
-          });
-    }
+    widget.payNowFunction(
+        paymentFor: _paymentFor,
+        paymentForId: _dropdownValue,
+        amount: amountInputValue,
+        phoneNumber: _userPhoneNumber,
+        description: _description);
   }
 
   void _populatePaymentFor() {
     if (_paymentFor == 1) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("contributionOptions") ? formLoadData["contributionOptions"] : [];
+        _dropdownItems = formLoadData.containsKey("contributionOptions")
+            ? formLoadData["contributionOptions"]
+            : [];
         _paymentForEnabled = true;
         _labelText = "Select Contribution";
       });
     } else if (_paymentFor == 2) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("finesOptions") ? formLoadData["finesOptions"] : [];
+        _dropdownItems = formLoadData.containsKey("finesOptions")
+            ? formLoadData["finesOptions"]
+            : [];
         _paymentForEnabled = true;
         _labelText = "Select Fine Type";
       });
     } else if (_paymentFor == 3) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems =
-            formLoadData.containsKey("memberOngoingLoanOptions") ? formLoadData["memberOngoingLoanOptions"] : [];
+        _dropdownItems = formLoadData.containsKey("memberOngoingLoanOptions")
+            ? formLoadData["memberOngoingLoanOptions"]
+            : [];
         _paymentForEnabled = _dropdownItems.length > 0 ? true : false;
-        _labelText = _dropdownItems.length > 0 ? "Select Loan" : "No ongoing loans";
+        _labelText =
+            _dropdownItems.length > 0 ? "Select Loan" : "No ongoing loans";
       });
     } else {
       setState(() {
@@ -226,29 +214,37 @@ class _PayNowState extends State<PayNow> {
     return FormField(
       builder: (FormFieldState state) {
         return DropdownButtonHideUnderline(
-          child: new Column(
+          child: new Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              customDropDown(
-                  selectedItem: _paymentFor,
-                  labelText: 'Select payment for',
-                  onChanged: (int newValue) {
-                    setState(() {
-                      _paymentFor = newValue;
-                      _populatePaymentFor();
-                    });
-                  },
-                  validator: (newValue) {
-                    if (newValue == null) {
-                      return "Field is required";
-                    }
-                    return null;
-                  },
-                  listItems: _paymentForOption,
-                  enabled: _inputEnabled),
-              Visibility(visible: _paymentFor != 4, child: SizedBox(height: 10)),
-              Visibility(
-                visible: _paymentFor != 4,
+              Expanded(
+                flex: 7,
+                child: customDropDown(
+                    selectedItem: _paymentFor,
+                    labelText: 'Select payment for',
+                    onChanged: (int newValue) {
+                      setState(() {
+                        _paymentFor = newValue;
+                        _populatePaymentFor();
+                      });
+                    },
+                    validator: (newValue) {
+                      if (newValue == null) {
+                        return "Field is required";
+                      }
+                      return null;
+                    },
+                    listItems: _paymentForOption,
+                    enabled: _inputEnabled),
+              ),
+              if(_paymentFor!=4)
+              Expanded(
+                flex: 1,
+                child: SizedBox(width: 10),
+              ),
+              if(_paymentFor!=4)
+              Expanded(
+                flex: 7,
                 child: customDropDown(
                     selectedItem: _dropdownValue,
                     labelText: _labelText,
@@ -258,8 +254,7 @@ class _PayNowState extends State<PayNow> {
                       });
                     },
                     validator: (newValue) {
-                      if (_paymentFor != 4 && newValue == null) {
-                        print("Offending 2");
+                      if (newValue == null) {
                         return "Field is required";
                       }
                       return null;
@@ -274,14 +269,9 @@ class _PayNowState extends State<PayNow> {
     );
   }
 
-  void _numberToPrompt(BuildContext scaffoldContext) {
-    if (!_formKey.currentState.validate()) {
-      return;
-    }
-    _formKey.currentState.save();
-
+  void _numberToPrompt() {
     showDialog(
-      context: scaffoldContext,
+      context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
@@ -299,7 +289,8 @@ class _PayNowState extends State<PayNow> {
               Text(
                 "An M-Pesa STK Push will be initiated on this number. Stand by to confirm.",
                 style: TextStyle(
-                  color: Theme.of(context).hintColor, //Theme.of(context).textSelectionHandleColor,
+                  color: Theme.of(context)
+                      .hintColor, //Theme.of(context).textSelectionHandleColor,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
                 ),
@@ -311,7 +302,9 @@ class _PayNowState extends State<PayNow> {
             style: inputTextStyle(),
             initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+            inputFormatters: <TextInputFormatter>[
+              WhitelistingTextInputFormatter.digitsOnly
+            ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
@@ -337,7 +330,7 @@ class _PayNowState extends State<PayNow> {
                 text: "Pay Now",
                 color: primaryColor,
                 action: () {
-                  payNow(scaffoldContext);
+                  payNow();
                 }),
           ],
         );
@@ -345,106 +338,112 @@ class _PayNowState extends State<PayNow> {
     );
   }
 
+  void _validatePayNowForm() {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+    _numberToPrompt();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: secondaryPageAppbar(
-        context: context,
-        action: () => Navigator.of(context).pop(),
-        elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Wallet Payment",
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      body: Builder(
-        builder: (BuildContext context) {
-          return GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  toolTip(
-                      context: context,
-                      title: "Note that...",
-                      showTitle: false,
-                      message:
-                          "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Form(
-                    key: _formKey,
-                    child: Column(
-                      children: <Widget>[
-                        Container(
-                          padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                          child: Column(
-                            children: <Widget>[
-                              buildDropDown(),
-                              Visibility(visible: _paymentFor == 4, child: SizedBox(height: 10)),
-                              Visibility(
-                                visible: _paymentFor == 4,
-                                child: simpleTextInputField(
-                                    context: context,
-                                    labelText: 'Short Description (Optional)',
-                                    onChanged: (value) {
-                                      setState(() {
-                                        _description = value;
-                                      });
-                                    }),
-                              ),
-                              SizedBox(height: 10),
-                              amountTextInputField(
-                                  enabled: _inputEnabled,
-                                  context: context,
-                                  labelText: "Amount to pay",
-                                  onChanged: (value) {
-                                    setState(() {
-                                      amountInputValue = double.parse(value);
-                                    });
-                                  },
-                                  validator: (value) {
-                                    if (value == null || value == "") {
-                                      return "Field is required";
-                                    } else {
-                                      int amount = int.tryParse(value) ?? 0;
-                                      if (amount < 1) {
-                                        return "Invalid amount";
-                                      }
-                                    }
-                                    return null;
-                                  }),
-                              SizedBox(
-                                height: 20,
-                              ),
-                              _isLoading
-                                  ? Padding(
-                                      padding: EdgeInsets.all(10),
-                                      child: Center(child: CircularProgressIndicator()),
-                                    )
-                                  : RaisedButton(
-                                      color: primaryColor,
-                                      child: Padding(
-                                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                                        child: Text("Pay Now"),
-                                      ),
-                                      textColor: Colors.white,
-                                      onPressed: () => _numberToPrompt(context),
-                                    )
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                ],
+    return SingleChildScrollView(
+      child: Container(
+          padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom + 45,
+          ),
+          width: double.infinity,
+          color: Theme.of(context).backgroundColor,
+          child: Column(
+            children: [
+              Container(
+                  height: 8,
+                  width: 100,
+                  decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .hintColor
+                          .withOpacity(0.3), //Color(0xffededfe),
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.all(Radius.circular(5)))),
+              SizedBox(
+                height: 7,
               ),
-            ),
-          );
-        },
-      ),
+              heading2(
+                  text: "Wallet Payment",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.start),
+              SizedBox(
+                height: 10,
+              ),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      padding: EdgeInsets.only(
+                          left: 16.0, right: 16.0, bottom: 16.0),
+                      child: Column(
+                        children: <Widget>[
+                          buildDropDown(),
+                          if(_paymentFor==4)
+                          multilineTextField(
+                            context: context,
+                            labelText: 'Short Description (Optional)',
+                            maxLines: 3,
+                            onChanged: (value) {
+                              setState(() {
+                                _description = value;
+                              });
+                            },
+                            validator: (value) {
+                              if(value=="" || value=="null"){
+                                return "Field required";
+                              }else if(value.toString().length<8){
+                                return "Description atleast 8 characters";
+                              }
+                              return null;
+                            }
+                          ),
+                          amountTextInputField(
+                              enabled: _inputEnabled,
+                              context: context,
+                              labelText: "Amount to pay",
+                              onChanged: (value) {
+                                setState(() {
+                                  amountInputValue = double.parse(value);
+                                });
+                              }),
+                          SizedBox(
+                            height: 20,
+                          ),
+                          _isLoading
+                              ? Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Center(
+                                      child: CircularProgressIndicator()),
+                                )
+                              : RaisedButton(
+                                  color: primaryColor,
+                                  child: Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        20.0, 0.0, 20.0, 0.0),
+                                    child: Text("Pay Now"),
+                                  ),
+                                  textColor: Colors.white,
+                                  onPressed: () => _validatePayNowForm(),
+                                )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          )),
     );
   }
 }

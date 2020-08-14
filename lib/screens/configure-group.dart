@@ -28,6 +28,7 @@ Map<String, String> roles = {
 
 class ConfigureGroup extends StatefulWidget {
   static const String namedRoute = "/configure-group";
+
   @override
   _ConfigureGroupState createState() => _ConfigureGroupState();
 }
@@ -89,7 +90,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         itemBuilder: (context) => [
           PopupMenuItem(
             value: 1,
-            child: customTitle(text: "ADD FROM CONTACTS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+            child:
+                customTitle(text: "ADD FROM CONTACTS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
           ),
           PopupMenuItem(
             value: 2,
@@ -99,9 +101,12 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         child: ButtonTheme(
           height: 36,
           child: FlatButton(
+            ///DON'T ADD 'onPressed', otherwise it will intercept the click event and prevent the
+            ///PopupMenu from being triggered. Should have used a different widget, I know :(
             padding: EdgeInsets.only(left: 4, right: 4),
             shape: RoundedRectangleBorder(
-                side: BorderSide(color: Theme.of(context).hintColor, width: 1.0, style: BorderStyle.solid), borderRadius: BorderRadius.circular(4)),
+                side: BorderSide(color: Theme.of(context).hintColor, width: 1.0, style: BorderStyle.solid),
+                borderRadius: BorderRadius.circular(4)),
             child: Row(
               children: <Widget>[
                 Icon(
@@ -182,15 +187,16 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     Expanded(
                                       child: FutureBuilder(
                                           future: _memberFuture,
-                                          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                              ? Center(child: CircularProgressIndicator())
-                                              : RefreshIndicator(
-                                                  key: _memberRefreshIndicatorKey,
-                                                  onRefresh: () => _getMembers(context),
-                                                  child: Consumer<Groups>(builder: (context, data, child) {
-                                                    List<Member> members = data.members;
-                                                    return MembersTabView(members: members);
-                                                  }))),
+                                          builder: (context, snapshot) =>
+                                              snapshot.connectionState == ConnectionState.waiting
+                                                  ? Center(child: CircularProgressIndicator())
+                                                  : RefreshIndicator(
+                                                      key: _memberRefreshIndicatorKey,
+                                                      onRefresh: () => _getMembers(context),
+                                                      child: Consumer<Groups>(builder: (context, data, child) {
+                                                        List<Member> members = data.members;
+                                                        return MembersTabView(members: members);
+                                                      }))),
                                     ),
                                   ],
                                 ),
@@ -213,7 +219,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                             Navigator.pop(context);
 
                                             if (response) {
-                                              final result = await Navigator.of(context).pushNamed(CreateBankAccount.namedRoute);
+                                              final result =
+                                                  await Navigator.of(context).pushNamed(CreateBankAccount.namedRoute);
                                               if (result != null && result) {
                                                 _accountRefreshIndicatorKey.currentState.show();
                                                 _getAccounts(context);
@@ -226,18 +233,20 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     Expanded(
                                       child: FutureBuilder(
                                         future: _accountFuture,
-                                        builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                            ? Center(child: CircularProgressIndicator())
-                                            : RefreshIndicator(
-                                                key: _accountRefreshIndicatorKey,
-                                                onRefresh: () => _getAccounts(context),
-                                                child: Consumer<Groups>(
-                                                  builder: (context, data, child) {
-                                                    List<CategorisedAccount> accounts = data.getAllCategorisedAccounts;
-                                                    return AccountsTabView(accounts: accounts);
-                                                  },
-                                                ),
-                                              ),
+                                        builder: (context, snapshot) =>
+                                            snapshot.connectionState == ConnectionState.waiting
+                                                ? Center(child: CircularProgressIndicator())
+                                                : RefreshIndicator(
+                                                    key: _accountRefreshIndicatorKey,
+                                                    onRefresh: () => _getAccounts(context),
+                                                    child: Consumer<Groups>(
+                                                      builder: (context, data, child) {
+                                                        List<CategorisedAccount> accounts =
+                                                            data.getAllCategorisedAccounts;
+                                                        return AccountsTabView(accounts: accounts);
+                                                      },
+                                                    ),
+                                                  ),
                                       ),
                                     ),
                                   ],
@@ -250,7 +259,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                         Container(
                                           margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
                                           child: groupSetupButton(context, "ADD CONTRIBUTION", () async {
-                                            final result = await Navigator.of(context).pushNamed(AddContributionDialog.namedRoute);
+                                            final result =
+                                                await Navigator.of(context).pushNamed(AddContributionDialog.namedRoute);
                                             if (result != null && result) {
                                               _contributionRefreshIndicatorKey.currentState.show();
                                               _getContributions(context);
@@ -262,15 +272,16 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     Expanded(
                                       child: FutureBuilder(
                                           future: _contributionFuture,
-                                          builder: (context, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                                              ? Center(child: CircularProgressIndicator())
-                                              : RefreshIndicator(
-                                                  key: _contributionRefreshIndicatorKey,
-                                                  onRefresh: () => _getContributions(context),
-                                                  child: Consumer<Groups>(builder: (context, data, child) {
-                                                    List<Contribution> contributions = data.contributions;
-                                                    return ContributionsTabView(contributions: contributions);
-                                                  }))),
+                                          builder: (context, snapshot) =>
+                                              snapshot.connectionState == ConnectionState.waiting
+                                                  ? Center(child: CircularProgressIndicator())
+                                                  : RefreshIndicator(
+                                                      key: _contributionRefreshIndicatorKey,
+                                                      onRefresh: () => _getContributions(context),
+                                                      child: Consumer<Groups>(builder: (context, data, child) {
+                                                        List<Contribution> contributions = data.contributions;
+                                                        return ContributionsTabView(contributions: contributions);
+                                                      }))),
                                     ),
                                   ],
                                 ),
@@ -300,7 +311,10 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                         fit: BoxFit.scaleDown,
                                         child: heading2(
                                             color: primaryColor,
-                                            text: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName + " Setup"),
+                                            text: Provider.of<Groups>(context, listen: false)
+                                                    .getCurrentGroup()
+                                                    .groupName +
+                                                " Setup"),
                                       ),
                                     ),
                                     SizedBox(width: 10.0),
@@ -311,8 +325,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                         buttonHeight: 30.0,
                                         textSize: 12.0,
                                         iconData: LineAwesomeIcons.arrow_right,
-                                        action: () => Navigator.of(context)
-                                            .pushNamedAndRemoveUntil(ChamasoftDashboard.namedRoute, ModalRoute.withName(MyGroups.namedRoute)))
+                                        action: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                                            ChamasoftDashboard.namedRoute, ModalRoute.withName(MyGroups.namedRoute)))
                                   ],
                                 ),
                               ),
@@ -384,7 +398,9 @@ class AccountsTabView extends StatelessWidget {
               CategorisedAccount account = accounts[index];
               if (account.isHeader) {
                 return Padding(
-                  padding: index == 0 ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0) : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                  padding: index == 0
+                      ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0)
+                      : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                   child: customTitle(
                     text: account.title,
                     fontWeight: FontWeight.w600,
@@ -435,7 +451,8 @@ class AccountsTabView extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ), //                                                    Expanded(
+                      ),
+                      //                                                    Expanded(
 //                                                      flex: 1,
 //                                                      child: FittedBox(
 //                                                        child: Row(

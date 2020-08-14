@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-banks.dart';

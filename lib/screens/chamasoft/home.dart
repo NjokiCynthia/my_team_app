@@ -435,7 +435,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             isFlat: false,
                                             text: "PAY NOW",
                                             iconSize: 12.0,
-                                            action: () => _openPayNowTray(context),
+                                            action: () => Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (BuildContext context) => PayNow(),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -593,36 +597,36 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         ));
   }
 
-  void _openPayNowTray(BuildContext context) {
-    Future<void> _initiatePayNow(
-        {int paymentFor, int paymentForId, double amount, String phoneNumber, String description}) async {
-      final Map<String, dynamic> _formData = {
-        "payment_for": paymentFor,
-        "contribution_id": paymentForId,
-        "fine_category_id": paymentForId,
-        "loan_id": paymentForId,
-        "description": description,
-        "amount": amount,
-        "phone_number": phoneNumber
-      };
-      try {
-        await Provider.of<Groups>(context, listen: false).makeGroupPayment(_formData);
-        Navigator.pop(context);
-      } on CustomException catch (error) {
-        Navigator.pop(context);
-        StatusHandler().handleStatus(context: context, error: error);
-      }
-    }
-
-    showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (_) {
-          return GestureDetector(
-            onTap: null,
-            child: PayNow(_initiatePayNow),
-            behavior: HitTestBehavior.opaque,
-          );
-        });
-  }
+//  void _openPayNowTray(BuildContext context) {
+//    Future<void> _initiatePayNow(
+//        {int paymentFor, int paymentForId, double amount, String phoneNumber, String description}) async {
+//      final Map<String, dynamic> _formData = {
+//        "payment_for": paymentFor,
+//        "contribution_id": paymentForId,
+//        "fine_category_id": paymentForId,
+//        "loan_id": paymentForId,
+//        "description": description,
+//        "amount": amount,
+//        "phone_number": phoneNumber
+//      };
+//      try {
+//        await Provider.of<Groups>(context, listen: false).makeGroupPayment(_formData);
+//        Navigator.pop(context);
+//      } on CustomException catch (error) {
+//        Navigator.pop(context);
+//        StatusHandler().handleStatus(context: context, error: error);
+//      }
+//    }
+//
+//    showModalBottomSheet(
+//        isScrollControlled: true,
+//        context: context,
+//        builder: (_) {
+//          return GestureDetector(
+//            onTap: null,
+//            child: PayNow(_initiatePayNow),
+//            behavior: HitTestBehavior.opaque,
+//          );
+//        });
+//  }
 }
