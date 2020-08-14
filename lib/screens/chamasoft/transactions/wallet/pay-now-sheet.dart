@@ -16,12 +16,10 @@ import 'package:chamasoft/providers/auth.dart';
 class PayNowSheet extends StatefulWidget {
   //Function payNowFunction;
   PayNowSheet(this.payNowFunction);
-  final void Function(
-      {int paymentFor,
-      int paymentForId,
-      double amount,
-      String phoneNumber,
-      String description}) payNowFunction;
+
+  final void Function({int paymentFor, int paymentForId, double amount, String phoneNumber, String description})
+      payNowFunction;
+
   @override
   _PayNowSheetState createState() => _PayNowSheetState();
 }
@@ -95,8 +93,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
     });
     try {
       formLoadData = await Provider.of<Groups>(context, listen: false)
-          .loadInitialFormData(
-              contr: true, fineOptions: true, memberOngoingLoans: true);
+          .loadInitialFormData(contr: true, fineOptions: true, memberOngoingLoans: true);
       setState(() {
         _isInit = false;
       });
@@ -129,30 +126,24 @@ class _PayNowSheetState extends State<PayNowSheet> {
     if (_paymentFor == 1) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("contributionOptions")
-            ? formLoadData["contributionOptions"]
-            : [];
+        _dropdownItems = formLoadData.containsKey("contributionOptions") ? formLoadData["contributionOptions"] : [];
         _paymentForEnabled = true;
         _labelText = "Select Contribution";
       });
     } else if (_paymentFor == 2) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("finesOptions")
-            ? formLoadData["finesOptions"]
-            : [];
+        _dropdownItems = formLoadData.containsKey("finesOptions") ? formLoadData["finesOptions"] : [];
         _paymentForEnabled = true;
         _labelText = "Select Fine Type";
       });
     } else if (_paymentFor == 3) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("memberOngoingLoanOptions")
-            ? formLoadData["memberOngoingLoanOptions"]
-            : [];
+        _dropdownItems =
+            formLoadData.containsKey("memberOngoingLoanOptions") ? formLoadData["memberOngoingLoanOptions"] : [];
         _paymentForEnabled = _dropdownItems.length > 0 ? true : false;
-        _labelText =
-            _dropdownItems.length > 0 ? "Select Loan" : "No ongoing loans";
+        _labelText = _dropdownItems.length > 0 ? "Select Loan" : "No ongoing loans";
       });
     } else {
       setState(() {
@@ -237,30 +228,28 @@ class _PayNowSheetState extends State<PayNowSheet> {
                     listItems: _paymentForOption,
                     enabled: _inputEnabled),
               ),
-              if(_paymentFor!=4)
-              Expanded(
-                flex: 1,
-                child: SizedBox(width: 10),
-              ),
-              if(_paymentFor!=4)
-              Expanded(
-                flex: 7,
-                child: customDropDown(
-                    selectedItem: _dropdownValue,
-                    labelText: _labelText,
-                    onChanged: (int newValue) {
-                      setState(() {
-                        _dropdownValue = newValue;
-                      });
-                    },
-                    validator: (newValue) {
-                      if (newValue == null) {
-                        return "Field is required";
-                      }
-                      return null;
-                    },
-                    listItems: _dropdownItems,
-                    enabled: _paymentForEnabled),
+              Visibility(visible: _paymentFor != 4, child: Expanded(flex: 1, child: SizedBox(height: 10))),
+              Visibility(
+                visible: _paymentFor != 4,
+                child: Expanded(
+                  flex: 7,
+                  child: customDropDown(
+                      selectedItem: _dropdownValue,
+                      labelText: _labelText,
+                      onChanged: (int newValue) {
+                        setState(() {
+                          _dropdownValue = newValue;
+                        });
+                      },
+                      validator: (newValue) {
+                        if (_paymentFor != 4 && newValue == null) {
+                          return "Field is required";
+                        }
+                        return null;
+                      },
+                      listItems: _dropdownItems,
+                      enabled: _paymentForEnabled),
+                ),
               ),
             ],
           ),
@@ -289,8 +278,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
               Text(
                 "An M-Pesa STK Push will be initiated on this number. Stand by to confirm.",
                 style: TextStyle(
-                  color: Theme.of(context)
-                      .hintColor, //Theme.of(context).textSelectionHandleColor,
+                  color: Theme.of(context).hintColor, //Theme.of(context).textSelectionHandleColor,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
                 ),
@@ -302,9 +290,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
             style: inputTextStyle(),
             initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              WhitelistingTextInputFormatter.digitsOnly
-            ],
+            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
@@ -364,9 +350,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
                   height: 8,
                   width: 100,
                   decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .hintColor
-                          .withOpacity(0.3), //Color(0xffededfe),
+                      color: Theme.of(context).hintColor.withOpacity(0.3), //Color(0xffededfe),
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.all(Radius.circular(5)))),
               SizedBox(
@@ -384,30 +368,23 @@ class _PayNowSheetState extends State<PayNowSheet> {
                 child: Column(
                   children: <Widget>[
                     Container(
-                      padding: EdgeInsets.only(
-                          left: 16.0, right: 16.0, bottom: 16.0),
+                      padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
                       child: Column(
                         children: <Widget>[
                           buildDropDown(),
-                          if(_paymentFor==4)
-                          multilineTextField(
-                            context: context,
-                            labelText: 'Short Description (Optional)',
-                            maxLines: 3,
-                            onChanged: (value) {
-                              setState(() {
-                                _description = value;
-                              });
-                            },
-                            validator: (value) {
-                              if(value=="" || value=="null"){
-                                return "Field required";
-                              }else if(value.toString().length<8){
-                                return "Description atleast 8 characters";
-                              }
-                              return null;
-                            }
+                          Visibility(visible: _paymentFor == 4, child: SizedBox(height: 10)),
+                          Visibility(
+                            visible: _paymentFor == 4,
+                            child: simpleTextInputField(
+                                context: context,
+                                labelText: 'Short Description (Optional)',
+                                onChanged: (value) {
+                                  setState(() {
+                                    _description = value;
+                                  });
+                                }),
                           ),
+                          SizedBox(height: 10),
                           amountTextInputField(
                               enabled: _inputEnabled,
                               context: context,
@@ -416,6 +393,17 @@ class _PayNowSheetState extends State<PayNowSheet> {
                                 setState(() {
                                   amountInputValue = double.parse(value);
                                 });
+                              },
+                              validator: (value) {
+                                if (value == null || value == "") {
+                                  return "Field is required";
+                                } else {
+                                  int amount = int.tryParse(value) ?? 0;
+                                  if (amount < 1) {
+                                    return "Invalid amount";
+                                  }
+                                }
+                                return null;
                               }),
                           SizedBox(
                             height: 20,
@@ -423,14 +411,12 @@ class _PayNowSheetState extends State<PayNowSheet> {
                           _isLoading
                               ? Padding(
                                   padding: EdgeInsets.all(10),
-                                  child: Center(
-                                      child: CircularProgressIndicator()),
+                                  child: Center(child: CircularProgressIndicator()),
                                 )
                               : RaisedButton(
                                   color: primaryColor,
                                   child: Padding(
-                                    padding: EdgeInsets.fromLTRB(
-                                        20.0, 0.0, 20.0, 0.0),
+                                    padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
                                     child: Text("Pay Now"),
                                   ),
                                   textColor: Colors.white,

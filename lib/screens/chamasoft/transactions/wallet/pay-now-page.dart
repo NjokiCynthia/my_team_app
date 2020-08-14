@@ -162,7 +162,7 @@ class _PayNowState extends State<PayNow> {
       setState(() {
         _dropdownValue = null;
         _dropdownItems =
-        formLoadData.containsKey("memberOngoingLoanOptions") ? formLoadData["memberOngoingLoanOptions"] : [];
+            formLoadData.containsKey("memberOngoingLoanOptions") ? formLoadData["memberOngoingLoanOptions"] : [];
         _paymentForEnabled = _dropdownItems.length > 0 ? true : false;
         _labelText = _dropdownItems.length > 0 ? "Select Loan" : "No ongoing loans";
       });
@@ -178,11 +178,11 @@ class _PayNowState extends State<PayNow> {
 
   Widget customDropDown(
       {int selectedItem,
-        String labelText,
-        Function onChanged,
-        Function validator,
-        List<NamesListItem> listItems,
-        bool enabled}) {
+      String labelText,
+      Function onChanged,
+      Function validator,
+      List<NamesListItem> listItems,
+      bool enabled}) {
     return new Theme(
       data: Theme.of(context).copyWith(
         canvasColor: Theme.of(context).cardColor,
@@ -316,9 +316,9 @@ class _PayNowState extends State<PayNow> {
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Theme.of(context).hintColor,
-                    width: 1.0,
-                  )),
+                color: Theme.of(context).hintColor,
+                width: 1.0,
+              )),
               // hintText: 'Phone Number or Email Address',
               labelText: "M-Pesa Number",
             ),
@@ -370,7 +370,7 @@ class _PayNowState extends State<PayNow> {
                       title: "Note that...",
                       showTitle: false,
                       message:
-                      "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
+                          "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
                   SizedBox(
                     height: 10,
                   ),
@@ -421,18 +421,18 @@ class _PayNowState extends State<PayNow> {
                               ),
                               _isLoading
                                   ? Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Center(child: CircularProgressIndicator()),
-                              )
+                                      padding: EdgeInsets.all(10),
+                                      child: Center(child: CircularProgressIndicator()),
+                                    )
                                   : RaisedButton(
-                                color: primaryColor,
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                                  child: Text("Pay Now"),
-                                ),
-                                textColor: Colors.white,
-                                onPressed: () => _numberToPrompt(context),
-                              )
+                                      color: primaryColor,
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                                        child: Text("Pay Now"),
+                                      ),
+                                      textColor: Colors.white,
+                                      onPressed: () => _numberToPrompt(context),
+                                    )
                             ],
                           ),
                         )
