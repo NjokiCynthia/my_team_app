@@ -71,7 +71,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
       alertDialogWithAction(context, "You have successfully added members to your group", () {
         Navigator.of(context).pop();
         Navigator.of(context).pop(true);
-      });
+      }, false);
     } on CustomException catch (error) {
       Navigator.of(context).pop();
       StatusHandler().handleStatus(

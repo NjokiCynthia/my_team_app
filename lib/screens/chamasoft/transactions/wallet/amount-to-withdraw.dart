@@ -47,11 +47,11 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
     try {
       await Provider.of<Groups>(context, listen: false).createWithdrawalRequest(widget.formData);
 
-      Scaffold.of(context).showSnackBar(SnackBar(
-          duration: Duration(seconds: 3),
-          content: Text(
-            "Withdrawal request submitted",
-          )));
+      alertDialogWithAction(context, "Withdrawal request has been submitted", () {
+        Navigator.of(context).pop();
+        int count = 0;
+        Navigator.of(context).popUntil((_) => count++ >= 3);
+      }, false);
 
 //      Future.delayed(const Duration(seconds: 3), () {
 //        Navigator.of(context).popUntil(ModalRoute.withName(ChamasoftDashboard.namedRoute));
@@ -72,8 +72,6 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
             _submitRequest(context);
           });
     }
-
-    print(widget.formData);
   }
 
   @override
