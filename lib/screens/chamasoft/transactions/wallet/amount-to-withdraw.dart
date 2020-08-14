@@ -52,10 +52,6 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
         int count = 0;
         Navigator.of(context).popUntil((_) => count++ >= 3);
       }, false);
-
-//      Future.delayed(const Duration(seconds: 3), () {
-//        Navigator.of(context).popUntil(ModalRoute.withName(ChamasoftDashboard.namedRoute));
-//      });
       setState(() {
         _isLoading = false;
         _isFormInputEnabled = true;
