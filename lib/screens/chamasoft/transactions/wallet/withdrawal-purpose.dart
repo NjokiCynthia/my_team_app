@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-banks.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-phone-contacts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -83,7 +85,22 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     _isInit = false;
   }
 
-  void _prepareSubmission() {
+  Future<bool> fetchBankOptions(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchBankOptions();
+      return true;
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            fetchBankOptions(context);
+          });
+      return false;
+    }
+  }
+
+  void _prepareSubmission(BuildContext context, int flag) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -120,13 +137,37 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 
         list = _formLoadData["memberOptions"];
         formData['member_name'] = _getOptionName(_memberId, list);
+        formData['member_id'] = _memberId.toString();
 
         list = _formLoadData["loanTypeOptions"];
         formData['name'] = _getOptionName(_loanTypeId, list);
         break;
     }
 
-    print("Data: ${formData.toString()}");
+    if (flag == 1) {
+      //send to bank
+      formData['recipient'] = "3";
+      List<Bank> _banksList = Provider.of<Groups>(context,listen: false).bankOptions;
+      if (_banksList.length < 1) {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            });
+        await fetchBankOptions(context);
+        Navigator.pop(context);
+        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ListBanks(formData: formData)));
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ListBanks(formData: formData)));
+      }
+    } else {
+      //send to phone
+      formData['recipient'] = "1";
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (BuildContext context) => ListPhoneContacts(formData: formData)));
+    }
   }
 
   String _getOptionName(int id, List<NamesListItem> list) {
@@ -327,7 +368,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     isFlat: false,
                                     text: "Send To Bank",
                                     iconSize: 12.0,
-                                    action: () => _prepareSubmission(),
+                                    action: () => _prepareSubmission(context, 1),
                                     showIcon: false),
                               ),
                               SizedBox(
@@ -341,7 +382,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     isFlat: true,
                                     text: "Send To Mobile",
                                     iconSize: 12.0,
-                                    action: () => _prepareSubmission(),
+                                    action: () => _prepareSubmission(context, 2),
                                     showIcon: false),
                               )
                             ],

@@ -344,6 +344,20 @@ class BankLoans {
       this.balance});
 }
 
+class OngoingMemberLoanOptions{
+  final String id,memberId;
+  final String description,loanType;
+  final double amount, balance;
+  final isSelected;
+
+  OngoingMemberLoanOptions(
+      {@required this.id,
+      @required this.memberId,
+      @required this.description,
+      this.amount,
+      this.balance,this.isSelected,this.loanType});
+}
+
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
 
@@ -364,6 +378,7 @@ class Groups with ChangeNotifier {
   List<MobileMoneyProvider> _mobileMoneyProviderOptions = [];
   List<Sacco> _saccoOptions = [];
   List<SaccoBranch> _saccoBranchOptions = [];
+  Map<String,List<OngoingMemberLoanOptions>> _ongoingMemberLoans = {};
 
   AccountBalanceModel _accountBalances;
   TransactionStatementModel _transactionStatement;
@@ -389,6 +404,7 @@ class Groups with ChangeNotifier {
   String _identity;
   List<Group> _groups = [];
   String _currentGroupId;
+  String _currentMemberId = "21475";
 
   Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
@@ -1070,6 +1086,28 @@ class Groups with ChangeNotifier {
       }
     }
     _bankLoans = bankLoansSummary;
+    notifyListeners();
+  }
+
+  void addOngoingMemberLoans(List<dynamic> memberLoansList){
+    final Map<String,List<OngoingMemberLoanOptions>> memberLoansSummary = {};
+    if (memberLoansList.length > 0) {
+      for (var object in memberLoansList) {
+        var memberId = object['member_id'].toString();
+        List<OngoingMemberLoanOptions> newData = [];
+        newData.add(OngoingMemberLoanOptions(
+          id: object['id'].toString(),
+          memberId: memberId,
+          isSelected: object['is_selected'].toString() == "1"?true:false,
+          description: object['description'].toString(),
+          amount: double.tryParse(object['amount'].toString()) ?? 0.0,
+          balance: double.tryParse(object['balance'].toString()) ?? 0.0,
+          loanType: object['name'].toString()
+        ));
+        memberLoansSummary[memberId] = newData;
+      }
+    }
+    _ongoingMemberLoans = memberLoansSummary;
     notifyListeners();
   }
 
@@ -2488,6 +2526,31 @@ class Groups with ChangeNotifier {
     }
   }
 
+
+  Future<void> fetchGroupMembersOngoingLoans()async{
+    const url = EndpointUrl.GET_MEMBERs_LOAN_TYPE_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        final data = response['loans'] as List<dynamic>;
+        addOngoingMemberLoans(data);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   ///*************************Contributions Summary and Fines Summary*****************************/
 
   Future<dynamic> getGroupContributionSummary() async {
@@ -2628,7 +2691,6 @@ class Groups with ChangeNotifier {
   /// ***********************Member Loans*****************************
   Future<void> fetchMemberLoans() async {
     const url = EndpointUrl.GET_GROUP_LOAN_LIST;
-
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2862,6 +2924,21 @@ class Groups with ChangeNotifier {
           .toList();
     }
 
+    if(memberOngoingLoans){
+      if(_ongoingMemberLoans.length==0){
+        await fetchGroupMembersOngoingLoans();
+      }
+
+      _ongoingMemberLoans.forEach((key, value) {
+          value.map((element){
+            if(element.isSelected){
+              memberOngoingLoanOptions.add(NamesListItem(id: int.tryParse(element.id), 
+                name: "${element.loanType} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(element.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(element.balance)}"
+              ));
+            }
+          }).toList();
+      });
+    }
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
@@ -3149,6 +3226,28 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> createWithdrawalRequest(Map<String, dynamic> formData) async {
+    try {
+      const url = EndpointUrl.WITHDRAWALS_FUNDS_TRANSFER;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
+
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   void switchGroupValuesToDefault({bool removeGroups = false}) {
     if (removeGroups) {
       _groups = [];
@@ -3184,5 +3283,6 @@ class Groups with ChangeNotifier {
     _contributionStatement = null;
     _fineStatement = null;
     _groupRolesStatusAndCurrentMemberStatus = null;
+    _ongoingMemberLoans = {};
   }
 }

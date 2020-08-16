@@ -1,12 +1,17 @@
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class ReviewWithdrawalRequests extends StatefulWidget {
   @override
@@ -15,6 +20,72 @@ class ReviewWithdrawalRequests extends StatefulWidget {
 }
 
 class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
+  double _appBarElevation = 0;
+  ScrollController _scrollController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List<Deposit> _deposits = [];
+  bool _isLoading = true;
+  bool _isInit = true;
+
+  void _scrollListener() {
+    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
+  }
+
+  Future<void> _getDeposits(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchDeposits();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getDeposits(context);
+          });
+    }
+  }
+
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
+    _getDeposits(context).then((_) {
+      _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
+      setState(() {
+        _isLoading = false;
+      });
+    });
+
+    _isInit = false;
+    return true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    //if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
+
+  @override
+  void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<WithdrawalRequest> list = [
