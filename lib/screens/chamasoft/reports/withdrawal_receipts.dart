@@ -43,7 +43,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
           error: error,
           callback: () {
             _getWithdrawals(context);
-          });
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
   }
 
