@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chamasoft/providers/groups.dart' as GroupProvider;
 import 'package:chamasoft/screens/chamasoft/notifications/notification-details.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -140,85 +142,94 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
               child: isFetched
                   ? Consumer<GroupProvider.Groups>(
                       builder: (context, groupData, child) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          GroupProvider.Notification notification =
-                              groupData.notifications[index];
-                          return InkWell(
-                            onTap: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    NotificationDetails(
-                                        notification: notification),
-                              ),
-                            ),
-                            child: Container(
-                              child: Column(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.all(SPACING_NORMAL),
+                      return groupData.notifications.length > 0
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                GroupProvider.Notification notification =
+                                    groupData.notifications[index];
+                                return InkWell(
+                                  onTap: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          NotificationDetails(
+                                              notification: notification),
+                                    ),
+                                  ),
+                                  child: Container(
                                     child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.end,
                                       children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.notifications,
-                                              size: 24.0,
-                                              color: notification.isRead == "0"
-                                                  ? Theme.of(context).hintColor
-                                                  : Theme.of(context)
-                                                      .dividerColor,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Expanded(
-                                              child: Text(
-                                                notification.message,
-                                                style: TextStyle(
-                                                    fontWeight:
+                                        Padding(
+                                          padding:
+                                              EdgeInsets.all(SPACING_NORMAL),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              Row(
+                                                children: <Widget>[
+                                                  Icon(
+                                                    Icons.notifications,
+                                                    size: 24.0,
+                                                    color:
                                                         notification.isRead ==
                                                                 "0"
-                                                            ? FontWeight.w700
-                                                            : FontWeight.w400,
-                                                    fontSize: 12.0,
-                                                    color: Theme.of(context)
-                                                        .textSelectionHandleColor,
-                                                    fontFamily: 'SegoeUI'),
-                                                textAlign: TextAlign.start,
+                                                            ? Theme.of(context)
+                                                                .hintColor
+                                                            : Theme.of(context)
+                                                                .dividerColor,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      notification.message,
+                                                      style: TextStyle(
+                                                          fontWeight: notification
+                                                                      .isRead ==
+                                                                  "0"
+                                                              ? FontWeight.w700
+                                                              : FontWeight.w400,
+                                                          fontSize: 12.0,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .textSelectionHandleColor,
+                                                          fontFamily:
+                                                              'SegoeUI'),
+                                                      textAlign:
+                                                          TextAlign.start,
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                            )
-                                          ],
+                                              customTitle(
+                                                  text: notification.timeAgo,
+                                                  fontSize: 12.0,
+                                                  fontWeight:
+                                                      notification.isRead == "0"
+                                                          ? FontWeight.w700
+                                                          : FontWeight.w400,
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
+                                                  textAlign: TextAlign.end),
+                                            ],
+                                          ),
                                         ),
-                                        customTitle(
-                                            text: notification.timeAgo,
-                                            fontSize: 12.0,
-                                            fontWeight:
-                                                notification.isRead == "0"
-                                                    ? FontWeight.w700
-                                                    : FontWeight.w400,
-                                            color: Theme.of(context)
-                                                .textSelectionHandleColor,
-                                            textAlign: TextAlign.end),
+                                        DashedDivider(
+                                          color: Theme.of(context).dividerColor,
+                                          thickness: 1.0,
+                                          height: 5.0,
+                                          width: 4.0,
+                                        ),
                                       ],
                                     ),
                                   ),
-                                  DashedDivider(
-                                    color: Theme.of(context).dividerColor,
-                                    thickness: 1.0,
-                                    height: 5.0,
-                                    width: 4.0,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        itemCount: groupData.notifications.length,
-                      );
+                                );
+                              },
+                              itemCount: groupData.notifications.length,
+                            )
+                          : Center(child: Text('No new notifications'));
                     })
                   : Center(
                       child: CircularProgressIndicator(),

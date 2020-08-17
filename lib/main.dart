@@ -13,11 +13,14 @@ import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import './providers/auth.dart';
 import './providers/groups.dart';
+
+
 
 void main() {
   runApp(MyApp());
@@ -29,8 +32,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
+
+
+
   void getCurrentAppTheme() async {
-    themeChangeProvider.darkTheme = await themeChangeProvider.darkThemePreference.getTheme();
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
@@ -46,6 +54,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -66,17 +76,23 @@ class _MyAppState extends State<MyApp> {
           // ignore: missing_return
           create: (BuildContext context) {},
         ),
-        ChangeNotifierProxyProvider<Groups,Dashboard>(
+        ChangeNotifierProxyProvider<Groups, Dashboard>(
           update: (ctx, groups, dashboardData) => Dashboard(
-              groups.userId, groups.currentGroupId,dashboardData == null ? {} : dashboardData.memberDashboardData, dashboardData == null ? {} : dashboardData.groupDashboardData),
+              groups.userId,
+              groups.currentGroupId,
+              dashboardData == null ? {} : dashboardData.memberDashboardData,
+              dashboardData == null ? {} : dashboardData.groupDashboardData),
           // ignore: missing_return
           create: (BuildContext context) {},
         )
       ],
-      child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
+      child: Consumer<DarkThemeProvider>(
+          builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          color: themeChangeProvider.darkTheme ? Colors.blueGrey[900] : Colors.blue[50],
+          color: themeChangeProvider.darkTheme
+              ? Colors.blueGrey[900]
+              : Colors.blue[50],
           title: 'Chamasoft',
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
           home: IntroScreen(),
