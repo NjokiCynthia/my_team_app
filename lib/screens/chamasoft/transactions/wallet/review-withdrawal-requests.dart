@@ -8,6 +8,8 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -15,15 +17,14 @@ import 'package:provider/provider.dart';
 
 class ReviewWithdrawalRequests extends StatefulWidget {
   @override
-  _ReviewWithdrawalRequestsState createState() =>
-      _ReviewWithdrawalRequestsState();
+  _ReviewWithdrawalRequestsState createState() => _ReviewWithdrawalRequestsState();
 }
 
 class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<Deposit> _deposits = [];
+  List<WithdrawalRequest> _withdrawalRequests = [];
   bool _isLoading = true;
   bool _isInit = true;
 
@@ -36,16 +37,17 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
     }
   }
 
-  Future<void> _getDeposits(BuildContext context) async {
+  Future<void> _getWithdrawalRequests(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchDeposits();
+      await Provider.of<Groups>(context, listen: false).fetchWithdrawalRequests();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
-            _getDeposits(context);
-          });
+            _getWithdrawalRequests(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
   }
 
@@ -54,9 +56,9 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
       _isLoading = true;
     });
 
-    _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
-    _getDeposits(context).then((_) {
-      _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
+    _withdrawalRequests = Provider.of<Groups>(context, listen: false).getWithdrawalRequestList;
+    _getWithdrawalRequests(context).then((_) {
+      _withdrawalRequests = Provider.of<Groups>(context, listen: false).getWithdrawalRequestList;
       setState(() {
         _isLoading = false;
       });
@@ -68,7 +70,7 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
 
   @override
   void didChangeDependencies() {
-    //if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
@@ -88,20 +90,8 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
 
   @override
   Widget build(BuildContext context) {
-    final List<WithdrawalRequest> list = [
-      WithdrawalRequest(
-          1, DateTime.now(), "Expense Payment", "Audit Fees", 12000),
-      WithdrawalRequest(
-          1, DateTime.now(), "Contribution Refund", "Peter Kimutai", 16000),
-      WithdrawalRequest(
-          1, DateTime.now(), "Merry Go Round", "Geoffrey Githaiga", 1000),
-      WithdrawalRequest(
-          1, DateTime.now(), "Loan Disbursement", "Aggrey Koros", 22000),
-      WithdrawalRequest(
-          1, DateTime.now(), "Expense Payment", "Audit Fees", 4210),
-    ];
-
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,8 +106,7 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
                     action: () => Navigator.of(context).pop(),
                   ),
                   SizedBox(width: 20.0),
-                  heading2(
-                      color: primaryColor, text: "Review Withdrawal Requests"),
+                  heading2(color: primaryColor, text: "Review Withdrawal Requests"),
                 ],
               ),
             ],
@@ -127,16 +116,35 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
           automaticallyImplyLeading: false,
         ),
         backgroundColor: Colors.transparent,
-        body: Container(
-          decoration: primaryGradient(context),
-          width: double.infinity,
-          height: double.infinity,
-          child: ListView.builder(
-            itemBuilder: (context, index) {
-              WithdrawalRequest request = list[index];
-              return WithdrawalRequestCard(request: request);
-            },
-            itemCount: list.length,
+        body: RefreshIndicator(
+          onRefresh: () => _fetchData(),
+          child: Container(
+            decoration: primaryGradient(context),
+            width: double.infinity,
+            height: double.infinity,
+            child: Column(
+              children: [
+                _isLoading
+                    ? showLinearProgressIndicator()
+                    : SizedBox(
+                        height: 0.0,
+                      ),
+                Expanded(
+                  child: _withdrawalRequests.length > 0
+                      ? ListView.builder(
+                          itemBuilder: (context, index) {
+                            WithdrawalRequest request = _withdrawalRequests[index];
+                            return WithdrawalRequestCard(request: request);
+                          },
+                          itemCount: _withdrawalRequests.length,
+                        )
+                      : emptyList(
+                          color: Colors.blue[400],
+                          iconData: LineAwesomeIcons.angle_double_down,
+                          text: "There are no withdrawal requests to display"),
+                ),
+              ],
+            ),
           ),
         ));
   }
@@ -152,18 +160,18 @@ class WithdrawalRequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
         elevation: 3.0,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         borderOnForeground: false,
         child: Container(
-            padding: EdgeInsets.all(12.0),
-            decoration: cardDecoration(
-                gradient: plainCardGradient(context), context: context),
+            padding: EdgeInsets.only(left: 12.0, top: 12.0, right: 12.0),
+            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -171,7 +179,7 @@ class WithdrawalRequestCard extends StatelessWidget {
                   children: <Widget>[
                     Expanded(
                       child: customTitle(
-                        text: request.purpose,
+                        text: request.withdrawalFor,
                         fontWeight: FontWeight.w700,
                         fontSize: 16.0,
                         color: Theme.of(context).textSelectionHandleColor,
@@ -185,7 +193,7 @@ class WithdrawalRequestCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         customTitle(
-                          text: "Ksh ",
+                          text: "${groupObject.groupCurrency} ",
                           fontSize: 16.0,
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
@@ -201,7 +209,7 @@ class WithdrawalRequestCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -213,12 +221,12 @@ class WithdrawalRequestCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             subtitle2(
-                                text: "Particulars",
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
+                                text: "Requested On",
+                                color: Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
-                            customTitle(
-                              text: request.particulars,
+                            customTitleWithWrap(
+                              text: request.requestDate,
+                              fontSize: 12.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.start,
                             )
@@ -234,13 +242,12 @@ class WithdrawalRequestCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
                             subtitle2(
-                                text: "Requested On",
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
+                                text: "Initiate By",
+                                color: Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.end),
-                            customTitle(
-                              text:
-                                  defaultDateFormat.format(request.requestDate),
+                            customTitleWithWrap(
+                              text: request.name,
+                              fontSize: 12.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.start,
                             )
@@ -248,25 +255,47 @@ class WithdrawalRequestCard extends StatelessWidget {
                         ),
                       ),
                     ]),
+                SizedBox(
+                  height: 5,
+                ),
+                subtitle2(
+                    text: "Recipient", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                customTitleWithWrap(
+                  text: request.recipient,
+                  fontSize: 12.0,
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.start,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
+                subtitle2(
+                    text: "Status", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                customTitleWithWrap(
+                  text: request.status,
+                  fontSize: 12.0,
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.start,
+                ),
+                SizedBox(
+                  height: 5,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Text(
-                      "",
+                    Expanded(
+                      child: Text(""),
                     ),
                     plainButtonWithArrow(
-                        text: "Respond",
+                        text: request.isOwner == 1 ? "VIEW" : request.hasResponded == 0 ? "RESPOND" : "VIEW",
+                        //TODO: Admin Restrictions
                         size: 16.0,
                         spacing: 2.0,
-                        color: Theme.of(context)
-                            .textSelectionHandleColor
-                            .withOpacity(.8),
-                        action: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    ReviewWithdrawal(
-                                      withdrawalRequest: request,
-                                    )))),
+                        color: Theme.of(context).textSelectionHandleColor.withOpacity(.8),
+                        action: () => Navigator.of(context).push(MaterialPageRoute(
+                            builder: (BuildContext context) => ReviewWithdrawal(
+                                  withdrawalRequest: request,
+                                )))),
                   ],
                 ),
               ],

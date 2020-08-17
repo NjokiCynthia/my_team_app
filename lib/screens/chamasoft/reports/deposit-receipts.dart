@@ -43,7 +43,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
           error: error,
           callback: () {
             _getDeposits(context);
-          });
+          },scaffoldState: _scaffoldKey.currentState);
     }
   }
 

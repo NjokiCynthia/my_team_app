@@ -259,15 +259,15 @@ Widget plainButton({String text, Function action, double size, Color color, doub
     child: Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Text(
-          text,
-          style: TextStyle(
+        Expanded(
+          child: customTitle(
+            text: text,
             color: color,
             fontSize: size,
             fontFamily: 'SegoeUI',
             fontWeight: FontWeight.w700,
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
         ),
         SizedBox(
           width: spacing,
@@ -277,7 +277,7 @@ Widget plainButton({String text, Function action, double size, Color color, doub
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
     onPressed: action,
     highlightColor: Colors.blueGrey.withOpacity(0.1),
-    splashColor: primaryColor,
+    splashColor: primaryColor.withOpacity(0.2),
   );
 }
 

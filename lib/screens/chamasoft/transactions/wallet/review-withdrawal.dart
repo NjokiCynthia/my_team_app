@@ -1,13 +1,17 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class ReviewWithdrawal extends StatefulWidget {
   final WithdrawalRequest withdrawalRequest;
@@ -19,6 +23,49 @@ class ReviewWithdrawal extends StatefulWidget {
 }
 
 class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
+  double _appBarElevation = 0;
+  ScrollController _scrollController;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  WithdrawalRequestDetails _withdrawalDetails;
+  bool _isLoading = true;
+  bool _isInit = true;
+
+  Future<void> _getWithdrawalRequestDetails(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .fetchWithdrawalRequestDetails(widget.withdrawalRequest.requestId);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getWithdrawalRequestDetails(context);
+          });
+    }
+  }
+
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _getWithdrawalRequestDetails(context).then((_) {
+      _withdrawalDetails = Provider.of<Groups>(context, listen: false).getWithdrawalRequestDetails;
+      setState(() {
+        _isLoading = false;
+      });
+    });
+
+    _isInit = false;
+    return true;
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
+
   final List<LoanSignatory> loanSignatories = [
     LoanSignatory(
       userId: 1,
@@ -73,9 +120,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             new FlatButton(
               child: new Text(
                 "Cancel",
-                style: TextStyle(
-                    fontFamily: 'SegoeUI',
-                    color: Theme.of(context).textSelectionHandleColor),
+                style: TextStyle(fontFamily: 'SegoeUI', color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -101,6 +146,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
@@ -117,49 +163,36 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+
               Container(
                 padding: EdgeInsets.all(16.0),
                 width: double.infinity,
-                color: (themeChangeProvider.darkTheme)
-                    ? Colors.blueGrey[800]
-                    : Color(0xffededfe),
+                color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Expanded(
                           flex: 1,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              heading2(
-                                text: "${widget.withdrawalRequest.purpose}",
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.start,
-                              ),
-                              customTitle(
-                                text: "Requested by Peter Parker",
-                                fontSize: 12.0,
-                                color: primaryColor,
-                                textAlign: TextAlign.start,
-                              ),
-                            ],
+                          child: heading2(
+                            text: "${widget.withdrawalRequest.withdrawalFor}",
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start,
                           ),
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: <Widget>[
                             customTitle(
-                              text: "Ksh ",
+                              text: "${groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               color: Theme.of(context).textSelectionHandleColor,
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
-                              text:
-                                  "${currencyFormat.format(widget.withdrawalRequest.amount)}",
+                              text: "${currencyFormat.format(widget.withdrawalRequest.amount)}",
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
@@ -168,73 +201,88 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                       ],
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle1(
-                          text: "Particulars: ",
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        customTitle(
-                          textAlign: TextAlign.start,
-                          text: "${widget.withdrawalRequest.particulars}",
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle1(
-                          text: "Recipient: ",
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        Expanded(
-                            child: customTitle(
-                          textAlign: TextAlign.start,
-                          text: "Peter Parker - 0712000111",
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w600,
-                        )),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle1(
-                          text: "Requested On: ",
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        Expanded(
-                            child: customTitle(
-                          textAlign: TextAlign.start,
-                          text:
-                              "${defaultDateFormat.format(widget.withdrawalRequest.requestDate)}",
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w600,
-                        )),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle1(
-                          text: "Description: ",
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        Expanded(
-                          child: customTitle(
-                            textAlign: TextAlign.start,
-                            text:
-                                "Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum",
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w600,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                subtitle2(
+                                    text: "Requested On",
+                                    color: Theme.of(context).textSelectionHandleColor,
+                                    textAlign: TextAlign.start),
+                                customTitleWithWrap(
+                                  text: widget.withdrawalRequest.requestDate,
+                                  fontSize: 12.0,
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.start,
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: <Widget>[
+                                subtitle2(
+                                    text: "Initiated By",
+                                    color: Theme.of(context).textSelectionHandleColor,
+                                    textAlign: TextAlign.end),
+                                customTitleWithWrap(
+                                  text: widget.withdrawalRequest.name,
+                                  fontSize: 12.0,
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.start,
+                                )
+                              ],
+                            ),
+                          ),
+                        ]),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    subtitle2(
+                        text: "Recipient",
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.start),
+                    customTitleWithWrap(
+                      text: widget.withdrawalRequest.recipient,
+                      fontSize: 12.0,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    subtitle2(
+                        text: "Description",
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.start),
+                    customTitleWithWrap(
+                        textAlign: TextAlign.start,
+                        fontSize: 12.0,
+                        text: "Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum",
+                        color: Theme.of(context).textSelectionHandleColor,
+                        maxLines: null),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    subtitle2(
+                        text: "Status", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    customTitleWithWrap(
+                      text: widget.withdrawalRequest.status,
+                      fontSize: 12.0,
+                      color: Theme.of(context).textSelectionHandleColor,
+                      textAlign: TextAlign.start,
                     ),
                   ],
                 ),
@@ -259,13 +307,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           child: ListView.separated(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
+                              separatorBuilder: (BuildContext context, int index) => const Divider(),
                               itemCount: loanSignatories.length,
                               itemBuilder: (context, int index) {
-                                LoanSignatory loanSignatory =
-                                    loanSignatories[index];
+                                LoanSignatory loanSignatory = loanSignatories[index];
                                 return LoanSignatoryCard(
                                   userName: loanSignatory.userName,
                                   userRole: loanSignatory.userRole,
@@ -290,10 +335,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               padding: EdgeInsets.all(12.0),
                               child: Text(
                                 'APPROVE',
-                                style: TextStyle(
-                                    color: primaryColor,
-                                    fontFamily: 'SegoeUI',
-                                    fontWeight: FontWeight.w700),
+                                style:
+                                    TextStyle(color: primaryColor, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
                               ),
                             ),
                           ),
@@ -306,10 +349,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               padding: EdgeInsets.all(12.0),
                               child: Text(
                                 'REJECT',
-                                style: TextStyle(
-                                    color: Colors.red,
-                                    fontFamily: 'SegoeUI',
-                                    fontWeight: FontWeight.w700),
+                                style: TextStyle(color: Colors.red, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
                               ),
                             ),
                           ),

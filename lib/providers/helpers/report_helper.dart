@@ -7,6 +7,7 @@ import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:intl/intl.dart';
@@ -30,7 +31,7 @@ AccountBalanceModel getAccountBalances(dynamic data) {
       }
     }
   }
-  double totalBalance = ParseHelper.stringToDouble(data['grand_total_balance'].toString()) ;
+  double totalBalance = ParseHelper.stringToDouble(data['grand_total_balance'].toString());
   return AccountBalanceModel(accounts: bankAccounts, totalBalance: totalBalance);
 }
 
@@ -324,6 +325,77 @@ List<Withdrawal> getWithdrawalList(List<dynamic> data) {
   }
 
   return withdrawalList;
+}
+
+List<WithdrawalRequest> getWithdrawalRequests(List<dynamic> data) {
+  List<WithdrawalRequest> withdrawalRequests = [];
+  if (data.length > 0) {
+    for (var withdrawal in data) {
+      int id = ParseHelper.getIntFromJson(withdrawal, "id");
+      String date = withdrawal["date"].toString();
+      String name = withdrawal["name"].toString();
+      String withdrawalFor = withdrawal["withdrawal_for"].toString();
+      double amount = ParseHelper.getDoubleFromJson(withdrawal, "amount");
+      int approved = ParseHelper.getIntFromJson(withdrawal, "approved");
+      int declined = ParseHelper.getIntFromJson(withdrawal, "declined");
+      int pending = ParseHelper.getIntFromJson(withdrawal, "pending");
+      String status = withdrawal["status"].toString();
+      int statusCode = ParseHelper.getIntFromJson(withdrawal, "status_code");
+      int isOwner = ParseHelper.getIntFromJson(withdrawal, "is_owner");
+      String recipient = withdrawal["recipient"].toString();
+      int hasResponse = ParseHelper.getIntFromJson(withdrawal, "has_responded");
+      int responseStatus = ParseHelper.getIntFromJson(withdrawal, "response_status");
+      String description = withdrawal["description"].toString();
+
+      final withdrawalItem = WithdrawalRequest(
+          requestId: id,
+          requestDate: date,
+          name: name,
+          withdrawalFor: withdrawalFor,
+          amount: amount,
+          approved: approved,
+          declined: declined,
+          pending: pending,
+          status: status,
+          statusCode: statusCode,
+          isOwner: isOwner,
+          recipient: recipient,
+          hasResponded: hasResponse,
+          responseStatus: responseStatus,
+          description: description);
+
+      withdrawalRequests.add(withdrawalItem);
+    }
+  }
+
+  return withdrawalRequests;
+}
+
+WithdrawalRequestDetails getWithdrawalDetails(dynamic data) {
+  String approvalStatus = data['approval_status'].toString();
+  String description = data['description'].toString();
+  List<StatusModel> signatories = [];
+  int hasResponded = ParseHelper.getIntFromJson(data, "has_responded");
+  int responseStatus = ParseHelper.getIntFromJson(data, "response_status");
+
+  for (var name in data['approved_members'] as dynamic) {
+    signatories.add(StatusModel(name: name.toString(), status: "APPROVED"));
+  }
+
+  for (var name in data['declined_members'] as dynamic) {
+    signatories.add(StatusModel(name: name.toString(), status: "DECLINED"));
+  }
+
+  for (var name in data['pending_approvals'] as dynamic) {
+    signatories.add(StatusModel(name: name.toString(), status: "PENDING"));
+  }
+
+  return WithdrawalRequestDetails(
+      approvalStatus: approvalStatus,
+      description: description,
+      signatories: signatories,
+      hasResponded: hasResponded,
+      responseStatus: responseStatus);
 }
 
 class ParseHelper {
