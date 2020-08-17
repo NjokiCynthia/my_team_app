@@ -375,6 +375,7 @@ WithdrawalRequestDetails getWithdrawalDetails(dynamic data) {
   String approvalStatus = data['approval_status'].toString();
   String description = data['description'].toString();
   List<StatusModel> signatories = [];
+  int isOwner = ParseHelper.getIntFromJson(data, "is_owner");
   int hasResponded = ParseHelper.getIntFromJson(data, "has_responded");
   int responseStatus = ParseHelper.getIntFromJson(data, "response_status");
 
@@ -394,6 +395,7 @@ WithdrawalRequestDetails getWithdrawalDetails(dynamic data) {
       approvalStatus: approvalStatus,
       description: description,
       signatories: signatories,
+      isOwner: isOwner,
       hasResponded: hasResponded,
       responseStatus: responseStatus);
 }

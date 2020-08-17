@@ -8,6 +8,8 @@ import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -40,7 +42,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
           error: error,
           callback: () {
             _getWithdrawalRequestDetails(context);
-          });
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
   }
 
@@ -65,30 +68,6 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
     if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
-
-  final List<LoanSignatory> loanSignatories = [
-    LoanSignatory(
-      userId: 1,
-      approvalStatus: 1,
-      isCurrentUser: true,
-      userName: 'John Doe',
-      userRole: 'Chairman',
-    ),
-    LoanSignatory(
-      userId: 4,
-      approvalStatus: 2,
-      isCurrentUser: false,
-      userName: 'Peter Kimutai',
-      userRole: 'Vice Chairman',
-    ),
-    LoanSignatory(
-      userId: 2,
-      approvalStatus: 2,
-      isCurrentUser: false,
-      userName: 'Jane Doe',
-      userRole: 'Secretary',
-    ),
-  ];
 
   void rejectDialog() {
     showDialog(
@@ -148,6 +127,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
   Widget build(BuildContext context) {
     final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
+        key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
           action: () => Navigator.of(context).pop(),
@@ -163,7 +143,6 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-
               Container(
                 padding: EdgeInsets.all(16.0),
                 width: double.infinity,
@@ -270,7 +249,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                     customTitleWithWrap(
                         textAlign: TextAlign.start,
                         fontSize: 12.0,
-                        text: "Lorem ipsumLorem ipsumLorem ipsumLorem ipsumLorem ipsum",
+                        text: _withdrawalDetails != null ? _withdrawalDetails.description : "--",
                         color: Theme.of(context).textSelectionHandleColor,
                         maxLines: null),
                     SizedBox(
@@ -279,7 +258,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                     subtitle2(
                         text: "Status", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
                     customTitleWithWrap(
-                      text: widget.withdrawalRequest.status,
+                      text: _withdrawalDetails != null ? _withdrawalDetails.approvalStatus : "--",
                       fontSize: 12.0,
                       color: Theme.of(context).textSelectionHandleColor,
                       textAlign: TextAlign.start,
@@ -287,6 +266,11 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                   ],
                 ),
               ),
+              _isLoading
+                  ? showLinearProgressIndicator()
+                  : SizedBox(
+                      height: 0.0,
+                    ),
               Expanded(
                 flex: 1,
                 child: Padding(
@@ -294,10 +278,13 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      heading2(
-                          text: "Signatories",
-                          color: Theme.of(context).textSelectionHandleColor,
-                          textAlign: TextAlign.start),
+                      Visibility(
+                        visible: _withdrawalDetails != null,
+                        child: heading2(
+                            text: "Signatories",
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start),
+                      ),
                       SizedBox(
                         height: 10,
                       ),
@@ -308,53 +295,78 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
                               separatorBuilder: (BuildContext context, int index) => const Divider(),
-                              itemCount: loanSignatories.length,
+                              itemCount: _withdrawalDetails != null ? _withdrawalDetails.signatories.length : 0,
                               itemBuilder: (context, int index) {
-                                LoanSignatory loanSignatory = loanSignatories[index];
-                                return LoanSignatoryCard(
-                                  userName: loanSignatory.userName,
-                                  userRole: loanSignatory.userRole,
-                                  approvalStatus: loanSignatory.approvalStatus,
-                                  isCurrentUser: loanSignatory.isCurrentUser,
-                                  onPressed: () {},
-                                );
+                                if (_withdrawalDetails != null) {
+                                  StatusModel statusModel = _withdrawalDetails.signatories[index];
+                                  return WalletSignatoryCard(
+                                    status: statusModel,
+                                  );
+                                } else
+                                  return Container();
                               }),
                         ),
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        mainAxisSize: MainAxisSize.max,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: <Widget>[
-                          FlatButton(
-                            color: Colors.blueAccent.withOpacity(.2),
-                            onPressed: () {},
-                            child: Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Text(
-                                'APPROVE',
-                                style:
-                                    TextStyle(color: primaryColor, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+                      Visibility(
+                        visible: _withdrawalDetails != null &&
+                            _withdrawalDetails.hasResponded != 1 &&
+                            _withdrawalDetails.isOwner != 1,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
+                            FlatButton(
+                              color: Colors.blueAccent.withOpacity(.2),
+                              onPressed: () {},
+                              child: Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: Text(
+                                  'APPROVE',
+                                  style: TextStyle(
+                                      color: primaryColor, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+                                ),
                               ),
                             ),
-                          ),
-                          FlatButton(
+                            FlatButton(
+                              color: Colors.redAccent.withOpacity(.2),
+                              onPressed: () {
+                                rejectDialog();
+                              },
+                              child: Padding(
+                                padding: EdgeInsets.all(12.0),
+                                child: Text(
+                                  'REJECT',
+                                  style:
+                                      TextStyle(color: Colors.red, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Visibility(
+                        visible: _withdrawalDetails != null &&
+                            _withdrawalDetails.hasResponded != 1 &&
+                            _withdrawalDetails.isOwner == 1,
+                        child: Center(
+                          child: FlatButton(
                             color: Colors.redAccent.withOpacity(.2),
                             onPressed: () {
-                              rejectDialog();
+                              //rejectDialog();
                             },
                             child: Padding(
                               padding: EdgeInsets.all(12.0),
                               child: Text(
-                                'REJECT',
+                                'CANCEL WITHDRAWAL REQUEST',
                                 style: TextStyle(color: Colors.red, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
                               ),
                             ),
                           ),
-                        ],
-                      )
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -362,5 +374,45 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             ],
           ),
         ));
+  }
+}
+
+class WalletSignatoryCard extends StatelessWidget {
+  final StatusModel status;
+
+  const WalletSignatoryCard({this.status});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              subtitle1(
+                text: status.name,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+//              subtitle2(
+//                text: "$userRole",
+//                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+//              ),
+            ],
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          statusChip(
+              text: status.status,
+              textColor: status.status == "APPROVED"
+                  ? primaryColor
+                  : status.status == "PENDING" ? Theme.of(context).textSelectionHandleColor : Colors.red,
+              backgroundColor: Theme.of(context).hintColor.withOpacity(0.1)),
+        ],
+      ),
+    );
   }
 }

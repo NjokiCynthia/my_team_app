@@ -32,10 +32,10 @@ class WithdrawalRequestDetails {
   String approvalStatus;
   String description;
   List<StatusModel> signatories = [];
-  int hasResponded, responseStatus;
+  int isOwner, hasResponded, responseStatus;
 
   WithdrawalRequestDetails({
-      this.approvalStatus, this.description, this.signatories, this.hasResponded, this.responseStatus});
+      this.approvalStatus, this.description, this.signatories,this.isOwner, this.hasResponded, this.responseStatus});
 }
 
 class StatusModel {
