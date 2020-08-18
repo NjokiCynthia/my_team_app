@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -27,6 +28,8 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
   List<WithdrawalRequest> _withdrawalRequests = [];
   bool _isLoading = true;
   bool _isInit = true;
+  List<int> statusApproval = [1, 2, 3];
+  List<int> statusDisbursement = [14, 15, 16];
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -39,7 +42,7 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
 
   Future<void> _getWithdrawalRequests(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchWithdrawalRequests();
+      await Provider.of<Groups>(context, listen: false).fetchWithdrawalRequests(statusApproval);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -161,6 +164,20 @@ class WithdrawalRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
+    IconData iconData = LineAwesomeIcons.info_circle;
+    Color color = Colors.blueGrey;
+    if (request.statusCode == 3) {
+      //failed
+      iconData = LineAwesomeIcons.close;
+      color = Colors.red;
+    } else if (request.statusCode == 5) {
+      iconData = LineAwesomeIcons.check;
+      color = Colors.green;
+    } else if (request.statusCode == 6) {
+      iconData = LineAwesomeIcons.close;
+      color = Colors.red;
+    }
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
@@ -269,22 +286,54 @@ class WithdrawalRequestCard extends StatelessWidget {
                 SizedBox(
                   height: 5,
                 ),
-                subtitle2(
-                    text: "Status", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
-                customTitleWithWrap(
-                  text: request.status,
-                  fontSize: 12.0,
-                  color: Theme.of(context).textSelectionHandleColor,
-                  textAlign: TextAlign.start,
-                ),
-                SizedBox(
-                  height: 5,
+                Visibility(
+                  visible: request.statusCode == 5 || request.statusCode == 6,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      subtitle2(
+                          text: request.statusCode == 5 ? "Disbursed To" : "Disbursement Status",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          textAlign: TextAlign.start),
+                      customTitleWithWrap(
+                        text: request.description,
+                        fontSize: 12.0,
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.start,
+                      ),
+                      SizedBox(
+                        width: 5,
+                      )
+                    ],
+                  ),
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Expanded(
-                      child: Text(""),
+                      child: Row(
+                        children: [
+                          Icon(
+                            iconData,
+                            color: color,
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Expanded(
+                            child: customTitleWithWrap(
+                              text: request.status,
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 5,
                     ),
                     plainButtonWithArrow(
                         text: request.isOwner == 1 ? "VIEW" : request.hasResponded == 0 ? "RESPOND" : "VIEW",

@@ -2737,12 +2737,18 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWithdrawalRequests() async {
+  Future<void> fetchWithdrawalRequests(List<int> status) async {
     const url = EndpointUrl.GET_GROUP_WITHDRAWAL_REQUESTS;
 
     try {
-      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId});
-
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "status": status.toString(),
+        "upper_limit": 50, //TODO change
+        "lower_limit": 0
+      });
+      print("Post: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         log(response.toString());
@@ -2765,7 +2771,6 @@ class Groups with ChangeNotifier {
 
     try {
       final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId, "id": id});
-
       try {
         final response = await PostToServer.post(postRequest, url);
         log(response.toString());

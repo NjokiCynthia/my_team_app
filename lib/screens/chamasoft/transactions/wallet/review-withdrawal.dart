@@ -32,8 +32,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
   bool _isLoading = true;
   bool _isInit = true;
 
+
   Future<void> _getWithdrawalRequestDetails(BuildContext context) async {
     try {
+      print(1212);
       await Provider.of<Groups>(context, listen: false)
           .fetchWithdrawalRequestDetails(widget.withdrawalRequest.requestId);
     } on CustomException catch (error) {
