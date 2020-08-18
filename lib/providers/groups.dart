@@ -2788,6 +2788,48 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> respondToWithdrawalRequest(Map<String, String> formData) async {
+    const url = EndpointUrl.RESPOND_TO_WITHDRAWAL_REQUEST;
+
+    try {
+      formData["user_id"] = _userId;
+      formData["group_id"] = _currentGroupId;
+      final postRequest = json.encode(formData);
+      try {
+        final response = await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> cancelWithdrawalRequest(Map<String, String> formData) async {
+    const url = EndpointUrl.CANCEL_WITHDRAWAL_REQUEST;
+
+    try {
+      formData["user_id"] = _userId;
+      formData["group_id"] = _currentGroupId;
+      final postRequest = json.encode(formData);
+      try {
+        final response = await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   /// ********************TODO: consolidate with fetchAccounts()********************/
   Future<void> temporaryFetchAccounts() async {
     const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;

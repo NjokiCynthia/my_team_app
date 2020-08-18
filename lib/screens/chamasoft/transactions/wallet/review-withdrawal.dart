@@ -10,8 +10,10 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -31,11 +33,13 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
   WithdrawalRequestDetails _withdrawalDetails;
   bool _isLoading = true;
   bool _isInit = true;
-
+  bool _responseSubmitted = false;
+  Color color;
+  Map<String, String> _formData = {};
+  TextEditingController _controller = new TextEditingController();
 
   Future<void> _getWithdrawalRequestDetails(BuildContext context) async {
     try {
-      print(1212);
       await Provider.of<Groups>(context, listen: false)
           .fetchWithdrawalRequestDetails(widget.withdrawalRequest.requestId);
     } on CustomException catch (error) {
@@ -56,6 +60,11 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 
     _getWithdrawalRequestDetails(context).then((_) {
       _withdrawalDetails = Provider.of<Groups>(context, listen: false).getWithdrawalRequestDetails;
+      if (_withdrawalDetails.approvalStatus.contains("Approved")) {
+        color = Colors.green;
+      } else if (_withdrawalDetails.approvalStatus.contains("Declined")) {
+        color = Colors.red;
+      }
       setState(() {
         _isLoading = false;
       });
@@ -67,23 +76,102 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+      color = Theme.of(context).textSelectionHandleColor;
+    }
     super.didChangeDependencies();
   }
 
-  void rejectDialog() {
+  Future<void> submit() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _formData["id"] = widget.withdrawalRequest.requestId.toString();
+    try {
+      await Provider.of<Groups>(context, listen: false).respondToWithdrawalRequest(_formData);
+      _responseSubmitted = true;
+      _fetchData();
+    } on CustomException catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            submit();
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  Future<void> cancelRequest() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    Map<String, String> formData = {};
+    formData["id"] = widget.withdrawalRequest.requestId.toString();
+    formData["reason"] = _controller.text;
+
+    try {
+      await Provider.of<Groups>(context, listen: false).cancelWithdrawalRequest(formData);
+      _responseSubmitted = true;
+      _fetchData();
+    } on CustomException catch (error) {
+      setState(() {
+        _isLoading = false;
+      });
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            cancelRequest();
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  void approvalDialog(String currency) {
+    String message =
+        "Are you sure you want to approve ${widget.withdrawalRequest.withdrawalFor} withdrawal request of  $currency ${currencyFormat.format(widget.withdrawalRequest.amount)} made by ${widget.withdrawalRequest.name}";
+    showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+              content: customTitleWithWrap(text: message, textAlign: TextAlign.start, maxLines: null),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              actions: <Widget>[
+                negativeActionDialogButton(
+                    text: "Cancel",
+                    color: Theme.of(context).textSelectionHandleColor,
+                    action: () => Navigator.of(context).pop()),
+                positiveActionDialogButton(
+                    text: "Yes",
+                    color: primaryColor,
+                    action: () {
+                      _formData["approve"] = "1";
+                      Navigator.of(context).pop();
+                      submit();
+                    })
+              ],
+            ));
+  }
+
+  void rejectDialog(int flag) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
-            text: "Reason for Rejecting",
+            text: "Reason for ${flag == 1 ? "Rejecting" : "Cancelling"}",
             textAlign: TextAlign.start,
             color: Theme.of(context).textSelectionHandleColor,
           ),
           content: TextFormField(
-            //controller: controller,
+            controller: _controller,
             keyboardType: TextInputType.text,
             style: inputTextStyle(),
             decoration: InputDecoration(
@@ -98,27 +186,26 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
             ),
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(fontFamily: 'SegoeUI', color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Proceed",
-                style: new TextStyle(
-                  color: primaryColor,
-                  fontFamily: 'SegoeUI',
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
+            negativeActionDialogButton(
+                text: "Cancel",
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Proceed",
+                color: primaryColor,
+                action: () {
+                  if (flag == 1) {
+                    _formData["decline"] = "1";
+                    _formData["reason"] = _controller.text;
+                    Navigator.of(context).pop();
+                    submit();
+                  } else {
+                    Navigator.of(context).pop();
+                    cancelRequest();
+                  }
+                })
           ],
         );
       },
@@ -132,14 +219,13 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
-          action: () => Navigator.of(context).pop(),
+          action: () => Navigator.of(context).pop(_responseSubmitted),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.close,
           title: "Review Withdrawal Request",
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Container(
-          color: Theme.of(context).backgroundColor,
           width: double.infinity,
           height: double.infinity,
           child: Column(
@@ -262,7 +348,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                     customTitleWithWrap(
                       text: _withdrawalDetails != null ? _withdrawalDetails.approvalStatus : "--",
                       fontSize: 12.0,
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: color,
                       textAlign: TextAlign.start,
                     ),
                   ],
@@ -315,14 +401,15 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                       Visibility(
                         visible: _withdrawalDetails != null &&
                             _withdrawalDetails.hasResponded != 1 &&
-                            _withdrawalDetails.isOwner != 1,
+                            _withdrawalDetails.isOwner != 1 &&
+                            _isLoading != true,
                         child: Row(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: <Widget>[
                             FlatButton(
                               color: Colors.blueAccent.withOpacity(.2),
-                              onPressed: () {},
+                              onPressed: () => approvalDialog(groupObject.groupCurrency),
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: Text(
@@ -335,7 +422,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                             FlatButton(
                               color: Colors.redAccent.withOpacity(.2),
                               onPressed: () {
-                                rejectDialog();
+                                rejectDialog(1);
                               },
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
@@ -351,13 +438,14 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                       ),
                       Visibility(
                         visible: _withdrawalDetails != null &&
-                            _withdrawalDetails.hasResponded != 1 &&
-                            _withdrawalDetails.isOwner == 1,
+                            _withdrawalDetails.isOwner == 1 &&
+                            widget.withdrawalRequest.statusCode == 1 &&
+                            _isLoading != true,
                         child: Center(
                           child: FlatButton(
                             color: Colors.redAccent.withOpacity(.2),
                             onPressed: () {
-                              //rejectDialog();
+                              rejectDialog(2);
                             },
                             child: Padding(
                               padding: EdgeInsets.all(12.0),
@@ -390,19 +478,22 @@ class WalletSignatoryCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              subtitle1(
-                text: status.name,
-                color: Theme.of(context).textSelectionHandleColor,
-              ),
+          Expanded(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                customTitleWithWrap(
+                  text: status.name,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
 //              subtitle2(
 //                text: "$userRole",
 //                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
 //              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(
             width: 10,

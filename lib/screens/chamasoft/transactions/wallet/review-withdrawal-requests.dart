@@ -28,7 +28,7 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
   List<WithdrawalRequest> _withdrawalRequests = [];
   bool _isLoading = true;
   bool _isInit = true;
-  List<int> statusApproval = [1, 2, 3];
+  List<int> statusApproval = []; //[1, 2, 3];
   List<int> statusDisbursement = [14, 15, 16];
 
   void _scrollListener() {
@@ -137,7 +137,19 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
                       ? ListView.builder(
                           itemBuilder: (context, index) {
                             WithdrawalRequest request = _withdrawalRequests[index];
-                            return WithdrawalRequestCard(request: request);
+                            return WithdrawalRequestCard(
+                              request: request,
+                              action: () async {
+                                final result = await Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) => ReviewWithdrawal(
+                                          withdrawalRequest: request,
+                                        )));
+
+                                if (result != null && result) {
+                                  _fetchData();
+                                }
+                              },
+                            );
                           },
                           itemCount: _withdrawalRequests.length,
                         )
@@ -154,12 +166,10 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
 }
 
 class WithdrawalRequestCard extends StatelessWidget {
-  const WithdrawalRequestCard({
-    Key key,
-    @required this.request,
-  }) : super(key: key);
+  const WithdrawalRequestCard({Key key, @required this.request, this.action}) : super(key: key);
 
   final WithdrawalRequest request;
+  final Function action;
 
   @override
   Widget build(BuildContext context) {
@@ -341,10 +351,7 @@ class WithdrawalRequestCard extends StatelessWidget {
                         size: 16.0,
                         spacing: 2.0,
                         color: Theme.of(context).textSelectionHandleColor.withOpacity(.8),
-                        action: () => Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) => ReviewWithdrawal(
-                                  withdrawalRequest: request,
-                                )))),
+                        action: action),
                   ],
                 ),
               ],
