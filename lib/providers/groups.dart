@@ -3310,5 +3310,7 @@ class Groups with ChangeNotifier {
     _fineStatement = null;
     _groupRolesStatusAndCurrentMemberStatus = null;
     _ongoingMemberLoans = {};
+    _withdrawalRequests = [];
+    _withdrawalRequestDetails = null;
   }
 }

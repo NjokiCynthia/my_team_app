@@ -22,7 +22,7 @@ dependencies:
   md2_tab_indicator: ^1.0.2
   shared_preferences: ^0.5.6+1
   intl: ^0.16.1
-  file_picker: ^1.13.2
+  file_picker: ^1.13.3
   contacts_service: ^0.4.5
   permission_handler: ^5.0.0+hotfix.4
   fl_chart: ^0.9.4
