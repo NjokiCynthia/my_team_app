@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-banks.dart';
@@ -98,6 +99,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     }
   }
 
+  Future<void> fetchBankAccounts() async {}
+
   void _prepareSubmission(BuildContext context, int flag) async {
     if (!_formKey.currentState.validate()) {
       return;
@@ -145,7 +148,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     if (flag == 1) {
       //send to bank
       formData['recipient'] = "3";
-      List<Bank> _banksList = Provider.of<Groups>(context,listen: false).bankOptions;
+      List<Bank> _banksList = Provider.of<Groups>(context, listen: false).bankOptions;
       if (_banksList.length < 1) {
         showDialog(
             context: context,
@@ -199,6 +202,25 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 
   @override
   Widget build(BuildContext context) {
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final List<BankAccountDashboardSummary> accountBalances =
+        Provider.of<Dashboard>(context, listen: false).bankAccountDashboardSummary;
+
+    String accountName = "";
+    double balance = 0;
+    if (accountBalances.length > 0) {
+      for (var account in accountBalances) {
+        if (account.accountName.contains("Chamasoft E-Wallet")) {
+          try {
+            accountName = account.accountName.replaceAll("Chamasoft E-Wallet -", "").trim();
+          } catch (error) {
+            accountName = account.accountName;
+          }
+          balance = account.balance;
+        }
+      }
+    }
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
@@ -217,11 +239,48 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
             scrollDirection: Axis.vertical,
             child: Column(
               children: [
-                toolTip(
-                    context: context,
-                    title: "",
-                    message: "Withdrawal requests will be sent to the group signatories for approval",
-                    showTitle: false),
+                accountName.isNotEmpty
+                    ? Container(
+                        padding: EdgeInsets.all(16.0),
+                        width: double.infinity,
+                        color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                        child: Column(
+                          children: [
+                            subtitle1(
+                              text: accountName,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: <Widget>[
+                                subtitle1(
+                                  text: "Account Balance ",
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.center,
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                heading2(
+                                  text: "${groupObject.groupCurrency} ${currencyFormat.format(balance)}",
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      )
+                    : toolTip(
+                        context: context,
+                        title: "",
+                        message: "Withdrawal requests will be sent to the group signatories for approval",
+                        showTitle: false),
                 Padding(
                   padding: inputPagePadding,
                   child: Form(
