@@ -127,6 +127,42 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
             height: double.infinity,
             child: Column(
               children: [
+                Visibility(
+                  visible: false,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                            decoration: BoxDecoration(
+                                border: Border(
+                                    right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5),
+                                    bottom: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0))),
+                            child: plainButton(
+                                text: "SORT",
+                                size: 16.0,
+                                spacing: 2.0,
+                                color: Colors.blueGrey,
+                                // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
+                                action: null) //loan.status == 2 ? null : repay),
+                            ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+                                  left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5),
+                                  bottom: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0))),
+                          child: plainButton(
+                              text: "FILTER", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: () {}),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
                 _isLoading
                     ? showLinearProgressIndicator()
                     : SizedBox(
