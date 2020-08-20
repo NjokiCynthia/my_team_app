@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -17,6 +19,7 @@ import '../widgets/textstyles.dart';
 
 class Verification extends StatefulWidget {
   static const namedRoute = '/verification-screen';
+
   @override
   _VerificationState createState() => _VerificationState();
 }
@@ -25,6 +28,9 @@ class _VerificationState extends State<Verification> {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
+  bool _isInit = true;
+  bool _enableResend = false;
+
   // String _pin;
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
@@ -34,6 +40,31 @@ class _VerificationState extends State<Verification> {
   };
   TextEditingController _pinEditingController = TextEditingController();
 
+  Timer _timer;
+  int _start = 60;
+
+  void _countDownTimer() {
+    _isInit = false;
+    _enableResend = false;
+    const singleUnit = Duration(seconds: 1);
+    _timer = new Timer.periodic(singleUnit, (Timer timer) {
+      setState(() {
+        if (_start < 1) {
+          _enableResend = true;
+          _timer.cancel();
+        } else {
+          _start -= 1;
+        }
+      });
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) _countDownTimer();
+    super.didChangeDependencies();
+  }
+
   @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
@@ -42,6 +73,7 @@ class _VerificationState extends State<Verification> {
 
   @override
   void dispose() {
+    _timer.cancel();
     super.dispose();
   }
 
@@ -49,6 +81,7 @@ class _VerificationState extends State<Verification> {
     if (!_formKey.currentState.validate()) {
       return;
     }
+    _timer.cancel();
     setState(() {
       _isLoading = true;
       _isFormInputEnabled = false;
@@ -99,8 +132,11 @@ class _VerificationState extends State<Verification> {
     Scaffold.of(context).showSnackBar(snackBar);
     try {
       await Provider.of<Auth>(context, listen: false).resendPin(_identity);
-      final snackBar = SnackBar(content: subtitle2(text: "Verification code has been sent", textAlign: TextAlign.start));
+      final snackBar =
+          SnackBar(content: subtitle2(text: "Verification code has been sent", textAlign: TextAlign.start));
       Scaffold.of(context).showSnackBar(snackBar);
+      _start = 60;
+      _countDownTimer();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -146,7 +182,9 @@ class _VerificationState extends State<Verification> {
                           SizedBox(
                             height: 10,
                           ),
-                          subtitle1(text: "A verification code has been sent to", color: Theme.of(context).textSelectionHandleColor),
+                          subtitle1(
+                              text: "A verification code has been sent to",
+                              color: Theme.of(context).textSelectionHandleColor),
                           customTitle(text: _identity, color: Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 12,
@@ -205,19 +243,22 @@ class _VerificationState extends State<Verification> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              customTitle(
-                                  text: "Didn't receive verification code? ", color: Theme.of(context).textSelectionHandleColor, fontSize: 13.0),
+                              Icon(LineAwesomeIcons.clock_o, color: Theme.of(context).textSelectionHandleColor),
+                              subtitle1(
+                                  text: _start > 9 ? "00:$_start" : "00:0$_start",
+                                  color: Theme.of(context).textSelectionHandleColor),
+                              SizedBox(width: 20),
                               InkWell(
                                 child: Text(
                                   'Resend',
                                   style: TextStyle(
                                     fontFamily: 'SegoeUI',
-                                    color: primaryColor,
+                                    color: _enableResend ? primaryColor : Theme.of(context).textSelectionHandleColor,
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                onTap: () => _resendOtp(context),
+                                onTap: _enableResend ? () => _resendOtp(context) : null,
                               )
                             ],
                           ),
