@@ -399,12 +399,13 @@ class Groups with ChangeNotifier {
 
   List<BankLoans> _bankLoans = [];
   List<Notification> _notifications = [];
+  bool _loanPulled = false;
 
   String _userId;
   String _identity;
   List<Group> _groups = [];
   String _currentGroupId;
-  String _currentMemberId = "21475";
+  String _currentMemberId;
 
   Groups(List<Group> _groups, String _userId, String _identity, String _currentGroupId) {
     this._groups = _groups;
@@ -1102,6 +1103,7 @@ class Groups with ChangeNotifier {
       }
     }
     _ongoingMemberLoans = memberLoansSummary;
+    _loanPulled = true;
     notifyListeners();
   }
 
@@ -2497,7 +2499,6 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        print(response);
         final data = response['loans'] as List<dynamic>;
         addOngoingMemberLoans(data);
       } on CustomException catch (error) {
@@ -2964,7 +2965,8 @@ class Groups with ChangeNotifier {
     }
 
     if (memberOngoingLoans) {
-      if (_ongoingMemberLoans.length == 0) {
+      print(_ongoingMemberLoans);
+      if (_ongoingMemberLoans.length == 0 && _loanPulled == false) {
         await fetchGroupMembersOngoingLoans();
       }
 
@@ -3313,5 +3315,6 @@ class Groups with ChangeNotifier {
     _ongoingMemberLoans = {};
     _withdrawalRequests = [];
     _withdrawalRequestDetails = null;
+    _loanPulled = false;
   }
 }
