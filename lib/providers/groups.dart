@@ -2693,12 +2693,12 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchDeposits() async {
+  Future<void> fetchDeposits(String sortOption) async {
     const url = EndpointUrl.GET_DEPOSITS_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId});
-
+      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId, "sort_by": sortOption});
+      print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
@@ -2715,12 +2715,12 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWithdrawals() async {
+  Future<void> fetchWithdrawals(String sortOption) async {
     const url = EndpointUrl.GET_GROUP_WITHDRAWAL_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId});
-
+      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId, "sort_by": sortOption});
+      print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['withdrawals'] as List<dynamic>;

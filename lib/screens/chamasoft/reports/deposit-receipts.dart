@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
+import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -24,6 +25,8 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   List<Deposit> _deposits = [];
   bool _isLoading = true;
   bool _isInit = true;
+  String _sortOption = "date_desc";
+  int selectedRadioTile;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -36,14 +39,15 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   Future<void> _getDeposits(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchDeposits();
+      await Provider.of<Groups>(context, listen: false).fetchDeposits(_sortOption);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
           callback: () {
             _getDeposits(context);
-          },scaffoldState: _scaffoldKey.currentState);
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
   }
 
@@ -84,6 +88,16 @@ class _DepositReceiptsState extends State<DepositReceipts> {
     super.dispose();
   }
 
+  void applySort(String sort) {
+    _sortOption = sort;
+    _fetchData();
+  }
+
+  void showSortBottomSheet() {
+    showModalBottomSheet(
+        isScrollControlled: true, context: context, builder: (_) => SortContainer(_sortOption, applySort));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +106,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
             context: context,
             title: "Deposit Receipts",
             action: () => Navigator.of(context).pop(),
-            elevation: _appBarElevation,
+            elevation: 1,
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
@@ -103,6 +117,63 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                 height: double.infinity,
                 child: Column(
                   children: <Widget>[
+                    Visibility(
+                      visible: true,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5),
+                                        bottom: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0))),
+                                child: Material(
+                                  color: Theme.of(context).backgroundColor,
+                                  child: InkWell(
+                                    onTap: () => showSortBottomSheet(),
+                                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(LineAwesomeIcons.sort, color: Theme.of(context).textSelectionHandleColor),
+                                        subtitle1(text: "Sort", color: Theme.of(context).textSelectionHandleColor)
+                                      ],
+                                    ),
+                                  ),
+                                ) //loan.status == 2 ? null : repay),
+                                ),
+                          ),
+                          Expanded(
+                            flex: 1,
+                            child: Container(
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5),
+                                        bottom: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0))),
+                                child: Material(
+                                  color: Theme.of(context).backgroundColor,
+                                  child: InkWell(
+                                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                                    onTap: () {},
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(LineAwesomeIcons.filter,
+                                            color: Theme.of(context).textSelectionHandleColor),
+                                        subtitle1(text: "Filter", color: Theme.of(context).textSelectionHandleColor)
+                                      ],
+                                    ),
+                                  ),
+                                )),
+                          ),
+                        ],
+                      ),
+                    ),
                     _isLoading
                         ? showLinearProgressIndicator()
                         : SizedBox(

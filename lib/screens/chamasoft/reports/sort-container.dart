@@ -23,7 +23,16 @@ class _SortContainerState extends State<SortContainer> {
 
   @override
   void initState() {
-    selectedRadioTile = 0;
+    if (widget.selectedSort == "date_desc") {
+      selectedRadioTile = 1;
+    } else if (widget.selectedSort == "date_asc") {
+      selectedRadioTile = 2;
+    }
+    if (widget.selectedSort == "amount_desc") {
+      selectedRadioTile = 3;
+    } else if (widget.selectedSort == "amount_asc") {
+      selectedRadioTile = 4;
+    }
     super.initState();
   }
 
@@ -85,7 +94,7 @@ class _SortContainerState extends State<SortContainer> {
                       value: 3,
                       groupValue: selectedRadioTile,
                       title: subtitle1(
-                          text: "Amount: Highest to lowest",
+                          text: "Amount: Highest to Lowest",
                           textAlign: TextAlign.start,
                           color: Theme.of(context).textSelectionHandleColor),
                       onChanged: (value) {
@@ -99,7 +108,7 @@ class _SortContainerState extends State<SortContainer> {
                       value: 4,
                       groupValue: selectedRadioTile,
                       title: subtitle1(
-                          text: "Amount: Lowest to highest",
+                          text: "Amount: Lowest to Highest",
                           textAlign: TextAlign.start,
                           color: Theme.of(context).textSelectionHandleColor),
                       onChanged: (value) {
