@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
+import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
 import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -98,6 +99,12 @@ class _DepositReceiptsState extends State<DepositReceipts> {
         isScrollControlled: true, context: context, builder: (_) => SortContainer(_sortOption, applySort));
   }
 
+  void showFilterOptions() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+      return FilterContainer();
+    }));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -159,7 +166,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                   color: Theme.of(context).backgroundColor,
                                   child: InkWell(
                                     splashColor: Colors.blueGrey.withOpacity(0.2),
-                                    onTap: () {},
+                                    onTap: () => showFilterOptions(),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
