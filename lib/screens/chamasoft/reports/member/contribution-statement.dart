@@ -1,6 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
+import 'package:chamasoft/screens/chamasoft/reports/FilterContainer.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
