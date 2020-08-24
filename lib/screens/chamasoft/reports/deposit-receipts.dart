@@ -28,6 +28,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   bool _isInit = true;
   String _sortOption = "date_desc";
   int selectedRadioTile;
+  List<int> _filterList = [];
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -40,7 +41,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   Future<void> _getDeposits(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchDeposits(_sortOption);
+      await Provider.of<Groups>(context, listen: false).fetchDeposits(_sortOption, _filterList);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -99,10 +100,18 @@ class _DepositReceiptsState extends State<DepositReceipts> {
         isScrollControlled: true, context: context, builder: (_) => SortContainer(_sortOption, applySort));
   }
 
-  void showFilterOptions() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-      return FilterContainer();
+  void showFilterOptions() async {
+    List<int> filters = await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+      return FilterContainer(
+        filterType: 1,
+        currentFilters: _filterList,
+      );
     }));
+
+    if (filters != null && filters.length > 0) {
+      _filterList = filters;
+      _fetchData();
+    }
   }
 
   @override
