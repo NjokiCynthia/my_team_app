@@ -1,16 +1,23 @@
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class FilterContainer extends StatefulWidget {
   final int filterType;
   final List<int> currentFilters;
+  final List<String> currentMembers;
 
-  FilterContainer({@required this.filterType, @required this.currentFilters});
+  FilterContainer({@required this.filterType, @required this.currentFilters, @required this.currentMembers});
 
   @override
   _FilterContainerState createState() => _FilterContainerState();
@@ -19,12 +26,16 @@ class FilterContainer extends StatefulWidget {
 class _FilterContainerState extends State<FilterContainer> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isInit = true;
+  bool _isLoading = false;
   bool _selectAll = false;
+  bool _selectAllMembers = false;
   bool _contributionPayments = false;
   bool _showStatusFilter = true;
   bool _showMemberFilter = false;
   List<NamesListItem> _list = [];
+  List<Member> _memberList = [];
   List<int> _selectedItems = [];
+  List<String> _selectedMembers = [];
 
   void _prepareDepositList() {
     _list = [
@@ -83,6 +94,47 @@ class _FilterContainerState extends State<FilterContainer> {
     ];
   }
 
+  Future<void> _getGroupMembers(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchMembers();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getGroupMembers(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  void _fetchData() {
+    if (_showMemberFilter)
+      setState(() {
+        _isLoading = true;
+      });
+    _memberList = Provider.of<Groups>(context, listen: false).members;
+    _getGroupMembers(context).then((_) {
+      _memberList = Provider.of<Groups>(context, listen: false).members;
+      if (widget.currentMembers.isEmpty || widget.currentMembers.length == _memberList.length) {
+        for (var member in _memberList) {
+          _selectedMembers.add(member.id);
+          _selectAllMembers = true;
+        }
+      } else {
+        for (var member in _memberList) {
+          for (var filter in widget.currentMembers) {
+            if (member.id == filter) _selectedMembers.add(member.id);
+          }
+        }
+      }
+      if (_showMemberFilter)
+        setState(() {
+          _isLoading = false;
+        });
+    });
+  }
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -97,6 +149,8 @@ class _FilterContainerState extends State<FilterContainer> {
         //withdrawal requests
         _prepareWithdrawalRequestList();
       }
+
+      _fetchData();
     }
 
     super.didChangeDependencies();
@@ -113,7 +167,7 @@ class _FilterContainerState extends State<FilterContainer> {
           elevation: 1,
           leadingIcon: LineAwesomeIcons.close,
           trailingIcon: LineAwesomeIcons.check,
-          trailingAction: () => Navigator.pop(context, _selectedItems)),
+          trailingAction: () => Navigator.pop(context, [_selectedItems, _selectedMembers])),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
@@ -139,14 +193,16 @@ class _FilterContainerState extends State<FilterContainer> {
                         splashColor: Colors.blueGrey.withOpacity(0.2),
                         child: Row(
                           children: [
-                            subtitle1(
+                            customTitle(
                                 text: "Status",
                                 textAlign: TextAlign.start,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w600,
                                 color: Theme.of(context).textSelectionHandleColor),
                             Visibility(
                                 visible: _showStatusFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
-                                    size: 16, color: Theme.of(context).textSelectionHandleColor))
+                                    size: 12, color: Theme.of(context).textSelectionHandleColor))
                           ],
                         ),
                       ),
@@ -166,14 +222,16 @@ class _FilterContainerState extends State<FilterContainer> {
                         splashColor: Colors.blueGrey.withOpacity(0.2),
                         child: Row(
                           children: [
-                            subtitle1(
+                            customTitle(
                                 text: "Members",
                                 textAlign: TextAlign.start,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w600,
                                 color: Theme.of(context).textSelectionHandleColor),
                             Visibility(
                                 visible: _showMemberFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
-                                    size: 16, color: Theme.of(context).textSelectionHandleColor))
+                                    size: 12, color: Theme.of(context).textSelectionHandleColor))
                           ],
                         ),
                       ),
@@ -182,65 +240,134 @@ class _FilterContainerState extends State<FilterContainer> {
                 ],
               ),
             ),
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.only(top: 8.0),
-                child: Column(
-                  //crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    customTitle(
-                        text: "Deposit Options",
-                        textAlign: TextAlign.center,
-                        fontWeight: FontWeight.w600,
-                        color: Theme.of(context).textSelectionHandleColor),
-                    CheckboxListTile(
-                      dense: true,
-                      title: subtitle1(
-                          text: "Select All",
-                          textAlign: TextAlign.start,
+            Visibility(
+              visible: _showStatusFilter,
+              child: Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Column(
+                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      customTitle(
+                          text: "Deposit Options",
+                          textAlign: TextAlign.center,
+                          fontWeight: FontWeight.w600,
                           color: Theme.of(context).textSelectionHandleColor),
-                      value: _selectAll,
-                      onChanged: (value) {
-                        _selectedItems.clear();
-                        if (value) {
+                      CheckboxListTile(
+                        dense: true,
+                        title: subtitle1(
+                            text: "Select All",
+                            textAlign: TextAlign.start,
+                            color: Theme.of(context).textSelectionHandleColor),
+                        value: _selectAll,
+                        onChanged: (value) {
                           _selectedItems.clear();
-                          for (var item in _list) {
-                            _selectedItems.add(item.id);
+                          if (value) {
+                            for (var item in _list) {
+                              _selectedItems.add(item.id);
+                            }
                           }
-                        }
-                        setState(() {
-                          _selectAll = value;
-                        });
-                      },
-                      activeColor: primaryColor,
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemBuilder: (BuildContext context, int index) {
-                          NamesListItem item = _list[index];
-                          return CheckboxListTile(
-                            dense: true,
-                            value: _selectedItems.contains(item.id),
-                            onChanged: (value) {
-                              setState(() {
-                                if (value) {
-                                  _selectedItems.add(item.id);
-                                } else {
-                                  _selectedItems.remove(item.id);
-                                }
-                              });
-                            },
-                            title: subtitle1(
-                                text: item.name,
-                                textAlign: TextAlign.start,
-                                color: Theme.of(context).textSelectionHandleColor),
-                            activeColor: primaryColor,
-                          );
+                          setState(() {
+                            _selectAll = value;
+                          });
                         },
-                        itemCount: _list.length,
+                        activeColor: primaryColor,
                       ),
-                    ),
-                  ],
+                      Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (BuildContext context, int index) {
+                            NamesListItem item = _list[index];
+                            return CheckboxListTile(
+                              dense: true,
+                              value: _selectedItems.contains(item.id),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value) {
+                                    _selectedItems.add(item.id);
+                                  } else {
+                                    _selectedItems.remove(item.id);
+                                  }
+                                });
+                              },
+                              title: subtitle1(
+                                  text: item.name,
+                                  textAlign: TextAlign.start,
+                                  color: Theme.of(context).textSelectionHandleColor),
+                              activeColor: primaryColor,
+                            );
+                          },
+                          itemCount: _list.length,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Visibility(
+              visible: _showMemberFilter,
+              child: Expanded(
+                child: Padding(
+                  padding: EdgeInsets.only(top: 8.0),
+                  child: Column(
+                    //crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _isLoading
+                          ? showLinearProgressIndicator()
+                          : SizedBox(
+                              height: 0.0,
+                            ),
+                      CheckboxListTile(
+                        dense: true,
+                        title: subtitle1(
+                            text: "Select All",
+                            textAlign: TextAlign.start,
+                            color: Theme.of(context).textSelectionHandleColor),
+                        value: _selectAllMembers,
+                        onChanged: (value) {
+                          _selectedMembers.clear();
+                          if (value) {
+                            for (var member in _memberList) {
+                              _selectedMembers.add(member.id);
+                            }
+                          }
+                          setState(() {
+                            _selectAllMembers = value;
+                          });
+                        },
+                        activeColor: primaryColor,
+                      ),
+                      Expanded(
+                        child: ListView.builder(
+                          itemBuilder: (BuildContext context, int index) {
+                            Member member = _memberList[index];
+                            return CheckboxListTile(
+                              secondary: const Icon(Icons.person),
+                              value: _selectedMembers.contains(member.id),
+                              onChanged: (value) {
+                                setState(() {
+                                  if (value) {
+                                    _selectedMembers.add(member.id);
+                                  } else {
+                                    _selectedMembers.remove(member.id);
+                                  }
+                                });
+                              },
+                              title: subtitle1(
+                                  text: member.name,
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.start),
+                              subtitle: subtitle2(
+                                  text: member.identity,
+                                  color: Theme.of(context).textSelectionHandleColor,
+                                  textAlign: TextAlign.start),
+                            );
+                          },
+                          itemCount: _memberList.length,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )

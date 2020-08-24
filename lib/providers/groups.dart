@@ -2694,12 +2694,17 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchDeposits(String sortOption, List<int> filterList) async {
+  Future<void> fetchDeposits(String sortOption, List<int> filterList, List<String> memberList) async {
     const url = EndpointUrl.GET_DEPOSITS_LIST;
 
     try {
-      final postRequest =
-          json.encode({"user_id": _userId, "group_id": _currentGroupId, "sort_by": sortOption, "status": filterList});
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "sort_by": sortOption,
+        "status": filterList,
+        "members": memberList
+      });
       print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
