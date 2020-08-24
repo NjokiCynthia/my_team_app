@@ -1002,7 +1002,7 @@ class Groups with ChangeNotifier {
   }
 
   void addDepositList(List<dynamic> data) {
-    _depositList = getDepositList(data);
+    _depositList.addAll(getDepositList(data));
     notifyListeners();
   }
 
@@ -2694,7 +2694,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchDeposits(String sortOption, List<int> filterList, List<String> memberList) async {
+  Future<void> fetchDeposits(String sortOption, List<int> filterList, List<String> memberList, int lowerLimit) async {
     const url = EndpointUrl.GET_DEPOSITS_LIST;
 
     try {
@@ -2703,7 +2703,9 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "sort_by": sortOption,
         "status": filterList,
-        "members": memberList
+        "members": memberList,
+        "lower_limit": lowerLimit,
+        "upper_limit": lowerLimit + 20
       });
       print("Request: $postRequest");
       try {

@@ -30,6 +30,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   int selectedRadioTile;
   List<int> _filterList = [];
   List<String> _memberList = [];
+  bool _hasMoreData = false;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -42,7 +43,8 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   Future<void> _getDeposits(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchDeposits(_sortOption, _filterList, _memberList);
+      await Provider.of<Groups>(context, listen: false)
+          .fetchDeposits(_sortOption, _filterList, _memberList, _deposits.length);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -63,6 +65,10 @@ class _DepositReceiptsState extends State<DepositReceipts> {
     _getDeposits(context).then((_) {
       _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
       setState(() {
+        if (_deposits.length < 20) {
+          _hasMoreData = false;
+        } else
+          _hasMoreData = true;
         _isLoading = false;
       });
     });
@@ -200,16 +206,27 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                           ),
                     Expanded(
                       child: _deposits.length > 0
-                          ? ListView.builder(
-                              itemBuilder: (context, index) {
-                                Deposit deposit = _deposits[index];
-                                return DepositCard(
-                                  deposit: deposit,
-                                  details: () {},
-                                  voidItem: () {},
-                                );
+                          ? NotificationListener<ScrollNotification>(
+                              onNotification: (ScrollNotification scrollInfo) {
+                                print("Size: ${_deposits.length}, More Data? ${_deposits.length >= 20}");
+                                if (!_isLoading &&
+                                    scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
+                                    _hasMoreData) {
+                                  _fetchData();
+                                }
+                                return true;
                               },
-                              itemCount: _deposits.length)
+                              child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    Deposit deposit = _deposits[index];
+                                    return DepositCard(
+                                      deposit: deposit,
+                                      details: () {},
+                                      voidItem: () {},
+                                    );
+                                  },
+                                  itemCount: _deposits.length),
+                            )
                           : emptyList(
                               color: Colors.blue[400],
                               iconData: LineAwesomeIcons.angle_double_down,
