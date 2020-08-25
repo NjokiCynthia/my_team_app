@@ -2755,7 +2755,8 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWithdrawalRequests(String sortOption, List<int> status) async {
+  Future<void> fetchWithdrawalRequests(
+      String sortOption, List<int> filterList, List<String> memberList, int lowerLimit) async {
     const url = EndpointUrl.GET_GROUP_WITHDRAWAL_REQUESTS;
 
     try {
@@ -2763,9 +2764,9 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
         "sort_by": sortOption,
-        "status": status.toString(),
-        "upper_limit": 50, //TODO change
-        "lower_limit": 0
+        "status": filterList,
+        //"upper_limit": lowerLimit + 20,
+        //"lower_limit": 0
       });
       print("Post: $postRequest");
       try {

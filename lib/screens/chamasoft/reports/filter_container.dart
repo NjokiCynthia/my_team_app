@@ -36,6 +36,7 @@ class _FilterContainerState extends State<FilterContainer> {
   List<Member> _memberList = [];
   List<int> _selectedItems = [];
   List<String> _selectedMembers = [];
+  String title = "Deposit Options";
 
   void _prepareDepositList() {
     _list = [
@@ -69,6 +70,7 @@ class _FilterContainerState extends State<FilterContainer> {
   }
 
   void _prepareWithdrawalList() {
+    title = "Withdrawal Options";
     _list = [
       NamesListItem(id: 1, name: "Expense Payments"),
       NamesListItem(id: 2, name: "Asset Purchase Payments"),
@@ -96,6 +98,7 @@ class _FilterContainerState extends State<FilterContainer> {
   }
 
   void _prepareWithdrawalRequestList() {
+    title = "Approval Status";
     _list = [
       NamesListItem(id: 1, name: "Pending Requests"),
       NamesListItem(id: 2, name: "Approved Requests"),
@@ -105,6 +108,12 @@ class _FilterContainerState extends State<FilterContainer> {
       NamesListItem(id: 15, name: "Failed Disbursement"),
       NamesListItem(id: 16, name: "Successful Disbursement"),
     ];
+
+    for (var item in _list) {
+      for (var filter in widget.currentFilters) {
+        if (item.id == filter) _selectedItems.add(item.id);
+      }
+    }
   }
 
   Future<void> _getGroupMembers(BuildContext context) async {
@@ -264,52 +273,91 @@ class _FilterContainerState extends State<FilterContainer> {
                     //crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       customTitle(
-                          text: "Deposit Options",
+                          text: title,
                           textAlign: TextAlign.center,
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).textSelectionHandleColor),
-                      CheckboxListTile(
-                        dense: true,
-                        title: subtitle1(
-                            text: "Select All",
-                            textAlign: TextAlign.start,
-                            color: Theme.of(context).textSelectionHandleColor),
-                        value: _selectAll,
-                        onChanged: (value) {
-                          _selectedItems.clear();
-                          if (value) {
-                            for (var item in _list) {
-                              _selectedItems.add(item.id);
+                      Visibility(
+                        visible: widget.filterType == 1 || widget.filterType == 2,
+                        child: CheckboxListTile(
+                          dense: true,
+                          title: subtitle1(
+                              text: "Select All",
+                              textAlign: TextAlign.start,
+                              color: Theme.of(context).textSelectionHandleColor),
+                          value: _selectAll,
+                          onChanged: (value) {
+                            _selectedItems.clear();
+                            if (value) {
+                              for (var item in _list) {
+                                _selectedItems.add(item.id);
+                              }
                             }
-                          }
-                          setState(() {
-                            _selectAll = value;
-                          });
-                        },
-                        activeColor: primaryColor,
+                            setState(() {
+                              _selectAll = value;
+                            });
+                          },
+                          activeColor: primaryColor,
+                        ),
                       ),
                       Expanded(
                         child: ListView.builder(
                           itemBuilder: (BuildContext context, int index) {
                             NamesListItem item = _list[index];
-                            return CheckboxListTile(
-                              dense: true,
-                              value: _selectedItems.contains(item.id),
-                              onChanged: (value) {
-                                setState(() {
-                                  if (value) {
-                                    _selectedItems.add(item.id);
-                                  } else {
-                                    _selectedItems.remove(item.id);
-                                  }
-                                });
-                              },
-                              title: subtitle1(
-                                  text: item.name,
-                                  textAlign: TextAlign.start,
-                                  color: Theme.of(context).textSelectionHandleColor),
-                              activeColor: primaryColor,
-                            );
+                            if (widget.filterType == 3) {
+                              if (item.id == -1) {
+                                return customTitle(
+                                    text: item.name,
+                                    textAlign: TextAlign.center,
+                                    fontWeight: FontWeight.w600,
+                                    color: Theme.of(context).textSelectionHandleColor);
+                              } else
+                                return CheckboxListTile(
+                                  dense: true,
+                                  value: _selectedItems.contains(item.id),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (item.id == 14 || item.id == 15 || item.id == 16) {
+                                        if (_selectedItems.contains(1)) _selectedItems.remove(1);
+                                        if (_selectedItems.contains(2)) _selectedItems.remove(2);
+                                        if (_selectedItems.contains(3)) _selectedItems.remove(3);
+                                      } else {
+                                        if (_selectedItems.contains(14)) _selectedItems.remove(14);
+                                        if (_selectedItems.contains(15)) _selectedItems.remove(15);
+                                        if (_selectedItems.contains(16)) _selectedItems.remove(16);
+                                      }
+                                      if (value) {
+                                        _selectedItems.add(item.id);
+                                      } else {
+                                        _selectedItems.remove(item.id);
+                                      }
+                                    });
+                                  },
+                                  title: subtitle1(
+                                      text: item.name,
+                                      textAlign: TextAlign.start,
+                                      color: Theme.of(context).textSelectionHandleColor),
+                                  activeColor: primaryColor,
+                                );
+                            } else
+                              return CheckboxListTile(
+                                dense: true,
+                                value: _selectedItems.contains(item.id),
+                                onChanged: (value) {
+                                  setState(() {
+                                    if (value) {
+                                      _selectedItems.add(item.id);
+                                    } else {
+                                      _selectedItems.remove(item.id);
+                                    }
+                                  });
+                                },
+                                title: subtitle1(
+                                    text: item.name,
+                                    textAlign: TextAlign.start,
+                                    color: Theme.of(context).textSelectionHandleColor),
+                                activeColor: primaryColor,
+                              );
                           },
                           itemCount: _list.length,
                         ),
