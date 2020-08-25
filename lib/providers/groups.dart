@@ -399,12 +399,13 @@ class Groups with ChangeNotifier {
 
   List<BankLoans> _bankLoans = [];
   List<Notification> _notifications = [];
+  bool _loanPulled = false;
 
   String _userId;
   String _identity;
   List<Group> _groups = [];
   String _currentGroupId;
-  String _currentMemberId = "21475";
+  String _currentMemberId;
 
   Groups(List<Group> _groups, String _userId, String _identity, String _currentGroupId) {
     this._groups = _groups;
@@ -1001,12 +1002,12 @@ class Groups with ChangeNotifier {
   }
 
   void addDepositList(List<dynamic> data) {
-    _depositList = getDepositList(data);
+    _depositList.addAll(getDepositList(data));
     notifyListeners();
   }
 
   void addWithdrawalList(List<dynamic> data) {
-    _withdrawalList = getWithdrawalList(data);
+    _withdrawalList.addAll(getWithdrawalList(data));
     notifyListeners();
   }
 
@@ -1102,6 +1103,7 @@ class Groups with ChangeNotifier {
       }
     }
     _ongoingMemberLoans = memberLoansSummary;
+    _loanPulled = true;
     notifyListeners();
   }
 
@@ -2497,7 +2499,6 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        print(response);
         final data = response['loans'] as List<dynamic>;
         addOngoingMemberLoans(data);
       } on CustomException catch (error) {
@@ -2693,12 +2694,20 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchDeposits() async {
+  Future<void> fetchDeposits(String sortOption, List<int> filterList, List<String> memberList, int lowerLimit) async {
     const url = EndpointUrl.GET_DEPOSITS_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId});
-
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "sort_by": sortOption,
+        "status": filterList,
+        "members": memberList,
+        "lower_limit": lowerLimit,
+        "upper_limit": lowerLimit + 20
+      });
+      print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
@@ -2715,12 +2724,21 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWithdrawals() async {
+  Future<void> fetchWithdrawals(
+      String sortOption, List<int> filterList, List<String> memberList, int lowerLimit) async {
     const url = EndpointUrl.GET_GROUP_WITHDRAWAL_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId});
-
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "sort_by": sortOption,
+        "status": filterList,
+        "members": memberList,
+        "lower_limit": lowerLimit,
+        "upper_limit": lowerLimit + 20
+      });
+      print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['withdrawals'] as List<dynamic>;
@@ -2737,16 +2755,18 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWithdrawalRequests(List<int> status) async {
+  Future<void> fetchWithdrawalRequests(
+      String sortOption, List<int> filterList, List<String> memberList, int lowerLimit) async {
     const url = EndpointUrl.GET_GROUP_WITHDRAWAL_REQUESTS;
 
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
-        "status": status.toString(),
-        "upper_limit": 50, //TODO change
-        "lower_limit": 0
+        "sort_by": sortOption,
+        "status": filterList,
+        //"upper_limit": lowerLimit + 20,
+        //"lower_limit": 0
       });
       print("Post: $postRequest");
       try {
@@ -2963,7 +2983,8 @@ class Groups with ChangeNotifier {
     }
 
     if (memberOngoingLoans) {
-      if (_ongoingMemberLoans.length == 0) {
+      print(_ongoingMemberLoans);
+      if (_ongoingMemberLoans.length == 0 && _loanPulled == false) {
         await fetchGroupMembersOngoingLoans();
       }
 
@@ -3312,5 +3333,6 @@ class Groups with ChangeNotifier {
     _ongoingMemberLoans = {};
     _withdrawalRequests = [];
     _withdrawalRequestDetails = null;
+    _loanPulled = false;
   }
 }

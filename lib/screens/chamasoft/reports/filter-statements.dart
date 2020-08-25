@@ -4,17 +4,17 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class FilterContainer extends StatefulWidget {
+class FilterStatements extends StatefulWidget {
   final int statementFlag;
   final Function applyFilter;
 
-  FilterContainer(this.statementFlag, this.applyFilter);
+  FilterStatements(this.statementFlag, this.applyFilter);
 
   @override
-  _FilterContainerState createState() => _FilterContainerState();
+  _FilterStatementsState createState() => _FilterStatementsState();
 }
 
-class _FilterContainerState extends State<FilterContainer> {
+class _FilterStatementsState extends State<FilterStatements> {
   String defaultTitle = "Contributions";
   String single = "Contribution";
 

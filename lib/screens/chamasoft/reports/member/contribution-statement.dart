@@ -1,6 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
+import 'package:chamasoft/screens/chamasoft/reports/filter-statements.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -122,7 +122,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
   // ignore: unused_element
   void _showFilter(BuildContext context) {
     showModalBottomSheet(
-        context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
+        context: context, builder: (_) => FilterStatements(ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
   @override

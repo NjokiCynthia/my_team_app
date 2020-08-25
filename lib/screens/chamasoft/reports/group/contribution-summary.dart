@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/FilterContainer.dart';
+import 'package:chamasoft/screens/chamasoft/reports/filter-statements.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -44,7 +44,7 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   // ignore: unused_element
   void _showFilter(BuildContext context) {
     showModalBottomSheet(
-        context: context, builder: (_) => FilterContainer(ModalRoute.of(context).settings.arguments, _applyFilter));
+        context: context, builder: (_) => FilterStatements(ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
   @override
