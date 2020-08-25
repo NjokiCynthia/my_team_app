@@ -80,6 +80,19 @@ class _FilterContainerState extends State<FilterContainer> {
       NamesListItem(id: 8, name: "Funds Transfer"),
       NamesListItem(id: 9, name: "External Loan Disbursement"),
     ];
+
+    if (widget.currentFilters.isEmpty || widget.currentFilters.length == _list.length) {
+      for (var item in _list) {
+        _selectedItems.add(item.id);
+        _selectAll = true;
+      }
+    } else {
+      for (var item in _list) {
+        for (var filter in widget.currentFilters) {
+          if (item.id == filter) _selectedItems.add(item.id);
+        }
+      }
+    }
   }
 
   void _prepareWithdrawalRequestList() {
@@ -115,23 +128,25 @@ class _FilterContainerState extends State<FilterContainer> {
       });
     _memberList = Provider.of<Groups>(context, listen: false).members;
     _getGroupMembers(context).then((_) {
-      _memberList = Provider.of<Groups>(context, listen: false).members;
-      if (widget.currentMembers.isEmpty || widget.currentMembers.length == _memberList.length) {
-        for (var member in _memberList) {
-          _selectedMembers.add(member.id);
-          _selectAllMembers = true;
-        }
-      } else {
-        for (var member in _memberList) {
-          for (var filter in widget.currentMembers) {
-            if (member.id == filter) _selectedMembers.add(member.id);
+      if (context != null) {
+        _memberList = Provider.of<Groups>(context, listen: false).members;
+        if (/*widget.currentMembers.isEmpty ||*/ widget.currentMembers.length == _memberList.length) {
+          for (var member in _memberList) {
+            _selectedMembers.add(member.id);
+            _selectAllMembers = true;
+          }
+        } else {
+          for (var member in _memberList) {
+            for (var filter in widget.currentMembers) {
+              if (member.id == filter) _selectedMembers.add(member.id);
+            }
           }
         }
+        if (_showMemberFilter)
+          setState(() {
+            _isLoading = false;
+          });
       }
-      if (_showMemberFilter)
-        setState(() {
-          _isLoading = false;
-        });
     });
   }
 

@@ -1007,7 +1007,7 @@ class Groups with ChangeNotifier {
   }
 
   void addWithdrawalList(List<dynamic> data) {
-    _withdrawalList = getWithdrawalList(data);
+    _withdrawalList.addAll(getWithdrawalList(data));
     notifyListeners();
   }
 
@@ -2724,11 +2724,20 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchWithdrawals(String sortOption) async {
+  Future<void> fetchWithdrawals(
+      String sortOption, List<int> filterList, List<String> memberList, int lowerLimit) async {
     const url = EndpointUrl.GET_GROUP_WITHDRAWAL_LIST;
 
     try {
-      final postRequest = json.encode({"user_id": _userId, "group_id": _currentGroupId, "sort_by": sortOption});
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "sort_by": sortOption,
+        "status": filterList,
+        "members": memberList,
+        "lower_limit": lowerLimit,
+        "upper_limit": lowerLimit + 20
+      });
       print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);

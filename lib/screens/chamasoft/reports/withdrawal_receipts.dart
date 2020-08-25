@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'filter_container.dart';
+
 class WithdrawalReceipts extends StatefulWidget {
   @override
   _WithdrawalReceiptsState createState() => _WithdrawalReceiptsState();
@@ -27,6 +29,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   bool _isInit = true;
   String _sortOption = "date_desc";
   int selectedRadioTile;
+  List<int> _filterList = [];
+  List<String> _memberList = [];
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -39,7 +43,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
   Future<void> _getWithdrawals(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchWithdrawals(_sortOption);
+      await Provider.of<Groups>(context, listen: false)
+          .fetchWithdrawals(_sortOption, _filterList, _memberList, _withdrawals.length);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -66,6 +71,22 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
     _isInit = false;
     return true;
+  }
+
+  void showFilterOptions() async {
+    List<dynamic> filters = await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+      return FilterContainer(
+        filterType: 2,
+        currentFilters: _filterList,
+        currentMembers: _memberList,
+      );
+    }));
+
+    if (filters != null && filters.length == 2) {
+      _filterList = filters[0];
+      _memberList = filters[1];
+      _fetchData();
+    }
   }
 
   @override
@@ -159,7 +180,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                   color: Theme.of(context).backgroundColor,
                                   child: InkWell(
                                     splashColor: Colors.blueGrey.withOpacity(0.2),
-                                    onTap: () {},
+                                    onTap: () => showFilterOptions(),
                                     child: Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -181,16 +202,24 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                           ),
                     Expanded(
                       child: _withdrawals.length > 0
-                          ? ListView.builder(
-                              itemBuilder: (context, index) {
-                                Withdrawal withdrawal = _withdrawals[index];
-                                return WithdrawalCard(
-                                  withdrawal: withdrawal,
-                                  details: () {},
-                                  voidItem: () {},
-                                );
+                          ? NotificationListener<ScrollNotification>(
+                              onNotification: (ScrollNotification scrollInfo) {
+                                if (!_isLoading && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) { //TODO check if has more data before fetching again
+                                  _fetchData();
+                                }
+                                return true;
                               },
-                              itemCount: _withdrawals.length)
+                              child: ListView.builder(
+                                  itemBuilder: (context, index) {
+                                    Withdrawal withdrawal = _withdrawals[index];
+                                    return WithdrawalCard(
+                                      withdrawal: withdrawal,
+                                      details: () {},
+                                      voidItem: () {},
+                                    );
+                                  },
+                                  itemCount: _withdrawals.length),
+                            )
                           : emptyList(
                               color: Colors.blue[400],
                               iconData: LineAwesomeIcons.angle_double_up,
