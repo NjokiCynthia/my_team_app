@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/deposits-v-withdrawals.dart';
 import 'package:chamasoft/screens/chamasoft/bar_chart_sample4.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -67,7 +68,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
 
   Future<void> _getGroupDashboardData([bool hardRefresh = false]) async {
     try {
-      if(hardRefresh){
+      if (hardRefresh) {
         Provider.of<Dashboard>(context, listen: false).resetGroupDashboardData(_currentGroup.groupId);
       }
       if (!Provider.of<Dashboard>(context, listen: false).groupDataExists(_currentGroup.groupId)) {
@@ -79,6 +80,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
           }
         }
         await Provider.of<Dashboard>(context, listen: false).getGroupDashboardData(_currentGroup.groupId);
+        getChartData();
       }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -93,6 +95,19 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
           _isInit = false;
         });
       }
+    }
+  }
+
+  Future<void> getChartData() async {
+    try {
+      await Provider.of<Dashboard>(context, listen: false).getGroupDepositVWithdrawals(_currentGroup.groupId);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            getChartData();
+          });
     }
   }
 
@@ -131,7 +146,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: RefreshIndicator(
-          onRefresh: ()=>_getGroupDashboardData(true),
+          onRefresh: () => _getGroupDashboardData(true),
           child: SafeArea(
             child: SingleChildScrollView(
               controller: _scrollController,
@@ -292,7 +307,8 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           width: 160.0,
                                           height: 165.0,
                                           padding: EdgeInsets.all(16.0),
-                                          decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                                          decoration:
+                                              cardDecoration(gradient: plainCardGradient(context), context: context),
                                           child: accountBalance(
                                             color: primaryColor,
                                             cardIcon: Feather.credit_card,
@@ -308,7 +324,8 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           width: 160.0,
                                           height: 165.0,
                                           padding: EdgeInsets.all(16.0),
-                                          decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                                          decoration:
+                                              cardDecoration(gradient: plainCardGradient(context), context: context),
                                           child: accountBalance(
                                             color: primaryColor,
                                             cardIcon: Feather.credit_card,
@@ -421,7 +438,6 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                         Padding(
                             padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
                             child: Container(
-                              height: 300,
                               padding: EdgeInsets.all(16.0),
                               decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
                               child: Column(
@@ -446,10 +462,8 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           onPressed: () {})
                                     ],
                                   ),
-                                  Expanded(
-                                    flex: 1,
-                                    child: BarChartSample4(),
-                                  )
+                                  SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal, child: DepositsVWithdrawals())
                                 ],
                               ),
                             ))

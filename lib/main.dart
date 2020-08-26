@@ -20,8 +20,6 @@ import 'package:provider/provider.dart';
 import './providers/auth.dart';
 import './providers/groups.dart';
 
-
-
 void main() {
   runApp(MyApp());
 }
@@ -32,13 +30,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
-
-
-
   void getCurrentAppTheme() async {
-    themeChangeProvider.darkTheme =
-        await themeChangeProvider.darkThemePreference.getTheme();
+    themeChangeProvider.darkTheme = await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
@@ -54,8 +47,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
@@ -86,13 +77,10 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) {},
         )
       ],
-      child: Consumer<DarkThemeProvider>(
-          builder: (BuildContext context, value, Widget child) {
+      child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
           debugShowCheckedModeBanner: false,
-          color: themeChangeProvider.darkTheme
-              ? Colors.blueGrey[900]
-              : Colors.blue[50],
+          color: themeChangeProvider.darkTheme ? Colors.blueGrey[900] : Colors.blue[50],
           title: 'Chamasoft',
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
           home: IntroScreen(),
