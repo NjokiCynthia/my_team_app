@@ -7,14 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'contribution/create-contribution.dart';
+import 'create-expense-category.dart';
+import 'edit-expense-category.dart';
 
-class ListExpenses extends StatefulWidget {
+class ListExpenseCategories extends StatefulWidget {
   @override
-  _ListExpensesState createState() => _ListExpensesState();
+  _ListExpenseCategoriesState createState() => _ListExpenseCategoriesState();
 }
 
-class _ListExpensesState extends State<ListExpenses> {
+class _ListExpenseCategoriesState extends State<ListExpenseCategories> {
   @override
   void initState() {
     super.initState();
@@ -33,7 +34,7 @@ class _ListExpensesState extends State<ListExpenses> {
         context: context,
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Expenses List",
+        title: "Expenses Categories List",
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -43,7 +44,7 @@ class _ListExpensesState extends State<ListExpenses> {
         backgroundColor: primaryColor,
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => CreateContribution(),
+            builder: (context) => CreateExpenseCategory(),
           ));
         },
       ),
@@ -54,9 +55,9 @@ class _ListExpensesState extends State<ListExpenses> {
           child: Consumer<Groups>(builder: (context, groupData, child) {
             return ListView.separated(
               padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-              itemCount: groupData.expenses.length,
+              itemCount: groupData.expenseCategories.length,
               itemBuilder: (context, index) {
-                Expense expense = groupData.expenses[index];
+                ExpenseCategories expense = groupData.expenseCategories[index];
                 return ListTile(
                   dense: true,
                   title: Row(
@@ -102,14 +103,26 @@ class _ListExpensesState extends State<ListExpenses> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                smallBadgeButton(
-                                  backgroundColor:
-                                      primaryColor.withOpacity(0.2),
-                                  textColor: primaryColor,
-                                  text: '${expense.amount}',
-                                  action: () {},
-                                  buttonHeight: 24.0,
-                                  textSize: 12.0,
+                                Padding(
+                                  padding: EdgeInsets.all(12.0),
+                                  child: circleIconButton(
+                                    icon: Icons.edit,
+                                    backgroundColor:
+                                        primaryColor.withOpacity(.3),
+                                    color: primaryColor,
+                                    iconSize: 18.0,
+                                    padding: 0.0,
+                                    onPressed: () async {
+                                      await Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditExpenseCategory(
+                                          expenseCategoryId:
+                                              int.parse(expense.id),
+                                        ),
+                                      ));
+                                    },
+                                  ),
                                 ),
                               ],
                             )

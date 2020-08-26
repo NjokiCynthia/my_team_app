@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 
 import '../../configure-group.dart';
 import 'list-accounts.dart';
-import 'list-expenses.dart';
+import 'list-expense-categories.dart';
 import 'list-fine-types.dart';
 import 'list-members.dart';
 import 'update-group-profile.dart';
@@ -136,12 +136,13 @@ class _GroupSettingsState extends State<GroupSettings> {
     }
   }
 
-  Future<void> fetchExpenses(BuildContext context) async {
+  Future<void> fetchExpenseCategories(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchExpenses();
+      await Provider.of<Groups>(context, listen: false)
+          .fetchExpenseCategories();
       Navigator.pop(context);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ListExpenses()));
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => ListExpenseCategories()));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -453,42 +454,42 @@ class _GroupSettingsState extends State<GroupSettings> {
                 thickness: 1.0,
                 height: 5.0,
               ),
-//              ListTile(
-//                leading: Icon(
-//                  FontAwesome.file_text,
-//                  size: 32,
-//                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-//                ),
-//                title: customTitle(
-//                  text: "Expenses",
-//                  fontWeight: FontWeight.w700,
-//                  textAlign: TextAlign.start,
-//                  color: Theme.of(context).textSelectionHandleColor,
-//                ),
-//                subtitle: customTitle(
-//                  text: "Manage expense categories",
-//                  textAlign: TextAlign.start,
-//                  fontSize: 13.0,
-//                  color: Theme.of(context).bottomAppBarColor,
-//                ),
-//                dense: true,
-//                onTap: () async {
-//                  showDialog(
-//                      context: context,
-//                      builder: (BuildContext context) {
-//                        return Center(
-//                          child: CircularProgressIndicator(),
-//                        );
-//                      });
-//                  await fetchExpenses(context);
-////                  Navigator.pop(context);
-//                },
-//              ),
-//              DashedDivider(
-//                   color: Theme.of(context).dividerColor,
-//                thickness: 1.0,
-//                height: 5.0,
-//              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Expense Categories",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage expense categories",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchExpenseCategories(context);
+//                  Navigator.pop(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
 
               ListTile(
                 leading: Icon(

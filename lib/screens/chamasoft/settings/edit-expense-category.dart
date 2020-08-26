@@ -9,14 +9,19 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class CreateFineType extends StatefulWidget {
+class EditExpenseCategory extends StatefulWidget {
+  final int expenseCategoryId;
+
+  EditExpenseCategory({this.expenseCategoryId});
   @override
-  _CreateFineTypeState createState() => _CreateFineTypeState();
+  _EditExpenseCategoryState createState() => _EditExpenseCategoryState();
 }
 
-class _CreateFineTypeState extends State<CreateFineType> {
+class _EditExpenseCategoryState extends State<EditExpenseCategory> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  TextEditingController nameTextController = TextEditingController();
+  TextEditingController descriptionTextController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   int _formModified = 0;
@@ -34,6 +39,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    fetchExpenseCategory(context);
     super.initState();
   }
 
@@ -44,10 +50,33 @@ class _CreateFineTypeState extends State<CreateFineType> {
     super.dispose();
   }
 
-  String fineTypeName = "";
-  double amount = 0;
+  String categoryName = "";
+  String description = "";
+  int id;
+  bool pageLoaded = false;
 
-  Future<void> createFineType(BuildContext context) async {
+  Future<void> fetchExpenseCategory(BuildContext context) async {
+    try {
+      final response = await Provider.of<Groups>(context, listen: false)
+          .fetchExpenseCategory(widget.expenseCategoryId);
+      if (response != null) {
+        this.setState(() {
+          id = int.parse(response['id'].toString());
+          description = response['description'].toString();
+          categoryName = response['name'].toString();
+
+          nameTextController.text = categoryName;
+          descriptionTextController.text = description.toString();
+
+          pageLoaded = true;
+        });
+      }
+    } on CustomException catch (error) {
+      print(error.message);
+    }
+  }
+
+  Future<void> editExpenseCategory(BuildContext context) async {
     try {
       showDialog(
           context: context,
@@ -57,16 +86,14 @@ class _CreateFineTypeState extends State<CreateFineType> {
             );
           });
 
-      await Provider.of<Groups>(context, listen: false).createFineCategory(
-        name: fineTypeName,
-        amount: amount.toString(),
-      );
+      await Provider.of<Groups>(context, listen: false).editExpenseCategory(
+          name: categoryName, description: description.toString(), id: id.toString());
 
       Navigator.pop(context);
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "You have successfully added a fine category",
-      )));
+            "You have successfully updated the expense category",
+          )));
 
       _formModified = 1;
       Future.delayed(const Duration(seconds: 4), () {
@@ -77,8 +104,8 @@ class _CreateFineTypeState extends State<CreateFineType> {
 
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "Error Adding the Fine Category. ${error.message} ",
-      )));
+            "Error updating the Expense Category. ${error.message} ",
+          )));
     }
   }
 
@@ -87,14 +114,15 @@ class _CreateFineTypeState extends State<CreateFineType> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Create Fine Category",
+        title: "Edit Expense Category",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(builder: (context) {
-        return Form(
+        return pageLoaded
+            ? Form(
           key: _formKey,
           child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
@@ -105,45 +133,48 @@ class _CreateFineTypeState extends State<CreateFineType> {
                   toolTip(
                       context: context,
                       title: "",
-                      message: "Create a new Fine Category",
+                      message: "Update Expense Category",
                       showTitle: false),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                    padding:
+                    const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           simpleTextInputField(
                               context: context,
-                              labelText: 'Enter fine name',
+                              labelText: 'Enter expense name',
                               validator: (value) {
-                                Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
+                                Pattern pattern =
+                                    r'^([A-Za-z0-9_ ]{2,})$';
                                 RegExp regex = new RegExp(pattern);
                                 if (!regex.hasMatch(value))
                                   return 'Invalid name';
                                 else
                                   return null;
                               },
-                              onSaved: (value) => fineTypeName = value,
+                              onSaved: (value) => categoryName = value,
+                              controller: nameTextController,
                               onChanged: (value) {
                                 setState(() {
-                                  fineTypeName = value;
+                                  categoryName = value;
                                 });
                               }),
                           SizedBox(
                             height: 24,
                           ),
-                          amountTextInputField(
+                          simpleTextInputField(
                             context: context,
-                            labelText: 'Enter amount',
+                            labelText: 'Enter description',
+                            controller: descriptionTextController,
                             onChanged: (value) {
                               setState(() {
-                                amount =
-                                    double.parse(value);
+                                description = value;
                               });
                             },
                             validator: (value) {
-                                return null;
+                              return null;
                             },
                           ),
                           SizedBox(
@@ -151,10 +182,10 @@ class _CreateFineTypeState extends State<CreateFineType> {
                           ),
                           defaultButton(
                             context: context,
-                            text: "CREATE CATEGORY",
+                            text: "EDIT CATEGORY",
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                await createFineType(context);
+                                await editExpenseCategory(context);
                               }
                             },
                           ),
@@ -162,7 +193,8 @@ class _CreateFineTypeState extends State<CreateFineType> {
                   ),
                 ],
               )),
-        );
+        )
+            : Center(child: CircularProgressIndicator());
       }),
     );
   }
