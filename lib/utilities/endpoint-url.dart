@@ -6,6 +6,7 @@ class EndpointUrl {
   static const String GET_MEMBER_DASHBOARD = CustomHelper.baseUrl + "/mobile/get_member_dashboard";
   static const String GET_MEMBER_DASHBOARD_DATA = CustomHelper.baseUrl + "/mobile/get_member_dashboard_data";
   static const String GET_GROUP_DASHBOARD_DATA = CustomHelper.baseUrl + "/mobile/get_group_dashboard_data";
+  static const String GET_GROUP_CHART_DATA = CustomHelper.baseUrl + "/mobile/get_member_and_group_chart_data";
 
   //On-boarding
   static const String GENERATE_OTP = CustomHelper.baseUrl + "/mobile/generate_pin";
@@ -225,7 +226,6 @@ class EndpointUrl {
   static const String GET_USD_CONVERSION = CustomHelper.baseUrl + "/mobile/billing/calculate_conversion";
   static const String SUBMIT_PAYPAL_RESPONSE = CustomHelper.baseUrl + "/mobile/billing/receive_complete_billing";
   static const String SUBMIT_MPESA_REQUEST = CustomHelper.baseUrl + "/mobile/billing/make_mpesa_payment";
-  static const String GET_RECENT_TRANSACTIONS = CustomHelper.baseUrl + "/mobile/get_member_and_group_chart_data";
   static const String GET_GROUP_USER_SUMMARIES = CustomHelper.baseUrl + "/mobile/get_group_more_dashboard_data";
   static const String CALCULATE_COUPON_VALUE = CustomHelper.baseUrl + "/mobile/billing/calculate_coupon";
   static const String CONFIRM_FREE_BILLLING = CustomHelper.baseUrl + "/mobile/billing/confirm_free_billing";

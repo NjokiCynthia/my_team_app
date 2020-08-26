@@ -154,6 +154,8 @@ PODS:
   - SDWebImage/Core (5.8.4)
   - shared_preferences (0.0.1):
     - Flutter
+  - sms_autofill (0.0.1):
+    - Flutter
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
@@ -174,6 +176,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - sms_autofill (from `.symlinks/plugins/sms_autofill/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
 
@@ -228,6 +231,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/permission_handler/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  sms_autofill:
+    :path: ".symlinks/plugins/sms_autofill/ios"
   sqflite:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher:
@@ -268,6 +273,7 @@ SPEC CHECKSUMS:
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
   SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  sms_autofill: c461043483362c3f1709ee76eaae6eb570b31686
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
   SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
