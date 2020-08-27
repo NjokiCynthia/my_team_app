@@ -1,4 +1,7 @@
 import 'package:chamasoft/providers/dashboard.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -19,8 +22,10 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
+    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
-      height: 300,
+      height: 280,
+      margin: EdgeInsets.only(top: 24),
       child: dashboardData.chartYAxisParameters[0] > 1
           ? Container(
               padding: EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -28,7 +33,15 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
               child: BarChart(
                 BarChartData(
                   maxY: dashboardData.chartYAxisParameters[0] / dashboardData.chartYAxisParameters[1],
-                  barTouchData: BarTouchData(enabled: false),
+                  barTouchData: BarTouchData(
+                      enabled: true,
+                      touchTooltipData: BarTouchTooltipData(
+                          tooltipBgColor: primaryColor,
+                          getTooltipItem: (group, groupIndex, rod, rodIndex) {
+                            double value = dashboardData.chartYAxisParameters[1] > 1 ? rod.y * 1000 : rod.y;
+                            return BarTooltipItem("${groupObject.groupCurrency} ${currencyFormat.format(value)}",
+                                TextStyle(color: Colors.white, fontFamily: 'SegoeUI'));
+                          })),
                   titlesData: FlTitlesData(
                       show: true,
                       bottomTitles: SideTitles(
