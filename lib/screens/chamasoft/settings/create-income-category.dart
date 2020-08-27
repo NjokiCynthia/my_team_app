@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -69,7 +70,10 @@ class _CreateIncomeCategoryState extends State<CreateIncomeCategory> {
 
       String id = widget.isEdit ? widget.incomeCategory.id : "";
       await Provider.of<Groups>(context, listen: false).createIncomeCategory(
-          name: _nameTextController.text, description: _descriptionTextController.text, isEdit: widget.isEdit, id: id);
+          name: _nameTextController.text,
+          description: _descriptionTextController.text,
+          action: widget.isEdit ? SettingActions.actionEdit : SettingActions.actionAdd,
+          id: id);
 
       Navigator.pop(context);
       String message = "Income category has been added";
@@ -82,7 +86,7 @@ class _CreateIncomeCategoryState extends State<CreateIncomeCategory> {
       )));
 
       _formModified = 1;
-      Future.delayed(const Duration(seconds: 4), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.of(context).pop(_formModified);
       });
     } on CustomException catch (error) {

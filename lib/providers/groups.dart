@@ -2340,13 +2340,24 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> createIncomeCategory({String name, String description, bool isEdit, String id}) async {
-    final url = isEdit ? EndpointUrl.EDIT_INCOME_CATEGORY : EndpointUrl.ADD_INCOME_CATEGORY;
+  Future<void> createIncomeCategory(
+      {@required String name, @required String description, String id, @required SettingActions action}) async {
+    String url = EndpointUrl.ADD_INCOME_CATEGORY;
+    if (action == SettingActions.actionEdit) {
+      url = EndpointUrl.EDIT_INCOME_CATEGORY;
+    } else if (action == SettingActions.actionHide) {
+      url = EndpointUrl.INCOME_CATEGORIES_HIDE;
+    } else if (action == SettingActions.actionUnHide) {
+      url = EndpointUrl.INCOME_CATEGORIES_UNHIDE;
+    } else if (action == SettingActions.actionDelete) {
+      url = EndpointUrl.INCOME_CATEGORIES_DELETE;
+    }
+
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
-        "id": isEdit ? id : "",
+        "id": action != SettingActions.actionAdd ? id : "",
         "name": name,
         "description": description,
       });

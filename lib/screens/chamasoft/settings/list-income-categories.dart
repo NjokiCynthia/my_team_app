@@ -1,13 +1,16 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/create-income-category.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +36,68 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
             _fetchIncomeCategories(context);
           });
     }
+  }
+
+  Future<void> editIncomeCategory(
+      BuildContext context, IncomeCategories incomeCategory, SettingActions settingAction) async {
+    try {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+
+      await Provider.of<Groups>(context, listen: false).createIncomeCategory(
+          name: incomeCategory.name,
+          description: incomeCategory.description,
+          id: incomeCategory.id,
+          action: settingAction);
+
+      Navigator.pop(context);
+      String message = "${incomeCategory.name} has been hidden";
+      if (settingAction == SettingActions.actionUnHide) {
+        message = "${incomeCategory.name} is now active";
+      } else if (settingAction == SettingActions.actionDelete) {
+        message = "${incomeCategory.name} has been deleted";
+      }
+
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(
+        message,
+      )));
+      _refreshIndicatorKey.currentState.show();
+    } on CustomException catch (error) {
+      Navigator.pop(context);
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            editIncomeCategory(context, incomeCategory, settingAction);
+          });
+    }
+  }
+
+  showConfirmationDialog(BuildContext context, IncomeCategories category, SettingActions settingAction) {
+    String title = "";
+    if (settingAction == SettingActions.actionHide) {
+      title = "This will hide ${category.name}";
+    } else if (settingAction == SettingActions.actionUnHide) {
+      title = "This will un-hide ${category.name}";
+    } else if (settingAction == SettingActions.actionDelete) {
+      title = "This will delete ${category.name}";
+    }
+
+    twoButtonAlertDialog(
+        context: context,
+        message: "Are you sure you want to proceed?",
+        yesText: "Yes",
+        title: title,
+        action: () async {
+          Navigator.of(context).pop();
+          editIncomeCategory(context, category, settingAction);
+        });
   }
 
   void _showActions(BuildContext context, IncomeCategories incomeCategory) {
@@ -72,34 +137,56 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                         color: Colors.blueGrey,
                       ),
                       title: customTitle(
-                          text: "Edit Income Category",
+                          text: "Edit",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           color: Theme.of(context).textSelectionHandleColor),
                     ),
                   ),
                 ),
-//                Material(
-//                  color: Theme.of(context).backgroundColor,
-//                  child: InkWell(
-//                    onTap: () {},
-//                    splashColor: Colors.blueGrey.withOpacity(0.2),
-//                    child: ListTile(
-//                      leading: Icon(
-//                        Icons.delete,
-//                        color: Colors.red.withOpacity(0.7),
-//                      ),
-//                      title: customTitle(
-//                          text: "Delete Contribution",
-//                          fontWeight: FontWeight.w600,
-//                          textAlign: TextAlign.start,
-//                          color: Theme.of(context).textSelectionHandleColor),
-//                      onTap: () {
-//                        Navigator.pop(context);
-//                      },
-//                    ),
-//                  ),
-//                ),
+                Material(
+                  color: Theme.of(context).backgroundColor,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      showConfirmationDialog(context, incomeCategory,
+                          incomeCategory.isHidden ? SettingActions.actionUnHide : SettingActions.actionHide);
+                    },
+                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                    child: ListTile(
+                      leading: Icon(
+                        incomeCategory.isHidden ? Feather.eye : Feather.eye_off,
+                        color: Colors.blueGrey,
+                      ),
+                      title: customTitle(
+                          text: incomeCategory.isHidden ? "UnHide" : "Hide",
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start,
+                          color: Theme.of(context).textSelectionHandleColor),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: Theme.of(context).backgroundColor,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context);
+                      showConfirmationDialog(context, incomeCategory, SettingActions.actionDelete);
+                    },
+                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.delete,
+                        color: Colors.blueGrey,
+                      ),
+                      title: customTitle(
+                          text: "Delete",
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start,
+                          color: Theme.of(context).textSelectionHandleColor),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -203,7 +290,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                           ),
                                         ),
                                         customTitleWithWrap(
-                                          text: '${incomeCategory.active ? "Active" : "Hidden"}',
+                                          text: '${incomeCategory.isHidden ? "Hidden" : "Active"}',
                                           color: Theme.of(context).textSelectionHandleColor,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12.0,
@@ -227,7 +314,7 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                 color: primaryColor,
                                 iconSize: 16.0,
                                 padding: 0.0,
-                                onPressed: () => _showActions(_scaffoldKey.currentContext, incomeCategory),
+                                onPressed: () => _showActions(context, incomeCategory),
                               ),
                             ),
                           ],
