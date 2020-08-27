@@ -362,6 +362,7 @@ class Groups with ChangeNotifier {
   List<FineType> _fineTypes = [];
   List<IncomeCategories> _incomeCategories = [];
   List<IncomeCategories> _detailedIncomeCategories = [];
+  List<IncomeCategories> _assetCategories = [];
   List<ExpenseCategories> _expenseCategories = [];
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
@@ -446,6 +447,10 @@ class Groups with ChangeNotifier {
 
   List<IncomeCategories> get detailedIncomeCategories {
     return [..._detailedIncomeCategories];
+  }
+
+  List<IncomeCategories> get assetCategories {
+    return [..._assetCategories];
   }
 
   List<LoanType> get loanTypes {
@@ -799,6 +804,23 @@ class Groups with ChangeNotifier {
           active: ParseHelper.getIntFromJson(incomeCategoryJson, "active") != 0,
         );
         _detailedIncomeCategories.add(income);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addAssetCategories(List<dynamic> incomeCategories) {
+    if (incomeCategories.length > 0) {
+      for (var incomeCategoryJson in incomeCategories) {
+        var description = incomeCategoryJson["description"];
+        final income = IncomeCategories(
+          id: incomeCategoryJson['id'].toString(),
+          name: incomeCategoryJson['name'].toString(),
+          description: description != null ? description.toString() : "",
+          isHidden: ParseHelper.getIntFromJson(incomeCategoryJson, "is_hidden") != 0,
+          active: ParseHelper.getIntFromJson(incomeCategoryJson, "active") != 0,
+        );
+        _assetCategories.add(income);
       }
     }
     notifyListeners();
@@ -1452,6 +1474,30 @@ class Groups with ChangeNotifier {
         _detailedIncomeCategories = []; //clear accounts
         final incomeCategoriesTypes = response['income_categories'] as List<dynamic>;
         addDetailedIncomeCategories(incomeCategoriesTypes);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchAssetCategories() async {
+    const url = EndpointUrl.GET_GROUP_ASSET_CATEGORIES;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _assetCategories = []; //clear accounts
+        final incomeCategoriesTypes = response['asset_categories'] as List<dynamic>;
+        addAssetCategories(incomeCategoriesTypes);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -2351,6 +2397,40 @@ class Groups with ChangeNotifier {
       url = EndpointUrl.INCOME_CATEGORIES_UNHIDE;
     } else if (action == SettingActions.actionDelete) {
       url = EndpointUrl.INCOME_CATEGORIES_DELETE;
+    }
+
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "id": action != SettingActions.actionAdd ? id : "",
+        "name": name,
+        "description": description,
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> createAssetCategory(
+      {@required String name, @required String description, String id, @required SettingActions action}) async {
+    String url = EndpointUrl.CREATE_ASSET_CATEGORY;
+    if (action == SettingActions.actionEdit) {
+      url = EndpointUrl.EDIT_ASSET_CATEGORY;
+    } else if (action == SettingActions.actionHide) {
+      url = EndpointUrl.ASSET_CATEGORIES_HIDE;
+    } else if (action == SettingActions.actionUnHide) {
+      url = EndpointUrl.ASSET_CATEGORIES_UNHIDE;
     }
 
     try {
@@ -3481,6 +3561,7 @@ class Groups with ChangeNotifier {
     _fineTypes = [];
     _incomeCategories = [];
     _detailedIncomeCategories = [];
+    _assetCategories = [];
     _expenseCategories = [];
     _loanTypes = [];
     _depositors = [];
