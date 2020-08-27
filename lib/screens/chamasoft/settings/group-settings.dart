@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
+import 'package:chamasoft/screens/chamasoft/settings/list-income-categories.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-loan-types.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -150,7 +151,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         action: SnackBarAction(
           label: 'Retry',
           onPressed: () async {
-            fetchAccounts(context);
+            fetchExpenseCategories(context);
           },
         ),
       );
@@ -172,7 +173,29 @@ class _GroupSettingsState extends State<GroupSettings> {
         action: SnackBarAction(
           label: 'Retry',
           onPressed: () async {
-            fetchAccounts(context);
+            fetchFineTypes(context);
+          },
+        ),
+      );
+      Navigator.pop(context);
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+  Future<void> fetchIncomeCategories(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchDetailedIncomeCategories();
+      Navigator.pop(context);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListIncomeCategories()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch fine types'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchIncomeCategories(context);
           },
         ),
       );
@@ -194,7 +217,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         action: SnackBarAction(
           label: 'Retry',
           onPressed: () async {
-            fetchAccounts(context);
+            fetchLoanTypes(context);
           },
         ),
       );
@@ -257,7 +280,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         action: SnackBarAction(
           label: 'Retry',
           onPressed: () async {
-            fetchAccounts(context);
+            fetchMembers(context);
           },
         ),
       );
@@ -561,41 +584,41 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                thickness: 1.0,
 //                height: 5.0,
 //              ),
-//              ListTile(
-//                leading: Icon(
-//                  FontAwesome.file_text,
-//                  size: 32,
-//                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-//                ),
-//                title: customTitle(
-//                  text: "Income Categories",
-//                  fontWeight: FontWeight.w700,
-//                  textAlign: TextAlign.start,
-//                  color: Theme.of(context).textSelectionHandleColor,
-//                ),
-//                subtitle: customTitle(
-//                  text: "Manage income categories of the group",
-//                  textAlign: TextAlign.start,
-//                  fontSize: 13.0,
-//                  color: Theme.of(context).bottomAppBarColor,
-//                ),
-//                dense: true,
-//                onTap: () async {
-//                  showDialog(
-//                      context: context,
-//                      builder: (BuildContext context) {
-//                        return Center(
-//                          child: CircularProgressIndicator(),
-//                        );
-//                      });
-//                  await fetchLoanTypes(context);
-//                },
-//              ),
-//              DashedDivider(
-//                   color: Theme.of(context).dividerColor,
-//                thickness: 1.0,
-//                height: 5.0,
-//              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Income Categories",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage group income categories",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchIncomeCategories(context);
+                },
+              ),
+              DashedDivider(
+                   color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
 //              ListTile(
 //                leading: Icon(
 //                  FontAwesome.file_text,
