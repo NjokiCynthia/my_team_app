@@ -221,7 +221,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                             if (response) {
                                               final result =
                                                   await Navigator.of(context).pushNamed(CreateBankAccount.namedRoute);
-                                              if (result != null && result) {
+                                              if (result != null && result == 1) {
                                                 _accountRefreshIndicatorKey.currentState.show();
                                                 _getAccounts(context);
                                               }

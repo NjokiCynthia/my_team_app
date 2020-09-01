@@ -1,5 +1,7 @@
 import 'dart:ui';
 
+import 'package:fl_chart/fl_chart.dart';
+
 class ChartData {
   String month;
   double deposit, withdrawal, total;
@@ -12,4 +14,12 @@ class ChartData {
     this.withdrawal = withdrawal;
     this.total = deposit + withdrawal;
   }
+}
+
+class GroupedChartData {
+  List<String> months;
+  List<BarChartGroupData> transactions;
+  double divider;
+
+
 }

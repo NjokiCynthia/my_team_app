@@ -150,7 +150,7 @@ class _EditFineTypeState extends State<EditFineType> {
                                           r'^([A-Za-z0-9_ ]{2,})$';
                                       RegExp regex = new RegExp(pattern);
                                       if (!regex.hasMatch(value))
-                                        return 'Invalid petty cash account name';
+                                        return 'Invalid name';
                                       else
                                         return null;
                                     },

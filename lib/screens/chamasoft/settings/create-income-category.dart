@@ -1,5 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
@@ -9,17 +11,24 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class CreateFineType extends StatefulWidget {
+class CreateIncomeCategory extends StatefulWidget {
+  final bool isEdit;
+  final IncomeCategories incomeCategory;
+
+  CreateIncomeCategory({@required this.isEdit, this.incomeCategory});
+
   @override
-  _CreateFineTypeState createState() => _CreateFineTypeState();
+  _CreateIncomeCategoryState createState() => _CreateIncomeCategoryState();
 }
 
-class _CreateFineTypeState extends State<CreateFineType> {
+class _CreateIncomeCategoryState extends State<CreateIncomeCategory> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   final _formKey = GlobalKey<FormState>();
-
   int _formModified = 0;
+  bool _isFormEnabled = true;
+  TextEditingController _nameTextController = TextEditingController();
+  TextEditingController _descriptionTextController = TextEditingController();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -34,6 +43,11 @@ class _CreateFineTypeState extends State<CreateFineType> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+
+    if (widget.isEdit) {
+      _nameTextController.text = widget.incomeCategory.name;
+      _descriptionTextController.text = widget.incomeCategory.description;
+    }
     super.initState();
   }
 
@@ -44,10 +58,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
     super.dispose();
   }
 
-  String fineTypeName = "";
-  double amount = 0;
-
-  Future<void> createFineType(BuildContext context) async {
+  Future<void> editIncomeCategory(BuildContext context) async {
     try {
       showDialog(
           context: context,
@@ -57,28 +68,35 @@ class _CreateFineTypeState extends State<CreateFineType> {
             );
           });
 
-      await Provider.of<Groups>(context, listen: false).createFineCategory(
-        name: fineTypeName,
-        amount: amount.toString(),
-      );
+      String id = widget.isEdit ? widget.incomeCategory.id : "";
+      await Provider.of<Groups>(context, listen: false).createIncomeCategory(
+          name: _nameTextController.text,
+          description: _descriptionTextController.text,
+          action: widget.isEdit ? SettingActions.actionEdit : SettingActions.actionAdd,
+          id: id);
 
       Navigator.pop(context);
+      String message = "Income category has been added";
+      if (widget.isEdit) {
+        message = "You have successfully updated the income category";
+      }
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "You have successfully added a fine category",
+        message,
       )));
 
       _formModified = 1;
-      Future.delayed(const Duration(seconds: 4), () {
+      Future.delayed(const Duration(seconds: 3), () {
         Navigator.of(context).pop(_formModified);
       });
     } on CustomException catch (error) {
       Navigator.pop(context);
-
-      Scaffold.of(context).showSnackBar(SnackBar(
-          content: Text(
-        "Error Adding the Fine Category. ${error.message} ",
-      )));
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            editIncomeCategory(context);
+          });
     }
   }
 
@@ -87,13 +105,13 @@ class _CreateFineTypeState extends State<CreateFineType> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Create Fine Category",
+        title: widget.isEdit ? "Edit Income Category" : "Add Income Category",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Builder(builder: (context) {
+      body: Builder(builder: (BuildContext context) {
         return Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -105,7 +123,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
                   toolTip(
                       context: context,
                       title: "",
-                      message: "Create a new Fine Category",
+                      message: widget.isEdit ? "Update Income Category" : "Create Income Category",
                       showTitle: false),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -114,47 +132,41 @@ class _CreateFineTypeState extends State<CreateFineType> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           simpleTextInputField(
+                              controller: _nameTextController,
                               context: context,
-                              labelText: 'Enter fine name',
+                              labelText: 'Income category name',
                               validator: (value) {
-                                Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
-                                RegExp regex = new RegExp(pattern);
-                                if (!regex.hasMatch(value))
-                                  return 'Invalid name';
-                                else
-                                  return null;
+                                if (value == "" || value == null) {
+                                  return "This field is required";
+                                }
+                                return null;
                               },
-                              onSaved: (value) => fineTypeName = value,
-                              onChanged: (value) {
-                                setState(() {
-                                  fineTypeName = value;
-                                });
-                              }),
+                              enabled: _isFormEnabled),
                           SizedBox(
                             height: 24,
                           ),
-                          amountTextInputField(
-                            context: context,
-                            labelText: 'Enter amount',
-                            onChanged: (value) {
-                              setState(() {
-                                amount =
-                                    double.parse(value);
-                              });
-                            },
-                            validator: (value) {
+                          simpleTextInputField(
+                              controller: _descriptionTextController,
+                              context: context,
+                              labelText: 'Category description',
+                              validator: (value) {
+                                if (value == "" || value == null) {
+                                  return "This field is required";
+                                } else if (value.toString().length < 4) {
+                                  return "Description is too short";
+                                }
                                 return null;
-                            },
-                          ),
+                              },
+                              enabled: _isFormEnabled),
                           SizedBox(
                             height: 24,
                           ),
                           defaultButton(
                             context: context,
-                            text: "CREATE CATEGORY",
+                            text: "SAVE",
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                await createFineType(context);
+                                await editIncomeCategory(context);
                               }
                             },
                           ),

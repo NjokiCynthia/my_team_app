@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class CreateFineType extends StatefulWidget {
+class CreateExpenseCategory extends StatefulWidget {
   @override
-  _CreateFineTypeState createState() => _CreateFineTypeState();
+  _CreateExpenseCategoryState createState() => _CreateExpenseCategoryState();
 }
 
-class _CreateFineTypeState extends State<CreateFineType> {
+class _CreateExpenseCategoryState extends State<CreateExpenseCategory> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   final _formKey = GlobalKey<FormState>();
@@ -44,10 +44,10 @@ class _CreateFineTypeState extends State<CreateFineType> {
     super.dispose();
   }
 
-  String fineTypeName = "";
-  double amount = 0;
+  String categoryName = "";
+  String description = "";
 
-  Future<void> createFineType(BuildContext context) async {
+  Future<void> createCategory(BuildContext context) async {
     try {
       showDialog(
           context: context,
@@ -57,15 +57,15 @@ class _CreateFineTypeState extends State<CreateFineType> {
             );
           });
 
-      await Provider.of<Groups>(context, listen: false).createFineCategory(
-        name: fineTypeName,
-        amount: amount.toString(),
+      await Provider.of<Groups>(context, listen: false).createExpenseCategory(
+        name: categoryName,
+        description: description,
       );
 
       Navigator.pop(context);
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "You have successfully added a fine category",
+        "You have successfully added an expense category",
       )));
 
       _formModified = 1;
@@ -77,7 +77,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
 
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-        "Error Adding the Fine Category. ${error.message} ",
+        "Error Adding the Expense Category. ${error.message} ",
       )));
     }
   }
@@ -87,7 +87,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Create Fine Category",
+        title: "Create Expense Category",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
@@ -105,7 +105,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
                   toolTip(
                       context: context,
                       title: "",
-                      message: "Create a new Fine Category",
+                      message: "Create a new Category",
                       showTitle: false),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
@@ -115,35 +115,34 @@ class _CreateFineTypeState extends State<CreateFineType> {
                         children: <Widget>[
                           simpleTextInputField(
                               context: context,
-                              labelText: 'Enter fine name',
+                              labelText: 'Enter category name',
                               validator: (value) {
                                 Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
                                 RegExp regex = new RegExp(pattern);
                                 if (!regex.hasMatch(value))
-                                  return 'Invalid name';
+                                  return 'Invalid  name';
                                 else
                                   return null;
                               },
-                              onSaved: (value) => fineTypeName = value,
+                              onSaved: (value) => categoryName = value,
                               onChanged: (value) {
                                 setState(() {
-                                  fineTypeName = value;
+                                  categoryName = value;
                                 });
                               }),
                           SizedBox(
                             height: 24,
                           ),
-                          amountTextInputField(
+                          simpleTextInputField(
                             context: context,
-                            labelText: 'Enter amount',
+                            labelText: 'Enter Description',
                             onChanged: (value) {
                               setState(() {
-                                amount =
-                                    double.parse(value);
+                                description = value;
                               });
                             },
                             validator: (value) {
-                                return null;
+                              return null;
                             },
                           ),
                           SizedBox(
@@ -154,7 +153,7 @@ class _CreateFineTypeState extends State<CreateFineType> {
                             text: "CREATE CATEGORY",
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
-                                await createFineType(context);
+                                await createCategory(context);
                               }
                             },
                           ),
