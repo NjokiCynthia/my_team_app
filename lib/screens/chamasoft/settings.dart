@@ -94,6 +94,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   @override
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
+    final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
     setState(() {
       theme = themeChange.darkTheme ? "Dark" : "Light";
     });
@@ -167,28 +169,31 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ],
             ),
-            ListTile(
-              title: Text("Group Settings",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16.0,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              subtitle: Text(
-                Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName,
-                style: TextStyle(color: Theme.of(context).bottomAppBarColor),
-              ),
-              trailing: Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                child: Icon(
-                  Icons.keyboard_arrow_right,
-                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+            Visibility(
+              visible: group.isGroupAdmin,
+              child: ListTile(
+                title: Text("Group Settings",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16.0,
+                      color: Theme.of(context).textSelectionHandleColor,
+                    )),
+                subtitle: Text(
+                  group.groupName,
+                  style: TextStyle(color: Theme.of(context).bottomAppBarColor),
                 ),
-              ),
-              dense: true,
-              onTap: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => GroupSettings(),
+                trailing: Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+                  child: Icon(
+                    Icons.keyboard_arrow_right,
+                    color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                  ),
+                ),
+                dense: true,
+                onTap: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => GroupSettings(),
+                  ),
                 ),
               ),
             ),
@@ -309,7 +314,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                         // Padding(
                         //   padding: EdgeInsets.only(left: 10.0)
                         // ),
-                        Text("Light", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
+                        Text("Light",
+                            style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
                       ],
                     )),
                 PopupMenuItem(
@@ -321,7 +327,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                         // Padding(
                         //   padding: EdgeInsets.only(left: 10.0)
                         // ),
-                        Text("Dark", style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
+                        Text("Dark",
+                            style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
                       ],
                     )),
               ],
