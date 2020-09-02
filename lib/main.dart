@@ -13,7 +13,6 @@ import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
