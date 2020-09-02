@@ -34,6 +34,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
   bool _isLoading = true;
   bool _isInit = true;
   bool _responseSubmitted = false;
+  bool _requestCancelled = false;
   Color color;
   Map<String, String> _formData = {};
   TextEditingController _controller = new TextEditingController();
@@ -64,6 +65,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
         color = Colors.green;
       } else if (_withdrawalDetails.approvalStatus.contains("Declined")) {
         color = Colors.red;
+        _requestCancelled = true;
       }
       setState(() {
         _isLoading = false;
@@ -119,6 +121,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
     try {
       await Provider.of<Groups>(context, listen: false).cancelWithdrawalRequest(formData);
       _responseSubmitted = true;
+      _requestCancelled = true;
       _fetchData();
     } on CustomException catch (error) {
       setState(() {
@@ -440,6 +443,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                         visible: _withdrawalDetails != null &&
                             _withdrawalDetails.isOwner == 1 &&
                             widget.withdrawalRequest.statusCode == 1 &&
+                            !_requestCancelled &&
                             _isLoading != true,
                         child: Center(
                           child: FlatButton(
