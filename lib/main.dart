@@ -13,13 +13,16 @@ import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart' show kDebugMode;
 
 import './providers/auth.dart';
 import './providers/groups.dart';
 
-void main() {
+void main() async {
   runApp(MyApp());
 }
 
@@ -29,13 +32,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  void disableCrashlytics() async {
+    if (kDebugMode) {
+      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
+    } else {}
+  }
+
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme = await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
   void initState() {
-    getCurrentAppTheme();
+    Firebase.initializeApp().whenComplete(() {
+      disableCrashlytics();
+      getCurrentAppTheme();
+      setState(() {});
+    });
     super.initState();
   }
 
