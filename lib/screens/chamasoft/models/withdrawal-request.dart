@@ -29,13 +29,26 @@ class WithdrawalRequest {
 }
 
 class WithdrawalRequestDetails {
+  String withdrawalFor, date, requestBy;
+  double amount;
+  String recipient;
   String approvalStatus;
   String description;
   List<StatusModel> signatories = [];
   int isOwner, hasResponded, responseStatus;
 
-  WithdrawalRequestDetails({
-      this.approvalStatus, this.description, this.signatories,this.isOwner, this.hasResponded, this.responseStatus});
+  WithdrawalRequestDetails(
+      {this.withdrawalFor,
+      this.date,
+      this.requestBy,
+      this.amount,
+      this.recipient,
+      this.approvalStatus,
+      this.description,
+      this.signatories,
+      this.isOwner,
+      this.hasResponded,
+      this.responseStatus});
 }
 
 class StatusModel {
