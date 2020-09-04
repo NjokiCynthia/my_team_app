@@ -1,10 +1,13 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -97,10 +100,29 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                 ),
               ),
             )
-          : emptyList(
-              color: Colors.blueGrey[400],
-              iconData: LineAwesomeIcons.angle_double_down,
-              text: "There are no transactions to display"),
+          : Column(
+              children: [
+                SvgPicture.asset(
+                  customIcons['no-data'],
+                  semanticsLabel: 'icon',
+                  height: 120.0,
+                ),
+                customTitleWithWrap(
+                  text: "Nothing to display!",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400]
+                ),
+                customTitleWithWrap(
+                  text: "Sorry, you don't have enough data to plot a chart.",
+                  //fontWeight: FontWeight.w500,
+                  fontSize: 12.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400]
+                )
+              ],
+            )
     );
   }
 }
