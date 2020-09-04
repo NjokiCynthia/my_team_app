@@ -462,8 +462,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           onPressed: () {})
                                     ],
                                   ),
-                                  SingleChildScrollView(
-                                      scrollDirection: Axis.horizontal, child: DepositsVWithdrawals())
+                                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: DepositsVWithdrawals())
                                 ],
                               ),
                             ))

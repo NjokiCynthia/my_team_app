@@ -136,17 +136,18 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           actions: <Widget>[
             IconButton(
               icon: Icon(
-                Icons.notifications,
-                color: Theme.of(context).textSelectionHandleColor,
+                Icons.notifications_off,
+                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
               ),
-              onPressed: () => {
-                _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ChamasoftNotifications(),
-                  ),
-                ),
-              }
+              onPressed: null, // Disable notifications for now
+              // onPressed: () => {
+              //   _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+              //   Navigator.of(context).push(
+              //     MaterialPageRoute(
+              //       builder: (BuildContext context) => ChamasoftNotifications(),
+              //     ),
+              //   ),
+              // }
             ),
             Padding(
               padding: EdgeInsets.only(right: 20.0),
@@ -155,15 +156,14 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   Icons.settings,
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
-                onPressed: null, // Disable notifications for now
-                // onPressed: () => {
-                //   _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                //   Navigator.of(context).push(
-                //     MaterialPageRoute(
-                //       builder: (BuildContext context) => ChamasoftSettings(),
-                //     ),
-                //   ),
-                // }
+                onPressed: () => {
+                  _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => ChamasoftSettings(),
+                    ),
+                  ),
+                }
               ),
             ),
           ],

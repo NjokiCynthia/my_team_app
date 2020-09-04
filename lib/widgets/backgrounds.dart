@@ -61,6 +61,20 @@ List<BoxShadow> appSwitcherShadow(Color color) {
   ];
 }
 
+BoxDecoration flatGradient(BuildContext context) {
+  return BoxDecoration(
+    gradient: RadialGradient(
+      colors: [
+        Theme.of(context).backgroundColor,
+        Theme.of(context).selectedRowColor
+      ],
+      radius: 2.0,
+    ),
+    borderRadius: BorderRadius.all(Radius.circular(16.0)),
+    boxShadow: mildShadow(Theme.of(context).unselectedWidgetColor),
+  );
+}
+
 BoxDecoration cardDecoration({Gradient gradient, BuildContext context}) {
   return BoxDecoration(
     color: Colors.white,
