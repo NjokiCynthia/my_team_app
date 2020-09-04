@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
@@ -13,6 +14,7 @@ import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
+import 'package:provider/provider.dart';
 
 class ChamasoftReports extends StatefulWidget {
   ChamasoftReports({
@@ -53,71 +55,59 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
 
   @override
   Widget build(BuildContext context) {
-
+    final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     List<Widget> memberOptions = [
       SizedBox(
         width: 16.0,
       ),
       Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['transaction'],
-          title: 'CONTRIBUTION',
-          subtitle: 'STATEMENT',
-          color: Colors.white,//Colors.blue[400],
-          isHighlighted: true,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => ContributionStatement(statementFlag: CONTRIBUTION_STATEMENT),
-              settings: RouteSettings(arguments: 0)
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['transaction'],
+              title: 'CONTRIBUTION',
+              subtitle: 'STATEMENT',
+              color: Colors.white,
+              //Colors.blue[400],
+              isHighlighted: true,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => ContributionStatement(statementFlag: CONTRIBUTION_STATEMENT),
+                  settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
       Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['invoice'],
-          title: 'FINE',
-          subtitle: 'STATEMENT',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) =>  ContributionStatement(statementFlag: FINE_STATEMENT),
-              settings: RouteSettings(arguments: 0)
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['invoice'],
+              title: 'FINE',
+              subtitle: 'STATEMENT',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => ContributionStatement(statementFlag: FINE_STATEMENT),
+                  settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
       Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['expense'],
-          title: 'LOAN',
-          subtitle: 'SUMMARY',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => LoanSummary(),
-              settings: RouteSettings(arguments: 0)
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['expense'],
+              title: 'LOAN',
+              subtitle: 'SUMMARY',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => LoanSummary(), settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
@@ -128,44 +118,34 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
         width: 16.0,
       ),
       Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['cash-in-hand'],
-          title: 'DEPOSIT',
-          subtitle: 'RECEIPTS',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => DepositReceipts(),
-              settings: RouteSettings(arguments: 0)
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['cash-in-hand'],
+              title: 'DEPOSIT',
+              subtitle: 'RECEIPTS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => DepositReceipts(), settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
       Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['cash-register'],
-          title: 'WITHDRAWAL',
-          subtitle: 'RECEIPTS',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => WithdrawalReceipts(),
-              settings: RouteSettings(arguments: 0)
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['cash-register'],
+              title: 'WITHDRAWAL',
+              subtitle: 'RECEIPTS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => WithdrawalReceipts(), settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
@@ -176,249 +156,225 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
         width: 16.0,
       ),
       Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['bank-cards'],
-          title: 'ACCOUNT',
-          subtitle: 'BALANCES',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => AccountBalances(),
-              settings: RouteSettings(arguments: 0)
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['bank-cards'],
+              title: 'ACCOUNT',
+              subtitle: 'BALANCES',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => AccountBalances(), settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
+      if (!group.enableMemberInformationPrivacy)
+        Container(
+            width: 132.0,
+            child: svgGridButton(
+                context: context,
+                icon: customIcons['money-bag'],
+                title: 'CONTRIBUTION',
+                subtitle: 'SUMMARY',
+                color: Colors.blue[400],
+                isHighlighted: false,
+                action: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => ContributionSummary(),
+                    settings: RouteSettings(arguments: CONTRIBUTION_STATEMENT))),
+                margin: 0,
+                imageHeight: 100.0)),
+      if (!group.enableMemberInformationPrivacy)
+        SizedBox(
+          width: 16.0,
+        ),
+      if (!group.enableMemberInformationPrivacy)
+        Container(
+            width: 132.0,
+            child: svgGridButton(
+                context: context,
+                icon: customIcons['expense'],
+                title: 'FINE',
+                subtitle: 'SUMMARY',
+                color: Colors.blue[400],
+                isHighlighted: false,
+                action: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => ContributionSummary(),
+                    settings: RouteSettings(arguments: FINE_STATEMENT))),
+                margin: 0,
+                imageHeight: 100.0)),
+      if (!group.enableMemberInformationPrivacy)
+        SizedBox(
+          width: 16.0,
+        ),
+      if (!group.enableMemberInformationPrivacy)
+        Container(
+            width: 132.0,
+            child: svgGridButton(
+                context: context,
+                icon: customIcons['transaction'],
+                title: 'LOAN',
+                subtitle: 'SUMMARY',
+                color: Colors.blue[400],
+                isHighlighted: false,
+                action: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) => GroupLoansSummary())),
+                margin: 0,
+                imageHeight: 100.0)),
+      if (!group.enableMemberInformationPrivacy)
+        SizedBox(
+          width: 16.0,
+        ),
       Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['money-bag'],
-          title: 'CONTRIBUTION',
-          subtitle: 'SUMMARY',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => ContributionSummary(),
-              settings: RouteSettings(arguments: CONTRIBUTION_STATEMENT)
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['card-payment'],
+              title: 'EXPENSE',
+              subtitle: 'SUMMARY',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () =>
+                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ExpenseSummary())),
+              margin: 0,
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
-      Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['expense'],
-          title: 'FINE',
-          subtitle: 'SUMMARY',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => ContributionSummary(),
-              settings: RouteSettings(arguments: FINE_STATEMENT)
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['transaction'],
-          title: 'LOAN',
-          subtitle: 'SUMMARY',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => GroupLoansSummary()
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['card-payment'],
-          title: 'EXPENSE',
-          subtitle: 'SUMMARY',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => ExpenseSummary()
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-        width: 132.0,
-        child: svgGridButton(
-          context: context,
-          icon: customIcons['invoice'],
-          title: 'TRANSACTION',
-          subtitle: 'STATEMENT',
-          color: Colors.blue[400],
-          isHighlighted: false,
-          action: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: (BuildContext context) => TransactionStatement()
-            )
-          ),
-          margin: 0,
-          imageHeight: 100.0
-        )
-      ),
-      SizedBox(
-        width: 16.0,
-      ),
+      if (!group.enableMemberInformationPrivacy)
+        Container(
+            width: 132.0,
+            child: svgGridButton(
+                context: context,
+                icon: customIcons['invoice'],
+                title: 'TRANSACTION',
+                subtitle: 'STATEMENT',
+                color: Colors.blue[400],
+                isHighlighted: false,
+                action: () => Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (BuildContext context) => TransactionStatement())),
+                margin: 0,
+                imageHeight: 100.0)),
+      if (!group.enableMemberInformationPrivacy)
+        SizedBox(
+          width: 16.0,
+        ),
     ];
 
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
-        child: SingleChildScrollView(
-          // controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Member Reports",
-                      style: TextStyle(
-                        color: Colors.blueGrey[400],
-                        fontFamily: 'SegoeUI',
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    IconButton(
-                        icon: Icon(
-                          Feather.more_horizontal,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: () {})
-                  ],
-                ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                child: Container(
-                  height: 160.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                    physics: BouncingScrollPhysics(),
-                    children: memberOptions,
+            child: SingleChildScrollView(
+                // controller: _scrollController,
+                child: Column(children: <Widget>[
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "Member Reports",
+                  style: TextStyle(
+                    color: Colors.blueGrey[400],
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Transaction Reports",
-                      style: TextStyle(
-                        color: Colors.blueGrey[400],
-                        fontFamily: 'SegoeUI',
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
-                      ),
+                IconButton(
+                    icon: Icon(
+                      Feather.more_horizontal,
+                      color: Colors.blueGrey,
                     ),
-                    IconButton(
-                        icon: Icon(
-                          Feather.more_horizontal,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: () {})
-                  ],
-                ),
+                    onPressed: () {})
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+            child: Container(
+              height: 160.0,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                physics: BouncingScrollPhysics(),
+                children: memberOptions,
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                child: Container(
-                  height: 160.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                    physics: BouncingScrollPhysics(),
-                    children: transactionOptions,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "Transaction Reports",
+                  style: TextStyle(
+                    color: Colors.blueGrey[400],
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-              ),
-
-              Padding(
-                padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Group Reports",
-                      style: TextStyle(
-                        color: Colors.blueGrey[400],
-                        fontFamily: 'SegoeUI',
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
-                      ),
+                IconButton(
+                    icon: Icon(
+                      Feather.more_horizontal,
+                      color: Colors.blueGrey,
                     ),
-                    IconButton(
-                        icon: Icon(
-                          Feather.more_horizontal,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: () {})
-                  ],
-                ),
+                    onPressed: () {})
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+            child: Container(
+              height: 160.0,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                physics: BouncingScrollPhysics(),
+                children: transactionOptions,
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                child: Container(
-                  height: 160.0,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                    physics: BouncingScrollPhysics(),
-                    children: groupOptions,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "Group Reports",
+                  style: TextStyle(
+                    color: Colors.blueGrey[400],
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
+                IconButton(
+                    icon: Icon(
+                      Feather.more_horizontal,
+                      color: Colors.blueGrey,
+                    ),
+                    onPressed: () {})
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+            child: Container(
+              height: 160.0,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                physics: BouncingScrollPhysics(),
+                children: groupOptions,
               ),
-
-            ]
-          )
-        )
-      )
+            ),
+          ),
+        ])))
         // child: OrientationBuilder(
         //   builder: (context, orientation) {
         //     return GridView.count(
@@ -440,7 +396,6 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
         //     );
         //   },
         // )
-      );
+        );
   }
-
 }

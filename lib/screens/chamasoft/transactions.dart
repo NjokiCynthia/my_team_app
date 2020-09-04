@@ -63,9 +63,10 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     List<Widget> eWalletOptions = [
-      SizedBox(
-        width: 16.0,
-      ),
+      if (group.onlineBankingEnabled)
+        SizedBox(
+          width: 16.0,
+        ),
       Container(
           width: 132.0,
           child: svgGridButton(
@@ -239,22 +240,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     ];
 
     List<Widget> invoicingOptions = [
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-          width: 132.0,
-          child: svgGridButton(
-              context: context,
-              icon: customIcons['group'],
-              title: 'INVOICE',
-              subtitle: 'MEMBERS',
-              color: Colors.blue[400],
-              isHighlighted: false,
-              action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => CreateInvoice(), settings: RouteSettings(arguments: 0))),
-              margin: 0,
-              imageHeight: 100.0)),
+//      SizedBox(
+//        width: 16.0,
+//      ),
+//      Container(
+//          width: 132.0,
+//          child: svgGridButton(
+//              context: context,
+//              icon: customIcons['group'],
+//              title: 'INVOICE',
+//              subtitle: 'MEMBERS',
+//              color: Colors.blue[400],
+//              isHighlighted: false,
+//              action: () => Navigator.of(context).push(MaterialPageRoute(
+//                  builder: (BuildContext context) => CreateInvoice(), settings: RouteSettings(arguments: 0))),
+//              margin: 0,
+//              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
@@ -271,22 +272,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   builder: (BuildContext context) => FineMember(), settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-          width: 132.0,
-          child: svgGridButton(
-              context: context,
-              icon: customIcons['blockchain'],
-              title: 'CONTRIBUTION',
-              subtitle: 'TRANSFER',
-              color: Colors.blue[400],
-              isHighlighted: false,
-              action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => ContributionTransfer(), settings: RouteSettings(arguments: 0))),
-              margin: 0,
-              imageHeight: 100.0)),
+//      SizedBox(
+//        width: 16.0,
+//      ),
+//      Container(
+//          width: 132.0,
+//          child: svgGridButton(
+//              context: context,
+//              icon: customIcons['blockchain'],
+//              title: 'CONTRIBUTION',
+//              subtitle: 'TRANSFER',
+//              color: Colors.blue[400],
+//              isHighlighted: false,
+//              action: () => Navigator.of(context).push(MaterialPageRoute(
+//                  builder: (BuildContext context) => ContributionTransfer(), settings: RouteSettings(arguments: 0))),
+//              margin: 0,
+//              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
@@ -312,31 +313,61 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: SafeArea(
-          child: group.isGroupAdmin
-            ? SingleChildScrollView(
-                // controller: _scrollController,
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "E-Wallet",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                              fontFamily: 'SegoeUI',
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
+            child: group.isGroupAdmin
+                ? SingleChildScrollView(
+                    // controller: _scrollController,
+                    child: Column(
+                      children: <Widget>[
+                        if (group.onlineBankingEnabled) Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "E-Wallet",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontFamily: 'SegoeUI',
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(
+                                    Feather.more_horizontal,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  onPressed: () {})
+                            ],
+                          ),
+                        ),
+                        if (group.onlineBankingEnabled)
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            child: Container(
+                              height: 160.0,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                                physics: BouncingScrollPhysics(),
+                                children: eWalletOptions,
+                              ),
                             ),
                           ),
-                          IconButton(
-                              icon: Icon(
-                                Feather.more_horizontal,
-                                color: Colors.blueGrey,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Record Payments",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontFamily: 'SegoeUI',
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                              onPressed: () {})
                         ],
                       ),
                     ),
@@ -462,7 +493,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               )
             : Column(
               children: [
-                // Hey Kapkei, ListView builder goes here
+                // ListView builder goes here
               ],
             )
             // Center(

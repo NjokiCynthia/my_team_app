@@ -372,6 +372,11 @@ List<WithdrawalRequest> getWithdrawalRequests(List<dynamic> data) {
 }
 
 WithdrawalRequestDetails getWithdrawalDetails(dynamic data) {
+  String withdrawalFor = data["withdrawal_for"].toString();
+  String date = data["date"].toString();
+  String requestBy = data["request_by"].toString();
+  double amount = ParseHelper.getDoubleFromJson(data, "amount");
+  String recipient = data["recipient"].toString();
   String approvalStatus = data['approval_status'].toString();
   String description = data['description'].toString();
   List<StatusModel> signatories = [];
@@ -392,6 +397,11 @@ WithdrawalRequestDetails getWithdrawalDetails(dynamic data) {
   }
 
   return WithdrawalRequestDetails(
+      withdrawalFor: withdrawalFor,
+      date: date,
+      requestBy: requestBy,
+      amount: amount,
+      recipient: recipient,
       approvalStatus: approvalStatus,
       description: description,
       signatories: signatories,

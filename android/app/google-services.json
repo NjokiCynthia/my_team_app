@@ -76,6 +76,58 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:945349049988:android:b4f36fb733f1aa489a8cd1",
+        "android_client_info": {
+          "package_name": "chamasoft.app.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945349049988-hcg519a88fpgl7bl09oecm1sqntlhnd6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "chamasoft.app.dev",
+            "certificate_hash": "8985ef2f7d149c7f8afad27f4459318206e0ee55"
+          }
+        },
+        {
+          "client_id": "945349049988-e59sjc6ivnk4hc0omcqeugu561jg66ad.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "chamasoft.app.dev",
+            "certificate_hash": "797e206efd1ee33b5119b6f8d0e7420c4cbe3966"
+          }
+        },
+        {
+          "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAp74hBEIip7Kwsk7ZQgiCbpXbT8SZBT08"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945349049988-p9ig9n1loq680q1odqa5ufgf2g0rp742.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "945349049988-60qdkau364lvla6gvdmlfbrtd8s9bt5q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.chamasoft"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:945349049988:android:624da6f72a6f7bfc",
         "android_client_info": {
           "package_name": "chamasoftbeta.app"

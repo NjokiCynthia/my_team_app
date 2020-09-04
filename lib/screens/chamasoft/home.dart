@@ -215,6 +215,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       _iteratableRecentTransactionSummary = dashboardData.recentMemberTransactions;
       _itableContributionSummary = dashboardData.memberContributionSummary;
     });
+    print("Disable arrears: ${_currentGroup.disableArrears}");
     return WillPopScope(
         onWillPop: _onWillPop,
         child: RefreshIndicator(
@@ -235,14 +236,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   children: <Widget>[
                                     Row(
                                       children: <Widget>[
-                                        Text(
-                                          "Total Balances",
-                                          style: TextStyle(
-                                            color: Colors.blueGrey[400],
-                                            fontFamily: 'SegoeUI',
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w600,
-                                          ),
+                                        customTitle(
+                                          text: _currentGroup.disableArrears
+                                              ? "Total Deposits and Loan Balances"
+                                              : "Total Balances",
+                                          color: Colors.blueGrey[400],
+                                          fontFamily: 'SegoeUI',
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
                                         ),
                                       ],
                                     ),
@@ -264,7 +265,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                           height: 22,
                                           child: cardAmountButton(
                                               currency: _groupCurrency,
-                                              amount: currencyFormat.format(dashboardData.memberContributionArrears),
+                                              amount: _currentGroup.disableArrears
+                                                  ? currencyFormat.format(dashboardData.memberContributionAmount)
+                                                  : currencyFormat.format(dashboardData.memberContributionArrears),
                                               size: 16.0,
                                               color: (dashboardData.memberContributionArrears) > 0
                                                   ? Colors.red[400]
@@ -289,7 +292,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                           height: 22,
                                           child: cardAmountButton(
                                               currency: _groupCurrency,
-                                              amount: currencyFormat.format(dashboardData.memberFineArrears),
+                                              amount: _currentGroup.disableArrears
+                                                  ? currencyFormat.format(dashboardData.memberFineAmount)
+                                                  : currencyFormat.format(dashboardData.memberFineArrears),
                                               size: 14.0,
                                               color: (dashboardData.memberFineArrears) > 0
                                                   ? Colors.red[400]

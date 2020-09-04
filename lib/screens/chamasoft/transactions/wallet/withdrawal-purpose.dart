@@ -18,6 +18,8 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import 'review-withdrawal.dart';
+
 class WithdrawalPurpose extends StatefulWidget {
   @override
   _WithdrawalPurposeState createState() => _WithdrawalPurposeState();
@@ -159,15 +161,45 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
             });
         await fetchBankOptions(context);
         Navigator.pop(context);
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ListBanks(formData: formData)));
+        final result = await Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) => ListBanks(formData: formData)));
+        if (result != null) {
+          final id = int.tryParse(result) ?? 0;
+          if (id != 0) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => ReviewWithdrawal(
+                      requestId: id,
+                    )));
+          }
+        }
       } else {
-        Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ListBanks(formData: formData)));
+        final result = await Navigator.of(context)
+            .push(MaterialPageRoute(builder: (BuildContext context) => ListBanks(formData: formData)));
+        if (result != null) {
+          final id = int.tryParse(result) ?? 0;
+          if (id != 0) {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (BuildContext context) => ReviewWithdrawal(
+                      requestId: id,
+                    )));
+          }
+        }
       }
     } else {
       //send to phone
       formData['recipient'] = "1";
-      Navigator.of(context)
+      final result = await Navigator.of(context)
           .push(MaterialPageRoute(builder: (BuildContext context) => ListPhoneContacts(formData: formData)));
+      if (result != null) {
+        print("result: $result");
+        final id = int.tryParse(result) ?? 0;
+        if (id != 0) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => ReviewWithdrawal(
+                    requestId: id,
+                  )));
+        }
+      }
     }
   }
 

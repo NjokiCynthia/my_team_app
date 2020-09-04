@@ -61,7 +61,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
     });
   }
 
-  void _proceedToAmountPage(int flag) {
+  void _proceedToAmountPage(int flag) async {
     if (flag == 1) {
       var _phonesList = selectedContact.phones.toList();
       if (_phonesList.length >= 1 && _phonesList[0]?.value != null) {
@@ -72,8 +72,17 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
       widget.formData["phone"] = _phoneController.text;
     }
 
-    Navigator.of(context)
+    final result = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (BuildContext context) => AmountToWithdraw(formData: widget.formData)));
+    if (result != null) {
+      print(result.toString());
+      final id = int.tryParse(result) ?? 0;
+      if (id != 0) {
+        Navigator.of(context).pop(result);
+      }
+    } else {
+      print("Empty result");
+    }
   }
 
   void _numberPrompt() {

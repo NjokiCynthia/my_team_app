@@ -1,5 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/report_helper.dart';
+import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -26,8 +28,7 @@ class AmountToWithdraw extends StatefulWidget {
 class _AmountToWithdrawState extends State<AmountToWithdraw> {
   TextEditingController _controller = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
-  String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
+  String requestId = ((DateTime.now().toUtc().millisecondsSinceEpoch.toDouble() / 1000).toStringAsFixed(0));
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
 
@@ -45,12 +46,16 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
     });
 
     try {
-      await Provider.of<Groups>(context, listen: false).createWithdrawalRequest(widget.formData);
+      final requestId = await Provider.of<Groups>(context, listen: false).createWithdrawalRequest(widget.formData);
 
       alertDialogWithAction(context, "Withdrawal request has been submitted", () {
         Navigator.of(context).pop();
-        int count = 0;
-        Navigator.of(context).popUntil((_) => count++ >= 3);
+        if (requestId == "-1") {
+          //request is duplicate
+          int count = 0;
+          Navigator.of(context).popUntil((_) => count++ >= 3);
+        } else
+          Navigator.of(context).pop(requestId);
       }, false);
       setState(() {
         _isLoading = false;

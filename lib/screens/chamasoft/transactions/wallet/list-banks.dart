@@ -73,15 +73,21 @@ class _ListBanksState extends State<ListBanks> {
             positiveActionDialogButton(
                 text: "Continue",
                 color: primaryColor,
-                action: () {
+                action: () async {
                   if (_accountController.text.length > 5) {
                     widget.formData["account_number"] = _accountController.text;
                     widget.formData["bank_id"] = bank.id.toString();
                     widget.formData["bank_name"] = bank.name;
 
                     Navigator.of(context).pop();
-                    Navigator.of(context).push(MaterialPageRoute(
+                   final result = await Navigator.of(context).push(MaterialPageRoute(
                         builder: (BuildContext context) => AmountToWithdraw(formData: widget.formData)));
+                   if(result != null){
+                     final id = int.tryParse(result) ?? 0;
+                     if(id != 0){
+                       Navigator.of(context).pop(result);
+                     }
+                   }
                   }
                 })
           ],

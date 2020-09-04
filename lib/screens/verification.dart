@@ -93,7 +93,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
   @override
   void dispose() {
     _timer.cancel();
-
+    SmsAutoFill().unregisterListener();
     super.dispose();
   }
 

@@ -279,7 +279,6 @@ class Dashboard with ChangeNotifier {
   }
 
   void _updateGroupDashboardData(String groupId, [bool addChartData = false]) async {
-    print("Add Chart Data: $addChartData");
     if (!addChartData) {
       if (_groupDashboardData[groupId].containsKey("group_details")) {
         var groupDetails = _groupDashboardData[groupId]["group_details"] as Map<String, dynamic>;

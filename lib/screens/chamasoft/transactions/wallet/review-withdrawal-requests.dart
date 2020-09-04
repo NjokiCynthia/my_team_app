@@ -213,7 +213,7 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
                             action: () async {
                               final result = await Navigator.of(context).push(MaterialPageRoute(
                                   builder: (BuildContext context) => ReviewWithdrawal(
-                                        withdrawalRequest: request,
+                                        requestId: request.requestId,
                                       )));
 
                               if (result != null && result) {
