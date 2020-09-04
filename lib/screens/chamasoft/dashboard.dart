@@ -24,12 +24,7 @@ class ChamasoftDashboard extends StatefulWidget {
 
 class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   StreamController _eventDispatcher = new StreamController.broadcast();
-  List<dynamic> _overlayItems = [
-    // {"id": 1, "title": "DVEA Staff Welfare", "role": "Member"},
-    // {"id": 2, "title": "La Casa De Papel", "role": "Organizer"},
-    // {"id": 3, "title": "Witcher Welfare Association", "role": "Chairperson"},
-    // {"id": 4, "title": "Kejodu Investments", "role": "Secretary"},
-  ];
+  List<dynamic> _overlayItems = [];
 
   Stream get _stream => _eventDispatcher.stream;
 
@@ -78,7 +73,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     _overlayItems.insert(0, {
       "id": '0',
       "title": "Create New",
-      "role": "Chama, Merry-go-round, fundraiser"
+      "role": "Add your Chama"
     });
     _groups.map((group) => {
       _overlayItems.add(
@@ -144,11 +139,14 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 Icons.notifications,
                 color: Theme.of(context).textSelectionHandleColor,
               ),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => ChamasoftNotifications(),
+              onPressed: () => {
+                _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ChamasoftNotifications(),
+                  ),
                 ),
-              ),
+              }
             ),
             Padding(
               padding: EdgeInsets.only(right: 20.0),
@@ -157,11 +155,14 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   Icons.settings,
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
-                onPressed: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ChamasoftSettings(),
+                onPressed: () => {
+                  _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => ChamasoftSettings(),
+                    ),
                   ),
-                ),
+                }
               ),
             ),
           ],
