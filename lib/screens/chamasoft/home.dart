@@ -116,16 +116,21 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             padding: EdgeInsets.all(16.0),
             decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
             child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: resetTransactions(
-                    color: (i % 2 == 1) ? Colors.blueGrey : primaryColor,
-                    paymentDescription: data.paymentTitle,
-                    cardAmount: currencyFormat.format(data.paymentAmount),
-                    currency: _groupCurrency,
-                    cardIcon: Feather.pie_chart,
-                    paymentDate: data.paymentDate,
-                    paymentMethod: data.paymentMethod + " Payment",
-                    contributionType: data.description)),
+              mainAxisSize: MainAxisSize.min,
+              children: resetTransactions(
+                  color: (i % 2 == 1) ? Colors.blueGrey : primaryColor,
+                  paymentDescription: data.paymentTitle,
+                  cardAmount: currencyFormat.format(data.paymentAmount),
+                  currency: _groupCurrency,
+                  cardIcon: Feather.pie_chart,
+                  paymentDate: data.paymentDate,
+                  paymentMethod: data.paymentMethod + " Payment",
+                  contributionType: data.description
+                )
+              ),
+          ),
+          SizedBox(
+            width: ((i + 1) == _iteratableRecentTransactionSummary.length) ? 16.0 : 0.0,
           ),
         ],
       );
@@ -145,8 +150,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           Container(
             width: 160.0,
             padding: EdgeInsets.all(16.0),
-            decoration:
-                cardDecoration(gradient: i == 0 ? csCardGradient() : plainCardGradient(context), context: context),
+            decoration: cardDecoration(gradient: i == 0 ? csCardGradient() : plainCardGradient(context), context: context),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: contributionSummary(
@@ -159,6 +163,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                 contributionName: data.contributionName,
               ),
             ),
+          ),
+          SizedBox(
+            width: ((i + 1) == _itableContributionSummary.length) ? 16.0 : 0.0,
           ),
         ],
       );

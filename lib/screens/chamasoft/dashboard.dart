@@ -155,14 +155,15 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   Icons.settings,
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
-                onPressed: () => {
-                  _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => ChamasoftSettings(),
-                    ),
-                  ),
-                }
+                onPressed: null, // Disable notifications for now
+                // onPressed: () => {
+                //   _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                //   Navigator.of(context).push(
+                //     MaterialPageRoute(
+                //       builder: (BuildContext context) => ChamasoftSettings(),
+                //     ),
+                //   ),
+                // }
               ),
             ),
           ],
