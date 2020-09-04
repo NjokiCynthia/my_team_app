@@ -6,11 +6,13 @@ import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
@@ -116,16 +118,21 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             padding: EdgeInsets.all(16.0),
             decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
             child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: resetTransactions(
-                    color: (i % 2 == 1) ? Colors.blueGrey : primaryColor,
-                    paymentDescription: data.paymentTitle,
-                    cardAmount: currencyFormat.format(data.paymentAmount),
-                    currency: _groupCurrency,
-                    cardIcon: Feather.pie_chart,
-                    paymentDate: data.paymentDate,
-                    paymentMethod: data.paymentMethod + " Payment",
-                    contributionType: data.description)),
+              mainAxisSize: MainAxisSize.min,
+              children: resetTransactions(
+                  color: (i % 2 == 1) ? Colors.blueGrey : primaryColor,
+                  paymentDescription: data.paymentTitle,
+                  cardAmount: currencyFormat.format(data.paymentAmount),
+                  currency: _groupCurrency,
+                  cardIcon: Feather.pie_chart,
+                  paymentDate: data.paymentDate,
+                  paymentMethod: data.paymentMethod + " Payment",
+                  contributionType: data.description
+                )
+              ),
+          ),
+          SizedBox(
+            width: ((i + 1) == _iteratableRecentTransactionSummary.length) ? 16.0 : 0.0,
           ),
         ],
       );
@@ -145,8 +152,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           Container(
             width: 160.0,
             padding: EdgeInsets.all(16.0),
-            decoration:
-                cardDecoration(gradient: i == 0 ? csCardGradient() : plainCardGradient(context), context: context),
+            decoration: cardDecoration(gradient: i == 0 ? csCardGradient() : plainCardGradient(context), context: context),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: contributionSummary(
@@ -159,6 +165,42 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                 contributionName: data.contributionName,
               ),
             ),
+          ),
+          if(((i+1) == _itableContributionSummary.length) && _itableContributionSummary.length == 1)
+          SizedBox(
+            width: 16.0,
+          ),
+          if(((i+1) == _itableContributionSummary.length) && _itableContributionSummary.length == 1)
+          Container(
+            width: 160.0,
+            padding: EdgeInsets.all(16.0),
+            // decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // SvgPicture.asset(
+                //   customIcons['no-data'],
+                //   semanticsLabel: 'icon',
+                //   height: 80.0,
+                // ),
+                Icon(
+                  Feather.layers,
+                  color: Colors.blueGrey[400].withOpacity(0.2),
+                  size: 38.0,
+                ),
+                SizedBox(height: 12.0,),
+                customTitleWithWrap(
+                  text: "More contributions will be displayed here",
+                  //fontWeight: FontWeight.w500,
+                  fontSize: 12.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400].withOpacity(0.3)
+                )
+              ],
+            ),
+          ),
+          SizedBox(
+            width: ((i + 1) == _itableContributionSummary.length) ? 16.0 : 0.0,
           ),
         ],
       );
@@ -326,7 +368,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       color: Colors.blueGrey[400],
                                       fontFamily: 'SegoeUI',
                                       fontSize: 16.0,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.w800,
                                     ),
                                   ),
                                   IconButton(
@@ -338,8 +380,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ],
                               ),
                             ),
+                            (_itableContributionSummary.length > 0) ? 
                             Padding(
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, _onlineBankingEnabled ? 10.0 : 0.0),
                               child: Container(
                                 height: 180.0,
                                 child: ListView(
@@ -417,18 +460,49 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                         ],
                                 ),
                               ),
+                            ) : 
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+                              child: Container(
+                                width: double.infinity,
+                                padding: EdgeInsets.all(16.0),
+                                decoration: flatGradient(context),
+                                child: Column(
+                                  children: [
+                                    SvgPicture.asset(
+                                      customIcons['no-data'],
+                                      semanticsLabel: 'icon',
+                                      height: 120.0,
+                                    ),
+                                    customTitleWithWrap(
+                                      text: "Nothing to display!",
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 14.0,
+                                      textAlign: TextAlign.center,
+                                      color: Colors.blueGrey[400]
+                                    ),
+                                    customTitleWithWrap(
+                                      text: "Sorry, you haven't made any contributions",
+                                      //fontWeight: FontWeight.w500,
+                                      fontSize: 12.0,
+                                      textAlign: TextAlign.center,
+                                      color: Colors.blueGrey[400]
+                                    )
+                                  ],
+                                )
+                              ),
                             ),
+                            if (_onlineBankingEnabled)
                             Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                               child: Container(
-                                width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
+                                // width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
                                 padding: EdgeInsets.symmetric(vertical: 10.0),
                                 color: Theme.of(context).cardColor.withOpacity(0.1),
                                 child: Row(
                                   // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
-                                    if (_onlineBankingEnabled)
                                       Expanded(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
@@ -470,30 +544,28 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                             ),
-                            recentTransactionSummary.length > 0
-                                ? Padding(
-                                    padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Text(
-                                          "Recent Transactions",
-                                          style: TextStyle(
-                                            color: Colors.blueGrey[400],
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.w800,
-                                          ),
-                                        ),
-                                        IconButton(
-                                            icon: Icon(
-                                              Feather.more_horizontal,
-                                              color: Colors.blueGrey,
-                                            ),
-                                            onPressed: () {})
-                                      ],
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Recent Transactions",
+                                    style: TextStyle(
+                                      color: Colors.blueGrey[400],
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w800,
                                     ),
-                                  )
-                                : SizedBox(),
+                                  ),
+                                  IconButton(
+                                      icon: Icon(
+                                        Feather.more_horizontal,
+                                        color: Colors.blueGrey,
+                                      ),
+                                      onPressed: () {})
+                                ],
+                              ),
+                            ),
                             recentTransactionSummary.length > 0
                                 ? Padding(
                                     padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
@@ -504,94 +576,39 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                         padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
                                         physics: BouncingScrollPhysics(),
                                         children: recentTransactionSummary.toList(),
-
-                                        // <Widget>[
-                                        //   SizedBox(
-                                        //     width: 16.0,
-                                        //   ),
-                                        //   Container(
-                                        //     width: 160.0,
-                                        //     padding: EdgeInsets.all(16.0),
-                                        //     decoration: cardDecoration(
-                                        //         gradient: plainCardGradient(context),
-                                        //         context: context),
-                                        //     child:
-
-                                        //     Column(
-                                        //       mainAxisSize: MainAxisSize.min,
-                                        //       children: resetTransactions(
-                                        //         color: Colors.blueGrey,
-                                        //         paymentDescription: "Contribution Payment",
-                                        //         cardAmount: "1,500",
-                                        //         currency: _groupCurrency,
-                                        //         cardIcon: Feather.pie_chart,
-                                        //         paymentDate: "14 Apr 20",
-                                        //       )
-
-                                        //       // contributionSummary(
-                                        //       //   color: Colors.blueGrey,
-                                        //       //   cardIcon: Feather.pie_chart,
-                                        //       //   amountDue: "1,500",
-                                        //       //   cardAmount: "1,500",
-                                        //       //   currency: _groupCurrency,
-                                        //       //   dueDate: "14 Apr 20",
-                                        //       //   contributionName: "Contribution Payment",
-                                        //       // ),
-                                        //     ),
-                                        //   ),
-                                        //   SizedBox(
-                                        //     width: 26.0,
-                                        //   ),
-                                        //   Container(
-                                        //     width: 160.0,
-                                        //     padding: EdgeInsets.all(16.0),
-                                        //     decoration: cardDecoration(
-                                        //         gradient: plainCardGradient(context),
-                                        //         context: context),
-                                        //     child: Column(
-                                        //       mainAxisSize: MainAxisSize.min,
-                                        //       children: contributionSummary(
-                                        //         color: primaryColor,
-                                        //         cardIcon: Feather.bar_chart_2,
-                                        //         amountDue: "10,050",
-                                        //         cardAmount: "4,050",
-                                        //         currency: _groupCurrency,
-                                        //         dueDate: "4 Apr 20",
-                                        //         contributionName: "Loan Repayment",
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        //   SizedBox(
-                                        //     width: 26.0,
-                                        //   ),
-                                        //   Container(
-                                        //     width: 160.0,
-                                        //     padding: EdgeInsets.all(16.0),
-                                        //     decoration: cardDecoration(
-                                        //         gradient: plainCardGradient(context),
-                                        //         context: context),
-                                        //     child: Column(
-                                        //       mainAxisSize: MainAxisSize.min,
-                                        //       children: contributionSummary(
-                                        //         color: Colors.blueGrey,
-                                        //         cardIcon: Feather.bar_chart_2,
-                                        //         amountDue: "10,050",
-                                        //         cardAmount: "4,050",
-                                        //         currency: _groupCurrency,
-                                        //         dueDate: "4 Apr 20",
-                                        //         contributionName: "Loan Repaymentfhghgh",
-                                        //       ),
-                                        //     ),
-                                        //   ),
-                                        //   SizedBox(
-                                        //     width: 16.0,
-                                        //   ),
-                                        // ],
                                       ),
                                     ),
                                   )
-                                : SizedBox(
-                                    height: 10.0,
+                                : Padding(
+                                    padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(16.0),
+                                      decoration: flatGradient(context),
+                                      child: Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            customIcons['no-data'],
+                                            semanticsLabel: 'icon',
+                                            height: 120.0,
+                                          ),
+                                          customTitleWithWrap(
+                                            text: "Nothing to display!",
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 14.0,
+                                            textAlign: TextAlign.center,
+                                            color: Colors.blueGrey[400]
+                                          ),
+                                          customTitleWithWrap(
+                                            text: "Sorry, you haven't made any transactions",
+                                            //fontWeight: FontWeight.w500,
+                                            fontSize: 12.0,
+                                            textAlign: TextAlign.center,
+                                            color: Colors.blueGrey[400]
+                                          )
+                                        ],
+                                      )
+                                    ),
                                   ),
                           ],
                         )

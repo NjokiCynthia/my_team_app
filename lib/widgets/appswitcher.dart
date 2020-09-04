@@ -53,7 +53,7 @@ class _CustomOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = itemCount>4?330:210;
+    double height = 240;//itemCount>4?330:210;
     return new Positioned.fill(
       child: new IgnorePointer(
         ignoring: false,
@@ -369,7 +369,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
   }
 
   void _handleStream(ev) {
-    // print('Input Stream : $ev');
+    print('Input Stream : $ev');
     switch (ev) {
       case 'TAP':
         _exitSwitcher();
