@@ -728,36 +728,36 @@ class _GroupSettingsState extends State<GroupSettings> {
                 thickness: 1.0,
                 height: 5.0,
               ),
-              ListTile(
-                leading: Icon(
-                  FontAwesome.file_text,
-                  size: 32,
-                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                ),
-                title: customTitle(
-                  text: "Setup Group",
-                  fontWeight: FontWeight.w700,
-                  textAlign: TextAlign.start,
-                  color: Theme.of(context).textSelectionHandleColor,
-                ),
-                subtitle: customTitle(
-                  text: "Temporary",
-                  textAlign: TextAlign.start,
-                  fontSize: 13.0,
-                  color: Theme.of(context).bottomAppBarColor,
-                ),
-                dense: true,
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (BuildContext context) => ConfigureGroup(),
-                  ));
-                },
-              ),
-              DashedDivider(
-                color: Theme.of(context).dividerColor,
-                thickness: 1.0,
-                height: 5.0,
-              ),
+//              ListTile(
+//                leading: Icon(
+//                  FontAwesome.file_text,
+//                  size: 32,
+//                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+//                ),
+//                title: customTitle(
+//                  text: "Setup Group",
+//                  fontWeight: FontWeight.w700,
+//                  textAlign: TextAlign.start,
+//                  color: Theme.of(context).textSelectionHandleColor,
+//                ),
+//                subtitle: customTitle(
+//                  text: "Temporary",
+//                  textAlign: TextAlign.start,
+//                  fontSize: 13.0,
+//                  color: Theme.of(context).bottomAppBarColor,
+//                ),
+//                dense: true,
+//                onTap: () {
+//                  Navigator.of(context).push(MaterialPageRoute(
+//                    builder: (BuildContext context) => ConfigureGroup(),
+//                  ));
+//                },
+//              ),
+//              DashedDivider(
+//                color: Theme.of(context).dividerColor,
+//                thickness: 1.0,
+//                height: 5.0,
+//              ),
               Visibility(
                 visible: false,
                 child: Padding(
