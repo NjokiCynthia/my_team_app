@@ -3519,7 +3519,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> createWithdrawalRequest(Map<String, dynamic> formData) async {
+  Future<String> createWithdrawalRequest(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.WITHDRAWALS_FUNDS_TRANSFER;
       formData['user_id'] = _userId;
@@ -3528,7 +3528,14 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        final response = await PostToServer.post(postRequest, url);
+
+        int status = ParseHelper.getIntFromJson(response, "status");
+        if (status == 12) {
+          return "-1";
+        } else {
+          return response["request_id"].toString();
+        }
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {

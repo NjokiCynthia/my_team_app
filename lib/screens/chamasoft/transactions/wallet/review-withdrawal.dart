@@ -18,9 +18,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ReviewWithdrawal extends StatefulWidget {
-  final WithdrawalRequest withdrawalRequest;
+  final int requestId;
 
-  ReviewWithdrawal({this.withdrawalRequest});
+  ReviewWithdrawal({this.requestId});
 
   @override
   _ReviewWithdrawalState createState() => _ReviewWithdrawalState();
@@ -41,8 +41,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 
   Future<void> _getWithdrawalRequestDetails(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false)
-          .fetchWithdrawalRequestDetails(widget.withdrawalRequest.requestId);
+      await Provider.of<Groups>(context, listen: false).fetchWithdrawalRequestDetails(widget.requestId);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -77,6 +76,20 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
   }
 
   @override
+  void initState() {
+//    String withdrawalFor, date, requestBy;
+//    double amount;
+//    String recipient;
+//    String approvalStatus;
+//    String description;
+//    List<StatusModel> signatories = [];
+//    int isOwner, hasResponded, responseStatus;
+    _withdrawalDetails = WithdrawalRequestDetails(
+        withdrawalFor: "Withdrawal Request", date: "--", amount: 0,requestBy: "--", recipient: "--", approvalStatus: "--", description: "--",signatories: []);
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     if (_isInit) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
@@ -90,7 +103,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
       _isLoading = true;
     });
 
-    _formData["id"] = widget.withdrawalRequest.requestId.toString();
+    _formData["id"] = widget.requestId.toString();
     try {
       await Provider.of<Groups>(context, listen: false).respondToWithdrawalRequest(_formData);
       _responseSubmitted = true;
@@ -115,7 +128,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
     });
 
     Map<String, String> formData = {};
-    formData["id"] = widget.withdrawalRequest.requestId.toString();
+    formData["id"] = widget.requestId.toString();
     formData["reason"] = _controller.text;
 
     try {
@@ -139,7 +152,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 
   void approvalDialog(String currency) {
     String message =
-        "Are you sure you want to approve ${widget.withdrawalRequest.withdrawalFor} withdrawal request of  $currency ${currencyFormat.format(widget.withdrawalRequest.amount)} made by ${widget.withdrawalRequest.name}";
+        "Are you sure you want to approve ${_withdrawalDetails.withdrawalFor} withdrawal request of  $currency ${currencyFormat.format(_withdrawalDetails.amount)} made by ${_withdrawalDetails.requestBy}";
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -247,7 +260,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                         Expanded(
                           flex: 1,
                           child: heading2(
-                            text: "${widget.withdrawalRequest.withdrawalFor}",
+                            text: "${_withdrawalDetails.withdrawalFor}",
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
@@ -262,7 +275,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
-                              text: "${currencyFormat.format(widget.withdrawalRequest.amount)}",
+                              text: "${currencyFormat.format(_withdrawalDetails.amount)}",
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
@@ -287,7 +300,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                     color: Theme.of(context).textSelectionHandleColor,
                                     textAlign: TextAlign.start),
                                 customTitleWithWrap(
-                                  text: widget.withdrawalRequest.requestDate,
+                                  text: _withdrawalDetails.date,
                                   fontSize: 12.0,
                                   color: Theme.of(context).textSelectionHandleColor,
                                   textAlign: TextAlign.start,
@@ -308,7 +321,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                     color: Theme.of(context).textSelectionHandleColor,
                                     textAlign: TextAlign.end),
                                 customTitleWithWrap(
-                                  text: widget.withdrawalRequest.name,
+                                  text: _withdrawalDetails.requestBy,
                                   fontSize: 12.0,
                                   color: Theme.of(context).textSelectionHandleColor,
                                   textAlign: TextAlign.start,
@@ -325,7 +338,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.start),
                     customTitleWithWrap(
-                      text: widget.withdrawalRequest.recipient,
+                      text: _withdrawalDetails.recipient,
                       fontSize: 12.0,
                       color: Theme.of(context).textSelectionHandleColor,
                       textAlign: TextAlign.start,
@@ -442,7 +455,7 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                       Visibility(
                         visible: _withdrawalDetails != null &&
                             _withdrawalDetails.isOwner == 1 &&
-                            widget.withdrawalRequest.statusCode == 1 &&
+                            _withdrawalDetails.responseStatus == 0 &&
                             !_requestCancelled &&
                             _isLoading != true,
                         child: Center(
