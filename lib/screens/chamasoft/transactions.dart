@@ -239,22 +239,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     ];
 
     List<Widget> invoicingOptions = [
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-          width: 132.0,
-          child: svgGridButton(
-              context: context,
-              icon: customIcons['group'],
-              title: 'INVOICE',
-              subtitle: 'MEMBERS',
-              color: Colors.blue[400],
-              isHighlighted: false,
-              action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => CreateInvoice(), settings: RouteSettings(arguments: 0))),
-              margin: 0,
-              imageHeight: 100.0)),
+//      SizedBox(
+//        width: 16.0,
+//      ),
+//      Container(
+//          width: 132.0,
+//          child: svgGridButton(
+//              context: context,
+//              icon: customIcons['group'],
+//              title: 'INVOICE',
+//              subtitle: 'MEMBERS',
+//              color: Colors.blue[400],
+//              isHighlighted: false,
+//              action: () => Navigator.of(context).push(MaterialPageRoute(
+//                  builder: (BuildContext context) => CreateInvoice(), settings: RouteSettings(arguments: 0))),
+//              margin: 0,
+//              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
@@ -271,22 +271,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   builder: (BuildContext context) => FineMember(), settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-          width: 132.0,
-          child: svgGridButton(
-              context: context,
-              icon: customIcons['blockchain'],
-              title: 'CONTRIBUTION',
-              subtitle: 'TRANSFER',
-              color: Colors.blue[400],
-              isHighlighted: false,
-              action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => ContributionTransfer(), settings: RouteSettings(arguments: 0))),
-              margin: 0,
-              imageHeight: 100.0)),
+//      SizedBox(
+//        width: 16.0,
+//      ),
+//      Container(
+//          width: 132.0,
+//          child: svgGridButton(
+//              context: context,
+//              icon: customIcons['blockchain'],
+//              title: 'CONTRIBUTION',
+//              subtitle: 'TRANSFER',
+//              color: Colors.blue[400],
+//              isHighlighted: false,
+//              action: () => Navigator.of(context).push(MaterialPageRoute(
+//                  builder: (BuildContext context) => ContributionTransfer(), settings: RouteSettings(arguments: 0))),
+//              margin: 0,
+//              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),

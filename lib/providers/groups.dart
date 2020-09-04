@@ -1155,6 +1155,7 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
+        //log(response.toString());
         final userGroups = response['user_groups'] as List<dynamic>;
         addGroups(userGroups);
       } on CustomException catch (error) {

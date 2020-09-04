@@ -139,17 +139,17 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           elevation: _appBarElevation,
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.notifications,
-                color: Theme.of(context).textSelectionHandleColor,
-              ),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => ChamasoftNotifications(),
-                ),
-              ),
-            ),
+//            IconButton(
+//              icon: Icon(
+//                Icons.notifications,
+//                color: Theme.of(context).textSelectionHandleColor,
+//              ),
+//              onPressed: () => Navigator.of(context).push(
+//                MaterialPageRoute(
+//                  builder: (BuildContext context) => ChamasoftNotifications(),
+//                ),
+//              ),
+//            ),
             Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: IconButton(
