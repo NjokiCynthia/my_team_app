@@ -63,14 +63,16 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
     _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
     _getDeposits(context).then((_) {
-      _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
-      setState(() {
-        if (_deposits.length < 20) {
-          _hasMoreData = false;
-        } else
-          _hasMoreData = true;
-        _isLoading = false;
-      });
+      if (context != null) {
+        _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
+        setState(() {
+          if (_deposits.length < 20) {
+            _hasMoreData = false;
+          } else
+            _hasMoreData = true;
+          _isLoading = false;
+        });
+      }
     });
 
     _isInit = false;
@@ -208,7 +210,6 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                       child: _deposits.length > 0
                           ? NotificationListener<ScrollNotification>(
                               onNotification: (ScrollNotification scrollInfo) {
-                                print("Size: ${_deposits.length}, More Data? ${_deposits.length >= 20}");
                                 if (!_isLoading &&
                                     scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent &&
                                     _hasMoreData) {
