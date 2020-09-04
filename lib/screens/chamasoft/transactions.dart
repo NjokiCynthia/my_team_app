@@ -63,9 +63,10 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     List<Widget> eWalletOptions = [
-      SizedBox(
-        width: 16.0,
-      ),
+      if (group.onlineBankingEnabled)
+        SizedBox(
+          width: 16.0,
+        ),
       Container(
           width: 132.0,
           child: svgGridButton(
@@ -317,7 +318,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     // controller: _scrollController,
                     child: Column(
                       children: <Widget>[
-                        Padding(
+                        if (group.onlineBankingEnabled) Padding(
                           padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -340,18 +341,19 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                             ],
                           ),
                         ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            height: 160.0,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                              physics: BouncingScrollPhysics(),
-                              children: eWalletOptions,
+                        if (group.onlineBankingEnabled)
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                            child: Container(
+                              height: 160.0,
+                              child: ListView(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                                physics: BouncingScrollPhysics(),
+                                children: eWalletOptions,
+                              ),
                             ),
                           ),
-                        ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                           child: Row(
