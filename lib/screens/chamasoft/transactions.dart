@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
@@ -14,13 +15,19 @@ import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/svg-icons.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+
+import 'reports/member/contribution-statement.dart';
 
 class ChamasoftTransactions extends StatefulWidget {
   ChamasoftTransactions({
@@ -62,6 +69,12 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final List<RecentTransactionSummary> recentTransactions =
+        Provider.of<Dashboard>(context, listen: false).recentMemberTransactions;
+    if (recentTransactions.length > 10) {
+      recentTransactions.length = 10;
+    }
+
     List<Widget> eWalletOptions = [
       if (group.onlineBankingEnabled)
         SizedBox(
@@ -318,29 +331,30 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     // controller: _scrollController,
                     child: Column(
                       children: <Widget>[
-                        if (group.onlineBankingEnabled) Padding(
-                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "E-Wallet",
-                                style: TextStyle(
-                                  color: Colors.blueGrey[400],
-                                  fontFamily: 'SegoeUI',
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              IconButton(
-                                  icon: Icon(
-                                    Feather.more_horizontal,
-                                    color: Colors.blueGrey,
+                        if (group.onlineBankingEnabled)
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  "E-Wallet",
+                                  style: TextStyle(
+                                    color: Colors.blueGrey[400],
+                                    fontFamily: 'SegoeUI',
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
                                   ),
-                                  onPressed: () {})
-                            ],
+                                ),
+                                IconButton(
+                                    icon: Icon(
+                                      Feather.more_horizontal,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    onPressed: () {})
+                              ],
+                            ),
                           ),
-                        ),
                         if (group.onlineBankingEnabled)
                           Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
@@ -368,134 +382,247 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                      child: Container(
-                        height: 160.0,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                          physics: BouncingScrollPhysics(),
-                          children: eWalletOptions,
+                            ],
+                          ),
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Record Payments",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                              fontFamily: 'SegoeUI',
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                          child: Container(
+                            height: 160.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                              physics: BouncingScrollPhysics(),
+                              children: eWalletOptions,
                             ),
                           ),
-                          IconButton(
-                              icon: Icon(
-                                Feather.more_horizontal,
-                                color: Colors.blueGrey,
-                              ),
-                              onPressed: () {})
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                      child: Container(
-                        height: 160.0,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                          physics: BouncingScrollPhysics(),
-                          children: paymentsOptions,
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Record Expenditure",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                              fontFamily: 'SegoeUI',
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Record Payments",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontFamily: 'SegoeUI',
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(
+                                    Feather.more_horizontal,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  onPressed: () {})
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                          child: Container(
+                            height: 160.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                              physics: BouncingScrollPhysics(),
+                              children: paymentsOptions,
                             ),
                           ),
-                          IconButton(
-                              icon: Icon(
-                                Feather.more_horizontal,
-                                color: Colors.blueGrey,
-                              ),
-                              onPressed: () {})
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                      child: Container(
-                        height: 160.0,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                          physics: BouncingScrollPhysics(),
-                          children: expenditureOptions,
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            "Invoicing & Transfers",
-                            style: TextStyle(
-                              color: Colors.blueGrey[400],
-                              fontFamily: 'SegoeUI',
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.w600,
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Record Expenditure",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontFamily: 'SegoeUI',
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(
+                                    Feather.more_horizontal,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  onPressed: () {})
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                          child: Container(
+                            height: 160.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                              physics: BouncingScrollPhysics(),
+                              children: expenditureOptions,
                             ),
                           ),
-                          IconButton(
-                              icon: Icon(
-                                Feather.more_horizontal,
-                                color: Colors.blueGrey,
-                              ),
-                              onPressed: () {})
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                      child: Container(
-                        height: 160.0,
-                        child: ListView(
-                          scrollDirection: Axis.horizontal,
-                          padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                          physics: BouncingScrollPhysics(),
-                          children: invoicingOptions,
                         ),
-                      ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Invoicing & Transfers",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontFamily: 'SegoeUI',
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(
+                                    Feather.more_horizontal,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  onPressed: () {})
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                          child: Container(
+                            height: 160.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                              physics: BouncingScrollPhysics(),
+                              children: invoicingOptions,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              )
-            : Column(
-              children: [
-                // ListView builder goes here
-              ],
-            )
+                  )
+                : recentTransactions.length > 0
+                    ? SingleChildScrollView(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: Column(
+                            children: [
+                              ListView.builder(
+                                controller: _scrollController,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  RecentTransactionSummary transaction = recentTransactions[index];
+                                  return Padding(
+                                    padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
+                                    child: Card(
+                                      elevation: 0,
+                                      color: Colors.transparent,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: <Widget>[
+                                          Expanded(
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: <Widget>[
+                                                Icon(
+                                                  Feather.bar_chart_2,
+                                                  color: Theme.of(context).hintColor,
+                                                  size: 24.0,
+                                                ),
+                                                SizedBox(
+                                                  width: 10,
+                                                ),
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: <Widget>[
+                                                      subtitle1(
+                                                          text: transaction.paymentTitle,
+                                                          color: Theme.of(context).textSelectionHandleColor,
+                                                          textAlign: TextAlign.start),
+                                                      subtitle2(
+                                                          text: transaction.description,
+                                                          color: Theme.of(context).textSelectionHandleColor,
+                                                          textAlign: TextAlign.start),
+                                                      subtitle2(
+                                                          text: transaction.paymentMethod + " Payment",
+                                                          color: Theme.of(context).textSelectionHandleColor,
+                                                          textAlign: TextAlign.start)
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              subtitle1(
+                                                  text: group.groupCurrency +
+                                                      " " +
+                                                      currencyFormat.format(transaction.paymentAmount),
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  textAlign: TextAlign.start),
+                                              subtitle2(
+                                                  text: transaction.paymentDate,
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  textAlign: TextAlign.start),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                itemCount: recentTransactions.length,
+                              ),
+                              SizedBox(
+                                height: 16,
+                              ),
+                              //if (recentTransactions.length == 10)
+                                defaultButton(
+                                    context: context,
+                                    text: "View More Transactions",
+                                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            ContributionStatement(statementFlag: CONTRIBUTION_STATEMENT),
+                                        settings: RouteSettings(arguments: 0))))
+                            ],
+                          ),
+                        ),
+                      )
+                    : Padding(
+                        padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+                        child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  customIcons['no-data'],
+                                  semanticsLabel: 'icon',
+                                  height: 120.0,
+                                ),
+                                customTitleWithWrap(
+                                    text: "Nothing to display!",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.0,
+                                    textAlign: TextAlign.center,
+                                    color: Colors.blueGrey[400]),
+                                customTitleWithWrap(
+                                    text: "Sorry, you haven't made any transactions",
+                                    //fontWeight: FontWeight.w500,
+                                    fontSize: 12.0,
+                                    textAlign: TextAlign.center,
+                                    color: Colors.blueGrey[400])
+                              ],
+                            )),
+                      )
             // Center(
             //     child: emptyList(
             //       color: Colors.blue[400],
@@ -503,7 +630,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             //       text: "Admin Users Only - Temporary"
             //     )
             //   )
-            )
-          );
+            ));
   }
 }
