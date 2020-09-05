@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
-import 'package:sms_autofill/sms_autofill.dart';
 
 import '../providers/auth.dart';
 import '../screens/signup.dart';
@@ -25,7 +24,7 @@ class Verification extends StatefulWidget {
   _VerificationState createState() => _VerificationState();
 }
 
-class _VerificationState extends State<Verification> with CodeAutoFill {
+class _VerificationState extends State<Verification> {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
@@ -69,31 +68,14 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
   }
 
   @override
-  void codeUpdated() {
-    setState(() {
-      _code = code;
-      _pinEditingController.text = code;
-    });
-  }
-
-  @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
-
-    listenForCode();
-
-    SmsAutoFill().getAppSignature.then((signature) {
-      setState(() {
-        _signature = signature;
-      });
-    });
     super.initState();
   }
 
   @override
   void dispose() {
     _timer.cancel();
-    SmsAutoFill().unregisterListener();
     super.dispose();
   }
 
@@ -124,6 +106,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
         });
       }
     } on CustomException catch (error) {
+      _countDownTimer();
       StatusHandler().handleStatus(
           context: context,
           error: error,
@@ -215,8 +198,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                             child: PinInputTextFormField(
                               pinLength: 4,
                               decoration: UnderlineDecoration(
-                                enteredColor: primaryColor,
-                                color: Theme.of(context).textSelectionHandleColor,
+                                colorBuilder:  PinListenColorBuilder(primaryColor,Theme.of(context).textSelectionHandleColor),
                                 lineHeight: 2.0,
                                 textStyle: TextStyle(
                                   color: primaryColor,

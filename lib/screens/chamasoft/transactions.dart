@@ -76,7 +76,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     }
 
     List<Widget> eWalletOptions = [
-      if (group.onlineBankingEnabled)
         SizedBox(
           width: 16.0,
         ),
@@ -86,7 +85,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               context: context,
               icon: customIcons['wallet'],
               title: 'CREATE',
-              subtitle: 'WITHDRAWAL REQUEST',
+              subtitle: 'WITHDRAWAL',
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -102,7 +101,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               context: context,
               icon: customIcons['couple'],
               title: 'REVIEW',
-              subtitle: 'WITHDRAWAL REQUESTS',
+              subtitle: 'WITHDRAWALS',
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -368,35 +367,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                               ),
                             ),
                           ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Record Payments",
-                                style: TextStyle(
-                                  color: Colors.blueGrey[400],
-                                  fontFamily: 'SegoeUI',
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            height: 160.0,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                              physics: BouncingScrollPhysics(),
-                              children: eWalletOptions,
-                            ),
-                          ),
-                        ),
                         Padding(
                           padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                           child: Row(

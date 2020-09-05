@@ -150,19 +150,23 @@ class _ListMembersState extends State<ListMembers> {
                       return ListTile(
                         dense: true,
                         leading: member.avatar != null
-                            ? new CachedNetworkImage(
-                                imageUrl: member.avatar,
-                                placeholder: (context, url) => const CircleAvatar(
-                                  backgroundImage: const AssetImage('assets/no-user.png'),
+                            ? Container(
+                                height: 50,
+                                width: 50,
+                                child: new CachedNetworkImage(
+                                  imageUrl: member.avatar,
+                                  placeholder: (context, url) => const CircleAvatar(
+                                    backgroundImage: const AssetImage('assets/no-user.png'),
+                                  ),
+                                  imageBuilder: (context, image) => CircleAvatar(
+                                    backgroundImage: image,
+                                  ),
+                                  errorWidget: (context, url, error) => const CircleAvatar(
+                                    backgroundImage: const AssetImage('assets/no-user.png'),
+                                  ),
+                                  fadeOutDuration: const Duration(seconds: 1),
+                                  fadeInDuration: const Duration(seconds: 3),
                                 ),
-                                imageBuilder: (context, image) => CircleAvatar(
-                                  backgroundImage: image,
-                                ),
-                                errorWidget: (context, url, error) => const CircleAvatar(
-                                  backgroundImage: const AssetImage('assets/no-user.png'),
-                                ),
-                                fadeOutDuration: const Duration(seconds: 1),
-                                fadeInDuration: const Duration(seconds: 3),
                               )
                             : const CircleAvatar(
                                 backgroundImage: const AssetImage('assets/no-user.png'),

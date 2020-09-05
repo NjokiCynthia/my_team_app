@@ -140,8 +140,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                             child: PinInputTextFormField(
                               pinLength: 4,
                               decoration: UnderlineDecoration(
-                                enteredColor: primaryColor,
-                                color: Theme.of(context).textSelectionHandleColor,
+                                colorBuilder:  PinListenColorBuilder(primaryColor,Theme.of(context).textSelectionHandleColor),
                                 lineHeight: 2.0,
                                 textStyle: TextStyle(
                                   color: primaryColor,
