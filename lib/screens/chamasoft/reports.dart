@@ -171,7 +171,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
       SizedBox(
         width: 16.0,
       ),
-      if (!group.enableMemberInformationPrivacy)
+      if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         Container(
             width: 132.0,
             child: svgGridButton(
@@ -186,11 +186,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     settings: RouteSettings(arguments: CONTRIBUTION_STATEMENT))),
                 margin: 0,
                 imageHeight: 100.0)),
-      if (!group.enableMemberInformationPrivacy)
+      if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         SizedBox(
           width: 16.0,
         ),
-      if (!group.enableMemberInformationPrivacy)
+       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         Container(
             width: 132.0,
             child: svgGridButton(
@@ -205,11 +205,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     settings: RouteSettings(arguments: FINE_STATEMENT))),
                 margin: 0,
                 imageHeight: 100.0)),
-      if (!group.enableMemberInformationPrivacy)
+       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         SizedBox(
           width: 16.0,
         ),
-      if (!group.enableMemberInformationPrivacy)
+       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         Container(
             width: 132.0,
             child: svgGridButton(
@@ -223,7 +223,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     .push(MaterialPageRoute(builder: (BuildContext context) => GroupLoansSummary())),
                 margin: 0,
                 imageHeight: 100.0)),
-      if (!group.enableMemberInformationPrivacy)
+       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         SizedBox(
           width: 16.0,
         ),
@@ -243,7 +243,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
       SizedBox(
         width: 16.0,
       ),
-      if (!group.enableMemberInformationPrivacy)
+       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         Container(
             width: 132.0,
             child: svgGridButton(
@@ -257,7 +257,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     .push(MaterialPageRoute(builder: (BuildContext context) => TransactionStatement())),
                 margin: 0,
                 imageHeight: 100.0)),
-      if (!group.enableMemberInformationPrivacy)
+       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         SizedBox(
           width: 16.0,
         ),
