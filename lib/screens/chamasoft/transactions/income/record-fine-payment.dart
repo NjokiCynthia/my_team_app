@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
+import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -17,7 +18,6 @@ import 'package:provider/provider.dart';
 
 import '../select-member.dart';
 
-
 class RecordFinePayment extends StatefulWidget {
   @override
   _RecordFinePaymentState createState() => _RecordFinePaymentState();
@@ -28,7 +28,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
   ScrollController _scrollController;
   List<MembersFilterEntry> selectedMembersList = [];
   int memberTypeId;
-  Map <String,dynamic> formLoadData = {};
+  Map<String, dynamic> formLoadData = {};
   bool _isInit = true;
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
@@ -40,7 +40,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
   int accountId;
   var selectDateController = TextEditingController();
   double amountInputValue;
-  Map<String,dynamic> _individualMemberContributions ={};
+  Map<String, dynamic> _individualMemberContributions = {};
   final _formKey = new GlobalKey<FormState>();
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
@@ -68,6 +68,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     _scrollController?.dispose();
     super.dispose();
   }
+
   @override
   void didChangeDependencies() {
     if (_isInit) {
@@ -76,68 +77,54 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     super.didChangeDependencies();
   }
 
-
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
           context: context,
           barrierDismissible: false,
-          builder: (BuildContext context){
+          builder: (BuildContext context) {
             return Center(
               child: CircularProgressIndicator(),
             );
-          }
-      );
+          });
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(
-        acc:true,
-        fineOptions:true
-    );
+    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, fineOptions: true);
     setState(() {
       _isInit = false;
     });
-    Navigator.of(context,rootNavigator: true).pop();
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   Iterable<Widget> get memberWidgets sync* {
     for (MembersFilterEntry member in selectedMembersList) {
       yield ListTile(
-        title: Container(
-          width: 200,
-          child: Text(member.name, style: TextStyle(
-          fontSize: 17
-        ))),
+        title: Container(width: 200, child: Text(member.name, style: TextStyle(fontSize: 17))),
         contentPadding: EdgeInsets.all(4.0),
         subtitle: Container(
-          width: 200,
-          child: Text(
-          member.phoneNumber,
-          style: TextStyle(
-            fontSize: 12
-          ),
-          
-        )),
+            width: 200,
+            child: Text(
+              member.phoneNumber,
+              style: TextStyle(fontSize: 12),
+            )),
         trailing: Container(
-          width:220.0,
+          width: 220.0,
           child: Row(
             children: <Widget>[
               Expanded(
-                flex: 5, 
-                child: amountTextInputField(
-                  labelText: "Enter Amount",
-                  enabled : _isFormInputEnabled,
-                  context: context,
-                  onChanged: (value){
-                    _individualMemberContributions[member.memberId] = value;
-                  },
-                  validator: (value){
-                    if(value==null || value==""){
-                      return "Field is required";
-                    }
-                    return null;
-                  }
-                )
-              ),
+                  flex: 5,
+                  child: amountTextInputField(
+                      labelText: "Enter Amount",
+                      enabled: _isFormInputEnabled,
+                      context: context,
+                      onChanged: (value) {
+                        _individualMemberContributions[member.memberId] = value;
+                      },
+                      validator: (value) {
+                        if (value == null || value == "") {
+                          return "Field is required";
+                        }
+                        return null;
+                      })),
               Expanded(
                 child: circleIconButton(
                     backgroundColor: Color(0xFFFFF2F2),
@@ -177,16 +164,12 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     _formData['member_type_id'] = memberTypeId;
     _formData['individual_payments'] = _individualMemberContributions;
     try {
-      await Provider.of<Groups>(context, listen: false).recordFinePayments(_formData);
-//      FlutterToast.showToast( msg: "This is Center Short Toast",
-//          toastLength: Toast.LENGTH_SHORT,
-//          gravity: ToastGravity.CENTER,
-//          timeInSecForIosWeb: 1,
-//          backgroundColor: Colors.red,
-//          textColor: Colors.white,
-//          fontSize: 16.0
-//      );
-      Navigator.of(context).pop();
+      String message = await Provider.of<Groups>(context, listen: false).recordFinePayments(_formData);
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+      });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -201,6 +184,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -212,165 +196,165 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
         leadingIcon: LineAwesomeIcons.arrow_left,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              toolTip(
-                  context: context,
-                  title: "Note that...",
-                  message: "Manually record fine payments",
-                  showTitle: false),
-              Padding(
-                padding: inputPagePadding,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: DatePicker(
-                              labelText: 'Select Deposit Date',
-                              lastDate: DateTime.now(),
-                              selectedDate: finePaymentDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : finePaymentDate,
-                              selectDate: (selectedDate) {
-                                setState(() {
-                                  finePaymentDate = selectedDate;
-                                });
-                              },
-                            ),
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                              flex: 3,
-                              child: CustomDropDownButton(
-                                labelText: "Select Deposit Method",
-                                enabled: _isFormInputEnabled,
-                                listItems: depositMethods,
-                                selectedItem: depositMethod,
-                                validator: (value){
-                                  if(value==null){
-                                    return "This field is required";
-                                  }
-                                  return null;
-                                },
-                                onChanged: (value) {
+      body: Builder(builder: (BuildContext context) {
+        return GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            scrollDirection: Axis.vertical,
+            controller: _scrollController,
+            child: Column(
+              children: <Widget>[
+                toolTip(
+                    context: context,
+                    title: "Manually record fine payments",
+                    message: "",
+                    showTitle: true),
+                Padding(
+                  padding: inputPagePadding,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 2,
+                              child: DatePicker(
+                                labelText: 'Select Deposit Date',
+                                lastDate: DateTime.now(),
+                                selectedDate: finePaymentDate == null
+                                    ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                    : finePaymentDate,
+                                selectDate: (selectedDate) {
                                   setState(() {
-                                    depositMethod = value;
+                                    finePaymentDate = selectedDate;
                                   });
                                 },
-                              )),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomDropDownButton(
-                        labelText: "Select Fine",
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("finesOptions")?formLoadData["finesOptions"]:[],
-                        selectedItem: fineId,
-                        onChanged: (value) {
-                          setState(() {
-                            fineId = value;
-                          });
-                        },
-                        validator: (value){
-                          if(value==null){
-                            return "This field is required";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomDropDownButton(
-                        labelText: "Select Deposit Account",
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
-                        selectedItem: accountId,
-                        onChanged: (value) {
-                          setState(() {
-                            accountId = value;
-                          });
-                        },
-                        validator: (value){
-                            if(value==null){
+                              ),
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            Expanded(
+                                flex: 3,
+                                child: CustomDropDownButton(
+                                  labelText: "Select Deposit Method",
+                                  enabled: _isFormInputEnabled,
+                                  listItems: depositMethods,
+                                  selectedItem: depositMethod,
+                                  validator: (value) {
+                                    if (value == null) {
+                                      return "This field is required";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      depositMethod = value;
+                                    });
+                                  },
+                                )),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomDropDownButton(
+                          labelText: "Select Fine",
+                          enabled: _isFormInputEnabled,
+                          listItems: formLoadData.containsKey("finesOptions") ? formLoadData["finesOptions"] : [],
+                          selectedItem: fineId,
+                          onChanged: (value) {
+                            setState(() {
+                              fineId = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null) {
                               return "This field is required";
                             }
                             return null;
                           },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Member',
-                        enabled: _isFormInputEnabled,
-                        listItems: memberTypes,
-                        selectedItem: memberTypeId,
-                        onChanged: (value) {
-                          setState(() {
-                            memberTypeId = value;
-                          });
-                        },
-                      ),
-                      Visibility(
-                        visible: memberTypeId == 1,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              Column(
-                                children: memberWidgets.toList(),
-                              ),
-                              FlatButton(
-                                onPressed: () async {
-                                  await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => SelectMember(
-                                          initialMembersList: selectedMembersList,
-                                        )
-                                      )
-                                    ).then((value){
-                                        setState(() {
-                                          selectedMembersList = value;
-                                        });   
-                                    }
-                                  );
-                                },
-                                child: Text(
-                                  'Select members',
-                                  style: TextStyle(
-                                    color: Colors.blueAccent,
-                                    fontSize: 15.0,
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomDropDownButton(
+                          labelText: "Select Deposit Account",
+                          enabled: _isFormInputEnabled,
+                          listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                          selectedItem: accountId,
+                          onChanged: (value) {
+                            setState(() {
+                              accountId = value;
+                            });
+                          },
+                          validator: (value) {
+                            if (value == null) {
+                              return "This field is required";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        CustomDropDownButton(
+                          labelText: 'Select Member',
+                          enabled: _isFormInputEnabled,
+                          listItems: memberTypes,
+                          selectedItem: memberTypeId,
+                          onChanged: (value) {
+                            setState(() {
+                              memberTypeId = value;
+                            });
+                          },
+                        ),
+                        Visibility(
+                          visible: memberTypeId == 1,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Column(
+                                  children: memberWidgets.toList(),
+                                ),
+                                FlatButton(
+                                  onPressed: () async {
+                                    await Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => SelectMember(
+                                                  initialMembersList: selectedMembersList,
+                                                ))).then((value) {
+                                      setState(() {
+                                        selectedMembersList = value;
+                                      });
+                                    });
+                                  },
+                                  child: Text(
+                                    'Select members',
+                                    style: TextStyle(
+                                      color: Colors.blueAccent,
+                                      fontSize: 15.0,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Visibility(
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Visibility(
                           visible: memberTypeId == 2,
                           child: amountTextInputField(
                               context: context,
@@ -381,41 +365,40 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                                   amountInputValue = double.parse(value);
                                 });
                               },
-                              validator: (value){
-                                if(value==null || value==""){
+                              validator: (value) {
+                                if (value == null || value == "") {
                                   return "Field is required";
                                 }
                                 return null;
                               }),
-                              ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _isLoading
-                      ? Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Center(
-                            child: CircularProgressIndicator()
-                          ),
-                      ):
-                      SizedBox(
-                        width: 200,
-                        child: defaultButton(
-                          context: context,
-                          text: "Save",
-                          onPressed: () {
-                            _submit(context);
-                          },
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                        _isLoading
+                            ? Padding(
+                                padding: EdgeInsets.all(10),
+                                child: Center(child: CircularProgressIndicator()),
+                              )
+                            : SizedBox(
+                                width: 200,
+                                child: defaultButton(
+                                  context: context,
+                                  text: "Save",
+                                  onPressed: () {
+                                    _submit(context);
+                                  },
+                                ),
+                              ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

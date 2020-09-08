@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -25,7 +26,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
   DateTime loanToDate = DateTime.now();
   DateTime now = DateTime.now();
   bool _isInit = true;
-  Map<String, dynamic> formLoadData = {}, _formData={};
+  Map<String, dynamic> formLoadData = {}, _formData = {};
   var accountId;
   final _formKey = new GlobalKey<FormState>();
   bool _isLoading = false, _isFormInputEnabled = true;
@@ -76,8 +77,7 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false)
-        .loadInitialFormData(acc: true);
+    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true);
     setState(() {
       _isInit = false;
     });
@@ -102,9 +102,12 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
     _formData["loan_end_date"] = loanToDate.toString();
     _formData["account_id"] = accountId;
     try {
-      await Provider.of<Groups>(context, listen: false)
-          .recordBankLoanIncome(_formData);
-      Navigator.of(context).pop();
+      String message = await Provider.of<Groups>(context, listen: false).recordBankLoanIncome(_formData);
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+      });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -131,178 +134,174 @@ class _RecordBankLoanState extends State<RecordBankLoan> {
         leadingIcon: LineAwesomeIcons.close,
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              toolTip(
-                context: context,
-                title:
-                    "Manually record loans received from financial institutions",
-                message: "",
-              ),
-              Padding(
-                padding: inputPagePadding,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      simpleTextInputField(
-                          context: context,
-                          labelText: "Bank loan description",
-                          validator: (value) {
-                            if (value == "" || value == null) {
-                              return "This field is required";
-                            } 
-                            else if (value.toString().length < 8) {
-                              return "Description is too short";
-                            }
-                            return null;
-                          },
-                          enabled: _isFormInputEnabled,
-                          onChanged: (value) {
-                            setState(() {
-                              loanDescription = value;
-                            });
-                          }),
-                      amountTextInputField(
-                        context: context,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            print("Empty value2");
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        enabled: _isFormInputEnabled,
-                        labelText: "Total amount received",
-                        onChanged: (value) {
-                          setState(() {
-                            amountLoaned = value;
-                          });
-                        }
-                      ),
-                      amountTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          enabled: _isFormInputEnabled,
-                          labelText: "Total amount payable",
-                          onChanged: (value) {
-                            setState(() {
-                              totalLoanAmountPayable = value;
-                            });
-                          }),
-                      amountTextInputField(
-                        context: context,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        labelText: "Total loan balance as at date",
-                        enabled: _isFormInputEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            loanBalance = value;
-                          });
-                        }
-                      ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+      body: Builder(
+        builder: (BuildContext context) {
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: <Widget>[
+                  toolTip(
+                    context: context,
+                    title: "Manually record loans received from financial institutions",
+                    showTitle: true,
+                    message: "",
+                  ),
+                  Padding(
+                    padding: inputPagePadding,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Expanded(
-                              flex: 1,
-                              child: DatePicker(
-                                labelText: 'Select Deposit Date',
-                                lastDate: DateTime.now(),
-                                selectedDate: loanFromDate == null
-                                    ? new DateTime(
-                                        now.year, now.month, now.day - 1, 6, 30)
-                                    : loanFromDate,
-                                selectDate: (selectedDate) {
-                                  setState(() {
-                                    loanFromDate = selectedDate;
-                                  });
-                                },
-                              )),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Expanded(
-                            flex: 1,
-                            child: DatePicker(
-                              labelText: 'Loan To',
-                              firstDate: loanFromDate == null
-                                  ? new DateTime(
-                                      now.year, now.month, now.day - 1, 6, 30)
-                                  : loanFromDate,
-                              lastDate: DateTime(2037),
-                              selectedDate: loanToDate == null
-                                  ? new DateTime(
-                                      now.year, now.month, now.day - 1, 6, 30)
-                                  : loanToDate,
-                              selectDate: (selectedDate) {
-                                setState(() {
-                                  loanToDate = selectedDate;
-                                });
+                          simpleTextInputField(
+                              context: context,
+                              labelText: "Bank loan description",
+                              validator: (value) {
+                                if (value == "" || value == null) {
+                                  return "This field is required";
+                                } else if (value.toString().length < 8) {
+                                  return "Description is too short";
+                                }
+                                return null;
                               },
-                            ),
+                              enabled: _isFormInputEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  loanDescription = value;
+                                });
+                              }),
+                          amountTextInputField(
+                              context: context,
+                              validator: (value) {
+                                if (value == null || value == "") {
+                                  print("Empty value2");
+                                  return "Field is required";
+                                }
+                                return null;
+                              },
+                              enabled: _isFormInputEnabled,
+                              labelText: "Total amount received",
+                              onChanged: (value) {
+                                setState(() {
+                                  amountLoaned = value;
+                                });
+                              }),
+                          amountTextInputField(
+                              context: context,
+                              validator: (value) {
+                                if (value == null || value == "") {
+                                  return "Field is required";
+                                }
+                                return null;
+                              },
+                              enabled: _isFormInputEnabled,
+                              labelText: "Total amount payable",
+                              onChanged: (value) {
+                                setState(() {
+                                  totalLoanAmountPayable = value;
+                                });
+                              }),
+                          amountTextInputField(
+                              context: context,
+                              validator: (value) {
+                                if (value == null || value == "") {
+                                  return "Field is required";
+                                }
+                                return null;
+                              },
+                              labelText: "Total loan balance as at date",
+                              enabled: _isFormInputEnabled,
+                              onChanged: (value) {
+                                setState(() {
+                                  loanBalance = value;
+                                });
+                              }),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Expanded(
+                                  flex: 1,
+                                  child: DatePicker(
+                                    labelText: 'Select Deposit Date',
+                                    lastDate: DateTime.now(),
+                                    selectedDate: loanFromDate == null
+                                        ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                        : loanFromDate,
+                                    selectDate: (selectedDate) {
+                                      setState(() {
+                                        loanFromDate = selectedDate;
+                                      });
+                                    },
+                                  )),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Expanded(
+                                flex: 1,
+                                child: DatePicker(
+                                  labelText: 'Loan To',
+                                  firstDate: loanFromDate == null
+                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      : loanFromDate,
+                                  lastDate: DateTime(2037),
+                                  selectedDate: loanToDate == null
+                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      : loanToDate,
+                                  selectDate: (selectedDate) {
+                                    setState(() {
+                                      loanToDate = selectedDate;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
+                          CustomDropDownButton(
+                            enabled: _isFormInputEnabled,
+                            labelText: "Account loan deposited to",
+                            listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                            selectedItem: accountId,
+                            onChanged: (value) {
+                              setState(() {
+                                accountId = value;
+                              });
+                            },
+                            validator: (value) {
+                              if (value == "" || value == null) {
+                                return "This field is required";
+                              }
+                              return null;
+                            },
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          _isLoading
+                              ? Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Center(child: CircularProgressIndicator()),
+                                )
+                              : defaultButton(
+                                  context: context,
+                                  text: "SAVE",
+                                  onPressed: () {
+                                    print("this is clicked");
+                                    _submit(context);
+                                  })
                         ],
                       ),
-                      CustomDropDownButton(
-                        enabled: _isFormInputEnabled,
-                        labelText: "Account loan deposited to",
-                        listItems: formLoadData.containsKey("accountOptions")
-                            ? formLoadData["accountOptions"]
-                            : [],
-                        selectedItem: accountId,
-                        onChanged: (value) {
-                          setState(() {
-                            accountId = value;
-                          });
-                        },
-                        validator: (value) {
-                          if (value == "" || value == null) {
-                            return "This field is required";
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      _isLoading
-                          ? Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Center(child: CircularProgressIndicator()),
-                            )
-                          : defaultButton(
-                              context: context,
-                              text: "SAVE",
-                              onPressed: () {
-                                print("this is clicked");
-                                _submit(context);
-                              })
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

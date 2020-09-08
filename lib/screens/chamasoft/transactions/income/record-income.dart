@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
@@ -121,9 +122,13 @@ class _RecordIncomeState extends State<RecordIncome> {
     _formData["description"] = description;
     _formData["request_id"] = requestId;
     try {
-      await Provider.of<Groups>(context, listen: false)
+     String message =  await Provider.of<Groups>(context, listen: false)
           .recordIncomePayment(_formData);
-      Navigator.of(context).pop();
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+      });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -150,179 +155,183 @@ class _RecordIncomeState extends State<RecordIncome> {
         title: "Record Income",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          scrollDirection: Axis.vertical,
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              toolTip(
-                  context: context,
-                  message: "",
-                  title: "Manually record income payment",
-                  showTitle: true),
-              Padding(
-                padding: inputPagePadding,
-                // height: MediaQuery.of(context).size.height,
-                // color: Theme.of(context).backgroundColor,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+      body: Builder(
+        builder: (BuildContext context){
+          return  GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              controller: _scrollController,
+              child: Column(
+                children: <Widget>[
+                  toolTip(
+                      context: context,
+                      message: "",
+                      title: "Manually record income payment",
+                      showTitle: true),
+                  Padding(
+                    padding: inputPagePadding,
+                    // height: MediaQuery.of(context).size.height,
+                    // color: Theme.of(context).backgroundColor,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: DatePicker(
-                              labelText: 'Select Deposit Date',
-                              lastDate: DateTime.now(),
-                              selectedDate: incomeDate == null
-                                  ? new DateTime(
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 2,
+                                child: DatePicker(
+                                  labelText: 'Select Deposit Date',
+                                  lastDate: DateTime.now(),
+                                  selectedDate: incomeDate == null
+                                      ? new DateTime(
                                       now.year, now.month, now.day - 1, 6, 30)
-                                  : incomeDate,
-                              selectDate: (selectedDate) {
-                                setState(() {
-                                  incomeDate = selectedDate;
-                                });
-                              },
-                            ),
+                                      : incomeDate,
+                                  selectDate: (selectedDate) {
+                                    setState(() {
+                                      incomeDate = selectedDate;
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: CustomDropDownButton(
+                                  labelText: 'Select Deposit Method',
+                                  enabled: _isFormInputEnabled,
+                                  listItems: depositMethods,
+                                  selectedItem: depositMethod,
+                                  validator: (value) {
+                                    if (value == null || value == "") {
+                                      return "Field required";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      depositMethod = value;
+                                    });
+                                  },
+                                ),
+                              )
+                            ],
                           ),
-                          SizedBox(
-                            width: 5,
+                          CustomDropDownButton(
+                            labelText: 'Select Depositor',
+                            enabled: _isFormInputEnabled,
+                            listItems: formLoadData.containsKey("depositorOptions")
+                                ? formLoadData["depositorOptions"]
+                                : [],
+                            selectedItem: depositorId,
+                            validator: (value) {
+                              if (value == null || value == "") {
+                                return "Field required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                depositorId = value;
+                              });
+                            },
                           ),
-                          Expanded(
-                            flex: 3,
-                            child: CustomDropDownButton(
-                              labelText: 'Select Deposit Method',
-                              enabled: _isFormInputEnabled,
-                              listItems: depositMethods,
-                              selectedItem: depositMethod,
-                              validator: (value) {
-                                if (value == null || value == "") {
-                                  return "Field required";
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                setState(() {
-                                  depositMethod = value;
-                                });
-                              },
-                            ),
-                          )
-                        ],
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Depositor',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("depositorOptions")
-                            ? formLoadData["depositorOptions"]
-                            : [],
-                        selectedItem: depositorId,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            depositorId = value;
-                          });
-                        },
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Income Category',
-                        enabled: _isFormInputEnabled,
-                        listItems:formLoadData.containsKey("incomeCategoryOptions")
+                          CustomDropDownButton(
+                            labelText: 'Select Income Category',
+                            enabled: _isFormInputEnabled,
+                            listItems:formLoadData.containsKey("incomeCategoryOptions")
                                 ? formLoadData["incomeCategoryOptions"]
                                 : [],
-                        selectedItem: incomeCategoryId,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            incomeCategoryId = value;
-                          });
-                        },
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Account',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("accountOptions")
-                            ? formLoadData["accountOptions"]
-                            : [],
-                        selectedItem: accountId,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            accountId = value;
-                          });
-                        },
-                      ),
-                      amountTextInputField(
-                        context: context,
-                        enabled: _isFormInputEnabled,
-                        labelText: 'Enter Amount',
-                        onChanged: (value) {
-                          setState(() {
-                            amount = double.parse(value);
-                          });
-                        },
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field required";
-                          }
-                          return null;
-                        },
-                      ),
-                      multilineTextField(
-                          maxLines: 30,
-                          context: context,
-                          labelText: 'Short Description (Optional)',
-                          onChanged: (value) {
-                            setState(() {
-                              description = value;
-                            });
-                          }),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      _isLoading
-                          ? Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Center(child: CircularProgressIndicator()),
-                            )
-                          : defaultButton(
+                            selectedItem: incomeCategoryId,
+                            validator: (value) {
+                              if (value == null || value == "") {
+                                return "Field required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                incomeCategoryId = value;
+                              });
+                            },
+                          ),
+                          CustomDropDownButton(
+                            labelText: 'Select Account',
+                            enabled: _isFormInputEnabled,
+                            listItems: formLoadData.containsKey("accountOptions")
+                                ? formLoadData["accountOptions"]
+                                : [],
+                            selectedItem: accountId,
+                            validator: (value) {
+                              if (value == null || value == "") {
+                                return "Field required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                accountId = value;
+                              });
+                            },
+                          ),
+                          amountTextInputField(
+                            context: context,
+                            enabled: _isFormInputEnabled,
+                            labelText: 'Enter Amount',
+                            onChanged: (value) {
+                              setState(() {
+                                amount = double.parse(value);
+                              });
+                            },
+                            validator: (value) {
+                              if (value == null || value == "") {
+                                return "Field required";
+                              }
+                              return null;
+                            },
+                          ),
+                          multilineTextField(
+                              maxLines: 30,
                               context: context,
-                              text: "SAVE",
-                              onPressed: () {
-                                _submit(context);
-                              },
-                            ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+                              labelText: 'Short Description (Optional)',
+                              onChanged: (value) {
+                                setState(() {
+                                  description = value;
+                                });
+                              }),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          _isLoading
+                              ? Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Center(child: CircularProgressIndicator()),
+                          )
+                              : defaultButton(
+                            context: context,
+                            text: "SAVE",
+                            onPressed: () {
+                              _submit(context);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

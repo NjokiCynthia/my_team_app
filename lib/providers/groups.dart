@@ -3262,7 +3262,7 @@ class Groups with ChangeNotifier {
 
   ///****************************Transaction****************/
 
-  Future<void> recordContibutionPayments(Map<String, dynamic> formData) async {
+  Future<String> recordContributionPayments(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
       formData['user_id'] = _userId;
@@ -3273,7 +3273,8 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        final response = await PostToServer.post(postRequest, url);
+        return response["message"].toString();
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -3286,7 +3287,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordFinePayments(Map<String, dynamic> formData) async {
+  Future<String> recordFinePayments(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_RECORD_FINE_PAYMENTS;
       formData['user_id'] = _userId;
@@ -3296,7 +3297,9 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        final response = await PostToServer.post(postRequest, url);
+        String message = response["message"].toString();
+        return message;
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -3309,7 +3312,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordIncomePayment(Map<String, dynamic> formData) async {
+  Future<String> recordIncomePayment(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_RECORD_INCOME;
       formData['user_id'] = _userId;
@@ -3318,7 +3321,9 @@ class Groups with ChangeNotifier {
       formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        final response = await PostToServer.post(postRequest, url);
+        String message = response["message"].toString();
+        return message;
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -3331,7 +3336,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordMiscellaneousPayments(Map<String, dynamic> formData) async {
+  Future<String> recordMiscellaneousPayments(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_RECORD_MISCELLANEOUS_PAYMENTS;
       formData['user_id'] = _userId;
@@ -3341,7 +3346,8 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        final response = await PostToServer.post(postRequest, url);
+        return response["message"].toString();
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -3354,7 +3360,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordBankLoanIncome(Map<String, dynamic> formData) async {
+  Future<String> recordBankLoanIncome(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.RECORD_BANK_LOAN;
       formData['user_id'] = _userId;
@@ -3365,7 +3371,8 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+       final response =  await PostToServer.post(postRequest, url);
+       return response["message"].toString();
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
