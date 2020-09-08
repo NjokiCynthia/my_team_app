@@ -570,9 +570,9 @@ class ContributionsTabView extends StatelessWidget {
                                         Expanded(
                                           child: customTitle(
                                             text: '${contribution.type}',
-                                            fontWeight: FontWeight.w900,
+                                            fontWeight: FontWeight.w700,
                                             textAlign: TextAlign.start,
-                                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                             fontSize: 12.0,
                                           ),
                                         ),
@@ -590,9 +590,9 @@ class ContributionsTabView extends StatelessWidget {
                                         Expanded(
                                           child: customTitle(
                                             text: '${contribution.frequency}',
-                                            fontWeight: FontWeight.w900,
+                                            fontWeight: FontWeight.w700,
                                             textAlign: TextAlign.start,
-                                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                             fontSize: 12.0,
                                           ),
                                         ),

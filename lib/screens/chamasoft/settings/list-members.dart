@@ -196,8 +196,8 @@ class _ListMembersState extends State<ListMembers> {
                                               children: <Widget>[
                                                 customTitle(
                                                   text: '${member.identity}',
-                                                  fontWeight: FontWeight.w900,
-                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                                   fontSize: 12.0,
                                                 ),
                                               ],

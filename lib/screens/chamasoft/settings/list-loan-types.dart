@@ -9,132 +9,24 @@ import 'package:provider/provider.dart';
 import 'create-loan-type.dart';
 
 List<dynamic> loanTypesList = [
-  {
-    "id": 1,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,500"
-  },
-  {
-    "id": 2,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 1,500"
-  },
-  {
-    "id": 3,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,100"
-  },
-  {
-    "id": 4,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,500"
-  },
-  {
-    "id": 5,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 1,500"
-  },
-  {
-    "id": 6,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,100"
-  },
-  {
-    "id": 1,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,500"
-  },
-  {
-    "id": 2,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 1,500"
-  },
-  {
-    "id": 3,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,100"
-  },
-  {
-    "id": 4,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,500"
-  },
-  {
-    "id": 5,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 1,500"
-  },
-  {
-    "id": 6,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,100"
-  },
-  {
-    "id": 7,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,500"
-  },
-  {
-    "id": 8,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 1,500"
-  },
-  {
-    "id": 9,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,100"
-  },
-  {
-    "id": 10,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,500"
-  },
-  {
-    "id": 11,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 1,500"
-  },
-  {
-    "id": 12,
-    "name": "Witcher School Fund",
-    "type": "Regular",
-    "frequency": "Once a month",
-    "amount": "Ksh 2,100"
-  },
+  {"id": 1, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,500"},
+  {"id": 2, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
+  {"id": 3, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
+  {"id": 4, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,500"},
+  {"id": 5, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
+  {"id": 6, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
+  {"id": 1, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,500"},
+  {"id": 2, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
+  {"id": 3, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
+  {"id": 4, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,500"},
+  {"id": 5, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
+  {"id": 6, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
+  {"id": 7, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,500"},
+  {"id": 8, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
+  {"id": 9, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
+  {"id": 10, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,500"},
+  {"id": 11, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 1,500"},
+  {"id": 12, "name": "Witcher School Fund", "type": "Regular", "frequency": "Once a month", "amount": "Ksh 2,100"},
 ];
 
 class ListLoanTypes extends StatefulWidget {
@@ -207,15 +99,13 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                   Text(
                                     '${loanType.name}',
                                     style: TextStyle(
-                                      color: Theme.of(context)
-                                          .textSelectionHandleColor,
+                                      color: Theme.of(context).textSelectionHandleColor,
                                       fontWeight: FontWeight.w800,
                                       fontSize: 18.0,
                                     ),
                                   ),
                                   Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Row(
                                         children: <Widget>[
@@ -223,19 +113,15 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                             'Repayment Period: ',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor
-                                                  .withOpacity(0.5),
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                               fontSize: 12.0,
                                             ),
                                           ),
                                           Text(
                                             '${loanType.repaymentPeriod}',
                                             style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor
-                                                  .withOpacity(0.5),
+                                              fontWeight: FontWeight.w700,
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                               fontSize: 12.0,
                                             ),
                                           ),
@@ -247,19 +133,15 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                             'Loan Amount: ',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w600,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor
-                                                  .withOpacity(0.5),
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
                                               fontSize: 12.0,
                                             ),
                                           ),
                                           Text(
                                             '${loanType.loanAmount}',
                                             style: TextStyle(
-                                              fontWeight: FontWeight.w900,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor
-                                                  .withOpacity(0.5),
+                                              fontWeight: FontWeight.w700,
+                                              color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                               fontSize: 12.0,
                                             ),
                                           ),
@@ -268,50 +150,40 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                       Text(
                                         'Interest rate: ${loanType.interestRate}',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor
-                                              .withOpacity(0.5),
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                           fontSize: 12.0,
                                         ),
                                       ),
                                       Text(
                                         'Loan Processing: ${loanType.loanProcessing}',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor
-                                              .withOpacity(0.5),
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                           fontSize: 12.0,
                                         ),
                                       ),
                                       Text(
                                         'Guarantors: ${loanType.guarantors}',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor
-                                              .withOpacity(0.5),
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                           fontSize: 12.0,
                                         ),
                                       ),
                                       Text(
                                         'Late Payment Fines: ${loanType.latePaymentFines}',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor
-                                              .withOpacity(0.5),
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                           fontSize: 12.0,
                                         ),
                                       ),
                                       Text(
                                         'Outstanding Payment Fines: ${loanType.outstandingPaymentFines}',
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w900,
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor
-                                              .withOpacity(0.5),
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
                                           fontSize: 12.0,
                                         ),
                                       ),
