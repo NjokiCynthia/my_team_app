@@ -242,13 +242,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                     labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                 onChanged: (value) {
                   _email = value;
-                },
-                validator: (value) {
-                  if (!CustomHelper.validEmail(value)) {
-                    return "Enter a valid email address";
-                  }
-                  return null;
-                },
+                }
               ),
               SizedBox(
                 height: 20,
