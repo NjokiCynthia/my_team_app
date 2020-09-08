@@ -480,7 +480,7 @@ Widget svgGridButton(
                 style: TextStyle(
                   color: color,
                   fontWeight: FontWeight.w800,
-                  fontSize: 14.0,
+                  fontSize: 12.0,
                   fontFamily: 'SegoeUI',
                 ),
                 textAlign: TextAlign.center,
@@ -494,7 +494,7 @@ Widget svgGridButton(
                   color: color.withOpacity(0.6),
                   fontWeight: FontWeight.w600,
                   fontFamily: 'SegoeUI',
-                  fontSize: 12.0,
+                  fontSize: 10.0,
                 ),
                 textAlign: TextAlign.center,
               ),

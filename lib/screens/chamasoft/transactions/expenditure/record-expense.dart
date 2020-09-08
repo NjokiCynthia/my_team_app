@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -31,8 +32,8 @@ class RecordExpenseState extends State<RecordExpense> {
   int accountId;
   String description;
   double amount;
-  bool _isInit = true,_isLoading=false;
-  Map <String,dynamic> formLoadData = {},_formData = {};
+  bool _isInit = true, _isLoading = false;
+  Map<String, dynamic> formLoadData = {}, _formData = {};
   final _formKey = new GlobalKey<FormState>();
   DateTime now = DateTime.now();
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
@@ -72,20 +73,19 @@ class RecordExpenseState extends State<RecordExpense> {
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      );
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true,exp:true); 
+    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, exp: true);
     setState(() {
       _isInit = false;
     });
-    Navigator.of(context,rootNavigator: true).pop();
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   void _submit(BuildContext context) async {
@@ -104,10 +104,15 @@ class RecordExpenseState extends State<RecordExpense> {
     _formData["account_id"] = accountId;
     _formData["description"] = description;
     _formData["request_id"] = requestId;
-    try{
-      await Provider.of<Groups>(context,listen: false).recordExpensePayment(_formData);
-      Navigator.of(context).pop();
-    }on CustomException catch (error) {
+    try {
+      String message = await Provider.of<Groups>(context, listen: false).recordExpensePayment(_formData);
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));
+      });
+    } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
@@ -121,7 +126,7 @@ class RecordExpenseState extends State<RecordExpense> {
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,150 +138,155 @@ class RecordExpenseState extends State<RecordExpense> {
         title: "Record Expense",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: GestureDetector(
-        onTap: () {
-          FocusScopeNode currentFocus = FocusScope.of(context);
+      body: Builder(
+        builder: (BuildContext context) {
+          return GestureDetector(
+            onTap: () {
+              FocusScopeNode currentFocus = FocusScope.of(context);
 
-          if (!currentFocus.hasPrimaryFocus) {
-            currentFocus.unfocus();
-          }
-        },
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              toolTip(context: context,title: "Manually record expense payment",message: ""),
-              Padding(
-                padding: inputPagePadding,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+              if (!currentFocus.hasPrimaryFocus) {
+                currentFocus.unfocus();
+              }
+            },
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: <Widget>[
+                  toolTip(context: context, title: "Manually record expense payment", message: ""),
+                  Padding(
+                    padding: inputPagePadding,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Expanded(
-                            flex: 2,
-                            child: DatePicker(
-                              labelText: 'Select Expense Date',
-                              lastDate: DateTime.now(),
-                              selectedDate: expenseDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : expenseDate,
-                              selectDate: (selectedDate) {
-                                setState(() {
-                                  expenseDate = selectedDate;
-                                });
-                              },
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Expanded(
+                                flex: 2,
+                                child: DatePicker(
+                                  labelText: 'Select Expense Date',
+                                  lastDate: DateTime.now(),
+                                  selectedDate: expenseDate == null
+                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      : expenseDate,
+                                  selectDate: (selectedDate) {
+                                    setState(() {
+                                      expenseDate = selectedDate;
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              Expanded(
+                                flex: 3,
+                                child: CustomDropDownButton(
+                                  labelText: 'Select Withdrawal Method',
+                                  enabled: _isFormInputEnabled,
+                                  listItems: withdrawalMethods,
+                                  selectedItem: withdrawalMethod,
+                                  validator: (value) {
+                                    if (value == null || value == "") {
+                                      return "Field is required";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      withdrawalMethod = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 5.0,
+                          CustomDropDownButton(
+                            labelText: 'Select Expense Category',
+                            enabled: _isFormInputEnabled,
+                            listItems:
+                                formLoadData.containsKey("expenseCategories") ? formLoadData["expenseCategories"] : [],
+                            selectedItem: expenseCategoryId,
+                            validator: (value) {
+                              if (value == null || value == "") {
+                                return "Field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                expenseCategoryId = value;
+                              });
+                            },
                           ),
-                          Expanded(
-                            flex: 3,
-                            child: CustomDropDownButton(
-                              labelText: 'Select Withdrawal Method',
+                          CustomDropDownButton(
+                            labelText: 'Select Account',
+                            enabled: _isFormInputEnabled,
+                            listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                            selectedItem: accountId,
+                            validator: (value) {
+                              if (value == null || value == "") {
+                                return "Field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                accountId = value;
+                              });
+                            },
+                          ),
+                          amountTextInputField(
+                              context: context,
                               enabled: _isFormInputEnabled,
-                              listItems: withdrawalMethods,
-                              selectedItem: withdrawalMethod,
-                              validator: (value){
-                                if(value==null||value==""){
-                                    return "Field is required";
-                                  }
-                                  return null;
-                              },
+                              labelText: 'Enter Amount Expensed',
                               onChanged: (value) {
                                 setState(() {
-                                  withdrawalMethod = value;
+                                  amount = double.parse(value);
                                 });
                               },
-                            ),
+                              validator: (value) {
+                                if (value == null || value == "") {
+                                  return "Field required";
+                                }
+                                return null;
+                              }),
+                          multilineTextField(
+                              context: context,
+                              labelText: 'Short Description (Optional)',
+                              maxLines: 5,
+                              onChanged: (value) {
+                                setState(() {
+                                  description = value;
+                                });
+                              }),
+                          SizedBox(
+                            height: 24,
                           ),
+                          _isLoading
+                              ? Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Center(child: CircularProgressIndicator()),
+                                )
+                              : defaultButton(
+                                  context: context,
+                                  text: "SAVE",
+                                  onPressed: () {
+                                    _submit(context);
+                                  },
+                                ),
                         ],
                       ),
-                      CustomDropDownButton(
-                        labelText: 'Select Expense Category',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("expenseCategories")?formLoadData["expenseCategories"]:[],
-                        selectedItem: expenseCategoryId,
-                        validator: (value){
-                          if(value==null||value==""){
-                              return "Field is required";
-                            }
-                            return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            expenseCategoryId = value;
-                          });
-                        },
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Account',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
-                        selectedItem: accountId,
-                        validator: (value){
-                          if(value==null||value==""){
-                              return "Field is required";
-                            }
-                            return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            accountId = value;
-                          });
-                        },
-                      ),
-                      amountTextInputField(
-                          context: context,
-                          enabled: _isFormInputEnabled,
-                          labelText: 'Enter Amount Expensed',
-                          onChanged: (value) {
-                            setState(() {
-                              amount = double.parse(value);
-                            });
-                          },
-                          validator: (value){
-                            if(value==null||value==""){
-                              return "Field required";
-                            }
-                            return null;
-                          }),
-                      multilineTextField(
-                          context: context,
-                          labelText: 'Short Description (Optional)',
-                          maxLines: 5,
-                          onChanged: (value) {
-                            setState(() {
-                              description = value;
-                            });
-                          }),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      _isLoading
-                      ? Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Center(
-                            child: CircularProgressIndicator()
-                          ),
-                      ):
-                      defaultButton(
-                        context: context,
-                        text: "SAVE",
-                        onPressed: () {
-                          _submit(context);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

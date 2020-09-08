@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -12,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:provider/provider.dart';
-
 
 class RecordContributionRefund extends StatefulWidget {
   @override
@@ -31,8 +31,8 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
   int accountId;
   double amount;
   String description;
-  bool _isInit = true,_isLoading=false,_isFormInputEnabled=true;
-  Map <String,dynamic> formLoadData = {},_formData = {};
+  bool _isInit = true, _isLoading = false, _isFormInputEnabled = true;
+  Map<String, dynamic> formLoadData = {}, _formData = {};
   final _formKey = new GlobalKey<FormState>();
   DateTime now = DateTime.now();
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
@@ -72,20 +72,20 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      );
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true,member: true,contr: true); 
+    formLoadData =
+        await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, member: true, contr: true);
     setState(() {
       _isInit = false;
     });
-    Navigator.of(context,rootNavigator: true).pop();
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   void _submit(BuildContext context) async {
@@ -105,10 +105,16 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
     _formData["account_id"] = accountId;
     _formData["description"] = description;
     _formData["request_id"] = requestId;
-    try{
-      await Provider.of<Groups>(context,listen: false).recordContributionRefund(_formData);
-      Navigator.of(context).pop();
-    }on CustomException catch (error) {
+    try {
+      String message = await Provider.of<Groups>(context, listen: false).recordContributionRefund(_formData);
+
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));
+      });
+    } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
@@ -122,7 +128,6 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
       });
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -135,161 +140,171 @@ class RecordContributionRefundState extends State<RecordContributionRefund> {
         title: "Record Contribution Refund",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              toolTip(context: context,title: "Manually record contribution refund",message: "",),
-              Padding(
-                padding: inputPagePadding,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
+      body: Builder(
+        builder: (BuildContext context) {
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: <Widget>[
+                  toolTip(
+                    context: context,
+                    title: "Manually record contribution refund",
+                    message: "",
+                  ),
+                  Padding(
+                    padding: inputPagePadding,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Expanded(
-                            child: DatePicker(
-                              labelText: 'Select Refund Date',
-                              lastDate: now,
-                              selectedDate:refundDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : refundDate,
-                              selectDate: (selectedDate) {
-                                setState(() {
-                                  refundDate = selectedDate;
-                                });
-                              },
-                            ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              Expanded(
+                                child: DatePicker(
+                                  labelText: 'Select Refund Date',
+                                  lastDate: now,
+                                  selectedDate: refundDate == null
+                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      : refundDate,
+                                  selectDate: (selectedDate) {
+                                    setState(() {
+                                      refundDate = selectedDate;
+                                    });
+                                  },
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5.0,
+                              ),
+                              Expanded(
+                                child: CustomDropDownButton(
+                                  labelText: 'Select Refund Method',
+                                  enabled: _isFormInputEnabled,
+                                  listItems: withdrawalMethods,
+                                  selectedItem: withdrawalMethod,
+                                  validator: (value) {
+                                    if (value.toString().isEmpty || value == null) {
+                                      return "Field is required";
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    setState(() {
+                                      withdrawalMethod = value;
+                                    });
+                                  },
+                                ),
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 5.0,
+                          CustomDropDownButton(
+                            labelText: 'Select Contribution to refund from',
+                            enabled: _isFormInputEnabled,
+                            listItems: formLoadData.containsKey("contributionOptions")
+                                ? formLoadData["contributionOptions"]
+                                : [],
+                            selectedItem: contributionId,
+                            validator: (value) {
+                              if (value.toString().isEmpty || value == null) {
+                                return "Field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                contributionId = value;
+                              });
+                            },
                           ),
-                          Expanded(
-                            child: CustomDropDownButton(
-                              labelText: 'Select Refund Method',
+                          CustomDropDownButton(
+                            labelText: 'Select account to refund from',
+                            enabled: _isFormInputEnabled,
+                            listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                            selectedItem: accountId,
+                            validator: (value) {
+                              if (value.toString().isEmpty || value == null) {
+                                return "Field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                accountId = value;
+                              });
+                            },
+                          ),
+                          CustomDropDownButton(
+                            labelText: 'Select Member to refund',
+                            enabled: _isFormInputEnabled,
+                            listItems: formLoadData.containsKey("memberOptions") ? formLoadData["memberOptions"] : [],
+                            selectedItem: groupMemberId,
+                            validator: (value) {
+                              if (value.toString().isEmpty || value == null) {
+                                return "Field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                groupMemberId = value;
+                              });
+                            },
+                          ),
+                          amountTextInputField(
+                              context: context,
                               enabled: _isFormInputEnabled,
-                              listItems: withdrawalMethods,
-                              selectedItem: withdrawalMethod,
-                              validator: (value){
-                                if(value.toString().isEmpty|| value==null){
+                              labelText: 'Enter Amount refunded',
+                              validator: (value) {
+                                if (value.toString().isEmpty || value == null) {
                                   return "Field is required";
                                 }
                                 return null;
                               },
                               onChanged: (value) {
                                 setState(() {
-                                  withdrawalMethod = value;
+                                  amount = double.parse(value);
                                 });
-                              },
-                            ),
+                              }),
+                          multilineTextField(
+                              context: context,
+                              labelText: 'Short Description (Optional)',
+                              maxLines: 5,
+                              onChanged: (value) {
+                                setState(() {
+                                  description = value;
+                                });
+                              }),
+                          SizedBox(
+                            height: 24,
                           ),
+                          _isLoading
+                              ? Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Center(child: CircularProgressIndicator()),
+                                )
+                              : defaultButton(
+                                  context: context,
+                                  text: "SAVE",
+                                  onPressed: () {
+                                    _submit(context);
+                                  },
+                                ),
                         ],
                       ),
-                      CustomDropDownButton(
-                        labelText: 'Select Contribution to refund from',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("contributionOptions")?formLoadData["contributionOptions"]:[],
-                        selectedItem: contributionId,
-                        validator: (value){
-                          if(value.toString().isEmpty || value==null){
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            contributionId = value;
-                          });
-                        },
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select account to refund from',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
-                        selectedItem: accountId,
-                        validator: (value){
-                          if(value.toString().isEmpty || value==null){
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            accountId = value;
-                          });
-                        },
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Member to refund',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("memberOptions")?formLoadData["memberOptions"]:[],
-                        selectedItem: groupMemberId,
-                        validator: (value){
-                          if(value.toString().isEmpty || value==null){
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            groupMemberId = value;
-                          });
-                        },
-                      ),
-                      amountTextInputField(
-                          context: context,
-                          enabled: _isFormInputEnabled,
-                          labelText: 'Enter Amount refunded',
-                          validator: (value){
-                            if(value.toString().isEmpty || value==null){
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              amount = double.parse(value);
-                            });
-                          }),
-                      multilineTextField(
-                          context: context,
-                          labelText: 'Short Description (Optional)',
-                          maxLines: 5,
-                          onChanged: (value) {
-                            setState(() {
-                              description = value;
-                            });
-                          }),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      _isLoading
-                      ? Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Center(
-                            child: CircularProgressIndicator()
-                          ),
-                      ):
-                      defaultButton(
-                        context: context,
-                        text: "SAVE",
-                        onPressed: () {
-                          _submit(context);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

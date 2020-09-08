@@ -3371,8 +3371,8 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-       final response =  await PostToServer.post(postRequest, url);
-       return response["message"].toString();
+        final response = await PostToServer.post(postRequest, url);
+        return response["message"].toString();
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -3385,7 +3385,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordExpensePayment(Map<String, dynamic> formData) async {
+  Future<String> recordExpensePayment(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_RECORD_EXPENSES;
       formData['user_id'] = _userId;
@@ -3394,7 +3394,8 @@ class Groups with ChangeNotifier {
       formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        final response = await PostToServer.post(postRequest, url);
+        return response["message"].toString();
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -3407,7 +3408,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordBankLoanRepayment(Map<String, dynamic> formData) async {
+  Future<String> recordBankLoanRepayment(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.RECORD_BANK_LOAN_REPAYMENT;
       formData['user_id'] = _userId;
@@ -3418,7 +3419,8 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        final response = await PostToServer.post(postRequest, url);
+        return response["message"].toString();
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -3431,7 +3433,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordContributionRefund(Map<String, dynamic> formData) async {
+  Future<String> recordContributionRefund(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.RECORD_CONTRIBUTION_REFUND;
       formData['user_id'] = _userId;
@@ -3441,7 +3443,8 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        await PostToServer.post(postRequest, url);
+        final response = await PostToServer.post(postRequest, url);
+        return response["message"].toString();
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {

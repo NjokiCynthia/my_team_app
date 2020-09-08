@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -29,8 +30,8 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
   int accountId;
   double amount;
   String description;
-  bool _isInit = true,_isLoading=false,_isFormInputEnabled=true;
-  Map <String,dynamic> formLoadData = {},_formData = {};
+  bool _isInit = true, _isLoading = false, _isFormInputEnabled = true;
+  Map<String, dynamic> formLoadData = {}, _formData = {};
   final _formKey = new GlobalKey<FormState>();
   DateTime now = DateTime.now();
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
@@ -70,20 +71,19 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      );
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
     });
-    formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(acc:true,bankLoans: true); 
+    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, bankLoans: true);
     setState(() {
       _isInit = false;
     });
-    Navigator.of(context,rootNavigator: true).pop();
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
   void _submit(BuildContext context) async {
@@ -102,10 +102,15 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
     _formData["account_id"] = accountId;
     _formData["description"] = description;
     _formData["request_id"] = requestId;
-    try{
-      await Provider.of<Groups>(context,listen: false).recordBankLoanRepayment(_formData);
-      Navigator.of(context).pop();
-    }on CustomException catch (error) {
+    try {
+      String message = await Provider.of<Groups>(context, listen: false).recordBankLoanRepayment(_formData);
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));
+      });
+    } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
           error: error,
@@ -119,7 +124,6 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
       });
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -132,139 +136,148 @@ class BankLoanRepaymentState extends State<BankLoanRepayment> {
         title: "Record Bank Loan Repayment",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              toolTip(context: context,title: "Manually record bank loan repayments",message: "",),
-              Padding(
-                padding: inputPagePadding,
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      CustomDropDownButton(
-                        labelText: 'Select Bank Loan',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("bankLoansOptions")?formLoadData["bankLoansOptions"]:[],
-                        selectedItem: bankLoanId,
-                        validator: (value){
-                          if(value==null||value.toString().isEmpty){
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            bankLoanId = value;
-                          });
-                        },
-                      ),
-                      DatePicker(
-                        labelText: 'Select Repayment Date',
-                        lastDate: now,
-                        selectedDate:withdrawalDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : withdrawalDate,
-                        selectDate: (selectedDate) {
-                          setState(() {
-                            withdrawalDate = selectedDate;
-                          });
-                        },
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Account Withdrawn',
-                        enabled: _isFormInputEnabled,
-                        listItems: formLoadData.containsKey("accountOptions")?formLoadData["accountOptions"]:[],
-                        selectedItem: accountId,
-                        validator: (value){
-                          if(value==null||value.toString().isEmpty){
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            accountId = value;
-                          });
-                        },
-                      ),
-                      CustomDropDownButton(
-                        labelText: 'Select Repayment Method',
-                        enabled: _isFormInputEnabled,
-                        validator: (value){
-                          if(value==null||value.toString().isEmpty){
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        listItems: withdrawalMethods,
-                        selectedItem: withdrawalMethod,
-                        onChanged: (value) {
-                          setState(() {
-                            withdrawalMethod = value;
-                          });
-                        },
-                      ),
-                      amountTextInputField(
-                          context: context,
-                          labelText: 'Enter Amount',
-                          enabled: _isFormInputEnabled,
-                          validator: (value){
-                            if(value==null||value.toString().isEmpty){
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              amount = double.parse(value);
-                            });
-                          }),
-                      multilineTextField(
-                          context: context,
-                          maxLines: 5,
-                          enabled: _isFormInputEnabled,
-                          labelText: 'Short Description',
-                          validator: (value){
-                             if(value==null||value.toString().isEmpty){
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          onChanged: (value) {
-                            setState(() {
-                              description = value;
-                            });
-                          }),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      _isLoading
-                      ? Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Center(
-                            child: CircularProgressIndicator()
-                          ),
-                      ):
-                      defaultButton(
-                        context: context,
-                        text: "SAVE",
-                        onPressed: () {
-                          _submit(context);
-                        },
-                      ),
-                    ],
+      body: Builder(
+        builder: (BuildContext context) {
+          return GestureDetector(
+            onTap: () {
+              FocusScope.of(context).unfocus();
+            },
+            child: SingleChildScrollView(
+              controller: _scrollController,
+              child: Column(
+                children: <Widget>[
+                  toolTip(
+                    context: context,
+                    title: "Manually record bank loan repayments",
+                    message: "",
                   ),
-                ),
-              )
-            ],
-          ),
-        ),
+                  Padding(
+                    padding: inputPagePadding,
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          CustomDropDownButton(
+                            labelText: 'Select Bank Loan',
+                            enabled: _isFormInputEnabled,
+                            listItems:
+                                formLoadData.containsKey("bankLoansOptions") ? formLoadData["bankLoansOptions"] : [],
+                            selectedItem: bankLoanId,
+                            validator: (value) {
+                              if (value == null || value.toString().isEmpty) {
+                                return "Field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                bankLoanId = value;
+                              });
+                            },
+                          ),
+                          DatePicker(
+                            labelText: 'Select Repayment Date',
+                            lastDate: now,
+                            selectedDate: withdrawalDate == null
+                                ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                : withdrawalDate,
+                            selectDate: (selectedDate) {
+                              setState(() {
+                                withdrawalDate = selectedDate;
+                              });
+                            },
+                          ),
+                          CustomDropDownButton(
+                            labelText: 'Select Account Withdrawn',
+                            enabled: _isFormInputEnabled,
+                            listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                            selectedItem: accountId,
+                            validator: (value) {
+                              if (value == null || value.toString().isEmpty) {
+                                return "Field is required";
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {
+                                accountId = value;
+                              });
+                            },
+                          ),
+                          CustomDropDownButton(
+                            labelText: 'Select Repayment Method',
+                            enabled: _isFormInputEnabled,
+                            validator: (value) {
+                              if (value == null || value.toString().isEmpty) {
+                                return "Field is required";
+                              }
+                              return null;
+                            },
+                            listItems: withdrawalMethods,
+                            selectedItem: withdrawalMethod,
+                            onChanged: (value) {
+                              setState(() {
+                                withdrawalMethod = value;
+                              });
+                            },
+                          ),
+                          amountTextInputField(
+                              context: context,
+                              labelText: 'Enter Amount',
+                              enabled: _isFormInputEnabled,
+                              validator: (value) {
+                                if (value == null || value.toString().isEmpty) {
+                                  return "Field is required";
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  amount = double.parse(value);
+                                });
+                              }),
+                          multilineTextField(
+                              context: context,
+                              maxLines: 5,
+                              enabled: _isFormInputEnabled,
+                              labelText: 'Short Description',
+                              validator: (value) {
+                                if (value == null || value.toString().isEmpty) {
+                                  return "Field is required";
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                setState(() {
+                                  description = value;
+                                });
+                              }),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          _isLoading
+                              ? Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Center(child: CircularProgressIndicator()),
+                                )
+                              : defaultButton(
+                                  context: context,
+                                  text: "SAVE",
+                                  onPressed: () {
+                                    _submit(context);
+                                  },
+                                ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
