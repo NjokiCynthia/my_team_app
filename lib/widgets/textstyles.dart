@@ -5,8 +5,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import 'buttons.dart';
 
-Widget heading1(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+Widget heading1({String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
     style: TextStyle(
@@ -18,41 +17,26 @@ Widget heading1(
   );
 }
 
-Widget heading2(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+Widget heading2({String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
-    style: TextStyle(
-        fontWeight: FontWeight.w700,
-        fontSize: 18.0,
-        color: color,
-        fontFamily: 'SegoeUI'),
+    style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18.0, color: color, fontFamily: 'SegoeUI'),
     textAlign: textAlign,
   );
 }
 
-Widget subtitle1(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+Widget subtitle1({String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
-    style: TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: 16.0,
-        color: color,
-        fontFamily: 'SegoeUI'),
+    style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16.0, color: color, fontFamily: 'SegoeUI'),
     textAlign: textAlign,
   );
 }
 
-Widget subtitle2(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+Widget subtitle2({String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(
     text,
-    style: TextStyle(
-        fontWeight: FontWeight.w300,
-        fontSize: 13.0,
-        color: color,
-        fontFamily: 'SegoeUI'),
+    style: TextStyle(fontWeight: FontWeight.w300, fontSize: 13.0, color: color, fontFamily: 'SegoeUI'),
     textAlign: textAlign,
   );
 }
@@ -98,8 +82,38 @@ Widget customTitleWithWrap(
   );
 }
 
-Widget textWithExternalLinks(
-    {Map<String, Map<String, dynamic>> textData, Color color, double size}) {
+Widget richTextWithWrap(
+    {String title,
+    String message,
+    Color color,
+    TextAlign textAlign = TextAlign.center,
+    double fontSize = 16.0,
+    int maxLines = 2,
+    String fontFamily = 'SegoeUI'}) {
+  return RichText(
+      textAlign: textAlign,
+      maxLines: maxLines,
+      text: TextSpan(children: <TextSpan>[
+        TextSpan(
+            text: title,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: fontSize,
+              fontFamily: fontFamily,
+              color: color,
+            )),
+        TextSpan(
+            text: message,
+            style: TextStyle(
+              fontWeight: FontWeight.w400,
+              fontSize: fontSize,
+              fontFamily: fontFamily,
+              color: color,
+            ))
+      ]));
+}
+
+Widget textWithExternalLinks({Map<String, Map<String, dynamic>> textData, Color color, double size}) {
   if (textData.isNotEmpty) {
     List<TextSpan> _children = [];
     textData.forEach((text, options) {
@@ -520,7 +534,7 @@ List<Widget> resetTransactions(
     mainAxisAlignment: MainAxisAlignment.spaceAround,
     children: <Widget>[
       Text(
-        paymentMethod??"Cash Payment",
+        paymentMethod ?? "Cash Payment",
         style: TextStyle(
           color: color.withOpacity(0.6),
           fontSize: 10.0,
@@ -546,12 +560,12 @@ List<Widget> resetTransactions(
         maxLines: 1,
         text: TextSpan(
             style: TextStyle(
-                fontWeight: FontWeight.w400,
-                fontSize: 10.0,
-                color: color.withOpacity(0.6),
-                ),
+              fontWeight: FontWeight.w400,
+              fontSize: 10.0,
+              color: color.withOpacity(0.6),
+            ),
             children: [
-              TextSpan(text: contributionType??""),
+              TextSpan(text: contributionType ?? ""),
             ]),
       )
     ],
@@ -570,9 +584,7 @@ Widget toolTip(
     visible: visible,
     child: Container(
         padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-        color: (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[800]
-            : Color(0xffededfe),
+        color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -591,15 +603,11 @@ Widget toolTip(
                 children: <Widget>[
                   (showTitle)
                       ? subtitle1(
-                          text: title,
-                          textAlign: TextAlign.start,
-                          color: Theme.of(context).textSelectionHandleColor)
+                          text: title, textAlign: TextAlign.start, color: Theme.of(context).textSelectionHandleColor)
                       : Container(),
                   (message.length > 0)
                       ? subtitle2(
-                          text: message,
-                          color: Theme.of(context).textSelectionHandleColor,
-                          textAlign: TextAlign.start)
+                          text: message, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
                       : Container(),
                 ],
               ),
@@ -616,12 +624,7 @@ Widget toolTip(
   );
 }
 
-Widget accountBalance(
-    {Color color,
-    IconData cardIcon,
-    String currency,
-    String cardAmount,
-    String accountName}) {
+Widget accountBalance({Color color, IconData cardIcon, String currency, String cardAmount, String accountName}) {
   return Column(
     mainAxisSize: MainAxisSize.min,
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -639,20 +642,12 @@ Widget accountBalance(
         overflow: TextOverflow.ellipsis,
         maxLines: 2,
         text: TextSpan(
-            style: TextStyle(
-                fontWeight: FontWeight.w600,
-                fontSize: 14.0,
-                color: color,
-                fontFamily: 'SegoeUI'),
+            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14.0, color: color, fontFamily: 'SegoeUI'),
             children: [
               TextSpan(text: accountName.toUpperCase()),
               TextSpan(text: " "),
               TextSpan(
-                  text: "BALANCE",
-                  style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      color: color,
-                      fontFamily: 'SegoeUI'))
+                  text: "BALANCE", style: TextStyle(fontWeight: FontWeight.w600, color: color, fontFamily: 'SegoeUI'))
             ]),
       ),
       SizedBox(
@@ -663,19 +658,12 @@ Widget accountBalance(
           child: RichText(
             overflow: TextOverflow.ellipsis,
             text: TextSpan(
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    fontSize: 20.0,
-                    color: color,
-                    fontFamily: 'SegoeUI'),
+                style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20.0, color: color, fontFamily: 'SegoeUI'),
                 children: [
                   TextSpan(
                       text: currency,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          fontSize: 18.0,
-                          color: color,
-                          fontFamily: 'SegoeUI')),
+                      style:
+                          TextStyle(fontWeight: FontWeight.w400, fontSize: 18.0, color: color, fontFamily: 'SegoeUI')),
                   TextSpan(text: " "),
                   TextSpan(text: cardAmount),
                 ]),

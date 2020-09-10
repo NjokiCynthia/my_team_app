@@ -3,6 +3,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,7 @@ class _ListFineTypesState extends State<ListFineTypes> {
         context: context,
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Fine Types List",
+        title: "Fine Types",
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -53,113 +54,117 @@ class _ListFineTypesState extends State<ListFineTypes> {
           width: MediaQuery.of(context).size.width,
           decoration: primaryGradient(context),
           child: Consumer<Groups>(builder: (context, groupData, child) {
-            return ListView.separated(
-              padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-              itemCount: groupData.fineTypes.length,
-              itemBuilder: (context, index) {
-                FineType fineType = groupData.fineTypes[index];
-                return ListTile(
-                  dense: true,
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+            return groupData.fineTypes.length > 0
+                ? ListView.separated(
+                    padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+                    itemCount: groupData.fineTypes.length,
+                    itemBuilder: (context, index) {
+                      FineType fineType = groupData.fineTypes[index];
+                      return ListTile(
+                        dense: true,
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                Icon(
-                                  Icons.label,
-                                  color: Colors.blueGrey,
-                                ),
-                                SizedBox(width: 10.0),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      '${fineType.name}',
-                                      style: TextStyle(
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontWeight: FontWeight.w800,
-                                        fontSize: 18.0,
+                            Expanded(
+                              flex: 3,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.label,
+                                        color: Colors.blueGrey,
                                       ),
-                                    ),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        Row(
-                                          children: <Widget>[
-                                            Text(
-                                              'Balance: ',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w600,
-                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
-                                                fontSize: 12.0,
-                                              ),
+                                      SizedBox(width: 10.0),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: <Widget>[
+                                          Text(
+                                            '${fineType.name}',
+                                            style: TextStyle(
+                                              color: Theme.of(context).textSelectionHandleColor,
+                                              fontWeight: FontWeight.w800,
+                                              fontSize: 18.0,
                                             ),
-                                            Text(
-                                              '${fineType.balance}',
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.w700,
-                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
-                                                fontSize: 12.0,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Row(
+                                                children: <Widget>[
+                                                  Text(
+                                                    'Balance: ',
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w600,
+                                                      color:
+                                                          Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                      fontSize: 12.0,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${fineType.balance}',
+                                                    style: TextStyle(
+                                                      fontWeight: FontWeight.w700,
+                                                      color:
+                                                          Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                                                      fontSize: 12.0,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.all(12.0),
+                                        child: circleIconButton(
+                                          icon: Icons.edit,
+                                          backgroundColor: primaryColor.withOpacity(.3),
+                                          color: primaryColor,
+                                          iconSize: 18.0,
+                                          padding: 0.0,
+                                          onPressed: () async {
+                                            await Navigator.of(context).push(MaterialPageRoute(
+                                              builder: (context) => EditFineType(
+                                                fineCategoryId: int.parse(fineType.id),
+                                              ),
+                                            ));
+                                          },
                                         ),
-                                      ],
-                                    )
-                                  ],
-                                ),
-                              ],
-                            )
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
                           ],
                         ),
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(12.0),
-                                  child: circleIconButton(
-                                    icon: Icons.edit,
-                                    backgroundColor: primaryColor.withOpacity(.3),
-                                    color: primaryColor,
-                                    iconSize: 18.0,
-                                    padding: 0.0,
-                                    onPressed: () async {
-                                      await Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => EditFineType(
-                                          fineCategoryId: int.parse(fineType.id),
-                                        ),
-                                      ));
-                                    },
-                                  ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              separatorBuilder: (context, index) {
-                return Divider(
-                  color: Theme.of(context).dividerColor,
-                  height: 6.0,
-                );
-              },
-            );
+                      );
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider(
+                        color: Theme.of(context).dividerColor,
+                        height: 6.0,
+                      );
+                    },
+                  )
+                : betterEmptyList(message: "Sorry, you have not added any fine types");
           })),
     );
   }

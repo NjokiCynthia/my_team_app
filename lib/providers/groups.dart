@@ -273,7 +273,7 @@ class LoanType {
   final String guarantors;
   final String latePaymentFines;
   final String outstandingPaymentFines;
-  final String isHidden;
+  final bool isHidden;
 
   LoanType({
     this.id,

@@ -90,6 +90,13 @@ class _MyAppState extends State<MyApp> {
       ],
       child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
+          builder: (BuildContext context, Widget child) {
+            final data = MediaQuery.of(context);
+            return MediaQuery(
+              data: data.copyWith(textScaleFactor: data.textScaleFactor > 1.0 ? 1.0 : data.textScaleFactor),
+              child: child,
+            );
+          },
           debugShowCheckedModeBanner: false,
           color: themeChangeProvider.darkTheme ? Colors.blueGrey[900] : Colors.blue[50],
           title: 'Chamasoft',

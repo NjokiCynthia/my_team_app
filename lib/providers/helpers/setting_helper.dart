@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
@@ -124,7 +125,7 @@ List<LoanType> parseLoanTypes(List<dynamic> groupLoanTypes) {
         guarantors: groupLoanTypesJSON['guarantors'].toString(),
         latePaymentFines: groupLoanTypesJSON['late_payment_fines'].toString(),
         outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines'].toString(),
-        isHidden: groupLoanTypesJSON['is_hidden'].toString(),
+        isHidden: ParseHelper.getIntFromJson(groupLoanTypesJSON, "is_hidden") == 0 ? false : true,
       );
       loanTypes.add(newLoanType);
     }

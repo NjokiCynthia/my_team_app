@@ -9,6 +9,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -222,86 +223,88 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                 width: MediaQuery.of(context).size.width,
                 decoration: primaryGradient(context),
                 child: Consumer<Groups>(builder: (context, groupData, child) {
-                  return ListView.separated(
-                    padding: EdgeInsets.only(bottom: 50.0, top: 10.0),
-                    itemCount: groupData.assetCategories.length,
-                    itemBuilder: (context, index) {
-                      IncomeCategories incomeCategory = groupData.assetCategories[index];
-                      return ListTile(
-                        contentPadding: EdgeInsets.all(12.0),
-                        dense: true,
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 3,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
+                  return groupData.assetCategories.length > 0
+                      ? ListView.separated(
+                          padding: EdgeInsets.only(bottom: 50.0, top: 10.0),
+                          itemCount: groupData.assetCategories.length,
+                          itemBuilder: (context, index) {
+                            IncomeCategories incomeCategory = groupData.assetCategories[index];
+                            return ListTile(
+                              contentPadding: EdgeInsets.all(12.0),
+                              dense: true,
+                              title: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Icon(
-                                    Icons.label,
-                                    color: Colors.blueGrey,
-                                  ),
-                                  SizedBox(width: 10.0),
                                   Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
-                                        heading2(
-                                          text: '${incomeCategory.name}',
-                                          textAlign: TextAlign.start,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                        Icon(
+                                          Icons.label,
+                                          color: Colors.blueGrey,
                                         ),
-                                        Visibility(
-                                          visible: incomeCategory.description.isNotEmpty,
-                                          child: customTitleWithWrap(
-                                            text: '${incomeCategory.description}',
-                                            color: Theme.of(context).textSelectionHandleColor,
-                                            fontWeight: FontWeight.w400,
-                                            fontSize: 12.0,
-                                            textAlign: TextAlign.start,
+                                        SizedBox(width: 10.0),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              heading2(
+                                                text: '${incomeCategory.name}',
+                                                textAlign: TextAlign.start,
+                                                color: Theme.of(context).textSelectionHandleColor,
+                                              ),
+                                              Visibility(
+                                                visible: incomeCategory.description.isNotEmpty,
+                                                child: customTitleWithWrap(
+                                                  text: '${incomeCategory.description}',
+                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 12.0,
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ),
+                                              customTitleWithWrap(
+                                                text: '${incomeCategory.isHidden ? "Hidden" : "Active"}',
+                                                color: Theme.of(context).textSelectionHandleColor,
+                                                fontWeight: FontWeight.w400,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            ],
                                           ),
-                                        ),
-                                        customTitleWithWrap(
-                                          text: '${incomeCategory.isHidden ? "Hidden" : "Active"}',
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.start,
                                         ),
                                       ],
                                     ),
                                   ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: circleIconButton(
+                                      icon: Icons.edit,
+                                      backgroundColor: primaryColor.withOpacity(.3),
+                                      color: primaryColor,
+                                      iconSize: 16.0,
+                                      padding: 0.0,
+                                      onPressed: () => _showActions(context, incomeCategory),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: circleIconButton(
-                                icon: Icons.edit,
-                                backgroundColor: primaryColor.withOpacity(.3),
-                                color: primaryColor,
-                                iconSize: 16.0,
-                                padding: 0.0,
-                                onPressed: () => _showActions(context, incomeCategory),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        color: Theme.of(context).dividerColor,
-                        height: 6.0,
-                      );
-                    },
-                  );
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              color: Theme.of(context).dividerColor,
+                              height: 6.0,
+                            );
+                          },
+                        )
+                      : betterEmptyList(message: "Sorry, you have not added any asset categories");
                 })),
           );
         },

@@ -9,6 +9,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -29,6 +30,7 @@ class ListAccounts extends StatefulWidget {
 
 class _ListAccountsState extends State<ListAccounts> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -243,7 +245,7 @@ class _ListAccountsState extends State<ListAccounts> {
         context: context,
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Accounts List",
+        title: "Accounts",
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(
@@ -272,8 +274,9 @@ class _ListAccountsState extends State<ListAccounts> {
                           CategorisedAccount account = accounts[index];
                           if (account.isHeader) {
                             return Padding(
-                              padding:
-                                  index == 0 ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0) : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                              padding: index == 0
+                                  ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0)
+                                  : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                               child: customTitle(
                                 text: account.title,
                                 fontWeight: FontWeight.w600,
@@ -395,7 +398,7 @@ class _ListAccountsState extends State<ListAccounts> {
                             );
                         },
                       )
-                    : Container();
+                    : betterEmptyList(message: "Sorry, you have not added any accounts");
               })),
         );
       }),

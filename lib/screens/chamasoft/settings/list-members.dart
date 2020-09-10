@@ -122,7 +122,7 @@ class _ListMembersState extends State<ListMembers> {
         context: context,
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Members List",
+        title: "Members",
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(

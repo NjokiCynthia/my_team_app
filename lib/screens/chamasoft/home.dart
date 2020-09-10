@@ -215,7 +215,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       _iteratableRecentTransactionSummary = dashboardData.recentMemberTransactions;
       _itableContributionSummary = dashboardData.memberContributionSummary;
     });
-    print("Disable arrears: ${_currentGroup.disableArrears}");
+
     return WillPopScope(
         onWillPop: _onWillPop,
         child: RefreshIndicator(
