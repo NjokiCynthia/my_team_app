@@ -93,13 +93,6 @@ ExpenseSummaryList getExpenseSummary(dynamic data) {
       final expenseRow = SummaryRow(name: name, paid: amount);
       expenseList.add(expenseRow);
     }
-
-    for (var expense in expenses) {
-      final name = expense['expense_name'].toString();
-      final amount = ParseHelper.getDoubleFromJson(expense, "amount");
-      final expenseRow = SummaryRow(name: name, paid: amount);
-      expenseList.add(expenseRow);
-    }
   }
   double totalExpenses = ParseHelper.getDoubleFromJson(data, "total_expenses");
   return ExpenseSummaryList(expenseSummary: expenseList, totalExpenses: totalExpenses);
