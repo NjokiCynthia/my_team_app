@@ -255,10 +255,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         customTitle(
-                                          text: "Contributions",
+                                          text: "Your Contribution Balance",
                                           textAlign: TextAlign.start,
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
                                           color: Theme.of(context).textSelectionHandleColor,
                                         ),
                                         SizedBox(

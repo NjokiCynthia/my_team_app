@@ -374,7 +374,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 child: amountTextInputField(
                                     enabled: _isFormInputEnabled,
                                     context: context,
-                                    labelText: 'Enter Amount',
+                                    labelText: 'Enter Amount for Each Member',
                                     onChanged: (value) {
                                       contributionAmount = value;
                                     },

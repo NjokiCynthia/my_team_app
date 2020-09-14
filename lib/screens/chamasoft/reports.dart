@@ -275,7 +275,7 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text(
-                  "Member Reports",
+                  "Your Reports",
                   style: TextStyle(
                     color: Colors.blueGrey[400],
                     fontFamily: 'SegoeUI',

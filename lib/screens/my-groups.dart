@@ -171,7 +171,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                         trailingIcon: LineAwesomeIcons.angle_right,
                         hideTrailingIcon: true,
                         backgroundColor: primaryColor.withOpacity(0.2),
-                        title: "ADD NEW",
+                        title: "ADD NEW GROUP",
                         subtitle: "Chama, Merry-go-round, Fundraiser",
                         textColor: primaryColor,
                         borderColor: primaryColor,

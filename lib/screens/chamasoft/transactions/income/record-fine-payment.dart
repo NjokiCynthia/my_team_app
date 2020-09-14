@@ -359,7 +359,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                           child: amountTextInputField(
                               context: context,
                               enabled: _isFormInputEnabled,
-                              labelText: "Enter Amount(for each member)",
+                              labelText: 'Enter Amount for Each Member',
                               onChanged: (value) {
                                 setState(() {
                                   amountInputValue = double.parse(value);

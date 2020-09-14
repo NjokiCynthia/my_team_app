@@ -123,7 +123,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           child: svgGridButton(
               context: context,
               icon: customIcons['cash-register'],
-              title: 'CONTRIBUTIONS',
+              title: 'CONTRIBUTION',
+              subtitle: "PAYMENTS",
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -139,7 +140,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           child: svgGridButton(
               context: context,
               icon: customIcons['refund'],
-              title: 'FINES',
+              title: 'FINE',
+              subtitle: "PAYMENTS",
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -373,7 +375,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                "Record Payments",
+                                "Record Deposit",
                                 style: TextStyle(
                                   color: Colors.blueGrey[400],
                                   fontFamily: 'SegoeUI',
@@ -408,7 +410,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                "Record Expenditure",
+                                "Record Withdrawal",
                                 style: TextStyle(
                                   color: Colors.blueGrey[400],
                                   fontFamily: 'SegoeUI',
