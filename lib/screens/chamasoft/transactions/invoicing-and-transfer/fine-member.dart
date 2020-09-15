@@ -39,9 +39,9 @@ class FineMemberState extends State<FineMember> {
   int memberTypeId;
   double amount;
   String description;
-  bool _isInit= true,_isLoading = false,_isFormInputEnabled=true;
-  Map<String,dynamic> _formLoadData = {},_formData={};
-  List<String> _individualMembers=[];
+  bool _isInit = true, _isLoading = false, _isFormInputEnabled = true;
+  Map<String, dynamic> _formLoadData = {}, _formData = {};
+  List<String> _individualMembers = [];
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
 
@@ -79,23 +79,22 @@ class FineMemberState extends State<FineMember> {
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
-        context: context,
-        barrierDismissible: false,
-        builder: (BuildContext context){
-          return Center(
-            child: CircularProgressIndicator(),
-          );
-        }
-      );
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
     });
-    _formLoadData = await Provider.of<Groups>(context,listen: false).loadInitialFormData(fineOptions: true); 
+    _formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(fineOptions: true);
     setState(() {
       _isInit = false;
     });
-    Navigator.of(context,rootNavigator: true).pop();
+    Navigator.of(context, rootNavigator: true).pop();
   }
 
-  void _submit(BuildContext context)async{
+  void _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -103,15 +102,15 @@ class FineMemberState extends State<FineMember> {
       _isLoading = true;
       _isFormInputEnabled = false;
     });
-     _formKey.currentState.save();
-     FocusScope.of(context).unfocus();
+    _formKey.currentState.save();
+    FocusScope.of(context).unfocus();
     _formData['fine_date'] = fineDate.toString();
     _formData['fine_category_id'] = fineTypeId;
     _formData['request_id'] = requestId;
     _formData['amount'] = amount;
     _formData['member_type_id'] = memberTypeId;
     _individualMembers = [];
-    selectedMembersList.map((selectedMember){
+    selectedMembersList.map((selectedMember) {
       _individualMembers.add(selectedMember.memberId);
     }).toList();
     _formData['members'] = _individualMembers;
@@ -173,7 +172,11 @@ class FineMemberState extends State<FineMember> {
           controller: _scrollController,
           child: Column(
             children: <Widget>[
-              toolTip(context: context,title: "Fine members for custom fines",message: "",),
+              toolTip(
+                context: context,
+                title: "Fine members for custom fines",
+                message: "",
+              ),
               Padding(
                 padding: inputPagePadding,
                 child: Form(
@@ -185,7 +188,8 @@ class FineMemberState extends State<FineMember> {
                       DatePicker(
                         labelText: 'Select Deposit Date',
                         lastDate: DateTime.now(),
-                        selectedDate: fineDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : fineDate,
+                        selectedDate:
+                            fineDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : fineDate,
                         selectDate: (selectedDate) {
                           setState(() {
                             fineDate = selectedDate;
@@ -195,10 +199,10 @@ class FineMemberState extends State<FineMember> {
                       CustomDropDownButton(
                         labelText: 'Select Fine type',
                         enabled: _isFormInputEnabled,
-                        listItems: _formLoadData.containsKey("finesOptions")?_formLoadData["finesOptions"]:[],
+                        listItems: _formLoadData.containsKey("finesOptions") ? _formLoadData["finesOptions"] : [],
                         selectedItem: fineTypeId,
-                        validator: (value){
-                          if(value==null||value==""){
+                        validator: (value) {
+                          if (value == null || value == "") {
                             return "This field is required";
                           }
                           return null;
@@ -214,16 +218,31 @@ class FineMemberState extends State<FineMember> {
                         listItems: memberTypes,
                         selectedItem: memberTypeId,
                         enabled: _isFormInputEnabled,
-                        validator: (value){
-                          if(value==null||value==""){
+                        validator: (value) {
+                          if (value == null || value == "") {
                             return "This field is required";
                           }
                           return null;
                         },
-                        onChanged: (value) {
-                          setState(() {
-                            memberTypeId = value;
-                          });
+                        onChanged: (selected) async {
+                          if (selected == 1) {
+                            await Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => SelectMember(
+                                          initialMembersList: selectedMembersList,
+                                          //membersList: memberOptions,
+                                        ))).then((value) {
+                              setState(() {
+                                memberTypeId = selected;
+                                selectedMembersList = value;
+                              });
+                            });
+                          } else {
+                            setState(() {
+                              memberTypeId = selected;
+                            });
+                          }
                         },
                       ),
                       Visibility(
@@ -238,11 +257,10 @@ class FineMemberState extends State<FineMember> {
                               onPressed: () async {
                                 //open select members dialog
                                 await Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => SelectMember(
-                                              initialMembersList:selectedMembersList
-                                  ))
-                                ).then((value){
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            SelectMember(initialMembersList: selectedMembersList))).then((value) {
                                   setState(() {
                                     selectedMembersList = value;
                                   });
@@ -262,8 +280,8 @@ class FineMemberState extends State<FineMember> {
                       amountTextInputField(
                           context: context,
                           enabled: _isFormInputEnabled,
-                          validator: (value){
-                            if(value=="" || value==null){
+                          validator: (value) {
+                            if (value == "" || value == null) {
                               return "Field is required";
                             }
                             return null;
@@ -288,19 +306,17 @@ class FineMemberState extends State<FineMember> {
                         height: 24,
                       ),
                       _isLoading
-                      ? Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Center(
-                            child: CircularProgressIndicator()
-                          ),
-                      ): 
-                      defaultButton(
-                        context: context,
-                        text: "SAVE",
-                        onPressed: () {
-                          _submit(context);
-                        },
-                      ),
+                          ? Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Center(child: CircularProgressIndicator()),
+                            )
+                          : defaultButton(
+                              context: context,
+                              text: "SAVE",
+                              onPressed: () {
+                                _submit(context);
+                              },
+                            ),
                     ],
                   ),
                 ),

@@ -189,10 +189,25 @@ class CreateInvoiceState extends State<CreateInvoice> {
                           labelText: 'Select Member',
                           listItems: memberTypes,
                           selectedItem: memberTypeId,
-                          onChanged: (value) {
-                            setState(() {
-                              memberTypeId = value;
-                            });
+                          onChanged: (selected) async {
+                            if (selected == 1) {
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectMember(
+                                        initialMembersList: selectedMembersList,
+                                        //membersList: memberOptions,
+                                      ))).then((value) {
+                                setState(() {
+                                  memberTypeId = selected;
+                                  selectedMembersList = value;
+                                });
+                              });
+                            } else {
+                              setState(() {
+                                memberTypeId = selected;
+                              });
+                            }
                           },
                         ),
                         Visibility(

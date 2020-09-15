@@ -1,17 +1,16 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-List<MembersFilterEntry> _membersList = <MembersFilterEntry>[];
-
 class SelectMember extends StatefulWidget {
   final List<MembersFilterEntry> initialMembersList;
-  //final List<MembersFilterEntry> membersList;
 
   SelectMember({@required this.initialMembersList});
 
@@ -25,6 +24,7 @@ class SelectMemberState extends State<SelectMember> {
   Future<void> _future;
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  List<MembersFilterEntry> _membersList = <MembersFilterEntry>[];
   List<MembersFilterEntry> selectedMembersList = [];
 
   @override
@@ -35,7 +35,7 @@ class SelectMemberState extends State<SelectMember> {
         filter = controller.text;
       });
     });
-    _future = _getGroupMembers(context,false);
+    _future = _getGroupMembers(context, false);
     super.initState();
   }
 
@@ -45,29 +45,24 @@ class SelectMemberState extends State<SelectMember> {
     super.dispose();
   }
 
-
-  Future<void> _getGroupMembers(BuildContext context,[bool fullRefresh = false]) async {
+  Future<void> _getGroupMembers(BuildContext context, [bool fullRefresh = false]) async {
     try {
       List<Member> members;
-      if(fullRefresh){
+      if (fullRefresh) {
         await Provider.of<Groups>(context, listen: false).fetchMembers();
         members = Provider.of<Groups>(context, listen: false).members;
-      }else{
-         members = Provider.of<Groups>(context, listen: false).members;
+      } else {
+        members = Provider.of<Groups>(context, listen: false).members;
       }
-      if(members.length==0){
+      if (members.length == 0) {
         await Provider.of<Groups>(context, listen: false).fetchMembers();
         members = Provider.of<Groups>(context, listen: false).members;
       }
       List<MembersFilterEntry> emptyMemberOptions = [];
-      members.map((member) => 
-        emptyMemberOptions.add(MembersFilterEntry(
-          memberId: member.id,
-          name: member.name,
-          phoneNumber: member.identity,
-          amount: 0.0
-        ))
-      ).toList();
+      members
+          .map((member) => emptyMemberOptions.add(
+              MembersFilterEntry(memberId: member.id, name: member.name, phoneNumber: member.identity, amount: 0.0)))
+          .toList();
       setState(() {
         _membersList = emptyMemberOptions;
       });
@@ -76,10 +71,9 @@ class SelectMemberState extends State<SelectMember> {
           context: context,
           error: error,
           callback: () {
-            _getGroupMembers(context,false);
+            _getGroupMembers(context, false);
           });
-    } finally {
-    }
+    } finally {}
   }
 
   @override
@@ -119,12 +113,11 @@ class SelectMemberState extends State<SelectMember> {
           }
         },
       ),
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).backgroundColor,
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Container(
           height: MediaQuery.of(context).size.height,
-          color: Theme.of(context).backgroundColor,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -132,6 +125,7 @@ class SelectMemberState extends State<SelectMember> {
                 padding: EdgeInsets.only(top: 20.0),
               ),
               TextField(
+                style: inputTextStyle(),
                 decoration: InputDecoration(
                   labelText: "Search Member",
                   prefixIcon: Icon(LineAwesomeIcons.search),
@@ -139,77 +133,96 @@ class SelectMemberState extends State<SelectMember> {
                 controller: controller,
               ),
               Expanded(
-                child: _membersList==null? 
-                Center(child: Text("There are no members to select"),):
-                FutureBuilder(
-                  future: _future,
-                  builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
-                  ? Center(child: CircularProgressIndicator())
-                  : RefreshIndicator(
-                      onRefresh: () => _getGroupMembers(context,true),
-                      child: Consumer<Groups>(
-                        child: Center(
-                          child: Text("Groups"),
-                        ),
-                        builder: (ctx, groups, ch) =>ListView.builder(
-                          itemCount: _membersList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return filter == null || filter == ""
-                                ? Card(
-                                    child: CheckboxListTile(
-                                      secondary: const Icon(Icons.person),
-                                      value: selectedMembersList
-                                          .contains(_membersList[index]),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          if (value) {
-                                            selectedMembersList
-                                                .add(_membersList[index]);
-                                          } else {
-                                            selectedMembersList
-                                                .remove(_membersList[index]);
-                                          }
-                                        });
-                                      },
-                                      title: Text(_membersList[index].name),
-                                      subtitle: Text(_membersList[index].phoneNumber),
-                                    ),
-                                  )
-                                : _membersList[index]
-                                        .name
-                                        .toLowerCase()
-                                        .contains(filter.toLowerCase())
-                                    ? Card(
-                                        child: CheckboxListTile(
-                                          secondary: const Icon(Icons.person),
-                                          value: selectedMembersList
-                                              .contains(_membersList[index]),
-                                          onChanged: (value) {
-                                            setState(() {
-                                              if (value) {
-                                                selectedMembersList
-                                                    .add(_membersList[index]);
-                                              } else {
-                                                selectedMembersList
-                                                    .remove(_membersList[index]);
-                                              }
-                                            });
-                                          },
-                                          title: Text(
-                                            _membersList[index].name,
-                                            style:
-                                                TextStyle(fontWeight: FontWeight.w800),
-                                          ),
-                                          subtitle:
-                                              Text(_membersList[index].phoneNumber),
-                                        ),
-                                      )
-                                    : new Container();
-                          },
-                        ),
+                child: _membersList == null
+                    ? Center(
+                        child: Text("There are no members to select"),
+                      )
+                    : FutureBuilder(
+                        future: _future,
+                        builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                            ? Center(child: CircularProgressIndicator())
+                            : RefreshIndicator(
+                                onRefresh: () => _getGroupMembers(context, true),
+                                child: Consumer<Groups>(
+                                  child: Center(
+                                    child: Text("Groups"),
+                                  ),
+                                  builder: (ctx, groups, ch) => ListView.builder(
+                                    itemCount: _membersList.length,
+                                    itemBuilder: (BuildContext context, int index) {
+                                      MembersFilterEntry entry = _membersList[index];
+                                      bool isSelected = false;
+                                      for (var selected in selectedMembersList) {
+                                        if (selected.memberId == entry.memberId) {
+                                          isSelected = true;
+                                          break;
+                                        }
+                                      }
+                                      return filter == null || filter == ""
+                                          ? Card(
+                                              child: CheckboxListTile(
+                                                secondary: const Icon(Icons.person),
+                                                value: isSelected,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    if (value) {
+                                                      selectedMembersList.add(entry);
+                                                    } else {
+                                                      for (var selected in selectedMembersList) {
+                                                        if (selected.memberId == entry.memberId) {
+                                                          selectedMembersList.remove(selected);
+                                                          break;
+                                                        }
+                                                      }
+                                                    }
+                                                  });
+                                                },
+                                                title: customTitle(
+                                                    text: entry.name,
+                                                    textAlign: TextAlign.start,
+                                                    color: Theme.of(context).textSelectionHandleColor),
+                                                subtitle: subtitle2(
+                                                    text: entry.phoneNumber,
+                                                    textAlign: TextAlign.start,
+                                                    color: Theme.of(context).textSelectionHandleColor),
+                                              ),
+                                            )
+                                          : _membersList[index].name.toLowerCase().contains(filter.toLowerCase())
+                                              ? Card(
+                                                  child: CheckboxListTile(
+                                                    secondary: const Icon(Icons.person),
+                                                    value: isSelected,
+                                                    onChanged: (value) {
+                                                      setState(() {
+                                                        if (value) {
+                                                          selectedMembersList.add(_membersList[index]);
+                                                        } else {
+                                                          for (var selected in selectedMembersList) {
+                                                            if (selected.memberId == entry.memberId) {
+                                                              selectedMembersList.remove(selected);
+                                                              break;
+                                                            }
+                                                          }
+                                                        }
+                                                      });
+                                                    },
+                                                    title: customTitle(
+                                                        text: entry.name,
+                                                        fontWeight: FontWeight.w800,
+                                                        textAlign: TextAlign.start,
+                                                        color: Theme.of(context).textSelectionHandleColor),
+                                                    subtitle: subtitle1(
+                                                        text: _membersList[index].phoneNumber,
+                                                        textAlign: TextAlign.start,
+                                                        color: Theme.of(context).textSelectionHandleColor),
+                                                  ),
+                                                )
+                                              : new Container();
+                                    },
+                                  ),
+                                ),
+                              ),
                       ),
-                  ),
-                ),
               ),
             ],
           ),

@@ -207,11 +207,7 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
             controller: _scrollController,
             child: Column(
               children: <Widget>[
-                toolTip(
-                    context: context,
-                    title: "Manually record fine payments",
-                    message: "",
-                    showTitle: true),
+                toolTip(context: context, title: "Manually record fine payments", message: "", showTitle: true),
                 Padding(
                   padding: inputPagePadding,
                   child: Form(
@@ -310,10 +306,25 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                           enabled: _isFormInputEnabled,
                           listItems: memberTypes,
                           selectedItem: memberTypeId,
-                          onChanged: (value) {
-                            setState(() {
-                              memberTypeId = value;
-                            });
+                          onChanged: (selected) async {
+                            if (selected == 1) {
+                              await Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => SelectMember(
+                                            initialMembersList: selectedMembersList,
+                                            //membersList: memberOptions,
+                                          ))).then((value) {
+                                setState(() {
+                                  memberTypeId = selected;
+                                  selectedMembersList = value;
+                                });
+                              });
+                            } else {
+                              setState(() {
+                                memberTypeId = selected;
+                              });
+                            }
                           },
                         ),
                         Visibility(
