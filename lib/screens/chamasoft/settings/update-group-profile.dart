@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/currency-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -26,9 +26,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   File avatar;
-  String groupName = 'Witcher Welfare';
-  String phoneNumber = '+254 701 234 567';
-  String emailAddress = 'official@witcher.com';
+  String groupName = '';
+  String phoneNumber = '';
+  String emailAddress = '';
   String currency = 'KES';
   String country = 'Kenya';
   String errorText = '';
@@ -67,8 +67,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     errorText = '';
     try {
       final response = await Provider.of<Groups>(context, listen: false).updateGroupName(groupName);
+      Navigator.of(context).pop(); //pop progress view
       if (response['status'] == 1) {
-        Navigator.of(context).pop();
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Name",
@@ -81,6 +81,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         )));
       }
     } on CustomException catch (error) {
+      Navigator.of(context).pop();
       print(error.message);
       errorText = 'Network Error occurred: could not update group name';
     }
@@ -92,16 +93,21 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     errorText = '';
     try {
       final response = await Provider.of<Groups>(context, listen: false).updateGroupEmail(emailAddress);
+      Navigator.of(context).pop();
       if (response['status'] == 1) {
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group email",
         )));
-        Navigator.of(context).pop();
       } else {
         errorText = response['message'];
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Error updating Group Email",
+        )));
       }
     } on CustomException catch (error) {
+      Navigator.of(context).pop();
       print(error.message);
       errorText = 'Network Error occurred: could not update group email';
     }
@@ -111,12 +117,22 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     errorText = '';
     try {
       final response = await Provider.of<Groups>(context, listen: false).updateGroupPhoneNumber(phoneNumber);
+      Navigator.of(context).pop();
       if (response['status'] == 1) {
-        Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
+        //Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "You have successfully updated group phone number",
+        )));
       } else {
         errorText = response['message'];
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Error updating group phone number",
+        )));
       }
     } on CustomException catch (error) {
+      Navigator.of(context).pop();
       print(error.message);
       errorText = 'Network Error occurred: could not update group email';
     }
@@ -126,16 +142,21 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
     errorText = '';
     try {
       final response = await Provider.of<Groups>(context, listen: false).updateGroupCurrency(currencyId);
+      Navigator.of(context).pop();
       if (response['status'] == 1) {
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Currency",
         )));
-        Navigator.of(context).pop();
       } else {
         errorText = response['message'];
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Error updating group currency",
+        )));
       }
     } on CustomException catch (error) {
+      Navigator.of(context).pop();
       print(error.message);
       errorText = 'Network Error occurred: could not update group currency';
     }
@@ -144,24 +165,22 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateCountry(BuildContext context) async {
     errorText = '';
     try {
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          });
       final response = await Provider.of<Groups>(context, listen: false).updateGroupCountry(countryId);
+      Navigator.of(context).pop();
       if (response['status'] == 1) {
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Country",
         )));
-        Navigator.of(context).pop();
       } else {
         errorText = response['message'];
+        Scaffold.of(context).showSnackBar(SnackBar(
+            content: Text(
+          "Error updating group country",
+        )));
       }
     } on CustomException catch (error) {
+      Navigator.of(context).pop();
       print(error.message);
       errorText = 'Network Error occurred: could not update group country';
     }
@@ -173,21 +192,20 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Phone Number"),
+          title: heading2(
+              text: "Update Phone Number",
+              textAlign: TextAlign.start,
+              color: Theme.of(context).textSelectionHandleColor),
           content: Form(
             key: _formKey,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                Text(
-                  'Before updating your number kindly ensure you can receive SMS on your new number',
-                  style: TextStyle(
-                    fontSize: 12,
-                  ),
-                ),
                 TextFormField(
-                  initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone == null
-                      ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone
+                  initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone != null
+                      ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone != "null"
+                          ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone
+                          : ""
                       : "",
                   keyboardType: TextInputType.phone,
                   onChanged: (value) {
@@ -216,27 +234,28 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             ),
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Continue",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-//                  Navigator.of(context).pop();
-                  await doUpdatePhone(context);
-                }
-              },
-            ),
+            negativeActionDialogButton(
+                text: "Cancel",
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Save",
+                color: primaryColor,
+                action: () async {
+                  if (_formKey.currentState.validate()) {
+                    Navigator.of(context).pop();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        });
+                    await doUpdatePhone(ctx);
+                  }
+                })
           ],
         );
       },
@@ -249,7 +268,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Group Name"),
+          title: heading2(
+              text: "Update Group Name", textAlign: TextAlign.start, color: Theme.of(context).textSelectionHandleColor),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -275,6 +295,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                     }
                     return null;
                   },
+                  style: inputTextStyle(),
                   decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
                     enabledBorder: UnderlineInputBorder(
@@ -289,26 +310,28 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             ],
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Save",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  await doUpdateName(ctx);
-                }
-              },
-            ),
+            negativeActionDialogButton(
+                text: "Cancel",
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Save",
+                color: primaryColor,
+                action: () async {
+                  if (_formKey.currentState.validate()) {
+                    Navigator.of(context).pop();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        });
+                    await doUpdateName(ctx);
+                  }
+                })
           ],
         );
       },
@@ -321,12 +344,17 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Update Group Email Address"),
+          title: heading2(
+              text: "Update Group Email Address",
+              textAlign: TextAlign.start,
+              color: Theme.of(context).textSelectionHandleColor),
           content: Form(
             key: _formKey,
             child: TextFormField(
-              initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail == null
-                  ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail
+              initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail != null
+                  ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail != "null"
+                      ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail
+                      : ""
                   : "",
               keyboardType: TextInputType.emailAddress,
               onChanged: (value) {
@@ -340,6 +368,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 }
                 return null;
               },
+              style: inputTextStyle(),
               decoration: InputDecoration(
                 floatingLabelBehavior: FloatingLabelBehavior.auto,
                 enabledBorder: UnderlineInputBorder(
@@ -352,26 +381,28 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             ),
           ),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            new FlatButton(
-              child: new Text(
-                "Save",
-                style: new TextStyle(color: primaryColor),
-              ),
-              onPressed: () async {
-                if (_formKey.currentState.validate()) {
-                  await doUpdateEmail(ctx);
-                }
-              },
-            ),
+            negativeActionDialogButton(
+                text: "Cancel",
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            positiveActionDialogButton(
+                text: "Save",
+                color: primaryColor,
+                action: () async {
+                  if (_formKey.currentState.validate()) {
+                    Navigator.of(context).pop();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        });
+                    await doUpdateEmail(ctx);
+                  }
+                }),
           ],
         );
       },
@@ -385,7 +416,10 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
-            title: new Text("Update Group Currency"),
+            title: heading2(
+                text: "Update Group Currency",
+                textAlign: TextAlign.start,
+                color: Theme.of(context).textSelectionHandleColor),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -405,24 +439,26 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               ],
             ),
             actions: <Widget>[
-              new FlatButton(
-                child: new Text(
-                  "Cancel",
-                  style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              new FlatButton(
-                child: new Text(
-                  "Save",
-                  style: new TextStyle(color: primaryColor),
-                ),
-                onPressed: () async {
-                  await doUpdateCurrency(ctx);
-                },
-              ),
+              negativeActionDialogButton(
+                  text: "Cancel",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  action: () {
+                    Navigator.of(context).pop();
+                  }),
+              positiveActionDialogButton(
+                  text: "Save",
+                  color: primaryColor,
+                  action: () async {
+                    Navigator.of(context).pop();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        });
+                    await doUpdateCurrency(ctx);
+                  })
             ],
           );
         });
@@ -459,25 +495,26 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               ],
             ),
             actions: <Widget>[
-              new FlatButton(
-                child: new Text(
-                  "Cancel",
-                  style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              new FlatButton(
-                child: new Text(
-                  "Save",
-                  style: new TextStyle(color: primaryColor),
-                ),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  await doUpdateCountry(ctx);
-                },
-              ),
+              negativeActionDialogButton(
+                  text: "Cancel",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  action: () {
+                    Navigator.of(context).pop();
+                  }),
+              positiveActionDialogButton(
+                  text: "Save",
+                  color: primaryColor,
+                  action: () async {
+                    Navigator.of(context).pop();
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        });
+                    await doUpdateCountry(ctx);
+                  })
             ],
           );
         });
@@ -539,7 +576,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   height: 40.0,
                 ),
                 heading1(text: "Update Group Profile", color: Theme.of(context).textSelectionHandleColor),
-                subtitle2(text: "Update the profile info for your Group", color: Theme.of(context).textSelectionHandleColor),
+                subtitle2(
+                    text: "Update the profile info for your Group", color: Theme.of(context).textSelectionHandleColor),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -625,7 +663,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   icon: Icons.edit,
                   onPressed: () async {
                     setState(() {
-                      currencyId = int.parse(Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCurrencyId);
+                      currencyId =
+                          int.parse(Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCurrencyId);
                     });
                     _updateCurrency(context);
                   },
@@ -655,6 +694,7 @@ class InfoUpdateTile extends StatelessWidget {
   final String updateText;
   final IconData icon;
   final Function onPressed;
+
   const InfoUpdateTile({
     this.labelText,
     this.updateText,
