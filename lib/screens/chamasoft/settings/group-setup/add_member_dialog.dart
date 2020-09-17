@@ -17,7 +17,7 @@ class AddMemberDialog extends StatefulWidget {
 class _AddMemberDialogState extends State<AddMemberDialog> {
   final _formKey = GlobalKey<FormState>();
   GroupRoles memberRole = GroupRoles(roleId: "0", roleName: "Member");
-  String _firstName, _lastName;
+  String _fullName, _firstName, _lastName;
   String _phoneNumber, _email;
   bool _isValid = true;
   FocusNode _focusNode;
@@ -49,11 +49,24 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
       return;
     }
 
+    var names = _fullName.trim().split(new RegExp("\\s+"));
+    if (names.length > 1) {
+      _firstName = names[0];
+      if (names.length > 2) {
+        _lastName = names[1] + " " + names[2];
+      } else {
+        _lastName = names[1];
+      }
+    } else {
+      _firstName = _fullName;
+      _lastName = "";
+    }
+
     List<Item> item = [];
     item.add(Item(value: _phoneNumber));
     CustomContact customContact = CustomContact.simpleContact(
         simpleContact: SimpleContact(
-            name: _firstName + " " + _lastName,
+            name: _fullName,
             firstName: _firstName,
             lastName: _lastName,
             phoneNumber: _countryCode.dialCode + _phoneNumber,
@@ -111,33 +124,23 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
-                    labelText: "First Name",
+                    enabledBorder:
+                        UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                    labelText: "Full Name",
                     labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                 onChanged: (value) {
-                  _firstName = value;
+                  _fullName = value.trim();
                 },
                 validator: (value) {
                   if (value.trim() == '' || value.trim() == null) {
-                    return 'Enter a valid first name';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
-                    labelText: "Last Name",
-                    labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                onChanged: (value) {
-                  _lastName = value;
-                },
-                validator: (value) {
-                  if (value.trim() == '' || value.trim() == null) {
-                    return 'Enter a valid last name';
+                    return 'Enter a valid name name';
+                  } else {
+                    var name = value.trim();
+                    var names = name.split(new RegExp("\\s+"));
+                    if (names.length < 2) {
+                      print("Name: $name");
+                      return "Enter at least two names";
+                    }
                   }
                   return null;
                 },
@@ -148,7 +151,11 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  customTitle(text: "Phone Number", textAlign: TextAlign.start, fontSize: 11, color: Theme.of(context).textSelectionHandleColor),
+                  customTitle(
+                      text: "Phone Number",
+                      textAlign: TextAlign.start,
+                      fontSize: 11,
+                      color: Theme.of(context).textSelectionHandleColor),
                 ],
               ),
               Row(
@@ -176,9 +183,13 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                                   alignLeft: false,
                                   flagWidth: 28.0,
                                   textStyle: TextStyle(
-                                    fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                    fontFamily:
+                                        'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
                                   ),
-                                  searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                                  searchStyle: TextStyle(
+                                      fontFamily: 'SegoeUI',
+                                      fontSize: 16,
+                                      color: Theme.of(context).textSelectionHandleColor),
                                   onChanged: (countryCode) {
                                     setState(() {
                                       _countryCode = countryCode;
@@ -234,16 +245,16 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                 ),
               ),
               TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
-                    labelText: "Email Address",
-                    labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                onChanged: (value) {
-                  _email = value;
-                }
-              ),
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                      floatingLabelBehavior: FloatingLabelBehavior.auto,
+                      enabledBorder:
+                          UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                      labelText: "Email Address",
+                      labelStyle: TextStyle(fontFamily: 'SegoeUI')),
+                  onChanged: (value) {
+                    _email = value;
+                  }),
               SizedBox(
                 height: 20,
               ),

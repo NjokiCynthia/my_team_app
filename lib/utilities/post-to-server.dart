@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:chamasoft/providers/auth.dart';
@@ -246,6 +247,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   throw CustomException(message: ERROR_MESSAGE);
               }
             } catch (error) {
+              //log(response.body);
               print("1: ${response.body}");
               throw error;
             }
