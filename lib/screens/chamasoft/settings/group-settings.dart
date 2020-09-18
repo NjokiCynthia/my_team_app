@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/settings/accounts/manage-e-wallet.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-asset-categories.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
@@ -417,6 +418,43 @@ class _GroupSettingsState extends State<GroupSettings> {
                   color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
                 ),
                 title: customTitle(
+                  text: "E-Wallet",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage E-Wallet account",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () /*async*/ {
+//                   showDialog(
+//                       context: context,
+//                       builder: (BuildContext context) {
+//                         return Center(
+//                           child: CircularProgressIndicator(),
+//                         );
+//                       });
+//                   await fetchAccounts(context);
+// //                  Navigator.pop(context);
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => ManageEWallet()));
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
                   text: "Accounts",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
@@ -548,46 +586,46 @@ class _GroupSettingsState extends State<GroupSettings> {
                   await fetchFineTypes(context);
                 },
               ),
-             //  DashedDivider(
-             //    color: Theme.of(context).dividerColor,
-             //    thickness: 1.0,
-             //    height: 5.0,
-             //  ),
-             // ListTile(
-             //   leading: Icon(
-             //     FontAwesome.file_text,
-             //     size: 32,
-             //     color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-             //   ),
-             //   title: customTitle(
-             //     text: "Loan Types",
-             //     fontWeight: FontWeight.w700,
-             //     textAlign: TextAlign.start,
-             //     color: Theme.of(context).textSelectionHandleColor,
-             //   ),
-             //   subtitle: customTitle(
-             //     text: "Manage loan types offered by the group",
-             //     textAlign: TextAlign.start,
-             //     fontSize: 13.0,
-             //     color: Theme.of(context).bottomAppBarColor,
-             //   ),
-             //   dense: true,
-             //   onTap: () async {
-             //     showDialog(
-             //         context: context,
-             //         builder: (BuildContext context) {
-             //           return Center(
-             //             child: CircularProgressIndicator(),
-             //           );
-             //         });
-             //     await fetchLoanTypes(context);
-             //   },
-             // ),
-             DashedDivider(
-                  color: Theme.of(context).dividerColor,
-               thickness: 1.0,
-               height: 5.0,
-             ),
+              //  DashedDivider(
+              //    color: Theme.of(context).dividerColor,
+              //    thickness: 1.0,
+              //    height: 5.0,
+              //  ),
+              // ListTile(
+              //   leading: Icon(
+              //     FontAwesome.file_text,
+              //     size: 32,
+              //     color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+              //   ),
+              //   title: customTitle(
+              //     text: "Loan Types",
+              //     fontWeight: FontWeight.w700,
+              //     textAlign: TextAlign.start,
+              //     color: Theme.of(context).textSelectionHandleColor,
+              //   ),
+              //   subtitle: customTitle(
+              //     text: "Manage loan types offered by the group",
+              //     textAlign: TextAlign.start,
+              //     fontSize: 13.0,
+              //     color: Theme.of(context).bottomAppBarColor,
+              //   ),
+              //   dense: true,
+              //   onTap: () async {
+              //     showDialog(
+              //         context: context,
+              //         builder: (BuildContext context) {
+              //           return Center(
+              //             child: CircularProgressIndicator(),
+              //           );
+              //         });
+              //     await fetchLoanTypes(context);
+              //   },
+              // ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
               ListTile(
                 leading: Icon(
                   FontAwesome.file_text,
@@ -728,36 +766,36 @@ class _GroupSettingsState extends State<GroupSettings> {
                 thickness: 1.0,
                 height: 5.0,
               ),
-             ListTile(
-               leading: Icon(
-                 FontAwesome.file_text,
-                 size: 32,
-                 color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-               ),
-               title: customTitle(
-                 text: "Setup Group",
-                 fontWeight: FontWeight.w700,
-                 textAlign: TextAlign.start,
-                 color: Theme.of(context).textSelectionHandleColor,
-               ),
-               subtitle: customTitle(
-                 text: "Temporary",
-                 textAlign: TextAlign.start,
-                 fontSize: 13.0,
-                 color: Theme.of(context).bottomAppBarColor,
-               ),
-               dense: true,
-               onTap: () {
-                 Navigator.of(context).push(MaterialPageRoute(
-                   builder: (BuildContext context) => ConfigureGroup(),
-                 ));
-               },
-             ),
-             DashedDivider(
-               color: Theme.of(context).dividerColor,
-               thickness: 1.0,
-               height: 5.0,
-             ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Setup Group",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Temporary",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => ConfigureGroup(),
+                  ));
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
               Visibility(
                 visible: false,
                 child: Padding(
