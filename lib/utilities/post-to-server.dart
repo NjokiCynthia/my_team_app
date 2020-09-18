@@ -168,7 +168,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           print("headers: $headers");
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
-            print("Body: $postRequest");
+            //print("Body: $postRequest");
             final http.Response response =
                 await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 60), onTimeout: () {
                   print("Connection timeout");

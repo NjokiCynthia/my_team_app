@@ -255,6 +255,7 @@ class Auth with ChangeNotifier {
         await setAccessToken(accessToken1);
         await setPreference(isLoggedIn, "true");
         userResponse = {'userExists': 1, 'userGroups': response['user_groups']};
+
       } else {
         userResponse = {
           'userExists': 2,
@@ -262,6 +263,7 @@ class Auth with ChangeNotifier {
           'uniqueCode': response['unique_code'],
         };
       }
+      notifyListeners();
       return userResponse;
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
@@ -312,6 +314,7 @@ class Auth with ChangeNotifier {
       final accessToken1 = response["access_token"].toString();
       await setAccessToken(accessToken1);
       await setPreference(isLoggedIn, "true");
+      notifyListeners();
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
