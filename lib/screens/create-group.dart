@@ -147,10 +147,13 @@ class _CreateGroupState extends State<CreateGroup> {
                                       size: 30.0,
                                     ),
                                     onPressed: () async {
-                                      File newAvatar = await FilePicker.getFile(type: FileType.image);
-                                      setState(() {
-                                        avatar = newAvatar;
-                                      });
+                                      FilePickerResult result = await FilePicker.platform.pickFiles(type: FileType.image);
+                                      if(result != null){
+                                        File newAvatar = File(result.files.single.path);
+                                        setState(() {
+                                          avatar = newAvatar;
+                                        });
+                                      }
                                     },
                                   ),
                                 )
