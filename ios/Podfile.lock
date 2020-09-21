@@ -1,40 +1,6 @@
 PODS:
   - contacts_service (0.2.2):
     - Flutter
-  - DKImagePickerController/Core (4.3.2):
-    - DKImagePickerController/ImageDataManager
-    - DKImagePickerController/Resource
-  - DKImagePickerController/ImageDataManager (4.3.2)
-  - DKImagePickerController/PhotoGallery (4.3.2):
-    - DKImagePickerController/Core
-    - DKPhotoGallery
-  - DKImagePickerController/Resource (4.3.2)
-  - DKPhotoGallery (0.0.17):
-    - DKPhotoGallery/Core (= 0.0.17)
-    - DKPhotoGallery/Model (= 0.0.17)
-    - DKPhotoGallery/Preview (= 0.0.17)
-    - DKPhotoGallery/Resource (= 0.0.17)
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Core (0.0.17):
-    - DKPhotoGallery/Model
-    - DKPhotoGallery/Preview
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Model (0.0.17):
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Preview (0.0.17):
-    - DKPhotoGallery/Model
-    - DKPhotoGallery/Resource
-    - SDWebImage
-    - SwiftyGif
-  - DKPhotoGallery/Resource (0.0.17):
-    - SDWebImage
-    - SwiftyGif
-  - file_picker (0.0.1):
-    - DKImagePickerController/PhotoGallery
-    - Flutter
   - Firebase/CoreOnly (6.26.0):
     - FirebaseCore (= 6.7.2)
   - Firebase/Messaging (6.26.0):
@@ -102,6 +68,8 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.7.2):
     - GoogleUtilities/Logger
+  - image_picker (0.0.1):
+    - Flutter
   - launch_review (0.0.1):
     - Flutter
   - libphonenumber (0.0.1):
@@ -121,24 +89,20 @@ PODS:
     - Flutter
   - PromisesObjC (1.2.10)
   - Protobuf (3.13.0)
-  - SDWebImage (5.8.4):
-    - SDWebImage/Core (= 5.8.4)
-  - SDWebImage/Core (5.8.4)
   - shared_preferences (0.0.1):
     - Flutter
   - sqflite (0.0.1):
     - Flutter
     - FMDB (~> 2.7.2)
-  - SwiftyGif (5.3.0)
   - url_launcher (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
-  - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - Flutter (from `Flutter`)
+  - image_picker (from `.symlinks/plugins/image_picker/ios`)
   - launch_review (from `.symlinks/plugins/launch_review/ios`)
   - libphonenumber (from `.symlinks/plugins/libphonenumber/ios`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
@@ -150,8 +114,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - DKImagePickerController
-    - DKPhotoGallery
     - Firebase
     - FirebaseAnalyticsInterop
     - FirebaseCore
@@ -167,20 +129,18 @@ SPEC REPOS:
     - nanopb
     - PromisesObjC
     - Protobuf
-    - SDWebImage
-    - SwiftyGif
 
 EXTERNAL SOURCES:
   contacts_service:
     :path: ".symlinks/plugins/contacts_service/ios"
-  file_picker:
-    :path: ".symlinks/plugins/file_picker/ios"
   firebase_core:
     :path: ".symlinks/plugins/firebase_core/ios"
   firebase_messaging:
     :path: ".symlinks/plugins/firebase_messaging/ios"
   Flutter:
     :path: Flutter
+  image_picker:
+    :path: ".symlinks/plugins/image_picker/ios"
   launch_review:
     :path: ".symlinks/plugins/launch_review/ios"
   libphonenumber:
@@ -200,9 +160,6 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   contacts_service: 849e1f84281804c8bfbec1b4c3eedcb23c5d3eca
-  DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
-  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  file_picker: 3e6c3790de664ccf9b882732d9db5eaf6b8d4eb1
   Firebase: 7cf5f9c67f03cb3b606d1d6535286e1080e57eb6
   firebase_core: 3134fe79d257d430f163b558caf52a10a87efe8a
   firebase_messaging: 6061cbdfe4463502a0d4d7049820c25d1757a095
@@ -217,6 +174,7 @@ SPEC CHECKSUMS:
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   GoogleDataTransport: 672fb0ce96fe7f7f31d43672fca62ad2c9c86f7b
   GoogleUtilities: 7f2f5a07f888cdb145101d6042bc4422f57e70b3
+  image_picker: 9c3312491f862b28d21ecd8fdf0ee14e601b3f09
   launch_review: 75d5a956ba8eaa493e9c9d4bf4c05e505e8d5ed0
   libphonenumber: bd14d5abfc5939ab0b0767234e2d8e2593af258e
   libPhoneNumber-iOS: 0a32a9525cf8744fe02c5206eb30d571e38f7d75
@@ -226,10 +184,8 @@ SPEC CHECKSUMS:
   permission_handler: eac8e15b4a1a3fba55b761d19f3f4e6b005d15b6
   PromisesObjC: b14b1c6b68e306650688599de8a45e49fae81151
   Protobuf: 3dac39b34a08151c6d949560efe3f86134a3f748
-  SDWebImage: cf6922231e95550934da2ada0f20f2becf2ceba9
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
   sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
-  SwiftyGif: e466e86c660d343357ab944a819a101c4127cb40
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c

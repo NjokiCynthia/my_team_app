@@ -22,7 +22,6 @@ dependencies:
   md2_tab_indicator: ^1.0.2
   shared_preferences: ^0.5.6+1
   intl: ^0.16.1
-  file_picker: ^2.0.0
   contacts_service: ^0.4.5
   permission_handler: ^5.0.0+hotfix.4
   fl_chart: ^0.9.4
@@ -34,6 +33,7 @@ dependencies:
   libphonenumber: ^1.0.1
   shimmer: ^1.1.1
   flutter_svg: ^0.18.0
+  image_picker: ^0.6.7+9
   #sms_autofill: ^1.2.4
 
 dev_dependencies:

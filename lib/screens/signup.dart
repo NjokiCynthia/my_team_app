@@ -2,25 +2,27 @@ import 'dart:io';
 
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/my-groups.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class SignUp extends StatefulWidget {
   static const String namedRoute = '/signup-screen';
+
   @override
   _SignUpState createState() => _SignUpState();
 }
 
 class _SignUpState extends State<SignUp> {
-  File avatar;
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
@@ -33,6 +35,33 @@ class _SignUpState extends State<SignUp> {
     'firstName': '',
     'lastName': '',
   };
+
+  PickedFile avatar;
+  final ImagePicker _picker = ImagePicker();
+
+  void _onImagePickerClicked(ImageSource source, BuildContext context) async {
+    try {
+      final pickedFile =
+          await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
+      setState(() {
+        avatar = pickedFile;
+      });
+    } catch (e) {
+      //show SnackBar?
+      //setState(() {});
+    }
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostData lostData = await _picker.getLostData();
+    if (lostData.isEmpty) return;
+
+    if (lostData.file != null) {
+      setState(() {
+        avatar = lostData.file;
+      });
+    } else {}
+  }
 
   @override
   void initState() {
@@ -59,7 +88,7 @@ class _SignUpState extends State<SignUp> {
       _authData['firstName'] = _firstName;
       _authData['lastName'] = _lastName;
       _authData['identity'] = _identity;
-      _authData['avatar'] = avatar;
+      _authData['avatar'] = File(avatar.path);
       _authData['uniqueCode'] = _uniqueCode;
       await Provider.of<Auth>(context, listen: false).registerUser(_authData);
       Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'), arguments: 0);
@@ -100,17 +129,49 @@ class _SignUpState extends State<SignUp> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     heading1(text: "Profile", color: Theme.of(context).textSelectionHandleColor),
-                    subtitle1(text: "Fill details to complete\naccount setup", color: Theme.of(context).textSelectionHandleColor),
+                    subtitle1(
+                        text: "Fill details to complete\naccount setup",
+                        color: Theme.of(context).textSelectionHandleColor),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
                       child: Stack(
                         alignment: AlignmentDirectional.bottomEnd,
                         children: <Widget>[
-                          CircleAvatar(
-                            backgroundImage: avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar),
-                            backgroundColor: Colors.transparent,
-                            radius: 50,
-                          ),
+                          !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                              ? FutureBuilder<void>(
+                                  future: retrieveLostData(),
+                                  builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                    switch (snapshot.connectionState) {
+                                      case ConnectionState.none:
+                                      case ConnectionState.waiting:
+                                        return CircleAvatar(
+                                          backgroundImage: AssetImage('assets/no-user.png'),
+                                          backgroundColor: Colors.transparent,
+                                          radius: 50,
+                                        );
+                                      case ConnectionState.done:
+                                        return CircleAvatar(
+                                          backgroundImage: avatar == null
+                                              ? AssetImage('assets/no-user.png')
+                                              : FileImage(File(avatar.path)),
+                                          backgroundColor: Colors.transparent,
+                                          radius: 50,
+                                        );
+                                      default:
+                                        return CircleAvatar(
+                                          backgroundImage: AssetImage('assets/no-user.png'),
+                                          backgroundColor: Colors.transparent,
+                                          radius: 50,
+                                        );
+                                    }
+                                  },
+                                )
+                              : CircleAvatar(
+                                  backgroundImage:
+                                      avatar == null ? AssetImage('assets/no-user.png') : FileImage(File(avatar.path)),
+                                  backgroundColor: Colors.transparent,
+                                  radius: 50,
+                                ),
                           Positioned(
                             bottom: -12.0,
                             right: -12.0,
@@ -121,13 +182,7 @@ class _SignUpState extends State<SignUp> {
                                 size: 30.0,
                               ),
                               onPressed: () async {
-                                FilePickerResult result = await FilePicker.platform.pickFiles(type: FileType.image);
-                                if(result != null){
-                                  File newAvatar = File(result.files.single.path);
-                                  setState(() {
-                                    avatar = newAvatar;
-                                  });
-                                }
+                                _onImagePickerClicked(ImageSource.gallery, context);
                               },
                             ),
                           )
@@ -189,7 +244,9 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       height: 24,
                     ),
-                    _isLoading ? CircularProgressIndicator() : defaultButton(context: context, text: "Finish", onPressed: () => _submit(context))
+                    _isLoading
+                        ? CircularProgressIndicator()
+                        : defaultButton(context: context, text: "Finish", onPressed: () => _submit(context))
                   ],
                 ),
               ),

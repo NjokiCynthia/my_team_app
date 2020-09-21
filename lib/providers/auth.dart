@@ -255,7 +255,6 @@ class Auth with ChangeNotifier {
         await setAccessToken(accessToken1);
         await setPreference(isLoggedIn, "true");
         userResponse = {'userExists': 1, 'userGroups': response['user_groups']};
-
       } else {
         userResponse = {
           'userExists': 2,
@@ -276,9 +275,7 @@ class Auth with ChangeNotifier {
     try {
       String newAvatar;
       if (userObject['avatar'] != null) {
-        print(userObject['avatar']);
-        final resizedImage = await CustomHelper.resizeFileImage(userObject['avatar'], 300);
-        newAvatar = base64Encode(resizedImage.readAsBytesSync());
+        newAvatar = base64Encode(userObject['avatar'].readAsBytesSync());
       }
       const url = EndpointUrl.SIGNUP;
       final postRequest = json.encode({
