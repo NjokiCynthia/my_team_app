@@ -1,5 +1,4 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -105,8 +104,8 @@ class _FilterContainerState extends State<FilterContainer> {
       NamesListItem(id: 3, name: "Declined Requests"),
       NamesListItem(id: -1, name: "Disbursement Status"),
       NamesListItem(id: 14, name: "Pending Disbursement"),
-      NamesListItem(id: 15, name: "Failed Disbursement"),
-      NamesListItem(id: 16, name: "Successful Disbursement"),
+      NamesListItem(id: 15, name: "Successful Disbursement"),
+      NamesListItem(id: 16, name: "Failed Disbursement"),
     ];
 
     for (var item in _list) {

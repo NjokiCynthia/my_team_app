@@ -1,14 +1,11 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
 import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
-import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -35,7 +32,7 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
   List<int> statusDisbursement = [14, 15, 16];
   int selectedRadioTile;
   String _sortOption = "date_desc";
-  List<int> _filterList = [];
+  List<int> _filterList = [1];
   List<String> _memberList = [];
 
   void _scrollListener() {
@@ -206,24 +203,24 @@ class _ReviewWithdrawalRequestsState extends State<ReviewWithdrawalRequests> {
                 Expanded(
                   child: _withdrawalRequests.length > 0
                       ? ListView.builder(
-                        itemBuilder: (context, index) {
-                          WithdrawalRequest request = _withdrawalRequests[index];
-                          return WithdrawalRequestCard(
-                            request: request,
-                            action: () async {
-                              final result = await Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (BuildContext context) => ReviewWithdrawal(
-                                        requestId: request.requestId,
-                                      )));
+                          itemBuilder: (context, index) {
+                            WithdrawalRequest request = _withdrawalRequests[index];
+                            return WithdrawalRequestCard(
+                              request: request,
+                              action: () async {
+                                final result = await Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (BuildContext context) => ReviewWithdrawal(
+                                          requestId: request.requestId,
+                                        )));
 
-                              if (result != null && result) {
-                                _fetchData();
-                              }
-                            },
-                          );
-                        },
-                        itemCount: _withdrawalRequests.length,
-                      )
+                                if (result != null && result) {
+                                  _fetchData();
+                                }
+                              },
+                            );
+                          },
+                          itemCount: _withdrawalRequests.length,
+                        )
                       : emptyList(
                           color: Colors.blue[400],
                           iconData: LineAwesomeIcons.angle_double_down,
