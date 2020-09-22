@@ -360,46 +360,50 @@ class _GroupSettingsState extends State<GroupSettings> {
                         heading2(text: currentGroup.groupName, color: Theme.of(context).textSelectionHandleColor),
                         Row(
                           children: [
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 10.0,
-                              ),
-                              child: smallBadgeButton(
-                                text: "Update Profile",
-                                backgroundColor: primaryColor,
-                                textColor: Colors.white,
-                                buttonHeight: 30.0,
-                                textSize: 12.0,
-                                action: () async {
-                                  showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      });
-                                  await fetchCurrencyOptions(context);
-                                  await fetchCountryOptions(context);
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10.0,
+                                ),
+                                child: smallBadgeButton(
+                                  text: "Update Profile",
+                                  backgroundColor: primaryColor,
+                                  textColor: Colors.white,
+                                  buttonHeight: 30.0,
+                                  textSize: 12.0,
+                                  action: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        });
+                                    await fetchCurrencyOptions(context);
+                                    await fetchCountryOptions(context);
 //                                  Navigator.pop(context);
-                                },
+                                  },
+                                ),
                               ),
                             ),
                             SizedBox(
                               width: 20,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                top: 10.0,
-                              ),
-                              child: smallBadgeButton(
-                                text: "Preferences",
-                                backgroundColor: Color(0xFFEDF8FE),
-                                textColor: primaryColor,
-                                buttonHeight: 30.0,
-                                textSize: 12.0,
-                                action: () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) => ConfigurePreferences(),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10.0,
+                                ),
+                                child: smallBadgeButton(
+                                  text: "Preferences",
+                                  backgroundColor: Color(0xFFEDF8FE),
+                                  textColor: primaryColor,
+                                  buttonHeight: 30.0,
+                                  textSize: 12.0,
+                                  action: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) => ConfigurePreferences(),
+                                    ),
                                   ),
                                 ),
                               ),

@@ -382,7 +382,7 @@ List<Widget> resetTransactions(
         Icon(
           cardIcon,
           color: color.withOpacity(0.6),
-          size: 38.0,
+          size: 30.0,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -397,7 +397,7 @@ List<Widget> resetTransactions(
                   width: 90.0,
                   child: customTitle(
                     text: paymentDescription,
-                    fontSize: 18.0,
+                    fontSize: 16.0,
                     fontWeight: FontWeight.w500,
                     textAlign: TextAlign.end,
                     color: color,
@@ -416,7 +416,7 @@ List<Widget> resetTransactions(
         Icon(
           cardIcon,
           color: color.withOpacity(0.6),
-          size: 38.0,
+          size: 30.0,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -433,7 +433,7 @@ List<Widget> resetTransactions(
                     _name[0],
                     style: TextStyle(
                       color: color,
-                      fontSize: 14.0,
+                      fontSize: 12.0,
                       fontWeight: FontWeight.w700,
                     ),
                     textAlign: TextAlign.end,
@@ -447,7 +447,7 @@ List<Widget> resetTransactions(
                     _name[1],
                     style: TextStyle(
                       color: color,
-                      fontSize: 18.0,
+                      fontSize: 14.0,
                       fontWeight: FontWeight.w400,
                     ),
                     textAlign: TextAlign.end,
@@ -468,7 +468,7 @@ List<Widget> resetTransactions(
         Icon(
           cardIcon,
           color: color.withOpacity(0.6),
-          size: 38.0,
+          size: 30.0,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -485,7 +485,7 @@ List<Widget> resetTransactions(
                     paymentDescription,
                     style: TextStyle(
                       color: color,
-                      fontSize: 15.0,
+                      fontSize: 16.0,
                       fontWeight: FontWeight.w800,
                     ),
                     textAlign: TextAlign.end,
@@ -510,7 +510,7 @@ List<Widget> resetTransactions(
           "$currency ",
           style: TextStyle(
             color: color.withOpacity(0.6),
-            fontSize: 18.0,
+            fontSize: 16.0,
             fontWeight: FontWeight.w400,
           ),
         ),
@@ -518,7 +518,7 @@ List<Widget> resetTransactions(
           cardAmount,
           style: TextStyle(
             color: color,
-            fontSize: 20.0,
+            fontSize: 18.0,
             fontWeight: FontWeight.w800,
           ),
         ),
@@ -547,8 +547,8 @@ List<Widget> resetTransactions(
       Text(
         paymentDate,
         style: TextStyle(
-          color: color.withOpacity(0.6),
-          fontSize: 14.0,
+          color: color.withOpacity(0.8),
+          fontSize: 12.0,
           fontWeight: FontWeight.w600,
         ),
       ),
