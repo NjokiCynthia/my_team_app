@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/settings/accounts/manage-e-wallet.dart';
 import 'package:chamasoft/screens/chamasoft/settings/configure-preferences.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-asset-categories.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
@@ -18,7 +17,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../../configure-group.dart';
 import 'list-accounts.dart';
 import 'list-expense-categories.dart';
 import 'list-fine-types.dart';
@@ -407,6 +405,9 @@ class _GroupSettingsState extends State<GroupSettings> {
                                   ),
                                 ),
                               ),
+                            ),
+                            SizedBox(
+                              width: 20,
                             ),
                           ],
                         ),

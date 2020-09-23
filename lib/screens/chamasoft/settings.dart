@@ -208,22 +208,22 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
             ),
-            SwitchListTile(
-              title: Text(
-                "Push Notifications",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-              ),
-              subtitle: Text(
-                pushNotifications ? "Enabled" : "Disabled",
-                style: TextStyle(color: Theme.of(context).bottomAppBarColor),
-              ),
-              value: pushNotifications,
-              onChanged: (bool value) {
-                setState(() {
-                  pushNotifications = value;
-                });
-              },
-            ),
+            // SwitchListTile(
+            //   title: Text(
+            //     "Push Notifications",
+            //     style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+            //   ),
+            //   subtitle: Text(
+            //     pushNotifications ? "Enabled" : "Disabled",
+            //     style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+            //   ),
+            //   value: pushNotifications,
+            //   onChanged: (bool value) {
+            //     setState(() {
+            //       pushNotifications = value;
+            //     });
+            //   },
+            // ),
             //tobe implemented in next phase
             // PopupMenuButton(
             //   child: ListTile(
