@@ -441,23 +441,23 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               dense: true,
               onTap: () => launchURL("https://chamasoft.com/terms-and-conditions"),
             ),
-            ListTile(
-              title: Text("E-Wallet Charges",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  )),
-              trailing: Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                child: Icon(
-                  Icons.link,
-                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                ),
-              ),
-              dense: true,
-              onTap: () => launchURL("https://chamasoft.com/"),
-            ),
+            // ListTile(
+            //   title: Text("E-Wallet Charges",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.w500,
+            //         fontSize: 16,
+            //         color: Theme.of(context).textSelectionHandleColor,
+            //       )),
+            //   trailing: Padding(
+            //     padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+            //     child: Icon(
+            //       Icons.link,
+            //       color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+            //     ),
+            //   ),
+            //   dense: true,
+            //   onTap: () => launchURL("https://chamasoft.com/"),
+            // ),
             Padding(
               padding: EdgeInsets.only(
                 top: 20.0,
