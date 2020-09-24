@@ -1,6 +1,6 @@
 name: chamasoft
 description: The new Chamasoft app
-version: 2.0.0+84
+version: 2.0.0+85
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
