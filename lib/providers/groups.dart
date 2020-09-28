@@ -1710,6 +1710,30 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<dynamic> addLoanTypeStepOne(Map<String, dynamic> formData, bool isEditMode) async {
+    var url = EndpointUrl.CREATE_LOAN_TYPE;
+    if (isEditMode) {
+      url = EndpointUrl.EDIT_LOAN_TYPE;
+    }
+    try {
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
+      try {
+        final postRequest = json.encode(formData);
+        return await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchCountryOptions() async {
     const url = EndpointUrl.GET_COUNTRY_LIST;
     try {
