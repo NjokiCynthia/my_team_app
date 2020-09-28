@@ -1,8 +1,8 @@
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
-import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class LoanTypeFines extends StatefulWidget {
@@ -46,35 +46,50 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       height: MediaQuery.of(context).size.height,
       child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
-        ListTile(
-          title: Text(
-            "Fines",
-            style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-          ),
-          subtitle: Text(
-            "",
-            style: TextStyle(color: Theme.of(context).bottomAppBarColor),
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            customTitle(
+                text: "Fines Details",
+                color: Theme.of(context).textSelectionHandleColor,
+                fontWeight: FontWeight.w400,
+                textAlign: TextAlign.start),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            subtitle2(
+                text: "Configure the fine settings",
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start),
+          ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            customTitle(
+                text: "Enable late loan repayment fines",
+                color: Theme.of(context).textSelectionHandleColor,
+                fontWeight: FontWeight.w500,
+                textAlign: TextAlign.start),
+            Switch(
+              value: enableLateLoanRepaymentFines,
+              onChanged: (value) {
+                setState(() {
+                  enableLateLoanRepaymentFines = value;
+                });
+              },
+            )
+          ],
         ),
         Expanded(
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                SwitchListTile(
-                  title: Text(
-                    "Enable late loan repayment fines",
-                    style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-                  ),
-                  value: enableLateLoanRepaymentFines,
-                  onChanged: (bool value) {
-                    setState(() {
-                      enableLateLoanRepaymentFines = value;
-                    });
-                  },
-                ),
                 Visibility(
                   visible: enableLateLoanRepaymentFines,
                   child: Column(
@@ -205,17 +220,23 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                     ],
                   ),
                 ),
-                SwitchListTile(
-                  title: Text(
-                    "Enable fines for outstanding balances",
-                    style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-                  ),
-                  value: enableFinesForOutstandingBalances,
-                  onChanged: (bool value) {
-                    setState(() {
-                      enableFinesForOutstandingBalances = value;
-                    });
-                  },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    customTitle(
+                        text: "Enable fines for outstanding balances",
+                        color: Theme.of(context).textSelectionHandleColor,
+                        fontWeight: FontWeight.w500,
+                        textAlign: TextAlign.start),
+                    Switch(
+                      value: enableFinesForOutstandingBalances,
+                      onChanged: (value) {
+                        setState(() {
+                          enableFinesForOutstandingBalances = value;
+                        });
+                      },
+                    )
+                  ],
                 ),
                 Visibility(
                   visible: enableFinesForOutstandingBalances,
@@ -318,6 +339,9 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
             ),
           ],
         ),
+        SizedBox(
+          height: 10,
+        )
       ]),
     );
   }

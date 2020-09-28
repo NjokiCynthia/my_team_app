@@ -1,8 +1,8 @@
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
-import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class LoanFeesAndGuarantors extends StatefulWidget {
@@ -31,36 +31,51 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       height: MediaQuery.of(context).size.height,
       child: Column(
         children: <Widget>[
-          ListTile(
-            title: Text(
-              "General Details",
-              style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-            ),
-            subtitle: Text(
-              "",
-              style: TextStyle(color: Theme.of(context).bottomAppBarColor),
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              customTitle(
+                  text: "General Details",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontWeight: FontWeight.w400,
+                  textAlign: TextAlign.start),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              subtitle2(
+                  text: "Set Guarantor Requirements and Loan Fees",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.start),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              customTitle(
+                  text: "Enable loan guarantors",
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontWeight: FontWeight.w500,
+                  textAlign: TextAlign.start),
+              Switch(
+                value: enableLoanGuarantors,
+                onChanged: (value) {
+                  setState(() {
+                    enableLoanGuarantors = value;
+                  });
+                },
+              )
+            ],
           ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  SwitchListTile(
-                    title: Text(
-                      "Enable loan guarantors",
-                      style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-                    ),
-                    value: enableLoanGuarantors,
-                    onChanged: (bool value) {
-                      setState(() {
-                        enableLoanGuarantors = value;
-                      });
-                    },
-                  ),
                   Visibility(
                     visible: enableLoanGuarantors,
                     child: ListTile(
@@ -120,17 +135,23 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                       ),
                     ),
                   ),
-                  SwitchListTile(
-                    title: Text(
-                      "Charge loan processing fee",
-                      style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-                    ),
-                    value: chargeLoanProcessingFee,
-                    onChanged: (bool value) {
-                      setState(() {
-                        chargeLoanProcessingFee = value;
-                      });
-                    },
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      customTitle(
+                          text: "Charge loan processing fee",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w500,
+                          textAlign: TextAlign.start),
+                      Switch(
+                        value: chargeLoanProcessingFee,
+                        onChanged: (value) {
+                          setState(() {
+                            chargeLoanProcessingFee = value;
+                          });
+                        },
+                      )
+                    ],
                   ),
                   Visibility(
                     visible: chargeLoanProcessingFee,
@@ -202,6 +223,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
             context: context,
             text: "Save & Finish",
             onPressed: () => widget.onButtonPressed(),
+          ),
+          SizedBox(
+            height: 10,
           )
         ],
       ),
