@@ -139,6 +139,7 @@ class _CreateLoanTypeState extends State<CreateLoanType> with SingleTickerProvid
                               setState(() {
                                 responseData = response;
                                 currentPage = 2;
+                                _formEdited = 1;
                               });
                             }),
                         new LoanFeesAndGuarantors(
