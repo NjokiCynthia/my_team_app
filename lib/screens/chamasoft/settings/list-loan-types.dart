@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/loan-type/create-loan-type.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -14,8 +16,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'contribution/create-contribution.dart';
-
 class ListLoanTypes extends StatefulWidget {
   @override
   _ListLoanTypesState createState() => _ListLoanTypesState();
@@ -24,16 +24,14 @@ class ListLoanTypes extends StatefulWidget {
 class _ListLoanTypesState extends State<ListLoanTypes> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String _groupCurrency = "Ksh";
 
-  Future<void> _getContributionSettings(BuildContext context, String contributionId) async {
+  Future<void> _getLoanSettings(BuildContext context, String contributionId) async {
     try {
-      final response = await Provider.of<Groups>(context, listen: false).getContributionDetails(contributionId);
-      print(response);
+      final response = await Provider.of<Groups>(context, listen: false).getLoanDetails(contributionId);
       Navigator.pop(context);
       Navigator.pop(context); // pop bottom sheet
       final result = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => CreateContribution(isEditMode: true, contributionDetails: response),
+        builder: (context) => CreateLoanType(isEditMode: true, loanDetails: response["data"]),
       ));
 
       print(result);
@@ -51,7 +49,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
           context: context,
           error: error,
           callback: () {
-            _getContributionSettings(context, contributionId);
+            _getLoanSettings(context, contributionId);
           });
     }
   }
@@ -86,14 +84,14 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (_) {
-                      //       return Center(
-                      //         child: CircularProgressIndicator(),
-                      //       );
-                      //     });
-                      // await _getContributionSettings(context, contribution.id);
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          });
+                      await _getLoanSettings(context, loanType.id);
                     },
                     child: ListTile(
                       leading: Icon(
@@ -182,9 +180,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
 
   @override
   void initState() {
-    super.initState();
-    _groupCurrency = Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCurrency;
-  }
+    super.initState();  }
 
   @override
   void dispose() {

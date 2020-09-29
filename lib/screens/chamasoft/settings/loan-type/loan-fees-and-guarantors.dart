@@ -6,9 +6,12 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class LoanFeesAndGuarantors extends StatefulWidget {
-  final Function onButtonPressed;
+  final dynamic responseData;
+  final bool isEditMode;
+  final dynamic loanDetails;
+  final Function(dynamic) onButtonPressed;
 
-  LoanFeesAndGuarantors({@required this.onButtonPressed});
+  LoanFeesAndGuarantors({this.responseData, this.isEditMode, this.loanDetails, @required this.onButtonPressed});
 
   @override
   _LoanFeesAndGuarantorsState createState() => _LoanFeesAndGuarantorsState();
@@ -222,7 +225,7 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
           defaultButton(
             context: context,
             text: "Save & Finish",
-            onPressed: () => widget.onButtonPressed(),
+            onPressed: () {} //=> widget.onButtonPressed(),
           ),
           SizedBox(
             height: 10,

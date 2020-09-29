@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -6,9 +8,12 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class LoanTypeFines extends StatefulWidget {
-  final Function onButtonPressed;
+  final dynamic responseData;
+  final bool isEditMode;
+  final dynamic loanDetails;
+  final Function(dynamic) onButtonPressed;
 
-  LoanTypeFines({@required this.onButtonPressed});
+  LoanTypeFines({this.responseData, this.isEditMode, this.loanDetails, @required this.onButtonPressed});
 
   @override
   _LoanTypeFinesState createState() => _LoanTypeFinesState();
@@ -45,6 +50,8 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
 
   @override
   Widget build(BuildContext context) {
+    log("${widget.loanDetails}");
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       height: MediaQuery.of(context).size.height,
@@ -332,11 +339,8 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
         ),
         Column(
           children: [
-            defaultButton(
-              context: context,
-              text: "Save & Continue",
-              onPressed: () => widget.onButtonPressed(),
-            ),
+            defaultButton(context: context, text: "Save & Continue", onPressed: () {} //=> widget.onButtonPressed(),
+                ),
           ],
         ),
         SizedBox(

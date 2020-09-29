@@ -69,6 +69,64 @@ Widget amountTextInputField(
   );
 }
 
+Widget numberDecimalFieldWithInitialValue(
+    {BuildContext context,
+    String initialValue,
+    String labelText,
+    bool isFormEnabled,
+    Function onChanged,
+    String hintText = '',
+    TextEditingController controller,
+    Function validator,
+    Function onSaved}) {
+  return TextFormField(
+    initialValue: initialValue != null ? initialValue : '',
+    style: inputTextStyle(),
+    enabled: isFormEnabled,
+    keyboardType: TextInputType.numberWithOptions(
+      decimal: true,
+      signed: false,
+    ),
+    decoration: InputDecoration(
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+        labelText: labelText,
+        hintText: hintText,
+        labelStyle: inputTextStyle()),
+    onChanged: onChanged,
+    validator: validator,
+    onSaved: onSaved,
+  );
+}
+
+Widget textFieldWithInitialValue(
+    {BuildContext context,
+    String initialValue,
+    String labelText,
+    bool isFormEnabled,
+    TextCapitalization textCapitalization = TextCapitalization.words,
+    Function onChanged,
+    String hintText = '',
+    Function validator,
+    Function onSaved}) {
+  return TextFormField(
+    initialValue: initialValue != null ? initialValue : '',
+    style: inputTextStyle(),
+    enabled: isFormEnabled,
+    keyboardType: TextInputType.text,
+    textCapitalization: textCapitalization,
+    decoration: InputDecoration(
+        floatingLabelBehavior: FloatingLabelBehavior.auto,
+        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+        labelText: labelText,
+        hintText: hintText,
+        labelStyle: inputTextStyle()),
+    onChanged: onChanged,
+    validator: validator,
+    onSaved: onSaved,
+  );
+}
+
 Widget numberTextInputField(
     {BuildContext context,
     String labelText,

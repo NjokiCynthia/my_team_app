@@ -1,19 +1,23 @@
+import 'dart:developer';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
-import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class LoanTypeSettings extends StatefulWidget {
-  final Function onButtonPressed;
+  final bool isEditMode;
+  final dynamic loanDetails;
+  final Function(dynamic) onButtonPressed;
 
-  LoanTypeSettings({@required this.onButtonPressed});
+  LoanTypeSettings({this.isEditMode, this.loanDetails, @required this.onButtonPressed});
 
   @override
   _LoanTypeSettingsState createState() => _LoanTypeSettingsState();
@@ -25,11 +29,12 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
   var _isLoading = false;
   String requestId = ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
 
+  String loanTypeID;
   String loanTypeName = '';
   int loanAmountTypeId;
-  double minimumLoanAmount;
-  double maximumLoanAmount;
-  double timesNumberOfSavings;
+  String minimumLoanAmount;
+  String maximumLoanAmount;
+  String timesNumberOfSavings;
   int interestTypeId;
   bool enableLoanReducingBalanceRecalculation = false;
   double loanInterestRate;
@@ -42,8 +47,6 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
   void _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
       return;
-    } else {
-      print("No validation issues");
     }
 
     setState(() {
@@ -68,22 +71,17 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
     formData["minimum_repayment_period"] = minimumRepaymentPeriod;
     formData["maximum_repayment_period"] = maximumRepaymentPeriod;
 
+    if (widget.isEditMode) formData["id"] = loanTypeID;
     print(formData);
 
-    //formData["id"] = contributionId; //TODO: Editing
-
-    // if (loanTypeID != 0) {
-    //   url = Constants.EDIT_LOAN_TYPE;
-    //   jsonObject.addProperty("id", loanTypeID);
-    // }
-
     try {
-      final response = await Provider.of<Groups>(context, listen: false).addLoanTypeStepOne(formData, false);
+      final response =
+          await Provider.of<Groups>(context, listen: false).addLoanTypeStepOne(formData, widget.isEditMode);
       print(response);
       requestId = null;
       alertDialogWithAction(context, response["message"].toString(), () {
         Navigator.of(context).pop();
-        //widget.onButtonPressed(response);
+        widget.onButtonPressed(response);
       }, false);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -98,6 +96,40 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
         _isFormEnabled = true;
       });
     }
+  }
+
+  void _prepareForm() {
+    log('Editing ${widget.loanDetails}');
+    dynamic settings = widget.loanDetails['loan_type'] as dynamic;
+    log('Settings $settings');
+
+    setState(() {
+      loanTypeID = settings['id'].toString();
+      loanTypeName = settings['name'].toString();
+      loanAmountTypeId = int.tryParse(settings['loan_amount_type'].toString()) ?? null;
+      minimumLoanAmount = settings['minimum_loan_amount'].toString();
+      maximumLoanAmount = settings['maximum_loan_amount'].toString();
+      timesNumberOfSavings = settings['savings_times'].toString();
+      interestTypeId = int.tryParse(settings['interest_type'].toString()) ?? null;
+      enableLoanReducingBalanceRecalculation =
+          (int.tryParse(settings['enable_reducing_balance_installment_recalculation'].toString()) ?? 0) == 1
+              ? true
+              : false;
+      loanInterestRate = double.tryParse(settings['interest_rate'].toString()) ?? null;
+      loanInterestRatePerId = int.tryParse(settings['loan_interest_rate_per'].toString()) ?? null;
+      loanRepaymentTypeId = int.tryParse(settings['loan_repayment_period_type'].toString()) ?? null;
+      fixedRepaymentPeriod = int.tryParse(settings['fixed_repayment_period'].toString()) ?? null;
+      minimumRepaymentPeriod = int.tryParse(settings['minimum_repayment_period'].toString()) ?? null;
+      maximumRepaymentPeriod = int.tryParse(settings['maximum_repayment_period'].toString()) ?? null;
+    });
+  }
+
+  @override
+  void initState() {
+    if (widget.isEditMode) {
+      _prepareForm();
+    }
+    super.initState();
   }
 
   @override
@@ -132,21 +164,28 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
               child: Form(
                 key: _formKey,
                 child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
-                  simpleTextInputField(
-                      context: context,
-                      enabled: _isFormEnabled,
-                      labelText: 'Loan Type Name',
-                      onChanged: (value) {
-                        setState(() {
-                          loanTypeName = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value.trim() == '' || value.trim() == null) {
-                          return 'This field is required';
-                        }
-                        return null;
-                      }),
+                  TextFormField(
+                    initialValue: loanTypeName != null ? loanTypeName : '',
+                    keyboardType: TextInputType.text,
+                    textCapitalization: TextCapitalization.words,
+                    style: inputTextStyle(),
+                    enabled: _isFormEnabled,
+                    decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                        labelText: 'Loan Type Name',
+                        labelStyle: inputTextStyle()),
+                    onChanged: (value) {
+                      loanTypeName = value;
+                    },
+                    validator: (value) {
+                      if (value.trim() == '' || value.trim() == null) {
+                        return 'This field is required';
+                      }
+                      return null;
+                    },
+                  ),
                   CustomDropDownButton(
                       labelText: "Loan Amount Type",
                       listItems: loanAmountTypes,
@@ -165,14 +204,52 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                       }),
                   Visibility(
                     visible: loanAmountTypeId == 1,
-                    child: amountTextInputField(
-                        context: context,
-                        labelText: 'Minimum Loan Amount',
+                    child: TextFormField(
+                      initialValue: minimumLoanAmount != null ? minimumLoanAmount : '',
+                      style: inputTextStyle(),
+                      enabled: _isFormEnabled,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                        signed: false,
+                      ),
+                      decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                          labelText: 'Minimum Loan Amount',
+                          labelStyle: inputTextStyle()),
+                      onChanged: (value) {
+                        minimumLoanAmount = value;
+                      },
+                      validator: (value) {
+                        if (loanAmountTypeId == 1) {
+                          if (value.trim() == '' || value.trim() == null) {
+                            return 'This field is required';
+                          }
+                          return null;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  Visibility(
+                      visible: loanAmountTypeId == 1,
+                      child: TextFormField(
+                        initialValue: maximumLoanAmount != null ? maximumLoanAmount : '',
+                        style: inputTextStyle(),
                         enabled: _isFormEnabled,
+                        keyboardType: TextInputType.numberWithOptions(
+                          decimal: true,
+                          signed: false,
+                        ),
+                        decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                            labelText: 'Maximum  Loan Amount',
+                            labelStyle: inputTextStyle()),
                         onChanged: (value) {
-                          setState(() {
-                            minimumLoanAmount = double.parse(value);
-                          });
+                          maximumLoanAmount = value;
                         },
                         validator: (value) {
                           if (loanAmountTypeId == 1) {
@@ -181,48 +258,37 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                             }
                             return null;
                           }
-                        }),
-                  ),
-                  Visibility(
-                    visible: loanAmountTypeId == 1,
-                    child: amountTextInputField(
-                        context: context,
-                        labelText: 'Maximum  Loan Amount',
-                        enabled: _isFormEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            maximumLoanAmount = double.parse(value);
-                          });
+                          return null;
                         },
-                        validator: (value) {
-                          if (loanAmountTypeId == 1) {
-                            if (value.trim() == '' || value.trim() == null) {
-                              return 'This field is required';
+                      )),
+                  Visibility(
+                      visible: loanAmountTypeId == 2,
+                      child: TextFormField(
+                          initialValue: timesNumberOfSavings != null ? timesNumberOfSavings : '',
+                          style: inputTextStyle(),
+                          enabled: _isFormEnabled,
+                          keyboardType: TextInputType.numberWithOptions(
+                            decimal: true,
+                            signed: false,
+                          ),
+                          decoration: InputDecoration(
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                              labelText: 'How many times the member savings',
+                              labelStyle: inputTextStyle()),
+                          onChanged: (value) {
+                            timesNumberOfSavings = value;
+                          },
+                          validator: (value) {
+                            if (loanAmountTypeId == 2) {
+                              if (value.trim() == '' || value.trim() == null) {
+                                return 'This field is required';
+                              }
+                              return null;
                             }
                             return null;
-                          }
-                        }),
-                  ),
-                  Visibility(
-                    visible: loanAmountTypeId == 2,
-                    child: amountTextInputField(
-                        context: context,
-                        labelText: 'How many times the member savings',
-                        enabled: _isFormEnabled,
-                        onChanged: (value) {
-                          setState(() {
-                            timesNumberOfSavings = double.parse(value);
-                          });
-                        },
-                        validator: (value) {
-                          if (loanAmountTypeId == 2) {
-                            if (value.trim() == '' || value.trim() == null) {
-                              return 'This field is required';
-                            }
-                            return null;
-                          }
-                        }),
-                  ),
+                          })),
                   CustomDropDownButton(
                       labelText: "Interest Type",
                       listItems: interestTypes,
@@ -263,14 +329,22 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                       ),
                     ),
                   ),
-                  amountTextInputField(
-                      context: context,
-                      labelText: 'Loan Interest Rate(%)',
+                  TextFormField(
+                      initialValue: loanInterestRate != null ? loanInterestRate.toString() : '',
+                      style: inputTextStyle(),
                       enabled: _isFormEnabled,
+                      keyboardType: TextInputType.numberWithOptions(
+                        decimal: true,
+                        signed: false,
+                      ),
+                      decoration: InputDecoration(
+                          floatingLabelBehavior: FloatingLabelBehavior.auto,
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                          labelText: 'Loan Interest Rate(%)',
+                          labelStyle: inputTextStyle()),
                       onChanged: (value) {
-                        setState(() {
-                          loanInterestRate = double.parse(value);
-                        });
+                        loanInterestRate = double.parse(value);
                       },
                       validator: (value) {
                         if (value.trim() == '' || value.trim() == null) {
@@ -311,65 +385,92 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                         return null;
                       }),
                   Visibility(
-                    visible: loanRepaymentTypeId == 1,
-                    child: amountTextInputField(
-                        context: context,
-                        labelText: 'Fixed Repayment Period',
-                        hintText: 'Value in months . E.g 3',
-                        onChanged: (value) {
-                          setState(() {
+                      visible: loanRepaymentTypeId == 1,
+                      child: TextFormField(
+                          initialValue: fixedRepaymentPeriod != null ? fixedRepaymentPeriod.toString() : '',
+                          style: inputTextStyle(),
+                          enabled: _isFormEnabled,
+                          keyboardType: TextInputType.numberWithOptions(
+                            decimal: true,
+                            signed: false,
+                          ),
+                          decoration: InputDecoration(
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                              labelText: 'Fixed Repayment Period',
+                              hintText: 'Value in months . E.g 3',
+                              labelStyle: inputTextStyle()),
+                          onChanged: (value) {
                             fixedRepaymentPeriod = int.tryParse(value) ?? 1;
-                          });
-                        },
-                        validator: (value) {
-                          if (loanRepaymentTypeId == 1) {
-                            if (value.trim() == '' || value.trim() == null) {
-                              return 'This field is required';
+                          },
+                          validator: (value) {
+                            if (loanRepaymentTypeId == 1) {
+                              if (value.trim() == '' || value.trim() == null) {
+                                return 'This field is required';
+                              }
+                              return null;
                             }
                             return null;
-                          }
-                        }),
-                  ),
+                          })),
                   Visibility(
-                    visible: loanRepaymentTypeId == 2,
-                    child: amountTextInputField(
-                        context: context,
-                        labelText: 'Minimum Repayment Period',
-                        hintText: 'Value in months . E.g 3',
-                        onChanged: (value) {
-                          setState(() {
+                      visible: loanRepaymentTypeId == 2,
+                      child: TextFormField(
+                          initialValue: minimumRepaymentPeriod != null ? minimumRepaymentPeriod.toString() : '',
+                          style: inputTextStyle(),
+                          enabled: _isFormEnabled,
+                          keyboardType: TextInputType.numberWithOptions(
+                            decimal: true,
+                            signed: false,
+                          ),
+                          decoration: InputDecoration(
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                              labelText: 'Minimum Repayment Period',
+                              hintText: 'Value in months . E.g 3',
+                              labelStyle: inputTextStyle()),
+                          onChanged: (value) {
                             minimumRepaymentPeriod = int.tryParse(value) ?? 1;
-                          });
-                        },
-                        validator: (value) {
-                          if (loanRepaymentTypeId == 2) {
-                            if (value.trim() == '' || value.trim() == null) {
-                              return 'This field is required';
+                          },
+                          validator: (value) {
+                            if (loanRepaymentTypeId == 2) {
+                              if (value.trim() == '' || value.trim() == null) {
+                                return 'This field is required';
+                              }
+                              return null;
                             }
                             return null;
-                          }
-                        }),
-                  ),
+                          })),
                   Visibility(
-                    visible: loanRepaymentTypeId == 2,
-                    child: amountTextInputField(
-                        context: context,
-                        labelText: 'Maximum Repayment period',
-                        hintText: 'Value in months . E.g 12',
-                        onChanged: (value) {
-                          setState(() {
+                      visible: loanRepaymentTypeId == 2,
+                      child: TextFormField(
+                          initialValue: maximumRepaymentPeriod != null ? maximumRepaymentPeriod.toString() : '',
+                          style: inputTextStyle(),
+                          enabled: _isFormEnabled,
+                          keyboardType: TextInputType.numberWithOptions(
+                            decimal: true,
+                            signed: false,
+                          ),
+                          decoration: InputDecoration(
+                              floatingLabelBehavior: FloatingLabelBehavior.auto,
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                              labelText: 'Maximum Repayment period',
+                              hintText: 'Value in months . E.g 12',
+                              labelStyle: inputTextStyle()),
+                          onChanged: (value) {
                             maximumRepaymentPeriod = int.tryParse(value) ?? 1;
-                          });
-                        },
-                        validator: (value) {
-                          if (loanRepaymentTypeId == 2) {
-                            if (value.trim() == '' || value.trim() == null) {
-                              return 'This field is required';
+                          },
+                          validator: (value) {
+                            if (loanRepaymentTypeId == 2) {
+                              if (value.trim() == '' || value.trim() == null) {
+                                return 'This field is required';
+                              }
+                              return null;
                             }
                             return null;
-                          }
-                        }),
-                  ),
+                          })),
                   SizedBox(
                     height: 5,
                   )
