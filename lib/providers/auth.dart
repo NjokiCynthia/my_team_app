@@ -262,6 +262,7 @@ class Auth with ChangeNotifier {
           'uniqueCode': response['unique_code'],
         };
       }
+      notifyListeners();
       return userResponse;
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
@@ -274,9 +275,7 @@ class Auth with ChangeNotifier {
     try {
       String newAvatar;
       if (userObject['avatar'] != null) {
-        print(userObject['avatar']);
-        final resizedImage = await CustomHelper.resizeFileImage(userObject['avatar'], 300);
-        newAvatar = base64Encode(resizedImage.readAsBytesSync());
+        newAvatar = base64Encode(userObject['avatar'].readAsBytesSync());
       }
       const url = EndpointUrl.SIGNUP;
       final postRequest = json.encode({
@@ -312,6 +311,7 @@ class Auth with ChangeNotifier {
       final accessToken1 = response["access_token"].toString();
       await setAccessToken(accessToken1);
       await setPreference(isLoggedIn, "true");
+      notifyListeners();
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {

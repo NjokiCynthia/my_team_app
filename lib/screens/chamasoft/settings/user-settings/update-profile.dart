@@ -9,9 +9,10 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,10 @@ class UpdateProfile extends StatefulWidget {
 class _UpdateProfileState extends State<UpdateProfile> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
-  File avatar;
+  PickedFile avatar;
+  final ImagePicker _picker = ImagePicker();
+  String _retrieveDataError;
+
   String _userAvatar;
   String name = 'Jane Doe';
   String _oldName;
@@ -43,10 +47,30 @@ class _UpdateProfileState extends State<UpdateProfile> {
     }
   }
 
-  // BorderSide _customInputBorderSide = BorderSide(
-  //   color: Colors.blueGrey,
-  //   width: 1.0,
-  // );
+  void _onImagePickerClicked(ImageSource source, BuildContext context) async {
+    try {
+      final pickedFile =
+          await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
+      setState(() {
+        avatar = pickedFile;
+      });
+      _uploadUserAvatar(context);
+    } catch (e) {
+      //show SnackBar?
+      //setState(() {});
+    }
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostData lostData = await _picker.getLostData();
+    if (lostData.isEmpty) return;
+
+    if (lostData.file != null) {
+      setState(() {
+        avatar = lostData.file;
+      });
+    } else {}
+  }
 
   @override
   void initState() {
@@ -76,7 +100,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
         _isLoadingImage = true;
       });
       try {
-        await Provider.of<Auth>(context, listen: false).updateUserAvatar(avatar);
+        await Provider.of<Auth>(context, listen: false).updateUserAvatar(File(avatar.path));
         setState(() {
           _userAvatar = null;
         });
@@ -507,12 +531,42 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                     fadeOutDuration: const Duration(seconds: 1),
                                     fadeInDuration: const Duration(seconds: 3),
                                   )
-                                : CircleAvatar(
-                                    backgroundImage: _userAvatar != null
-                                        ? NetworkImage(_userAvatar)
-                                        : (avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar)),
-                                    backgroundColor: Colors.transparent,
-                                  ),
+                                : !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                                    ? FutureBuilder<void>(
+                                        future: retrieveLostData(),
+                                        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                          switch (snapshot.connectionState) {
+                                            case ConnectionState.none:
+                                            case ConnectionState.waiting:
+                                              return CircleAvatar(
+                                                backgroundImage: AssetImage('assets/no-user.png'),
+                                                backgroundColor: Colors.transparent,
+                                                radius: 45,
+                                              );
+                                            case ConnectionState.done:
+                                              return CircleAvatar(
+                                                backgroundImage: avatar == null
+                                                    ? AssetImage('assets/no-user.png')
+                                                    : FileImage(File(avatar.path)),
+                                                backgroundColor: Colors.transparent,
+                                                radius: 45,
+                                              );
+                                            default:
+                                              return CircleAvatar(
+                                                backgroundImage: AssetImage('assets/no-user.png'),
+                                                backgroundColor: Colors.transparent,
+                                                radius: 45,
+                                              );
+                                          }
+                                        },
+                                      )
+                                    : CircleAvatar(
+                                        backgroundImage: avatar == null
+                                            ? AssetImage('assets/no-user.png')
+                                            : FileImage(File(avatar.path)),
+                                        backgroundColor: Colors.transparent,
+                                        radius: 45,
+                                      ),
                         Positioned(
                           bottom: -12.0,
                           right: -12.0,
@@ -523,11 +577,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               size: 30.0,
                             ),
                             onPressed: () async {
-                              File newAvatar = await FilePicker.getFile(type: FileType.image);
-                              setState(() {
-                                avatar = newAvatar;
-                              });
-                              _uploadUserAvatar(context);
+                              _onImagePickerClicked(ImageSource.gallery, context);
                             },
                           ),
                         )
@@ -577,6 +627,7 @@ class InfoUpdateTile extends StatelessWidget {
   final String updateText;
   final IconData icon;
   final Function onPressed;
+
   const InfoUpdateTile({
     this.labelText,
     this.updateText,

@@ -136,7 +136,7 @@ class AmortizationBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 subtitle1(
-                    text:groupObject.groupCurrency + " " + installment.amount,
+                    text: groupObject.groupCurrency + " " + installment.amount,
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.end),
                 subtitle2(
@@ -338,11 +338,16 @@ class AccountBody extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        customTitle(
+                        customTitleWithWrap(
                             text: account.name,
+                            maxLines: 2,
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start),
-                        //subtitle2(text: account.accountNumber, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start)
+                        if (account.accountNumber != "0")
+                          subtitle2(
+                              text: account.accountNumber,
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.start)
                       ],
                     ),
                   ),

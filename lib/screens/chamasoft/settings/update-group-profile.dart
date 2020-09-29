@@ -11,9 +11,10 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/currency-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +26,6 @@ class UpdateGroupProfile extends StatefulWidget {
 class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
-  File avatar;
   String groupName = '';
   String phoneNumber = '';
   String emailAddress = '';
@@ -37,6 +37,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   bool _isLoadingImage = false;
   String _groupAvatar;
 
+  PickedFile avatar;
+  final ImagePicker _picker = ImagePicker();
+
   final _formKey = GlobalKey<FormState>();
 
   void _scrollListener() {
@@ -46,6 +49,31 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         _appBarElevation = newElevation;
       });
     }
+  }
+
+  void _onImagePickerClicked(ImageSource source, BuildContext context) async {
+    try {
+      final pickedFile =
+          await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
+      setState(() {
+        avatar = pickedFile;
+      });
+      _uploadGroupAvatar(context);
+    } catch (e) {
+      //show SnackBar?
+      //setState(() {});
+    }
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostData lostData = await _picker.getLostData();
+    if (lostData.isEmpty) return;
+
+    if (lostData.file != null) {
+      setState(() {
+        avatar = lostData.file;
+      });
+    } else {}
   }
 
   @override
@@ -528,7 +556,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         _isLoadingImage = true;
       });
       try {
-        await Provider.of<Groups>(context, listen: false).updateGroupAvatar(avatar);
+        await Provider.of<Groups>(context, listen: false).updateGroupAvatar(File(avatar.path));
         setState(() {
           _groupAvatar = null;
         });
@@ -606,12 +634,42 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                                   fadeOutDuration: const Duration(seconds: 1),
                                   fadeInDuration: const Duration(seconds: 3),
                                 )
-                              : CircleAvatar(
-                                  backgroundImage: _groupAvatar != null
-                                      ? NetworkImage(_groupAvatar)
-                                      : (avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar)),
-                                  backgroundColor: Colors.transparent,
-                                ),
+                              : !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                                  ? FutureBuilder<void>(
+                                      future: retrieveLostData(),
+                                      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                        switch (snapshot.connectionState) {
+                                          case ConnectionState.none:
+                                          case ConnectionState.waiting:
+                                            return CircleAvatar(
+                                              backgroundImage: AssetImage('assets/no-user.png'),
+                                              backgroundColor: Colors.transparent,
+                                              radius: 45,
+                                            );
+                                          case ConnectionState.done:
+                                            return CircleAvatar(
+                                              backgroundImage: avatar == null
+                                                  ? AssetImage('assets/no-user.png')
+                                                  : FileImage(File(avatar.path)),
+                                              backgroundColor: Colors.transparent,
+                                              radius: 45,
+                                            );
+                                          default:
+                                            return CircleAvatar(
+                                              backgroundImage: AssetImage('assets/no-user.png'),
+                                              backgroundColor: Colors.transparent,
+                                              radius: 45,
+                                            );
+                                        }
+                                      },
+                                    )
+                                  : CircleAvatar(
+                                      backgroundImage: avatar == null
+                                          ? AssetImage('assets/no-user.png')
+                                          : FileImage(File(avatar.path)),
+                                      backgroundColor: Colors.transparent,
+                                      radius: 45,
+                                    ),
                       Positioned(
                         bottom: -12.0,
                         right: -12.0,
@@ -622,11 +680,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                             size: 30.0,
                           ),
                           onPressed: () async {
-                            File newAvatar = await FilePicker.getFile(type: FileType.image);
-                            setState(() {
-                              avatar = newAvatar;
-                            });
-                            _uploadGroupAvatar(context);
+                            _onImagePickerClicked(ImageSource.gallery, context);
                           },
                         ),
                       )

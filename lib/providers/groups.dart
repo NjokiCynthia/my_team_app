@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io' as io;
+import 'dart:io';
 
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
@@ -641,9 +642,8 @@ class Groups with ChangeNotifier {
   Future<void> updateGroupAvatar(io.File avatar) async {
     const url = EndpointUrl.EDIT_NEW_GROUP_PHOTO;
     try {
-      final resizedImage = await CustomHelper.resizeFileImage(avatar, 300);
       try {
-        final newAvatar = base64Encode(resizedImage.readAsBytesSync());
+        final newAvatar = base64Encode(avatar.readAsBytesSync());
         final postRequest = json.encode({
           "avatar": newAvatar,
           "user_id": _userId,
@@ -1170,14 +1170,13 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> createGroup({String groupName, int countryId, dynamic avatar}) async {
+  Future<void> createGroup({String groupName, int countryId, File avatar}) async {
     const url = EndpointUrl.CREATE_GROUP;
 
     try {
       String newAvatar;
       if (avatar != null) {
-        final resizedImage = await CustomHelper.resizeFileImage(avatar, 300);
-        newAvatar = base64Encode(resizedImage.readAsBytesSync());
+        newAvatar = base64Encode(avatar.readAsBytesSync());
       }
 
       final postRequest =

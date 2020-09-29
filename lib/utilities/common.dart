@@ -56,13 +56,10 @@ const String ERROR_MESSAGE = "We could not complete your request at the moment. 
 const String ERROR_MESSAGE_LOGIN = "Kindly login again";
 const String ERROR_MESSAGE_INTERNET = "No internet connection";
 
-enum SettingActions{
-  actionAdd,
-  actionEdit,
-  actionHide,
-  actionUnHide,
-  actionDelete
-}
+//Image upload quality
+const int IMAGE_QUALITY = 50;
+
+enum SettingActions { actionAdd, actionEdit, actionHide, actionUnHide, actionDelete }
 
 enum ErrorStatusCode {
   statusNormal,

@@ -16,6 +16,7 @@ import 'package:provider/provider.dart';
 
 class MyGroups extends StatefulWidget {
   static const namedRoute = '/my-groups-screen';
+
   @override
   _MyGroupsState createState() => _MyGroupsState();
 }
@@ -25,13 +26,13 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   AnimationController _controller;
   DateTime currentBackPressTime;
 
-  Future<void> _getUserCheckinData(BuildContext context,[bool refresh=false]) async {
+  Future<void> _getUserCheckInData(BuildContext context, [bool refresh = false]) async {
     try {
-      if(Provider.of<Groups>(context, listen: false).item.length>0){
-      }else{
+      if (Provider.of<Groups>(context, listen: false).item.length > 0) {
+      } else {
         refresh = true;
       }
-      if(refresh){
+      if (refresh) {
         await Provider.of<Groups>(context, listen: false).fetchAndSetUserGroups();
       }
     } on CustomException catch (error) {
@@ -39,7 +40,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
           context: context,
           error: error,
           callback: () {
-            _getUserCheckinData(context);
+            _getUserCheckInData(context);
           });
     } finally {}
   }
@@ -50,7 +51,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
       duration: const Duration(seconds: 300),
       vsync: this,
     );
-    _future = _getUserCheckinData(context);
+    _future = _getUserCheckInData(context);
     super.initState();
   }
 
@@ -81,28 +82,35 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title: new Text("Logout"),
-          content: new Text("Are you sure you want to log out? You'll have to login again to continue."),
+          title:
+              heading2(text: "Logout", textAlign: TextAlign.start, color: Theme.of(context).textSelectionHandleColor),
+          content: customTitleWithWrap(
+              text: "Are you sure you want to log out? You'll have to login again to continue.",
+              textAlign: TextAlign.start,
+              color: Theme.of(context).textSelectionHandleColor,
+              maxLines: null),
           actions: <Widget>[
-            new FlatButton(
-              child: new Text(
-                "Cancel",
-                style: TextStyle(color: Theme.of(context).textSelectionHandleColor),
+            negativeActionDialogButton(
+                text: "Cancel",
+                color: Theme.of(context).textSelectionHandleColor,
+                action: () {
+                  Navigator.of(context).pop();
+                }),
+            FlatButton(
+              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+              child: customTitle(
+                text: "Logout",
+                color: Colors.red,
+                fontWeight: FontWeight.w600,
               ),
               onPressed: () {
                 Navigator.of(context).pop();
+                StatusHandler().logout(context);
               },
-            ),
-            new FlatButton(
-                child: new Text(
-                  "Logout",
-                  style: new TextStyle(color: Colors.red),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  StatusHandler().logout(context);
-                }
-                ),
+              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(4.0)),
+              textColor: Colors.red,
+              color: Colors.red.withOpacity(0.2),
+            )
           ],
         );
       },
@@ -162,20 +170,22 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                             ),
                     ),
                     heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
-                    subtitle1(text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
+                    subtitle1(
+                        text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6)),
                     Padding(
-                      padding: EdgeInsets.fromLTRB(2, 10, 2, 0),
-                      child: groupInfoButton(
-                        context: context,
-                        leadingIcon: LineAwesomeIcons.plus,
-                        trailingIcon: LineAwesomeIcons.angle_right,
-                        hideTrailingIcon: true,
-                        backgroundColor: primaryColor.withOpacity(0.2),
-                        title: "ADD NEW GROUP",
-                        subtitle: "Chama, Merry-go-round, Fundraiser",
-                        textColor: primaryColor,
-                        borderColor: primaryColor,
-                        action: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup())))),
+                        padding: EdgeInsets.fromLTRB(2, 10, 2, 0),
+                        child: groupInfoButton(
+                            context: context,
+                            leadingIcon: LineAwesomeIcons.plus,
+                            trailingIcon: LineAwesomeIcons.angle_right,
+                            hideTrailingIcon: true,
+                            backgroundColor: primaryColor.withOpacity(0.2),
+                            title: "ADD NEW GROUP",
+                            subtitle: "Chama, Merry-go-round, Fundraiser",
+                            textColor: primaryColor,
+                            borderColor: primaryColor,
+                            action: () =>
+                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreateGroup())))),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -184,7 +194,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                             builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
                                 ? buildContainer(Center(child: CircularProgressIndicator()), 0, true)
                                 : RefreshIndicator(
-                                    onRefresh: () => _getUserCheckinData(context,true),
+                                    onRefresh: () => _getUserCheckInData(context, true),
                                     child: Consumer<Groups>(
                                       child: Center(
                                         child: Text("Groups"),
@@ -209,7 +219,8 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                                     textColor: Colors.blueGrey,
                                                     borderColor: Colors.blueGrey.withOpacity(0.2),
                                                     action: () {
-                                                      Provider.of<Groups>(ctx2, listen: false).setSelectedGroupId(groups.item[index].groupId);
+                                                      Provider.of<Groups>(ctx2, listen: false)
+                                                          .setSelectedGroupId(groups.item[index].groupId);
                                                       Navigator.of(context).push(MaterialPageRoute(
                                                         builder: (BuildContext context) => ChamasoftDashboard(),
                                                       ));

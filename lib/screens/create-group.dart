@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/configure-group.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -9,8 +10,9 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -24,12 +26,38 @@ class CreateGroup extends StatefulWidget {
 class _CreateGroupState extends State<CreateGroup> {
   bool _isInit = true;
   List<Country> _countryOptions = [];
-  File avatar;
   int countryId = 1;
   final GlobalKey<FormState> _formKey = GlobalKey();
   bool _isFormInputEnabled = true;
   bool _isLoading = false;
   String _groupName;
+
+  PickedFile avatar;
+  final ImagePicker _picker = ImagePicker();
+
+  void _onImagePickerClicked(ImageSource source, BuildContext context) async {
+    try {
+      final pickedFile =
+          await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
+      setState(() {
+        avatar = pickedFile;
+      });
+    } catch (e) {
+      //show SnackBar?
+      //setState(() {});
+    }
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostData lostData = await _picker.getLostData();
+    if (lostData.isEmpty) return;
+
+    if (lostData.file != null) {
+      setState(() {
+        avatar = lostData.file;
+      });
+    } else {}
+  }
 
   void _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
@@ -43,7 +71,8 @@ class _CreateGroupState extends State<CreateGroup> {
     });
 
     try {
-      await Provider.of<Groups>(context, listen: false).createGroup(groupName: _groupName, countryId: countryId, avatar: avatar);
+      await Provider.of<Groups>(context, listen: false)
+          .createGroup(groupName: _groupName, countryId: countryId, avatar: File(avatar.path));
       Navigator.of(context).pushReplacementNamed(ConfigureGroup.namedRoute);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -123,7 +152,9 @@ class _CreateGroupState extends State<CreateGroup> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           heading1(text: "Create Group", color: Theme.of(context).textSelectionHandleColor),
-                          subtitle1(text: "Give your group a name, profile photo and country", color: Theme.of(context).textSelectionHandleColor),
+                          subtitle1(
+                              text: "Give your group a name, profile photo and country",
+                              color: Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 24,
                           ),
@@ -132,11 +163,42 @@ class _CreateGroupState extends State<CreateGroup> {
                             child: Stack(
                               alignment: AlignmentDirectional.bottomEnd,
                               children: <Widget>[
-                                CircleAvatar(
-                                  backgroundImage: avatar == null ? AssetImage('assets/no-user.png') : FileImage(avatar),
-                                  backgroundColor: Colors.transparent,
-                                  radius: 50,
-                                ),
+                                !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                                    ? FutureBuilder<void>(
+                                        future: retrieveLostData(),
+                                        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                          switch (snapshot.connectionState) {
+                                            case ConnectionState.none:
+                                            case ConnectionState.waiting:
+                                              return CircleAvatar(
+                                                backgroundImage: AssetImage('assets/no-user.png'),
+                                                backgroundColor: Colors.transparent,
+                                                radius: 50,
+                                              );
+                                            case ConnectionState.done:
+                                              return CircleAvatar(
+                                                backgroundImage: avatar == null
+                                                    ? AssetImage('assets/no-user.png')
+                                                    : FileImage(File(avatar.path)),
+                                                backgroundColor: Colors.transparent,
+                                                radius: 50,
+                                              );
+                                            default:
+                                              return CircleAvatar(
+                                                backgroundImage: AssetImage('assets/no-user.png'),
+                                                backgroundColor: Colors.transparent,
+                                                radius: 50,
+                                              );
+                                          }
+                                        },
+                                      )
+                                    : CircleAvatar(
+                                        backgroundImage: avatar == null
+                                            ? AssetImage('assets/no-user.png')
+                                            : FileImage(File(avatar.path)),
+                                        backgroundColor: Colors.transparent,
+                                        radius: 50,
+                                      ),
                                 Positioned(
                                   bottom: -12.0,
                                   right: -12.0,
@@ -147,10 +209,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                       size: 30.0,
                                     ),
                                     onPressed: () async {
-                                      File newAvatar = await FilePicker.getFile(type: FileType.image);
-                                      setState(() {
-                                        avatar = newAvatar;
-                                      });
+                                      _onImagePickerClicked(ImageSource.gallery, context);
                                     },
                                   ),
                                 )
