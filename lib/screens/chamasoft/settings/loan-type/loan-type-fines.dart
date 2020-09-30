@@ -120,6 +120,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
 
     Map<String, dynamic> formData = {};
 
+    formData["request_id"] = requestId;
     formData["id"] = loanTypeID;
     formData["enable_loan_fines"] = enableLateLoanRepaymentFines ? 1 : 0;
     formData["loan_fine_type"] = lateLoanPaymentFineTypeId;
