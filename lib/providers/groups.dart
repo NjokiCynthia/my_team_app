@@ -1798,6 +1798,36 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> updateLoanType(
+      {@required String id, @required SettingActions action}) async {
+    String url = EndpointUrl.LOAN_TYPES_UNHIDE;
+    if (action == SettingActions.actionHide) {
+      url = EndpointUrl.LOAN_TYPES_HIDE;
+    } else if (action == SettingActions.actionDelete) {
+      url = EndpointUrl.LOAN_TYPES_DELETE;
+    }
+
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "id": id,
+      });
+
+      try {
+        await PostToServer.post(postRequest, url);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<void> fetchCountryOptions() async {
     const url = EndpointUrl.GET_COUNTRY_LIST;
     try {
