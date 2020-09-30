@@ -57,94 +57,107 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                   textAlign: TextAlign.start),
             ],
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              customTitle(
-                  text: "Enable loan guarantors",
-                  color: Theme.of(context).textSelectionHandleColor,
-                  fontWeight: FontWeight.w500,
-                  textAlign: TextAlign.start),
-              Switch(
-                value: enableLoanGuarantors,
-                onChanged: (value) {
-                  setState(() {
-                    enableLoanGuarantors = value;
-                  });
-                },
-              )
-            ],
-          ),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 children: <Widget>[
-                  Visibility(
-                    visible: enableLoanGuarantors,
-                    child: ListTile(
-                      title: Text(
-                        "Choose guarantor option",
-                        style:
-                            TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-                      ),
-                    ),
-                  ),
-                  Visibility(
-                    visible: enableLoanGuarantors,
-                    child: RadioListTile(
-                      title: Text(
-                        "Every time member applying loan",
-                        style:
-                            TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          guarantorOptionId = value;
-                        });
-                      },
-                      value: 1,
-                      groupValue: guarantorOptionId,
-                    ),
-                  ),
-                  Visibility(
-                    visible: enableLoanGuarantors,
-                    child: RadioListTile(
-                      title: Text(
-                        "When a member loan request exceeds maximum loan amount",
-                        style:
-                            TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          guarantorOptionId = value;
-                        });
-                      },
-                      value: 2,
-                      groupValue: guarantorOptionId,
-                    ),
-                  ),
-                  Visibility(
-                    visible: enableLoanGuarantors,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: amountTextInputField(
-                        context: context,
-                        labelText: 'Enter minimum allowed guarantors',
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      customTitle(
+                          text: "Enable loan guarantors",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start),
+                      Switch(
+                        value: enableLoanGuarantors,
                         onChanged: (value) {
                           setState(() {
-                            minimumAllowedGuarantors = int.parse(value);
+                            enableLoanGuarantors = value;
                           });
                         },
-                      ),
+                      )
+                    ],
+                  ),
+                  Visibility(visible: enableLoanGuarantors, child: SizedBox(height: 5)),
+                  Visibility(
+                    visible: enableLoanGuarantors,
+                    child: Row(
+                      children: [
+                        customTitle(
+                          text: "Choose guarantor option",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w500,
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
                     ),
                   ),
+                  Visibility(
+                    visible: enableLoanGuarantors,
+                    child: Row(
+                      children: <Widget>[
+                        Radio(
+                          groupValue: guarantorOptionId,
+                          value: 1,
+                          onChanged: (value) {
+                            setState(() {
+                              guarantorOptionId = value;
+                            });
+                          },
+                        ),
+                        customTitleWithWrap(
+                            text: "Every time member applying loan",
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w500,
+                            textAlign: TextAlign.start),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: enableLoanGuarantors,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Radio(
+                          value: 2,
+                          groupValue: guarantorOptionId,
+                          onChanged: (value) {
+                            setState(() {
+                              guarantorOptionId = value;
+                            });
+                          },
+                        ),
+                        Expanded(
+                          child: customTitleWithWrap(
+                              text: "When a member loan request exceeds maximum loan amount",
+                              color: Theme.of(context).textSelectionHandleColor,
+                              fontWeight: FontWeight.w500,
+                              textAlign: TextAlign.start),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: enableLoanGuarantors,
+                    child: amountTextInputField(
+                      context: context,
+                      labelText: 'Enter minimum allowed guarantors',
+                      onChanged: (value) {
+                        setState(() {
+                          minimumAllowedGuarantors = int.parse(value);
+                        });
+                      },
+                    ),
+                  ),
+                  SizedBox(height: 5),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       customTitle(
                           text: "Charge loan processing fee",
                           color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start),
                       Switch(
                         value: chargeLoanProcessingFee,
@@ -158,75 +171,61 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                   ),
                   Visibility(
                     visible: chargeLoanProcessingFee,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CustomDropDownButton(
-                        labelText: "Loan processing fee type",
-                        listItems: loanProcessingFeeTypes,
-                        selectedItem: loanProcessingFeeTypeId,
-                        onChanged: (value) {
-                          setState(() {
-                            loanProcessingFeeTypeId = value;
-                          });
-                        },
-                      ),
+                    child: CustomDropDownButton(
+                      labelText: "Loan processing fee type",
+                      listItems: loanProcessingFeeTypes,
+                      selectedItem: loanProcessingFeeTypeId,
+                      onChanged: (value) {
+                        setState(() {
+                          loanProcessingFeeTypeId = value;
+                        });
+                      },
                     ),
                   ),
                   Visibility(
-                    visible: loanProcessingFeeTypeId == 1,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: amountTextInputField(
-                        context: context,
-                        labelText: 'Enter processing fee amount',
-                        onChanged: (value) {
-                          setState(() {
-                            loanProcessingFeeAmount = double.parse(value);
-                          });
-                        },
-                      ),
+                    visible: chargeLoanProcessingFee && loanProcessingFeeTypeId == 1,
+                    child: amountTextInputField(
+                      context: context,
+                      labelText: 'Enter processing fee amount',
+                      onChanged: (value) {
+                        setState(() {
+                          loanProcessingFeeAmount = double.parse(value);
+                        });
+                      },
                     ),
                   ),
                   Visibility(
-                    visible: loanProcessingFeeTypeId == 2,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: amountTextInputField(
-                        context: context,
-                        labelText: 'Enter processing fee percentage',
-                        onChanged: (value) {
-                          setState(() {
-                            loanProcessingFeePercentage = double.parse(value);
-                          });
-                        },
-                      ),
+                    visible: chargeLoanProcessingFee && loanProcessingFeeTypeId == 2,
+                    child: amountTextInputField(
+                      context: context,
+                      labelText: 'Enter processing fee percentage',
+                      onChanged: (value) {
+                        setState(() {
+                          loanProcessingFeePercentage = double.parse(value);
+                        });
+                      },
                     ),
                   ),
                   Visibility(
-                    visible: loanProcessingFeeTypeId == 2,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: CustomDropDownButton(
-                        labelText: "Percentage charged on",
-                        listItems: loanProcessingFeePercentageChargedOn,
-                        selectedItem: loanProcessingFeePercentageChargedOnId,
-                        onChanged: (value) {
-                          setState(() {
-                            loanProcessingFeePercentageChargedOnId = value;
-                          });
-                        },
-                      ),
+                    visible: chargeLoanProcessingFee && loanProcessingFeeTypeId == 2,
+                    child: CustomDropDownButton(
+                      labelText: "Percentage charged on",
+                      listItems: loanProcessingFeePercentageChargedOn,
+                      selectedItem: loanProcessingFeePercentageChargedOnId,
+                      onChanged: (value) {
+                        setState(() {
+                          loanProcessingFeePercentageChargedOnId = value;
+                        });
+                      },
                     ),
                   ),
+                  SizedBox(height: 5)
                 ],
               ),
             ),
           ),
-          defaultButton(
-            context: context,
-            text: "Save & Finish",
-            onPressed: () {} //=> widget.onButtonPressed(),
-          ),
+          defaultButton(context: context, text: "Save & Finish", onPressed: () {} //=> widget.onButtonPressed(),
+              ),
           SizedBox(
             height: 10,
           )

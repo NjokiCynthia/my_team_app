@@ -199,30 +199,30 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                 textAlign: TextAlign.start),
           ],
         ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            customTitle(
-                text: "Enable late loan repayment fines",
-                color: Theme.of(context).textSelectionHandleColor,
-                fontWeight: FontWeight.w500,
-                textAlign: TextAlign.start),
-            Switch(
-              value: enableLateLoanRepaymentFines,
-              onChanged: (value) {
-                setState(() {
-                  enableLateLoanRepaymentFines = value;
-                });
-              },
-            )
-          ],
-        ),
         Expanded(
           child: SingleChildScrollView(
             child: Form(
               key: _formKey,
               child: Column(
                 children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      customTitle(
+                          text: "Enable late loan repayment fines",
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start),
+                      Switch(
+                        value: enableLateLoanRepaymentFines,
+                        onChanged: (value) {
+                          setState(() {
+                            enableLateLoanRepaymentFines = value;
+                          });
+                        },
+                      )
+                    ],
+                  ),
                   Visibility(
                     visible: enableLateLoanRepaymentFines,
                     child: Column(
@@ -265,6 +265,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                         Visibility(
                           visible: lateLoanPaymentFineTypeId == 3 && oneOffFineTypeId == 1,
                           child: numberDecimalFieldWithInitialValue(
+                            initialValue: oneOffFixedAmount != null ? oneOffFixedAmount : '',
                             context: context,
                             isFormEnabled: _isFormEnabled,
                             labelText: 'Enter One Off Fixed Amount',
@@ -284,6 +285,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                         Visibility(
                           visible: lateLoanPaymentFineTypeId == 3 && oneOffFineTypeId == 2,
                           child: numberDecimalFieldWithInitialValue(
+                            initialValue: oneOffPercentage != null ? oneOffPercentage : '',
                             context: context,
                             isFormEnabled: _isFormEnabled,
                             labelText: 'Enter one off percentage (%)',
@@ -322,6 +324,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                         Visibility(
                           visible: lateLoanPaymentFineTypeId == 1,
                           child: numberDecimalFieldWithInitialValue(
+                            initialValue: fixedFineAmount != null ? fixedFineAmount : '',
                             context: context,
                             labelText: 'Enter fixed fine amount',
                             isFormEnabled: _isFormEnabled,
@@ -360,6 +363,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                         Visibility(
                           visible: lateLoanPaymentFineTypeId == 2,
                           child: numberDecimalFieldWithInitialValue(
+                            initialValue: percentageFineRate != null ? percentageFineRate : '',
                             context: context,
                             isFormEnabled: _isFormEnabled,
                             labelText: 'Enter fine percentage rate',
@@ -424,7 +428,7 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                       customTitle(
                           text: "Enable fines for outstanding balances",
                           color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start),
                       Switch(
                         value: enableFinesForOutstandingBalances,
@@ -458,6 +462,9 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                       Visibility(
                         visible: outstandingBalanceFineTypeId == 3,
                         child: numberDecimalFieldWithInitialValue(
+                            initialValue: outstandingLoanBalanceOneOffFineAmount != null
+                                ? outstandingLoanBalanceOneOffFineAmount
+                                : '',
                             context: context,
                             labelText: 'Outstanding Loan Balance One Off Fine Amount',
                             isFormEnabled: _isFormEnabled,
@@ -475,6 +482,9 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                       Visibility(
                         visible: outstandingBalanceFineTypeId == 1,
                         child: numberDecimalFieldWithInitialValue(
+                            initialValue: outstandingLoanBalanceFixedFineAmount != null
+                                ? outstandingLoanBalanceFixedFineAmount
+                                : '',
                             context: context,
                             isFormEnabled: _isFormEnabled,
                             labelText: 'Outstanding Loan Balance Fixed Fine Amount',
@@ -513,6 +523,9 @@ class _LoanTypeFinesState extends State<LoanTypeFines> {
                       Visibility(
                         visible: outstandingBalanceFineTypeId == 2,
                         child: numberDecimalFieldWithInitialValue(
+                          initialValue: outstandingLoanBalancePercentageFineRate != null
+                              ? outstandingLoanBalancePercentageFineRate
+                              : '',
                           context: context,
                           isFormEnabled: _isFormEnabled,
                           labelText: 'Outstanding Loan Balance Percentage Fine Rate',
