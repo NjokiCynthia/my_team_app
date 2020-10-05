@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
@@ -9,24 +10,18 @@ import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-paym
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/contribution-transfer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/create-invoice.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
-import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/create-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/svg-icons.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'reports/member/contribution-statement.dart';
@@ -124,9 +119,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           width: 132.0,
           child: svgGridButton(
               context: context,
-              icon: customIcons['safe'],
-              title: 'CREATE',
-              subtitle: 'LOAN',
+              icon: customIcons['money-bag'],
+              title: 'RECORD',
+              subtitle: 'MEMBER LOAN',
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
@@ -136,22 +131,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
       SizedBox(
         width: 16.0,
       ),
-      // Container(
-      //     width: 132.0,
-      //     child: svgGridButton(
-      //         context: context,
-      //         icon: customIcons['couple'],
-      //         title: 'RECORD',
-      //         subtitle: 'LOAN REPAYMENTS',
-      //         color: Colors.blue[400],
-      //         isHighlighted: false,
-      //         action: () => Navigator.of(context).push(MaterialPageRoute(
-      //             builder: (BuildContext context) => RecordLoanPayment(), settings: RouteSettings(arguments: 0))),
-      //         margin: 0,
-      //         imageHeight: 100.0)),
-      // SizedBox(
-      //   width: 16.0,
-      // ),
+      Container(
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['safe'],
+              title: 'RECORD',
+              subtitle: 'REPAYMENTS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => RecordLoanPayment(), settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
+      SizedBox(
+        width: 16.0,
+      ),
     ];
 
     List<Widget> paymentsOptions = [

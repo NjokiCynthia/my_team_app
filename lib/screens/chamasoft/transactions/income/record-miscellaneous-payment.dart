@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -10,7 +11,6 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +23,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   bool _isInit = true;
-  Map <String, dynamic> formLoadData = {};
+  Map<String, dynamic> formLoadData = {};
   DateTime now = DateTime.now();
   DateTime depositDate = DateTime.now();
   int depositMethod, memberId, accountId;
@@ -32,10 +32,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
   final _formKey = new GlobalKey<FormState>();
   bool _isFormInputEnabled = true;
   Map<String, dynamic> _formData = {};
-  static final int epochTime = DateTime
-      .now()
-      .toUtc()
-      .millisecondsSinceEpoch;
+  static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
   String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
   bool _isLoading = false;
 
@@ -79,8 +76,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
             return Center(
               child: CircularProgressIndicator(),
             );
-          }
-      );
+          });
     });
     formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(member: true, acc: true);
     setState(() {
@@ -138,9 +134,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
           leadingIcon: LineAwesomeIcons.close,
           title: "Record Miscellaneous Payment",
         ),
-        backgroundColor: Theme
-            .of(context)
-            .backgroundColor,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
           builder: (BuildContext context) {
             return GestureDetector(
@@ -151,10 +145,7 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                 controller: _scrollController,
                 child: Column(
                   children: <Widget>[
-                    toolTip(
-                        context: context,
-                        title: "Manually record miscellaneous payments",
-                        message: ""),
+                    toolTip(context: context, title: "Manually record miscellaneous payments", message: ""),
                     Padding(
                       padding: inputPagePadding,
                       child: Form(
@@ -171,8 +162,9 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                                   child: DatePicker(
                                     labelText: 'Select Deposit Date',
                                     lastDate: DateTime.now(),
-                                    selectedDate: depositDate == null ? new DateTime(
-                                        now.year, now.month, now.day - 1, 6, 30) : depositDate,
+                                    selectedDate: depositDate == null
+                                        ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                        : depositDate,
                                     selectDate: (selectedDate) {
                                       setState(() {
                                         depositDate = selectedDate;
@@ -223,8 +215,8 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                             CustomDropDownButton(
                               labelText: 'Select Account',
                               enabled: _isFormInputEnabled,
-                              listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [
-                              ],
+                              listItems:
+                                  formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
                               selectedItem: accountId,
                               validator: (value) {
                                 if (value == "" || value == null) {
@@ -267,18 +259,16 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
                             ),
                             _isLoading
                                 ? Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Center(
-                                  child: CircularProgressIndicator()
-                              ),
-                            ) :
-                            defaultButton(
-                              context: context,
-                              text: "SAVE",
-                              onPressed: () {
-                                _submit(context);
-                              },
-                            ),
+                                    padding: EdgeInsets.all(10),
+                                    child: Center(child: CircularProgressIndicator()),
+                                  )
+                                : defaultButton(
+                                    context: context,
+                                    text: "SAVE",
+                                    onPressed: () {
+                                      _submit(context);
+                                    },
+                                  ),
                           ],
                         ),
                       ),
@@ -288,7 +278,6 @@ class _RecordMiscellaneousPayment extends State<RecordMiscellaneousPayment> {
               ),
             );
           },
-        )
-    );
+        ));
   }
 }

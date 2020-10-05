@@ -194,7 +194,7 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Create Member Loan",
+        title: "Record Member Loan",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
