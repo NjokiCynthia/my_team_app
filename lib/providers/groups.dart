@@ -3403,6 +3403,53 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<String> recordMemberLoan(Map<String, dynamic> formData) async {
+    try {
+      const url = EndpointUrl.RECORD_MEMBER_LOAN;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
+      log(formData.toString());
+      try {
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        return response["success"].toString();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<String> recordLoanRepayment(Map<String, dynamic> formData) async {
+    try {
+      const url = EndpointUrl.RECORD_LOAN_REPAYMENTS;
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['request_id'] = "${formData['request_id']}_${_userId}_$_identity";
+      log(formData.toString());
+      try {
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        return response["message"].toString();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<String> recordFinePayments(Map<String, dynamic> formData) async {
     try {
       const url = EndpointUrl.NEW_RECORD_FINE_PAYMENTS;

@@ -1,8 +1,13 @@
+import 'dart:developer';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -35,13 +40,11 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
   int depositMethod, memberId, loanId, accountId;
   double amount;
   String description;
-  static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
-  String requestId = ((epochTime.toDouble() / 1000).toStringAsFixed(0));
+  String requestId = ((DateTime.now().toUtc().millisecondsSinceEpoch.toDouble() / 1000).toStringAsFixed(0));
 
   final _formKey = new GlobalKey<FormState>();
   bool _isFormInputEnabled = true;
   bool _isLoading = false;
-  Map<String, dynamic> _formData = {};
   List<OngoingMemberLoanOptions> ongoingGroupMemberLoans = [];
   List<NamesListItem> memberLoans = [];
 
@@ -94,6 +97,79 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
     });
   }
 
+  void _submit(BuildContext context) async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _isFormInputEnabled = false;
+    });
+
+    _formKey.currentState.save();
+
+    Map<String, dynamic> _formData = {};
+    _formData['member_id'] = memberId;
+    _formData['loan_id'] = loanId;
+    _formData['amount'] = amount;
+    _formData['account_id'] = _getAccountFormId(accountId);
+    _formData['deposit_date'] = depositDate.toString();
+    _formData['deposit_method'] = depositMethod;
+    _formData['description'] = description;
+
+    List<dynamic> list = [];
+    list.add(_formData);
+    Map<String, dynamic> data = {};
+    data['request_id'] = requestId;
+    data['loan_repayments_break_down'] = [_formData];
+    data['send_sms_notification'] = 0; //TODO change to dynamic?
+    data['send_email_notification'] = 1; //TODO change to dynamic?
+
+    log(data.toString());
+
+    try {
+      String message = await Provider.of<Groups>(context, listen: false).recordLoanRepayment(data);
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+      });
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormInputEnabled = true;
+      });
+    }
+  }
+
+
+  // ignore: missing_return
+  String _getAccountFormId(int position) {
+    final accounts = Provider.of<Groups>(context,listen: false).allAccounts;
+    for (var accountOption in accounts) {
+      for (var account in accountOption) {
+        if (position == account.uniqueId) {
+          if (account.typeId == 1) {
+            return "bank-${account.id}";
+          } else if (account.typeId == 2) {
+            return "sacco-${account.id}";
+          } else if (account.typeId == 3) {
+            return "mobile-${account.id}";
+          } else {
+            return "petty-${account.id}";
+          }
+        }
+      }
+    }
+  }
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -125,7 +201,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Record Loan Payment",
+        title: "Record Loan Repayment",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Builder(
@@ -140,7 +216,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                 key: _formKey,
                 child: Column(
                   children: <Widget>[
-                    toolTip(context: context, title: "Manually record loan payments", message: ""),
+                    toolTip(context: context, title: "Manually record loan repayments", message: ""),
                     Container(
                       padding: EdgeInsets.all(16.0),
                       height: MediaQuery.of(context).size.height,
@@ -152,9 +228,13 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
                               Expanded(
+                                flex: 2,
                                 child: DatePicker(
                                   labelText: 'Select Deposit Date',
-                                  selectedDate: depositDate == null ? DateTime.now() : depositDate,
+                                  lastDate: DateTime.now(),
+                                  selectedDate: depositDate == null
+                                      ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                      : depositDate,
                                   selectDate: (selectedDate) {
                                     setState(() {
                                       depositDate = selectedDate;
@@ -166,6 +246,7 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                                 width: 5.0,
                               ),
                               Expanded(
+                                flex: 3,
                                 child: CustomDropDownButton(
                                   labelText: 'Select Deposit Method',
                                   listItems: depositMethods,
@@ -220,8 +301,10 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                             },
                           ),
                           CustomDropDownButton(
-                            labelText: 'Select Account',
-                            listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                            labelText: "Select Account",
+                            enabled: _isFormInputEnabled,
+                            listItems:
+                            formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
                             selectedItem: accountId,
                             onChanged: (value) {
                               setState(() {
@@ -229,8 +312,8 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                               });
                             },
                             validator: (value) {
-                              if (value == "" || value == null) {
-                                return "Field is required";
+                              if (value == null) {
+                                return "This field is required";
                               }
                               return null;
                             },
@@ -262,30 +345,18 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
                           SizedBox(
                             height: 24,
                           ),
-                          // _isLoading
-                          //     ? Padding(
-                          //   padding: EdgeInsets.all(10),
-                          //   child: Center(child: CircularProgressIndicator()),
-                          // )
-                          //     : defaultButton(
-                          //   context: context,
-                          //   text: "SAVE",
-                          //   onPressed: () {
-                          //     _submit(context);
-                          //   },
-                          // ),
-                          defaultButton(
-                            context: context,
-                            text: "SAVE",
-                            onPressed: () {
-                              print('Deposit date: $depositDate');
-                              print('Deposit Method: $depositMethod');
-                              print('Member: $memberId');
-                              print('Loan: $loanId');
-                              print('Account: $accountId');
-                              print('Amount: $amount');
-                            },
-                          ),
+                          _isLoading
+                              ? Padding(
+                                  padding: EdgeInsets.all(10),
+                                  child: Center(child: CircularProgressIndicator()),
+                                )
+                              : defaultButton(
+                                  context: context,
+                                  text: "SAVE",
+                                  onPressed: () {
+                                    _submit(context);
+                                  },
+                                ),
                         ],
                       ),
                     )

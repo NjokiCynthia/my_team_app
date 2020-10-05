@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
+import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -34,8 +36,9 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
   int loanTypeId;
   int accountId;
   int groupMemberId;
-  String loanAmount;
+  int gracePeriod;
   String repaymentPeriod;
+  String loanAmount;
   Map<String, dynamic> _formData = {};
   String selectedLoanValue;
   String selectedAccountValue;
@@ -79,10 +82,10 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
       return;
     }
 
-    // setState(() {
-    //   _isLoading = true;
-    //   _isFormInputEnabled = false;
-    // });
+    setState(() {
+      _isLoading = true;
+      _isFormInputEnabled = false;
+    });
 
     _formKey.currentState.save();
     _formData['disbursement_date'] = disbursementDate.toString();
@@ -91,29 +94,31 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
     _formData['request_id'] = requestId;
     _formData['loan_amount'] = loanAmount;
     _formData['member_id'] = groupMemberId;
+    _formData['grace_period'] = gracePeriod;
     _formData['repayment_period'] = repaymentPeriod;
 
     log(_formData.toString());
-    // try {
-    //   String message = await Provider.of<Groups>(context, listen: false).recordContributionPayments(_formData);
-    //   StatusHandler().showSuccessSnackBar(context, message);
-    //
-    //   Future.delayed(const Duration(milliseconds: 2500), () {
-    //     Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
-    //   });
-    // } on CustomException catch (error) {
-    //   StatusHandler().handleStatus(
-    //       context: context,
-    //       error: error,
-    //       callback: () {
-    //         _submit(context);
-    //       });
-    // } finally {
-    //   setState(() {
-    //     _isLoading = false;
-    //     _isFormInputEnabled = true;
-    //   });
-    // }
+    try {
+      String message = await Provider.of<Groups>(context, listen: false).recordMemberLoan(_formData);
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));
+      });
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _submit(context);
+          });
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isFormInputEnabled = true;
+      });
+    }
   }
 
   @override
@@ -313,6 +318,23 @@ class _RecordContributionPaymentState extends State<CreateMemberLoan> {
                                     }
                                     return null;
                                   }),
+                              CustomDropDownButton(
+                                labelText: "Select Grace Period",
+                                enabled: _isFormInputEnabled,
+                                listItems: loanGracePeriods,
+                                selectedItem: gracePeriod,
+                                onChanged: (value) {
+                                  setState(() {
+                                    gracePeriod = value;
+                                  });
+                                },
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "This field is required";
+                                  }
+                                  return null;
+                                },
+                              ),
                               SizedBox(
                                 height: 10,
                               ),
