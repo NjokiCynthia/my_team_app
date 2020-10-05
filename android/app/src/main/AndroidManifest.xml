@@ -8,7 +8,7 @@
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name=".MyApplication"
         android:icon="@mipmap/launcher_icon"
         android:label="@string/app_name">
         <activity
