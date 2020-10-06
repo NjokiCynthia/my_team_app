@@ -626,41 +626,41 @@ class _GroupSettingsState extends State<GroupSettings> {
                   await fetchFineTypes(context);
                 },
               ),
-              //  DashedDivider(
-              //    color: Theme.of(context).dividerColor,
-              //    thickness: 1.0,
-              //    height: 5.0,
-              //  ),
-              // ListTile(
-              //   leading: Icon(
-              //     FontAwesome.file_text,
-              //     size: 32,
-              //     color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-              //   ),
-              //   title: customTitle(
-              //     text: "Loan Types",
-              //     fontWeight: FontWeight.w700,
-              //     textAlign: TextAlign.start,
-              //     color: Theme.of(context).textSelectionHandleColor,
-              //   ),
-              //   subtitle: customTitle(
-              //     text: "Manage loan types offered by the group",
-              //     textAlign: TextAlign.start,
-              //     fontSize: 13.0,
-              //     color: Theme.of(context).bottomAppBarColor,
-              //   ),
-              //   dense: true,
-              //   onTap: () async {
-              //     showDialog(
-              //         context: context,
-              //         builder: (BuildContext context) {
-              //           return Center(
-              //             child: CircularProgressIndicator(),
-              //           );
-              //         });
-              //     await fetchLoanTypes(context);
-              //   },
-              // ),
+               DashedDivider(
+                 color: Theme.of(context).dividerColor,
+                 thickness: 1.0,
+                 height: 5.0,
+               ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Loan Types",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage loan types offered by the group",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchLoanTypes(context);
+                },
+              ),
               DashedDivider(
                 color: Theme.of(context).dividerColor,
                 thickness: 1.0,

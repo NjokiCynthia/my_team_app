@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
@@ -9,22 +10,18 @@ import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-paym
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/contribution-transfer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/create-invoice.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
-import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/create-loan.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/svg-icons.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'reports/member/contribution-statement.dart';
@@ -76,9 +73,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     }
 
     List<Widget> eWalletOptions = [
-        SizedBox(
-          width: 16.0,
-        ),
+      SizedBox(
+        width: 16.0,
+      ),
       Container(
           width: 132.0,
           child: svgGridButton(
@@ -107,6 +104,44 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => ReviewWithdrawalRequests(),
                   settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
+      SizedBox(
+        width: 16.0,
+      ),
+    ];
+
+    List<Widget> loanOptions = [
+      SizedBox(
+        width: 16.0,
+      ),
+      Container(
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['money-bag'],
+              title: 'RECORD',
+              subtitle: 'MEMBER LOAN',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => CreateMemberLoan(), settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
+      SizedBox(
+        width: 16.0,
+      ),
+      Container(
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['safe'],
+              title: 'RECORD',
+              subtitle: 'REPAYMENTS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => RecordLoanPayment(), settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -375,6 +410,41 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
+                                "Loans",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontFamily: 'SegoeUI',
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(
+                                    Feather.more_horizontal,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  onPressed: () {})
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                          child: Container(
+                            height: 160.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                              physics: BouncingScrollPhysics(),
+                              children: loanOptions,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
                                 "Record Deposit",
                                 style: TextStyle(
                                   color: Colors.blueGrey[400],
@@ -556,13 +626,13 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                 height: 16,
                               ),
                               //if (recentTransactions.length == 10)
-                                defaultButton(
-                                    context: context,
-                                    text: "View More Transactions",
-                                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ContributionStatement(statementFlag: CONTRIBUTION_STATEMENT),
-                                        settings: RouteSettings(arguments: 0))))
+                              defaultButton(
+                                  context: context,
+                                  text: "View More Transactions",
+                                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ContributionStatement(statementFlag: CONTRIBUTION_STATEMENT),
+                                      settings: RouteSettings(arguments: 0))))
                             ],
                           ),
                         ),

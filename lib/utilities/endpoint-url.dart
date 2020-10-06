@@ -41,7 +41,7 @@ class EndpointUrl {
   static const String GET_GROUP_ACCOUNT_OPTIONS = CustomHelper.baseUrl + "/mobile/accounts/get_group_active_account_options";
   static const String GET_GROUP_ALL_ACCOUNT_OPTIONS = CustomHelper.baseUrl + "/mobile/accounts/get_group_account_options";
   static const String GET_GROUP_FINE_OPTIONS = CustomHelper.baseUrl + "/mobile/fine_categories/get_group_fine_category_options";
-  static const String GET_MEMBER_LOAN_TYPE_OPTIONS = CustomHelper.baseUrl + "/mobile/loans/get_member_loan_options";
+  static const String GET_MEMBER_LOAN_OPTIONS = CustomHelper.baseUrl + "/mobile/loans/get_member_loan_options";
   static const String GET_MEMBERs_LOAN_TYPE_OPTIONS = CustomHelper.baseUrl + "/mobile/loans/get_members_loans_options";
   static const String GET_GROUP_CONTRIBUTIONS_OPTIONS = CustomHelper.baseUrl + "/mobile/contributions/get_group_contribution_options";
   static const String GET_MEMBER_CONTRIBUTIONS_OPTIONS = CustomHelper.baseUrl + "/mobile/contributions/get_member_contribution_options";
