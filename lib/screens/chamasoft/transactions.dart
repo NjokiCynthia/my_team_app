@@ -147,6 +147,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
       SizedBox(
         width: 16.0,
       ),
+      Container(
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['safe'],
+              title: 'BANK LOAN',
+              subtitle: 'REPAYMENTS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => BankLoanRepayment(), settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
+      SizedBox(
+        width: 16.0,
+      ),
     ];
 
     List<Widget> paymentsOptions = [
@@ -250,22 +266,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   builder: (BuildContext context) => RecordExpense(), settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-          width: 132.0,
-          child: svgGridButton(
-              context: context,
-              icon: customIcons['safe'],
-              title: 'BANK LOAN',
-              subtitle: 'REPAYMENTS',
-              color: Colors.blue[400],
-              isHighlighted: false,
-              action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => BankLoanRepayment(), settings: RouteSettings(arguments: 0))),
-              margin: 0,
-              imageHeight: 100.0)),
+
       SizedBox(
         width: 16.0,
       ),
@@ -410,41 +411,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text(
-                                "Loans",
-                                style: TextStyle(
-                                  color: Colors.blueGrey[400],
-                                  fontFamily: 'SegoeUI',
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              IconButton(
-                                  icon: Icon(
-                                    Feather.more_horizontal,
-                                    color: Colors.blueGrey,
-                                  ),
-                                  onPressed: () {})
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                          child: Container(
-                            height: 160.0,
-                            child: ListView(
-                              scrollDirection: Axis.horizontal,
-                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                              physics: BouncingScrollPhysics(),
-                              children: loanOptions,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
                                 "Record Deposit",
                                 style: TextStyle(
                                   color: Colors.blueGrey[400],
@@ -506,6 +472,41 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                               padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
                               physics: BouncingScrollPhysics(),
                               children: expenditureOptions,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Loans",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontFamily: 'SegoeUI',
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(
+                                    Feather.more_horizontal,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  onPressed: () {})
+                            ],
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                          child: Container(
+                            height: 160.0,
+                            child: ListView(
+                              scrollDirection: Axis.horizontal,
+                              padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                              physics: BouncingScrollPhysics(),
+                              children: loanOptions,
                             ),
                           ),
                         ),
