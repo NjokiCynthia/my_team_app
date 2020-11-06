@@ -32,6 +32,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   List<int> _filterList = [];
   List<String> _memberList = [];
 
+  bool _hasMoreData = false;
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -63,10 +65,16 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
     _withdrawals = Provider.of<Groups>(context, listen: false).getWithdrawals;
     _getWithdrawals(context).then((_) {
-      _withdrawals = Provider.of<Groups>(context, listen: false).getWithdrawals;
-      setState(() {
-        _isLoading = false;
-      });
+      if (context != null) {
+        _withdrawals = Provider.of<Groups>(context, listen: false).getWithdrawals;
+        setState(() {
+          if (_withdrawals.length < 20) {
+            _hasMoreData = false;
+          } else
+            _hasMoreData = true;
+          _isLoading = false;
+        });
+      }
     });
 
     _isInit = false;
@@ -204,7 +212,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                       child: _withdrawals.length > 0
                           ? NotificationListener<ScrollNotification>(
                               onNotification: (ScrollNotification scrollInfo) {
-                                if (!_isLoading && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) { //TODO check if has more data before fetching again
+                                if (!_isLoading && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && _hasMoreData) {
+                                  //TODO check if has more data before fetching again
                                   _fetchData();
                                 }
                                 return true;

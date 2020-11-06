@@ -6,6 +6,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -22,37 +23,35 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  String _groupCurrency = "Ksh";
 
-  // Future<void> _getContributionSettings(BuildContext context, String contributionId) async {
-  //   try {
-  //     final response = await Provider.of<Groups>(context, listen: false).getContributionDetails(contributionId);
-  //     print(response);
-  //     Navigator.pop(context);
-  //     Navigator.pop(context); // pop bottom sheet
-  //     final result = await Navigator.of(context).push(MaterialPageRoute(
-  //       builder: (context) => CreateContribution(isEditMode: true, contributionDetails: response),
-  //     ));
+  Future<void> _getLoanSettings(BuildContext context, String contributionId) async {
+    try {
+      final response = await Provider.of<Groups>(context, listen: false).getLoanDetails(contributionId);
+      Navigator.pop(context);
+      Navigator.pop(context); // pop bottom sheet
+      final result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => CreateLoanType(isEditMode: true, loanDetails: response["data"]),
+      ));
 
-  //     print(result);
-  //     if (result != null) {
-  //       int status = int.tryParse(result.toString()) ?? 0;
-  //       if (status == 1) {
-  //         _refreshIndicatorKey.currentState.show();
-  //         _fetchLoanTypes(context);
-  //       }
-  //     }
-  //   } on CustomException catch (error) {
-  //     Navigator.pop(context);
-  //     Navigator.pop(context); // pop bottom sheet
-  //     StatusHandler().handleStatus(
-  //         context: context,
-  //         error: error,
-  //         callback: () {
-  //           _getContributionSettings(context, contributionId);
-  //         });
-  //   }
-  // }
+      print(result);
+      if (result != null) {
+        int status = int.tryParse(result.toString()) ?? 0;
+        if (status == 1) {
+          _refreshIndicatorKey.currentState.show();
+          _fetchLoanTypes(context);
+        }
+      }
+    } on CustomException catch (error) {
+      Navigator.pop(context);
+      Navigator.pop(context); // pop bottom sheet
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _getLoanSettings(context, contributionId);
+          });
+    }
+  }
 
   Future<void> _fetchLoanTypes(BuildContext context) async {
     try {
@@ -63,6 +62,63 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
           error: error,
           callback: () {
             _fetchLoanTypes(context);
+          });
+    }
+  }
+
+  showConfirmationDialog(BuildContext context, LoanType loanType, SettingActions settingAction) {
+    String title = "";
+    if (settingAction == SettingActions.actionHide) {
+      title = "This will hide ${loanType.name}";
+    } else if (settingAction == SettingActions.actionUnHide) {
+      title = "This will un-hide ${loanType.name}";
+    } else if (settingAction == SettingActions.actionDelete) {
+      title = "This will delete ${loanType.name}";
+    }
+
+    twoButtonAlertDialog(
+        context: context,
+        message: "Are you sure you want to proceed?",
+        yesText: "Yes",
+        title: title,
+        action: () async {
+          Navigator.of(context).pop();
+          updateLoanType(context, loanType, settingAction);
+        });
+  }
+
+  Future<void> updateLoanType(BuildContext context, LoanType loanType, SettingActions settingAction) async {
+    try {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+
+      await Provider.of<Groups>(context, listen: false).updateLoanType(id: loanType.id, action: settingAction);
+
+      Navigator.pop(context);
+      String message = "${loanType.name} has been hidden";
+      if (settingAction == SettingActions.actionUnHide) {
+        message = "${loanType.name} is now active";
+      } else if (settingAction == SettingActions.actionDelete) {
+        message = "${loanType.name} has been deleted";
+      }
+
+      Scaffold.of(context).showSnackBar(SnackBar(
+          content: Text(
+        message,
+      )));
+      _refreshIndicatorKey.currentState.show();
+    } on CustomException catch (error) {
+      Navigator.pop(context);
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            updateLoanType(context, loanType, settingAction);
           });
     }
   }
@@ -84,14 +140,14 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
-                      // showDialog(
-                      //     context: context,
-                      //     builder: (_) {
-                      //       return Center(
-                      //         child: CircularProgressIndicator(),
-                      //       );
-                      //     });
-                      // await _getContributionSettings(context, contribution.id);
+                      showDialog(
+                          context: context,
+                          builder: (_) {
+                            return Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          });
+                      await _getLoanSettings(context, loanType.id);
                     },
                     child: ListTile(
                       leading: Icon(
@@ -111,8 +167,8 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      // showConfirmationDialog(context, incomeCategory,
-                      //     incomeCategory.isHidden ? SettingActions.actionUnHide : SettingActions.actionHide);
+                      showConfirmationDialog(context, loanType,
+                          loanType.isHidden ? SettingActions.actionUnHide : SettingActions.actionHide);
                     },
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     child: ListTile(
@@ -133,7 +189,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      // showConfirmationDialog(context, incomeCategory, SettingActions.actionDelete);
+                      showConfirmationDialog(context, loanType, SettingActions.actionDelete);
                     },
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     child: ListTile(
@@ -149,27 +205,6 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                     ),
                   ),
                 ),
-//                Material(
-//                  color: Theme.of(context).backgroundColor,
-//                  child: InkWell(
-//                    onTap: () {},
-//                    splashColor: Colors.blueGrey.withOpacity(0.2),
-//                    child: ListTile(
-//                      leading: Icon(
-//                        Icons.delete,
-//                        color: Colors.red.withOpacity(0.7),
-//                      ),
-//                      title: customTitle(
-//                          text: "Delete Contribution",
-//                          fontWeight: FontWeight.w600,
-//                          textAlign: TextAlign.start,
-//                          color: Theme.of(context).textSelectionHandleColor),
-//                      onTap: () {
-//                        Navigator.pop(context);
-//                      },
-//                    ),
-//                  ),
-//                ),
               ],
             ),
           ),
@@ -181,10 +216,6 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
   @override
   void initState() {
     super.initState();
-    _groupCurrency = Provider.of<Groups>(context, listen: false)
-        .getCurrentGroup()
-        .groupCurrency;
-    print(_groupCurrency);
   }
 
   @override
@@ -213,7 +244,6 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
               Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
             builder: (_) => CreateLoanType(),
           ));
-
           if (result != null) {
             int status = int.tryParse(result.toString()) ?? 0;
             if (status == 1) {
@@ -245,15 +275,13 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                               contentPadding: EdgeInsets.all(12.0),
                               dense: true,
                               title: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Expanded(
                                     flex: 3,
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.start,
                                       children: <Widget>[
                                         Icon(
                                           Icons.label,
@@ -262,75 +290,61 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                         SizedBox(width: 10.0),
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            crossAxisAlignment: CrossAxisAlignment.start,
                                             children: <Widget>[
                                               customTitleWithWrap(
                                                 text: '${loanType.name}',
                                                 textAlign: TextAlign.start,
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 16.0,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                color: Theme.of(context).textSelectionHandleColor,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Loan Amount: ',
                                                 message: loanType.loanAmount,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                color: Theme.of(context).textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Repayment Period: ',
-                                                message:
-                                                    loanType.repaymentPeriod,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                message: loanType.repaymentPeriod,
+                                                color: Theme.of(context).textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Interest Rate: ',
                                                 message: loanType.interestRate,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                color: Theme.of(context).textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Loan Processing: ',
-                                                message:
-                                                    loanType.loanProcessing,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                message: loanType.loanProcessing,
+                                                color: Theme.of(context).textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Guarantors: ',
                                                 message: loanType.guarantors,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                color: Theme.of(context).textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Late Payment Fines: ',
-                                                message:
-                                                    loanType.latePaymentFines,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                message: loanType.latePaymentFines,
+                                                color: Theme.of(context).textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
                                               richTextWithWrap(
-                                                title:
-                                                    'Outstanding Payment Fines: ',
-                                                message: loanType
-                                                    .outstandingPaymentFines,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                                title: 'Outstanding Payment Fines: ',
+                                                message: loanType.outstandingPaymentFines,
+                                                color: Theme.of(context).textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -348,14 +362,11 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                     width: 40,
                                     child: circleIconButton(
                                       icon: Icons.edit,
-                                      backgroundColor:
-                                          primaryColor.withOpacity(.3),
+                                      backgroundColor: primaryColor.withOpacity(.3),
                                       color: primaryColor,
                                       iconSize: 16.0,
                                       padding: 0.0,
-                                      onPressed: () => _showActions(
-                                          _scaffoldKey.currentContext,
-                                          loanType),
+                                      onPressed: () => _showActions(context, loanType),
                                     ),
                                   ),
                                 ],
@@ -369,8 +380,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                             );
                           },
                         )
-                      : betterEmptyList(
-                          message: "Sorry, you have not added any loan types");
+                      : betterEmptyList(message: "Sorry, you have not added any loan types");
                 })),
           );
         },

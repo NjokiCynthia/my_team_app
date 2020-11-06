@@ -28,6 +28,12 @@ List<NamesListItem> memberTransferToOptions = [
   NamesListItem(id: 2, name: "Fine Payments"),
   NamesListItem(id: 3, name: "Loan Share"),
 ];
+List<NamesListItem> groupMembers = [
+  NamesListItem(id: 1, name: "Martin Nzuki"),
+  NamesListItem(id: 2, name: "Peter Kimutai"),
+  NamesListItem(id: 3, name: "Geoffrey Githaiga"),
+  NamesListItem(id: 4, name: "Edwin Kapkei"),
+];
 
 class ContributionTransfer extends StatefulWidget {
   @override

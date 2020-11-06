@@ -1,10 +1,9 @@
 import 'dart:developer';
 
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
-import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
+import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
@@ -19,14 +18,12 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../select-member.dart';
-
-class RecordContributionPayment extends StatefulWidget {
+class CreateMemberLoan extends StatefulWidget {
   @override
   _RecordContributionPaymentState createState() => _RecordContributionPaymentState();
 }
 
-class _RecordContributionPaymentState extends State<RecordContributionPayment> {
+class _RecordContributionPaymentState extends State<CreateMemberLoan> {
   bool _isInit = true;
   bool _isLoading = false;
   double _appBarElevation = 0;
@@ -34,14 +31,16 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   List<MembersFilterEntry> selectedMembersList = [], memberOptions = [];
   int memberTypeId;
   final _formKey = new GlobalKey<FormState>();
-  DateTime contributionDate = DateTime.now();
+  DateTime disbursementDate = DateTime.now();
   final now = DateTime.now();
-  int depositMethod;
-  int contributionId;
+  int loanTypeId;
   int accountId;
-  String contributionAmount;
+  int groupMemberId;
+  int gracePeriod;
+  String repaymentPeriod;
+  String loanAmount;
   Map<String, dynamic> _formData = {};
-  String selectedContributionValue;
+  String selectedLoanValue;
   String selectedAccountValue;
   String selectedMemberType;
   static final int epochTime = DateTime.now().toUtc().millisecondsSinceEpoch;
@@ -70,7 +69,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(contr: true, acc: true);
+    formLoadData =
+        await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, member: true, loanTypes: true);
     setState(() {
       _isInit = false;
     });
@@ -81,26 +81,30 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     if (!_formKey.currentState.validate()) {
       return;
     }
+
     setState(() {
       _isLoading = true;
       _isFormInputEnabled = false;
     });
+
     _formKey.currentState.save();
-    _formData['deposit_date'] = contributionDate.toString();
-    _formData['deposit_method'] = depositMethod;
-    _formData['contribution_id'] = contributionId;
+    _formData['disbursement_date'] = disbursementDate.toString();
+    _formData['loan_type_id'] = loanTypeId;
     _formData['account_id'] = accountId;
     _formData['request_id'] = requestId;
-    _formData['amount'] = contributionAmount;
-    _formData['member_type_id'] = memberTypeId;
-    _formData['individual_payments'] = _individualMemberContributions;
+    _formData['loan_amount'] = loanAmount;
+    _formData['member_id'] = groupMemberId;
+    _formData['grace_period'] = gracePeriod;
+    _formData['repayment_period'] = repaymentPeriod;
+
     log(_formData.toString());
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordContributionPayments(_formData);
+      String message = await Provider.of<Groups>(context, listen: false).recordMemberLoan(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -195,7 +199,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        title: "Record Contribution Payment",
+        title: "Record Member Loan",
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
@@ -213,8 +217,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                 controller: _scrollController,
                 child: Column(
                   children: <Widget>[
-                    toolTip(
-                        context: context, title: "Manually record contribution payments", message: "", showTitle: true),
+                    toolTip(context: context, title: "Manually record member loans", message: "", showTitle: true),
                     Padding(
                       padding: inputPagePadding,
                       child: Form(
@@ -223,59 +226,24 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisSize: MainAxisSize.min,
                             children: <Widget>[
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: <Widget>[
-                                  Expanded(
-                                    flex: 2,
-                                    child: DatePicker(
-                                      labelText: 'Select Deposit Date',
-                                      lastDate: DateTime.now(),
-                                      selectedDate: contributionDate == null
-                                          ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
-                                          : contributionDate,
-                                      selectDate: (selectedDate) {
-                                        setState(() {
-                                          contributionDate = selectedDate;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Expanded(
-                                    flex: 3,
-                                    child: CustomDropDownButton(
-                                      enabled: _isFormInputEnabled,
-                                      labelText: "Select Deposit Method",
-                                      listItems: depositMethods,
-                                      selectedItem: depositMethod,
-                                      validator: (value) {
-                                        if (value == null) {
-                                          return "This field is required";
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        setState(() {
-                                          depositMethod = value;
-                                        });
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              SizedBox(
-                                height: 10,
+                              DatePicker(
+                                labelText: 'Select Disbursement Date',
+                                lastDate: DateTime.now(),
+                                selectedDate: disbursementDate == null
+                                    ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                    : disbursementDate,
+                                selectDate: (selectedDate) {
+                                  setState(() {
+                                    disbursementDate = selectedDate;
+                                  });
+                                },
                               ),
                               CustomDropDownButton(
-                                labelText: "Select Contribution",
+                                labelText: "Select Loan Type",
                                 enabled: _isFormInputEnabled,
-                                listItems: formLoadData.containsKey("contributionOptions")
-                                    ? formLoadData["contributionOptions"]
-                                    : [],
-                                selectedItem: contributionId,
+                                listItems:
+                                    formLoadData.containsKey("loanTypeOptions") ? formLoadData["loanTypeOptions"] : [],
+                                selectedItem: loanTypeId,
                                 validator: (value) {
                                   if (value == null) {
                                     return "This field is required";
@@ -284,15 +252,43 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 },
                                 onChanged: (value) {
                                   setState(() {
-                                    contributionId = value;
+                                    loanTypeId = value;
                                   });
                                 },
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
                               CustomDropDownButton(
-                                labelText: "Select Account",
+                                labelText: 'Select Member Taking the Loan',
+                                enabled: _isFormInputEnabled,
+                                listItems:
+                                    formLoadData.containsKey("memberOptions") ? formLoadData["memberOptions"] : [],
+                                selectedItem: groupMemberId,
+                                validator: (value) {
+                                  if (value.toString().isEmpty || value == null) {
+                                    return "Field is required";
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {
+                                    groupMemberId = value;
+                                  });
+                                },
+                              ),
+                              amountTextInputField(
+                                  enabled: _isFormInputEnabled,
+                                  context: context,
+                                  labelText: 'Loan Amount',
+                                  onChanged: (value) {
+                                    loanAmount = value;
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value == "") {
+                                      return "Field is required";
+                                    }
+                                    return null;
+                                  }),
+                              CustomDropDownButton(
+                                labelText: "Select Disbursing Account",
                                 enabled: _isFormInputEnabled,
                                 listItems:
                                     formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
@@ -309,33 +305,28 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                   return null;
                                 },
                               ),
-                              SizedBox(
-                                height: 10,
-                              ),
+                              amountTextInputField(
+                                  enabled: _isFormInputEnabled,
+                                  context: context,
+                                  labelText: 'Repayment Period(in Months)',
+                                  onChanged: (value) {
+                                    repaymentPeriod = value;
+                                  },
+                                  validator: (value) {
+                                    if (value == null || value == "") {
+                                      return "Field is required";
+                                    }
+                                    return null;
+                                  }),
                               CustomDropDownButton(
-                                labelText: 'Select Member',
+                                labelText: "Select Grace Period",
                                 enabled: _isFormInputEnabled,
-                                listItems: memberTypes,
-                                selectedItem: memberTypeId,
-                                onChanged: (selected) async {
-                                  if (selected == 1) {
-                                    await Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => SelectMember(
-                                                  initialMembersList: selectedMembersList,
-                                                  //membersList: memberOptions,
-                                                ))).then((value) {
-                                      setState(() {
-                                        memberTypeId = selected;
-                                        selectedMembersList = value;
-                                      });
-                                    });
-                                  } else {
-                                    setState(() {
-                                      memberTypeId = selected;
-                                    });
-                                  }
+                                listItems: loanGracePeriods,
+                                selectedItem: gracePeriod,
+                                onChanged: (value) {
+                                  setState(() {
+                                    gracePeriod = value;
+                                  });
                                 },
                                 validator: (value) {
                                   if (value == null) {
@@ -343,62 +334,6 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                   }
                                   return null;
                                 },
-                              ),
-                              Visibility(
-                                visible: memberTypeId == 1,
-                                child: SingleChildScrollView(
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Column(
-                                        children: memberWidgets.toList(),
-                                      ),
-                                      FlatButton(
-                                        onPressed: () async {
-                                          //open select members dialog
-                                          await Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) => SelectMember(
-                                                        initialMembersList: selectedMembersList,
-                                                        //membersList: memberOptions,
-                                                      ))).then((value) {
-                                            setState(() {
-                                              selectedMembersList = value;
-                                            });
-                                          });
-                                        },
-                                        child: Text(
-                                          'Select members',
-                                          style: TextStyle(
-                                            color: Colors.blueAccent,
-                                            fontSize: 15.0,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Visibility(
-                                visible: memberTypeId == 2,
-                                child: amountTextInputField(
-                                    enabled: _isFormInputEnabled,
-                                    context: context,
-                                    labelText: 'Enter Amount for Each Member',
-                                    onChanged: (value) {
-                                      contributionAmount = value;
-                                    },
-                                    validator: (value) {
-                                      if (value == null || value == "") {
-                                        return "Field is required";
-                                      }
-                                      return null;
-                                    }),
                               ),
                               SizedBox(
                                 height: 10,

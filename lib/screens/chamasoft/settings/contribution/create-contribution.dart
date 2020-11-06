@@ -24,7 +24,6 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
   double _appBarElevation = 0;
   dynamic responseData;
   PageController _pageController;
-  int selectedTabIndex = 0;
   int currentPage = 0;
   int _formEdited = 0;
 
@@ -148,7 +147,7 @@ class _CreateContributionState extends State<CreateContribution> with SingleTick
                           isEditMode: widget.isEditMode == null ? false : true,
                           contributionDetails: widget.contributionDetails,
                           onButtonPressed: (response) {
-                            Navigator.of(context).pop(true);
+                            Navigator.of(context).pop(_formEdited);
                           },
                         ),
                       ],
