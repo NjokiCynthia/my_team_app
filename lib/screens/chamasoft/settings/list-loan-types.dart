@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/loan-type/create-loan-type.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -20,8 +21,7 @@ class ListLoanTypes extends StatefulWidget {
 }
 
 class _ListLoanTypesState extends State<ListLoanTypes> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> _getLoanSettings(BuildContext context, String contributionId) async {
@@ -240,8 +240,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
         ),
         backgroundColor: primaryColor,
         onPressed: () async {
-          final result =
-              Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
+          final result = Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
             builder: (_) => CreateLoanType(),
           ));
           if (result != null) {
