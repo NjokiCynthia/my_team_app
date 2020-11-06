@@ -392,12 +392,12 @@ class _LoginState extends State<Login> {
                         "color": primaryColor,
                         "weight": FontWeight.w500
                       },
-                      'and': {},
-                      'privacy policy.': {
-                        "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-                        "color": primaryColor,
-                        "weight": FontWeight.w500
-                      },
+                      // 'and': {},
+                      // 'privacy policy.': {
+                      //   "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                      //   "color": primaryColor,
+                      //   "weight": FontWeight.w500
+                      // },
                     }),
                   ],
                 ),
