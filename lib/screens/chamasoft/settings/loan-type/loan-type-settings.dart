@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
-import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
@@ -40,7 +39,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
           ListTile(
             title: Text(
               "Loan Details",
-              style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontWeight: FontWeight.w500),
             ),
             subtitle: Text(
               "Configure the behaviour of your loan",
@@ -51,7 +52,8 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
-                child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                child:
+                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   simpleTextInputField(
                     context: context,
                     labelText: 'Loan Type Name',
@@ -125,8 +127,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                     child: SwitchListTile(
                       title: Text(
                         "Enable loan reducing balance recalculation",
-                        style:
-                            TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w500),
                       ),
                       value: enableLoanReducingBalanceRecalculation,
                       onChanged: (bool value) {
@@ -208,13 +211,12 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
             ),
           ),
           defaultButton(
-            context: context,
-            text: "Save & Continue",
-            onPressed: () {
-              print("clicked");
-              widget.onButtonPressed();
-            }
-          )
+              context: context,
+              text: "Save & Continue",
+              onPressed: () {
+                print("clicked");
+                widget.onButtonPressed();
+              })
         ],
       ),
     );

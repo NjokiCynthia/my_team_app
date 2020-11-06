@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-
 import 'package:chamasoft/providers/auth.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:http/http.dart' as http;
@@ -10,7 +8,8 @@ import '../utilities/custom-helper.dart';
 import 'common.dart';
 
 class PostToServer {
-  static const String _defaultAuthenticationToken = "d8ng63ttyjp88cnjpkme65efgz6b2gwg";
+  static const String _defaultAuthenticationToken =
+      "d8ng63ttyjp88cnjpkme65efgz6b2gwg";
 
   static String _encryptAESCryptoJS(String plainText, String passphrase) {
     try {
@@ -28,14 +27,17 @@ class PostToServer {
     var explodedString = encryptedString.split(":")..toList();
     final String encryptedBody = explodedString[0];
     final String ivBody = explodedString[1];
-    final encryptProtocol = Encrypter(AES(Key.fromUtf8(passphrase), mode: AESMode.cbc));
-    final encrypted = encryptProtocol.decrypt64(encryptedBody, iv: IV.fromBase64(ivBody));
+    final encryptProtocol =
+        Encrypter(AES(Key.fromUtf8(passphrase), mode: AESMode.cbc));
+    final encrypted =
+        encryptProtocol.decrypt64(encryptedBody, iv: IV.fromBase64(ivBody));
     return encrypted;
   }
 
   static Future<String> _encryptSecretKey(String randomKey) async {
     try {
-      final publicKey = '''MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST
+      final publicKey =
+          '''MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+VsG3fDU1B8V7258pZST
 0FfZzEXiPCC6i8RtA5pyS/orSBa1Ds3PMnF4qU+Z+HlBB9apKG/pYK73mXR8v1cX
 jZCFxg08Gq/dwam1O5ehNXtEHKhembXdZC2zdFyVVg8emgbyDxaP1oEWwQOqoUI7
 1e1lPqDMrFTUeS65YO2ayWeEKEnY12nE6pgyopSdEo5Boz4RzxCL8jLIhTwRouhi
@@ -131,7 +133,10 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
       final String secretKey = response["secret"];
       final String body = response["body"];
       try {
-        if (body == null || body.isEmpty || secretKey == null || secretKey.isEmpty) {
+        if (body == null ||
+            body.isEmpty ||
+            secretKey == null ||
+            secretKey.isEmpty) {
           return;
         }
         final secretKeyString = await _decryptSecretKey(secretKey);
@@ -147,18 +152,24 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
 
   static Future<dynamic> post(String jsonObject, String url) async {
     try {
-      final result = await InternetAddress.lookup("example.com").timeout(const Duration(seconds: 10), onTimeout: () {
+      final result = await InternetAddress.lookup("example.com")
+          .timeout(const Duration(seconds: 10), onTimeout: () {
         print("Connection error");
-        throw CustomException(message: ERROR_MESSAGE_INTERNET, status: ErrorStatusCode.statusNoInternet);
+        throw CustomException(
+            message: ERROR_MESSAGE_INTERNET,
+            status: ErrorStatusCode.statusNoInternet);
       });
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         final String randomKey = CustomHelper.generateRandomString(16);
         print(url);
         try {
           final String secretKey = await _encryptSecretKey(randomKey);
-          final String versionCode = await CustomHelper.getApplicationBuildNumber();
+          final String versionCode =
+              await CustomHelper.getApplicationBuildNumber();
           final String userAccessTokenKey = await Auth.getAccessToken();
-          final String userAccessToken = userAccessTokenKey != null ? userAccessTokenKey : _defaultAuthenticationToken;
+          final String userAccessToken = userAccessTokenKey != null
+              ? userAccessTokenKey
+              : _defaultAuthenticationToken;
           final Map<String, String> headers = {
             "Secret": secretKey,
             "Versioncode": versionCode,
@@ -169,10 +180,12 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
             //print("Body: $postRequest");
-            final http.Response response =
-                await http.post(url, headers: headers, body: postRequest).timeout(const Duration(seconds: 60), onTimeout: () {
-                  print("Connection timeout");
-              throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
+            final http.Response response = await http
+                .post(url, headers: headers, body: postRequest)
+                .timeout(const Duration(seconds: 60), onTimeout: () {
+              print("Connection timeout");
+              throw CustomException(
+                  message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
               final responseBody = await generateResponse(response.body);
@@ -184,12 +197,15 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   //display error(s)
                   if (responseBody["validation_errors"] != null) {
                     message = "";
-                    Map<String, dynamic> validationErrors = responseBody["validation_errors"];
+                    Map<String, dynamic> validationErrors =
+                        responseBody["validation_errors"];
                     validationErrors.forEach((key, value) {
                       message = message + value + "\n";
                     });
 
-                    throw CustomException(message: message, status: ErrorStatusCode.statusFormValidationError);
+                    throw CustomException(
+                        message: message,
+                        status: ErrorStatusCode.statusFormValidationError);
                   }
 
                   throw CustomException(message: message);
@@ -208,14 +224,18 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                 case 8:
                 case 9:
                   //reset app
-                  throw CustomException(message: message, status: ErrorStatusCode.statusRequireLogout);
+                  throw CustomException(
+                      message: message,
+                      status: ErrorStatusCode.statusRequireLogout);
                   break;
                 case 5:
                 case 6:
                 case 10:
                   //clear current group loaded to preferences
                   //clear screens and restart app from splash screen
-                  throw CustomException(message: message, status: ErrorStatusCode.statusRequireRestart);
+                  throw CustomException(
+                      message: message,
+                      status: ErrorStatusCode.statusRequireRestart);
                   break;
                 case 7:
                   //generic error
@@ -235,7 +255,9 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   break;
                 case 400:
                   //log out user
-                  throw CustomException(message: ERROR_MESSAGE_LOGIN, status: ErrorStatusCode.statusRequireLogout);
+                  throw CustomException(
+                      message: ERROR_MESSAGE_LOGIN,
+                      status: ErrorStatusCode.statusRequireLogout);
                   break;
                 case 404:
                   //generic error
@@ -261,10 +283,14 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           throw (error);
         }
       } else {
-        throw CustomException(message: ERROR_MESSAGE_INTERNET, status: ErrorStatusCode.statusNoInternet);
+        throw CustomException(
+            message: ERROR_MESSAGE_INTERNET,
+            status: ErrorStatusCode.statusNoInternet);
       }
     } on SocketException catch (_) {
-      throw CustomException(message: ERROR_MESSAGE_INTERNET, status: ErrorStatusCode.statusNoInternet);
+      throw CustomException(
+          message: ERROR_MESSAGE_INTERNET,
+          status: ErrorStatusCode.statusNoInternet);
     }
   }
 }

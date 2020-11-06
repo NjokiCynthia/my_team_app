@@ -1,11 +1,8 @@
-import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'backgrounds.dart';
 
 Widget emptyList({Color color, IconData iconData, String text}) {
   return Container(
@@ -30,7 +27,8 @@ Widget emptyList({Color color, IconData iconData, String text}) {
   );
 }
 
-Widget betterEmptyList({String title = "Nothing to display!", @required message}) {
+Widget betterEmptyList(
+    {String title = "Nothing to display!", @required message}) {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [

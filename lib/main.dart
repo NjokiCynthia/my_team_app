@@ -15,7 +15,6 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
 
 import './providers/auth.dart';
 import './providers/groups.dart';
@@ -37,7 +36,8 @@ class _MyAppState extends State<MyApp> {
 //  }
 
   void getCurrentAppTheme() async {
-    themeChangeProvider.darkTheme = await themeChangeProvider.darkThemePreference.getTheme();
+    themeChangeProvider.darkTheme =
+        await themeChangeProvider.darkThemePreference.getTheme();
   }
 
   @override
@@ -88,17 +88,22 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) {},
         )
       ],
-      child: Consumer<DarkThemeProvider>(builder: (BuildContext context, value, Widget child) {
+      child: Consumer<DarkThemeProvider>(
+          builder: (BuildContext context, value, Widget child) {
         return MaterialApp(
           builder: (BuildContext context, Widget child) {
             final data = MediaQuery.of(context);
             return MediaQuery(
-              data: data.copyWith(textScaleFactor: data.textScaleFactor > 1.0 ? 1.0 : data.textScaleFactor),
+              data: data.copyWith(
+                  textScaleFactor:
+                      data.textScaleFactor > 1.0 ? 1.0 : data.textScaleFactor),
               child: child,
             );
           },
           debugShowCheckedModeBanner: false,
-          color: themeChangeProvider.darkTheme ? Colors.blueGrey[900] : Colors.blue[50],
+          color: themeChangeProvider.darkTheme
+              ? Colors.blueGrey[900]
+              : Colors.blue[50],
           title: 'Chamasoft',
           theme: Styles.themeData(themeChangeProvider.darkTheme, context),
           home: IntroScreen(),

@@ -1,7 +1,4 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/report_helper.dart';
-import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -13,8 +10,6 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
-
-import '../../dashboard.dart';
 
 class AmountToWithdraw extends StatefulWidget {
   final Map<String, String> formData;
@@ -28,7 +23,9 @@ class AmountToWithdraw extends StatefulWidget {
 class _AmountToWithdrawState extends State<AmountToWithdraw> {
   TextEditingController _controller = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  String requestId = ((DateTime.now().toUtc().millisecondsSinceEpoch.toDouble() / 1000).toStringAsFixed(0));
+  String requestId =
+      ((DateTime.now().toUtc().millisecondsSinceEpoch.toDouble() / 1000)
+          .toStringAsFixed(0));
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
 
@@ -46,9 +43,11 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
     });
 
     try {
-      final requestId = await Provider.of<Groups>(context, listen: false).createWithdrawalRequest(widget.formData);
+      final requestId = await Provider.of<Groups>(context, listen: false)
+          .createWithdrawalRequest(widget.formData);
 
-      alertDialogWithAction(context, "Withdrawal request has been submitted", () {
+      alertDialogWithAction(context, "Withdrawal request has been submitted",
+          () {
         Navigator.of(context).pop();
         if (requestId == "-1") {
           //request is duplicate
@@ -120,7 +119,9 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                     Container(
                       padding: EdgeInsets.all(16.0),
                       width: double.infinity,
-                      color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                      color: (themeChangeProvider.darkTheme)
+                          ? Colors.blueGrey[800]
+                          : Color(0xffededfe),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -137,14 +138,16 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                             children: <Widget>[
                               subtitle1(
                                 text: "$namePlaceholder: ",
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                               ),
                               Expanded(
                                 flex: 1,
                                 child: customTitle(
                                   text: widget.formData['name'],
                                   fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
                               ),
@@ -157,14 +160,18 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                               children: <Widget>[
                                 subtitle1(
                                   text: "$typePlaceholder: ",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                 ),
                                 Expanded(
                                   flex: 1,
                                   child: customTitle(
-                                    text: widget.formData['member_name'] != null ? widget.formData['member_name'] : '',
+                                    text: widget.formData['member_name'] != null
+                                        ? widget.formData['member_name']
+                                        : '',
                                     fontWeight: FontWeight.w600,
-                                    color: Theme.of(context).textSelectionHandleColor,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
                                 ),
@@ -178,13 +185,17 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                               children: <Widget>[
                                 subtitle1(
                                   text: "Bank: ",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                 ),
                                 Expanded(
                                     child: customTitle(
                                   textAlign: TextAlign.start,
-                                  text: widget.formData['bank_name'] != null ? widget.formData['bank_name'] : '',
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  text: widget.formData['bank_name'] != null
+                                      ? widget.formData['bank_name']
+                                      : '',
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   fontWeight: FontWeight.w600,
                                 )),
                               ],
@@ -194,14 +205,20 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               subtitle1(
-                                text: recipient == 1 ? "Recipient Contact: " : "Recipient Account: ",
-                                color: Theme.of(context).textSelectionHandleColor,
+                                text: recipient == 1
+                                    ? "Recipient Contact: "
+                                    : "Recipient Account: ",
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                               ),
                               Expanded(
                                   child: customTitleWithWrap(
                                 textAlign: TextAlign.start,
-                                text: recipient == 1 ? widget.formData['phone'] : widget.formData['account_number'],
-                                color: Theme.of(context).textSelectionHandleColor,
+                                text: recipient == 1
+                                    ? widget.formData['phone']
+                                    : widget.formData['account_number'],
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w600,
                               )),
                             ],
@@ -213,13 +230,17 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                               children: <Widget>[
                                 subtitle1(
                                   text: "Description: ",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                 ),
                                 Expanded(
                                   child: customTitle(
                                     textAlign: TextAlign.start,
-                                    text: widget.formData['description'] != null ? widget.formData['description'] : '',
-                                    color: Theme.of(context).textSelectionHandleColor,
+                                    text: widget.formData['description'] != null
+                                        ? widget.formData['description']
+                                        : '',
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -258,7 +279,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                             _isLoading
                                 ? Padding(
                                     padding: EdgeInsets.all(10),
-                                    child: Center(child: CircularProgressIndicator()),
+                                    child: Center(
+                                        child: CircularProgressIndicator()),
                                   )
                                 : defaultButton(
                                     context: context,

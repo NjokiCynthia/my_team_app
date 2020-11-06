@@ -19,6 +19,7 @@ class _ManageEWalletState extends State<ManageEWallet> {
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    print(group);
     //_walletEnabled = group.onlineBankingEnabled;
 
     return Scaffold(
@@ -52,7 +53,9 @@ class _ManageEWalletState extends State<ManageEWallet> {
                   Card(
                     elevation: 0,
                     margin: EdgeInsets.all(12),
-                    color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                    color: (themeChangeProvider.darkTheme)
+                        ? Colors.blueGrey[800]
+                        : Color(0xffededfe),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Column(

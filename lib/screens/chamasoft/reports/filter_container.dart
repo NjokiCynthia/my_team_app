@@ -16,7 +16,10 @@ class FilterContainer extends StatefulWidget {
   final List<int> currentFilters;
   final List<String> currentMembers;
 
-  FilterContainer({@required this.filterType, @required this.currentFilters, @required this.currentMembers});
+  FilterContainer(
+      {@required this.filterType,
+      @required this.currentFilters,
+      @required this.currentMembers});
 
   @override
   _FilterContainerState createState() => _FilterContainerState();
@@ -28,7 +31,7 @@ class _FilterContainerState extends State<FilterContainer> {
   bool _isLoading = false;
   bool _selectAll = false;
   bool _selectAllMembers = false;
-  bool _contributionPayments = false;
+  // bool _contributionPayments = false;
   bool _showStatusFilter = true;
   bool _showMemberFilter = false;
   List<NamesListItem> _list = [];
@@ -54,7 +57,8 @@ class _FilterContainerState extends State<FilterContainer> {
       NamesListItem(id: 13, name: "External Lending Loa Repayment"),
     ];
 
-    if (widget.currentFilters.isEmpty || widget.currentFilters.length == _list.length) {
+    if (widget.currentFilters.isEmpty ||
+        widget.currentFilters.length == _list.length) {
       for (var item in _list) {
         _selectedItems.add(item.id);
         _selectAll = true;
@@ -82,7 +86,8 @@ class _FilterContainerState extends State<FilterContainer> {
       NamesListItem(id: 9, name: "External Loan Disbursement"),
     ];
 
-    if (widget.currentFilters.isEmpty || widget.currentFilters.length == _list.length) {
+    if (widget.currentFilters.isEmpty ||
+        widget.currentFilters.length == _list.length) {
       for (var item in _list) {
         _selectedItems.add(item.id);
         _selectAll = true;
@@ -138,7 +143,8 @@ class _FilterContainerState extends State<FilterContainer> {
     _getGroupMembers(context).then((_) {
       if (context != null) {
         _memberList = Provider.of<Groups>(context, listen: false).members;
-        if (/*widget.currentMembers.isEmpty ||*/ widget.currentMembers.length == _memberList.length) {
+        if (/*widget.currentMembers.isEmpty ||*/ widget.currentMembers.length ==
+            _memberList.length) {
           for (var member in _memberList) {
             _selectedMembers.add(member.id);
             _selectAllMembers = true;
@@ -190,14 +196,17 @@ class _FilterContainerState extends State<FilterContainer> {
           elevation: 1,
           leadingIcon: LineAwesomeIcons.close,
           trailingIcon: LineAwesomeIcons.check,
-          trailingAction: () => Navigator.pop(context, [_selectedItems, _selectedMembers])),
+          trailingAction: () =>
+              Navigator.pop(context, [_selectedItems, _selectedMembers])),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
         child: Row(
           children: [
             Container(
-              color: themeChangeProvider.darkTheme ? Colors.grey[800] : Colors.grey[100],
+              color: themeChangeProvider.darkTheme
+                  ? Colors.grey[800]
+                  : Colors.grey[100],
               padding: EdgeInsets.all(8.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,7 +214,9 @@ class _FilterContainerState extends State<FilterContainer> {
                   Container(
                     height: 50,
                     child: Material(
-                      color: themeChangeProvider.darkTheme ? Colors.grey[800] : Colors.grey[100],
+                      color: themeChangeProvider.darkTheme
+                          ? Colors.grey[800]
+                          : Colors.grey[100],
                       child: InkWell(
                         onTap: () {
                           setState(() {
@@ -221,11 +232,14 @@ class _FilterContainerState extends State<FilterContainer> {
                                 textAlign: TextAlign.start,
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w600,
-                                color: Theme.of(context).textSelectionHandleColor),
+                                color:
+                                    Theme.of(context).textSelectionHandleColor),
                             Visibility(
                                 visible: _showStatusFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
-                                    size: 12, color: Theme.of(context).textSelectionHandleColor))
+                                    size: 12,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor))
                           ],
                         ),
                       ),
@@ -234,7 +248,9 @@ class _FilterContainerState extends State<FilterContainer> {
                   Container(
                     height: 50,
                     child: Material(
-                      color: themeChangeProvider.darkTheme ? Colors.grey[800] : Colors.grey[100],
+                      color: themeChangeProvider.darkTheme
+                          ? Colors.grey[800]
+                          : Colors.grey[100],
                       child: InkWell(
                         onTap: () {
                           setState(() {
@@ -250,11 +266,14 @@ class _FilterContainerState extends State<FilterContainer> {
                                 textAlign: TextAlign.start,
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w600,
-                                color: Theme.of(context).textSelectionHandleColor),
+                                color:
+                                    Theme.of(context).textSelectionHandleColor),
                             Visibility(
                                 visible: _showMemberFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
-                                    size: 12, color: Theme.of(context).textSelectionHandleColor))
+                                    size: 12,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor))
                           ],
                         ),
                       ),
@@ -277,13 +296,15 @@ class _FilterContainerState extends State<FilterContainer> {
                           fontWeight: FontWeight.w600,
                           color: Theme.of(context).textSelectionHandleColor),
                       Visibility(
-                        visible: widget.filterType == 1 || widget.filterType == 2,
+                        visible:
+                            widget.filterType == 1 || widget.filterType == 2,
                         child: CheckboxListTile(
                           dense: true,
                           title: subtitle1(
                               text: "Select All",
                               textAlign: TextAlign.start,
-                              color: Theme.of(context).textSelectionHandleColor),
+                              color:
+                                  Theme.of(context).textSelectionHandleColor),
                           value: _selectAll,
                           onChanged: (value) {
                             _selectedItems.clear();
@@ -309,21 +330,30 @@ class _FilterContainerState extends State<FilterContainer> {
                                     text: item.name,
                                     textAlign: TextAlign.center,
                                     fontWeight: FontWeight.w600,
-                                    color: Theme.of(context).textSelectionHandleColor);
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor);
                               } else
                                 return CheckboxListTile(
                                   dense: true,
                                   value: _selectedItems.contains(item.id),
                                   onChanged: (value) {
                                     setState(() {
-                                      if (item.id == 14 || item.id == 15 || item.id == 16) {
-                                        if (_selectedItems.contains(1)) _selectedItems.remove(1);
-                                        if (_selectedItems.contains(2)) _selectedItems.remove(2);
-                                        if (_selectedItems.contains(3)) _selectedItems.remove(3);
+                                      if (item.id == 14 ||
+                                          item.id == 15 ||
+                                          item.id == 16) {
+                                        if (_selectedItems.contains(1))
+                                          _selectedItems.remove(1);
+                                        if (_selectedItems.contains(2))
+                                          _selectedItems.remove(2);
+                                        if (_selectedItems.contains(3))
+                                          _selectedItems.remove(3);
                                       } else {
-                                        if (_selectedItems.contains(14)) _selectedItems.remove(14);
-                                        if (_selectedItems.contains(15)) _selectedItems.remove(15);
-                                        if (_selectedItems.contains(16)) _selectedItems.remove(16);
+                                        if (_selectedItems.contains(14))
+                                          _selectedItems.remove(14);
+                                        if (_selectedItems.contains(15))
+                                          _selectedItems.remove(15);
+                                        if (_selectedItems.contains(16))
+                                          _selectedItems.remove(16);
                                       }
                                       if (value) {
                                         _selectedItems.add(item.id);
@@ -335,7 +365,8 @@ class _FilterContainerState extends State<FilterContainer> {
                                   title: subtitle1(
                                       text: item.name,
                                       textAlign: TextAlign.start,
-                                      color: Theme.of(context).textSelectionHandleColor),
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor),
                                   activeColor: primaryColor,
                                 );
                             } else
@@ -354,7 +385,8 @@ class _FilterContainerState extends State<FilterContainer> {
                                 title: subtitle1(
                                     text: item.name,
                                     textAlign: TextAlign.start,
-                                    color: Theme.of(context).textSelectionHandleColor),
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor),
                                 activeColor: primaryColor,
                               );
                           },
@@ -417,11 +449,13 @@ class _FilterContainerState extends State<FilterContainer> {
                               },
                               title: subtitle1(
                                   text: member.name,
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                               subtitle: subtitle2(
                                   text: member.identity,
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                             );
                           },

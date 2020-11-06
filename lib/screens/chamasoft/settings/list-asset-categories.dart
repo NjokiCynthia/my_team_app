@@ -1,6 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/create-asset-category.dart';
-import 'package:chamasoft/screens/chamasoft/settings/create-income-category.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -16,15 +15,14 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'contribution/create-contribution.dart';
-
 class ListAssetCategories extends StatefulWidget {
   @override
   _ListAssetCategoriesState createState() => _ListAssetCategoriesState();
 }
 
 class _ListAssetCategoriesState extends State<ListAssetCategories> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> _fetchAssetCategories(BuildContext context) async {
@@ -40,8 +38,8 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
     }
   }
 
-  Future<void> editAssetCategory(
-      BuildContext context, IncomeCategories incomeCategory, SettingActions settingAction) async {
+  Future<void> editAssetCategory(BuildContext context,
+      IncomeCategories incomeCategory, SettingActions settingAction) async {
     try {
       showDialog(
           context: context,
@@ -81,7 +79,8 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
     }
   }
 
-  showConfirmationDialog(BuildContext context, IncomeCategories category, SettingActions settingAction) {
+  showConfirmationDialog(BuildContext context, IncomeCategories category,
+      SettingActions settingAction) {
     String title = "";
     if (settingAction == SettingActions.actionHide) {
       title = "This will hide ${category.name}";
@@ -118,8 +117,10 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
                       Navigator.pop(context);
-                      final result = await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreateAssetCategory(isEdit: true, incomeCategory: incomeCategory),
+                      final result =
+                          await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CreateAssetCategory(
+                            isEdit: true, incomeCategory: incomeCategory),
                       ));
 
                       if (result != null) {
@@ -147,8 +148,12 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      showConfirmationDialog(context, incomeCategory,
-                          incomeCategory.isHidden ? SettingActions.actionUnHide : SettingActions.actionHide);
+                      showConfirmationDialog(
+                          context,
+                          incomeCategory,
+                          incomeCategory.isHidden
+                              ? SettingActions.actionUnHide
+                              : SettingActions.actionHide);
                     },
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     child: ListTile(
@@ -228,18 +233,21 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           padding: EdgeInsets.only(bottom: 50.0, top: 10.0),
                           itemCount: groupData.assetCategories.length,
                           itemBuilder: (context, index) {
-                            IncomeCategories incomeCategory = groupData.assetCategories[index];
+                            IncomeCategories incomeCategory =
+                                groupData.assetCategories[index];
                             return ListTile(
                               contentPadding: EdgeInsets.all(12.0),
                               dense: true,
                               title: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Expanded(
                                     flex: 3,
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: <Widget>[
                                         Icon(
                                           Icons.label,
@@ -248,26 +256,33 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                         SizedBox(width: 10.0),
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               heading2(
                                                 text: '${incomeCategory.name}',
                                                 textAlign: TextAlign.start,
-                                                color: Theme.of(context).textSelectionHandleColor,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
                                               ),
                                               Visibility(
-                                                visible: incomeCategory.description.isNotEmpty,
+                                                visible: incomeCategory
+                                                    .description.isNotEmpty,
                                                 child: customTitleWithWrap(
-                                                  text: '${incomeCategory.description}',
-                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  text:
+                                                      '${incomeCategory.description}',
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 12.0,
                                                   textAlign: TextAlign.start,
                                                 ),
                                               ),
                                               customTitleWithWrap(
-                                                text: '${incomeCategory.isHidden ? "Hidden" : "Active"}',
-                                                color: Theme.of(context).textSelectionHandleColor,
+                                                text:
+                                                    '${incomeCategory.isHidden ? "Hidden" : "Active"}',
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -286,11 +301,13 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                     width: 40,
                                     child: circleIconButton(
                                       icon: Icons.edit,
-                                      backgroundColor: primaryColor.withOpacity(.3),
+                                      backgroundColor:
+                                          primaryColor.withOpacity(.3),
                                       color: primaryColor,
                                       iconSize: 16.0,
                                       padding: 0.0,
-                                      onPressed: () => _showActions(context, incomeCategory),
+                                      onPressed: () =>
+                                          _showActions(context, incomeCategory),
                                     ),
                                   ),
                                 ],
@@ -304,7 +321,9 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                             );
                           },
                         )
-                      : betterEmptyList(message: "Sorry, you have not added any asset categories");
+                      : betterEmptyList(
+                          message:
+                              "Sorry, you have not added any asset categories");
                 })),
           );
         },

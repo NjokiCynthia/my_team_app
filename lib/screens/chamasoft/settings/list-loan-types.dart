@@ -1,6 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/loan-type/create-loan-type.dart';
-import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -14,47 +13,46 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'contribution/create-contribution.dart';
-
 class ListLoanTypes extends StatefulWidget {
   @override
   _ListLoanTypesState createState() => _ListLoanTypesState();
 }
 
 class _ListLoanTypesState extends State<ListLoanTypes> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _groupCurrency = "Ksh";
 
-  Future<void> _getContributionSettings(BuildContext context, String contributionId) async {
-    try {
-      final response = await Provider.of<Groups>(context, listen: false).getContributionDetails(contributionId);
-      print(response);
-      Navigator.pop(context);
-      Navigator.pop(context); // pop bottom sheet
-      final result = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => CreateContribution(isEditMode: true, contributionDetails: response),
-      ));
+  // Future<void> _getContributionSettings(BuildContext context, String contributionId) async {
+  //   try {
+  //     final response = await Provider.of<Groups>(context, listen: false).getContributionDetails(contributionId);
+  //     print(response);
+  //     Navigator.pop(context);
+  //     Navigator.pop(context); // pop bottom sheet
+  //     final result = await Navigator.of(context).push(MaterialPageRoute(
+  //       builder: (context) => CreateContribution(isEditMode: true, contributionDetails: response),
+  //     ));
 
-      print(result);
-      if (result != null) {
-        int status = int.tryParse(result.toString()) ?? 0;
-        if (status == 1) {
-          _refreshIndicatorKey.currentState.show();
-          _fetchLoanTypes(context);
-        }
-      }
-    } on CustomException catch (error) {
-      Navigator.pop(context);
-      Navigator.pop(context); // pop bottom sheet
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _getContributionSettings(context, contributionId);
-          });
-    }
-  }
+  //     print(result);
+  //     if (result != null) {
+  //       int status = int.tryParse(result.toString()) ?? 0;
+  //       if (status == 1) {
+  //         _refreshIndicatorKey.currentState.show();
+  //         _fetchLoanTypes(context);
+  //       }
+  //     }
+  //   } on CustomException catch (error) {
+  //     Navigator.pop(context);
+  //     Navigator.pop(context); // pop bottom sheet
+  //     StatusHandler().handleStatus(
+  //         context: context,
+  //         error: error,
+  //         callback: () {
+  //           _getContributionSettings(context, contributionId);
+  //         });
+  //   }
+  // }
 
   Future<void> _fetchLoanTypes(BuildContext context) async {
     try {
@@ -183,7 +181,10 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
   @override
   void initState() {
     super.initState();
-    _groupCurrency = Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCurrency;
+    _groupCurrency = Provider.of<Groups>(context, listen: false)
+        .getCurrentGroup()
+        .groupCurrency;
+    print(_groupCurrency);
   }
 
   @override
@@ -208,7 +209,8 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
         ),
         backgroundColor: primaryColor,
         onPressed: () async {
-          final result = Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
+          final result =
+              Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
             builder: (_) => CreateLoanType(),
           ));
 
@@ -233,120 +235,142 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                 width: MediaQuery.of(context).size.width,
                 decoration: primaryGradient(context),
                 child: Consumer<Groups>(builder: (context, groupData, child) {
-                  return groupData.loanTypes.length > 0 ? ListView.separated(
-                    padding: EdgeInsets.only(bottom: 50.0),
-                    itemCount: groupData.loanTypes.length,
-                    itemBuilder: (context, index) {
-                      LoanType loanType = groupData.loanTypes[index];
-                      return ListTile(
-                        contentPadding: EdgeInsets.all(12.0),
-                        dense: true,
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Expanded(
-                              flex: 3,
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
+                  return groupData.loanTypes.length > 0
+                      ? ListView.separated(
+                          padding: EdgeInsets.only(bottom: 50.0),
+                          itemCount: groupData.loanTypes.length,
+                          itemBuilder: (context, index) {
+                            LoanType loanType = groupData.loanTypes[index];
+                            return ListTile(
+                              contentPadding: EdgeInsets.all(12.0),
+                              dense: true,
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Icon(
-                                    Icons.label,
-                                    color: Colors.blueGrey,
-                                  ),
-                                  SizedBox(width: 10.0),
                                   Expanded(
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: <Widget>[
-                                        customTitleWithWrap(
-                                          text: '${loanType.name}',
-                                          textAlign: TextAlign.start,
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 16.0,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                        Icon(
+                                          Icons.label,
+                                          color: Colors.blueGrey,
                                         ),
-                                        richTextWithWrap(
-                                          title: 'Loan Amount: ',
-                                          message: loanType.loanAmount,
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                        richTextWithWrap(
-                                          title: 'Repayment Period: ',
-                                          message: loanType.repaymentPeriod,
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                        richTextWithWrap(
-                                          title: 'Interest Rate: ',
-                                          message: loanType.interestRate,
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                        richTextWithWrap(
-                                          title: 'Loan Processing: ',
-                                          message: loanType.loanProcessing,
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                        richTextWithWrap(
-                                          title: 'Guarantors: ',
-                                          message: loanType.guarantors,
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                        richTextWithWrap(
-                                          title: 'Late Payment Fines: ',
-                                          message: loanType.latePaymentFines,
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.start,
-                                        ),
-                                        richTextWithWrap(
-                                          title: 'Outstanding Payment Fines: ',
-                                          message: loanType.outstandingPaymentFines,
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.start,
+                                        SizedBox(width: 10.0),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              customTitleWithWrap(
+                                                text: '${loanType.name}',
+                                                textAlign: TextAlign.start,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 16.0,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                              ),
+                                              richTextWithWrap(
+                                                title: 'Loan Amount: ',
+                                                message: loanType.loanAmount,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              richTextWithWrap(
+                                                title: 'Repayment Period: ',
+                                                message:
+                                                    loanType.repaymentPeriod,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              richTextWithWrap(
+                                                title: 'Interest Rate: ',
+                                                message: loanType.interestRate,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              richTextWithWrap(
+                                                title: 'Loan Processing: ',
+                                                message:
+                                                    loanType.loanProcessing,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              richTextWithWrap(
+                                                title: 'Guarantors: ',
+                                                message: loanType.guarantors,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              richTextWithWrap(
+                                                title: 'Late Payment Fines: ',
+                                                message:
+                                                    loanType.latePaymentFines,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              richTextWithWrap(
+                                                title:
+                                                    'Outstanding Payment Fines: ',
+                                                message: loanType
+                                                    .outstandingPaymentFines,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ],
                                     ),
                                   ),
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: circleIconButton(
+                                      icon: Icons.edit,
+                                      backgroundColor:
+                                          primaryColor.withOpacity(.3),
+                                      color: primaryColor,
+                                      iconSize: 16.0,
+                                      padding: 0.0,
+                                      onPressed: () => _showActions(
+                                          _scaffoldKey.currentContext,
+                                          loanType),
+                                    ),
+                                  ),
                                 ],
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              height: 40,
-                              width: 40,
-                              child: circleIconButton(
-                                icon: Icons.edit,
-                                backgroundColor: primaryColor.withOpacity(.3),
-                                color: primaryColor,
-                                iconSize: 16.0,
-                                padding: 0.0,
-                                onPressed: () => _showActions(_scaffoldKey.currentContext, loanType),
-                              ),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        color: Theme.of(context).dividerColor,
-                        height: 6.0,
-                      );
-                    },
-                  ) : betterEmptyList(message: "Sorry, you have not added any loan types");
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              color: Theme.of(context).dividerColor,
+                              height: 6.0,
+                            );
+                          },
+                        )
+                      : betterEmptyList(
+                          message: "Sorry, you have not added any loan types");
                 })),
           );
         },

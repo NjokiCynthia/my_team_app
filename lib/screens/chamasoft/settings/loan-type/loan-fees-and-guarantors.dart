@@ -1,5 +1,4 @@
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
-import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
@@ -38,7 +37,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
           ListTile(
             title: Text(
               "General Details",
-              style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontWeight: FontWeight.w500),
             ),
             subtitle: Text(
               "",
@@ -52,7 +53,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                   SwitchListTile(
                     title: Text(
                       "Enable loan guarantors",
-                      style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w500),
                     ),
                     value: enableLoanGuarantors,
                     onChanged: (bool value) {
@@ -66,8 +69,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                     child: ListTile(
                       title: Text(
                         "Choose guarantor option",
-                        style:
-                            TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w500),
                       ),
                     ),
                   ),
@@ -76,8 +80,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                     child: RadioListTile(
                       title: Text(
                         "Every time member applying loan",
-                        style:
-                            TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w500),
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -93,8 +98,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                     child: RadioListTile(
                       title: Text(
                         "When a member loan request exceeds maximum loan amount",
-                        style:
-                            TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w500),
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -123,7 +129,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                   SwitchListTile(
                     title: Text(
                       "Charge loan processing fee",
-                      style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+                      style: TextStyle(
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w500),
                     ),
                     value: chargeLoanProcessingFee,
                     onChanged: (bool value) {

@@ -1,7 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -59,7 +58,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   @override
   void didChangeDependencies() {
-    _currentGroup = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     //if(_isInit){
     _getMemberDashboardData();
     //}
@@ -75,9 +75,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Future<void> _getMemberDashboardData([bool hardRefresh = false]) async {
     try {
       if (hardRefresh) {
-        Provider.of<Dashboard>(context, listen: false).resetMemberDashboardData(_currentGroup.groupId);
+        Provider.of<Dashboard>(context, listen: false)
+            .resetMemberDashboardData(_currentGroup.groupId);
       }
-      if (!Provider.of<Dashboard>(context, listen: false).memberGroupDataExists(_currentGroup.groupId)) {
+      if (!Provider.of<Dashboard>(context, listen: false)
+          .memberGroupDataExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
             setState(() {
@@ -85,7 +87,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             });
           }
         }
-        await Provider.of<Dashboard>(context, listen: false).getMemberDashboardData(_currentGroup.groupId);
+        await Provider.of<Dashboard>(context, listen: false)
+            .getMemberDashboardData(_currentGroup.groupId);
       }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -116,23 +119,24 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           Container(
             width: 160.0,
             padding: EdgeInsets.all(16.0),
-            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+            decoration: cardDecoration(
+                gradient: plainCardGradient(context), context: context),
             child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: resetTransactions(
-                  color: (i % 2 == 1) ? Colors.blueGrey : primaryColor,
-                  paymentDescription: data.paymentTitle,
-                  cardAmount: currencyFormat.format(data.paymentAmount),
-                  currency: _groupCurrency,
-                  cardIcon: Feather.pie_chart,
-                  paymentDate: data.paymentDate,
-                  paymentMethod: data.paymentMethod + " Payment",
-                  contributionType: data.description
-                )
-              ),
+                mainAxisSize: MainAxisSize.min,
+                children: resetTransactions(
+                    color: (i % 2 == 1) ? Colors.blueGrey : primaryColor,
+                    paymentDescription: data.paymentTitle,
+                    cardAmount: currencyFormat.format(data.paymentAmount),
+                    currency: _groupCurrency,
+                    cardIcon: Feather.pie_chart,
+                    paymentDate: data.paymentDate,
+                    paymentMethod: data.paymentMethod + " Payment",
+                    contributionType: data.description)),
           ),
           SizedBox(
-            width: ((i + 1) == _iteratableRecentTransactionSummary.length) ? 16.0 : 0.0,
+            width: ((i + 1) == _iteratableRecentTransactionSummary.length)
+                ? 16.0
+                : 0.0,
           ),
         ],
       );
@@ -152,11 +156,16 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           Container(
             width: 160.0,
             padding: EdgeInsets.all(16.0),
-            decoration: cardDecoration(gradient: i == 0 ? csCardGradient() : plainCardGradient(context), context: context),
+            decoration: cardDecoration(
+                gradient:
+                    i == 0 ? csCardGradient() : plainCardGradient(context),
+                context: context),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: contributionSummary(
-                color: i == 0 ? Colors.white : i == 1 ? primaryColor : Colors.blueGrey,
+                color: i == 0
+                    ? Colors.white
+                    : i == 1 ? primaryColor : Colors.blueGrey,
                 cardIcon: i == 0 ? Feather.bar_chart_2 : Feather.bar_chart,
                 amountDue: currencyFormat.format(data.balance),
                 cardAmount: currencyFormat.format(data.amountPaid),
@@ -166,39 +175,42 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
               ),
             ),
           ),
-          if(((i+1) == _itableContributionSummary.length) && _itableContributionSummary.length == 1)
-          SizedBox(
-            width: 16.0,
-          ),
-          if(((i+1) == _itableContributionSummary.length) && _itableContributionSummary.length == 1)
-          Container(
-            width: 160.0,
-            padding: EdgeInsets.all(16.0),
-            // decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // SvgPicture.asset(
-                //   customIcons['no-data'],
-                //   semanticsLabel: 'icon',
-                //   height: 80.0,
-                // ),
-                Icon(
-                  Feather.layers,
-                  color: Colors.blueGrey[400].withOpacity(0.2),
-                  size: 38.0,
-                ),
-                SizedBox(height: 12.0,),
-                customTitleWithWrap(
-                  text: "More contributions will be displayed here",
-                  //fontWeight: FontWeight.w500,
-                  fontSize: 12.0,
-                  textAlign: TextAlign.center,
-                  color: Colors.blueGrey[400].withOpacity(0.3)
-                )
-              ],
+          if (((i + 1) == _itableContributionSummary.length) &&
+              _itableContributionSummary.length == 1)
+            SizedBox(
+              width: 16.0,
             ),
-          ),
+          if (((i + 1) == _itableContributionSummary.length) &&
+              _itableContributionSummary.length == 1)
+            Container(
+              width: 160.0,
+              padding: EdgeInsets.all(16.0),
+              // decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  // SvgPicture.asset(
+                  //   customIcons['no-data'],
+                  //   semanticsLabel: 'icon',
+                  //   height: 80.0,
+                  // ),
+                  Icon(
+                    Feather.layers,
+                    color: Colors.blueGrey[400].withOpacity(0.2),
+                    size: 38.0,
+                  ),
+                  SizedBox(
+                    height: 12.0,
+                  ),
+                  customTitleWithWrap(
+                      text: "More contributions will be displayed here",
+                      //fontWeight: FontWeight.w500,
+                      fontSize: 12.0,
+                      textAlign: TextAlign.center,
+                      color: Colors.blueGrey[400].withOpacity(0.3))
+                ],
+              ),
+            ),
           SizedBox(
             width: ((i + 1) == _itableContributionSummary.length) ? 16.0 : 0.0,
           ),
@@ -212,7 +224,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
     setState(() {
-      _iteratableRecentTransactionSummary = dashboardData.recentMemberTransactions;
+      _iteratableRecentTransactionSummary =
+          dashboardData.recentMemberTransactions;
       _itableContributionSummary = dashboardData.memberContributionSummary;
     });
 
@@ -227,10 +240,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       ? Column(
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                              padding:
+                                  EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                               child: Container(
                                 padding: EdgeInsets.all(16.0),
-                                decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                                decoration: cardDecoration(
+                                    gradient: plainCardGradient(context),
+                                    context: context),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
@@ -248,30 +264,42 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       ],
                                     ),
                                     Divider(
-                                      color: Theme.of(context).hintColor.withOpacity(0.1),
+                                      color: Theme.of(context)
+                                          .hintColor
+                                          .withOpacity(0.1),
                                       thickness: 2.0,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         customTitle(
                                           text: "Your Contribution Balance",
                                           textAlign: TextAlign.start,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                         ),
                                         SizedBox(
                                           height: 22,
                                           child: cardAmountButton(
                                               currency: _groupCurrency,
-                                              amount: _currentGroup.disableArrears
-                                                  ? currencyFormat.format(dashboardData.memberContributionAmount)
-                                                  : currencyFormat.format(dashboardData.memberContributionArrears),
+                                              amount: _currentGroup
+                                                      .disableArrears
+                                                  ? currencyFormat.format(
+                                                      dashboardData
+                                                          .memberContributionAmount)
+                                                  : currencyFormat.format(
+                                                      dashboardData
+                                                          .memberContributionArrears),
                                               size: 16.0,
-                                              color: (dashboardData.memberContributionArrears) > 0
+                                              color: (dashboardData
+                                                          .memberContributionArrears) >
+                                                      0
                                                   ? Colors.red[400]
-                                                  : Theme.of(context).textSelectionHandleColor,
+                                                  : Theme.of(context)
+                                                      .textSelectionHandleColor,
                                               action: () {}),
                                         ),
                                       ],
@@ -280,25 +308,35 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       height: 4.0,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         customTitle(
                                           text: "Fines",
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                         ),
                                         SizedBox(
                                           height: 22,
                                           child: cardAmountButton(
                                               currency: _groupCurrency,
-                                              amount: _currentGroup.disableArrears
-                                                  ? currencyFormat.format(dashboardData.memberFineAmount)
-                                                  : currencyFormat.format(dashboardData.memberFineArrears),
+                                              amount: _currentGroup
+                                                      .disableArrears
+                                                  ? currencyFormat.format(
+                                                      dashboardData
+                                                          .memberFineAmount)
+                                                  : currencyFormat.format(
+                                                      dashboardData
+                                                          .memberFineArrears),
                                               size: 14.0,
-                                              color: (dashboardData.memberFineArrears) > 0
+                                              color: (dashboardData
+                                                          .memberFineArrears) >
+                                                      0
                                                   ? Colors.red[400]
-                                                  : Theme.of(context).textSelectionHandleColor,
+                                                  : Theme.of(context)
+                                                      .textSelectionHandleColor,
                                               action: () {}),
                                         ),
                                       ],
@@ -307,23 +345,30 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       height: 4.0,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         customTitle(
                                           text: "Loans",
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                         ),
                                         SizedBox(
                                           height: 22,
                                           child: cardAmountButton(
                                               currency: _groupCurrency,
-                                              amount: currencyFormat.format(dashboardData.memberTotalLoanBalance),
+                                              amount: currencyFormat.format(
+                                                  dashboardData
+                                                      .memberTotalLoanBalance),
                                               size: 14.0,
-                                              color: (dashboardData.memberTotalLoanBalance) > 0
+                                              color: (dashboardData
+                                                          .memberTotalLoanBalance) >
+                                                      0
                                                   ? Colors.red[400]
-                                                  : Theme.of(context).textSelectionHandleColor,
+                                                  : Theme.of(context)
+                                                      .textSelectionHandleColor,
                                               action: () {}),
                                         ),
                                       ],
@@ -332,23 +377,30 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       height: 4.0,
                                     ),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         customTitle(
                                           text: "Pending Installment Balance",
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                         ),
                                         SizedBox(
                                           height: 22,
                                           child: cardAmountButton(
                                               currency: _groupCurrency,
-                                              amount: currencyFormat.format(dashboardData.memberLoanArrears),
+                                              amount: currencyFormat.format(
+                                                  dashboardData
+                                                      .memberLoanArrears),
                                               size: 14.0,
-                                              color: (dashboardData.memberLoanArrears) > 0
+                                              color: (dashboardData
+                                                          .memberLoanArrears) >
+                                                      0
                                                   ? Colors.red[400]
-                                                  : Theme.of(context).textSelectionHandleColor,
+                                                  : Theme.of(context)
+                                                      .textSelectionHandleColor,
                                               action: () {}),
                                         ),
                                       ],
@@ -358,9 +410,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               ),
                             ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
+                              padding:
+                                  EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
                                     "Contribution Summary",
@@ -380,129 +434,156 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ],
                               ),
                             ),
-                            (_itableContributionSummary.length > 0) ? 
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, _onlineBankingEnabled ? 10.0 : 0.0),
-                              child: Container(
-                                height: 180.0,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-                                  physics: BouncingScrollPhysics(),
-                                  children: _itableContributionSummary.length > 0
-                                      ? contributionsSummary.toList()
-                                      : <Widget>[
-                                          SizedBox(
-                                            width: 16.0,
-                                          ),
-                                          Container(
-                                            width: 160.0,
-                                            padding: EdgeInsets.all(16.0),
-                                            decoration: cardDecoration(gradient: csCardGradient(), context: context),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: contributionSummary(
-                                                color: Colors.white,
-                                                cardIcon: Feather.bar_chart_2,
-                                                amountDue: "0",
-                                                cardAmount: "0",
-                                                currency: _groupCurrency,
-                                                dueDate: "14 Apr 20",
-                                                contributionName: "Monthly Savings",
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 26.0,
-                                          ),
-                                          Container(
-                                            width: 160.0,
-                                            padding: EdgeInsets.all(16.0),
-                                            decoration:
-                                                cardDecoration(gradient: plainCardGradient(context), context: context),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: contributionSummary(
-                                                color: primaryColor,
-                                                cardIcon: Feather.bar_chart,
-                                                amountDue: "0",
-                                                cardAmount: "0",
-                                                currency: _groupCurrency,
-                                                dueDate: "4 Apr 20",
-                                                contributionName: "Welfare",
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 26.0,
-                                          ),
-                                          Container(
-                                            width: 160.0,
-                                            padding: EdgeInsets.all(16.0),
-                                            decoration:
-                                                cardDecoration(gradient: plainCardGradient(context), context: context),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: contributionSummary(
-                                                color: Colors.blueGrey,
-                                                cardIcon: Feather.bar_chart_2,
-                                                amountDue: "0",
-                                                cardAmount: "0",
-                                                currency: _groupCurrency,
-                                                dueDate: "14 Apr 20",
-                                                contributionName: "Insurance",
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 16.0,
-                                          ),
-                                        ],
-                                ),
-                              ),
-                            ) : 
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
-                              child: Container(
-                                width: double.infinity,
-                                padding: EdgeInsets.all(16.0),
-                                decoration: flatGradient(context),
-                                child: Column(
-                                  children: [
-                                    SvgPicture.asset(
-                                      customIcons['no-data'],
-                                      semanticsLabel: 'icon',
-                                      height: 120.0,
+                            (_itableContributionSummary.length > 0)
+                                ? Padding(
+                                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0,
+                                        _onlineBankingEnabled ? 10.0 : 0.0),
+                                    child: Container(
+                                      height: 180.0,
+                                      child: ListView(
+                                        scrollDirection: Axis.horizontal,
+                                        padding: EdgeInsets.only(
+                                            top: 5.0, bottom: 10.0),
+                                        physics: BouncingScrollPhysics(),
+                                        children: _itableContributionSummary
+                                                    .length >
+                                                0
+                                            ? contributionsSummary.toList()
+                                            : <Widget>[
+                                                SizedBox(
+                                                  width: 16.0,
+                                                ),
+                                                Container(
+                                                  width: 160.0,
+                                                  padding: EdgeInsets.all(16.0),
+                                                  decoration: cardDecoration(
+                                                      gradient:
+                                                          csCardGradient(),
+                                                      context: context),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children:
+                                                        contributionSummary(
+                                                      color: Colors.white,
+                                                      cardIcon:
+                                                          Feather.bar_chart_2,
+                                                      amountDue: "0",
+                                                      cardAmount: "0",
+                                                      currency: _groupCurrency,
+                                                      dueDate: "14 Apr 20",
+                                                      contributionName:
+                                                          "Monthly Savings",
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 26.0,
+                                                ),
+                                                Container(
+                                                  width: 160.0,
+                                                  padding: EdgeInsets.all(16.0),
+                                                  decoration: cardDecoration(
+                                                      gradient:
+                                                          plainCardGradient(
+                                                              context),
+                                                      context: context),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children:
+                                                        contributionSummary(
+                                                      color: primaryColor,
+                                                      cardIcon:
+                                                          Feather.bar_chart,
+                                                      amountDue: "0",
+                                                      cardAmount: "0",
+                                                      currency: _groupCurrency,
+                                                      dueDate: "4 Apr 20",
+                                                      contributionName:
+                                                          "Welfare",
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 26.0,
+                                                ),
+                                                Container(
+                                                  width: 160.0,
+                                                  padding: EdgeInsets.all(16.0),
+                                                  decoration: cardDecoration(
+                                                      gradient:
+                                                          plainCardGradient(
+                                                              context),
+                                                      context: context),
+                                                  child: Column(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children:
+                                                        contributionSummary(
+                                                      color: Colors.blueGrey,
+                                                      cardIcon:
+                                                          Feather.bar_chart_2,
+                                                      amountDue: "0",
+                                                      cardAmount: "0",
+                                                      currency: _groupCurrency,
+                                                      dueDate: "14 Apr 20",
+                                                      contributionName:
+                                                          "Insurance",
+                                                    ),
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: 16.0,
+                                                ),
+                                              ],
+                                      ),
                                     ),
-                                    customTitleWithWrap(
-                                      text: "Nothing to display!",
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 14.0,
-                                      textAlign: TextAlign.center,
-                                      color: Colors.blueGrey[400]
-                                    ),
-                                    customTitleWithWrap(
-                                      text: "Sorry, you haven't made any contributions",
-                                      //fontWeight: FontWeight.w500,
-                                      fontSize: 12.0,
-                                      textAlign: TextAlign.center,
-                                      color: Colors.blueGrey[400]
-                                    )
-                                  ],
-                                )
-                              ),
-                            ),
+                                  )
+                                : Padding(
+                                    padding: EdgeInsets.fromLTRB(
+                                        16.0, 10.0, 16.0, 20.0),
+                                    child: Container(
+                                        width: double.infinity,
+                                        padding: EdgeInsets.all(16.0),
+                                        decoration: flatGradient(context),
+                                        child: Column(
+                                          children: [
+                                            SvgPicture.asset(
+                                              customIcons['no-data'],
+                                              semanticsLabel: 'icon',
+                                              height: 120.0,
+                                            ),
+                                            customTitleWithWrap(
+                                                text: "Nothing to display!",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 14.0,
+                                                textAlign: TextAlign.center,
+                                                color: Colors.blueGrey[400]),
+                                            customTitleWithWrap(
+                                                text:
+                                                    "Sorry, you haven't made any contributions",
+                                                //fontWeight: FontWeight.w500,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.center,
+                                                color: Colors.blueGrey[400])
+                                          ],
+                                        )),
+                                  ),
                             if (_onlineBankingEnabled)
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                              child: Container(
-                                // width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
-                                padding: EdgeInsets.symmetric(vertical: 10.0),
-                                color: Theme.of(context).cardColor.withOpacity(0.1),
-                                child: Row(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
+                              Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                                child: Container(
+                                  // width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
+                                  padding: EdgeInsets.symmetric(vertical: 10.0),
+                                  color: Theme.of(context)
+                                      .cardColor
+                                      .withOpacity(0.1),
+                                  child: Row(
+                                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
                                       Expanded(
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
@@ -515,39 +596,42 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             isFlat: false,
                                             text: "PAY NOW",
                                             iconSize: 12.0,
-                                            action: () => _openPayNowTray(context),
+                                            action: () =>
+                                                _openPayNowTray(context),
                                           ),
                                         ),
                                       ),
-                                    // Expanded(
-                                    //   child: Padding(
-                                    //     padding: EdgeInsets.symmetric(
-                                    //       horizontal: 16.0,
-                                    //     ),
-                                    //     child: paymentActionButton(
-                                    //       color: primaryColor,
-                                    //       textColor: Colors.white,
-                                    //       icon: FontAwesome.chevron_right,
-                                    //       isFlat: true,
-                                    //       text: "APPLY LOAN",
-                                    //       iconSize: 12.0,
-                                    //       action: () => Navigator.of(context).push(
-                                    //         MaterialPageRoute(
-                                    //           builder: (BuildContext context) =>
-                                    //               ApplyLoan(),
-                                    //         ),
-                                    //       ),
-                                    //     ),
-                                    //   ),
-                                    // ),
-                                  ],
+                                      // Expanded(
+                                      //   child: Padding(
+                                      //     padding: EdgeInsets.symmetric(
+                                      //       horizontal: 16.0,
+                                      //     ),
+                                      //     child: paymentActionButton(
+                                      //       color: primaryColor,
+                                      //       textColor: Colors.white,
+                                      //       icon: FontAwesome.chevron_right,
+                                      //       isFlat: true,
+                                      //       text: "APPLY LOAN",
+                                      //       iconSize: 12.0,
+                                      //       action: () => Navigator.of(context).push(
+                                      //         MaterialPageRoute(
+                                      //           builder: (BuildContext context) =>
+                                      //               ApplyLoan(),
+                                      //         ),
+                                      //       ),
+                                      //     ),
+                                      //   ),
+                                      // ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
                             Padding(
-                              padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                              padding:
+                                  EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
                                     "Recent Transactions",
@@ -568,47 +652,49 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             ),
                             recentTransactionSummary.length > 0
                                 ? Padding(
-                                    padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+                                    padding: EdgeInsets.fromLTRB(
+                                        0.0, 0.0, 0.0, 10.0),
                                     child: Container(
                                       height: 180.0,
                                       child: ListView(
                                         scrollDirection: Axis.horizontal,
-                                        padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                                        padding: EdgeInsets.only(
+                                            top: 5.0, bottom: 10.0),
                                         physics: BouncingScrollPhysics(),
-                                        children: recentTransactionSummary.toList(),
+                                        children:
+                                            recentTransactionSummary.toList(),
                                       ),
                                     ),
                                   )
                                 : Padding(
-                                    padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+                                    padding: EdgeInsets.fromLTRB(
+                                        16.0, 10.0, 16.0, 20.0),
                                     child: Container(
-                                      width: double.infinity,
-                                      padding: EdgeInsets.all(16.0),
-                                      decoration: flatGradient(context),
-                                      child: Column(
-                                        children: [
-                                          SvgPicture.asset(
-                                            customIcons['no-data'],
-                                            semanticsLabel: 'icon',
-                                            height: 120.0,
-                                          ),
-                                          customTitleWithWrap(
-                                            text: "Nothing to display!",
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 14.0,
-                                            textAlign: TextAlign.center,
-                                            color: Colors.blueGrey[400]
-                                          ),
-                                          customTitleWithWrap(
-                                            text: "Sorry, you haven't made any transactions",
-                                            //fontWeight: FontWeight.w500,
-                                            fontSize: 12.0,
-                                            textAlign: TextAlign.center,
-                                            color: Colors.blueGrey[400]
-                                          )
-                                        ],
-                                      )
-                                    ),
+                                        width: double.infinity,
+                                        padding: EdgeInsets.all(16.0),
+                                        decoration: flatGradient(context),
+                                        child: Column(
+                                          children: [
+                                            SvgPicture.asset(
+                                              customIcons['no-data'],
+                                              semanticsLabel: 'icon',
+                                              height: 120.0,
+                                            ),
+                                            customTitleWithWrap(
+                                                text: "Nothing to display!",
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 14.0,
+                                                textAlign: TextAlign.center,
+                                                color: Colors.blueGrey[400]),
+                                            customTitleWithWrap(
+                                                text:
+                                                    "Sorry, you haven't made any transactions",
+                                                //fontWeight: FontWeight.w500,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.center,
+                                                color: Colors.blueGrey[400])
+                                          ],
+                                        )),
                                   ),
                           ],
                         )
@@ -618,7 +704,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   void _openPayNowTray(BuildContext context) {
     Future<void> _initiatePayNow(
-        {int paymentFor, int paymentForId, double amount, String phoneNumber, String description}) async {
+        {int paymentFor,
+        int paymentForId,
+        double amount,
+        String phoneNumber,
+        String description}) async {
       final Map<String, dynamic> _formData = {
         "payment_for": paymentFor,
         "contribution_id": paymentForId,
@@ -629,7 +719,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         "phone_number": phoneNumber
       };
       try {
-        await Provider.of<Groups>(context, listen: false).makeGroupPayment(_formData);
+        await Provider.of<Groups>(context, listen: false)
+            .makeGroupPayment(_formData);
         Navigator.pop(context);
       } on CustomException catch (error) {
         Navigator.pop(context);

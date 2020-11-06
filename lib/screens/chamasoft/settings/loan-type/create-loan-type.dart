@@ -3,21 +3,18 @@ import 'package:chamasoft/screens/chamasoft/settings/loan-type/loan-type-fines.d
 import 'package:chamasoft/screens/chamasoft/settings/loan-type/loan-type-settings.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/custom-dropdown.dart';
-import 'package:chamasoft/widgets/textfields.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
-import '../setup-lists/loan-setup-list.dart';
 
 class CreateLoanType extends StatefulWidget {
   @override
   _CreateLoanTypeState createState() => _CreateLoanTypeState();
 }
 
-class _CreateLoanTypeState extends State<CreateLoanType> with SingleTickerProviderStateMixin {
+class _CreateLoanTypeState extends State<CreateLoanType>
+    with SingleTickerProviderStateMixin {
   double _appBarElevation = 0;
   PageController _pageController;
 
@@ -121,7 +118,8 @@ class _CreateLoanTypeState extends State<CreateLoanType> with SingleTickerProvid
                         thickness: 5.0,
                         indent: 10,
                         endIndent: 10,
-                        color: currentPage == 0 ? primaryColor : Color(0xFFAEAEAE),
+                        color:
+                            currentPage == 0 ? primaryColor : Color(0xFFAEAEAE),
                       ),
                     ),
                   ),
@@ -132,7 +130,8 @@ class _CreateLoanTypeState extends State<CreateLoanType> with SingleTickerProvid
                         thickness: 5.0,
                         indent: 10,
                         endIndent: 10,
-                        color: currentPage == 1 ? primaryColor : Color(0xFFAEAEAE),
+                        color:
+                            currentPage == 1 ? primaryColor : Color(0xFFAEAEAE),
                       ),
                     ),
                   ),
@@ -143,7 +142,8 @@ class _CreateLoanTypeState extends State<CreateLoanType> with SingleTickerProvid
                         thickness: 5.0,
                         indent: 10,
                         endIndent: 10,
-                        color: currentPage == 2 ? primaryColor : Color(0xFFAEAEAE),
+                        color:
+                            currentPage == 2 ? primaryColor : Color(0xFFAEAEAE),
                       ),
                     ),
                   ),

@@ -15,20 +15,20 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'contribution/create-contribution.dart';
-
 class ListIncomeCategories extends StatefulWidget {
   @override
   _ListIncomeCategoriesState createState() => _ListIncomeCategoriesState();
 }
 
 class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   Future<void> _fetchIncomeCategories(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchDetailedIncomeCategories();
+      await Provider.of<Groups>(context, listen: false)
+          .fetchDetailedIncomeCategories();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -39,8 +39,8 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
     }
   }
 
-  Future<void> editIncomeCategory(
-      BuildContext context, IncomeCategories incomeCategory, SettingActions settingAction) async {
+  Future<void> editIncomeCategory(BuildContext context,
+      IncomeCategories incomeCategory, SettingActions settingAction) async {
     try {
       showDialog(
           context: context,
@@ -80,7 +80,8 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
     }
   }
 
-  showConfirmationDialog(BuildContext context, IncomeCategories category, SettingActions settingAction) {
+  showConfirmationDialog(BuildContext context, IncomeCategories category,
+      SettingActions settingAction) {
     String title = "";
     if (settingAction == SettingActions.actionHide) {
       title = "This will hide ${category.name}";
@@ -119,8 +120,10 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
                       Navigator.pop(context);
-                      final result = await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => CreateIncomeCategory(isEdit: true, incomeCategory: incomeCategory),
+                      final result =
+                          await Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => CreateIncomeCategory(
+                            isEdit: true, incomeCategory: incomeCategory),
                       ));
 
                       if (result != null) {
@@ -150,8 +153,12 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      showConfirmationDialog(context, incomeCategory,
-                          incomeCategory.isHidden ? SettingActions.actionUnHide : SettingActions.actionHide);
+                      showConfirmationDialog(
+                          context,
+                          incomeCategory,
+                          incomeCategory.isHidden
+                              ? SettingActions.actionUnHide
+                              : SettingActions.actionHide);
                     },
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     child: ListTile(
@@ -172,7 +179,8 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                   child: InkWell(
                     onTap: () {
                       Navigator.pop(context);
-                      showConfirmationDialog(context, incomeCategory, SettingActions.actionDelete);
+                      showConfirmationDialog(
+                          context, incomeCategory, SettingActions.actionDelete);
                     },
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     child: ListTile(
@@ -243,7 +251,8 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
         builder: (BuildContext context) {
           return RefreshIndicator(
             key: _refreshIndicatorKey,
-            onRefresh: () => _fetchIncomeCategories(_scaffoldKey.currentContext),
+            onRefresh: () =>
+                _fetchIncomeCategories(_scaffoldKey.currentContext),
             child: Container(
                 height: MediaQuery.of(context).size.height,
                 width: MediaQuery.of(context).size.width,
@@ -254,18 +263,21 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                           padding: EdgeInsets.only(bottom: 50.0, top: 10.0),
                           itemCount: groupData.detailedIncomeCategories.length,
                           itemBuilder: (context, index) {
-                            IncomeCategories incomeCategory = groupData.detailedIncomeCategories[index];
+                            IncomeCategories incomeCategory =
+                                groupData.detailedIncomeCategories[index];
                             return ListTile(
                               contentPadding: EdgeInsets.all(12.0),
                               dense: true,
                               title: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Expanded(
                                     flex: 3,
                                     child: Row(
                                       mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: <Widget>[
                                         Icon(
                                           Icons.label,
@@ -274,26 +286,33 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                         SizedBox(width: 10.0),
                                         Expanded(
                                           child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               heading2(
                                                 text: '${incomeCategory.name}',
                                                 textAlign: TextAlign.start,
-                                                color: Theme.of(context).textSelectionHandleColor,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
                                               ),
                                               Visibility(
-                                                visible: incomeCategory.description.isNotEmpty,
+                                                visible: incomeCategory
+                                                    .description.isNotEmpty,
                                                 child: customTitleWithWrap(
-                                                  text: '${incomeCategory.description}',
-                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  text:
+                                                      '${incomeCategory.description}',
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 12.0,
                                                   textAlign: TextAlign.start,
                                                 ),
                                               ),
                                               customTitleWithWrap(
-                                                text: '${incomeCategory.isHidden ? "Hidden" : "Active"}',
-                                                color: Theme.of(context).textSelectionHandleColor,
+                                                text:
+                                                    '${incomeCategory.isHidden ? "Hidden" : "Active"}',
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -312,11 +331,13 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                                     width: 40,
                                     child: circleIconButton(
                                       icon: Icons.edit,
-                                      backgroundColor: primaryColor.withOpacity(.3),
+                                      backgroundColor:
+                                          primaryColor.withOpacity(.3),
                                       color: primaryColor,
                                       iconSize: 16.0,
                                       padding: 0.0,
-                                      onPressed: () => _showActions(context, incomeCategory),
+                                      onPressed: () =>
+                                          _showActions(context, incomeCategory),
                                     ),
                                   ),
                                 ],
@@ -330,7 +351,9 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
                             );
                           },
                         )
-                      : betterEmptyList(message: "Sorry, you have not added any income categories");
+                      : betterEmptyList(
+                          message:
+                              "Sorry, you have not added any income categories");
                 })),
           );
         },

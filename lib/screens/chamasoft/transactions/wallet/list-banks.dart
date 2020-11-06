@@ -1,8 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/amount-to-withdraw.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -46,12 +44,16 @@ class _ListBanksState extends State<ListBanks> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
-              text: "Set Bank Account", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+              text: "Set Bank Account",
+              color: Theme.of(context).textSelectionHandleColor,
+              textAlign: TextAlign.start),
           content: TextFormField(
             controller: _accountController,
             style: inputTextStyle(),
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+            inputFormatters: <TextInputFormatter>[
+              WhitelistingTextInputFormatter.digitsOnly
+            ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
@@ -80,14 +82,16 @@ class _ListBanksState extends State<ListBanks> {
                     widget.formData["bank_name"] = bank.name;
 
                     Navigator.of(context).pop();
-                   final result = await Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => AmountToWithdraw(formData: widget.formData)));
-                   if(result != null){
-                     final id = int.tryParse(result) ?? 0;
-                     if(id != 0){
-                       Navigator.of(context).pop(result);
-                     }
-                   }
+                    final result = await Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                AmountToWithdraw(formData: widget.formData)));
+                    if (result != null) {
+                      final id = int.tryParse(result) ?? 0;
+                      if (id != 0) {
+                        Navigator.of(context).pop(result);
+                      }
+                    }
                   }
                 })
           ],
@@ -127,12 +131,13 @@ class _ListBanksState extends State<ListBanks> {
                   child: ListView.builder(
                       itemBuilder: (_, int index) {
                         String name = _banksList[index].name;
-                        int id = _banksList[index].id;
+                        // int id = _banksList[index].id;
                         return filter == null || filter.isEmpty
                             ? buildListTile(_banksList[index])
                             : name.toLowerCase().contains(filter.toLowerCase())
                                 ? buildListTile(_banksList[index])
-                                : Visibility(visible: false, child: new Container());
+                                : Visibility(
+                                    visible: false, child: new Container());
                       },
                       itemCount: _banksList.length),
                 )

@@ -1,7 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/loan-signatory.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/review-loan.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
@@ -10,7 +8,6 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -27,8 +24,8 @@ class ReviewWithdrawal extends StatefulWidget {
 }
 
 class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
-  double _appBarElevation = 0;
-  ScrollController _scrollController;
+  // double _appBarElevation = 0;
+  // ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   WithdrawalRequestDetails _withdrawalDetails;
   bool _isLoading = true;
@@ -41,7 +38,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 
   Future<void> _getWithdrawalRequestDetails(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchWithdrawalRequestDetails(widget.requestId);
+      await Provider.of<Groups>(context, listen: false)
+          .fetchWithdrawalRequestDetails(widget.requestId);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -59,7 +57,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
     });
 
     _getWithdrawalRequestDetails(context).then((_) {
-      _withdrawalDetails = Provider.of<Groups>(context, listen: false).getWithdrawalRequestDetails;
+      _withdrawalDetails = Provider.of<Groups>(context, listen: false)
+          .getWithdrawalRequestDetails;
       if (_withdrawalDetails.approvalStatus.contains("Approved")) {
         color = Colors.green;
       } else if (_withdrawalDetails.approvalStatus.contains("Declined")) {
@@ -85,7 +84,14 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 //    List<StatusModel> signatories = [];
 //    int isOwner, hasResponded, responseStatus;
     _withdrawalDetails = WithdrawalRequestDetails(
-        withdrawalFor: "Withdrawal Request", date: "--", amount: 0,requestBy: "--", recipient: "--", approvalStatus: "--", description: "--",signatories: []);
+        withdrawalFor: "Withdrawal Request",
+        date: "--",
+        amount: 0,
+        requestBy: "--",
+        recipient: "--",
+        approvalStatus: "--",
+        description: "--",
+        signatories: []);
     super.initState();
   }
 
@@ -105,7 +111,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 
     _formData["id"] = widget.requestId.toString();
     try {
-      await Provider.of<Groups>(context, listen: false).respondToWithdrawalRequest(_formData);
+      await Provider.of<Groups>(context, listen: false)
+          .respondToWithdrawalRequest(_formData);
       _responseSubmitted = true;
       _fetchData();
     } on CustomException catch (error) {
@@ -132,7 +139,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
     formData["reason"] = _controller.text;
 
     try {
-      await Provider.of<Groups>(context, listen: false).cancelWithdrawalRequest(formData);
+      await Provider.of<Groups>(context, listen: false)
+          .cancelWithdrawalRequest(formData);
       _responseSubmitted = true;
       _requestCancelled = true;
       _fetchData();
@@ -156,8 +164,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
     showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-              content: customTitleWithWrap(text: message, textAlign: TextAlign.start, maxLines: null),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              content: customTitleWithWrap(
+                  text: message, textAlign: TextAlign.start, maxLines: null),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
               actions: <Widget>[
                 negativeActionDialogButton(
                     text: "Cancel",
@@ -230,7 +240,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
@@ -250,7 +261,9 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
               Container(
                 padding: EdgeInsets.all(16.0),
                 width: double.infinity,
-                color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                color: (themeChangeProvider.darkTheme)
+                    ? Colors.blueGrey[800]
+                    : Color(0xffededfe),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -275,7 +288,8 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
-                              text: "${currencyFormat.format(_withdrawalDetails.amount)}",
+                              text:
+                                  "${currencyFormat.format(_withdrawalDetails.amount)}",
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
@@ -297,12 +311,14 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               children: <Widget>[
                                 subtitle2(
                                     text: "Requested On",
-                                    color: Theme.of(context).textSelectionHandleColor,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
                                     textAlign: TextAlign.start),
                                 customTitleWithWrap(
                                   text: _withdrawalDetails.date,
                                   fontSize: 12.0,
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 )
                               ],
@@ -318,12 +334,14 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               children: <Widget>[
                                 subtitle2(
                                     text: "Initiated By",
-                                    color: Theme.of(context).textSelectionHandleColor,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
                                     textAlign: TextAlign.end),
                                 customTitleWithWrap(
                                   text: _withdrawalDetails.requestBy,
                                   fontSize: 12.0,
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 )
                               ],
@@ -353,16 +371,22 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                     customTitleWithWrap(
                         textAlign: TextAlign.start,
                         fontSize: 12.0,
-                        text: _withdrawalDetails != null ? _withdrawalDetails.description : "--",
+                        text: _withdrawalDetails != null
+                            ? _withdrawalDetails.description
+                            : "--",
                         color: Theme.of(context).textSelectionHandleColor,
                         maxLines: null),
                     SizedBox(
                       height: 5,
                     ),
                     subtitle2(
-                        text: "Status", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                        text: "Status",
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.start),
                     customTitleWithWrap(
-                      text: _withdrawalDetails != null ? _withdrawalDetails.approvalStatus : "--",
+                      text: _withdrawalDetails != null
+                          ? _withdrawalDetails.approvalStatus
+                          : "--",
                       fontSize: 12.0,
                       color: color,
                       textAlign: TextAlign.start,
@@ -398,11 +422,16 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           child: ListView.separated(
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,
-                              separatorBuilder: (BuildContext context, int index) => const Divider(),
-                              itemCount: _withdrawalDetails != null ? _withdrawalDetails.signatories.length : 0,
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(),
+                              itemCount: _withdrawalDetails != null
+                                  ? _withdrawalDetails.signatories.length
+                                  : 0,
                               itemBuilder: (context, int index) {
                                 if (_withdrawalDetails != null) {
-                                  StatusModel statusModel = _withdrawalDetails.signatories[index];
+                                  StatusModel statusModel =
+                                      _withdrawalDetails.signatories[index];
                                   return WalletSignatoryCard(
                                     status: statusModel,
                                   );
@@ -425,13 +454,16 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                           children: <Widget>[
                             FlatButton(
                               color: Colors.blueAccent.withOpacity(.2),
-                              onPressed: () => approvalDialog(groupObject.groupCurrency),
+                              onPressed: () =>
+                                  approvalDialog(groupObject.groupCurrency),
                               child: Padding(
                                 padding: EdgeInsets.all(12.0),
                                 child: Text(
                                   'APPROVE',
                                   style: TextStyle(
-                                      color: primaryColor, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+                                      color: primaryColor,
+                                      fontFamily: 'SegoeUI',
+                                      fontWeight: FontWeight.w700),
                                 ),
                               ),
                             ),
@@ -444,8 +476,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                                 padding: EdgeInsets.all(12.0),
                                 child: Text(
                                   'REJECT',
-                                  style:
-                                      TextStyle(color: Colors.red, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+                                  style: TextStyle(
+                                      color: Colors.red,
+                                      fontFamily: 'SegoeUI',
+                                      fontWeight: FontWeight.w700),
                                 ),
                               ),
                             ),
@@ -468,7 +502,10 @@ class _ReviewWithdrawalState extends State<ReviewWithdrawal> {
                               padding: EdgeInsets.all(12.0),
                               child: Text(
                                 'CANCEL WITHDRAWAL REQUEST',
-                                style: TextStyle(color: Colors.red, fontFamily: 'SegoeUI', fontWeight: FontWeight.w700),
+                                style: TextStyle(
+                                    color: Colors.red,
+                                    fontFamily: 'SegoeUI',
+                                    fontWeight: FontWeight.w700),
                               ),
                             ),
                           ),
@@ -519,7 +556,9 @@ class WalletSignatoryCard extends StatelessWidget {
               text: status.status,
               textColor: status.status == "APPROVED"
                   ? primaryColor
-                  : status.status == "PENDING" ? Theme.of(context).textSelectionHandleColor : Colors.red,
+                  : status.status == "PENDING"
+                      ? Theme.of(context).textSelectionHandleColor
+                      : Colors.red,
               backgroundColor: Theme.of(context).hintColor.withOpacity(0.1)),
         ],
       ),

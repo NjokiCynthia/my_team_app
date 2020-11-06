@@ -1,6 +1,4 @@
 import 'dart:async';
-import 'dart:math';
-
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -65,15 +63,20 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
     if (flag == 1) {
       var _phonesList = selectedContact.phones.toList();
       if (_phonesList.length >= 1 && _phonesList[0]?.value != null) {
-        widget.formData["phone"] = _phonesList[0].value.replaceAll(" ", "").replaceAll("+", "").replaceAll("-", "");
+        widget.formData["phone"] = _phonesList[0]
+            .value
+            .replaceAll(" ", "")
+            .replaceAll("+", "")
+            .replaceAll("-", "");
       } else
         return;
     } else {
       widget.formData["phone"] = _phoneController.text;
     }
 
-    final result = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (BuildContext context) => AmountToWithdraw(formData: widget.formData)));
+    final result = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (BuildContext context) =>
+            AmountToWithdraw(formData: widget.formData)));
     if (result != null) {
       print(result.toString());
       final id = int.tryParse(result) ?? 0;
@@ -99,7 +102,9 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
             controller: _phoneController,
             style: inputTextStyle(),
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+            inputFormatters: <TextInputFormatter>[
+              WhitelistingTextInputFormatter.digitsOnly
+            ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
@@ -192,9 +197,12 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
 
                         return filter == null || filter == ""
                             ? _buildListTile(index, _contact, _phonesList)
-                            : displayName.toLowerCase().contains(filter.toLowerCase())
+                            : displayName
+                                    .toLowerCase()
+                                    .contains(filter.toLowerCase())
                                 ? _buildListTile(index, _contact, _phonesList)
-                                : Visibility(visible: false, child: new Container());
+                                : Visibility(
+                                    visible: false, child: new Container());
                       },
                     ),
                   ),
@@ -205,7 +213,10 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[CircularProgressIndicator(), subtitle1(text: "Retrieving contact list")],
+                children: <Widget>[
+                  CircularProgressIndicator(),
+                  subtitle1(text: "Retrieving contact list")
+                ],
               ),
             ),
     );
@@ -228,13 +239,16 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
   ListTile _buildListTile(int index, Contact contact, List<Item> list) {
     return ListTile(
       leading: CircleAvatar(
-          backgroundColor: primaryColor, //Colors.primaries[Random().nextInt(Colors.primaries.length)],
-          child: Text(contact.displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24))),
+          backgroundColor:
+              primaryColor, //Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          child: Text(contact.displayName[0].toUpperCase(),
+              style: TextStyle(color: Colors.white, fontSize: 24))),
       onTap: () {
         selectedContact = contact;
         _proceedToAmountPage(1);
       },
-      title: subtitle1(text: contact.displayName ?? "", textAlign: TextAlign.start),
+      title: subtitle1(
+          text: contact.displayName ?? "", textAlign: TextAlign.start),
       subtitle: list.length >= 1 && list[0]?.value != null
           ? subtitle1(text: list[0].value, textAlign: TextAlign.start)
           : Text(''),
@@ -257,7 +271,8 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
     }
 
     setState(() {
-      _contacts.sort((a, b) => a.contact.displayName.compareTo(b.contact.displayName));
+      _contacts.sort(
+          (a, b) => a.contact.displayName.compareTo(b.contact.displayName));
       _isLoading = false;
     });
   }

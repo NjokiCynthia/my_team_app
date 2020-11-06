@@ -23,12 +23,20 @@ class IntroScreenState extends State<IntroScreen> {
     setPreference("currency", "Ksh");
     (await getPreference("isFirstTime") != '')
         ? (await getPreference("isLoggedIn") == 'true')
-            ? await Provider.of<Auth>(context, listen: false).setUserProfile().then((_) {
-                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => MyGroups())).whenComplete(() {
+            ? await Provider.of<Auth>(context, listen: false)
+                .setUserProfile()
+                .then((_) {
+                Navigator.of(context)
+                    .pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => MyGroups()))
+                    .whenComplete(() {
                   _loading = false;
                 });
               })
-            : Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Login())).whenComplete(() {
+            : Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(
+                    builder: (BuildContext context) => Login()))
+                .whenComplete(() {
                 _loading = false;
               })
         : setState(() {
@@ -53,14 +61,17 @@ class IntroScreenState extends State<IntroScreen> {
   }
 
   Widget _buildImage(String assetName) {
-    return Align(child: Image.asset('assets/$assetName.png', width: 280.0), alignment: Alignment.bottomCenter);
+    return Align(
+        child: Image.asset('assets/$assetName.png', width: 280.0),
+        alignment: Alignment.bottomCenter);
   }
 
   @override
   Widget build(BuildContext context) {
     PageDecoration _pageDeco({Color pageColor}) {
       return PageDecoration(
-          titleTextStyle: TextStyle(fontSize: 26.0, fontWeight: FontWeight.w900, color: Colors.white),
+          titleTextStyle: TextStyle(
+              fontSize: 26.0, fontWeight: FontWeight.w900, color: Colors.white),
           bodyTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
           descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
           titlePadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 10.0),
@@ -83,29 +94,33 @@ class IntroScreenState extends State<IntroScreen> {
             key: introKey,
             pages: [
               PageViewModel(
-                  titleWidget: heading1(text: "A fix for your Chama", color: Colors.white),
+                  titleWidget: heading1(
+                      text: "A fix for your Chama", color: Colors.white),
                   bodyWidget: subtitle1(
                       text:
-                          "A leading book keeping tool for investment groups that handles all your Chama's financial administration as you focus on your investments.",
+                          "Leading book keeping tool for investment groups that handles all your financial administration as you focus on your investments.",
                       color: Colors.white),
                   image: _buildImage('onboarding_1'),
                   decoration: _pageDeco(
                     pageColor: Colors.blue[900],
                   )),
               PageViewModel(
-                  titleWidget: heading1(text: "...merry-go-rounds too", color: Colors.white),
+                  titleWidget: heading1(
+                      text: "...it's easy to use & secure", color: Colors.white),
                   bodyWidget: subtitle1(
-                      text: "Send your contributions, manage members, make withdrawals straight to your M-Pesa, and more. It's never been this easy.",
+                      text:
+                          "Financial information stored on Chamasoft is only visible to authorized users. Communication with our servers is encrypted.",
                       color: Colors.white),
                   image: _buildImage('onboarding_2'),
                   decoration: _pageDeco(
                     pageColor: Colors.blue[800],
                   )),
               PageViewModel(
-                  titleWidget: heading1(text: "...or even a fundraiser!", color: Colors.white),
+                  titleWidget: heading1(
+                      text: "...accessible everywhere, anytime!", color: Colors.white),
                   bodyWidget: subtitle1(
                       text:
-                          "Running a fundraiser & in need of a solution for processing contributions? Give your contributors a great experience & hit your target faster.",
+                          "Chamasoft is available 24/7 from anywhere in the world through various platforms: USSD, Web, Android & iOS. Get started now.",
                       color: Colors.white),
                   image: _buildImage('onboarding_3'),
                   decoration: _pageDeco(
@@ -118,14 +133,28 @@ class IntroScreenState extends State<IntroScreen> {
             showSkipButton: true,
             skipFlex: 0,
             nextFlex: 0,
-            skip: Text("Skip", style: TextStyle(fontFamily: 'SegoeUI', fontSize: 16.0, color: Colors.blue[200])),
-            next: Text("Next", style: TextStyle(fontFamily: 'SegoeUI', fontSize: 16.0, color: Colors.white)),
-            done: Text("Continue", style: TextStyle(fontSize: 16.0, fontFamily: 'SegoeUI', fontWeight: FontWeight.w800, color: Colors.white)),
+            skip: Text("Skip",
+                style: TextStyle(
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    color: Colors.blue[200])),
+            next: Text("Next",
+                style: TextStyle(
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    color: Colors.white)),
+            done: Text("Continue",
+                style: TextStyle(
+                    fontSize: 16.0,
+                    fontFamily: 'SegoeUI',
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white)),
             dotsDecorator: DotsDecorator(
                 size: Size(10.0, 10.0),
                 color: Colors.blue[200],
                 activeSize: Size(16.0, 10.0),
-                activeShape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(25.0))),
+                activeShape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(25.0))),
                 activeColor: Colors.white));
   }
 }

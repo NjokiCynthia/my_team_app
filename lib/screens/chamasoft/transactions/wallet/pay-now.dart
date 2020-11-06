@@ -42,7 +42,7 @@ class _PayNowState extends State<PayNow> {
 
   final _formKey = new GlobalKey<FormState>();
   int _paymentFor;
-  String _errorText;
+  // String _errorText;
   int _dropdownValue;
   bool _inputEnabled = true, _isLoading = false;
 
@@ -90,7 +90,8 @@ class _PayNowState extends State<PayNow> {
     });
     try {
       formLoadData = await Provider.of<Groups>(context, listen: false)
-          .loadInitialFormData(contr: true, fineOptions: true, memberOngoingLoans: true);
+          .loadInitialFormData(
+              contr: true, fineOptions: true, memberOngoingLoans: true);
       setState(() {
         _isInit = false;
       });
@@ -122,7 +123,8 @@ class _PayNowState extends State<PayNow> {
       "phone_number": _userPhoneNumber
     };
     try {
-      await Provider.of<Groups>(context, listen: false).makeGroupPayment(_formData);
+      await Provider.of<Groups>(context, listen: false)
+          .makeGroupPayment(_formData);
       setState(() {
         _paymentForEnabled = true;
         _inputEnabled = true;
@@ -147,24 +149,30 @@ class _PayNowState extends State<PayNow> {
     if (_paymentFor == 1) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("contributionOptions") ? formLoadData["contributionOptions"] : [];
+        _dropdownItems = formLoadData.containsKey("contributionOptions")
+            ? formLoadData["contributionOptions"]
+            : [];
         _paymentForEnabled = true;
         _labelText = "Select Contribution";
       });
     } else if (_paymentFor == 2) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems = formLoadData.containsKey("finesOptions") ? formLoadData["finesOptions"] : [];
+        _dropdownItems = formLoadData.containsKey("finesOptions")
+            ? formLoadData["finesOptions"]
+            : [];
         _paymentForEnabled = true;
         _labelText = "Select Fine Type";
       });
     } else if (_paymentFor == 3) {
       setState(() {
         _dropdownValue = null;
-        _dropdownItems =
-        formLoadData.containsKey("memberOngoingLoanOptions") ? formLoadData["memberOngoingLoanOptions"] : [];
+        _dropdownItems = formLoadData.containsKey("memberOngoingLoanOptions")
+            ? formLoadData["memberOngoingLoanOptions"]
+            : [];
         _paymentForEnabled = _dropdownItems.length > 0 ? true : false;
-        _labelText = _dropdownItems.length > 0 ? "Select Loan" : "No ongoing loans";
+        _labelText =
+            _dropdownItems.length > 0 ? "Select Loan" : "No ongoing loans";
       });
     } else {
       setState(() {
@@ -178,11 +186,11 @@ class _PayNowState extends State<PayNow> {
 
   Widget customDropDown(
       {int selectedItem,
-        String labelText,
-        Function onChanged,
-        Function validator,
-        List<NamesListItem> listItems,
-        bool enabled}) {
+      String labelText,
+      Function onChanged,
+      Function validator,
+      List<NamesListItem> listItems,
+      bool enabled}) {
     return new Theme(
       data: Theme.of(context).copyWith(
         canvasColor: Theme.of(context).cardColor,
@@ -246,7 +254,8 @@ class _PayNowState extends State<PayNow> {
                   },
                   listItems: _paymentForOption,
                   enabled: _inputEnabled),
-              Visibility(visible: _paymentFor != 4, child: SizedBox(height: 10)),
+              Visibility(
+                  visible: _paymentFor != 4, child: SizedBox(height: 10)),
               Visibility(
                 visible: _paymentFor != 4,
                 child: customDropDown(
@@ -299,7 +308,8 @@ class _PayNowState extends State<PayNow> {
               Text(
                 "An M-Pesa STK Push will be initiated on this number. Stand by to confirm.",
                 style: TextStyle(
-                  color: Theme.of(context).hintColor, //Theme.of(context).textSelectionHandleColor,
+                  color: Theme.of(context)
+                      .hintColor, //Theme.of(context).textSelectionHandleColor,
                   fontSize: 12.0,
                   fontWeight: FontWeight.w500,
                 ),
@@ -311,14 +321,16 @@ class _PayNowState extends State<PayNow> {
             style: inputTextStyle(),
             initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[WhitelistingTextInputFormatter.digitsOnly],
+            inputFormatters: <TextInputFormatter>[
+              WhitelistingTextInputFormatter.digitsOnly
+            ],
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.auto,
               enabledBorder: UnderlineInputBorder(
                   borderSide: BorderSide(
-                    color: Theme.of(context).hintColor,
-                    width: 1.0,
-                  )),
+                color: Theme.of(context).hintColor,
+                width: 1.0,
+              )),
               // hintText: 'Phone Number or Email Address',
               labelText: "M-Pesa Number",
             ),
@@ -370,7 +382,7 @@ class _PayNowState extends State<PayNow> {
                       title: "Note that...",
                       showTitle: false,
                       message:
-                      "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
+                          "An STK Push will be initiated on your phone, this process is almost instant but may take a while due to third-party delays"),
                   SizedBox(
                     height: 10,
                   ),
@@ -379,11 +391,14 @@ class _PayNowState extends State<PayNow> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                          padding: EdgeInsets.only(
+                              left: 16.0, right: 16.0, bottom: 16.0),
                           child: Column(
                             children: <Widget>[
                               buildDropDown(),
-                              Visibility(visible: _paymentFor == 4, child: SizedBox(height: 10)),
+                              Visibility(
+                                  visible: _paymentFor == 4,
+                                  child: SizedBox(height: 10)),
                               Visibility(
                                 visible: _paymentFor == 4,
                                 child: simpleTextInputField(
@@ -421,18 +436,20 @@ class _PayNowState extends State<PayNow> {
                               ),
                               _isLoading
                                   ? Padding(
-                                padding: EdgeInsets.all(10),
-                                child: Center(child: CircularProgressIndicator()),
-                              )
+                                      padding: EdgeInsets.all(10),
+                                      child: Center(
+                                          child: CircularProgressIndicator()),
+                                    )
                                   : RaisedButton(
-                                color: primaryColor,
-                                child: Padding(
-                                  padding: EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
-                                  child: Text("Pay Now"),
-                                ),
-                                textColor: Colors.white,
-                                onPressed: () => _numberToPrompt(context),
-                              )
+                                      color: primaryColor,
+                                      child: Padding(
+                                        padding: EdgeInsets.fromLTRB(
+                                            20.0, 0.0, 20.0, 0.0),
+                                        child: Text("Pay Now"),
+                                      ),
+                                      textColor: Colors.white,
+                                      onPressed: () => _numberToPrompt(context),
+                                    )
                             ],
                           ),
                         )

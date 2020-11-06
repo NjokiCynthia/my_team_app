@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
-import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
@@ -16,7 +15,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 
 class ChamasoftDashboard extends StatefulWidget {
-
   static const namedRoute = "/dashboard";
   @override
   _ChamasoftDashboardState createState() => _ChamasoftDashboardState();
@@ -44,7 +42,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     }
   }
 
-  _handleSelectedOption(BuildContext context,String option,_updateSelectedGroup) {
+  _handleSelectedOption(
+      BuildContext context, String option, _updateSelectedGroup) {
     if (option == '0') {
       // CREATE NEW Selected, handle it!
       Navigator.of(context).push(
@@ -58,8 +57,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         if (value["id"] == option) {
           setState(() {
             _selectedGroupIndex = index;
-            if(_updateSelectedGroup) 
-              Provider.of<Groups>(context, listen: false).setSelectedGroupId(value["id"]);
+            if (_updateSelectedGroup)
+              Provider.of<Groups>(context, listen: false)
+                  .setSelectedGroupId(value["id"]);
           });
         }
         //switch to selected group.
@@ -67,19 +67,22 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     }
   }
 
-  Future<void> _getUserGroupsOverlay(BuildContext context) async{
-    var _groups = Provider.of<Groups>(context,listen: false).item;
+  Future<void> _getUserGroupsOverlay(BuildContext context) async {
+    var _groups = Provider.of<Groups>(context, listen: false).item;
     _overlayItems = [];
-    _overlayItems.insert(0, {
-      "id": '0',
-      "title": "Create New",
-      "role": "Add your Chama"
-    });
-    _groups.map((group) => {
-      _overlayItems.add(
-        {"id": group.groupId, "title": group.groupName, "role": group.isGroupAdmin?"Group Admin | ${group.groupRole}":group.groupRole}
-      )
-    }).toList();
+    _overlayItems.insert(
+        0, {"id": '0', "title": "Create New", "role": "Add your Chama"});
+    _groups
+        .map((group) => {
+              _overlayItems.add({
+                "id": group.groupId,
+                "title": group.groupName,
+                "role": group.isGroupAdmin
+                    ? "Group Admin | ${group.groupRole}"
+                    : group.groupRole
+              })
+            })
+        .toList();
   }
 
   @override
@@ -92,13 +95,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     _getUserGroupsOverlay(context).then((_) async {
-      await Provider.of<Groups>(context,listen: false).getCurrentGroupId().then((groupId){
-        _handleSelectedOption(context,groupId,false);
+      await Provider.of<Groups>(context, listen: false)
+          .getCurrentGroupId()
+          .then((groupId) {
+        _handleSelectedOption(context, groupId, false);
       });
-    })
-    .catchError((error){
-      
-    });
+    }).catchError((error) {});
     super.didChangeDependencies();
   }
 
@@ -115,8 +117,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       child: Scaffold(
         key: dashboardScaffoldKey,
         backgroundColor: (themeChangeProvider.darkTheme)
-              ? Colors.blueGrey[900]
-              : Colors.blue[50],
+            ? Colors.blueGrey[900]
+            : Colors.blue[50],
         appBar: AppBar(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[900]
@@ -128,7 +130,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             parentStream: _stream,
             currentGroup: _overlayItems[_selectedGroupIndex],
             selectedOption: (selected) {
-              _handleSelectedOption(context,selected,true);
+              _handleSelectedOption(context, selected, true);
             },
           ),
           elevation: _appBarElevation,
@@ -137,7 +139,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             IconButton(
               icon: Icon(
                 Icons.notifications_off,
-                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                color:
+                    Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
               ),
               onPressed: null, // Disable notifications for now
               // onPressed: () => {
@@ -152,19 +155,19 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: IconButton(
-                icon: Icon(
-                  Icons.settings,
-                  color: Theme.of(context).textSelectionHandleColor,
-                ),
-                onPressed: () => {
-                  _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => ChamasoftSettings(),
-                    ),
+                  icon: Icon(
+                    Icons.settings,
+                    color: Theme.of(context).textSelectionHandleColor,
                   ),
-                }
-              ),
+                  onPressed: () => {
+                        _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (BuildContext context) =>
+                                ChamasoftSettings(),
+                          ),
+                        ),
+                      }),
             ),
           ],
         ),
@@ -249,7 +252,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             return SafeArea(
               child: Container(
                 // decoration: primaryGradient(context),
-                child:getPage(_currentPage),
+                child: getPage(_currentPage),
               ),
             );
           },

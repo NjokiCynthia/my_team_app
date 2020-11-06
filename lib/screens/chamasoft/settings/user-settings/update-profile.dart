@@ -26,7 +26,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   ScrollController _scrollController;
   PickedFile avatar;
   final ImagePicker _picker = ImagePicker();
-  String _retrieveDataError;
+  // String _retrieveDataError;
 
   String _userAvatar;
   String name = 'Jane Doe';
@@ -49,8 +49,11 @@ class _UpdateProfileState extends State<UpdateProfile> {
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
-      final pickedFile =
-          await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
+      final pickedFile = await _picker.getImage(
+          source: source,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: IMAGE_QUALITY);
       setState(() {
         avatar = pickedFile;
       });
@@ -100,7 +103,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
         _isLoadingImage = true;
       });
       try {
-        await Provider.of<Auth>(context, listen: false).updateUserAvatar(File(avatar.path));
+        await Provider.of<Auth>(context, listen: false)
+            .updateUserAvatar(File(avatar.path));
         setState(() {
           _userAvatar = null;
         });
@@ -182,7 +186,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
       }
       _emailFormKey.currentState.save();
       if (emailAddress != _oldEmailAddress) {
-        await Provider.of<Auth>(context, listen: false).updateUserEmailAddress(emailAddress);
+        await Provider.of<Auth>(context, listen: false)
+            .updateUserEmailAddress(emailAddress);
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated your email address",
@@ -501,8 +506,12 @@ class _UpdateProfileState extends State<UpdateProfile> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  heading1(text: "Update Profile", color: Theme.of(context).textSelectionHandleColor),
-                  subtitle2(text: "Update your Chamasoft Profile", color: Theme.of(context).textSelectionHandleColor),
+                  heading1(
+                      text: "Update Profile",
+                      color: Theme.of(context).textSelectionHandleColor),
+                  subtitle2(
+                      text: "Update your Chamasoft Profile",
+                      color: Theme.of(context).textSelectionHandleColor),
                   SizedBox(
                     height: 20.0,
                   ),
@@ -519,42 +528,56 @@ class _UpdateProfileState extends State<UpdateProfile> {
                             : _userAvatar != null
                                 ? CachedNetworkImage(
                                     imageUrl: _userAvatar,
-                                    placeholder: (context, url) => const CircleAvatar(
+                                    placeholder: (context, url) =>
+                                        const CircleAvatar(
                                       radius: 45.0,
-                                      backgroundImage: const AssetImage('assets/no-user.png'),
+                                      backgroundImage: const AssetImage(
+                                          'assets/no-user.png'),
                                     ),
-                                    imageBuilder: (context, image) => CircleAvatar(
+                                    imageBuilder: (context, image) =>
+                                        CircleAvatar(
                                       backgroundImage: image,
                                       radius: 45.0,
                                     ),
-                                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(Icons.error),
                                     fadeOutDuration: const Duration(seconds: 1),
                                     fadeInDuration: const Duration(seconds: 3),
                                   )
-                                : !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                                : !kIsWeb &&
+                                        defaultTargetPlatform ==
+                                            TargetPlatform.android
                                     ? FutureBuilder<void>(
                                         future: retrieveLostData(),
-                                        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<void> snapshot) {
                                           switch (snapshot.connectionState) {
                                             case ConnectionState.none:
                                             case ConnectionState.waiting:
                                               return CircleAvatar(
-                                                backgroundImage: AssetImage('assets/no-user.png'),
-                                                backgroundColor: Colors.transparent,
+                                                backgroundImage: AssetImage(
+                                                    'assets/no-user.png'),
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 radius: 45,
                                               );
                                             case ConnectionState.done:
                                               return CircleAvatar(
                                                 backgroundImage: avatar == null
-                                                    ? AssetImage('assets/no-user.png')
-                                                    : FileImage(File(avatar.path)),
-                                                backgroundColor: Colors.transparent,
+                                                    ? AssetImage(
+                                                        'assets/no-user.png')
+                                                    : FileImage(
+                                                        File(avatar.path)),
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 radius: 45,
                                               );
                                             default:
                                               return CircleAvatar(
-                                                backgroundImage: AssetImage('assets/no-user.png'),
-                                                backgroundColor: Colors.transparent,
+                                                backgroundImage: AssetImage(
+                                                    'assets/no-user.png'),
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 radius: 45,
                                               );
                                           }
@@ -577,7 +600,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               size: 30.0,
                             ),
                             onPressed: () async {
-                              _onImagePickerClicked(ImageSource.gallery, context);
+                              _onImagePickerClicked(
+                                  ImageSource.gallery, context);
                             },
                           ),
                         )

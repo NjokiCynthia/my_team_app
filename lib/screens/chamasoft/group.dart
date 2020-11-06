@@ -1,7 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/deposits-v-withdrawals.dart';
-import 'package:chamasoft/screens/chamasoft/bar_chart_sample4.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -53,7 +52,8 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
 
   @override
   void didChangeDependencies() {
-    _currentGroup = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    _currentGroup =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     //if(_isInit){
     _getGroupDashboardData();
     //}
@@ -62,16 +62,19 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
   }
 
   Future<bool> _onWillPop() async {
-    await Navigator.of(context).pushReplacementNamed(ChamasoftDashboard.namedRoute);
+    await Navigator.of(context)
+        .pushReplacementNamed(ChamasoftDashboard.namedRoute);
     return null;
   }
 
   Future<void> _getGroupDashboardData([bool hardRefresh = false]) async {
     try {
       if (hardRefresh) {
-        Provider.of<Dashboard>(context, listen: false).resetGroupDashboardData(_currentGroup.groupId);
+        Provider.of<Dashboard>(context, listen: false)
+            .resetGroupDashboardData(_currentGroup.groupId);
       }
-      if (!Provider.of<Dashboard>(context, listen: false).groupDataExists(_currentGroup.groupId)) {
+      if (!Provider.of<Dashboard>(context, listen: false)
+          .groupDataExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
             setState(() {
@@ -79,7 +82,8 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
             });
           }
         }
-        await Provider.of<Dashboard>(context, listen: false).getGroupDashboardData(_currentGroup.groupId);
+        await Provider.of<Dashboard>(context, listen: false)
+            .getGroupDashboardData(_currentGroup.groupId);
         getChartData();
       }
     } on CustomException catch (error) {
@@ -100,7 +104,8 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
 
   Future<void> getChartData() async {
     try {
-      await Provider.of<Dashboard>(context, listen: false).getGroupDepositVWithdrawals(_currentGroup.groupId);
+      await Provider.of<Dashboard>(context, listen: false)
+          .getGroupDepositVWithdrawals(_currentGroup.groupId);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -120,7 +125,8 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
             height: 165.0,
             padding: EdgeInsets.all(16.0),
             margin: EdgeInsets.all(0.0),
-            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+            decoration: cardDecoration(
+                gradient: plainCardGradient(context), context: context),
             child: accountBalance(
               color: primaryColor,
               cardIcon: Feather.credit_card,
@@ -157,7 +163,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                           padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
                           child: Container(
                             padding: EdgeInsets.all(16.0),
-                            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                            decoration: cardDecoration(
+                                gradient: plainCardGradient(context),
+                                context: context),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -173,26 +181,33 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   ],
                                 ),
                                 Divider(
-                                  color: Theme.of(context).hintColor.withOpacity(0.1),
+                                  color: Theme.of(context)
+                                      .hintColor
+                                      .withOpacity(0.1),
                                   thickness: 2.0,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     customTitle(
                                       text: "All Group Contributions",
                                       textAlign: TextAlign.start,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                     ),
                                     SizedBox(
                                       height: 22,
                                       child: cardAmountButton(
                                           currency: _groupCurrency,
-                                          amount: currencyFormat.format(dashboardData.groupContributionAmount),
+                                          amount: currencyFormat.format(
+                                              dashboardData
+                                                  .groupContributionAmount),
                                           size: 16.0,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                           action: () {}),
                                     ),
                                   ],
@@ -201,22 +216,27 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   height: 4.0,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     customTitle(
                                       text: "Total Fine Payments",
                                       textAlign: TextAlign.start,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                     ),
                                     SizedBox(
                                       height: 22,
                                       child: cardAmountButton(
                                           currency: _groupCurrency,
-                                          amount: currencyFormat.format(dashboardData.groupFinePaymentAmount),
+                                          amount: currencyFormat.format(
+                                              dashboardData
+                                                  .groupFinePaymentAmount),
                                           size: 16.0,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                           action: () {}),
                                     ),
                                   ],
@@ -225,19 +245,23 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   height: 4.0,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     customTitle(
                                       text: "Group Expenses",
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                     ),
                                     SizedBox(
                                       height: 22,
                                       child: cardAmountButton(
                                           currency: _groupCurrency,
-                                          amount: currencyFormat.format(dashboardData.groupExpensesAmount),
+                                          amount: currencyFormat.format(
+                                              dashboardData
+                                                  .groupExpensesAmount),
                                           size: 14.0,
                                           color: Colors.red[400],
                                           action: () {}),
@@ -286,11 +310,14 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                 Container(
                                   width: 160.0,
                                   padding: EdgeInsets.all(16.0),
-                                  decoration: cardDecoration(gradient: csCardGradient(), context: context),
+                                  decoration: cardDecoration(
+                                      gradient: csCardGradient(),
+                                      context: context),
                                   child: accountBalance(
                                     color: Colors.white,
                                     cardIcon: Feather.globe,
-                                    cardAmount: currencyFormat.format(dashboardData.totalBankBalances),
+                                    cardAmount: currencyFormat.format(
+                                        dashboardData.totalBankBalances),
                                     currency: _groupCurrency,
                                     accountName: "Total",
                                   ),
@@ -307,12 +334,15 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           width: 160.0,
                                           height: 165.0,
                                           padding: EdgeInsets.all(16.0),
-                                          decoration:
-                                              cardDecoration(gradient: plainCardGradient(context), context: context),
+                                          decoration: cardDecoration(
+                                              gradient:
+                                                  plainCardGradient(context),
+                                              context: context),
                                           child: accountBalance(
                                             color: primaryColor,
                                             cardIcon: Feather.credit_card,
-                                            cardAmount: currencyFormat.format(dashboardData.bankBalances),
+                                            cardAmount: currencyFormat.format(
+                                                dashboardData.bankBalances),
                                             currency: _groupCurrency,
                                             accountName: "Cash at Bank",
                                           ),
@@ -324,12 +354,15 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           width: 160.0,
                                           height: 165.0,
                                           padding: EdgeInsets.all(16.0),
-                                          decoration:
-                                              cardDecoration(gradient: plainCardGradient(context), context: context),
+                                          decoration: cardDecoration(
+                                              gradient:
+                                                  plainCardGradient(context),
+                                              context: context),
                                           child: accountBalance(
                                             color: primaryColor,
                                             cardIcon: Feather.credit_card,
-                                            cardAmount: currencyFormat.format(dashboardData.cashBalances),
+                                            cardAmount: currencyFormat.format(
+                                                dashboardData.cashBalances),
                                             currency: _groupCurrency,
                                             accountName: "Cash at Hand",
                                           ),
@@ -343,7 +376,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                           padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
                           child: Container(
                             padding: EdgeInsets.all(16.0),
-                            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                            decoration: cardDecoration(
+                                gradient: plainCardGradient(context),
+                                context: context),
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -361,26 +396,32 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   ],
                                 ),
                                 Divider(
-                                  color: Theme.of(context).hintColor.withOpacity(0.1),
+                                  color: Theme.of(context)
+                                      .hintColor
+                                      .withOpacity(0.1),
                                   thickness: 2.0,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     customTitle(
                                       text: "Loaned Out",
                                       textAlign: TextAlign.start,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                     ),
                                     SizedBox(
                                       height: 22,
                                       child: cardAmountButton(
                                           currency: _groupCurrency,
-                                          amount: currencyFormat.format(dashboardData.groupLoanedAmount),
+                                          amount: currencyFormat.format(
+                                              dashboardData.groupLoanedAmount),
                                           size: 16.0,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                           action: () {}),
                                     ),
                                   ],
@@ -389,21 +430,25 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   height: 4.0,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     customTitle(
                                       text: "Total Repaid",
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                     ),
                                     SizedBox(
                                       height: 22,
                                       child: cardAmountButton(
                                           currency: _groupCurrency,
-                                          amount: currencyFormat.format(dashboardData.groupLoanPaid),
+                                          amount: currencyFormat.format(
+                                              dashboardData.groupLoanPaid),
                                           size: 14.0,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                           action: () {}),
                                     ),
                                   ],
@@ -412,21 +457,26 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   height: 4.0,
                                 ),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     customTitle(
                                       text: "Pending Loan Balance",
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                     ),
                                     SizedBox(
                                       height: 22,
                                       child: cardAmountButton(
                                           currency: _groupCurrency,
-                                          amount: currencyFormat.format(dashboardData.groupPendingLoanBalance),
+                                          amount: currencyFormat.format(
+                                              dashboardData
+                                                  .groupPendingLoanBalance),
                                           size: 14.0,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                           action: () {}),
                                     ),
                                   ],
@@ -436,14 +486,18 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                           ),
                         ),
                         Padding(
-                            padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+                            padding:
+                                EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
                             child: Container(
                               padding: EdgeInsets.all(16.0),
-                              decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+                              decoration: cardDecoration(
+                                  gradient: plainCardGradient(context),
+                                  context: context),
                               child: Column(
                                 children: <Widget>[
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
                                         "Deposits vs Withdrawals",
@@ -462,7 +516,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           onPressed: () {})
                                     ],
                                   ),
-                                  SingleChildScrollView(scrollDirection: Axis.horizontal, child: DepositsVWithdrawals())
+                                  SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: DepositsVWithdrawals())
                                 ],
                               ),
                             ))

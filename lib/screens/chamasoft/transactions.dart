@@ -9,22 +9,17 @@ import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-paym
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-income.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-miscellaneous-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/account-to-account-transfer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/contribution-transfer.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/create-invoice.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/svg-icons.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 import 'reports/member/contribution-statement.dart';
@@ -62,7 +57,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   }
 
   Future<bool> _onWillPop() async {
-    await Navigator.of(context).pushReplacementNamed(ChamasoftDashboard.namedRoute);
+    await Navigator.of(context)
+        .pushReplacementNamed(ChamasoftDashboard.namedRoute);
     return null;
   }
 
@@ -76,9 +72,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     }
 
     List<Widget> eWalletOptions = [
-        SizedBox(
-          width: 16.0,
-        ),
+      SizedBox(
+        width: 16.0,
+      ),
       Container(
           width: 132.0,
           child: svgGridButton(
@@ -89,7 +85,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => WithdrawalPurpose(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => WithdrawalPurpose(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -128,7 +125,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => RecordContributionPayment(),
+                  builder: (BuildContext context) =>
+                      RecordContributionPayment(),
                   settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
@@ -145,7 +143,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => RecordFinePayment(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => RecordFinePayment(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -160,7 +159,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => RecordIncome(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => RecordIncome(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -175,7 +175,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => RecordMiscellaneousPayment(),
+                  builder: (BuildContext context) =>
+                      RecordMiscellaneousPayment(),
                   settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
@@ -191,7 +192,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => RecordBankLoan(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => RecordBankLoan(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -212,7 +214,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => RecordExpense(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => RecordExpense(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -228,7 +231,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => BankLoanRepayment(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => BankLoanRepayment(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -283,7 +287,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => FineMember(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => FineMember(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
 //      SizedBox(
@@ -363,7 +368,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                               height: 160.0,
                               child: ListView(
                                 scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                                padding:
+                                    EdgeInsets.only(top: 5.0, bottom: 10.0),
                                 physics: BouncingScrollPhysics(),
                                 children: eWalletOptions,
                               ),
@@ -487,22 +493,27 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                 controller: _scrollController,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
-                                  RecentTransactionSummary transaction = recentTransactions[index];
+                                  RecentTransactionSummary transaction =
+                                      recentTransactions[index];
                                   return Padding(
-                                    padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
+                                    padding: EdgeInsets.fromLTRB(
+                                        16.0, 4.0, 16.0, 4.0),
                                     child: Card(
                                       elevation: 0,
                                       color: Colors.transparent,
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
                                           Expanded(
                                             child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
                                               children: <Widget>[
                                                 Icon(
                                                   Feather.bar_chart_2,
-                                                  color: Theme.of(context).hintColor,
+                                                  color: Theme.of(context)
+                                                      .hintColor,
                                                   size: 24.0,
                                                 ),
                                                 SizedBox(
@@ -510,20 +521,35 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                 ),
                                                 Expanded(
                                                   child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: <Widget>[
                                                       subtitle1(
-                                                          text: transaction.paymentTitle,
-                                                          color: Theme.of(context).textSelectionHandleColor,
-                                                          textAlign: TextAlign.start),
+                                                          text: transaction
+                                                              .paymentTitle,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .textSelectionHandleColor,
+                                                          textAlign:
+                                                              TextAlign.start),
                                                       subtitle2(
-                                                          text: transaction.description,
-                                                          color: Theme.of(context).textSelectionHandleColor,
-                                                          textAlign: TextAlign.start),
+                                                          text: transaction
+                                                              .description,
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .textSelectionHandleColor,
+                                                          textAlign:
+                                                              TextAlign.start),
                                                       subtitle2(
-                                                          text: transaction.paymentMethod + " Payment",
-                                                          color: Theme.of(context).textSelectionHandleColor,
-                                                          textAlign: TextAlign.start)
+                                                          text: transaction
+                                                                  .paymentMethod +
+                                                              " Payment",
+                                                          color: Theme.of(
+                                                                  context)
+                                                              .textSelectionHandleColor,
+                                                          textAlign:
+                                                              TextAlign.start)
                                                     ],
                                                   ),
                                                 ),
@@ -531,17 +557,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                             ),
                                           ),
                                           Column(
-                                            crossAxisAlignment: CrossAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
                                             children: <Widget>[
                                               subtitle1(
                                                   text: group.groupCurrency +
                                                       " " +
-                                                      currencyFormat.format(transaction.paymentAmount),
-                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                      currencyFormat.format(
+                                                          transaction
+                                                              .paymentAmount),
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
                                                   textAlign: TextAlign.start),
                                               subtitle2(
                                                   text: transaction.paymentDate,
-                                                  color: Theme.of(context).textSelectionHandleColor,
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
                                                   textAlign: TextAlign.start),
                                             ],
                                           )
@@ -556,13 +587,17 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                 height: 16,
                               ),
                               //if (recentTransactions.length == 10)
-                                defaultButton(
-                                    context: context,
-                                    text: "View More Transactions",
-                                    onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            ContributionStatement(statementFlag: CONTRIBUTION_STATEMENT),
-                                        settings: RouteSettings(arguments: 0))))
+                              defaultButton(
+                                  context: context,
+                                  text: "View More Transactions",
+                                  onPressed: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ContributionStatement(
+                                                  statementFlag:
+                                                      CONTRIBUTION_STATEMENT),
+                                          settings:
+                                              RouteSettings(arguments: 0))))
                             ],
                           ),
                         ),
@@ -587,7 +622,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                     textAlign: TextAlign.center,
                                     color: Colors.blueGrey[400]),
                                 customTitleWithWrap(
-                                    text: "Sorry, you haven't made any transactions",
+                                    text:
+                                        "Sorry, you haven't made any transactions",
                                     //fontWeight: FontWeight.w500,
                                     fontSize: 12.0,
                                     textAlign: TextAlign.center,
