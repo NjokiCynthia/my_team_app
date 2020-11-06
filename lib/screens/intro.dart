@@ -57,7 +57,7 @@ class IntroScreenState extends State<IntroScreen> {
 
   void _onIntroEnd(context) {
     setPreference("isFirstTime", "true");
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => Login()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => Login()));
   }
 
   Widget _buildImage(String assetName) {
