@@ -33,6 +33,7 @@ class _CreateGroupState extends State<CreateGroup> {
   String _groupName;
 
   PickedFile avatar;
+  File imageFile = null;
   final ImagePicker _picker = ImagePicker();
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
@@ -41,6 +42,7 @@ class _CreateGroupState extends State<CreateGroup> {
           await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
       setState(() {
         avatar = pickedFile;
+        imageFile = File(avatar.path);
       });
     } catch (e) {
       //show SnackBar?
@@ -72,7 +74,7 @@ class _CreateGroupState extends State<CreateGroup> {
 
     try {
       await Provider.of<Groups>(context, listen: false)
-          .createGroup(groupName: _groupName, countryId: countryId, avatar: File(avatar.path));
+          .createGroup(groupName: _groupName, countryId: countryId, avatar: imageFile);
       Navigator.of(context).pushReplacementNamed(ConfigureGroup.namedRoute);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
