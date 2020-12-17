@@ -271,7 +271,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
                                 }
                               },
                             ),
-                            numberTextInputField(
+                            simpleTextInputField(
                               context: context,
                               labelText: 'Enter account number',
                               controller: accountNumberTextController,

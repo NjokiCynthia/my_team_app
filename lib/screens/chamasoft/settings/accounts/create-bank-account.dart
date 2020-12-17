@@ -217,7 +217,7 @@ class _CreateBankAccountState extends State<CreateBankAccount> {
                           }
                         },
                       ),
-                      numberTextInputField(
+                      simpleTextInputField(
                         context: context,
                         labelText: 'Enter account number',
                         onChanged: (value) {
