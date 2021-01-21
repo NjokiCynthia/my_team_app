@@ -359,6 +359,7 @@ class Groups with ChangeNotifier {
 
   List<Account> _accounts = [];
   List<Contribution> _contributions = [];
+  List<Contribution> _payContributions = [];
   List<Expense> _expenses = [];
   List<FineType> _fineTypes = [];
   List<IncomeCategories> _incomeCategories = [];
@@ -432,6 +433,10 @@ class Groups with ChangeNotifier {
 
   List<Contribution> get contributions {
     return [..._contributions];
+  }
+
+  List<Contribution> get payContributions{
+    return [..._payContributions];
   }
 
   List<Expense> get expenses {
@@ -749,6 +754,28 @@ class Groups with ChangeNotifier {
           active: groupContributionJSON['active'].toString(),
         );
         _contributions.add(newContribution);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addPayContributions(List<dynamic> groupContributions) {
+    if (groupContributions.length > 0) {
+      for (var groupContributionJSON in groupContributions) {
+        final newContribution = Contribution(
+          id: groupContributionJSON['id'].toString(),
+          name: groupContributionJSON['name'].toString(),
+          amount: groupContributionJSON['amount'].toString(),
+          type: groupContributionJSON['type'].toString(),
+          contributionType: groupContributionJSON['contribution_type'].toString(),
+          frequency: groupContributionJSON['frequency'].toString(),
+          invoiceDate: groupContributionJSON['invoice_date'].toString(),
+          contributionDate: groupContributionJSON['contribution_date'].toString(),
+          oneTimeContributionSetting: groupContributionJSON['one_time_contribution_setting'].toString(),
+          isHidden: groupContributionJSON['is_hidden'].toString(),
+          active: groupContributionJSON['active'].toString(),
+        );
+        _payContributions.add(newContribution);
       }
     }
     notifyListeners();
@@ -1356,6 +1383,30 @@ class Groups with ChangeNotifier {
         _contributions = []; //clear
         final groupContributions = response['contributions'] as List<dynamic>;
         addContributions(groupContributions);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchPayContributions() async {
+    const url = EndpointUrl.GET_GROUP_PAY_CONTRIBUTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _payContributions = []; //clear
+        final groupContributions = response['contributions'] as List<dynamic>;
+        addPayContributions(groupContributions);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -3263,10 +3314,10 @@ class Groups with ChangeNotifier {
         loanTypeOptions = [],
         memberOngoingLoanOptions = [];
     if (contr) {
-      if (_contributions.length == 0) {
-        await fetchContributions();
+      if (_payContributions.length == 0) {
+        await fetchPayContributions();
       }
-      _contributions
+      _payContributions
           .map((element) => contributionOptions.add(NamesListItem(id: int.tryParse(element.id), name: element.name)))
           .toList();
     }
@@ -3731,6 +3782,7 @@ class Groups with ChangeNotifier {
     _members = [];
     _allAccounts = [];
     _contributions = [];
+    _payContributions = [];
     _countryOptions = [];
     _currencyOptions = [];
     _bankOptions = [];

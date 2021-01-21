@@ -118,6 +118,7 @@ class EndpointUrl {
 
   //Selected Setting Apis
   static const String GET_GROUP_CONTRIBUTIONS = CustomHelper.baseUrl + "/mobile/contributions/get_group_contributions";
+  static const String GET_GROUP_PAY_CONTRIBUTIONS = CustomHelper.baseUrl + "/mobile/contributions/get_group_contributions_to_pay";
   static const String GET_GROUP_EXPENSE_CATEGORIES = CustomHelper.baseUrl + "/mobile/expense_categories/get_group_expense_categories";
   static const String GET_GROUP_INCOME_CATEGORIES_LIST = CustomHelper.baseUrl + "/mobile/income_categories/group_income_categories_list";
   static const String GET_GROUP_ASSET_CATEGORIES = CustomHelper.baseUrl + "/mobile/asset_categories/get_group_asset_categories";
