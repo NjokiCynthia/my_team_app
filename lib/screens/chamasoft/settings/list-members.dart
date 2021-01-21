@@ -132,112 +132,140 @@ class _ListMembersState extends State<ListMembers> {
         backgroundColor: primaryColor,
         onPressed: () => _showActions(context),
       ),
-      body: Builder(
-        builder: (BuildContext context) {
-          return RefreshIndicator(
-            key: _refreshIndicatorKey,
-            onRefresh: () => _fetchMembers(context),
-            child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: primaryGradient(context),
-                child: Consumer<Groups>(builder: (context, groupData, child) {
-                  return ListView.separated(
-                    padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-                    itemCount: groupData.members.length,
-                    itemBuilder: (context, index) {
-                      Member member = groupData.members[index];
-                      return ListTile(
-                        dense: true,
-                        leading: member.avatar != null
-                            ? Container(
-                                height: 50,
-                                width: 50,
-                                child: new CachedNetworkImage(
-                                  imageUrl: member.avatar,
-                                  placeholder: (context, url) => const CircleAvatar(
-                                    backgroundImage: const AssetImage('assets/no-user.png'),
-                                  ),
-                                  imageBuilder: (context, image) => CircleAvatar(
-                                    backgroundImage: image,
-                                  ),
-                                  errorWidget: (context, url, error) => const CircleAvatar(
-                                    backgroundImage: const AssetImage('assets/no-user.png'),
-                                  ),
-                                  fadeOutDuration: const Duration(seconds: 1),
-                                  fadeInDuration: const Duration(seconds: 3),
-                                ),
-                              )
-                            : const CircleAvatar(
-                                backgroundImage: const AssetImage('assets/no-user.png'),
-                              ),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: <Widget>[
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: <Widget>[
-                                        customTitle(
-                                          text: '${member.name}',
-                                          color: Theme.of(context).textSelectionHandleColor,
-                                          fontWeight: FontWeight.w800,
-                                          fontSize: 18.0,
-                                        ),
-                                        Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            Row(
-                                              children: <Widget>[
-                                                customTitle(
-                                                  text: '${member.identity}',
-                                                  fontWeight: FontWeight.w700,
-                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
-                                                  fontSize: 12.0,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-//                  trailing: Padding(
-//                    padding: EdgeInsets.all(10.0),
-//                    child: circleIconButton(
-//                      icon: Icons.close,
-//                      backgroundColor: Colors.redAccent.withOpacity(.3),
-//                      color: Colors.red,
-//                      iconSize: 12.0,
-//                      padding: 0.0,
-//                      onPressed: () {
-//                        // TODO: Implement Delete Method
-//                      },
-//                    ),
-//                  ),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return Divider(
-                        color: Theme.of(context).dividerColor,
-                        height: 6.0,
-                      );
-                    },
-                  );
-                })),
-          );
-        },
+      body: RefreshIndicator(
+        onRefresh: () => _fetchMembers(context),
+        child: FutureBuilder(
+          future: _fetchMembers(context),
+          builder: (ctx, dataSnapshot) {
+            if (dataSnapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (dataSnapshot.error != null) {
+              //do error handling
+              return Center(
+                child: Text("Some error occurred"),
+              );
+            } else {
+              return Center(
+                child: Text("Everything is correct"),
+              );
+              // return Consumer<Orders>(
+              //     builder: (ctx, orderData, child) => ListView.builder(
+              //           itemCount: orderData.orders.length,
+              //           itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
+              //         ));
+            }
+          },
+        ),
       ),
+      
+//       Builder(
+//         builder: (BuildContext context) {
+//           return RefreshIndicator(
+//             key: _refreshIndicatorKey,
+//             onRefresh: () => _fetchMembers(context),
+//             child: Container(
+//                 height: MediaQuery.of(context).size.height,
+//                 width: MediaQuery.of(context).size.width,
+//                 decoration: primaryGradient(context),
+//                 child: Consumer<Groups>(builder: (context, groupData, child) {
+//                   return ListView.separated(
+//                     padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+//                     itemCount: groupData.members.length,
+//                     itemBuilder: (context, index) {
+//                       Member member = groupData.members[index];
+//                       return ListTile(
+//                         dense: true,
+//                         leading: member.avatar != null
+//                             ? Container(
+//                                 height: 50,
+//                                 width: 50,
+//                                 child: new CachedNetworkImage(
+//                                   imageUrl: member.avatar,
+//                                   placeholder: (context, url) => const CircleAvatar(
+//                                     backgroundImage: const AssetImage('assets/no-user.png'),
+//                                   ),
+//                                   imageBuilder: (context, image) => CircleAvatar(
+//                                     backgroundImage: image,
+//                                   ),
+//                                   errorWidget: (context, url, error) => const CircleAvatar(
+//                                     backgroundImage: const AssetImage('assets/no-user.png'),
+//                                   ),
+//                                   fadeOutDuration: const Duration(seconds: 1),
+//                                   fadeInDuration: const Duration(seconds: 3),
+//                                 ),
+//                               )
+//                             : const CircleAvatar(
+//                                 backgroundImage: const AssetImage('assets/no-user.png'),
+//                               ),
+//                         title: Row(
+//                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//                           children: <Widget>[
+//                             Column(
+//                               crossAxisAlignment: CrossAxisAlignment.start,
+//                               children: <Widget>[
+//                                 Row(
+//                                   mainAxisAlignment: MainAxisAlignment.start,
+//                                   children: <Widget>[
+//                                     Column(
+//                                       crossAxisAlignment: CrossAxisAlignment.start,
+//                                       children: <Widget>[
+//                                         customTitle(
+//                                           text: '${member.name}',
+//                                           color: Theme.of(context).textSelectionHandleColor,
+//                                           fontWeight: FontWeight.w800,
+//                                           fontSize: 18.0,
+//                                         ),
+//                                         Column(
+//                                           crossAxisAlignment: CrossAxisAlignment.start,
+//                                           children: <Widget>[
+//                                             Row(
+//                                               children: <Widget>[
+//                                                 customTitle(
+//                                                   text: '${member.identity}',
+//                                                   fontWeight: FontWeight.w700,
+//                                                   color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+//                                                   fontSize: 12.0,
+//                                                 ),
+//                                               ],
+//                                             ),
+//                                           ],
+//                                         )
+//                                       ],
+//                                     ),
+//                                   ],
+//                                 )
+//                               ],
+//                             ),
+//                           ],
+//                         ),
+// //                  trailing: Padding(
+// //                    padding: EdgeInsets.all(10.0),
+// //                    child: circleIconButton(
+// //                      icon: Icons.close,
+// //                      backgroundColor: Colors.redAccent.withOpacity(.3),
+// //                      color: Colors.red,
+// //                      iconSize: 12.0,
+// //                      padding: 0.0,
+// //                      onPressed: () {
+// //                        // TODO: Implement Delete Method
+// //                      },
+// //                    ),
+// //                  ),
+//                       );
+//                     },
+//                     separatorBuilder: (context, index) {
+//                       return Divider(
+//                         color: Theme.of(context).dividerColor,
+//                         height: 6.0,
+//                       );
+//                     },
+//                   );
+//                 })),
+//           );
+//         },
+//       ),
     );
   }
 }
