@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'group-setup/add-members-manually.dart';
 import 'group-setup/list-contacts.dart';
+import '../../../widgets/memberListItem.dart';
 
 class ListMembers extends StatefulWidget {
   @override
@@ -91,6 +92,7 @@ class _ListMembersState extends State<ListMembers> {
     );
   }
 
+
   Future<void> _fetchMembers(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
@@ -147,8 +149,27 @@ class _ListMembersState extends State<ListMembers> {
                 child: Text("Some error occurred"),
               );
             } else {
-              return Center(
-                child: Text("Everything is correct"),
+              return Container(
+                height: MediaQuery.of(context).size.height,
+                width: MediaQuery.of(context).size.width,
+                decoration: primaryGradient(context),
+                child: Consumer<Groups>(builder: (context, groupData, child) {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        Member member = groupData.members[index];
+                        return CartItem(
+                          id: member.id,
+                          title:  member.name,
+                          quantity: 2,
+                          price: 20.00,
+                          productId: member.userId,
+                        );
+                      },
+                      itemCount: groupData.members.length,
+                    ) 
+                  );
+                }),
               );
               // return Consumer<Orders>(
               //     builder: (ctx, orderData, child) => ListView.builder(
