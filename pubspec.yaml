@@ -34,7 +34,7 @@ dependencies:
   shimmer: ^1.1.1
   flutter_svg: ^0.18.0
   image_picker: ^0.6.7+9
-  #sms_autofill: ^1.2.4
+  sms_autofill: ^1.2.7
 
 dev_dependencies:
   flutter_test:

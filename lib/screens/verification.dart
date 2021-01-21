@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../providers/auth.dart';
 import '../screens/signup.dart';
@@ -24,16 +25,12 @@ class Verification extends StatefulWidget {
   _VerificationState createState() => _VerificationState();
 }
 
-class _VerificationState extends State<Verification> {
+class _VerificationState extends State<Verification> with CodeAutoFill {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
   bool _isInit = true;
   bool _enableResend = false;
-  String _code;
-  String _signature;
-
-  // String _pin;
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
   Map<String, String> _authData = {
@@ -44,6 +41,7 @@ class _VerificationState extends State<Verification> {
 
   Timer _timer;
   int _start = 60;
+  String appSignature = "{{app signature}}";
 
   void _countDownTimer() {
     _isInit = false;
@@ -61,6 +59,12 @@ class _VerificationState extends State<Verification> {
     });
   }
 
+  // void _initSmsListener() async{
+  //   await SmsAutoFill().listenForCode;
+  //   print("Initialize this message");
+  // }
+
+
   @override
   void didChangeDependencies() {
     if (_isInit) _countDownTimer();
@@ -68,13 +72,29 @@ class _VerificationState extends State<Verification> {
   }
 
   @override
-  void initState() {
-    (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
-    super.initState();
+  void codeUpdated() {
+      if(code.length == 4){
+        _pinEditingController.text = code;
+        _submit(context);
+      }
   }
 
   @override
+  void initState() {
+    (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
+    listenForCode();
+    SmsAutoFill().getAppSignature.then((signature) {
+      setState(() {
+        appSignature = signature;
+      });
+    });
+    super.initState();
+  }
+
+
+  @override
   void dispose() {
+    SmsAutoFill().unregisterListener();
     _timer.cancel();
     super.dispose();
   }
@@ -91,13 +111,16 @@ class _VerificationState extends State<Verification> {
     try {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
-      final response = await Provider.of<Auth>(context, listen: false).verifyPin(_authData) as Map<String, dynamic>;
-      print(response);
+      final response = await Provider.of<Auth>(context, listen: false)
+          .verifyPin(_authData) as Map<String, dynamic>;
       if (response['userExists'] == 1) {
         if (response.containsKey('userGroups')) {
-          Provider.of<Groups>(context, listen: false).addGroups(response['userGroups']);
+          Provider.of<Groups>(context, listen: false)
+              .addGroups(response['userGroups']);
         }
-        Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'), arguments: 0);
+        Navigator.of(context).pushNamedAndRemoveUntil(
+            MyGroups.namedRoute, ModalRoute.withName('/'),
+            arguments: 0);
       } else {
         final uniqueCode = response['uniqueCode'];
         Navigator.pushReplacementNamed(context, SignUp.namedRoute, arguments: {
@@ -124,19 +147,23 @@ class _VerificationState extends State<Verification> {
 
   bool _validOtp(String otp) {
     int pin = int.parse(otp);
-    if (pin.toString().length != 4) {
-      return false;
+    if (pin.toString().length == 4) {
+      return true;
     }
-    return true;
+    return false;
   }
 
   void _resendOtp(BuildContext context) async {
-    final snackBar = SnackBar(content: subtitle2(text: "Resending verification code", textAlign: TextAlign.start));
+    final snackBar = SnackBar(
+        content: subtitle2(
+            text: "Resending verification code", textAlign: TextAlign.start));
     Scaffold.of(context).showSnackBar(snackBar);
     try {
       await Provider.of<Auth>(context, listen: false).resendPin(_identity);
-      final snackBar =
-          SnackBar(content: subtitle2(text: "Verification code has been sent", textAlign: TextAlign.start));
+      final snackBar = SnackBar(
+          content: subtitle2(
+              text: "Verification code has been sent",
+              textAlign: TextAlign.start));
       Scaffold.of(context).showSnackBar(snackBar);
       _start = 60;
       _countDownTimer();
@@ -181,18 +208,28 @@ class _VerificationState extends State<Verification> {
                               height: 100.0,
                             ),
                           ),
-                          heading1(text: "Verification", color: Theme.of(context).textSelectionHandleColor),
+                          heading1(
+                              text: "Verification",
+                              color:
+                                  Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 10,
                           ),
                           subtitle1(
                               text: "A verification code has been sent to",
-                              color: Theme.of(context).textSelectionHandleColor),
-                          customTitle(text: _identity, color: Theme.of(context).textSelectionHandleColor),
+                              color:
+                                  Theme.of(context).textSelectionHandleColor),
+                          customTitle(
+                              text: _identity,
+                              color:
+                                  Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 12,
                           ),
-                          subtitle2(text: "Enter your code here", color: Theme.of(context).textSelectionHandleColor),
+                          subtitle2(
+                              text: "Enter your code here",
+                              color:
+                                  Theme.of(context).textSelectionHandleColor),
                           Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                             child: PinInputTextFormField(
@@ -227,6 +264,7 @@ class _VerificationState extends State<Verification> {
                                   _submit(context);
                                 }
                               },
+
                             ),
                           ),
                           SizedBox(
@@ -245,22 +283,31 @@ class _VerificationState extends State<Verification> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              Icon(LineAwesomeIcons.clock_o, color: Theme.of(context).textSelectionHandleColor),
+                              Icon(LineAwesomeIcons.clock_o,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor),
                               subtitle1(
-                                  text: _start > 9 ? "00:$_start" : "00:0$_start",
-                                  color: Theme.of(context).textSelectionHandleColor),
+                                  text:
+                                      _start > 9 ? "00:$_start" : "00:0$_start",
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor),
                               SizedBox(width: 20),
                               InkWell(
                                 child: Text(
                                   'Resend',
                                   style: TextStyle(
                                     fontFamily: 'SegoeUI',
-                                    color: _enableResend ? primaryColor : Theme.of(context).textSelectionHandleColor,
+                                    color: _enableResend
+                                        ? primaryColor
+                                        : Theme.of(context)
+                                            .textSelectionHandleColor,
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.underline,
                                   ),
                                 ),
-                                onTap: _enableResend ? () => _resendOtp(context) : null,
+                                onTap: _enableResend
+                                    ? () => _resendOtp(context)
+                                    : null,
                               )
                             ],
                           ),
