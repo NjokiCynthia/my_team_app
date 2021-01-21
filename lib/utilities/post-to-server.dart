@@ -166,6 +166,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           };
 
           print("headers: $headers");
+          print("Request: $jsonObject");
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
             //print("Body: $postRequest");
@@ -175,6 +176,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
               throw CustomException(message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
+              print("Server Response Before: ${response.body}");
               final responseBody = await generateResponse(response.body);
               print("Server Response: $responseBody");
               String message = responseBody["message"].toString();
