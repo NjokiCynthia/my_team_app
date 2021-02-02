@@ -33,7 +33,7 @@ class _CreateGroupState extends State<CreateGroup> {
   String _groupName;
 
   PickedFile avatar;
-  File imageFile = null;
+  File imageFile;
   final ImagePicker _picker = ImagePicker();
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
