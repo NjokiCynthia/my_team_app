@@ -100,6 +100,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
   }
 
   void _submit(BuildContext context) async {
+    _formKey.currentState.save();
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -159,7 +160,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
             text: "Resending verification code", textAlign: TextAlign.start));
     Scaffold.of(context).showSnackBar(snackBar);
     try {
-      await Provider.of<Auth>(context, listen: false).resendPin(_identity);
+      await Provider.of<Auth>(context, listen: false).resendPin(_identity,appSignature);
       final snackBar = SnackBar(
           content: subtitle2(
               text: "Verification code has been sent",

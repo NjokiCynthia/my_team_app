@@ -163,6 +163,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             "Versioncode": versionCode,
             "Authorization": userAccessToken,
           };
+          print("Request: $jsonObject");
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
             final http.Response response =
