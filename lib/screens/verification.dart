@@ -100,15 +100,21 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
   }
 
   void _submit(BuildContext context) async {
-    _formKey.currentState.save();
-    if (!_formKey.currentState.validate()) {
-      return;
+    if(this.mounted){
+      if (!_formKey.currentState.validate()) {
+        return;
+      }
     }
-    _timer.cancel();
-    setState(() {
-      _isLoading = true;
-      _isFormInputEnabled = false;
-    });
+    if(this.mounted){
+      _timer.cancel();
+      setState(() {
+        _isLoading = true;
+        _isFormInputEnabled = false;
+      });
+    }
+    if(this.mounted){
+      _formKey.currentState.save();
+    }
     try {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
