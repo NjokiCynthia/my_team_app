@@ -193,10 +193,11 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> generatePin(String identity) async {
+  Future<void> generatePin(String identity,String appSignature) async {
     const url = EndpointUrl.GENERATE_OTP;
     final postRequest = json.encode({
       "identity": identity,
+      "appSignature": appSignature,
     });
     try {
       await PostToServer.post(postRequest, url);
@@ -208,10 +209,11 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> resendPin(String identity) async {
+  Future<void> resendPin(String identity,String appSignature) async {
     const url = EndpointUrl.RESEND_OTP;
     final postRequest = json.encode({
       "identity": identity,
+      "appSignature": appSignature,
     });
     try {
       await PostToServer.post(postRequest, url);

@@ -11,6 +11,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../utilities/custom-helper.dart';
 
@@ -33,6 +34,7 @@ class _LoginState extends State<Login> {
   bool _isFormInputEnabled = true;
   bool _isPhoneNumber = false;
   bool _setStateCalled = false;
+  String appSignature = "{{app signature}}";
 
   FocusNode _focusNode;
   bool _focused = false;
@@ -69,6 +71,11 @@ class _LoginState extends State<Login> {
     _phoneController.addListener(_printLatestValues);
     _focusNode = new FocusNode();
     _focusNode.addListener(_handleFocusChange);
+    SmsAutoFill().getAppSignature.then((signature) {
+      setState(() {
+        appSignature = signature;
+      });
+    });
   }
 
   void _handleFocusChange() {
@@ -148,7 +155,7 @@ class _LoginState extends State<Login> {
             _isFormInputEnabled = false;
           });
           try {
-            await Provider.of<Auth>(context, listen: false).generatePin(_identity);
+            await Provider.of<Auth>(context, listen: false).generatePin(_identity,appSignature);
             Navigator.of(context)
                 .push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
           } on CustomException catch (error) {

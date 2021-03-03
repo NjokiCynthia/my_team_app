@@ -1,6 +1,6 @@
 name: chamasoft
 description: The new Chamasoft app
-version: 2.0.1+86
+version: 2.0.5+90
 
 environment:
   sdk: ">=2.3.0 <3.0.0"
@@ -20,9 +20,9 @@ dependencies:
   url_launcher: ^5.6.0
   pin_input_text_field: ^3.0.1
   md2_tab_indicator: ^1.0.2
-  shared_preferences: ^0.5.6+1
+  shared_preferences: ^0.5.12+4
   intl: ^0.16.1
-  contacts_service: ^0.4.5
+  contacts_service: ^0.4.6
   permission_handler: ^5.0.0+hotfix.4
   fl_chart: ^0.9.4
   package_info: ^0.4.0+16
@@ -34,7 +34,7 @@ dependencies:
   shimmer: ^1.1.1
   flutter_svg: ^0.18.0
   image_picker: ^0.6.7+9
-  #sms_autofill: ^1.2.4
+  sms_autofill: ^1.2.7
 
 dev_dependencies:
   flutter_test:

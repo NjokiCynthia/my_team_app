@@ -154,7 +154,6 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     try {
       final result = await InternetAddress.lookup("example.com")
           .timeout(const Duration(seconds: 10), onTimeout: () {
-        print("Connection error");
         throw CustomException(
             message: ERROR_MESSAGE_INTERNET,
             status: ErrorStatusCode.statusNoInternet);
@@ -175,15 +174,12 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             "Versioncode": versionCode,
             "Authorization": userAccessToken,
           };
-
-          print("headers: $headers");
+          print("Request: $jsonObject");
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           try {
-            //print("Body: $postRequest");
             final http.Response response = await http
                 .post(url, headers: headers, body: postRequest)
                 .timeout(const Duration(seconds: 60), onTimeout: () {
-              print("Connection timeout");
               throw CustomException(
                   message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });

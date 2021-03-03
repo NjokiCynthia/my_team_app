@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 class ChangeNumberVerification extends StatefulWidget {
   @override
@@ -28,10 +29,16 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
     'pin': '',
   };
   TextEditingController _pinEditingController = TextEditingController();
+  String appSignature = "{{app signature}}";
 
   @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
+    SmsAutoFill().getAppSignature.then((signature) {
+      setState(() {
+        appSignature = signature;
+      });
+    });
     super.initState();
   }
 
@@ -81,7 +88,7 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
     final snackBar = SnackBar(content: subtitle2(text: "Resending verification code", textAlign: TextAlign.start));
     Scaffold.of(context).showSnackBar(snackBar);
     try {
-      await Provider.of<Auth>(context, listen: false).resendPin(_identity);
+      await Provider.of<Auth>(context, listen: false).resendPin(_identity,appSignature);
       final snackBar = SnackBar(content: subtitle2(text: "Verification code has been sent", textAlign: TextAlign.start));
       Scaffold.of(context).showSnackBar(snackBar);
     } on CustomException catch (error) {

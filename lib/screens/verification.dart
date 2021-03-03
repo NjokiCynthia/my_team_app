@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import '../providers/auth.dart';
 import '../screens/signup.dart';
@@ -24,16 +25,12 @@ class Verification extends StatefulWidget {
   _VerificationState createState() => _VerificationState();
 }
 
-class _VerificationState extends State<Verification> {
+class _VerificationState extends State<Verification> with CodeAutoFill {
   String _logo = "cs.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
   bool _isInit = true;
   bool _enableResend = false;
-  // String _code;
-  // String _signature;
-
-  // String _pin;
   bool _isLoading = false;
   bool _isFormInputEnabled = true;
   Map<String, String> _authData = {
@@ -44,6 +41,7 @@ class _VerificationState extends State<Verification> {
 
   Timer _timer;
   int _start = 60;
+  String appSignature = "{{app signature}}";
 
   void _countDownTimer() {
     _isInit = false;
@@ -61,6 +59,11 @@ class _VerificationState extends State<Verification> {
     });
   }
 
+  // void _initSmsListener() async{
+  //   await SmsAutoFill().listenForCode;
+  //   print("Initialize this message");
+  // }
+
   @override
   void didChangeDependencies() {
     if (_isInit) _countDownTimer();
@@ -68,32 +71,53 @@ class _VerificationState extends State<Verification> {
   }
 
   @override
+  void codeUpdated() {
+    if (code.length == 4) {
+      _pinEditingController.text = code;
+      _submit(context);
+    }
+  }
+
+  @override
   void initState() {
     (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
+    listenForCode();
+    SmsAutoFill().getAppSignature.then((signature) {
+      setState(() {
+        appSignature = signature;
+      });
+    });
     super.initState();
   }
 
   @override
   void dispose() {
+    SmsAutoFill().unregisterListener();
     _timer.cancel();
     super.dispose();
   }
 
   void _submit(BuildContext context) async {
-    if (!_formKey.currentState.validate()) {
-      return;
+    if (this.mounted) {
+      if (!_formKey.currentState.validate()) {
+        return;
+      }
     }
-    _timer.cancel();
-    setState(() {
-      _isLoading = true;
-      _isFormInputEnabled = false;
-    });
+    if (this.mounted) {
+      _timer.cancel();
+      setState(() {
+        _isLoading = true;
+        _isFormInputEnabled = false;
+      });
+    }
+    if (this.mounted) {
+      _formKey.currentState.save();
+    }
     try {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
       final response = await Provider.of<Auth>(context, listen: false)
           .verifyPin(_authData) as Map<String, dynamic>;
-      print(response);
       if (response['userExists'] == 1) {
         if (response.containsKey('userGroups')) {
           Provider.of<Groups>(context, listen: false)
@@ -128,10 +152,10 @@ class _VerificationState extends State<Verification> {
 
   bool _validOtp(String otp) {
     int pin = int.parse(otp);
-    if (pin.toString().length != 4) {
-      return false;
+    if (pin.toString().length == 4) {
+      return true;
     }
-    return true;
+    return false;
   }
 
   void _resendOtp(BuildContext context) async {
@@ -140,7 +164,8 @@ class _VerificationState extends State<Verification> {
             text: "Resending verification code", textAlign: TextAlign.start));
     Scaffold.of(context).showSnackBar(snackBar);
     try {
-      await Provider.of<Auth>(context, listen: false).resendPin(_identity);
+      await Provider.of<Auth>(context, listen: false)
+          .resendPin(_identity, appSignature);
       final snackBar = SnackBar(
           content: subtitle2(
               text: "Verification code has been sent",
