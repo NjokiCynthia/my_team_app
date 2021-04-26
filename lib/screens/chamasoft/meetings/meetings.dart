@@ -125,49 +125,54 @@ class _MeetingsState extends State<Meetings> {
                   ],
                 ),
               ),
-              meetings.length > 0
-                  ? ListView.builder(
-                      // controller: _scrollController,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () => {},
-                          child: Container(
-                            child: Column(
-                              children: <Widget>[
-                                Padding(
-                                  padding: EdgeInsets.all(SPACING_NORMAL),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      customTitle(
-                                          text: "notification.timeAgo",
-                                          fontSize: 12.0,
-                                          fontWeight: FontWeight.w400,
-                                          color: Theme.of(context)
-                                              .textSelectionHandleColor,
-                                          textAlign: TextAlign.end),
-                                    ],
-                                  ),
-                                ),
-                                DashedDivider(
-                                  color: Theme.of(context).dividerColor,
-                                  thickness: 1.0,
-                                  height: 5.0,
-                                  width: 4.0,
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                      itemCount: meetings.length,
-                    )
-                  : emptyList(
-                      color: Colors.blue[400],
-                      iconData: LineAwesomeIcons.file_text,
-                      text: "There are no meetings to show",
+              Container(
+                padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    subtitle2(
+                      text: "12 April, 2021",
+                      color: Theme.of(context).textSelectionHandleColor,
+                      textAlign: TextAlign.start,
                     ),
+                    subtitle1(
+                      text: "Group's AGM meeting held at KNH",
+                      color: Theme.of(context).textSelectionHandleColor,
+                      textAlign: TextAlign.start,
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Members present ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w300,
+                            fontSize: 13.0,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontFamily: 'SegoeUI',
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                        Text(
+                          "12",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13.0,
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontFamily: 'SegoeUI',
+                          ),
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // emptyList(
+              //   color: Colors.blue[400],
+              //   iconData: LineAwesomeIcons.file_text,
+              //   text: "There are no meetings to show",
+              // ),
             ],
           ),
         );
