@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -101,7 +102,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       if (this.mounted) {
         setState(() {
           _isInit = false;
-          //_isLoading = false;
           _onlineBankingEnabled = _currentGroup.onlineBankingEnabled;
         });
       }
@@ -165,7 +165,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
               children: contributionSummary(
                 color: i == 0
                     ? Colors.white
-                    : i == 1 ? primaryColor : Colors.blueGrey,
+                    : i == 1
+                        ? primaryColor
+                        : Colors.blueGrey,
                 cardIcon: i == 0 ? Feather.bar_chart_2 : Feather.bar_chart,
                 amountDue: currencyFormat.format(data.balance),
                 cardAmount: currencyFormat.format(data.amountPaid),
@@ -240,13 +242,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       ? Column(
                           children: <Widget>[
                             Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                              padding: EdgeInsets.fromLTRB(
+                                16.0,
+                                16.0,
+                                16.0,
+                                0.0,
+                              ),
                               child: Container(
                                 padding: EdgeInsets.all(16.0),
                                 decoration: cardDecoration(
-                                    gradient: plainCardGradient(context),
-                                    context: context),
+                                  gradient: plainCardGradient(context),
+                                  context: context,
+                                ),
                                 child: Column(
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
@@ -410,8 +417,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               ),
                             ),
                             Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
+                              padding: EdgeInsets.fromLTRB(
+                                20.0,
+                                10.0,
+                                16.0,
+                                0.0,
+                              ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -627,8 +638,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                             Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                              padding: EdgeInsets.fromLTRB(
+                                20.0,
+                                0.0,
+                                16.0,
+                                0.0,
+                              ),
                               child: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -696,6 +711,82 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                           ],
                                         )),
                                   ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                20.0,
+                                0.0,
+                                16.0,
+                                0.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "Group Meetings",
+                                    style: TextStyle(
+                                      color: Colors.blueGrey[400],
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                  IconButton(
+                                      icon: Icon(
+                                        Feather.more_horizontal,
+                                        color: Colors.blueGrey,
+                                      ),
+                                      onPressed: () {})
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+                              child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(16.0),
+                                  decoration: flatGradient(context),
+                                  child: Column(
+                                    children: [
+                                      SvgPicture.asset(
+                                        customIcons['no-data'],
+                                        semanticsLabel: 'icon',
+                                        height: 80.0,
+                                      ),
+                                      customTitleWithWrap(
+                                        text: "Nothing to display!",
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 14.0,
+                                        textAlign: TextAlign.center,
+                                        color: Colors.blueGrey[400],
+                                      ),
+                                      customTitleWithWrap(
+                                        text:
+                                            "Your group hasn't had any meetings",
+                                        //fontWeight: FontWeight.w500,
+                                        fontSize: 12.0,
+                                        textAlign: TextAlign.center,
+                                        color: Colors.blueGrey[400],
+                                      ),
+                                      SizedBox(
+                                        height: 8.0,
+                                      ),
+                                      defaultButton(
+                                        context: context,
+                                        text: "Start Meeting",
+                                        onPressed: () =>
+                                            Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                Meetings(),
+                                            settings:
+                                                RouteSettings(arguments: 0),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                            ),
                           ],
                         )
                       : chamasoftHomeLoadingData(context: context))),

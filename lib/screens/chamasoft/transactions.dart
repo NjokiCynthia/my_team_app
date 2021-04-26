@@ -127,7 +127,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => CreateMemberLoan(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => CreateMemberLoan(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -143,7 +144,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => RecordLoanPayment(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => RecordLoanPayment(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -159,7 +161,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => BankLoanRepayment(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => BankLoanRepayment(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -662,12 +665,18 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                               ),
                               //if (recentTransactions.length == 10)
                               defaultButton(
-                                  context: context,
-                                  text: "View More Transactions",
-                                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          ContributionStatement(statementFlag: CONTRIBUTION_STATEMENT),
-                                      settings: RouteSettings(arguments: 0))))
+                                context: context,
+                                text: "View More Transactions",
+                                onPressed: () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ContributionStatement(
+                                            statementFlag:
+                                                CONTRIBUTION_STATEMENT),
+                                    settings: RouteSettings(arguments: 0),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),
