@@ -189,57 +189,55 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               title: Text(
                 "Home",
                 style: TextStyle(
+                  color:
+                      _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
+                  fontFamily: 'SegoeUI',
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                Feather.users,
+                color: _currentPage == 1 ? primaryColor : Colors.blueGrey[300],
+              ),
+              title: Text(
+                "My Group",
+                style: TextStyle(
                     color:
-                        _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
+                        _currentPage == 1 ? primaryColor : Colors.blueGrey[300],
                     fontFamily: 'SegoeUI',
                     fontWeight: FontWeight.w700),
               ),
             ),
             BottomNavigationBarItem(
-                icon: Icon(
-                  Feather.users,
-                  color:
-                      _currentPage == 1 ? primaryColor : Colors.blueGrey[300],
-                ),
-                title: Text(
-                  "My Group",
-                  style: TextStyle(
-                      color: _currentPage == 1
-                          ? primaryColor
-                          : Colors.blueGrey[300],
-                      fontFamily: 'SegoeUI',
-                      fontWeight: FontWeight.w700),
-                )),
+              icon: Icon(
+                Feather.credit_card,
+                color: _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
+              ),
+              title: Text(
+                "Transactions",
+                style: TextStyle(
+                    color:
+                        _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
+                    fontFamily: 'SegoeUI',
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
             BottomNavigationBarItem(
-                icon: Icon(
-                  Feather.credit_card,
-                  color:
-                      _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
-                ),
-                title: Text(
-                  "Transactions",
-                  style: TextStyle(
-                      color: _currentPage == 2
-                          ? primaryColor
-                          : Colors.blueGrey[300],
-                      fontFamily: 'SegoeUI',
-                      fontWeight: FontWeight.w700),
-                )),
-            BottomNavigationBarItem(
-                icon: Icon(
-                  Feather.copy,
-                  color:
-                      _currentPage == 3 ? primaryColor : Colors.blueGrey[300],
-                ),
-                title: Text(
-                  "Reports",
-                  style: TextStyle(
-                      color: _currentPage == 3
-                          ? primaryColor
-                          : Colors.blueGrey[300],
-                      fontFamily: 'SegoeUI',
-                      fontWeight: FontWeight.w700),
-                )),
+              icon: Icon(
+                Feather.copy,
+                color: _currentPage == 3 ? primaryColor : Colors.blueGrey[300],
+              ),
+              title: Text(
+                "Reports",
+                style: TextStyle(
+                    color:
+                        _currentPage == 3 ? primaryColor : Colors.blueGrey[300],
+                    fontFamily: 'SegoeUI',
+                    fontWeight: FontWeight.w700),
+              ),
+            ),
           ],
           onTap: (index) {
             setState(() {

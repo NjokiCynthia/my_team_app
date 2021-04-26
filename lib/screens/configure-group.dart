@@ -34,9 +34,12 @@ class ConfigureGroup extends StatefulWidget {
 }
 
 class _ConfigureGroupState extends State<ConfigureGroup> {
-  final GlobalKey<RefreshIndicatorState> _memberRefreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-  final GlobalKey<RefreshIndicatorState> _accountRefreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
-  final GlobalKey<RefreshIndicatorState> _contributionRefreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _memberRefreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _accountRefreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _contributionRefreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   Future<void> _memberFuture, _accountFuture, _contributionFuture;
 
   Future<void> _getMembers(BuildContext context) async {
@@ -49,7 +52,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
 
   Future<void> _getAccounts(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).temporaryFetchAccounts();
+      await Provider.of<Groups>(context, listen: false)
+          .temporaryFetchAccounts();
     } on CustomException catch (error) {
       print(error.message);
     }
@@ -74,13 +78,15 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
   _showPopup() => PopupMenuButton<int>(
         onSelected: (position) async {
           if (position == 1) {
-            final result = await Navigator.of(context).pushNamed(ListContacts.namedRoute);
+            final result =
+                await Navigator.of(context).pushNamed(ListContacts.namedRoute);
             if (result != null && result) {
               _memberRefreshIndicatorKey.currentState.show();
               _getMembers(context);
             }
           } else {
-            final result = await Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
+            final result = await Navigator.of(context)
+                .pushNamed(AddMembersManually.namedRoute);
             if (result != null && result) {
               _memberRefreshIndicatorKey.currentState.show();
               _getMembers(context);
@@ -90,12 +96,17 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         itemBuilder: (context) => [
           PopupMenuItem(
             value: 1,
-            child:
-                customTitle(text: "ADD FROM CONTACTS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+            child: customTitle(
+                text: "ADD FROM CONTACTS",
+                fontSize: 12,
+                color: Theme.of(context).textSelectionHandleColor),
           ),
           PopupMenuItem(
             value: 2,
-            child: customTitle(text: "ADD MANUALLY", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+            child: customTitle(
+                text: "ADD MANUALLY",
+                fontSize: 12,
+                color: Theme.of(context).textSelectionHandleColor),
           ),
         ],
         child: ButtonTheme(
@@ -105,7 +116,10 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
             ///PopupMenu from being triggered. Should have used a different widget, I know :(
             padding: EdgeInsets.only(left: 4, right: 4),
             shape: RoundedRectangleBorder(
-                side: BorderSide(color: Theme.of(context).hintColor, width: 1.0, style: BorderStyle.solid),
+                side: BorderSide(
+                    color: Theme.of(context).hintColor,
+                    width: 1.0,
+                    style: BorderStyle.solid),
                 borderRadius: BorderRadius.circular(4)),
             child: Row(
               children: <Widget>[
@@ -117,7 +131,10 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 SizedBox(
                   width: 5,
                 ),
-                customTitle(text: "ADD MEMBERS", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+                customTitle(
+                    text: "ADD MEMBERS",
+                    fontSize: 12,
+                    color: Theme.of(context).textSelectionHandleColor),
                 Container(
                   height: 36,
                   child: VerticalDivider(
@@ -179,7 +196,10 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: <Widget>[
                                         Container(
-                                          margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                                          margin: const EdgeInsets.only(
+                                              top: 8.0,
+                                              right: 8.0,
+                                              bottom: 8.0),
                                           child: _showPopup(),
                                         ),
                                       ],
@@ -187,16 +207,25 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     Expanded(
                                       child: FutureBuilder(
                                           future: _memberFuture,
-                                          builder: (context, snapshot) =>
-                                              snapshot.connectionState == ConnectionState.waiting
-                                                  ? Center(child: CircularProgressIndicator())
-                                                  : RefreshIndicator(
-                                                      key: _memberRefreshIndicatorKey,
-                                                      onRefresh: () => _getMembers(context),
-                                                      child: Consumer<Groups>(builder: (context, data, child) {
-                                                        List<Member> members = data.members;
-                                                        return MembersTabView(members: members);
-                                                      }))),
+                                          builder: (context, snapshot) => snapshot
+                                                      .connectionState ==
+                                                  ConnectionState.waiting
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator())
+                                              : RefreshIndicator(
+                                                  key:
+                                                      _memberRefreshIndicatorKey,
+                                                  onRefresh: () =>
+                                                      _getMembers(context),
+                                                  child: Consumer<Groups>(
+                                                      builder: (context, data,
+                                                          child) {
+                                                    List<Member> members =
+                                                        data.members;
+                                                    return MembersTabView(
+                                                        members: members);
+                                                  }))),
                                     ),
                                   ],
                                 ),
@@ -206,23 +235,37 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: <Widget>[
                                         Container(
-                                          margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                                          child: groupSetupButton(context, "ADD BANK ACCOUNT", () async {
+                                          margin: const EdgeInsets.only(
+                                              top: 8.0,
+                                              right: 8.0,
+                                              bottom: 8.0),
+                                          child: groupSetupButton(
+                                              context, "ADD BANK ACCOUNT",
+                                              () async {
                                             showDialog(
                                                 context: context,
-                                                builder: (BuildContext context) {
+                                                builder:
+                                                    (BuildContext context) {
                                                   return Center(
-                                                    child: CircularProgressIndicator(),
+                                                    child:
+                                                        CircularProgressIndicator(),
                                                   );
                                                 });
-                                            final response = await fetchBankOptions(context);
+                                            final response =
+                                                await fetchBankOptions(context);
                                             Navigator.pop(context);
 
                                             if (response) {
                                               final result =
-                                                  await Navigator.of(context).pushNamed(CreateBankAccount.namedRoute);
-                                              if (result != null && result == 1) {
-                                                _accountRefreshIndicatorKey.currentState.show();
+                                                  await Navigator.of(context)
+                                                      .pushNamed(
+                                                          CreateBankAccount
+                                                              .namedRoute);
+                                              if (result != null &&
+                                                  result == 1) {
+                                                _accountRefreshIndicatorKey
+                                                    .currentState
+                                                    .show();
                                                 _getAccounts(context);
                                               }
                                             }
@@ -233,20 +276,28 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     Expanded(
                                       child: FutureBuilder(
                                         future: _accountFuture,
-                                        builder: (context, snapshot) =>
-                                            snapshot.connectionState == ConnectionState.waiting
-                                                ? Center(child: CircularProgressIndicator())
-                                                : RefreshIndicator(
-                                                    key: _accountRefreshIndicatorKey,
-                                                    onRefresh: () => _getAccounts(context),
-                                                    child: Consumer<Groups>(
-                                                      builder: (context, data, child) {
-                                                        List<CategorisedAccount> accounts =
-                                                            data.getAllCategorisedAccounts;
-                                                        return AccountsTabView(accounts: accounts);
-                                                      },
-                                                    ),
-                                                  ),
+                                        builder: (context, snapshot) => snapshot
+                                                    .connectionState ==
+                                                ConnectionState.waiting
+                                            ? Center(
+                                                child:
+                                                    CircularProgressIndicator())
+                                            : RefreshIndicator(
+                                                key:
+                                                    _accountRefreshIndicatorKey,
+                                                onRefresh: () =>
+                                                    _getAccounts(context),
+                                                child: Consumer<Groups>(
+                                                  builder:
+                                                      (context, data, child) {
+                                                    List<CategorisedAccount>
+                                                        accounts =
+                                                        data.getAllCategorisedAccounts;
+                                                    return AccountsTabView(
+                                                        accounts: accounts);
+                                                  },
+                                                ),
+                                              ),
                                       ),
                                     ),
                                   ],
@@ -257,12 +308,22 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: <Widget>[
                                         Container(
-                                          margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
-                                          child: groupSetupButton(context, "ADD CONTRIBUTION", () async {
+                                          margin: const EdgeInsets.only(
+                                              top: 8.0,
+                                              right: 8.0,
+                                              bottom: 8.0),
+                                          child: groupSetupButton(
+                                              context, "ADD CONTRIBUTION",
+                                              () async {
                                             final result =
-                                                await Navigator.of(context).pushNamed(AddContributionDialog.namedRoute);
+                                                await Navigator.of(context)
+                                                    .pushNamed(
+                                                        AddContributionDialog
+                                                            .namedRoute);
                                             if (result != null && result) {
-                                              _contributionRefreshIndicatorKey.currentState.show();
+                                              _contributionRefreshIndicatorKey
+                                                  .currentState
+                                                  .show();
                                               _getContributions(context);
                                             }
                                           }),
@@ -272,16 +333,28 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     Expanded(
                                       child: FutureBuilder(
                                           future: _contributionFuture,
-                                          builder: (context, snapshot) =>
-                                              snapshot.connectionState == ConnectionState.waiting
-                                                  ? Center(child: CircularProgressIndicator())
-                                                  : RefreshIndicator(
-                                                      key: _contributionRefreshIndicatorKey,
-                                                      onRefresh: () => _getContributions(context),
-                                                      child: Consumer<Groups>(builder: (context, data, child) {
-                                                        List<Contribution> contributions = data.contributions;
-                                                        return ContributionsTabView(contributions: contributions);
-                                                      }))),
+                                          builder: (context, snapshot) => snapshot
+                                                      .connectionState ==
+                                                  ConnectionState.waiting
+                                              ? Center(
+                                                  child:
+                                                      CircularProgressIndicator())
+                                              : RefreshIndicator(
+                                                  key:
+                                                      _contributionRefreshIndicatorKey,
+                                                  onRefresh: () =>
+                                                      _getContributions(
+                                                          context),
+                                                  child: Consumer<Groups>(
+                                                      builder: (context, data,
+                                                          child) {
+                                                    List<Contribution>
+                                                        contributions =
+                                                        data.contributions;
+                                                    return ContributionsTabView(
+                                                        contributions:
+                                                            contributions);
+                                                  }))),
                                     ),
                                   ],
                                 ),
@@ -295,13 +368,16 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                             height: 120.0,
                             child: AppBar(
                               title: Padding(
-                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                                padding:
+                                    EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     screenActionButton(
                                       icon: LineAwesomeIcons.arrow_left,
-                                      backgroundColor: primaryColor.withOpacity(0.1),
+                                      backgroundColor:
+                                          primaryColor.withOpacity(0.1),
                                       textColor: primaryColor,
                                       action: () => Navigator.of(context).pop(),
                                     ),
@@ -311,7 +387,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                         fit: BoxFit.scaleDown,
                                         child: heading2(
                                             color: primaryColor,
-                                            text: Provider.of<Groups>(context, listen: false)
+                                            text: Provider.of<Groups>(context,
+                                                        listen: false)
                                                     .getCurrentGroup()
                                                     .groupName +
                                                 " Setup"),
@@ -320,18 +397,24 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                     SizedBox(width: 10.0),
                                     smallBadgeButtonWithIcon(
                                         text: "Dashboard",
-                                        backgroundColor: primaryColor.withOpacity(0.1),
+                                        backgroundColor:
+                                            primaryColor.withOpacity(0.1),
                                         textColor: primaryColor,
                                         buttonHeight: 30.0,
                                         textSize: 12.0,
                                         iconData: LineAwesomeIcons.arrow_right,
-                                        action: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                                            ChamasoftDashboard.namedRoute, ModalRoute.withName(MyGroups.namedRoute)))
+                                        action: () => Navigator.of(context)
+                                            .pushNamedAndRemoveUntil(
+                                                ChamasoftDashboard.namedRoute,
+                                                ModalRoute.withName(
+                                                    MyGroups.namedRoute)))
                                   ],
                                 ),
                               ),
                               elevation: 0.0,
-                              backgroundColor: (themeChangeProvider.darkTheme) ? Colors.blueGrey[900] : Colors.white54,
+                              backgroundColor: (themeChangeProvider.darkTheme)
+                                  ? Colors.blueGrey[900]
+                                  : Colors.white54,
                               automaticallyImplyLeading: false,
                               bottom: TabBar(
                                 indicator: MD2Indicator(
@@ -341,7 +424,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                 ),
                                 labelColor: primaryColor,
                                 unselectedLabelColor: Colors.blueGrey,
-                                labelPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                                labelPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
                                 isScrollable: false,
                                 labelStyle: TextStyle(
                                   fontSize: 16.0,
@@ -405,7 +489,9 @@ class AccountsTabView extends StatelessWidget {
                     text: account.title,
                     fontWeight: FontWeight.w600,
                     textAlign: TextAlign.start,
-                    color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
+                    color: Theme.of(context)
+                        .textSelectionHandleColor
+                        .withOpacity(0.6),
                     fontSize: 13.0,
                   ),
                 );
@@ -432,7 +518,8 @@ class AccountsTabView extends StatelessWidget {
                                 children: <Widget>[
                                   customTitleWithWrap(
                                     text: account.name,
-                                    color: Theme.of(context).textSelectionHandleColor,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
                                     textAlign: TextAlign.start,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 15.0,
@@ -442,7 +529,9 @@ class AccountsTabView extends StatelessWidget {
                                           text: account.accountNumber,
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
-                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
                                           fontSize: 12.0,
                                         )
                                       : Container(),
@@ -550,7 +639,8 @@ class ContributionsTabView extends StatelessWidget {
                               children: <Widget>[
                                 customTitle(
                                   text: '${contribution.name}',
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   fontWeight: FontWeight.w700,
                                   textAlign: TextAlign.start,
                                   fontSize: 15.0,
@@ -564,7 +654,9 @@ class ContributionsTabView extends StatelessWidget {
                                           text: 'Contribution Type: ',
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
-                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
                                           fontSize: 12.0,
                                         ),
                                         Expanded(
@@ -572,7 +664,9 @@ class ContributionsTabView extends StatelessWidget {
                                             text: '${contribution.type}',
                                             fontWeight: FontWeight.w700,
                                             textAlign: TextAlign.start,
-                                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor
+                                                .withOpacity(0.7),
                                             fontSize: 12.0,
                                           ),
                                         ),
@@ -584,7 +678,9 @@ class ContributionsTabView extends StatelessWidget {
                                           text: 'Frequency: ',
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
-                                          color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
                                           fontSize: 12.0,
                                         ),
                                         Expanded(
@@ -592,7 +688,9 @@ class ContributionsTabView extends StatelessWidget {
                                             text: '${contribution.frequency}',
                                             fontWeight: FontWeight.w700,
                                             textAlign: TextAlign.start,
-                                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor
+                                                .withOpacity(0.7),
                                             fontSize: 12.0,
                                           ),
                                         ),
@@ -614,7 +712,9 @@ class ContributionsTabView extends StatelessWidget {
                           smallBadgeButton(
                             backgroundColor: primaryColor.withOpacity(0.2),
                             textColor: primaryColor,
-                            text: 'Ksh ' + currencyFormat.format(double.tryParse(contribution.amount) ?? 0),
+                            text: 'Ksh ' +
+                                currencyFormat.format(
+                                    double.tryParse(contribution.amount) ?? 0),
                             action: () {},
                             buttonHeight: 24.0,
                             textSize: 12.0,
@@ -703,7 +803,9 @@ class MembersTabView extends StatelessWidget {
                             text: '${member.identity}',
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.start,
-                            color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                            color: Theme.of(context)
+                                .textSelectionHandleColor
+                                .withOpacity(0.5),
                             fontSize: 12.0,
                           ),
                         ],

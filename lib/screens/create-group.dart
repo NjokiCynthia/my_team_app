@@ -38,8 +38,11 @@ class _CreateGroupState extends State<CreateGroup> {
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
-      final pickedFile =
-          await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
+      final pickedFile = await _picker.getImage(
+          source: source,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: IMAGE_QUALITY);
       setState(() {
         avatar = pickedFile;
         imageFile = File(avatar.path);
@@ -73,8 +76,8 @@ class _CreateGroupState extends State<CreateGroup> {
     });
 
     try {
-      await Provider.of<Groups>(context, listen: false)
-          .createGroup(groupName: _groupName, countryId: countryId, avatar: imageFile);
+      await Provider.of<Groups>(context, listen: false).createGroup(
+          groupName: _groupName, countryId: countryId, avatar: imageFile);
       Navigator.of(context).pushReplacementNamed(ConfigureGroup.namedRoute);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -153,10 +156,15 @@ class _CreateGroupState extends State<CreateGroup> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          heading1(text: "Create Group", color: Theme.of(context).textSelectionHandleColor),
+                          heading1(
+                              text: "Create Group",
+                              color:
+                                  Theme.of(context).textSelectionHandleColor),
                           subtitle1(
-                              text: "Give your group a name, profile photo and country",
-                              color: Theme.of(context).textSelectionHandleColor),
+                              text:
+                                  "Give your group a name, profile photo and country",
+                              color:
+                                  Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 24,
                           ),
@@ -165,30 +173,40 @@ class _CreateGroupState extends State<CreateGroup> {
                             child: Stack(
                               alignment: AlignmentDirectional.bottomEnd,
                               children: <Widget>[
-                                !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                                !kIsWeb &&
+                                        defaultTargetPlatform ==
+                                            TargetPlatform.android
                                     ? FutureBuilder<void>(
                                         future: retrieveLostData(),
-                                        builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                        builder: (BuildContext context,
+                                            AsyncSnapshot<void> snapshot) {
                                           switch (snapshot.connectionState) {
                                             case ConnectionState.none:
                                             case ConnectionState.waiting:
                                               return CircleAvatar(
-                                                backgroundImage: AssetImage('assets/no-user.png'),
-                                                backgroundColor: Colors.transparent,
+                                                backgroundImage: AssetImage(
+                                                    'assets/no-group.png'),
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 radius: 50,
                                               );
                                             case ConnectionState.done:
                                               return CircleAvatar(
                                                 backgroundImage: avatar == null
-                                                    ? AssetImage('assets/no-user.png')
-                                                    : FileImage(File(avatar.path)),
-                                                backgroundColor: Colors.transparent,
+                                                    ? AssetImage(
+                                                        'assets/no-group.png')
+                                                    : FileImage(
+                                                        File(avatar.path)),
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 radius: 50,
                                               );
                                             default:
                                               return CircleAvatar(
-                                                backgroundImage: AssetImage('assets/no-user.png'),
-                                                backgroundColor: Colors.transparent,
+                                                backgroundImage: AssetImage(
+                                                    'assets/no-group.png'),
+                                                backgroundColor:
+                                                    Colors.transparent,
                                                 radius: 50,
                                               );
                                           }
@@ -196,7 +214,7 @@ class _CreateGroupState extends State<CreateGroup> {
                                       )
                                     : CircleAvatar(
                                         backgroundImage: avatar == null
-                                            ? AssetImage('assets/no-user.png')
+                                            ? AssetImage('assets/no-group.png')
                                             : FileImage(File(avatar.path)),
                                         backgroundColor: Colors.transparent,
                                         radius: 50,
@@ -211,7 +229,8 @@ class _CreateGroupState extends State<CreateGroup> {
                                       size: 30.0,
                                     ),
                                     onPressed: () async {
-                                      _onImagePickerClicked(ImageSource.gallery, context);
+                                      _onImagePickerClicked(
+                                          ImageSource.gallery, context);
                                     },
                                   ),
                                 )
