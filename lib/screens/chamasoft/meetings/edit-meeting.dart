@@ -236,35 +236,39 @@ class _EditMeetingState extends State<EditMeeting> {
                         children: <Widget>[
                           defaultButton(
                             context: context,
-                            text: "Save & Continue",
+                            text: currentStep == 5
+                                ? "Submit Meeting"
+                                : "Save & Continue",
                             onPressed: onStepContinue,
                           ),
                           SizedBox(
                             width: 20.0,
                           ),
-                          OutlineButton(
-                            color: Colors.white,
-                            child: Text(
-                              "Go Back",
-                              style: TextStyle(
-                                color:
-                                    Theme.of(context).textSelectionHandleColor,
-                              ),
-                            ),
-                            borderSide: BorderSide(
-                              width: 2.0,
-                              color: Theme.of(context)
-                                  .textSelectionHandleColor
-                                  .withOpacity(0.5),
-                            ),
-                            highlightColor: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.1),
-                            highlightedBorderColor: Theme.of(context)
-                                .textSelectionHandleColor
-                                .withOpacity(0.6),
-                            onPressed: onStepCancel,
-                          ),
+                          currentStep > 0
+                              ? OutlineButton(
+                                  color: Colors.white,
+                                  child: Text(
+                                    "Go Back",
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
+                                    ),
+                                  ),
+                                  borderSide: BorderSide(
+                                    width: 2.0,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor
+                                        .withOpacity(0.5),
+                                  ),
+                                  highlightColor: Theme.of(context)
+                                      .textSelectionHandleColor
+                                      .withOpacity(0.1),
+                                  highlightedBorderColor: Theme.of(context)
+                                      .textSelectionHandleColor
+                                      .withOpacity(0.6),
+                                  onPressed: onStepCancel,
+                                )
+                              : SizedBox(),
                         ],
                       ),
                     );
