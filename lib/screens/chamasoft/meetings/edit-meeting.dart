@@ -41,11 +41,11 @@ class _EditMeetingState extends State<EditMeeting> {
     return Text(
       title,
       style: TextStyle(
-        color: currentStep == step
+        color: currentStep >= step
             ? primaryColor
             : Theme.of(context).textSelectionHandleColor,
         fontFamily: 'SegoeUI',
-        fontWeight: currentStep == step ? FontWeight.bold : FontWeight.normal,
+        fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
       ),
     );
   }
@@ -81,7 +81,7 @@ class _EditMeetingState extends State<EditMeeting> {
     steps = [
       Step(
         title: formatStep(0, "Name & Venue"),
-        isActive: currentStep == 0 ? true : false,
+        isActive: currentStep >= 0 ? true : false,
         state: currentStep > 0 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
@@ -100,7 +100,7 @@ class _EditMeetingState extends State<EditMeeting> {
       ),
       Step(
         title: formatStep(1, "Members"),
-        isActive: currentStep == 1 ? true : false,
+        isActive: currentStep >= 1 ? true : false,
         state: currentStep > 1 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
@@ -112,7 +112,7 @@ class _EditMeetingState extends State<EditMeeting> {
       ),
       Step(
         title: formatStep(2, "Agenda"),
-        isActive: currentStep == 2 ? true : false,
+        isActive: currentStep >= 2 ? true : false,
         state: currentStep > 2 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
@@ -124,7 +124,7 @@ class _EditMeetingState extends State<EditMeeting> {
       ),
       Step(
         title: formatStep(3, "Collections"),
-        isActive: currentStep == 3 ? true : false,
+        isActive: currentStep >= 3 ? true : false,
         state: currentStep > 3 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
@@ -136,7 +136,7 @@ class _EditMeetingState extends State<EditMeeting> {
       ),
       Step(
         title: formatStep(4, "AOB"),
-        isActive: currentStep == 4 ? true : false,
+        isActive: currentStep >= 4 ? true : false,
         state: currentStep > 4 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
@@ -148,7 +148,7 @@ class _EditMeetingState extends State<EditMeeting> {
       ),
       Step(
         title: formatStep(5, "Summary"),
-        isActive: currentStep == 5 ? true : false,
+        isActive: currentStep >= 5 ? true : false,
         state: currentStep > 5 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
