@@ -80,7 +80,7 @@ class _EditMeetingState extends State<EditMeeting> {
 
     steps = [
       Step(
-        title: formatStep(0, "Name & Value"),
+        title: formatStep(0, "Name & Venue"),
         isActive: currentStep == 0 ? true : false,
         state: currentStep > 0 ? StepState.complete : StepState.disabled,
         content: Column(
@@ -236,9 +236,8 @@ class _EditMeetingState extends State<EditMeeting> {
                         children: <Widget>[
                           defaultButton(
                             context: context,
-                            text: currentStep == 5
-                                ? "Submit Meeting"
-                                : "Save & Continue",
+                            text:
+                                currentStep == 5 ? "Submit" : "Save & Continue",
                             onPressed: onStepContinue,
                           ),
                           SizedBox(
