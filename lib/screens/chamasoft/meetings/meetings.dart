@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/meetings/edit-meeting.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -85,25 +86,28 @@ class _MeetingsState extends State<Meetings> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context).pop(),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Meetings",
-          actions: [
-            Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: IconButton(
-                icon: Icon(
-                  Icons.add,
-                  color: Theme.of(context).textSelectionHandleColor,
+        context: context,
+        action: () => Navigator.of(context).pop(),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: "Meetings",
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              icon: Icon(
+                Icons.add,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => EditMeeting(),
                 ),
-                onPressed: () => {
-                  // Add new meeting
-                },
               ),
             ),
-          ]),
+          ),
+        ],
+      ),
       body: Builder(
         builder: (BuildContext context) {
           return Column(
@@ -147,7 +151,7 @@ class _MeetingsState extends State<Meetings> {
                 ),
               ),
               SingleChildScrollView(
-                controller: _scrollController,
+                // controller: _scrollController,
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
                 child: meetings.length > 0
                     ? ListView.separated(
