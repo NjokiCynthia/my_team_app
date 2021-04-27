@@ -215,6 +215,7 @@ class _EditMeetingState extends State<EditMeeting> {
                   ),
                 ),
                 Stepper(
+                  physics: ClampingScrollPhysics(),
                   steps: steps,
                   currentStep: currentStep,
                   onStepContinue: next,
@@ -246,15 +247,22 @@ class _EditMeetingState extends State<EditMeeting> {
                             child: Text(
                               "Go Back",
                               style: TextStyle(
-                                color: primaryColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                               ),
                             ),
                             borderSide: BorderSide(
                               width: 2.0,
-                              color: primaryColor,
+                              color: Theme.of(context)
+                                  .textSelectionHandleColor
+                                  .withOpacity(0.5),
                             ),
-                            highlightColor: primaryColor.withOpacity(0.1),
-                            highlightedBorderColor: primaryColor,
+                            highlightColor: Theme.of(context)
+                                .textSelectionHandleColor
+                                .withOpacity(0.1),
+                            highlightedBorderColor: Theme.of(context)
+                                .textSelectionHandleColor
+                                .withOpacity(0.6),
                             onPressed: onStepCancel,
                           ),
                         ],
