@@ -20,6 +20,8 @@ class _EditMeetingState extends State<EditMeeting> {
   int currentStep = 0;
   bool complete = false;
   List<Step> steps = [];
+  final _stepOneFormKey = GlobalKey<FormState>();
+  final Map stepOneFieldValues = {};
 
   goTo(int step) {
     setState(() => currentStep = step);
@@ -29,8 +31,8 @@ class _EditMeetingState extends State<EditMeeting> {
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
-          // submit form data...
-
+          print(stepOneFieldValues);
+          goTo(1);
         }
       } else {
         goTo(currentStep + 1);
@@ -74,21 +76,26 @@ class _EditMeetingState extends State<EditMeeting> {
         return "Meeting title is required";
       else if (value.length < 6)
         return "Meeting title is way too short";
-      else
+      else {
+        stepOneFieldValues['title'] = value;
         return null;
+      }
     } else if (field == 'venue') {
       if (value.isEmpty)
         return "Meeting venue is required";
       else if (value.length < 3)
         return "Meeting venue is way too short";
-      else
+      else {
+        stepOneFieldValues['venue'] = value;
         return null;
+      }
+    } else if (field == 'purpose') {
+      stepOneFieldValues['purpose'] = value;
+      return null;
     } else {
       return null;
     }
   }
-
-  final _stepOneFormKey = GlobalKey<FormState>();
 
   @override
   void initState() {
@@ -132,6 +139,7 @@ class _EditMeetingState extends State<EditMeeting> {
                 ),
               ),
               TextFormField(
+                validator: (val) => validateMeeting('purpose', val),
                 decoration: InputDecoration(
                   labelText: 'Meeting Purpose (Optional)',
                 ),
