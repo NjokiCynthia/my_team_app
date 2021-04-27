@@ -331,118 +331,111 @@ class _GroupSettingsState extends State<GroupSettings> {
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Group Settings",
       ),
-      body: Builder(
-        builder: (BuildContext context) {
-          return Container(
-            height: double.infinity,
-            child: SingleChildScrollView(
-              controller: _scrollController,
-              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+      body: Builder(builder: (BuildContext context) {
+        return SingleChildScrollView(
+          controller: _scrollController,
+          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
+          child: Column(
+            children: <Widget>[
+              Row(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16.0, 20.0, 20.0, 20.0),
-                        child: group.getCurrentGroupDisplayAvatar() != null
-                            ? new CachedNetworkImage(
-                                imageUrl: group.getCurrentGroupDisplayAvatar(),
-                                placeholder: (context, url) =>
-                                    const CircleAvatar(
-                                  radius: 45.0,
-                                  backgroundImage:
-                                      const AssetImage('assets/no-user.png'),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 20.0, 20.0, 20.0),
+                    child: group.getCurrentGroupDisplayAvatar() != null
+                        ? new CachedNetworkImage(
+                            imageUrl: group.getCurrentGroupDisplayAvatar(),
+                            placeholder: (context, url) => const CircleAvatar(
+                              radius: 45.0,
+                              backgroundImage:
+                                  const AssetImage('assets/no-user.png'),
+                            ),
+                            imageBuilder: (context, image) => CircleAvatar(
+                              backgroundImage: image,
+                              radius: 45.0,
+                            ),
+                            errorWidget: (context, url, error) =>
+                                const CircleAvatar(
+                              backgroundImage:
+                                  const AssetImage('assets/no-user.png'),
+                              radius: 45.0,
+                            ),
+                            fadeOutDuration: const Duration(seconds: 1),
+                            fadeInDuration: const Duration(seconds: 3),
+                          )
+                        : const CircleAvatar(
+                            backgroundImage:
+                                const AssetImage('assets/no-user.png'),
+                            radius: 45.0,
+                          ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        heading2(
+                            text: currentGroup.groupName,
+                            color: Theme.of(context).textSelectionHandleColor),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10.0,
                                 ),
-                                imageBuilder: (context, image) => CircleAvatar(
-                                  backgroundImage: image,
-                                  radius: 45.0,
-                                ),
-                                errorWidget: (context, url, error) =>
-                                    const CircleAvatar(
-                                  backgroundImage:
-                                      const AssetImage('assets/no-user.png'),
-                                  radius: 45.0,
-                                ),
-                                fadeOutDuration: const Duration(seconds: 1),
-                                fadeInDuration: const Duration(seconds: 3),
-                              )
-                            : const CircleAvatar(
-                                backgroundImage:
-                                    const AssetImage('assets/no-user.png'),
-                                radius: 45.0,
-                              ),
-                      ),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            heading2(
-                                text: currentGroup.groupName,
-                                color:
-                                    Theme.of(context).textSelectionHandleColor),
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 10.0,
-                                    ),
-                                    child: smallBadgeButton(
-                                      text: "Update Profile",
-                                      backgroundColor: primaryColor,
-                                      textColor: Colors.white,
-                                      buttonHeight: 30.0,
-                                      textSize: 12.0,
-                                      action: () async {
-                                        showDialog(
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return Center(
-                                                child:
-                                                    CircularProgressIndicator(),
-                                              );
-                                            });
-                                        await fetchCurrencyOptions(context);
-                                        await fetchCountryOptions(context);
+                                child: smallBadgeButton(
+                                  text: "Update Profile",
+                                  backgroundColor: primaryColor,
+                                  textColor: Colors.white,
+                                  buttonHeight: 30.0,
+                                  textSize: 12.0,
+                                  action: () async {
+                                    showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return Center(
+                                            child: CircularProgressIndicator(),
+                                          );
+                                        });
+                                    await fetchCurrencyOptions(context);
+                                    await fetchCountryOptions(context);
 //                                  Navigator.pop(context);
-                                      },
+                                  },
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                  top: 10.0,
+                                ),
+                                child: smallBadgeButton(
+                                  text: "Preferences",
+                                  backgroundColor: Color(0xFFEDF8FE),
+                                  textColor: primaryColor,
+                                  buttonHeight: 30.0,
+                                  textSize: 12.0,
+                                  action: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          ConfigurePreferences(),
                                     ),
                                   ),
                                 ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.only(
-                                      top: 10.0,
-                                    ),
-                                    child: smallBadgeButton(
-                                      text: "Preferences",
-                                      backgroundColor: Color(0xFFEDF8FE),
-                                      textColor: primaryColor,
-                                      buttonHeight: 30.0,
-                                      textSize: 12.0,
-                                      action: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ConfigurePreferences(),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20,
-                                ),
-                              ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 20,
                             ),
                           ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
+                ],
+              ),
 //               ListTile(
 //                 leading: Icon(
 //                   FontAwesome.file_text,
@@ -480,297 +473,289 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                 thickness: 1.0,
 //                 height: 5.0,
 //               ),
-                  ListTile(
-                    leading: Icon(
-                      FontAwesome.file_text,
-                      size: 32,
-                      color:
-                          Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                    ),
-                    title: customTitle(
-                      text: "Accounts",
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.start,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle: customTitle(
-                      text: "Manage group deposit accounts",
-                      textAlign: TextAlign.start,
-                      fontSize: 13.0,
-                      color: Theme.of(context).bottomAppBarColor,
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      await fetchAccounts(context);
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Accounts",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage group deposit accounts",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchAccounts(context);
 //                  Navigator.pop(context);
-                    },
-                  ),
-                  DashedDivider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 1.0,
-                    height: 5.0,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      FontAwesome.file_text,
-                      size: 32,
-                      color:
-                          Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                    ),
-                    title: customTitle(
-                      text: "Contributions",
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.start,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle: customTitle(
-                      text: "Manage contributions",
-                      textAlign: TextAlign.start,
-                      fontSize: 13.0,
-                      color: Theme.of(context).bottomAppBarColor,
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      await fetchContributions(context);
-                    },
-                  ),
-                  DashedDivider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 1.0,
-                    height: 5.0,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      FontAwesome.file_text,
-                      size: 32,
-                      color:
-                          Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                    ),
-                    title: customTitle(
-                      text: "Members",
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.start,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle: customTitle(
-                      text: "Add or remove members of the group",
-                      textAlign: TextAlign.start,
-                      fontSize: 13.0,
-                      color: Theme.of(context).bottomAppBarColor,
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      await fetchMembers(context);
-                    },
-                  ),
-                  DashedDivider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 1.0,
-                    height: 5.0,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      FontAwesome.file_text,
-                      size: 32,
-                      color:
-                          Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                    ),
-                    title: customTitle(
-                      text: "Expense Categories",
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.start,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle: customTitle(
-                      text: "Manage expense categories",
-                      textAlign: TextAlign.start,
-                      fontSize: 13.0,
-                      color: Theme.of(context).bottomAppBarColor,
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      await fetchExpenseCategories(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Contributions",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage contributions",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchContributions(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Members",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Add or remove members of the group",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchMembers(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Expense Categories",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage expense categories",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchExpenseCategories(context);
 //                  Navigator.pop(context);
-                    },
-                  ),
-                  DashedDivider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 1.0,
-                    height: 5.0,
-                  ),
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
 
-                  ListTile(
-                    leading: Icon(
-                      FontAwesome.file_text,
-                      size: 32,
-                      color:
-                          Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                    ),
-                    title: customTitle(
-                      text: "Fine Types",
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.start,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle: customTitle(
-                      text: "Manage group fine categories",
-                      textAlign: TextAlign.start,
-                      fontSize: 13.0,
-                      color: Theme.of(context).bottomAppBarColor,
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      await fetchFineTypes(context);
-                    },
-                  ),
-                  DashedDivider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 1.0,
-                    height: 5.0,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      FontAwesome.file_text,
-                      size: 32,
-                      color:
-                          Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                    ),
-                    title: customTitle(
-                      text: "Loan Types",
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.start,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle: customTitle(
-                      text: "Manage loan types offered by the group",
-                      textAlign: TextAlign.start,
-                      fontSize: 13.0,
-                      color: Theme.of(context).bottomAppBarColor,
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      await fetchLoanTypes(context);
-                    },
-                  ),
-                  DashedDivider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 1.0,
-                    height: 5.0,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      FontAwesome.file_text,
-                      size: 32,
-                      color:
-                          Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                    ),
-                    title: customTitle(
-                      text: "Income Categories",
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.start,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle: customTitle(
-                      text: "Manage group income categories",
-                      textAlign: TextAlign.start,
-                      fontSize: 13.0,
-                      color: Theme.of(context).bottomAppBarColor,
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      await fetchIncomeCategories(context);
-                    },
-                  ),
-                  DashedDivider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 1.0,
-                    height: 5.0,
-                  ),
-                  ListTile(
-                    leading: Icon(
-                      FontAwesome.file_text,
-                      size: 32,
-                      color:
-                          Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                    ),
-                    title: customTitle(
-                      text: "Asset Categories",
-                      fontWeight: FontWeight.w700,
-                      textAlign: TextAlign.start,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle: customTitle(
-                      text: "Manage group asset categories",
-                      textAlign: TextAlign.start,
-                      fontSize: 13.0,
-                      color: Theme.of(context).bottomAppBarColor,
-                    ),
-                    dense: true,
-                    onTap: () async {
-                      showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          });
-                      await fetchAssetCategories(context);
-                    },
-                  ),
-                  DashedDivider(
-                    color: Theme.of(context).dividerColor,
-                    thickness: 1.0,
-                    height: 5.0,
-                  ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Fine Types",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage group fine categories",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchFineTypes(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Loan Types",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage loan types offered by the group",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchLoanTypes(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Income Categories",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage group income categories",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchIncomeCategories(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
+              ListTile(
+                leading: Icon(
+                  FontAwesome.file_text,
+                  size: 32,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+                title: customTitle(
+                  text: "Asset Categories",
+                  fontWeight: FontWeight.w700,
+                  textAlign: TextAlign.start,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                subtitle: customTitle(
+                  text: "Manage group asset categories",
+                  textAlign: TextAlign.start,
+                  fontSize: 13.0,
+                  color: Theme.of(context).bottomAppBarColor,
+                ),
+                dense: true,
+                onTap: () async {
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      });
+                  await fetchAssetCategories(context);
+                },
+              ),
+              DashedDivider(
+                color: Theme.of(context).dividerColor,
+                thickness: 1.0,
+                height: 5.0,
+              ),
 //              ListTile(
 //                leading: Icon(
 //                  FontAwesome.file_text,
@@ -807,61 +792,59 @@ class _GroupSettingsState extends State<GroupSettings> {
 //                height: 5.0,
 //              ),
 
-                  // ListTile(
-                  //   leading: Icon(
-                  //     FontAwesome.file_text,
-                  //     size: 32,
-                  //     color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                  //   ),
-                  //   title: customTitle(
-                  //     text: "Setup Group",
-                  //     fontWeight: FontWeight.w700,
-                  //     textAlign: TextAlign.start,
-                  //     color: Theme.of(context).textSelectionHandleColor,
-                  //   ),
-                  //   subtitle: customTitle(
-                  //     text: "Temporary",
-                  //     textAlign: TextAlign.start,
-                  //     fontSize: 13.0,
-                  //     color: Theme.of(context).bottomAppBarColor,
-                  //   ),
-                  //   dense: true,
-                  //   onTap: () {
-                  //     Navigator.of(context).push(MaterialPageRoute(
-                  //       builder: (BuildContext context) => ConfigureGroup(),
-                  //     ));
-                  //   },
-                  // ),
-                  // DashedDivider(
-                  //   color: Theme.of(context).dividerColor,
-                  //   thickness: 1.0,
-                  //   height: 5.0,
-                  // ),
-                  Visibility(
-                    visible: false,
-                    child: Padding(
-                      padding: EdgeInsets.only(
-                        top: 20.0,
-                      ),
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: smallBadgeButtonWithIcon(
-                          text: "Delete Group",
-                          backgroundColor: Colors.red.withOpacity(0.2),
-                          textColor: Colors.red,
-                          buttonHeight: 36.0,
-                          textSize: 15.0,
-                          action: () => _deleteGroupDialog(),
-                        ),
-                      ),
+              // ListTile(
+              //   leading: Icon(
+              //     FontAwesome.file_text,
+              //     size: 32,
+              //     color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+              //   ),
+              //   title: customTitle(
+              //     text: "Setup Group",
+              //     fontWeight: FontWeight.w700,
+              //     textAlign: TextAlign.start,
+              //     color: Theme.of(context).textSelectionHandleColor,
+              //   ),
+              //   subtitle: customTitle(
+              //     text: "Temporary",
+              //     textAlign: TextAlign.start,
+              //     fontSize: 13.0,
+              //     color: Theme.of(context).bottomAppBarColor,
+              //   ),
+              //   dense: true,
+              //   onTap: () {
+              //     Navigator.of(context).push(MaterialPageRoute(
+              //       builder: (BuildContext context) => ConfigureGroup(),
+              //     ));
+              //   },
+              // ),
+              // DashedDivider(
+              //   color: Theme.of(context).dividerColor,
+              //   thickness: 1.0,
+              //   height: 5.0,
+              // ),
+              Visibility(
+                visible: false,
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 20.0,
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: smallBadgeButtonWithIcon(
+                      text: "Delete Group",
+                      backgroundColor: Colors.red.withOpacity(0.2),
+                      textColor: Colors.red,
+                      buttonHeight: 36.0,
+                      textSize: 15.0,
+                      action: () => _deleteGroupDialog(),
                     ),
                   ),
-                ],
+                ),
               ),
-            ),
-          );
-        },
-      ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

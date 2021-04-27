@@ -26,9 +26,18 @@ class _EditMeetingState extends State<EditMeeting> {
   }
 
   next() {
-    currentStep + 1 != steps.length
-        ? goTo(currentStep + 1)
-        : setState(() => complete = true);
+    if (currentStep + 1 != steps.length) {
+      if (currentStep == 0) {
+        if (_stepOneFormKey.currentState.validate()) {
+          // submit form data...
+
+        }
+      } else {
+        goTo(currentStep + 1);
+      }
+    } else {
+      setState(() => complete = true);
+    }
   }
 
   cancel() {
@@ -59,6 +68,28 @@ class _EditMeetingState extends State<EditMeeting> {
     }
   }
 
+  String validateMeeting(String field, String value) {
+    if (field == 'title') {
+      if (value.isEmpty)
+        return "Meeting title is required";
+      else if (value.length < 6)
+        return "Meeting title is way too short";
+      else
+        return null;
+    } else if (field == 'venue') {
+      if (value.isEmpty)
+        return "Meeting venue is required";
+      else if (value.length < 3)
+        return "Meeting venue is way too short";
+      else
+        return null;
+    } else {
+      return null;
+    }
+  }
+
+  final _stepOneFormKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -83,19 +114,30 @@ class _EditMeetingState extends State<EditMeeting> {
         title: formatStep(0, "Name & Venue"),
         isActive: currentStep >= 0 ? true : false,
         state: currentStep > 0 ? StepState.complete : StepState.disabled,
-        content: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Meeting Title'),
-            ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Venue'),
-            ),
-            TextFormField(
-              decoration:
-                  InputDecoration(labelText: 'Meeting Purpose (Optional)'),
-            ),
-          ],
+        content: Form(
+          key: _stepOneFormKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                validator: (val) => validateMeeting('title', val),
+                decoration: InputDecoration(
+                  labelText: 'Meeting Title',
+                  hintText: 'The title for this meeting',
+                ),
+              ),
+              TextFormField(
+                validator: (val) => validateMeeting('venue', val),
+                decoration: InputDecoration(
+                  labelText: 'Venue',
+                ),
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                  labelText: 'Meeting Purpose (Optional)',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       Step(
