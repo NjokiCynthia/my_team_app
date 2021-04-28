@@ -17,7 +17,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 2;
+  int currentStep = 4;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -97,7 +97,7 @@ class _EditMeetingState extends State<EditMeeting> {
     }
   }
 
-  Widget agendaItem({String agenda}) {
+  Widget agendaItem({String agenda, Function action}) {
     return Container(
       color: Theme.of(context).textSelectionHandleColor.withOpacity(0.1),
       width: double.infinity,
@@ -129,7 +129,7 @@ class _EditMeetingState extends State<EditMeeting> {
                 size: 16.0,
               ),
             ),
-            onTap: () {},
+            onTap: action,
           ),
         ],
       ),
@@ -240,16 +240,36 @@ class _EditMeetingState extends State<EditMeeting> {
         state: currentStep > 2 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Add agenda item...'),
+            Stack(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Add agenda item...',
+                    contentPadding: EdgeInsets.only(bottom: 0.0),
+                  ),
+                ),
+                Positioned(
+                  right: 0.0,
+                  top: 0.0,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.check,
+                      color: primaryColor,
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
             ),
             SizedBox(height: 20.0),
             agendaItem(
               agenda: "Some text goes here for the agenda item",
+              action: () {},
             ),
             agendaItem(
               agenda:
                   "Some text goes here for the agenda item text goes here for the agenda item text goes here for the agenda item text goes here for the agenda item.",
+              action: () {},
             ),
           ],
         ),
@@ -272,8 +292,36 @@ class _EditMeetingState extends State<EditMeeting> {
         state: currentStep > 4 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Start typing...'),
+            Stack(
+              children: [
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Add AOB item...',
+                    contentPadding: EdgeInsets.only(bottom: 0.0),
+                  ),
+                ),
+                Positioned(
+                  right: 0.0,
+                  top: 0.0,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.check,
+                      color: primaryColor,
+                    ),
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20.0),
+            agendaItem(
+              agenda: "Some text goes here for the AOB item",
+              action: () {},
+            ),
+            agendaItem(
+              agenda:
+                  "Some text goes here for the AOB item text goes here for the AOB item text goes here for the AOB item text goes here for the AOB item.",
+              action: () {},
             ),
           ],
         ),
