@@ -101,7 +101,7 @@ class _EditMeetingState extends State<EditMeeting> {
     return Container(
       color: Theme.of(context).textSelectionHandleColor.withOpacity(0.1),
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 8.0),
+      padding: EdgeInsets.fromLTRB(10.0, 2.0, 10.0, 2.0),
       margin: EdgeInsets.only(bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
