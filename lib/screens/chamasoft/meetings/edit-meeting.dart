@@ -17,7 +17,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 3;
+  int currentStep = 5;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -133,6 +133,26 @@ class _EditMeetingState extends State<EditMeeting> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget summaryTitle({String text}) {
+    return Text(
+      text,
+      style: TextStyle(
+        color: Theme.of(context).textSelectionHandleColor,
+        fontSize: 12.0,
+      ),
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.left,
+    );
+  }
+
+  TextStyle summaryContentFormat() {
+    return TextStyle(
+      color: Theme.of(context).textSelectionHandleColor,
+      fontSize: 16.0,
+      fontWeight: FontWeight.bold,
     );
   }
 
@@ -369,12 +389,66 @@ class _EditMeetingState extends State<EditMeeting> {
         title: formatStep(5, "Summary"),
         isActive: currentStep >= 5 ? true : false,
         state: currentStep > 5 ? StepState.complete : StepState.disabled,
-        content: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Start typing...'),
-            ),
-          ],
+        content: Container(
+          width: double.infinity,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              summaryTitle(text: "Meeting title"),
+              Text(
+                "Some meeting title goes here",
+                style: summaryContentFormat(),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 10.0),
+              summaryTitle(text: "Venue"),
+              Text(
+                "Nairobi, KNH",
+                style: summaryContentFormat(),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 10.0),
+              summaryTitle(text: "Date"),
+              Text(
+                "28th April 2021",
+                style: summaryContentFormat(),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 10.0),
+              summaryTitle(text: "Members"),
+              Text(
+                "23 present, 2 absent with apology and 1 absent without",
+                style: summaryContentFormat(),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 10.0),
+              summaryTitle(text: "Agenda"),
+              Text(
+                "1. This is agent item\n" +
+                    "2. This is another agenda item\n" +
+                    "3. You can always have a third too, you know.",
+                style: summaryContentFormat(),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 10.0),
+              summaryTitle(text: "Collections"),
+              Text(
+                "1. Group contributions: KES 13,600\n" +
+                    "2. Loan repayments: KES 31,000\n" +
+                    "3. Loan disbursements: KES 10,500",
+                style: summaryContentFormat(),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 10.0),
+              summaryTitle(text: "AOB"),
+              Text(
+                "1. This is AOB item\n" + "2. This is another AOB item",
+                style: summaryContentFormat(),
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: 10.0),
+            ],
+          ),
         ),
       ),
     ];
@@ -455,8 +529,9 @@ class _EditMeetingState extends State<EditMeeting> {
                         children: <Widget>[
                           defaultButton(
                             context: context,
-                            text:
-                                currentStep == 5 ? "Submit" : "Save & Continue",
+                            text: currentStep == 5
+                                ? "Confirm & Submit"
+                                : "Save & Continue",
                             onPressed: onStepContinue,
                           ),
                           SizedBox(
