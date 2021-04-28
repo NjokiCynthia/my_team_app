@@ -17,7 +17,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 1;
+  int currentStep = 2;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -95,6 +95,45 @@ class _EditMeetingState extends State<EditMeeting> {
     } else {
       return null;
     }
+  }
+
+  Widget agendaItem({String agenda}) {
+    return Container(
+      color: Theme.of(context).textSelectionHandleColor.withOpacity(0.1),
+      width: double.infinity,
+      padding: EdgeInsets.fromLTRB(10.0, 8.0, 10.0, 8.0),
+      margin: EdgeInsets.only(bottom: 10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Flexible(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  agenda,
+                  style: TextStyle(
+                    color: Theme.of(context).textSelectionHandleColor,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          InkWell(
+            child: Padding(
+              padding: EdgeInsets.all(4.0),
+              child: Icon(
+                Icons.close,
+                color: Colors.red[700],
+                size: 16.0,
+              ),
+            ),
+            onTap: () {},
+          ),
+        ],
+      ),
+    );
   }
 
   @override
@@ -202,7 +241,15 @@ class _EditMeetingState extends State<EditMeeting> {
         content: Column(
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(labelText: 'Start typing...'),
+              decoration: InputDecoration(labelText: 'Add agenda item...'),
+            ),
+            SizedBox(height: 20.0),
+            agendaItem(
+              agenda: "Some text goes here for the agenda item",
+            ),
+            agendaItem(
+              agenda:
+                  "Some text goes here for the agenda item text goes here for the agenda item text goes here for the agenda item text goes here for the agenda item.",
             ),
           ],
         ),
