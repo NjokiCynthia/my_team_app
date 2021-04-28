@@ -17,7 +17,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 4;
+  int currentStep = 3;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -196,7 +196,7 @@ class _EditMeetingState extends State<EditMeeting> {
             Container(
               color: Colors.green.withOpacity(0.1),
               width: double.infinity,
-              child: meetingMembersButton(
+              child: meetingMegaButton(
                 context: context,
                 action: () {},
                 title: "Members present",
@@ -209,7 +209,7 @@ class _EditMeetingState extends State<EditMeeting> {
             Container(
               color: Colors.orange[700].withOpacity(0.1),
               width: double.infinity,
-              child: meetingMembersButton(
+              child: meetingMegaButton(
                 context: context,
                 action: () {},
                 title: "Absent with apology",
@@ -222,7 +222,7 @@ class _EditMeetingState extends State<EditMeeting> {
             Container(
               color: Colors.red[400].withOpacity(0.1),
               width: double.infinity,
-              child: meetingMembersButton(
+              child: meetingMegaButton(
                 context: context,
                 action: () {},
                 title: "Absent without apology",
@@ -280,8 +280,47 @@ class _EditMeetingState extends State<EditMeeting> {
         state: currentStep > 3 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Start typing...'),
+            Container(
+              color: Colors.green[700].withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () {},
+                title: "Group Contributions",
+                subtitle: "KES 13,600 contributed by 18 members",
+                icon: Icons.edit,
+                color: Colors.green[700],
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Container(
+              color: Colors.cyan[700].withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () {},
+                title: "Loan Repayments",
+                subtitle: "KES 31,000 repaid by 3 members",
+                icon: Icons.edit,
+                color: Colors.cyan[700],
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Container(
+              color: Colors.brown.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () {},
+                title: "Loan Disbursements",
+                subtitle: "KES 10,500 disbursed to 4 members",
+                icon: Icons.edit,
+                color: Colors.brown,
+              ),
             ),
           ],
         ),

@@ -647,7 +647,7 @@ ButtonTheme groupSetupButton(
   );
 }
 
-Widget meetingMembersButton(
+Widget meetingMegaButton(
     {BuildContext context,
     String title,
     String subtitle,
