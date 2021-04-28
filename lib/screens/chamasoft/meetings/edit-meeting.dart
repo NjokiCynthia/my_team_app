@@ -17,7 +17,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 0;
+  int currentStep = 1;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -154,8 +154,43 @@ class _EditMeetingState extends State<EditMeeting> {
         state: currentStep > 1 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Select Members Present'),
+            Container(
+              color: Colors.green.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMembersButton(
+                context: context,
+                action: () {},
+                title: "Members present",
+                subtitle: "Martin & 23 other members",
+                icon: Icons.edit,
+                color: Colors.green,
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              color: Colors.orange[700].withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMembersButton(
+                context: context,
+                action: () {},
+                title: "Absent with apology",
+                subtitle: "Aggrey & 2 other members",
+                icon: Icons.edit,
+                color: Colors.orange[700],
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              color: Colors.red[400].withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMembersButton(
+                context: context,
+                action: () {},
+                title: "Absent without apology",
+                subtitle: "1 member",
+                icon: Icons.edit,
+                color: Colors.red[400],
+              ),
             ),
           ],
         ),
