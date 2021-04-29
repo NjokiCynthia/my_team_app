@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -17,7 +18,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 5;
+  int currentStep = 1;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -218,7 +219,11 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () {},
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => SelectMembers(),
+                  ),
+                ),
                 title: "Members present",
                 subtitle: "Martin & 23 other members",
                 icon: Icons.edit,
