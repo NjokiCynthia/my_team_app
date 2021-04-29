@@ -221,7 +221,9 @@ class _EditMeetingState extends State<EditMeeting> {
                 context: context,
                 action: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (BuildContext context) => SelectMembers(),
+                    builder: (BuildContext context) => SelectMembers(
+                      type: 'present',
+                    ),
                   ),
                 ),
                 title: "Members present",
@@ -236,7 +238,13 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () {},
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => SelectMembers(
+                      type: 'with-apology',
+                    ),
+                  ),
+                ),
                 title: "Absent with apology",
                 subtitle: "Aggrey & 2 other members",
                 icon: Icons.edit,
@@ -249,7 +257,13 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () {},
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => SelectMembers(
+                      type: 'without-apology',
+                    ),
+                  ),
+                ),
                 title: "Absent without apology",
                 subtitle: "1 member",
                 icon: Icons.edit,

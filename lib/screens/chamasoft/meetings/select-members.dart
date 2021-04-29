@@ -7,11 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class SelectMembers extends StatefulWidget {
+  final String type;
+  SelectMembers({
+    @required this.type,
+  });
   @override
   _SelectMembersState createState() => _SelectMembersState();
 }
 
 class _SelectMembersState extends State<SelectMembers> {
+  String _title = "Select Members";
   double _appBarElevation = 0;
   ScrollController _scrollController;
   List<CheckBoxListTileModel> checkBoxListTileModel =
@@ -38,6 +43,12 @@ class _SelectMembersState extends State<SelectMembers> {
 
   @override
   void initState() {
+    if (widget.type == 'present')
+      _title = "Members Present";
+    else if (widget.type == 'with-apology')
+      _title = "Absent With Apology";
+    else if (widget.type == 'without-apology')
+      _title = "Absent Without Apology";
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     super.initState();
@@ -59,7 +70,7 @@ class _SelectMembersState extends State<SelectMembers> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Members Present",
+        title: _title,
       ),
       body: Builder(
         builder: (BuildContext context) {
@@ -77,7 +88,7 @@ class _SelectMembersState extends State<SelectMembers> {
                       Icons.lightbulb_outline,
                       color: Theme.of(context).textSelectionHandleColor,
                       size: 24.0,
-                      semanticLabel: 'Members present...',
+                      semanticLabel: 'Select members...',
                     ),
                     SizedBox(
                       width: 10,
@@ -93,7 +104,7 @@ class _SelectMembersState extends State<SelectMembers> {
                           ),
                           subtitle2(
                             text:
-                                "Select the members you want to mark as present.",
+                                "Select the members you want to mark add and save.",
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
