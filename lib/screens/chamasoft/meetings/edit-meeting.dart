@@ -8,6 +8,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 
 class EditMeeting extends StatefulWidget {
   @override
@@ -18,11 +19,12 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 1;
+  int currentStep = 0;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
   final Map stepOneFieldValues = {};
+  String _meetingDate = DateTime.now().toString();
 
   goTo(int step) {
     setState(() => currentStep = step);
@@ -157,6 +159,15 @@ class _EditMeetingState extends State<EditMeeting> {
     );
   }
 
+  Future _selectDate() async {
+    DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(2021),
+        lastDate: new DateTime(2022));
+    if (picked != null) setState(() => _meetingDate = picked.toString());
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -190,19 +201,36 @@ class _EditMeetingState extends State<EditMeeting> {
                 decoration: InputDecoration(
                   labelText: 'Meeting Title',
                   hintText: 'The title for this meeting',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
                 ),
               ),
               TextFormField(
                 validator: (val) => validateMeeting('venue', val),
                 decoration: InputDecoration(
                   labelText: 'Venue',
+                  hintText: 'The venue for this meeting',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
                 ),
               ),
               TextFormField(
                 validator: (val) => validateMeeting('purpose', val),
                 decoration: InputDecoration(
                   labelText: 'Meeting Purpose (Optional)',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
                 ),
+              ),
+              DateTimePicker(
+                type: DateTimePickerType.dateTime,
+                initialValue: '',
+                firstDate: DateTime(2000),
+                lastDate: DateTime(2100),
+                dateLabelText: 'Date',
+                onChanged: (val) => print(val),
+                validator: (val) {
+                  print(val);
+                  return null;
+                },
+                onSaved: (val) => print(val),
               ),
             ],
           ),
