@@ -159,15 +159,6 @@ class _EditMeetingState extends State<EditMeeting> {
     );
   }
 
-  Future _selectDate() async {
-    DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: new DateTime.now(),
-        firstDate: new DateTime(2021),
-        lastDate: new DateTime(2022));
-    if (picked != null) setState(() => _meetingDate = picked.toString());
-  }
-
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -222,9 +213,9 @@ class _EditMeetingState extends State<EditMeeting> {
               DateTimePicker(
                 type: DateTimePickerType.dateTime,
                 initialValue: '',
-                firstDate: DateTime(2000),
-                lastDate: DateTime(2100),
-                dateLabelText: 'Date',
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2030),
+                dateLabelText: 'Meeting Date & Time',
                 onChanged: (val) => print(val),
                 validator: (val) {
                   print(val);
