@@ -30,6 +30,7 @@ class ChamasoftGroup extends StatefulWidget {
 
 class _ChamasoftGroupState extends State<ChamasoftGroup> {
   ScrollController _scrollController;
+  ScrollController _chartScrollController;
   List<BankAccountDashboardSummary> _iteratableData = [];
   String _groupCurrency = "Ksh";
   Group _currentGroup;
@@ -508,7 +509,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Text(
-                                      "Deposits vs Withdrawals",
+                                      "Deposits Vs Withdrawals",
                                       style: TextStyle(
                                         color: Colors.blueGrey[400],
                                         fontFamily: 'SegoeUI',
@@ -597,7 +598,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   ),
                                   defaultButton(
                                     context: context,
-                                    text: "Start Meeting",
+                                    text: "Manage Meetings",
                                     onPressed: () => Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (BuildContext context) =>
