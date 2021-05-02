@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
@@ -13,6 +14,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class ChamasoftDashboard extends StatefulWidget {
@@ -111,8 +113,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     super.dispose();
   }
 
+  String getUserName(String name) =>
+      name.isNotEmpty ? name.trim().split(' ')[0].toLowerCase() : 'Home';
+
   @override
   Widget build(BuildContext context) {
+    final auth = Provider.of<Auth>(context);
     return GestureDetector(
       onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP'),
       child: Scaffold(
@@ -183,11 +189,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(
-                AntDesign.home,
+                Feather.user,
                 color: _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
               ),
               title: Text(
-                "Home",
+                toBeginningOfSentenceCase(getUserName(auth.userName)),
                 style: TextStyle(
                   color:
                       _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
