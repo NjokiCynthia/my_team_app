@@ -226,7 +226,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
     setState(() {
-      _isInit = true;
       _iteratableRecentTransactionSummary =
           dashboardData.recentMemberTransactions;
       _itableContributionSummary = dashboardData.memberContributionSummary;
