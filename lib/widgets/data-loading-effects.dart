@@ -312,9 +312,10 @@ Widget chamasoftGroupLoadingData({BuildContext context}) {
       Padding(
         padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         child: Container(
-          padding: EdgeInsets.all(16.0),
-          decoration: cardDecoration(
-              gradient: plainCardGradient(context), context: context),
+          padding: EdgeInsets.only(
+            top: 16.0,
+            bottom: 16.0,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -401,10 +402,11 @@ Widget chamasoftGroupLoadingData({BuildContext context}) {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 dataLoadingEffect(
-                    context: context,
-                    width: 160,
-                    height: 20,
-                    borderRadius: 16.0)
+                  context: context,
+                  width: 160,
+                  height: 20,
+                  borderRadius: 16.0,
+                )
               ],
             ),
             Row(
@@ -418,325 +420,43 @@ Widget chamasoftGroupLoadingData({BuildContext context}) {
         ),
       ),
       Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+        padding: EdgeInsets.fromLTRB(16.0, 0.0, 0.0, 10.0),
         child: Container(
           height: 180.0,
           child: ListView(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
-            physics: BouncingScrollPhysics(),
+            physics: NeverScrollableScrollPhysics(),
             children: <Widget>[
               SizedBox(
                 width: 16.0,
               ),
-              Container(
-                width: 160.0,
-                padding: EdgeInsets.all(16.0),
-                decoration: cardDecoration(
-                    gradient: plainCardGradient(context), context: context),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            dataLoadingEffect(
-                                context: context,
-                                width: 20,
-                                height: 20,
-                                borderRadius: 16.0)
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    dataLoadingEffect(
-                                        context: context,
-                                        width: 90,
-                                        height: 20,
-                                        borderRadius: 16.0)
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 14.0,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        dataLoadingEffect(
-                            context: context,
-                            width: 90,
-                            height: 20,
-                            borderRadius: 16.0)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 60,
-                                    height: 12,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 6.0,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 100,
-                                    height: 20,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 6.0,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 50,
-                                    height: 12,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+              dataLoadingEffect(
+                context: context,
+                width: 160,
+                height: 160,
+                borderRadius: 16.0,
               ),
               SizedBox(
                 width: 26.0,
               ),
-              Container(
-                width: 160.0,
-                padding: EdgeInsets.all(16.0),
-                decoration: cardDecoration(
-                    gradient: plainCardGradient(context), context: context),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            dataLoadingEffect(
-                                context: context,
-                                width: 20,
-                                height: 20,
-                                borderRadius: 16.0)
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    dataLoadingEffect(
-                                        context: context,
-                                        width: 90,
-                                        height: 20,
-                                        borderRadius: 16.0)
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 14.0,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        dataLoadingEffect(
-                            context: context,
-                            width: 90,
-                            height: 20,
-                            borderRadius: 16.0)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 60,
-                                    height: 12,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 6.0,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 100,
-                                    height: 20,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 6.0,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 50,
-                                    height: 12,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+              dataLoadingEffect(
+                context: context,
+                width: 160,
+                height: 160,
+                borderRadius: 16.0,
               ),
               SizedBox(
                 width: 26.0,
               ),
-              Container(
-                width: 160.0,
-                padding: EdgeInsets.all(16.0),
-                decoration: cardDecoration(
-                    gradient: plainCardGradient(context), context: context),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Stack(
-                      children: <Widget>[
-                        Row(
-                          children: <Widget>[
-                            dataLoadingEffect(
-                                context: context,
-                                width: 20,
-                                height: 20,
-                                borderRadius: 16.0)
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    dataLoadingEffect(
-                                        context: context,
-                                        width: 90,
-                                        height: 20,
-                                        borderRadius: 16.0)
-                                  ],
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 14.0,
-                    ),
-                    Row(
-                      children: <Widget>[
-                        dataLoadingEffect(
-                            context: context,
-                            width: 90,
-                            height: 20,
-                            borderRadius: 16.0)
-                      ],
-                    ),
-                    SizedBox(
-                      height: 15.0,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 60,
-                                    height: 12,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 6.0,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 100,
-                                    height: 20,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                            SizedBox(
-                              height: 6.0,
-                            ),
-                            Row(
-                              children: <Widget>[
-                                dataLoadingEffect(
-                                    context: context,
-                                    width: 50,
-                                    height: 12,
-                                    borderRadius: 16.0)
-                              ],
-                            ),
-                          ],
-                        ),
-                      ],
-                    )
-                  ],
-                ),
+              dataLoadingEffect(
+                context: context,
+                width: 160,
+                height: 160,
+                borderRadius: 16.0,
+              ),
+              SizedBox(
+                width: 26.0,
               ),
             ],
           ),
@@ -745,19 +465,21 @@ Widget chamasoftGroupLoadingData({BuildContext context}) {
       Padding(
         padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
         child: Container(
-          padding: EdgeInsets.all(16.0),
-          decoration: cardDecoration(
-              gradient: plainCardGradient(context), context: context),
+          padding: EdgeInsets.only(
+            top: 16.0,
+            bottom: 16.0,
+          ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Row(
                 children: <Widget>[
                   dataLoadingEffect(
-                      context: context,
-                      width: 200,
-                      height: 20,
-                      borderRadius: 16.0)
+                    context: context,
+                    width: 200,
+                    height: 20,
+                    borderRadius: 16.0,
+                  )
                 ],
               ),
               SizedBox(
@@ -774,15 +496,17 @@ Widget chamasoftGroupLoadingData({BuildContext context}) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   dataLoadingEffect(
-                      context: context,
-                      width: 120,
-                      height: 20,
-                      borderRadius: 16.0),
+                    context: context,
+                    width: 120,
+                    height: 20,
+                    borderRadius: 16.0,
+                  ),
                   dataLoadingEffect(
-                      context: context,
-                      width: 80,
-                      height: 20,
-                      borderRadius: 16.0),
+                    context: context,
+                    width: 80,
+                    height: 20,
+                    borderRadius: 16.0,
+                  ),
                 ],
               ),
               SizedBox(
@@ -792,15 +516,17 @@ Widget chamasoftGroupLoadingData({BuildContext context}) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   dataLoadingEffect(
-                      context: context,
-                      width: 80,
-                      height: 16,
-                      borderRadius: 16.0),
+                    context: context,
+                    width: 80,
+                    height: 16,
+                    borderRadius: 16.0,
+                  ),
                   dataLoadingEffect(
-                      context: context,
-                      width: 100,
-                      height: 16,
-                      borderRadius: 16.0),
+                    context: context,
+                    width: 100,
+                    height: 16,
+                    borderRadius: 16.0,
+                  ),
                 ],
               ),
               SizedBox(
@@ -810,15 +536,17 @@ Widget chamasoftGroupLoadingData({BuildContext context}) {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   dataLoadingEffect(
-                      context: context,
-                      width: 150,
-                      height: 16,
-                      borderRadius: 16.0),
+                    context: context,
+                    width: 150,
+                    height: 16,
+                    borderRadius: 16.0,
+                  ),
                   dataLoadingEffect(
-                      context: context,
-                      width: 80,
-                      height: 16,
-                      borderRadius: 16.0),
+                    context: context,
+                    width: 80,
+                    height: 16,
+                    borderRadius: 16.0,
+                  ),
                 ],
               ),
             ],
