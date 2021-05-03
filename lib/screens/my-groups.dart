@@ -3,6 +3,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/create-group.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -89,9 +90,10 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
-              text: "Logout",
-              textAlign: TextAlign.start,
-              color: Theme.of(context).textSelectionHandleColor),
+            text: "Logout",
+            textAlign: TextAlign.start,
+            color: Theme.of(context).textSelectionHandleColor,
+          ),
           content: customTitleWithWrap(
             text:
                 "Are you sure you want to log out? You'll have to login again to continue.",
@@ -143,6 +145,8 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: false);
+    print("Auth >>> ");
+    print(auth);
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: WillPopScope(

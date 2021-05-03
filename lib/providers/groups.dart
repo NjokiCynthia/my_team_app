@@ -419,8 +419,7 @@ class Groups with ChangeNotifier {
     this._userId = _userId;
     this._identity = _identity;
     this._currentGroupId = _currentGroupId;
-    print(
-        " currentGroupId $currentGroupId and length ${_groups.length} userid: $_userId and identity $_identity");
+    // print(" currentGroupId $currentGroupId and length ${_groups.length} userid: $_userId and identity $_identity");
   }
 
   List<Group> get item {
@@ -1219,6 +1218,8 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         //log(response.toString());
+        print("My groups >> ");
+        print(response);
         final userGroups = response['user_groups'] as List<dynamic>;
         addGroups(userGroups);
       } on CustomException catch (error) {
@@ -2138,7 +2139,7 @@ class Groups with ChangeNotifier {
     String disableMemberEditProfile,
     String enableAbsoluteLoanRecalculation,
   }) async {
-    print("orderMembersBy $orderMembersBy");
+    // print("orderMembersBy $orderMembersBy");
     const url = EndpointUrl.UPDATE_GROUP_SETTINGS;
 
     try {
@@ -2279,7 +2280,7 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "sacco_id": saccoId,
       });
-      print(postRequest);
+      // print(postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
         _saccoBranchOptions = []; //clear
@@ -2316,7 +2317,7 @@ class Groups with ChangeNotifier {
         "initial_balance": initialBalance
       });
 
-      print(postRequest);
+      // print(postRequest);
       try {
         await PostToServer.post(postRequest, url);
         await fetchAccounts();
@@ -3209,7 +3210,7 @@ class Groups with ChangeNotifier {
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });
-      print("Request: $postRequest");
+      // print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
@@ -3240,7 +3241,7 @@ class Groups with ChangeNotifier {
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });
-      print("Request: $postRequest");
+      // print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['withdrawals'] as List<dynamic>;
@@ -3270,7 +3271,7 @@ class Groups with ChangeNotifier {
         //"upper_limit": lowerLimit + 20,
         //"lower_limit": 0
       });
-      print("Post: $postRequest");
+      // print("Post: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         log(response.toString());
@@ -3497,7 +3498,7 @@ class Groups with ChangeNotifier {
     }
 
     if (memberOngoingLoans) {
-      print(_ongoingMemberLoans);
+      // print(_ongoingMemberLoans);
       if (_ongoingMemberLoans.length == 0 && _loanPulled == false) {
         await fetchGroupMembersOngoingLoans();
       }
@@ -3793,7 +3794,7 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
+        // print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -3822,7 +3823,7 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
+        // print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -3843,7 +3844,7 @@ class Groups with ChangeNotifier {
       formData['group_id'] = currentGroupId;
       try {
         final postRequest = json.encode(formData);
-        print("request: $postRequest");
+        // print("request: $postRequest");
         var response = await PostToServer.post(postRequest, url);
         print(response);
       } on CustomException catch (error) {

@@ -1,3 +1,4 @@
+import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +6,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
+
+final dbHelper = DatabaseHelper.instance;
+Map<String, dynamic> myGroups = {};
 
 double appBarElevation = 2.5;
 
@@ -14,6 +18,32 @@ launchURL(String url) async {
     await launch(url);
   } else {
     throw 'Could not launch $url';
+  }
+}
+
+void updateDbRecord(
+  String table,
+  dynamic id,
+  List<Map<String, dynamic>> data,
+) async {
+  Map<String, dynamic> row = {};
+  data.forEach((e) => {
+        for (String key in e.keys) {row[key] = e[key]}
+      });
+  if (id == null) {
+    await dbHelper.insert(row, table);
+    return;
+  }
+  var checkRecord = await dbHelper.queryWhere(
+    table,
+    'id',
+    [id],
+  );
+  if (checkRecord.isEmpty) {
+    await dbHelper.insert(row, table);
+  } else {
+    row['id'] = id;
+    await dbHelper.update(row, table);
   }
 }
 
@@ -36,7 +66,8 @@ TextStyle inputTextStyle() {
 }
 
 //Edge insets for scrolling input pages
-const inputPagePadding = EdgeInsets.fromLTRB(SPACING_NORMAL, SPACING_NORMAL, SPACING_NORMAL, 0.0);
+const inputPagePadding =
+    EdgeInsets.fromLTRB(SPACING_NORMAL, SPACING_NORMAL, SPACING_NORMAL, 0.0);
 
 final currencyFormat = new NumberFormat("#,##0", "en_US");
 final defaultDateFormat = new DateFormat("d MMM, y");
@@ -52,14 +83,21 @@ const int REVIEW_LOAN = 1;
 const int VIEW_APPLICATION_STATUS = 2;
 
 //Error messages and codes
-const String ERROR_MESSAGE = "We could not complete your request at the moment. Try again later";
+const String ERROR_MESSAGE =
+    "We could not complete your request at the moment. Try again later";
 const String ERROR_MESSAGE_LOGIN = "Kindly login again";
 const String ERROR_MESSAGE_INTERNET = "No internet connection";
 
 //Image upload quality
 const int IMAGE_QUALITY = 50;
 
-enum SettingActions { actionAdd, actionEdit, actionHide, actionUnHide, actionDelete }
+enum SettingActions {
+  actionAdd,
+  actionEdit,
+  actionHide,
+  actionUnHide,
+  actionDelete
+}
 
 enum ErrorStatusCode {
   statusNormal,

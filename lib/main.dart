@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -12,6 +14,7 @@ import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -40,6 +43,22 @@ class _MyAppState extends State<MyApp> {
         await themeChangeProvider.darkThemePreference.getTheme();
   }
 
+  initDB() async {
+    List<dynamic> _myGroups = await dbHelper.queryWhere(
+      DatabaseHelper.dataTable,
+      "section",
+      ["my_groups"],
+    );
+    myGroups = (_myGroups.length == 1)
+        ? ((_myGroups[0]['value'] != '')
+            ? {
+                'id': _myGroups[0]['id'],
+                'value': jsonDecode(_myGroups[0]['value'])
+              }
+            : {})
+        : {};
+  }
+
   @override
   void initState() {
 //    Firebase.initializeApp().whenComplete(() {
@@ -48,6 +67,7 @@ class _MyAppState extends State<MyApp> {
 //      setState(() {});
 //    });
     getCurrentAppTheme();
+    initDB();
     super.initState();
   }
 

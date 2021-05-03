@@ -5,6 +5,9 @@ class DatabaseHelper {
   static final _databaseName = "chamasoft.db";
   static final _databaseVersion = 1;
 
+  static final dataTable = 'data';
+  static final meetingsTable = 'meetings';
+
   // make this a singleton class
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();
@@ -32,7 +35,7 @@ class DatabaseHelper {
       Batch batch = db.batch();
       // Settings table
       batch.execute('''
-            CREATE TABLE IF NOT EXISTS data (
+            CREATE TABLE IF NOT EXISTS $dataTable (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
               section TEXT NOT NULL,
@@ -42,7 +45,7 @@ class DatabaseHelper {
             ''');
       // Meetings table
       batch.execute('''
-            CREATE TABLE IF NOT EXISTS meetings (
+            CREATE TABLE IF NOT EXISTS $meetingsTable (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
               title TEXT NOT NULL DEFAULT '',
