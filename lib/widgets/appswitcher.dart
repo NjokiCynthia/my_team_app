@@ -242,7 +242,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                               ),
                               onTap: () {
                                 // print('Chose: ${_listItems[ndx]["title"]}');
-                                _handleSelection(_listItems[ndx]["id"]);
+                                _handleSelection(_listItems[ndx]["id"], ndx);
                               },
                             ),
                           );
@@ -405,8 +405,15 @@ class _AppSwitcherState extends State<AppSwitcher> {
     _toggleEntry(false);
   }
 
-  void _handleSelection(selectedOption) {
+  void _handleSelection(selectedOption, idx) {
+    print("Selected >> ");
+    print(idx);
+    dynamic _selected = _listItems.removeAt(idx);
+    _listItems.insert(1, _selected);
+    print("NEW >> ");
+    print(_listItems);
     widget.selectedOption(selectedOption);
+    // widget.currentGroup.id = selectedOption;
     _exitSwitcher();
   }
 
