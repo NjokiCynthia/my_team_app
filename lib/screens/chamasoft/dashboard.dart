@@ -81,7 +81,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 "id": group.groupId,
                 "title": group.groupName,
                 "role": group.isGroupAdmin
-                    ? "Group Admin | ${group.groupRole}"
+                    ? "Group Admin & ${group.groupRole}"
                     : group.groupRole
               })
             })
