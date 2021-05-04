@@ -160,6 +160,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
           child: SafeArea(
             child: SingleChildScrollView(
               controller: _scrollController,
+              physics: AlwaysScrollableScrollPhysics(),
               child: !_isInit
                   ? Column(
                       children: <Widget>[
