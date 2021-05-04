@@ -144,8 +144,6 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: false);
-    print("Auth >>> ");
-    print(auth);
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: WillPopScope(

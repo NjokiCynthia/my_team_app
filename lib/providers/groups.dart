@@ -1219,7 +1219,8 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
 
-        //=== BEGIN: Check if record exists...
+        //=== BEGIN: OFFLINE PLUG
+        //=== Check if record exists...
         bool _exists = await entryExistsInDb(
           DatabaseHelper.dataTable,
           "section",
@@ -1249,17 +1250,19 @@ class Groups with ChangeNotifier {
             },
           );
         }
-        //=== END.
+        //=== END: OFFLINE PLUG
 
         final userGroups = response['user_groups'] as List<dynamic>;
         addGroups(userGroups);
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
           dynamic _localData = await getLocalData('groups');
-          if (_localData != null) {
-            final userGroups = _localData as List<dynamic>;
+          if (_localData['value'] != null) {
+            final userGroups = _localData['value'] as List<dynamic>;
             addGroups(userGroups);
           }
+          //=== END: OFFLINE PLUG
         } else {
           throw CustomException(message: error.message, status: error.status);
         }
@@ -1268,11 +1271,13 @@ class Groups with ChangeNotifier {
       }
     } on CustomException catch (error) {
       if (error.status == ErrorStatusCode.statusNoInternet) {
+        //=== BEGIN: OFFLINE PLUG
         dynamic _localData = await getLocalData('groups');
-        if (_localData != null) {
-          final userGroups = _localData as List<dynamic>;
+        if (_localData['value'] != null) {
+          final userGroups = _localData['value'] as List<dynamic>;
           addGroups(userGroups);
         }
+        //=== END: OFFLINE PLUG
       } else {
         throw CustomException(message: error.message, status: error.status);
       }

@@ -238,6 +238,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           child: SafeArea(
               child: SingleChildScrollView(
                   controller: _scrollController,
+                  physics: AlwaysScrollableScrollPhysics(),
                   child: !_isInit
                       ? Column(
                           children: <Widget>[

@@ -39,7 +39,7 @@ Future<dynamic> getLocalData(String key) async {
           'id': null,
           'value': null,
         };
-  return obj['value'];
+  return obj;
 }
 
 Future<bool> entryExistsInDb(
