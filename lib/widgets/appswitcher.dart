@@ -65,9 +65,7 @@ class _CustomOverlay extends StatelessWidget {
             verticalOffset: -4.0,
           ),
           child: new Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: new Row(
                 children: <Widget>[
                   new Stack(
@@ -89,12 +87,26 @@ class _CustomOverlay extends StatelessWidget {
                         bottom: 20.0,
                         child: Container(
                           width: width,
-                          color: Theme.of(context)
-                              .backgroundColor
-                              .withOpacity(0.6),
                           padding: EdgeInsets.symmetric(
                             horizontal: 5.0,
-                            vertical: 12.0,
+                            vertical: 16.0,
+                          ),
+                          decoration: new BoxDecoration(
+                            gradient: new LinearGradient(
+                              colors: [
+                                Theme.of(context)
+                                    .backgroundColor
+                                    .withOpacity(0),
+                                Theme.of(context)
+                                    .backgroundColor
+                                    .withOpacity(0.5),
+                                Theme.of(context)
+                                    .backgroundColor
+                                    .withOpacity(1),
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
                           ),
                         ),
                       ),
@@ -175,7 +187,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
                     child: ScrollConfiguration(
                       behavior: SwitcherScrollBehavior(),
                       child: ListView.builder(
-                        padding: const EdgeInsets.all(0.0),
+                        padding: const EdgeInsets.only(bottom: 18.0),
                         itemBuilder: (BuildContext context, int ndx) {
                           return new Container(
                             color: (_listItems[ndx]["id"] ==
@@ -281,8 +293,10 @@ class _AppSwitcherState extends State<AppSwitcher> {
                       bottomLeft: Radius.circular(20.0),
                     ),
                   ),
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 5.0, vertical: 10.0),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 5.0,
+                    vertical: 10.0,
+                  ),
                 ),
               ],
             ),
