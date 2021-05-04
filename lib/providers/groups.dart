@@ -1238,10 +1238,11 @@ class Groups with ChangeNotifier {
         }
         //=== If it does exist, update it.
         else {
+          dynamic _groups = await getLocalData('groups');
           await updateInLocalDb(
             DatabaseHelper.dataTable,
             {
-              "id": myGroups['id'],
+              "id": _groups['id'],
               "section": "groups",
               "value": jsonEncode(response['user_groups']),
               "modified_on": DateTime.now().millisecondsSinceEpoch,
@@ -1253,12 +1254,28 @@ class Groups with ChangeNotifier {
         final userGroups = response['user_groups'] as List<dynamic>;
         addGroups(userGroups);
       } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          dynamic _localData = await getLocalData('groups');
+          if (_localData != null) {
+            final userGroups = _localData as List<dynamic>;
+            addGroups(userGroups);
+          }
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
         throw CustomException(message: error.message);
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        dynamic _localData = await getLocalData('groups');
+        if (_localData != null) {
+          final userGroups = _localData as List<dynamic>;
+          addGroups(userGroups);
+        }
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }

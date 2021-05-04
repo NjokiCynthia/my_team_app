@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -14,7 +12,6 @@ import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -44,28 +41,16 @@ class _MyAppState extends State<MyApp> {
   }
 
   initDB() async {
-    List<dynamic> _myGroups = await dbHelper.queryWhere(
-      DatabaseHelper.dataTable,
-      "section",
-      ["groups"],
-    );
-    myGroups = (_myGroups.length == 1)
-        ? ((_myGroups[0]['value'] != '')
-            ? {
-                'id': _myGroups[0]['id'],
-                'value': jsonDecode(_myGroups[0]['value'])
-              }
-            : {})
-        : {};
+    // Any call to the DB will instantiate it, whether valid or invalid
+    await getLocalData('app');
   }
 
   @override
   void initState() {
-//    Firebase.initializeApp().whenComplete(() {
-//      disableCrashlytics();
-//
-//      setState(() {});
-//    });
+    // Firebase.initializeApp().whenComplete(() {
+    //   disableCrashlytics();
+    //   setState(() {});
+    // });
     getCurrentAppTheme();
     initDB();
     super.initState();

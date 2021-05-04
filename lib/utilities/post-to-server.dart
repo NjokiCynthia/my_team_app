@@ -155,8 +155,9 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
       final result = await InternetAddress.lookup("example.com")
           .timeout(const Duration(seconds: 10), onTimeout: () {
         throw CustomException(
-            message: ERROR_MESSAGE_INTERNET,
-            status: ErrorStatusCode.statusNoInternet);
+          message: ERROR_MESSAGE_INTERNET,
+          status: ErrorStatusCode.statusNoInternet,
+        );
       });
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         final String randomKey = CustomHelper.generateRandomString(16);
@@ -200,8 +201,9 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                     });
 
                     throw CustomException(
-                        message: message,
-                        status: ErrorStatusCode.statusFormValidationError);
+                      message: message,
+                      status: ErrorStatusCode.statusFormValidationError,
+                    );
                   }
 
                   throw CustomException(message: message);
@@ -280,13 +282,15 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
         }
       } else {
         throw CustomException(
-            message: ERROR_MESSAGE_INTERNET,
-            status: ErrorStatusCode.statusNoInternet);
+          message: ERROR_MESSAGE_INTERNET,
+          status: ErrorStatusCode.statusNoInternet,
+        );
       }
     } on SocketException catch (_) {
       throw CustomException(
-          message: ERROR_MESSAGE_INTERNET,
-          status: ErrorStatusCode.statusNoInternet);
+        message: ERROR_MESSAGE_INTERNET,
+        status: ErrorStatusCode.statusNoInternet,
+      );
     }
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +10,6 @@ import 'package:url_launcher/url_launcher.dart';
 DarkThemeProvider themeChangeProvider = new DarkThemeProvider();
 
 final dbHelper = DatabaseHelper.instance;
-Map<String, dynamic> myGroups = {};
 
 double appBarElevation = 2.5;
 
@@ -19,6 +20,26 @@ launchURL(String url) async {
   } else {
     throw 'Could not launch $url';
   }
+}
+
+Future<dynamic> getLocalData(String key) async {
+  List<dynamic> _data = await dbHelper.queryWhere(
+    DatabaseHelper.dataTable,
+    "section",
+    [key],
+  );
+  dynamic obj = (_data.length == 1)
+      ? ((_data[0]['value'] != '')
+          ? {'id': _data[0]['id'], 'value': jsonDecode(_data[0]['value'])}
+          : {
+              'id': null,
+              'value': null,
+            })
+      : {
+          'id': null,
+          'value': null,
+        };
+  return obj['value'];
 }
 
 Future<bool> entryExistsInDb(
