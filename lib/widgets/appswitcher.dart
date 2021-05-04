@@ -70,18 +70,35 @@ class _CustomOverlay extends StatelessWidget {
               ),
               child: new Row(
                 children: <Widget>[
-                  new Container(
-                    width: width,
-                    constraints: BoxConstraints(maxHeight: (height - 6)),
-                    alignment: Alignment.topLeft,
-                    color: Colors.transparent,
+                  new Stack(
+                    children: [
+                      new Container(
+                        width: width,
+                        constraints: BoxConstraints(maxHeight: (height - 6)),
+                        alignment: Alignment.topLeft,
+                        color: Colors.transparent,
 //                    decoration: new BoxDecoration(
 //                      color: Theme.of(context).backgroundColor,
 //                      boxShadow:
 //                          mildShadow(Theme.of(context).unselectedWidgetColor),
 //                      // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
 //                    ),
-                    child: child,
+                        child: child,
+                      ),
+                      Positioned(
+                        bottom: 20.0,
+                        child: Container(
+                          width: width,
+                          color: Theme.of(context)
+                              .backgroundColor
+                              .withOpacity(0.6),
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 5.0,
+                            vertical: 12.0,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               )),
