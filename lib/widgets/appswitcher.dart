@@ -55,7 +55,7 @@ class _CustomOverlay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = 240; //itemCount>4?330:210;
+    double height = 260; //itemCount>4?330:210;
     return new Positioned.fill(
       child: new IgnorePointer(
         ignoring: false,
@@ -151,7 +151,8 @@ class _AppSwitcherState extends State<AppSwitcher> {
                     decoration: new BoxDecoration(
                       color: Theme.of(context).backgroundColor,
                       boxShadow: appSwitcherShadow(
-                          Theme.of(context).unselectedWidgetColor),
+                        Theme.of(context).unselectedWidgetColor,
+                      ),
                       // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
                     ),
                     child: ScrollConfiguration(
