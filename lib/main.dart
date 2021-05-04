@@ -47,7 +47,7 @@ class _MyAppState extends State<MyApp> {
     List<dynamic> _myGroups = await dbHelper.queryWhere(
       DatabaseHelper.dataTable,
       "section",
-      ["my_groups"],
+      ["groups"],
     );
     myGroups = (_myGroups.length == 1)
         ? ((_myGroups[0]['value'] != '')

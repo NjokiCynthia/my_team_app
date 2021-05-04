@@ -21,30 +21,32 @@ launchURL(String url) async {
   }
 }
 
-void updateDbRecord(
+Future<bool> entryExistsInDb(
   String table,
-  dynamic id,
-  List<Map<String, dynamic>> data,
+  String field,
+  String value,
 ) async {
-  Map<String, dynamic> row = {};
-  data.forEach((e) => {
-        for (String key in e.keys) {row[key] = e[key]}
-      });
-  if (id == null) {
-    await dbHelper.insert(row, table);
-    return;
-  }
   var checkRecord = await dbHelper.queryWhere(
     table,
-    'id',
-    [id],
+    field,
+    [value],
   );
-  if (checkRecord.isEmpty) {
-    await dbHelper.insert(row, table);
-  } else {
-    row['id'] = id;
-    await dbHelper.update(row, table);
-  }
+  if (checkRecord.isEmpty) return false;
+  return true;
+}
+
+Future<dynamic> insertToLocalDb(
+  String table,
+  Map<String, dynamic> row,
+) async {
+  return await dbHelper.insert(row, table);
+}
+
+Future<dynamic> updateInLocalDb(
+  String table,
+  Map<String, dynamic> row,
+) async {
+  return await dbHelper.update(row, table);
 }
 
 //get from shared preferences

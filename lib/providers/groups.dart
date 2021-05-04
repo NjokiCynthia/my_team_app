@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'helpers/report_helper.dart';
+import 'package:chamasoft/utilities/database-helper.dart';
 
 class Account {
   final String id;
@@ -1217,9 +1218,37 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        //log(response.toString());
-        print("My groups >> ");
-        print(response);
+        //=== BEGIN: Check if record exists...
+        bool _exists = await entryExistsInDb(
+          DatabaseHelper.dataTable,
+          "section",
+          "groups",
+        );
+        //=== ...if it doesn't exist, insert it.
+        if (!_exists) {
+          await insertToLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "section": "groups",
+              "value": jsonEncode(response['user_groups']),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+        }
+        //=== If it does exist, update it.
+        else {
+          await updateInLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "id": myGroups['id'],
+              "section": "groups",
+              "value": jsonEncode(response['user_groups']),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+        }
+        //=== END.
+
         final userGroups = response['user_groups'] as List<dynamic>;
         addGroups(userGroups);
       } on CustomException catch (error) {

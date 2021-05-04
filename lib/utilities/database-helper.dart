@@ -2,7 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 
 class DatabaseHelper {
-  static final _databaseName = "chamasoft.db";
+  static final _databaseName = "chamasoft-app.db";
   static final _databaseVersion = 1;
 
   static final dataTable = 'data';
@@ -37,7 +37,6 @@ class DatabaseHelper {
       batch.execute('''
             CREATE TABLE IF NOT EXISTS $dataTable (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
-              group_id INTEGER NOT NULL,
               section TEXT NOT NULL,
               value TEXT NOT NULL,
               modified_on INTEGER NOT NULL
