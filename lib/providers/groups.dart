@@ -1218,6 +1218,7 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
+
         //=== BEGIN: Check if record exists...
         bool _exists = await entryExistsInDb(
           DatabaseHelper.dataTable,
