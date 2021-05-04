@@ -406,14 +406,10 @@ class _AppSwitcherState extends State<AppSwitcher> {
   }
 
   void _handleSelection(selectedOption, idx) {
-    print("Selected >> ");
-    print(idx);
+    // Move the selected item to top of the list
     dynamic _selected = _listItems.removeAt(idx);
     _listItems.insert(1, _selected);
-    print("NEW >> ");
-    print(_listItems);
     widget.selectedOption(selectedOption);
-    // widget.currentGroup.id = selectedOption;
     _exitSwitcher();
   }
 
