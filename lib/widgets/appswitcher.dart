@@ -65,55 +65,52 @@ class _CustomOverlay extends StatelessWidget {
             verticalOffset: -4.0,
           ),
           child: new Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: new Row(
-                children: <Widget>[
-                  new Stack(
-                    children: [
-                      new Container(
-                        width: width,
-                        constraints: BoxConstraints(maxHeight: (height - 6)),
-                        alignment: Alignment.topLeft,
-                        color: Colors.transparent,
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: new Row(
+              children: <Widget>[
+                new Stack(
+                  children: [
+                    new Container(
+                      width: width,
+                      constraints: BoxConstraints(maxHeight: (height - 6)),
+                      alignment: Alignment.topLeft,
+                      color: Colors.transparent,
 //                    decoration: new BoxDecoration(
 //                      color: Theme.of(context).backgroundColor,
 //                      boxShadow:
 //                          mildShadow(Theme.of(context).unselectedWidgetColor),
 //                      // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
 //                    ),
-                        child: child,
-                      ),
-                      Positioned(
-                        bottom: 20.0,
-                        child: Container(
-                          width: width,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 5.0,
-                            vertical: 16.0,
-                          ),
-                          decoration: new BoxDecoration(
-                            gradient: new LinearGradient(
-                              colors: [
-                                Theme.of(context)
-                                    .backgroundColor
-                                    .withOpacity(0),
-                                Theme.of(context)
-                                    .backgroundColor
-                                    .withOpacity(0.5),
-                                Theme.of(context)
-                                    .backgroundColor
-                                    .withOpacity(1),
-                              ],
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                            ),
+                      child: child,
+                    ),
+                    Positioned(
+                      bottom: 20.0,
+                      child: Container(
+                        width: width,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 5.0,
+                          vertical: 16.0,
+                        ),
+                        decoration: new BoxDecoration(
+                          gradient: new LinearGradient(
+                            colors: [
+                              Theme.of(context).backgroundColor.withOpacity(0),
+                              Theme.of(context)
+                                  .backgroundColor
+                                  .withOpacity(0.5),
+                              Theme.of(context).backgroundColor.withOpacity(1),
+                            ],
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              )),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -387,10 +384,10 @@ class _AppSwitcherState extends State<AppSwitcher> {
                           topLeft: Radius.circular(20.0),
                           bottomLeft: Radius.circular(20.0))
                       : BorderRadius.circular(40.0),
-                  color: Theme.of(context).hintColor.withOpacity(0.99),
+                  color: Theme.of(context).hintColor.withOpacity(0.6),
                 ),
                 child: Icon(
-                  Feather.plus,
+                  Feather.users,
                   color: Colors.white70,
                   size: 18.0,
                 ),

@@ -74,17 +74,27 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     var _groups = Provider.of<Groups>(context, listen: false).item;
     _overlayItems = [];
     _overlayItems.insert(
-        0, {"id": '0', "title": "Create New", "role": "Add your Chama"});
+      0,
+      {
+        "id": '0',
+        "title": "Create New",
+        "role": "Add your Chama",
+      },
+    );
     _groups
-        .map((group) => {
-              _overlayItems.add({
+        .map(
+          (group) => {
+            _overlayItems.add(
+              {
                 "id": group.groupId,
                 "title": group.groupName,
                 "role": group.isGroupAdmin
                     ? "Group Admin & ${group.groupRole}"
                     : group.groupRole
-              })
-            })
+              },
+            )
+          },
+        )
         .toList();
   }
 
@@ -119,6 +129,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
+
     return GestureDetector(
       onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP'),
       child: Scaffold(
