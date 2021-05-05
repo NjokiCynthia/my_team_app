@@ -40,7 +40,8 @@ class _TransactionStatementState extends State<TransactionStatement> {
 
   Future<void> _getTransactionStatement(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchTransactionStatement();
+      await Provider.of<Groups>(context, listen: false)
+          .fetchTransactionStatement();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -56,7 +57,8 @@ class _TransactionStatementState extends State<TransactionStatement> {
       _isLoading = true;
     });
 
-    _transactionStatementModel = Provider.of<Groups>(context, listen: false).transactionStatement;
+    _transactionStatementModel =
+        Provider.of<Groups>(context, listen: false).transactionStatement;
 
     if (_transactionStatementModel != null) {
       _transactions = _transactionStatementModel.transactionStatements;
@@ -67,7 +69,8 @@ class _TransactionStatementState extends State<TransactionStatement> {
     }
 
     _getTransactionStatement(context).then((_) {
-      _transactionStatementModel = Provider.of<Groups>(context, listen: false).transactionStatement;
+      _transactionStatementModel =
+          Provider.of<Groups>(context, listen: false).transactionStatement;
       setState(() {
         _isLoading = false;
         if (_transactionStatementModel != null) {
@@ -93,7 +96,8 @@ class _TransactionStatementState extends State<TransactionStatement> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
@@ -106,7 +110,8 @@ class _TransactionStatementState extends State<TransactionStatement> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -117,12 +122,17 @@ class _TransactionStatementState extends State<TransactionStatement> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
+        backgroundColor: (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Colors.white,
         onRefresh: () => _fetchData(),
         child: Column(
           children: <Widget>[
             Container(
               padding: EdgeInsets.all(16.0),
-              color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+              color: (themeChangeProvider.darkTheme)
+                  ? Colors.blueGrey[800]
+                  : Color(0xffededfe),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -136,7 +146,8 @@ class _TransactionStatementState extends State<TransactionStatement> {
                             children: <Widget>[
                               heading2(
                                   text: "Total Balance",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                               SizedBox(
                                 height: 4,
@@ -146,11 +157,13 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                 children: <Widget>[
                                   subtitle2(
                                       text: "Deposits ",
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                       textAlign: TextAlign.start),
                                   subtitle1(
                                       text: "-",
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                       textAlign: TextAlign.start),
                                 ],
                               ),
@@ -159,11 +172,13 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                 children: <Widget>[
                                   subtitle2(
                                       text: "Withdrawals ",
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                       textAlign: TextAlign.start),
                                   subtitle1(
                                       text: "-",
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                       textAlign: TextAlign.start),
                                 ],
                               ),
@@ -172,7 +187,8 @@ class _TransactionStatementState extends State<TransactionStatement> {
                         ),
                       ),
                       heading2(
-                          text: "${groupObject.groupCurrency} " + currencyFormat.format(_totalBalance),
+                          text: "${groupObject.groupCurrency} " +
+                              currencyFormat.format(_totalBalance),
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.start)
                     ],

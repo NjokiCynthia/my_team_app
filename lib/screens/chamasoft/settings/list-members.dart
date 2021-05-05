@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -20,7 +21,8 @@ class ListMembers extends StatefulWidget {
 }
 
 class _ListMembersState extends State<ListMembers> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   void _showActions(BuildContext context) {
     showModalBottomSheet<void>(
@@ -39,7 +41,8 @@ class _ListMembersState extends State<ListMembers> {
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
-                      final result = await Navigator.of(context).pushNamed(ListContacts.namedRoute);
+                      final result = await Navigator.of(context)
+                          .pushNamed(ListContacts.namedRoute);
                       Navigator.pop(context); // pop bottom sheet
                       if (result != null && result) {
                         _refreshIndicatorKey.currentState.show();
@@ -64,7 +67,8 @@ class _ListMembersState extends State<ListMembers> {
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
-                      final result = await Navigator.of(context).pushNamed(AddMembersManually.namedRoute);
+                      final result = await Navigator.of(context)
+                          .pushNamed(AddMembersManually.namedRoute);
                       Navigator.pop(context); // pop bottom sheet
                       if (result != null && result) {
                         _refreshIndicatorKey.currentState.show();
@@ -91,7 +95,6 @@ class _ListMembersState extends State<ListMembers> {
       },
     );
   }
-
 
   Future<void> _fetchMembers(BuildContext context) async {
     try {
@@ -134,58 +137,61 @@ class _ListMembersState extends State<ListMembers> {
         backgroundColor: primaryColor,
         onPressed: () => _showActions(context),
       ),
-      body: 
-      
-      // RefreshIndicator(
-      //   onRefresh: () => _fetchMembers(context),
-      //   child: FutureBuilder(
-      //     future: _fetchMembers(context),
-      //     builder: (ctx, dataSnapshot) {
-      //       if (dataSnapshot.connectionState == ConnectionState.waiting) {
-      //         return Center(
-      //           child: CircularProgressIndicator(),
-      //         );
-      //       } else if (dataSnapshot.error != null) {
-      //         //do error handling
-      //         return Center(
-      //           child: Text("Some error occurred"),
-      //         );
-      //       } else {
-      //         return Container(
-      //           height: MediaQuery.of(context).size.height,
-      //           width: MediaQuery.of(context).size.width,
-      //           decoration: primaryGradient(context),
-      //           child: Consumer<Groups>(builder: (context, groupData, child) {
-      //             return Expanded(
-      //               child: ListView.builder(
-      //                 itemBuilder: (context, index) {
-      //                   Member member = groupData.members[index];
-      //                   return CartItem(
-      //                     id: member.id,
-      //                     title:  member.name,
-      //                     quantity: 2,
-      //                     price: 20.00,
-      //                     productId: member.userId,
-      //                   );
-      //                 },
-      //                 itemCount: groupData.members.length,
-      //               ) 
-      //             );
-      //           }),
-      //         );
-      //         // return Consumer<Orders>(
-      //         //     builder: (ctx, orderData, child) => ListView.builder(
-      //         //           itemCount: orderData.orders.length,
-      //         //           itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
-      //         //         ));
-      //       }
-      //     },
-      //   ),
-      // ),
-      
-      Builder(
+      body:
+
+          // RefreshIndicator(
+          //   onRefresh: () => _fetchMembers(context),
+          //   child: FutureBuilder(
+          //     future: _fetchMembers(context),
+          //     builder: (ctx, dataSnapshot) {
+          //       if (dataSnapshot.connectionState == ConnectionState.waiting) {
+          //         return Center(
+          //           child: CircularProgressIndicator(),
+          //         );
+          //       } else if (dataSnapshot.error != null) {
+          //         //do error handling
+          //         return Center(
+          //           child: Text("Some error occurred"),
+          //         );
+          //       } else {
+          //         return Container(
+          //           height: MediaQuery.of(context).size.height,
+          //           width: MediaQuery.of(context).size.width,
+          //           decoration: primaryGradient(context),
+          //           child: Consumer<Groups>(builder: (context, groupData, child) {
+          //             return Expanded(
+          //               child: ListView.builder(
+          //                 itemBuilder: (context, index) {
+          //                   Member member = groupData.members[index];
+          //                   return CartItem(
+          //                     id: member.id,
+          //                     title:  member.name,
+          //                     quantity: 2,
+          //                     price: 20.00,
+          //                     productId: member.userId,
+          //                   );
+          //                 },
+          //                 itemCount: groupData.members.length,
+          //               )
+          //             );
+          //           }),
+          //         );
+          //         // return Consumer<Orders>(
+          //         //     builder: (ctx, orderData, child) => ListView.builder(
+          //         //           itemCount: orderData.orders.length,
+          //         //           itemBuilder: (ctx, i) => OrderItem(orderData.orders[i]),
+          //         //         ));
+          //       }
+          //     },
+          //   ),
+          // ),
+
+          Builder(
         builder: (BuildContext context) {
           return RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
             key: _refreshIndicatorKey,
             onRefresh: () => _fetchMembers(context),
             child: Container(
@@ -206,21 +212,27 @@ class _ListMembersState extends State<ListMembers> {
                                 width: 50,
                                 child: new CachedNetworkImage(
                                   imageUrl: member.avatar,
-                                  placeholder: (context, url) => const CircleAvatar(
-                                    backgroundImage: const AssetImage('assets/no-user.png'),
+                                  placeholder: (context, url) =>
+                                      const CircleAvatar(
+                                    backgroundImage:
+                                        const AssetImage('assets/no-user.png'),
                                   ),
-                                  imageBuilder: (context, image) => CircleAvatar(
+                                  imageBuilder: (context, image) =>
+                                      CircleAvatar(
                                     backgroundImage: image,
                                   ),
-                                  errorWidget: (context, url, error) => const CircleAvatar(
-                                    backgroundImage: const AssetImage('assets/no-user.png'),
+                                  errorWidget: (context, url, error) =>
+                                      const CircleAvatar(
+                                    backgroundImage:
+                                        const AssetImage('assets/no-user.png'),
                                   ),
                                   fadeOutDuration: const Duration(seconds: 1),
                                   fadeInDuration: const Duration(seconds: 3),
                                 ),
                               )
                             : const CircleAvatar(
-                                backgroundImage: const AssetImage('assets/no-user.png'),
+                                backgroundImage:
+                                    const AssetImage('assets/no-user.png'),
                               ),
                         title: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -232,23 +244,28 @@ class _ListMembersState extends State<ListMembers> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: <Widget>[
                                     Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         customTitle(
                                           text: '${member.name}',
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                           fontWeight: FontWeight.w800,
                                           fontSize: 18.0,
                                         ),
                                         Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Row(
                                               children: <Widget>[
                                                 customTitle(
                                                   text: '${member.identity}',
                                                   fontWeight: FontWeight.w700,
-                                                  color: Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor
+                                                      .withOpacity(0.7),
                                                   fontSize: 12.0,
                                                 ),
                                               ],

@@ -40,7 +40,8 @@ class _LoanStatementState extends State<LoanStatement> {
 
   Future<void> _getLoanStatements(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchLoanStatement(widget.loan.id);
+      await Provider.of<Groups>(context, listen: false)
+          .fetchLoanStatement(widget.loan.id);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -71,7 +72,8 @@ class _LoanStatementState extends State<LoanStatement> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
@@ -85,48 +87,65 @@ class _LoanStatementState extends State<LoanStatement> {
           builder: (BuildContext context) {
             return FutureBuilder(
                 future: _future,
-                builder: (_, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                builder: (_, snapshot) => snapshot.connectionState ==
+                        ConnectionState.waiting
                     ? Center(child: CircularProgressIndicator())
                     : RefreshIndicator(
+                        backgroundColor: (themeChangeProvider.darkTheme)
+                            ? Colors.blueGrey[800]
+                            : Colors.white,
                         onRefresh: () => _getLoanStatements(context),
-                        child: Consumer<Groups>(builder: (context, data, child) {
-                          LoanStatementModel statementModel = data.getLoanStatements;
+                        child:
+                            Consumer<Groups>(builder: (context, data, child) {
+                          LoanStatementModel statementModel =
+                              data.getLoanStatements;
                           if (statementModel != null) {
-                            List<LoanStatementRow> statementRows = data.getLoanStatements.statementRows;
+                            List<LoanStatementRow> statementRows =
+                                data.getLoanStatements.statementRows;
                             return Column(
                               children: <Widget>[
                                 Container(
                                   padding: EdgeInsets.all(16.0),
                                   width: double.infinity,
-                                  color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                                  color: (themeChangeProvider.darkTheme)
+                                      ? Colors.blueGrey[800]
+                                      : Color(0xffededfe),
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Expanded(
                                             flex: 1,
                                             child: heading2(
                                               text: "${widget.loan.name}",
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
                                           ),
                                           Row(
                                             children: <Widget>[
                                               customTitle(
-                                                text: "${groupObject.groupCurrency} ",
+                                                text:
+                                                    "${groupObject.groupCurrency} ",
                                                 fontSize: 18.0,
-                                                color: Theme.of(context).textSelectionHandleColor,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                               ),
                                               heading2(
-                                                text: "${currencyFormat.format(widget.loan.amount)}",
-                                                color: Theme.of(context).textSelectionHandleColor,
+                                                text:
+                                                    "${currencyFormat.format(widget.loan.amount)}",
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
                                                 textAlign: TextAlign.end,
                                               ),
                                             ],
@@ -149,43 +168,53 @@ class _LoanStatementState extends State<LoanStatement> {
 //                                  ],
 //                                ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: <Widget>[
                                           subtitle2(
                                               text: "Amount Repaid ",
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
                                               text:
                                                   "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.paid)}",
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: <Widget>[
                                           subtitle2(
                                               text: "Balance ",
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
                                               text:
                                                   "${groupObject.groupCurrency} ${currencyFormat.format(data.getLoanStatements.balance)}",
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
                                         children: <Widget>[
                                           subtitle2(
                                               text: "Disbursed On ",
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
                                               textAlign: TextAlign.start),
                                           subtitle1(
-                                              text: widget.loan.disbursementDate,
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              text:
+                                                  widget.loan.disbursementDate,
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
                                               textAlign: TextAlign.start),
                                         ],
                                       ),
@@ -194,9 +223,11 @@ class _LoanStatementState extends State<LoanStatement> {
                                 ),
                                 statementRows.length > 0
                                     ? Container(
-                                        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 0.0),
+                                        padding: EdgeInsets.fromLTRB(
+                                            16.0, 8.0, 16.0, 0.0),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: <Widget>[
                                             Expanded(
                                               flex: 2,
@@ -206,14 +237,16 @@ class _LoanStatementState extends State<LoanStatement> {
                                               flex: 1,
                                               child: subtitle1(
                                                   text: "Paid",
-                                                  color: Theme.of(context).primaryColor,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
                                                   textAlign: TextAlign.end),
                                             ),
                                             Expanded(
                                               flex: 1,
                                               child: subtitle1(
                                                   text: "Balance",
-                                                  color: Theme.of(context).primaryColor,
+                                                  color: Theme.of(context)
+                                                      .primaryColor,
                                                   textAlign: TextAlign.end),
                                             ),
                                           ],
@@ -226,7 +259,8 @@ class _LoanStatementState extends State<LoanStatement> {
                                           controller: _scrollController,
                                           shrinkWrap: true,
                                           itemBuilder: (context, index) {
-                                            LoanStatementRow row = statementRows[index];
+                                            LoanStatementRow row =
+                                                statementRows[index];
                                             return LoanStatementBody(
                                               row: row,
                                               position: index % 2 == 0,
@@ -237,7 +271,8 @@ class _LoanStatementState extends State<LoanStatement> {
                                       : emptyList(
                                           color: Colors.blue[400],
                                           iconData: LineAwesomeIcons.file_text,
-                                          text: "There are no statements to display"),
+                                          text:
+                                              "There are no statements to display"),
                                 )
                               ],
                             );
@@ -246,7 +281,8 @@ class _LoanStatementState extends State<LoanStatement> {
                               child: emptyList(
                                   color: Colors.blue[400],
                                   iconData: LineAwesomeIcons.pie_chart,
-                                  text: "There are no loan statements to display"),
+                                  text:
+                                      "There are no loan statements to display"),
                             );
                           }
                         })));

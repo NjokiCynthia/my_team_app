@@ -3,6 +3,7 @@ import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-mobile-money-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-sacco-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/edit-sacco-account.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -21,7 +22,12 @@ import 'accounts/edit-bank-account.dart';
 import 'accounts/edit-mobile-money-account.dart';
 import 'accounts/edit-petty-cash-account.dart';
 
-List<String> accountTypes = ["Bank Accounts", "Sacco Accounts", "Mobile Money Accounts", "Petty Cash Accounts"];
+List<String> accountTypes = [
+  "Bank Accounts",
+  "Sacco Accounts",
+  "Mobile Money Accounts",
+  "Petty Cash Accounts"
+];
 
 class ListAccounts extends StatefulWidget {
   @override
@@ -29,7 +35,8 @@ class ListAccounts extends StatefulWidget {
 }
 
 class _ListAccountsState extends State<ListAccounts> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   // final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -70,7 +77,8 @@ class _ListAccountsState extends State<ListAccounts> {
 
   Future<bool> fetchMobileMoneyProviderOptions(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchMobileMoneyProviderOptions();
+      await Provider.of<Groups>(context, listen: false)
+          .fetchMobileMoneyProviderOptions();
       return true;
     } on CustomException catch (error) {
       print(error.message);
@@ -80,7 +88,8 @@ class _ListAccountsState extends State<ListAccounts> {
 
   Future<void> _fetchAccounts(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).temporaryFetchAccounts();
+      await Provider.of<Groups>(context, listen: false)
+          .temporaryFetchAccounts();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -124,7 +133,8 @@ class _ListAccountsState extends State<ListAccounts> {
                     Navigator.pop(context);
                     Navigator.pop(context); //pop bottom sheet
 
-                    final result = await Navigator.of(context).push(MaterialPageRoute(
+                    final result =
+                        await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateBankAccount(),
                     ));
                     if (result != null) {
@@ -157,7 +167,8 @@ class _ListAccountsState extends State<ListAccounts> {
                     Navigator.pop(context);
                     Navigator.pop(context); //pop bottom sheet
 
-                    final result = await Navigator.of(context).push(MaterialPageRoute(
+                    final result =
+                        await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateSaccoAccount(),
                     ));
 
@@ -191,7 +202,8 @@ class _ListAccountsState extends State<ListAccounts> {
                     Navigator.pop(context);
                     Navigator.pop(context); //pop bottom sheet
 
-                    final result = await Navigator.of(context).push(MaterialPageRoute(
+                    final result =
+                        await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreateMobileMoneyAccount(),
                     ));
 
@@ -216,7 +228,8 @@ class _ListAccountsState extends State<ListAccounts> {
                   onPressed: () async {
                     Navigator.pop(context); //pop bottom sheet
 
-                    final result = await Navigator.of(context).push(MaterialPageRoute(
+                    final result =
+                        await Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => CreatePettyCashAccount(),
                     ));
 
@@ -257,6 +270,9 @@ class _ListAccountsState extends State<ListAccounts> {
       ),
       body: Builder(builder: (BuildContext context) {
         return RefreshIndicator(
+          backgroundColor: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Colors.white,
           key: _refreshIndicatorKey,
           onRefresh: () => _fetchAccounts(context),
           child: Container(
@@ -264,7 +280,8 @@ class _ListAccountsState extends State<ListAccounts> {
               width: MediaQuery.of(context).size.width,
               decoration: primaryGradient(context),
               child: Consumer<Groups>(builder: (context, groupData, child) {
-                List<CategorisedAccount> accounts = groupData.getAllCategorisedAccounts;
+                List<CategorisedAccount> accounts =
+                    groupData.getAllCategorisedAccounts;
                 return accounts.length > 0
                     ? ListView.separated(
                         shrinkWrap: true,
@@ -275,13 +292,17 @@ class _ListAccountsState extends State<ListAccounts> {
                           if (account.isHeader) {
                             return Padding(
                               padding: index == 0
-                                  ? const EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 0.0)
-                                  : const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+                                  ? const EdgeInsets.fromLTRB(
+                                      16.0, 4.0, 16.0, 0.0)
+                                  : const EdgeInsets.fromLTRB(
+                                      16.0, 16.0, 16.0, 0.0),
                               child: customTitle(
                                 text: account.title,
                                 fontWeight: FontWeight.w600,
                                 textAlign: TextAlign.start,
-                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
+                                color: Theme.of(context)
+                                    .textSelectionHandleColor
+                                    .withOpacity(0.6),
                                 fontSize: 13.0,
                               ),
                             );
@@ -297,11 +318,13 @@ class _ListAccountsState extends State<ListAccounts> {
                                 children: <Widget>[
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
                                         customTitleWithWrap(
                                           text: account.name,
-                                          color: Theme.of(context).textSelectionHandleColor,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w700,
                                           fontSize: 15.0,
@@ -311,7 +334,9 @@ class _ListAccountsState extends State<ListAccounts> {
                                                 text: account.accountNumber,
                                                 fontWeight: FontWeight.w600,
                                                 textAlign: TextAlign.start,
-                                                color: Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor
+                                                    .withOpacity(0.5),
                                                 fontSize: 12.0,
                                               )
                                             : Container(),
@@ -330,54 +355,74 @@ class _ListAccountsState extends State<ListAccounts> {
                                   padding: 0.0,
                                   onPressed: () async {
                                     if (account.typeId == 1) {
-                                      final result = await Navigator.of(context).push(MaterialPageRoute(
+                                      final result = await Navigator.of(context)
+                                          .push(MaterialPageRoute(
                                         builder: (context) => EditBankAccount(
                                           bankAccountId: int.parse(account.id),
                                         ),
                                       ));
                                       if (result != null) {
-                                        int status = int.tryParse(result.toString()) ?? 0;
+                                        int status =
+                                            int.tryParse(result.toString()) ??
+                                                0;
                                         if (status == 1) {
-                                          _refreshIndicatorKey.currentState.show();
+                                          _refreshIndicatorKey.currentState
+                                              .show();
                                           _fetchAccounts(context);
                                         }
                                       }
                                     } else if (account.typeId == 2) {
-                                      final result = await Navigator.of(context).push(MaterialPageRoute(
+                                      final result = await Navigator.of(context)
+                                          .push(MaterialPageRoute(
                                         builder: (context) => EditSaccoAccount(
                                           saccoAccountId: int.parse(account.id),
                                         ),
                                       ));
                                       if (result != null) {
-                                        int status = int.tryParse(result.toString()) ?? 0;
+                                        int status =
+                                            int.tryParse(result.toString()) ??
+                                                0;
                                         if (status == 1) {
-                                          _refreshIndicatorKey.currentState.show();
+                                          _refreshIndicatorKey.currentState
+                                              .show();
                                           _fetchAccounts(context);
                                         }
                                       }
                                     } else if (account.typeId == 3) {
-                                      final result = await Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => EditMobileMoneyAccount(
-                                          mobileMoneyAccountId: int.parse(account.id),
+                                      final result = await Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditMobileMoneyAccount(
+                                          mobileMoneyAccountId:
+                                              int.parse(account.id),
                                         ),
                                       ));
                                       if (result != null) {
-                                        int status = int.tryParse(result.toString()) ?? 0;
+                                        int status =
+                                            int.tryParse(result.toString()) ??
+                                                0;
                                         if (status == 1) {
-                                          _refreshIndicatorKey.currentState.show();
+                                          _refreshIndicatorKey.currentState
+                                              .show();
                                           _fetchAccounts(context);
                                         }
                                       }
                                     } else if (account.typeId == 4) {
-                                      final result = await Navigator.of(context).push(MaterialPageRoute(
-                                        builder: (context) => EditPettyCashAccount(
-                                          pettyCashAccountId: int.parse(account.id),
+                                      final result = await Navigator.of(context)
+                                          .push(MaterialPageRoute(
+                                        builder: (context) =>
+                                            EditPettyCashAccount(
+                                          pettyCashAccountId:
+                                              int.parse(account.id),
                                         ),
                                       ));
                                       if (result != null) {
-                                        int status = int.tryParse(result.toString()) ?? 0;
+                                        int status =
+                                            int.tryParse(result.toString()) ??
+                                                0;
                                         if (status == 1) {
-                                          _refreshIndicatorKey.currentState.show();
+                                          _refreshIndicatorKey.currentState
+                                              .show();
                                           _fetchAccounts(context);
                                         }
                                       }
@@ -398,7 +443,8 @@ class _ListAccountsState extends State<ListAccounts> {
                             );
                         },
                       )
-                    : betterEmptyList(message: "Sorry, you have not added any accounts");
+                    : betterEmptyList(
+                        message: "Sorry, you have not added any accounts");
               })),
         );
       }),

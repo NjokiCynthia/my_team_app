@@ -221,6 +221,9 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
       body: Builder(
         builder: (BuildContext context) {
           return RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
             key: _refreshIndicatorKey,
             onRefresh: () => _fetchAssetCategories(_scaffoldKey.currentContext),
             child: Container(

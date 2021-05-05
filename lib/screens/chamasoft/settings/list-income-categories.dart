@@ -250,6 +250,9 @@ class _ListIncomeCategoriesState extends State<ListIncomeCategories> {
       body: Builder(
         builder: (BuildContext context) {
           return RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
             key: _refreshIndicatorKey,
             onRefresh: () =>
                 _fetchIncomeCategories(_scaffoldKey.currentContext),

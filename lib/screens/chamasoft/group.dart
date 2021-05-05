@@ -156,6 +156,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     return new WillPopScope(
         onWillPop: _onWillPop,
         child: RefreshIndicator(
+          backgroundColor: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Colors.white,
           onRefresh: () => _getGroupDashboardData(true),
           child: SafeArea(
             child: SingleChildScrollView(

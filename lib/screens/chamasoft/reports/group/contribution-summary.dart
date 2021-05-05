@@ -44,7 +44,9 @@ class _ContributionSummaryState extends State<ContributionSummary> {
   // ignore: unused_element
   void _showFilter(BuildContext context) {
     showModalBottomSheet(
-        context: context, builder: (_) => FilterStatements(ModalRoute.of(context).settings.arguments, _applyFilter));
+        context: context,
+        builder: (_) => FilterStatements(
+            ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
   @override
@@ -72,19 +74,23 @@ class _ContributionSummaryState extends State<ContributionSummary> {
       appbarTitle = "Fine Summary";
       defaultTitle = "Fines";
       _statementType = 2;
-      _totalAmount = Provider.of<Groups>(context, listen: false).groupTotalFinesSummary();
+      _totalAmount =
+          Provider.of<Groups>(context, listen: false).groupTotalFinesSummary();
       _fetchGroupFineSummary(context).then((_) {
         setState(() {
           _isLoading = false;
-          _totalAmount = Provider.of<Groups>(context, listen: false).groupTotalFinesSummary();
+          _totalAmount = Provider.of<Groups>(context, listen: false)
+              .groupTotalFinesSummary();
         });
       });
     } else {
-      _totalAmount = Provider.of<Groups>(context, listen: false).groupTotalContributionSummary();
+      _totalAmount = Provider.of<Groups>(context, listen: false)
+          .groupTotalContributionSummary();
       _fetchGroupContributionSummary(context).then((_) {
         setState(() {
           _isLoading = false;
-          _totalAmount = Provider.of<Groups>(context, listen: false).groupTotalContributionSummary();
+          _totalAmount = Provider.of<Groups>(context, listen: false)
+              .groupTotalContributionSummary();
         });
       }).catchError((error) {
         print(error);
@@ -103,13 +109,15 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
   Future<void> _fetchGroupContributionSummary(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).getGroupContributionSummary();
+      await Provider.of<Groups>(context, listen: false)
+          .getGroupContributionSummary();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -133,7 +141,8 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
@@ -147,13 +156,18 @@ class _ContributionSummaryState extends State<ContributionSummary> {
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
+        backgroundColor: (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Colors.white,
         onRefresh: () => _fetchData(),
         child: Column(
           children: <Widget>[
             Container(
               padding: EdgeInsets.all(16.0),
               width: double.infinity,
-              color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+              color: (themeChangeProvider.darkTheme)
+                  ? Colors.blueGrey[800]
+                  : Color(0xffededfe),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -232,11 +246,17 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
+                    child: subtitle1(
+                        text: "Paid",
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.end),
                   ),
                   Expanded(
                     flex: 1,
-                    child: subtitle1(text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
+                    child: subtitle1(
+                        text: "Balance",
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.end),
                   ),
                 ],
               ),
@@ -247,7 +267,9 @@ class _ContributionSummaryState extends State<ContributionSummary> {
                     height: 0.0,
                   ),
             Expanded(
-                child: _isLoading ? ContributionSummaryBody(_statementType) : ContributionSummaryBody(_statementType))
+                child: _isLoading
+                    ? ContributionSummaryBody(_statementType)
+                    : ContributionSummaryBody(_statementType))
           ],
         ),
       ),

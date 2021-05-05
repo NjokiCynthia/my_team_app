@@ -20,18 +20,22 @@ class ListContributions extends StatefulWidget {
 }
 
 class _ListContributionsState extends State<ListContributions> {
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = new GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   String _groupCurrency = "Ksh";
 
-  Future<void> _getContributionSettings(BuildContext context, String contributionId) async {
+  Future<void> _getContributionSettings(
+      BuildContext context, String contributionId) async {
     try {
-      final response = await Provider.of<Groups>(context, listen: false).getContributionDetails(contributionId);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .getContributionDetails(contributionId);
       print(response);
       Navigator.pop(context);
       Navigator.pop(context); // pop bottom sheet
       final result = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => CreateContribution(isEditMode: true, contributionDetails: response),
+        builder: (context) =>
+            CreateContribution(isEditMode: true, contributionDetails: response),
       ));
 
       print(result);
@@ -138,7 +142,9 @@ class _ListContributionsState extends State<ListContributions> {
   @override
   void initState() {
     super.initState();
-    _groupCurrency = Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCurrency;
+    _groupCurrency = Provider.of<Groups>(context, listen: false)
+        .getCurrentGroup()
+        .groupCurrency;
   }
 
   @override
@@ -163,7 +169,8 @@ class _ListContributionsState extends State<ListContributions> {
         ),
         backgroundColor: primaryColor,
         onPressed: () async {
-          final result = Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
+          final result =
+              Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
             builder: (_) => CreateContribution(),
           ));
 
@@ -181,6 +188,9 @@ class _ListContributionsState extends State<ListContributions> {
       body: Builder(
         builder: (BuildContext context) {
           return RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
             key: _refreshIndicatorKey,
             onRefresh: () => _fetchContributions(_scaffoldKey.currentContext),
             child: Container(
@@ -189,95 +199,107 @@ class _ListContributionsState extends State<ListContributions> {
                 decoration: primaryGradient(context),
                 child: Consumer<Groups>(builder: (context, groupData, child) {
                   return groupData.contributions.length > 0
-                          ? ListView.separated(
-                              padding: EdgeInsets.only(bottom: 50.0),
-                              itemCount: groupData.contributions.length,
-                              itemBuilder: (context, index) {
-                                Contribution contribution = groupData.contributions[index];
-                                return ListTile(
-                                  contentPadding: EdgeInsets.all(12.0),
-                                  dense: true,
-                                  title: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: <Widget>[
-                                      Expanded(
-                                        flex: 3,
-                                        child: Row(
-                                          mainAxisSize: MainAxisSize.min,
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.label,
-                                              color: Colors.blueGrey,
-                                            ),
-                                            SizedBox(width: 10.0),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: <Widget>[
-                                                  customTitleWithWrap(
-                                                    text: '${contribution.name}',
-                                                    textAlign: TextAlign.start,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontSize: 16.0,
-                                                    color: Theme.of(context).textSelectionHandleColor,
-                                                  ),
-                                                  richTextWithWrap(
-                                                    title: 'Contribution Type: ',
-                                                    message: contribution.type,
-                                                    color: Theme.of(context).textSelectionHandleColor,
-                                                    fontSize: 12.0,
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                  richTextWithWrap(
-                                                    title: 'Frequency: ',
-                                                    message: contribution.frequency,
-                                                    color: Theme.of(context).textSelectionHandleColor,
-                                                    fontSize: 12.0,
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                  customTitle(
-                                                    text:
-                                                        '$_groupCurrency ${currencyFormat.format(double.tryParse(contribution.amount) ?? 0)}',
-                                                    color: Theme.of(context).textSelectionHandleColor,
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 12.0,
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                ],
+                      ? ListView.separated(
+                          padding: EdgeInsets.only(bottom: 50.0),
+                          itemCount: groupData.contributions.length,
+                          itemBuilder: (context, index) {
+                            Contribution contribution =
+                                groupData.contributions[index];
+                            return ListTile(
+                              contentPadding: EdgeInsets.all(12.0),
+                              dense: true,
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Expanded(
+                                    flex: 3,
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.label,
+                                          color: Colors.blueGrey,
+                                        ),
+                                        SizedBox(width: 10.0),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              customTitleWithWrap(
+                                                text: '${contribution.name}',
+                                                textAlign: TextAlign.start,
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 16.0,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
                                               ),
-                                            ),
-                                          ],
+                                              richTextWithWrap(
+                                                title: 'Contribution Type: ',
+                                                message: contribution.type,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              richTextWithWrap(
+                                                title: 'Frequency: ',
+                                                message: contribution.frequency,
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              customTitle(
+                                                text:
+                                                    '$_groupCurrency ${currencyFormat.format(double.tryParse(contribution.amount) ?? 0)}',
+                                                color: Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 12.0,
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      SizedBox(
-                                        height: 40,
-                                        width: 40,
-                                        child: circleIconButton(
-                                          icon: Icons.edit,
-                                          backgroundColor: primaryColor.withOpacity(.3),
-                                          color: primaryColor,
-                                          iconSize: 16.0,
-                                          padding: 0.0,
-                                          onPressed: () => _showActions(_scaffoldKey.currentContext, contribution),
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                );
-                              },
-                              separatorBuilder: (context, index) {
-                                return Divider(
-                                  color: Theme.of(context).dividerColor,
-                                  height: 6.0,
-                                );
-                              },
-                            )
-                          : betterEmptyList(message: "Sorry, you have not added any contributions")
-                      ;
+                                  SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: circleIconButton(
+                                      icon: Icons.edit,
+                                      backgroundColor:
+                                          primaryColor.withOpacity(.3),
+                                      color: primaryColor,
+                                      iconSize: 16.0,
+                                      padding: 0.0,
+                                      onPressed: () => _showActions(
+                                          _scaffoldKey.currentContext,
+                                          contribution),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          separatorBuilder: (context, index) {
+                            return Divider(
+                              color: Theme.of(context).dividerColor,
+                              height: 6.0,
+                            );
+                          },
+                        )
+                      : betterEmptyList(
+                          message:
+                              "Sorry, you have not added any contributions");
                 })),
           );
         },

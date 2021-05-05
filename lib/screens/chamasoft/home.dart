@@ -11,6 +11,7 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -222,6 +223,48 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     }
   }
 
+  LineChartData eWalletTrend() {
+    return LineChartData(
+      gridData: FlGridData(show: false),
+      titlesData: FlTitlesData(show: false),
+      borderData: FlBorderData(show: false),
+      minX: 0,
+      maxX: 11,
+      minY: 0,
+      maxY: 6,
+      lineBarsData: [
+        LineChartBarData(
+          spots: [
+            FlSpot(0, 5),
+            FlSpot(1, 2),
+            FlSpot(2, 6),
+            FlSpot(3, 3),
+            FlSpot(4, 4),
+            FlSpot(5, 2),
+            FlSpot(6, 4),
+            FlSpot(7, 1),
+            FlSpot(8, 3),
+          ],
+          isCurved: false,
+          colors: [primaryColor],
+          barWidth: 1,
+          isStrokeCapRound: false,
+          dotData: FlDotData(show: false),
+          belowBarData: BarAreaData(
+            show: true,
+            colors: [
+              primaryColor.withOpacity(0.07),
+              primaryColor.withOpacity(0.0),
+            ],
+            gradientColorStops: [0.5, 1.0],
+            gradientFrom: const Offset(0, 0),
+            gradientTo: const Offset(0, 1),
+          ),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
@@ -234,6 +277,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return WillPopScope(
         onWillPop: _onWillPop,
         child: RefreshIndicator(
+          backgroundColor: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Colors.white,
           onRefresh: () => _getMemberDashboardData(true),
           child: SafeArea(
               child: SingleChildScrollView(
@@ -420,6 +466,166 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             Padding(
                               padding: EdgeInsets.fromLTRB(
                                 20.0,
+                                20.0,
+                                16.0,
+                                0.0,
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Text(
+                                    "E-Wallet",
+                                    style: TextStyle(
+                                      color: Colors.blueGrey[400],
+                                      fontFamily: 'SegoeUI',
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                16.0,
+                                16.0,
+                                16.0,
+                                0.0,
+                              ),
+                              child: Container(
+                                padding: EdgeInsets.all(16.0),
+                                decoration: cardDecoration(
+                                  gradient: plainCardGradient(context),
+                                  context: context,
+                                ),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              "Available",
+                                              style: TextStyle(
+                                                color: Colors.blueGrey[300],
+                                                fontFamily: 'SegoeUI',
+                                                fontSize: 16.0,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  "KES",
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey[400],
+                                                    fontFamily: 'SegoeUI',
+                                                    fontSize: 32.0,
+                                                    fontWeight: FontWeight.w300,
+                                                  ),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                                SizedBox(width: 6.0),
+                                                Text(
+                                                  "12,390",
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey[400],
+                                                    fontFamily: 'SegoeUI',
+                                                    fontSize: 32.0,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 12.0),
+                                            SizedBox(
+                                              height: 32.0,
+                                              child: LineChart(
+                                                eWalletTrend(),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              "Deposits",
+                                              style: TextStyle(
+                                                color: Colors.blueGrey[400],
+                                                fontFamily: 'SegoeUI',
+                                                fontSize: 12.0,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.arrow_drop_down_sharp,
+                                                  color: Colors.red,
+                                                ),
+                                                Text(
+                                                  "0.92%",
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey[400],
+                                                    fontFamily: 'SegoeUI',
+                                                    fontSize: 12.0,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ],
+                                            ),
+                                            SizedBox(height: 12.0),
+                                            Text(
+                                              "Withdrawals",
+                                              style: TextStyle(
+                                                color: Colors.blueGrey[400],
+                                                fontFamily: 'SegoeUI',
+                                                fontSize: 12.0,
+                                                fontWeight: FontWeight.w300,
+                                              ),
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                  Icons.arrow_drop_up_sharp,
+                                                  color: Colors.green,
+                                                ),
+                                                Text(
+                                                  "1.2%",
+                                                  style: TextStyle(
+                                                    color: Colors.blueGrey[400],
+                                                    fontFamily: 'SegoeUI',
+                                                    fontSize: 12.0,
+                                                    fontWeight: FontWeight.w600,
+                                                  ),
+                                                  textAlign: TextAlign.start,
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                20.0,
                                 10.0,
                                 16.0,
                                 0.0,
@@ -438,11 +644,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                     ),
                                   ),
                                   IconButton(
-                                      icon: Icon(
-                                        Feather.more_horizontal,
-                                        color: Colors.blueGrey,
-                                      ),
-                                      onPressed: () {})
+                                    icon: Icon(
+                                      Feather.more_horizontal,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    onPressed: () {},
+                                  ),
                                 ],
                               ),
                             ),

@@ -71,7 +71,8 @@ class _LoanSummaryState extends State<LoanSummary> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
@@ -103,6 +104,9 @@ class _LoanSummaryState extends State<LoanSummary> {
         body: Builder(
           builder: (BuildContext context) {
             return RefreshIndicator(
+                backgroundColor: (themeChangeProvider.darkTheme)
+                    ? Colors.blueGrey[800]
+                    : Colors.white,
                 onRefresh: () => _fetchData(),
                 child: Container(
                     decoration: primaryGradient(context),
@@ -125,7 +129,8 @@ class _LoanSummaryState extends State<LoanSummary> {
                                       repay: () {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                            builder: (BuildContext context) => RepayLoan(
+                                            builder: (BuildContext context) =>
+                                                RepayLoan(
                                               loan: loan,
                                             ),
                                           ),
@@ -134,7 +139,8 @@ class _LoanSummaryState extends State<LoanSummary> {
                                       statement: () {
                                         Navigator.of(context).push(
                                           MaterialPageRoute(
-                                            builder: (BuildContext context) => LoanStatement(
+                                            builder: (BuildContext context) =>
+                                                LoanStatement(
                                               loan: loan,
                                             ),
                                           ),
@@ -158,22 +164,27 @@ class _LoanSummaryState extends State<LoanSummary> {
 }
 
 class ActiveLoanCard extends StatelessWidget {
-  const ActiveLoanCard({Key key, @required this.loan, this.repay, this.statement}) : super(key: key);
+  const ActiveLoanCard(
+      {Key key, @required this.loan, this.repay, this.statement})
+      : super(key: key);
 
   final ActiveLoan loan;
   final Function repay, statement;
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
         elevation: 0.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         borderOnForeground: false,
         child: Container(
-            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+            decoration: cardDecoration(
+                gradient: plainCardGradient(context), context: context),
             child: Column(
               children: <Widget>[
                 Container(
@@ -214,11 +225,13 @@ class ActiveLoanCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle2(
                                 text: "Disbursed On",
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: loan.disbursementDate,
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
                         ),
@@ -253,13 +266,21 @@ class ActiveLoanCard extends StatelessWidget {
                       child: Container(
                           decoration: BoxDecoration(
                               border: Border(
-                                  top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
-                                  right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
+                                  top: BorderSide(
+                                      color:
+                                          Theme.of(context).bottomAppBarColor,
+                                      width: 1.0),
+                                  right: BorderSide(
+                                      color:
+                                          Theme.of(context).bottomAppBarColor,
+                                      width: 0.5))),
                           child: plainButton(
                               text: "REPAY NOW",
                               size: 16.0,
                               spacing: 2.0,
-                              color: Theme.of(context).primaryColor.withOpacity(0.5),
+                              color: Theme.of(context)
+                                  .primaryColor
+                                  .withOpacity(0.5),
                               // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
                               action: null) //loan.status == 2 ? null : repay),
                           ),
@@ -269,10 +290,18 @@ class ActiveLoanCard extends StatelessWidget {
                       child: Container(
                         decoration: BoxDecoration(
                             border: Border(
-                                top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
-                                left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
+                                top: BorderSide(
+                                    color: Theme.of(context).bottomAppBarColor,
+                                    width: 1.0),
+                                left: BorderSide(
+                                    color: Theme.of(context).bottomAppBarColor,
+                                    width: 0.5))),
                         child: plainButton(
-                            text: "STATEMENT", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: statement),
+                            text: "STATEMENT",
+                            size: 16.0,
+                            spacing: 2.0,
+                            color: Colors.blueGrey,
+                            action: statement),
                       ),
                     ),
                   ],
@@ -290,9 +319,15 @@ class ActiveLoanCard extends StatelessWidget {
           textColor: Colors.lightBlueAccent,
           backgroundColor: Colors.lightBlueAccent.withOpacity(.2));
     } else if (loan.status == 3) {
-      return statusChip(text: "LOAN DEFAULTED", textColor: Colors.red, backgroundColor: Colors.red.withOpacity(.2));
+      return statusChip(
+          text: "LOAN DEFAULTED",
+          textColor: Colors.red,
+          backgroundColor: Colors.red.withOpacity(.2));
     } else {
-      return statusChip(text: "ONGOING", textColor: Colors.blueGrey, backgroundColor: Colors.blueGrey.withOpacity(.2));
+      return statusChip(
+          text: "ONGOING",
+          textColor: Colors.blueGrey,
+          backgroundColor: Colors.blueGrey.withOpacity(.2));
     }
   }
 }

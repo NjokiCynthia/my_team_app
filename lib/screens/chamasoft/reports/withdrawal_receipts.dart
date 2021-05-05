@@ -45,8 +45,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
   Future<void> _getWithdrawals(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false)
-          .fetchWithdrawals(_sortOption, _filterList, _memberList, _withdrawals.length);
+      await Provider.of<Groups>(context, listen: false).fetchWithdrawals(
+          _sortOption, _filterList, _memberList, _withdrawals.length);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -66,7 +66,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
     _withdrawals = Provider.of<Groups>(context, listen: false).getWithdrawals;
     _getWithdrawals(context).then((_) {
       if (context != null) {
-        _withdrawals = Provider.of<Groups>(context, listen: false).getWithdrawals;
+        _withdrawals =
+            Provider.of<Groups>(context, listen: false).getWithdrawals;
         setState(() {
           if (_withdrawals.length < 20) {
             _hasMoreData = false;
@@ -82,7 +83,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   }
 
   void showFilterOptions() async {
-    List<dynamic> filters = await Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+    List<dynamic> filters = await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (BuildContext context) {
       return FilterContainer(
         filterType: 2,
         currentFilters: _filterList,
@@ -99,7 +101,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
@@ -124,7 +127,9 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 
   void showSortBottomSheet() {
     showModalBottomSheet(
-        isScrollControlled: true, context: context, builder: (_) => SortContainer(_sortOption, applySort));
+        isScrollControlled: true,
+        context: context,
+        builder: (_) => SortContainer(_sortOption, applySort));
   }
 
   @override
@@ -139,6 +144,9 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
             onRefresh: () => _fetchData(),
             child: Container(
                 decoration: primaryGradient(context),
@@ -158,18 +166,31 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                     border: Border(
-                                        right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5),
-                                        bottom: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0))),
+                                        right: BorderSide(
+                                            color: Theme.of(context)
+                                                .bottomAppBarColor,
+                                            width: 0.5),
+                                        bottom: BorderSide(
+                                            color: Theme.of(context)
+                                                .bottomAppBarColor,
+                                            width: 1.0))),
                                 child: Material(
                                   color: Theme.of(context).backgroundColor,
                                   child: InkWell(
                                     onTap: () => showSortBottomSheet(),
-                                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                                    splashColor:
+                                        Colors.blueGrey.withOpacity(0.2),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        Icon(LineAwesomeIcons.sort, color: Theme.of(context).textSelectionHandleColor),
-                                        subtitle1(text: "Sort", color: Theme.of(context).textSelectionHandleColor)
+                                        Icon(LineAwesomeIcons.sort,
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor),
+                                        subtitle1(
+                                            text: "Sort",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor)
                                       ],
                                     ),
                                   ),
@@ -182,19 +203,31 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                                 height: 40,
                                 decoration: BoxDecoration(
                                     border: Border(
-                                        left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5),
-                                        bottom: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0))),
+                                        left: BorderSide(
+                                            color: Theme.of(context)
+                                                .bottomAppBarColor,
+                                            width: 0.5),
+                                        bottom: BorderSide(
+                                            color: Theme.of(context)
+                                                .bottomAppBarColor,
+                                            width: 1.0))),
                                 child: Material(
                                   color: Theme.of(context).backgroundColor,
                                   child: InkWell(
-                                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                                    splashColor:
+                                        Colors.blueGrey.withOpacity(0.2),
                                     onTap: () => showFilterOptions(),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Icon(LineAwesomeIcons.filter,
-                                            color: Theme.of(context).textSelectionHandleColor),
-                                        subtitle1(text: "Filter", color: Theme.of(context).textSelectionHandleColor)
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor),
+                                        subtitle1(
+                                            text: "Filter",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor)
                                       ],
                                     ),
                                   ),
@@ -212,7 +245,10 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
                       child: _withdrawals.length > 0
                           ? NotificationListener<ScrollNotification>(
                               onNotification: (ScrollNotification scrollInfo) {
-                                if (!_isLoading && scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent && _hasMoreData) {
+                                if (!_isLoading &&
+                                    scrollInfo.metrics.pixels ==
+                                        scrollInfo.metrics.maxScrollExtent &&
+                                    _hasMoreData) {
                                   //TODO check if has more data before fetching again
                                   _fetchData();
                                 }
@@ -240,22 +276,27 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
 }
 
 class WithdrawalCard extends StatelessWidget {
-  const WithdrawalCard({Key key, @required this.withdrawal, this.details, this.voidItem}) : super(key: key);
+  const WithdrawalCard(
+      {Key key, @required this.withdrawal, this.details, this.voidItem})
+      : super(key: key);
 
   final Withdrawal withdrawal;
   final Function details, voidItem;
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: Card(
         elevation: 0.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
         borderOnForeground: false,
         child: Container(
-            decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+            decoration: cardDecoration(
+                gradient: plainCardGradient(context), context: context),
             child: Column(
               children: <Widget>[
                 Container(
@@ -320,11 +361,13 @@ class WithdrawalCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle2(
                                 text: "Recipient",
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: withdrawal.recipient,
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
                         ),
@@ -333,11 +376,13 @@ class WithdrawalCard extends StatelessWidget {
                           children: <Widget>[
                             subtitle2(
                                 text: "Withdrawal Date",
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.end),
                             subtitle1(
                                 text: withdrawal.withdrawalDate,
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.end)
                           ],
                         ),

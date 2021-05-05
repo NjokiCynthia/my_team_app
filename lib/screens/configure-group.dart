@@ -214,6 +214,11 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                   child:
                                                       CircularProgressIndicator())
                                               : RefreshIndicator(
+                                                  backgroundColor:
+                                                      (themeChangeProvider
+                                                              .darkTheme)
+                                                          ? Colors.blueGrey[800]
+                                                          : Colors.white,
                                                   key:
                                                       _memberRefreshIndicatorKey,
                                                   onRefresh: () =>
@@ -283,6 +288,11 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                 child:
                                                     CircularProgressIndicator())
                                             : RefreshIndicator(
+                                                backgroundColor:
+                                                    (themeChangeProvider
+                                                            .darkTheme)
+                                                        ? Colors.blueGrey[800]
+                                                        : Colors.white,
                                                 key:
                                                     _accountRefreshIndicatorKey,
                                                 onRefresh: () =>
@@ -340,6 +350,11 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                                                   child:
                                                       CircularProgressIndicator())
                                               : RefreshIndicator(
+                                                  backgroundColor:
+                                                      (themeChangeProvider
+                                                              .darkTheme)
+                                                          ? Colors.blueGrey[800]
+                                                          : Colors.white,
                                                   key:
                                                       _contributionRefreshIndicatorKey,
                                                   onRefresh: () =>

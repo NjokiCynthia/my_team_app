@@ -41,7 +41,8 @@ class _AccountBalancesState extends State<AccountBalances> {
       _isLoading = true;
     });
 
-    _accountBalanceModel = Provider.of<Groups>(context, listen: false).accountBalances;
+    _accountBalanceModel =
+        Provider.of<Groups>(context, listen: false).accountBalances;
 
     if (_accountBalanceModel != null) {
       _totalBalance = _accountBalanceModel.totalBalance;
@@ -49,7 +50,8 @@ class _AccountBalancesState extends State<AccountBalances> {
     }
 
     _getAccountBalances(context).then((_) {
-      _accountBalanceModel = Provider.of<Groups>(context, listen: false).accountBalances;
+      _accountBalanceModel =
+          Provider.of<Groups>(context, listen: false).accountBalances;
       setState(() {
         _isLoading = false;
         if (_accountBalanceModel != null) {
@@ -65,10 +67,14 @@ class _AccountBalancesState extends State<AccountBalances> {
 
   Future<void> _getAccountBalances(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchReportAccountBalances();
+      await Provider.of<Groups>(context, listen: false)
+          .fetchReportAccountBalances();
     } on CustomException catch (error) {
-      StatusHandler()
-          .handleStatus(context: context, error: error, callback: () {}, scaffoldState: _scaffoldKey.currentState);
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {},
+          scaffoldState: _scaffoldKey.currentState);
     } finally {
       _isLoading = false;
     }
@@ -83,7 +89,8 @@ class _AccountBalancesState extends State<AccountBalances> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
@@ -96,7 +103,8 @@ class _AccountBalancesState extends State<AccountBalances> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
@@ -108,12 +116,17 @@ class _AccountBalancesState extends State<AccountBalances> {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
+          backgroundColor: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Colors.white,
           onRefresh: () => _fetchData(),
           child: Column(
             children: <Widget>[
               Container(
                 padding: EdgeInsets.all(20.0),
-                color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                color: (themeChangeProvider.darkTheme)
+                    ? Colors.blueGrey[800]
+                    : Color(0xffededfe),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,7 +145,8 @@ class _AccountBalancesState extends State<AccountBalances> {
                             children: <Widget>[
                               subtitle2(
                                   text: "Account balances",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
                           ),
@@ -140,7 +154,8 @@ class _AccountBalancesState extends State<AccountBalances> {
                       ),
                     ),
                     heading2(
-                        text: "${groupObject.groupCurrency} " + currencyFormat.format(_totalBalance),
+                        text: "${groupObject.groupCurrency} " +
+                            currencyFormat.format(_totalBalance),
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.start)
                   ],
@@ -149,8 +164,8 @@ class _AccountBalancesState extends State<AccountBalances> {
               _isLoading
                   ? showLinearProgressIndicator()
                   : SizedBox(
-                height: 0.0,
-              ),
+                      height: 0.0,
+                    ),
               Expanded(
                 child: _accountBalances.length > 0
                     ? ListView.builder(

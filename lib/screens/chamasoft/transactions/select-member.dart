@@ -45,7 +45,8 @@ class SelectMemberState extends State<SelectMember> {
     super.dispose();
   }
 
-  Future<void> _getGroupMembers(BuildContext context, [bool fullRefresh = false]) async {
+  Future<void> _getGroupMembers(BuildContext context,
+      [bool fullRefresh = false]) async {
     try {
       List<Member> members;
       if (fullRefresh) {
@@ -60,8 +61,11 @@ class SelectMemberState extends State<SelectMember> {
       }
       List<MembersFilterEntry> emptyMemberOptions = [];
       members
-          .map((member) => emptyMemberOptions.add(
-              MembersFilterEntry(memberId: member.id, name: member.name, phoneNumber: member.identity, amount: 0.0)))
+          .map((member) => emptyMemberOptions.add(MembersFilterEntry(
+              memberId: member.id,
+              name: member.name,
+              phoneNumber: member.identity,
+              amount: 0.0)))
           .toList();
       setState(() {
         _membersList = emptyMemberOptions;
@@ -139,21 +143,31 @@ class SelectMemberState extends State<SelectMember> {
                       )
                     : FutureBuilder(
                         future: _future,
-                        builder: (ctx, snapshot) => snapshot.connectionState == ConnectionState.waiting
+                        builder: (ctx, snapshot) => snapshot.connectionState ==
+                                ConnectionState.waiting
                             ? Center(child: CircularProgressIndicator())
                             : RefreshIndicator(
-                                onRefresh: () => _getGroupMembers(context, true),
+                                backgroundColor: (themeChangeProvider.darkTheme)
+                                    ? Colors.blueGrey[800]
+                                    : Colors.white,
+                                onRefresh: () =>
+                                    _getGroupMembers(context, true),
                                 child: Consumer<Groups>(
                                   child: Center(
                                     child: Text("Groups"),
                                   ),
-                                  builder: (ctx, groups, ch) => ListView.builder(
+                                  builder: (ctx, groups, ch) =>
+                                      ListView.builder(
                                     itemCount: _membersList.length,
-                                    itemBuilder: (BuildContext context, int index) {
-                                      MembersFilterEntry entry = _membersList[index];
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      MembersFilterEntry entry =
+                                          _membersList[index];
                                       bool isSelected = false;
-                                      for (var selected in selectedMembersList) {
-                                        if (selected.memberId == entry.memberId) {
+                                      for (var selected
+                                          in selectedMembersList) {
+                                        if (selected.memberId ==
+                                            entry.memberId) {
                                           isSelected = true;
                                           break;
                                         }
@@ -161,16 +175,21 @@ class SelectMemberState extends State<SelectMember> {
                                       return filter == null || filter == ""
                                           ? Card(
                                               child: CheckboxListTile(
-                                                secondary: const Icon(Icons.person),
+                                                secondary:
+                                                    const Icon(Icons.person),
                                                 value: isSelected,
                                                 onChanged: (value) {
                                                   setState(() {
                                                     if (value) {
-                                                      selectedMembersList.add(entry);
+                                                      selectedMembersList
+                                                          .add(entry);
                                                     } else {
-                                                      for (var selected in selectedMembersList) {
-                                                        if (selected.memberId == entry.memberId) {
-                                                          selectedMembersList.remove(selected);
+                                                      for (var selected
+                                                          in selectedMembersList) {
+                                                        if (selected.memberId ==
+                                                            entry.memberId) {
+                                                          selectedMembersList
+                                                              .remove(selected);
                                                           break;
                                                         }
                                                       }
@@ -180,26 +199,41 @@ class SelectMemberState extends State<SelectMember> {
                                                 title: customTitle(
                                                     text: entry.name,
                                                     textAlign: TextAlign.start,
-                                                    color: Theme.of(context).textSelectionHandleColor),
+                                                    color: Theme.of(context)
+                                                        .textSelectionHandleColor),
                                                 subtitle: subtitle2(
                                                     text: entry.phoneNumber,
                                                     textAlign: TextAlign.start,
-                                                    color: Theme.of(context).textSelectionHandleColor),
+                                                    color: Theme.of(context)
+                                                        .textSelectionHandleColor),
                                               ),
                                             )
-                                          : _membersList[index].name.toLowerCase().contains(filter.toLowerCase())
+                                          : _membersList[index]
+                                                  .name
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      filter.toLowerCase())
                                               ? Card(
                                                   child: CheckboxListTile(
-                                                    secondary: const Icon(Icons.person),
+                                                    secondary: const Icon(
+                                                        Icons.person),
                                                     value: isSelected,
                                                     onChanged: (value) {
                                                       setState(() {
                                                         if (value) {
-                                                          selectedMembersList.add(_membersList[index]);
+                                                          selectedMembersList
+                                                              .add(_membersList[
+                                                                  index]);
                                                         } else {
-                                                          for (var selected in selectedMembersList) {
-                                                            if (selected.memberId == entry.memberId) {
-                                                              selectedMembersList.remove(selected);
+                                                          for (var selected
+                                                              in selectedMembersList) {
+                                                            if (selected
+                                                                    .memberId ==
+                                                                entry
+                                                                    .memberId) {
+                                                              selectedMembersList
+                                                                  .remove(
+                                                                      selected);
                                                               break;
                                                             }
                                                           }
@@ -208,13 +242,20 @@ class SelectMemberState extends State<SelectMember> {
                                                     },
                                                     title: customTitle(
                                                         text: entry.name,
-                                                        fontWeight: FontWeight.w800,
-                                                        textAlign: TextAlign.start,
-                                                        color: Theme.of(context).textSelectionHandleColor),
+                                                        fontWeight:
+                                                            FontWeight.w800,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        color: Theme.of(context)
+                                                            .textSelectionHandleColor),
                                                     subtitle: subtitle1(
-                                                        text: _membersList[index].phoneNumber,
-                                                        textAlign: TextAlign.start,
-                                                        color: Theme.of(context).textSelectionHandleColor),
+                                                        text:
+                                                            _membersList[index]
+                                                                .phoneNumber,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        color: Theme.of(context)
+                                                            .textSelectionHandleColor),
                                                   ),
                                                 )
                                               : new Container();

@@ -47,7 +47,8 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
       _isLoading = true;
     });
 
-    _expenseSummaryList = Provider.of<Groups>(context, listen: false).expenseSummaryList;
+    _expenseSummaryList =
+        Provider.of<Groups>(context, listen: false).expenseSummaryList;
 
     if (_expenseSummaryList != null) {
       _expenseRows = _expenseSummaryList.expenseSummary;
@@ -55,7 +56,8 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
     }
 
     _getExpenseSummary(context).then((_) {
-      _expenseSummaryList = Provider.of<Groups>(context, listen: false).expenseSummaryList;
+      _expenseSummaryList =
+          Provider.of<Groups>(context, listen: false).expenseSummaryList;
       setState(() {
         _isLoading = false;
         if (_expenseSummaryList != null) {
@@ -87,7 +89,8 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
@@ -100,7 +103,8 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
@@ -111,6 +115,9 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
             onRefresh: () => _fetchData(),
             child: Container(
               width: double.infinity,
@@ -120,7 +127,9 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                   Container(
                     padding: EdgeInsets.all(16.0),
                     width: double.infinity,
-                    color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                    color: (themeChangeProvider.darkTheme)
+                        ? Colors.blueGrey[800]
+                        : Color(0xffededfe),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -137,11 +146,15 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                 children: <Widget>[
                                   heading2(
                                     text: "Total Expenses",
-                                    color: Theme.of(context).textSelectionHandleColor,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
                                   ),
                                   subtitle2(
-                                    text: _expenseRows.length == 1 ? "1 Expense" : "${_expenseRows.length} Expenses",
-                                    color: Theme.of(context).textSelectionHandleColor,
+                                    text: _expenseRows.length == 1
+                                        ? "1 Expense"
+                                        : "${_expenseRows.length} Expenses",
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
                                 ],
@@ -153,11 +166,13 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                   text: "${groupObject.groupCurrency} ",
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                 ),
                                 heading2(
                                   text: currencyFormat.format(_totalExpenses),
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),
                               ],
@@ -181,7 +196,10 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                               Expanded(
                                 child: Container(),
                               ),
-                              subtitle1(text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.end),
+                              subtitle1(
+                                  text: "Paid",
+                                  color: Theme.of(context).primaryColor,
+                                  textAlign: TextAlign.end),
                             ],
                           ),
                         )

@@ -47,7 +47,8 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
       _isLoading = true;
     });
 
-    _loansSummary = Provider.of<Groups>(context, listen: false).getLoansSummaryList;
+    _loansSummary =
+        Provider.of<Groups>(context, listen: false).getLoansSummaryList;
 
     if (_loansSummary != null) {
       _loanSummaryRows = _loansSummary.summaryList;
@@ -58,7 +59,8 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
     }
 
     _getLoanSummary(context).then((_) {
-      _loansSummary = Provider.of<Groups>(context, listen: false).getLoansSummaryList;
+      _loansSummary =
+          Provider.of<Groups>(context, listen: false).getLoansSummaryList;
       setState(() {
         _isLoading = false;
         if (_loansSummary != null) {
@@ -98,7 +100,8 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
@@ -111,7 +114,8 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     String appbarTitle = "Group Loans Summary";
     return Scaffold(
         key: _scaffoldKey,
@@ -124,13 +128,18 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
             onRefresh: () => _fetchData(),
             child: Column(
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.all(16.0),
                   width: double.infinity,
-                  color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                  color: (themeChangeProvider.darkTheme)
+                      ? Colors.blueGrey[800]
+                      : Color(0xffededfe),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +153,8 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                             flex: 1,
                             child: heading2(
                                 text: "Total Loaned Out",
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
                           ),
                           Row(
@@ -153,11 +163,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                 text: "${groupObject.groupCurrency} ",
                                 fontWeight: FontWeight.w400,
                                 fontSize: 18.0,
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                               ),
                               heading2(
                                 text: currencyFormat.format(_totalLoanedOut),
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.end,
                               ),
                             ],
@@ -173,100 +185,127 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                           children: <Widget>[
                             Expanded(
                               flex: 1,
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    subtitle2(
-                                        text: "Payable: ${groupObject.groupCurrency} ",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        textAlign: TextAlign.start),
-                                    customTitle(
-                                        text: currencyFormat.format(_payable),
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontSize: 12,
-                                        textAlign: TextAlign.start),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    subtitle2(
-                                        text: "Paid: ${groupObject.groupCurrency} ",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        textAlign: TextAlign.start),
-                                    customTitle(
-                                        text: currencyFormat.format(_paid),
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontSize: 12,
-                                        textAlign: TextAlign.start),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    subtitle2(
-                                        text: "Balance: ${groupObject.groupCurrency} ",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        textAlign: TextAlign.start),
-                                    customTitle(
-                                        text: currencyFormat.format(_balance),
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontSize: 12,
-                                        textAlign: TextAlign.start),
-                                  ],
-                                ),
-                              ]),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        subtitle2(
+                                            text:
+                                                "Payable: ${groupObject.groupCurrency} ",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        customTitle(
+                                            text:
+                                                currencyFormat.format(_payable),
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start),
+                                      ],
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        subtitle2(
+                                            text:
+                                                "Paid: ${groupObject.groupCurrency} ",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        customTitle(
+                                            text: currencyFormat.format(_paid),
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start),
+                                      ],
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        subtitle2(
+                                            text:
+                                                "Balance: ${groupObject.groupCurrency} ",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        customTitle(
+                                            text:
+                                                currencyFormat.format(_balance),
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start),
+                                      ],
+                                    ),
+                                  ]),
                             ),
                             Expanded(
                               flex: 1,
-                              child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: <Widget>[
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.end,
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: <Widget>[
-                                    subtitle2(
-                                        text: "Active Loans: ",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        textAlign: TextAlign.start),
-                                    customTitle(
-                                        text: "-",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontSize: 12,
-                                        textAlign: TextAlign.start),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    subtitle2(
-                                        text: "Fully Paid: ",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        textAlign: TextAlign.start),
-                                    customTitle(
-                                        text: "-",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontSize: 12,
-                                        textAlign: TextAlign.start),
-                                  ],
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: <Widget>[
-                                    subtitle2(
-                                        text: "Bad Loans: ",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        textAlign: TextAlign.start),
-                                    customTitle(
-                                        text: "-",
-                                        color: Theme.of(context).textSelectionHandleColor,
-                                        fontSize: 12,
-                                        textAlign: TextAlign.start),
-                                  ],
-                                ),
-                              ]),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        subtitle2(
+                                            text: "Active Loans: ",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        customTitle(
+                                            text: "-",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start),
+                                      ],
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        subtitle2(
+                                            text: "Fully Paid: ",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        customTitle(
+                                            text: "-",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start),
+                                      ],
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        subtitle2(
+                                            text: "Bad Loans: ",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        customTitle(
+                                            text: "-",
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start),
+                                      ],
+                                    ),
+                                  ]),
                             ),
                           ]),
                     ],
@@ -290,17 +329,23 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                             Expanded(
                               flex: 2,
                               child: subtitle1(
-                                  text: "Due", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                  text: "Due",
+                                  color: Theme.of(context).primaryColor,
+                                  textAlign: TextAlign.center),
                             ),
                             Expanded(
                               flex: 2,
                               child: subtitle1(
-                                  text: "Paid", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                  text: "Paid",
+                                  color: Theme.of(context).primaryColor,
+                                  textAlign: TextAlign.center),
                             ),
                             Expanded(
                               flex: 2,
                               child: subtitle1(
-                                  text: "Balance", color: Theme.of(context).primaryColor, textAlign: TextAlign.center),
+                                  text: "Balance",
+                                  color: Theme.of(context).primaryColor,
+                                  textAlign: TextAlign.center),
                             ),
                           ],
                         ),

@@ -50,9 +50,11 @@ class _ContributionStatementState extends State<ContributionStatement> {
     });
 
     if (widget.statementFlag == FINE_STATEMENT) {
-      _contributionStatementModel = Provider.of<Groups>(context, listen: false).getFineStatements;
+      _contributionStatementModel =
+          Provider.of<Groups>(context, listen: false).getFineStatements;
     } else
-      _contributionStatementModel = Provider.of<Groups>(context, listen: false).getContributionStatements;
+      _contributionStatementModel =
+          Provider.of<Groups>(context, listen: false).getContributionStatements;
 
     if (_contributionStatementModel != null) {
       _statements = _contributionStatementModel.statements;
@@ -66,9 +68,12 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
     _getContributionStatement(context).then((_) {
       if (widget.statementFlag == FINE_STATEMENT) {
-        _contributionStatementModel = Provider.of<Groups>(context, listen: false).getFineStatements;
+        _contributionStatementModel =
+            Provider.of<Groups>(context, listen: false).getFineStatements;
       } else
-        _contributionStatementModel = Provider.of<Groups>(context, listen: false).getContributionStatements;
+        _contributionStatementModel =
+            Provider.of<Groups>(context, listen: false)
+                .getContributionStatements;
 
       setState(() {
         _isLoading = false;
@@ -90,16 +95,21 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
   }
 
   Future<void> _getContributionStatement(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchContributionStatement(widget.statementFlag);
+      await Provider.of<Groups>(context, listen: false)
+          .fetchContributionStatement(widget.statementFlag);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
-          context: context, error: error, callback: () => _fetchData(), scaffoldState: _scaffoldKey.currentState);
+          context: context,
+          error: error,
+          callback: () => _fetchData(),
+          scaffoldState: _scaffoldKey.currentState);
     }
   }
 
@@ -122,12 +132,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
   // ignore: unused_element
   void _showFilter(BuildContext context) {
     showModalBottomSheet(
-        context: context, builder: (_) => FilterStatements(ModalRoute.of(context).settings.arguments, _applyFilter));
+        context: context,
+        builder: (_) => FilterStatements(
+            ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     String appbarTitle = "Contribution Statement";
     String defaultTitle = "Contributions";
 
@@ -149,12 +162,17 @@ class _ContributionStatementState extends State<ContributionStatement> {
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
             onRefresh: () => _fetchData(),
             child: Column(
               children: <Widget>[
                 Container(
                   padding: EdgeInsets.all(16.0),
-                  color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                  color: (themeChangeProvider.darkTheme)
+                      ? Colors.blueGrey[800]
+                      : Color(0xffededfe),
                   child: Column(
                     children: <Widget>[
                       Row(
@@ -168,7 +186,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                               children: <Widget>[
                                 heading2(
                                     text: "Total " + defaultTitle,
-                                    color: Theme.of(context).textSelectionHandleColor,
+                                    color: Theme.of(context)
+                                        .textSelectionHandleColor,
                                     textAlign: TextAlign.start),
                                 SizedBox(
                                   height: 10,
@@ -178,11 +197,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                   children: <Widget>[
                                     subtitle2(
                                         text: "Total amount due ",
-                                        color: Theme.of(context).textSelectionHandleColor,
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
                                         textAlign: TextAlign.start),
                                     customTitle(
-                                        text: groupObject.groupCurrency + " " + currencyFormat.format(_totalDue),
-                                        color: Theme.of(context).textSelectionHandleColor,
+                                        text: groupObject.groupCurrency +
+                                            " " +
+                                            currencyFormat.format(_totalDue),
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w500,
                                         textAlign: TextAlign.start)
@@ -196,13 +219,17 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                   children: <Widget>[
                                     subtitle2(
                                         text: "Balance ",
-                                        color: Theme.of(context).textSelectionHandleColor,
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
                                         textAlign: TextAlign.start),
                                     customTitle(
-                                      text: groupObject.groupCurrency + " " + currencyFormat.format(_balance),
+                                      text: groupObject.groupCurrency +
+                                          " " +
+                                          currencyFormat.format(_balance),
                                       fontSize: 14,
                                       fontWeight: FontWeight.w500,
-                                      color: Theme.of(context).textSelectionHandleColor,
+                                      color: Theme.of(context)
+                                          .textSelectionHandleColor,
                                       textAlign: TextAlign.start,
                                     ),
                                   ],
@@ -211,7 +238,9 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             ),
                           ),
                           heading2(
-                              text: groupObject.groupCurrency + " " + currencyFormat.format(_totalContributions),
+                              text: groupObject.groupCurrency +
+                                  " " +
+                                  currencyFormat.format(_totalContributions),
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.start)
                         ],
@@ -227,14 +256,16 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             children: <Widget>[
                               subtitle2(
                                 text: "Statement as At",
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                               customTitle(
                                 text: _statementAsAt,
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
-                                color: Theme.of(context).textSelectionHandleColor,
+                                color:
+                                    Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
                             ],
@@ -245,14 +276,18 @@ class _ContributionStatementState extends State<ContributionStatement> {
                               children: <Widget>[
                                 subtitle2(
                                   text: "Statement Period",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),
                                 customTitle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
-                                  text: _statementFrom.isNotEmpty ? "$_statementFrom to $_statementTo" : "",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  text: _statementFrom.isNotEmpty
+                                      ? "$_statementFrom to $_statementTo"
+                                      : "",
+                                  color: Theme.of(context)
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),
                               ],
@@ -266,8 +301,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
                 _isLoading
                     ? showLinearProgressIndicator()
                     : SizedBox(
-                  height: 0.0,
-                ),
+                        height: 0.0,
+                      ),
                 Expanded(
                     child: _statements.length > 0
                         ? ListView.builder(
