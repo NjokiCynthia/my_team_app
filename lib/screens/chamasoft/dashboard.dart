@@ -8,6 +8,7 @@ import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
+import 'package:chamasoft/screens/chamasoft/wallet.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -233,7 +234,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 color: _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
               ),
               title: Text(
-                "Transactions",
+                "Wallet",
                 style: TextStyle(
                     color:
                         _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
@@ -288,9 +289,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           appBarElevation: (elevation) => _setElevation(elevation),
         );
       case 2:
-        return ChamasoftTransactions(
+        return Wallet(
           appBarElevation: (elevation) => _setElevation(elevation),
         );
+      // return ChamasoftTransactions(
+      //   appBarElevation: (elevation) => _setElevation(elevation),
+      // );
       case 3:
         return ChamasoftReports(
           appBarElevation: (elevation) => _setElevation(elevation),

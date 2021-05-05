@@ -463,40 +463,40 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                             ),
+                            // Padding(
+                            //   padding: EdgeInsets.fromLTRB(
+                            //     20.0,
+                            //     10.0,
+                            //     16.0,
+                            //     0.0,
+                            //   ),
+                            //   child: Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceBetween,
+                            //     children: <Widget>[
+                            //       Text(
+                            //         "E-Wallet",
+                            //         style: TextStyle(
+                            //           color: Colors.blueGrey[400],
+                            //           fontFamily: 'SegoeUI',
+                            //           fontSize: 16.0,
+                            //           fontWeight: FontWeight.w800,
+                            //         ),
+                            //       ),
+                            //       IconButton(
+                            //         icon: Icon(
+                            //           Feather.more_horizontal,
+                            //           color: Colors.blueGrey,
+                            //         ),
+                            //         onPressed: () {},
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(
+                                16.0,
                                 20.0,
-                                10.0,
-                                16.0,
-                                0.0,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    "E-Wallet",
-                                    style: TextStyle(
-                                      color: Colors.blueGrey[400],
-                                      fontFamily: 'SegoeUI',
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    icon: Icon(
-                                      Feather.more_horizontal,
-                                      color: Colors.blueGrey,
-                                    ),
-                                    onPressed: () {},
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
-                                16.0,
-                                10.0,
                                 16.0,
                                 0.0,
                               ),
@@ -518,9 +518,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Text(
-                                              "Available",
+                                              "Wallet Balance",
                                               style: TextStyle(
-                                                color: Colors.blueGrey[300],
+                                                color: Colors.blueGrey[400],
                                                 fontFamily: 'SegoeUI',
                                                 fontSize: 16.0,
                                                 fontWeight: FontWeight.w600,
