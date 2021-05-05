@@ -316,14 +316,14 @@ class _WalletState extends State<Wallet> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(
-                                    FontAwesome.arrow_up,
-                                    color: Colors.white,
-                                    size: 12.0,
-                                  ),
-                                  SizedBox(width: 10.0),
+                                  // Icon(
+                                  //   FontAwesome.arrow_up,
+                                  //   color: Colors.white,
+                                  //   size: 12.0,
+                                  // ),
+                                  // SizedBox(width: 10.0),
                                   customTitle(
-                                    text: "TOP UP",
+                                    text: "DEPOSIT",
                                     color: Colors.white,
                                     fontWeight: FontWeight.w700,
                                     fontSize: 15.0,
@@ -348,12 +348,12 @@ class _WalletState extends State<Wallet> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(
-                                    FontAwesome.arrow_down,
-                                    color: primaryColor,
-                                    size: 12.0,
-                                  ),
-                                  SizedBox(width: 10.0),
+                                  // Icon(
+                                  //   FontAwesome.arrow_down,
+                                  //   color: primaryColor,
+                                  //   size: 12.0,
+                                  // ),
+                                  // SizedBox(width: 10.0),
                                   customTitle(
                                     text: "WITHDRAW",
                                     color: primaryColor,
@@ -390,7 +390,7 @@ class _WalletState extends State<Wallet> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       Text(
-                        "Recent Transactions",
+                        "Transactions",
                         style: TextStyle(
                           color: Colors.blueGrey[400],
                           fontFamily: 'SegoeUI',
