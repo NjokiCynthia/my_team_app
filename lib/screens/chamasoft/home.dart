@@ -466,7 +466,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             Padding(
                               padding: EdgeInsets.fromLTRB(
                                 20.0,
-                                20.0,
+                                10.0,
                                 16.0,
                                 0.0,
                               ),
@@ -483,13 +483,20 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       fontWeight: FontWeight.w800,
                                     ),
                                   ),
+                                  IconButton(
+                                    icon: Icon(
+                                      Feather.more_horizontal,
+                                      color: Colors.blueGrey,
+                                    ),
+                                    onPressed: () {},
+                                  ),
                                 ],
                               ),
                             ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(
                                 16.0,
-                                16.0,
+                                10.0,
                                 16.0,
                                 0.0,
                               ),
