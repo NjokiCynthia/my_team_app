@@ -82,6 +82,38 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
     }
   }
 
+  void _referDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          // title: heading2(
+          //   text: "Logout",
+          //   textAlign: TextAlign.start,
+          //   color: Theme.of(context).textSelectionHandleColor,
+          // ),
+          content: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/logo.png',
+                height: 200,
+                fit: BoxFit.cover,
+              ),
+              Text(
+                'This Is Some Text',
+                style: TextStyle(
+                  fontSize: 24,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -214,7 +246,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () {},
+              onTap: () => _referDialog(),
             ),
             Visibility(
               visible: group.isGroupAdmin,
