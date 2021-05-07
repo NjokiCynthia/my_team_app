@@ -34,10 +34,13 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
-          title:
-          heading2(text: "Logout", textAlign: TextAlign.start, color: Theme.of(context).textSelectionHandleColor),
+          title: heading2(
+              text: "Logout",
+              textAlign: TextAlign.start,
+              color: Theme.of(context).textSelectionHandleColor),
           content: customTitleWithWrap(
-              text: "Are you sure you want to log out? You'll have to login again to continue.",
+              text:
+                  "Are you sure you want to log out? You'll have to login again to continue.",
               textAlign: TextAlign.start,
               color: Theme.of(context).textSelectionHandleColor,
               maxLines: null),
@@ -59,7 +62,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 Navigator.of(context).pop();
                 StatusHandler().logout(context);
               },
-              shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(4.0)),
+              shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(4.0)),
               textColor: Colors.red,
               color: Colors.red.withOpacity(0.2),
             )
@@ -124,21 +128,25 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                           imageUrl: auth.displayAvatar,
                           placeholder: (context, url) => const CircleAvatar(
                             radius: 45.0,
-                            backgroundImage: const AssetImage('assets/no-user.png'),
+                            backgroundImage:
+                                const AssetImage('assets/no-user.png'),
                           ),
                           imageBuilder: (context, image) => CircleAvatar(
                             backgroundImage: image,
                             radius: 45.0,
                           ),
-                          errorWidget: (context, url, error) => const CircleAvatar(
-                            backgroundImage: const AssetImage('assets/no-user.png'),
+                          errorWidget: (context, url, error) =>
+                              const CircleAvatar(
+                            backgroundImage:
+                                const AssetImage('assets/no-user.png'),
                             radius: 45.0,
                           ),
                           fadeOutDuration: const Duration(seconds: 1),
                           fadeInDuration: const Duration(seconds: 3),
                         )
                       : const CircleAvatar(
-                          backgroundImage: const AssetImage('assets/no-user.png'),
+                          backgroundImage:
+                              const AssetImage('assets/no-user.png'),
                           radius: 45.0,
                         ),
                 ),
@@ -146,8 +154,12 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      heading2(text: auth.userName, color: Theme.of(context).textSelectionHandleColor),
-                      subtitle2(text: auth.phoneNumber, color: Theme.of(context).textSelectionHandleColor),
+                      heading2(
+                          text: auth.userName,
+                          color: Theme.of(context).textSelectionHandleColor),
+                      subtitle2(
+                          text: auth.phoneNumber,
+                          color: Theme.of(context).textSelectionHandleColor),
                       Padding(
                         padding: EdgeInsets.only(
                           top: 10.0,
@@ -160,7 +172,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                           textSize: 12.0,
                           action: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (BuildContext context) => UpdateProfile(),
+                              builder: (BuildContext context) =>
+                                  UpdateProfile(),
                             ),
                           ),
                         ),
@@ -169,6 +182,39 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                   ),
                 ),
               ],
+            ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: heading2(
+                  text: "Share",
+                  color: Colors.blueGrey,
+                ),
+              ),
+            ),
+            ListTile(
+              title: Text(
+                "Refer friends & earn",
+                style: TextStyle(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 16,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+              ),
+              subtitle: Text(
+                "CS67RE5655",
+                style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+              ),
+              trailing: Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+                child: Icon(
+                  Icons.share,
+                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                ),
+              ),
+              dense: true,
+              onTap: () {},
             ),
             Visibility(
               visible: group.isGroupAdmin,
@@ -300,7 +346,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               onSelected: (value) {
                 setState(() {
                   theme = value;
-                  (theme == "Dark") ? themeChange.darkTheme = true : themeChange.darkTheme = false;
+                  (theme == "Dark")
+                      ? themeChange.darkTheme = true
+                      : themeChange.darkTheme = false;
                 });
               },
               tooltip: "Change theme",
@@ -316,7 +364,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                         //   padding: EdgeInsets.only(left: 10.0)
                         // ),
                         Text("Light",
-                            style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).indicatorColor)),
                       ],
                     )),
                 PopupMenuItem(
@@ -329,7 +379,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                         //   padding: EdgeInsets.only(left: 10.0)
                         // ),
                         Text("Dark",
-                            style: TextStyle(fontWeight: FontWeight.w600, color: Theme.of(context).indicatorColor)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context).indicatorColor)),
                       ],
                     )),
               ],
@@ -422,7 +474,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => launchURL("https://chamasoft.com/company/about-chamasoft"),
+              onTap: () =>
+                  launchURL("https://chamasoft.com/company/about-chamasoft"),
             ),
             ListTile(
               title: Text("Terms & Conditions",
@@ -439,7 +492,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => launchURL("https://chamasoft.com/terms-and-conditions"),
+              onTap: () =>
+                  launchURL("https://chamasoft.com/terms-and-conditions"),
             ),
             // ListTile(
             //   title: Text("E-Wallet Charges",

@@ -323,82 +323,85 @@ class _AppSwitcherState extends State<AppSwitcher> {
         children: <Widget>[
           Container(
             constraints: BoxConstraints(maxWidth: 320),
-            child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: <Widget>[
-                    Text(
-                      title.toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.blueGrey[400],
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16.0,
-                        fontFamily: 'SegoeUI',
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Text(
+                        title.toUpperCase(),
+                        style: TextStyle(
+                          color: Colors.blueGrey[400],
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16.0,
+                          fontFamily: 'SegoeUI',
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        softWrap: false,
+                        textAlign: TextAlign.center,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
-                      textAlign: TextAlign.center,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        // Icon(
-                        //   Icons.beenhere,
-                        //   size: 12.0,
-                        // ),
-                        // SizedBox(width: 4.0),
-                        Flexible(
-                          fit: FlexFit.loose,
-                          child: Padding(
-                            padding: EdgeInsets.only(bottom: 2),
-                            child: Text(
-                              role, //.toUpperCase(),
-                              style: TextStyle(
-                                color: Colors.blueGrey[300],
-                                fontWeight: FontWeight.w700,
-                                fontSize: 11.0,
-                                fontFamily: 'SegoeUI',
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          // Icon(
+                          //   Icons.beenhere,
+                          //   size: 12.0,
+                          // ),
+                          // SizedBox(width: 4.0),
+                          Flexible(
+                            fit: FlexFit.loose,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 2),
+                              child: Text(
+                                role, //.toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.blueGrey[300],
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 11.0,
+                                  fontFamily: 'SegoeUI',
+                                ),
+                                maxLines: 1,
+                                overflow: TextOverflow.fade,
+                                softWrap: false,
+                                textAlign: TextAlign.end,
                               ),
-                              maxLines: 1,
-                              overflow: TextOverflow.fade,
-                              softWrap: false,
-                              textAlign: TextAlign.end,
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              Container(
-                height: 32.0,
-                width: 32.0,
-                margin: EdgeInsets.only(left: 5.0),
-                decoration: BoxDecoration(
-                  borderRadius: _entryIsVisible
-                      ? BorderRadius.only(
-                          topRight: Radius.circular(20.0),
-                          topLeft: Radius.circular(20.0),
-                          bottomLeft: Radius.circular(20.0))
-                      : BorderRadius.circular(40.0),
-                  color: Theme.of(context).hintColor.withOpacity(0.6),
+                Container(
+                  height: 32.0,
+                  width: 32.0,
+                  margin: EdgeInsets.only(left: 5.0),
+                  decoration: BoxDecoration(
+                    borderRadius: _entryIsVisible
+                        ? BorderRadius.only(
+                            topRight: Radius.circular(20.0),
+                            topLeft: Radius.circular(20.0),
+                            bottomLeft: Radius.circular(20.0))
+                        : BorderRadius.circular(40.0),
+                    color: Theme.of(context).hintColor.withOpacity(0.6),
+                  ),
+                  child: Icon(
+                    Feather.users,
+                    color: Colors.white70,
+                    size: 18.0,
+                  ),
+                  // ** If group image is available, replace above child with this: **
+                  // =================================================================
+                  // child: Image(
+                  //   image:  AssetImage('assets/no-user.png'),
+                  //   height: 32.0,
+                  // ),
                 ),
-                child: Icon(
-                  Feather.users,
-                  color: Colors.white70,
-                  size: 18.0,
-                ),
-                // ** If group image is available, replace above child with this: **
-                // =================================================================
-                // child: Image(
-                //   image:  AssetImage('assets/no-user.png'),
-                //   height: 32.0,
-                // ),
-              ),
-            ]),
+              ],
+            ),
           ),
         ],
       ),
@@ -407,6 +410,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
           width = this.context.size.width;
         });
         _entryIsVisible ? _exitSwitcher() : _handleSwitch();
+        // groupSwitcherDialog(widget.currentGroup["id"]);
       },
       shape: _entryIsVisible
           ? new RoundedRectangleBorder(
@@ -422,6 +426,167 @@ class _AppSwitcherState extends State<AppSwitcher> {
             ),
       textColor: primaryColor,
       color: Theme.of(context).buttonColor.withOpacity(0.9),
+    );
+  }
+
+  groupSwitcherDialog(dynamic currentGroup) {
+    return showGeneralDialog(
+      // barrierColor: Colors.white.withOpacity(0.5),
+      barrierDismissible: true,
+      transitionBuilder: (context, a1, a2, widget) {
+        final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+          child: AlertDialog(
+            content: Container(
+              height: 200,
+              color: Colors.transparent,
+              width: MediaQuery.of(context).size.width - 100,
+              child: Stack(
+                alignment: Alignment.center,
+                children: <Widget>[
+                  Column(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                          decoration: new BoxDecoration(
+                            color: Theme.of(context).backgroundColor,
+                            boxShadow: appSwitcherShadow(
+                              Theme.of(context).unselectedWidgetColor,
+                            ),
+                            // borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20.0), bottomRight: Radius.circular(20.0)),
+                          ),
+                          child: ScrollConfiguration(
+                            behavior: SwitcherScrollBehavior(),
+                            child: ListView.builder(
+                              padding: const EdgeInsets.only(bottom: 18.0),
+                              itemBuilder: (BuildContext context, int ndx) {
+                                return new Container(
+                                  color: (_listItems[ndx]["id"] == currentGroup)
+                                      ? Colors.blue[200].withOpacity(0.2)
+                                      : Colors.transparent,
+                                  child: new ListTile(
+                                    dense: true,
+                                    title: Row(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding: EdgeInsets.only(
+                                            right: 10.0,
+                                          ),
+                                          child: Icon(
+                                            _listItems[ndx]["id"] ==
+                                                    currentGroup
+                                                ? Feather.check
+                                                : Feather.plus,
+                                            color: (_listItems[ndx]["id"] ==
+                                                    currentGroup)
+                                                ? primaryColor
+                                                : (_listItems[ndx]["id"] !=
+                                                            currentGroup &&
+                                                        _listItems[ndx]["id"] !=
+                                                            '0')
+                                                    ? Colors.transparent
+                                                    : Colors.blueGrey[300],
+                                            size: 20.0,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: <Widget>[
+                                              Text(
+                                                _listItems[ndx]["title"]
+                                                    .toString()
+                                                    .toUpperCase(),
+                                                style: TextStyle(
+                                                  color: (_listItems[ndx]
+                                                                  ["id"] ==
+                                                              0 ||
+                                                          _listItems[ndx]
+                                                                  ["id"] ==
+                                                              currentGroup)
+                                                      ? primaryColor
+                                                      : Colors.blueGrey[
+                                                          400], //Theme.of(context).textSelectionHandleColor,
+                                                  fontSize: 16.0,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontFamily: 'SegoeUI',
+                                                ),
+                                                softWrap: false,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.fade,
+                                              ),
+                                              Text(
+                                                _listItems[ndx]["role"],
+                                                style: TextStyle(
+                                                  color: (_listItems[ndx]
+                                                                  ["id"] ==
+                                                              0 ||
+                                                          _listItems[ndx]
+                                                                  ["id"] ==
+                                                              currentGroup)
+                                                      ? primaryColor
+                                                          .withOpacity(0.7)
+                                                      : Colors.blueGrey[
+                                                          300], //Theme.of(context).indicatorColor,
+                                                  fontSize: 12.0,
+                                                  fontFamily: 'SegoeUI',
+                                                  //                                    fontWeight: FontWeight.w600,
+                                                ),
+                                                softWrap: false,
+                                                maxLines: 1,
+                                                overflow: TextOverflow.fade,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    onTap: () {
+                                      // print('Chose: ${_listItems[ndx]["title"]}');
+                                      _handleSelection(
+                                          _listItems[ndx]["id"], ndx);
+                                    },
+                                  ),
+                                );
+                              },
+                              itemCount: _listItems.length,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        // color: null,
+                        decoration: BoxDecoration(
+                          boxShadow: appSwitcherShadow(
+                            Theme.of(context).unselectedWidgetColor,
+                          ),
+                          color: Theme.of(context).backgroundColor,
+                          borderRadius: new BorderRadius.only(
+                            bottomRight: Radius.circular(20.0),
+                            bottomLeft: Radius.circular(20.0),
+                          ),
+                        ),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 5.0,
+                          vertical: 10.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+      transitionDuration: Duration(milliseconds: 400),
+      barrierLabel: '',
+      context: context,
+      pageBuilder: (context, animation1, animation2) {
+        return SizedBox();
+      },
     );
   }
 

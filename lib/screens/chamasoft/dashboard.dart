@@ -234,7 +234,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 color: _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
               ),
               title: Text(
-                "Wallet",
+                "Transactions",
                 style: TextStyle(
                     color:
                         _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
@@ -289,12 +289,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           appBarElevation: (elevation) => _setElevation(elevation),
         );
       case 2:
-        return Wallet(
+        // return Wallet(
+        //   appBarElevation: (elevation) => _setElevation(elevation),
+        // );
+        return ChamasoftTransactions(
           appBarElevation: (elevation) => _setElevation(elevation),
         );
-      // return ChamasoftTransactions(
-      //   appBarElevation: (elevation) => _setElevation(elevation),
-      // );
       case 3:
         return ChamasoftReports(
           appBarElevation: (elevation) => _setElevation(elevation),
