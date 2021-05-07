@@ -216,9 +216,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               dense: true,
               onTap: () async {
                 var response = await FlutterShareMe().shareToSystem(
-                  msg: "\"" +
-                      "Earn Ksh 200 when you sign up here https://app.chamasoft.com/signup?referral-code=CS675FGF" +
-                      "\"",
+                  msg: "Get Ksh 1,000 on Chamasoft Wallet when you sign up here " +
+                      "https://app.chamasoft.com/signup?referral-code=CS675FGF",
                 );
                 if (response != 'success') {
                   print("An error occurred while sharing!");
