@@ -11,7 +11,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
-
+import 'package:flutter_share_me/flutter_share_me.dart';
 import 'settings/group-settings.dart';
 import 'settings/user-settings/update-profile.dart';
 
@@ -80,38 +80,6 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
         _appBarElevation = newElevation;
       });
     }
-  }
-
-  void _referDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          // title: heading2(
-          //   text: "Logout",
-          //   textAlign: TextAlign.start,
-          //   color: Theme.of(context).textSelectionHandleColor,
-          // ),
-          content: Stack(
-            alignment: Alignment.center,
-            children: <Widget>[
-              Image.asset(
-                'assets/logo.png',
-                height: 200,
-                fit: BoxFit.cover,
-              ),
-              Text(
-                'This Is Some Text',
-                style: TextStyle(
-                  fontSize: 24,
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
   }
 
   @override
@@ -246,7 +214,16 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => _referDialog(),
+              onTap: () async {
+                var response = await FlutterShareMe().shareToSystem(
+                  msg: "\"" +
+                      "Earn Ksh 200 when you sign up here https://app.chamasoft.com/signup?referral-code=CS675FGF" +
+                      "\"",
+                );
+                if (response != 'success') {
+                  print("An error occurred while sharing!");
+                }
+              },
             ),
             Visibility(
               visible: group.isGroupAdmin,
