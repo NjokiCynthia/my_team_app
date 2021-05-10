@@ -17,6 +17,30 @@ class _MeetingsState extends State<Meetings> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
+  final List<dynamic> meetings = <dynamic>[
+    {
+      'title': "Group's AGM meeting",
+      'venue': "KNH, Nairobi",
+      'purpose': "",
+      'date': "12 April, 2021",
+      'members': {
+        'present': [],
+        'absent': {
+          'with_apology': [],
+          'without_apology': [],
+        },
+      },
+      'agenda': [],
+      'colections': {
+        'contributions': [],
+        'loan_repayments': [],
+        'loan_disbursements': [],
+      },
+      'aob': [],
+      'synced': 0,
+    },
+  ];
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
     if (_appBarElevation != newElevation) {
@@ -44,30 +68,6 @@ class _MeetingsState extends State<Meetings> {
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context);
     final currentGroup = group.getCurrentGroup();
-
-    final List<dynamic> meetings = <dynamic>[
-      {
-        'title': "Group's AGM meeting",
-        'venue': "KNH, Nairobi",
-        'purpose': "",
-        'date': "12 April, 2021",
-        'members': {
-          'present': [],
-          'absent': {
-            'with_apology': [],
-            'without_apology': [],
-          },
-        },
-        'agenda': [],
-        'colections': {
-          'contributions': [],
-          'loan_repayments': [],
-          'loan_disbursements': [],
-        },
-        'aob': [],
-        'synced': 0,
-      },
-    ];
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,

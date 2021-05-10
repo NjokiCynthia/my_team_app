@@ -1286,8 +1286,11 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> createGroup(
-      {String groupName, int countryId, File avatar}) async {
+  Future<void> createGroup({
+    String groupName,
+    int countryId,
+    File avatar,
+  }) async {
     const url = EndpointUrl.CREATE_GROUP;
 
     try {

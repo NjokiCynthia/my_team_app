@@ -146,193 +146,190 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context, listen: false);
     return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: WillPopScope(
-          onWillPop: _onWillPop,
-          child: Builder(builder: (BuildContext context) {
-            return Container(
-              alignment: Alignment.center,
-              decoration: primaryGradient(context),
-              height: MediaQuery.of(context).size.height,
-              child: SingleChildScrollView(
-                padding: EdgeInsets.only(
-                  top: 30,
-                  left: 40,
-                  right: 40,
-                  bottom: 20,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    heading1(
-                      text: "My Groups",
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle1(
-                      text: "All groups I belong to",
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
-                      child: auth.displayAvatar != null
-                          ? CachedNetworkImage(
-                              imageUrl: auth.displayAvatar,
-                              placeholder: (context, url) => const CircleAvatar(
-                                radius: 45.0,
-                                backgroundImage:
-                                    const AssetImage('assets/no-user.png'),
-                              ),
-                              imageBuilder: (context, image) => CircleAvatar(
-                                backgroundImage: image,
-                                radius: 45.0,
-                              ),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
-                              fadeOutDuration: const Duration(seconds: 1),
-                              fadeInDuration: const Duration(seconds: 3),
-                            )
-                          : const CircleAvatar(
+      backgroundColor: Colors.transparent,
+      body: WillPopScope(
+        onWillPop: _onWillPop,
+        child: Builder(builder: (BuildContext context) {
+          return Container(
+            alignment: Alignment.center,
+            decoration: primaryGradient(context),
+            height: MediaQuery.of(context).size.height,
+            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                top: 30,
+                left: 40,
+                right: 40,
+                bottom: 20,
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  heading1(
+                    text: "My Groups",
+                    color: Theme.of(context).textSelectionHandleColor,
+                  ),
+                  subtitle1(
+                    text: "All groups I belong to",
+                    color: Theme.of(context).textSelectionHandleColor,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                    child: auth.displayAvatar != null
+                        ? CachedNetworkImage(
+                            imageUrl: auth.displayAvatar,
+                            placeholder: (context, url) => const CircleAvatar(
+                              radius: 45.0,
                               backgroundImage:
                                   const AssetImage('assets/no-user.png'),
+                            ),
+                            imageBuilder: (context, image) => CircleAvatar(
+                              backgroundImage: image,
                               radius: 45.0,
                             ),
-                    ),
-                    heading2(
-                      text: auth.userName,
-                      color: Theme.of(context).textSelectionHandleColor,
-                    ),
-                    subtitle1(
-                      text: auth.phoneNumber,
-                      color: Theme.of(context)
-                          .textSelectionHandleColor
-                          .withOpacity(0.6),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(2, 10, 2, 0),
-                      child: groupInfoButton(
-                        context: context,
-                        leadingIcon: LineAwesomeIcons.plus,
-                        trailingIcon: LineAwesomeIcons.angle_right,
-                        hideTrailingIcon: true,
-                        backgroundColor: primaryColor.withOpacity(0.2),
-                        title: "ADD NEW GROUP",
-                        subtitle: "Chama, Merry-go-round, Fundraiser",
-                        textColor: primaryColor,
-                        borderColor: primaryColor,
-                        action: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => CreateGroup(),
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
+                            fadeOutDuration: const Duration(seconds: 1),
+                            fadeInDuration: const Duration(seconds: 3),
+                          )
+                        : const CircleAvatar(
+                            backgroundImage:
+                                const AssetImage('assets/no-user.png'),
+                            radius: 45.0,
                           ),
+                  ),
+                  heading2(
+                    text: auth.userName,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  ),
+                  subtitle1(
+                    text: auth.phoneNumber,
+                    color: Theme.of(context)
+                        .textSelectionHandleColor
+                        .withOpacity(0.6),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(2, 10, 2, 0),
+                    child: groupInfoButton(
+                      context: context,
+                      leadingIcon: LineAwesomeIcons.plus,
+                      trailingIcon: LineAwesomeIcons.angle_right,
+                      hideTrailingIcon: true,
+                      backgroundColor: primaryColor.withOpacity(0.2),
+                      title: "ADD NEW GROUP",
+                      subtitle: "Chama, Merry-go-round, Fundraiser",
+                      textColor: primaryColor,
+                      borderColor: primaryColor,
+                      action: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => CreateGroup(),
                         ),
                       ),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        FutureBuilder(
-                          future: _future,
-                          builder: (ctx, snapshot) => snapshot
-                                      .connectionState ==
-                                  ConnectionState.waiting
-                              ? buildContainer(
-                                  Center(
-                                    child: dataLoadingEffect(
-                                        context: context,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.98,
-                                        height: 50,
-                                        borderRadius: 50.0),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      FutureBuilder(
+                        future: _future,
+                        builder: (ctx, snapshot) => snapshot.connectionState ==
+                                ConnectionState.waiting
+                            ? buildContainer(
+                                Center(
+                                  child: dataLoadingEffect(
+                                      context: context,
+                                      width: MediaQuery.of(context).size.width *
+                                          0.98,
+                                      height: 50,
+                                      borderRadius: 50.0),
+                                ),
+                                0,
+                                true)
+                            : RefreshIndicator(
+                                backgroundColor: (themeChangeProvider.darkTheme)
+                                    ? Colors.blueGrey[800]
+                                    : Colors.white,
+                                onRefresh: () =>
+                                    _getUserCheckInData(context, true),
+                                child: Consumer<Groups>(
+                                  child: Center(
+                                    child: Text("Groups"),
                                   ),
-                                  0,
-                                  true)
-                              : RefreshIndicator(
-                                  backgroundColor:
-                                      (themeChangeProvider.darkTheme)
-                                          ? Colors.blueGrey[800]
-                                          : Colors.white,
-                                  onRefresh: () =>
-                                      _getUserCheckInData(context, true),
-                                  child: Consumer<Groups>(
-                                    child: Center(
-                                      child: Text("Groups"),
-                                    ),
-                                    builder: (ctx, groups, ch) =>
-                                        buildContainer(
-                                      ListView.builder(
-                                          padding: EdgeInsets.only(
-                                            top: 10,
-                                            bottom: 5,
-                                            left: 2,
-                                            right: 2,
-                                          ),
-                                          shrinkWrap: true,
-                                          physics:
-                                              AlwaysScrollableScrollPhysics(),
-                                          itemCount: groups.item.length,
-                                          itemBuilder: (ctx2, index) {
-                                            return groupInfoButton(
-                                                context: context,
-                                                leadingIcon:
-                                                    LineAwesomeIcons.group,
-                                                trailingIcon: LineAwesomeIcons
-                                                    .angle_right,
-                                                backgroundColor: primaryColor
-                                                    .withOpacity(0.2),
-                                                title:
-                                                    "${groups.item[index].groupName}",
-                                                subtitle:
-                                                    "${groups.item[index].groupSize} Members",
-                                                description: groups.item[index]
-                                                        .isGroupAdmin
-                                                    ? "Group Admin | ${groups.item[index].groupRole}"
-                                                    : groups
-                                                        .item[index].groupRole,
-                                                textColor: Colors.blueGrey,
-                                                borderColor: Colors.blueGrey
-                                                    .withOpacity(0.2),
-                                                action: () {
-                                                  Provider.of<Groups>(ctx2,
-                                                          listen: false)
-                                                      .setSelectedGroupId(groups
-                                                          .item[index].groupId);
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        ChamasoftDashboard(),
-                                                  ));
-                                                });
-                                          }),
-                                      groups.item.length,
-                                    ),
+                                  builder: (ctx, groups, ch) => buildContainer(
+                                    ListView.builder(
+                                        padding: EdgeInsets.only(
+                                          top: 10,
+                                          bottom: 5,
+                                          left: 2,
+                                          right: 2,
+                                        ),
+                                        shrinkWrap: true,
+                                        physics:
+                                            AlwaysScrollableScrollPhysics(),
+                                        itemCount: groups.item.length,
+                                        itemBuilder: (ctx2, index) {
+                                          return groupInfoButton(
+                                              context: context,
+                                              leadingIcon:
+                                                  LineAwesomeIcons.group,
+                                              trailingIcon:
+                                                  LineAwesomeIcons.angle_right,
+                                              backgroundColor:
+                                                  primaryColor.withOpacity(0.2),
+                                              title:
+                                                  "${groups.item[index].groupName}",
+                                              subtitle:
+                                                  "${groups.item[index].groupSize} Members",
+                                              description: groups
+                                                      .item[index].isGroupAdmin
+                                                  ? "Group Admin | ${groups.item[index].groupRole}"
+                                                  : groups
+                                                      .item[index].groupRole,
+                                              textColor: Colors.blueGrey,
+                                              borderColor: Colors.blueGrey
+                                                  .withOpacity(0.2),
+                                              action: () {
+                                                Provider.of<Groups>(ctx2,
+                                                        listen: false)
+                                                    .setSelectedGroupId(groups
+                                                        .item[index].groupId);
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          ChamasoftDashboard(),
+                                                ));
+                                              });
+                                        }),
+                                    groups.item.length,
                                   ),
                                 ),
+                              ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          top: 20.0,
                         ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                            top: 20.0,
-                          ),
-                          child: Align(
-                            alignment: Alignment.center,
-                            child: smallBadgeButton(
-                              text: "Logout",
-                              backgroundColor: Colors.red.withOpacity(0.2),
-                              textColor: Colors.red,
-                              buttonHeight: 36.0,
-                              textSize: 15.0,
-                              action: () => _logoutDialog(),
-                            ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: smallBadgeButton(
+                            text: "Logout",
+                            backgroundColor: Colors.red.withOpacity(0.2),
+                            textColor: Colors.red,
+                            buttonHeight: 36.0,
+                            textSize: 15.0,
+                            action: () => _logoutDialog(),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            );
-          }),
-        ));
+            ),
+          );
+        }),
+      ),
+    );
   }
 }
