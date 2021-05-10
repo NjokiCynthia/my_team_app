@@ -156,6 +156,19 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           automaticallyImplyLeading: false,
           actions: <Widget>[
             IconButton(
+                icon: Icon(
+                  Icons.credit_card,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                onPressed: () => {
+                      _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => Wallet(),
+                        ),
+                      ),
+                    }),
+            IconButton(
               icon: Icon(
                 Icons.notifications_off,
                 color:
@@ -171,22 +184,19 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               //   ),
               // }
             ),
-            Padding(
-              padding: EdgeInsets.only(right: 20.0),
-              child: IconButton(
-                  icon: Icon(
-                    Icons.settings,
-                    color: Theme.of(context).textSelectionHandleColor,
+            IconButton(
+              icon: Icon(
+                Icons.settings,
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              onPressed: () => {
+                _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ChamasoftSettings(),
                   ),
-                  onPressed: () => {
-                        _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                ChamasoftSettings(),
-                          ),
-                        ),
-                      }),
+                ),
+              },
             ),
           ],
         ),
