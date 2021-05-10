@@ -47,37 +47,25 @@ class _MeetingsState extends State<Meetings> {
 
     final List<dynamic> meetings = <dynamic>[
       {
-        'name': "Group's AGM meeting held at KNH",
+        'title': "Group's AGM meeting",
+        'venue': "KNH, Nairobi",
+        'purpose': "",
         'date': "12 April, 2021",
         'members': {
-          'present': 10,
+          'present': [],
           'absent': {
-            'with_apology': 2,
-            'without_apology': 1,
+            'with_apology': [],
+            'without_apology': [],
           },
         },
-      },
-      {
-        'name': "Loans critical discussions meeting",
-        'date': "21 April, 2021",
-        'members': {
-          'present': 8,
-          'absent': {
-            'with_apology': 3,
-            'without_apology': 2,
-          },
+        'agenda': [],
+        'colections': {
+          'contributions': [],
+          'loan_repayments': [],
+          'loan_disbursements': [],
         },
-      },
-      {
-        'name': "Group's AGM meeting held at KNH",
-        'date': "12 April, 2021",
-        'members': {
-          'present': 10,
-          'absent': {
-            'with_apology': 2,
-            'without_apology': 1,
-          },
-        },
+        'aob': [],
+        'synced': 0,
       },
     ];
 
@@ -169,67 +157,94 @@ class _MeetingsState extends State<Meetings> {
                               padding: EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
                               width: double.infinity,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Padding(
-                                    padding: EdgeInsets.only(left: 0.0),
-                                    child: IconButton(
-                                      icon: Icon(
-                                        Icons.group,
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                      ),
-                                      onPressed: () => {
-                                        // Add new meeting
-                                      },
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      subtitle2(
-                                        text: meetings[index]['date'],
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                        textAlign: TextAlign.start,
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          left: 16.0,
+                                          right: 16.0,
+                                        ),
+                                        child: Icon(
+                                          Icons.group,
+                                          color: Theme.of(context)
+                                              .textSelectionHandleColor,
+                                        ),
                                       ),
-                                      subtitle1(
-                                        text: meetings[index]['name'],
-                                        color: Theme.of(context)
-                                            .textSelectionHandleColor,
-                                        textAlign: TextAlign.start,
-                                      ),
-                                      Row(
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Text(
-                                            "Members present ",
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w300,
-                                              fontSize: 13.0,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor,
-                                              fontFamily: 'SegoeUI',
-                                            ),
+                                          subtitle2(
+                                            text: meetings[index]['date'],
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
                                             textAlign: TextAlign.start,
                                           ),
-                                          Text(
-                                            meetings[index]['members']
-                                                    ['present']
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 13.0,
-                                              color: Theme.of(context)
-                                                  .textSelectionHandleColor,
-                                              fontFamily: 'SegoeUI',
-                                            ),
+                                          subtitle1(
+                                            text: meetings[index]['title'],
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor,
                                             textAlign: TextAlign.start,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "Members present ",
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w300,
+                                                  fontSize: 13.0,
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
+                                                  fontFamily: 'SegoeUI',
+                                                ),
+                                                textAlign: TextAlign.start,
+                                              ),
+                                              Text(
+                                                meetings[index]['members']
+                                                        ['present']
+                                                    .length
+                                                    .toString(),
+                                                style: TextStyle(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 13.0,
+                                                  color: Theme.of(context)
+                                                      .textSelectionHandleColor,
+                                                  fontFamily: 'SegoeUI',
+                                                ),
+                                                textAlign: TextAlign.start,
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
                                     ],
                                   ),
+                                  meetings[index]['members']['synced'] == 1
+                                      ? Padding(
+                                          padding: EdgeInsets.only(right: 22.0),
+                                          child: Icon(
+                                            Icons.cloud_done,
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor
+                                                .withOpacity(0.7),
+                                          ),
+                                        )
+                                      : Padding(
+                                          padding: EdgeInsets.only(right: 12.0),
+                                          child: IconButton(
+                                            icon: Icon(
+                                              Icons.file_upload,
+                                              color: Colors.red[700],
+                                            ),
+                                            onPressed: () => {
+                                              // Upload meeting
+                                            },
+                                          ),
+                                        ),
                                 ],
                               ),
                             ),

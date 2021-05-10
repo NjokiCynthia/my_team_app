@@ -502,10 +502,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                           ),
                           child: Container(
                             padding: EdgeInsets.all(16.0),
-                            decoration: cardDecoration(
-                              gradient: plainCardGradient(context),
-                              context: context,
-                            ),
+                            decoration: flatGradient(context),
                             child: Column(
                               children: <Widget>[
                                 Row(
