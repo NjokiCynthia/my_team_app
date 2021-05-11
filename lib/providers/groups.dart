@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io' as io;
 import 'dart:io';
-
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
@@ -11,6 +10,7 @@ import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/meeting-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
@@ -22,7 +22,6 @@ import 'package:chamasoft/utilities/endpoint-url.dart';
 import 'package:chamasoft/utilities/post-to-server.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'helpers/report_helper.dart';
 import 'package:chamasoft/utilities/database-helper.dart';
 
@@ -413,6 +412,8 @@ class Groups with ChangeNotifier {
   List<Group> _groups = [];
   String _currentGroupId;
   // String _currentMemberId;
+
+  List<MeetingModel> _meetings = [];
 
   Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
@@ -1316,6 +1317,83 @@ class Groups with ChangeNotifier {
       }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchMeetings() async {
+    const url = EndpointUrl.GET_MEETINGS;
+    try {
+      final postRequest = json.encode({
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+
+        //=== BEGIN: OFFLINE PLUG
+        //=== Check if record exists...
+        // bool _exists = await entryExistsInDb(
+        //   DatabaseHelper.dataTable,
+        //   "section",
+        //   "groups",
+        // );
+        //=== ...if it doesn't exist, insert it.
+        // if (!_exists) {
+        //   await insertToLocalDb(
+        //     DatabaseHelper.dataTable,
+        //     {
+        //       "section": "groups",
+        //       "value": jsonEncode(response['user_groups']),
+        //       "modified_on": DateTime.now().millisecondsSinceEpoch,
+        //     },
+        //   );
+        // }
+        //=== If it does exist, update it.
+        // else {
+        //   dynamic _groups = await getLocalData('groups');
+        //   await updateInLocalDb(
+        //     DatabaseHelper.dataTable,
+        //     {
+        //       "id": _groups['id'],
+        //       "section": "groups",
+        //       "value": jsonEncode(response['user_groups']),
+        //       "modified_on": DateTime.now().millisecondsSinceEpoch,
+        //     },
+        //   );
+        // }
+        //=== END: OFFLINE PLUG
+
+        // final groupMeetings = response['user_groups'] as List<dynamic>;
+        final groupMeetings = response as List<dynamic>;
+        // addGroups(userGroups);
+      } on CustomException catch (error) {
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          // dynamic _localData = await getLocalData('groups');
+          // if (_localData['value'] != null) {
+          //   final userGroups = _localData['value'] as List<dynamic>;
+          //   addGroups(userGroups);
+          // }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
+      } catch (error) {
+        throw CustomException(message: error.message);
+      }
+    } on CustomException catch (error) {
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        //=== BEGIN: OFFLINE PLUG
+        // dynamic _localData = await getLocalData('groups');
+        // if (_localData['value'] != null) {
+        //   final userGroups = _localData['value'] as List<dynamic>;
+        //   addGroups(userGroups);
+        // }
+        //=== END: OFFLINE PLUG
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }

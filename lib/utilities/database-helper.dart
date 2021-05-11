@@ -50,7 +50,7 @@ class DatabaseHelper {
               title TEXT NOT NULL DEFAULT '',
               venue TEXT NOT NULL DEFAULT '',
               purpose TEXT NOT NULL DEFAULT '',
-              meeting_date INTEGER NOT NULL,
+              date TEXT NOT NULL DEFAULT '',
               members TEXT NOT NULL DEFAULT '',
               agenda TEXT NOT NULL DEFAULT '',
               collections TEXT NOT NULL DEFAULT '',

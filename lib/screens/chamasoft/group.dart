@@ -16,7 +16,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
-
 import 'models/group-model.dart';
 
 class ChamasoftGroup extends StatefulWidget {
@@ -24,7 +23,6 @@ class ChamasoftGroup extends StatefulWidget {
 
   @override
   _ChamasoftGroupState createState() => _ChamasoftGroupState();
-
   ChamasoftGroup({this.appBarElevation});
 }
 

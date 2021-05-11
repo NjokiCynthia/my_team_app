@@ -2,6 +2,15 @@
     "version": "0.2.0",
     "configurations": [
       {
+        "name": "DEV",
+        "request": "launch",
+        "type": "dart",
+        "args": [
+          "--flavor",
+          "dev"
+        ]
+      },
+      {
         "name": "PROD",
         "request": "launch",
         "type": "dart",
@@ -10,14 +19,5 @@
           "prod"
         ]
       },
-      {
-        "name": "DEV",
-        "request": "launch",
-        "type": "dart",
-        "args": [
-          "--flavor",
-          "dev"
-        ]
-      }
     ]
   }

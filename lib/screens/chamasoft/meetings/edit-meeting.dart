@@ -23,8 +23,7 @@ class _EditMeetingState extends State<EditMeeting> {
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
-  final Map stepOneFieldValues = {};
-  String _meetingDate = DateTime.now().toString();
+  Map<String, dynamic> _data = {};
 
   goTo(int step) {
     setState(() => currentStep = step);
@@ -34,7 +33,7 @@ class _EditMeetingState extends State<EditMeeting> {
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
-          print(stepOneFieldValues);
+          print(_data);
           goTo(1);
         }
       } else {
@@ -80,7 +79,7 @@ class _EditMeetingState extends State<EditMeeting> {
       else if (value.length < 6)
         return "Meeting title is way too short";
       else {
-        stepOneFieldValues['title'] = value;
+        _data['title'] = value;
         return null;
       }
     } else if (field == 'venue') {
@@ -89,11 +88,11 @@ class _EditMeetingState extends State<EditMeeting> {
       else if (value.length < 3)
         return "Meeting venue is way too short";
       else {
-        stepOneFieldValues['venue'] = value;
+        _data['venue'] = value;
         return null;
       }
     } else if (field == 'purpose') {
-      stepOneFieldValues['purpose'] = value;
+      _data['purpose'] = value;
       return null;
     } else {
       return null;
@@ -177,6 +176,7 @@ class _EditMeetingState extends State<EditMeeting> {
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context);
     final currentGroup = group.getCurrentGroup();
+    _data['groupId'] = currentGroup.groupId;
 
     steps = [
       Step(
@@ -216,9 +216,9 @@ class _EditMeetingState extends State<EditMeeting> {
                 firstDate: DateTime(2020),
                 lastDate: DateTime(2030),
                 dateLabelText: 'Meeting Date & Time',
-                onChanged: (val) => print(val),
+                onChanged: (val) => _data['date'] = val,
                 validator: (val) {
-                  print(val);
+                  _data['date'] = val;
                   return null;
                 },
                 onSaved: (val) => print(val),
