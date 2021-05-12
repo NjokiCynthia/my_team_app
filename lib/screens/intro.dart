@@ -1,4 +1,6 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -19,19 +21,42 @@ class IntroScreenState extends State<IntroScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
   bool _loading = true;
 
+  _dashNav() async {
+    String currentGroupId = await getPreference("selectedGroupId");
+    dynamic groups = Provider.of<Groups>(context, listen: false);
+    await groups.fetchAndSetUserGroups();
+    await groups.setSelectedGroupId(currentGroupId);
+    print("currentGroupId >>> ");
+    print(currentGroupId);
+    Navigator.of(context)
+        .pushReplacement(
+      MaterialPageRoute(
+        builder: (BuildContext context) => ChamasoftDashboard(),
+      ),
+    )
+        .whenComplete(() {
+      _loading = false;
+    });
+  }
+
   _isFirstTime() async {
     setPreference("currency", "Ksh");
     (await getPreference("isFirstTime") != '')
         ? (await getPreference("isLoggedIn") == 'true')
             ? await Provider.of<Auth>(context, listen: false)
                 .setUserProfile()
-                .then((_) {
-                Navigator.of(context)
-                    .pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => MyGroups()))
-                    .whenComplete(() {
-                  _loading = false;
-                });
+                .then((_) async {
+                (await getPreference("selectedGroupId") != '')
+                    ? await _dashNav()
+                    : Navigator.of(context)
+                        .pushReplacement(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => MyGroups(),
+                        ),
+                      )
+                        .whenComplete(() {
+                        _loading = false;
+                      });
               })
             : Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(
@@ -57,7 +82,8 @@ class IntroScreenState extends State<IntroScreen> {
 
   void _onIntroEnd(context) {
     setPreference("isFirstTime", "true");
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => Login()));
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (_) => Login()));
   }
 
   Widget _buildImage(String assetName) {
@@ -106,7 +132,8 @@ class IntroScreenState extends State<IntroScreen> {
                   )),
               PageViewModel(
                   titleWidget: heading1(
-                      text: "...it's easy to use & secure", color: Colors.white),
+                      text: "...it's easy to use & secure",
+                      color: Colors.white),
                   bodyWidget: subtitle1(
                       text:
                           "Financial information stored on Chamasoft is only visible to authorized users. Communication with our servers is encrypted.",
@@ -117,7 +144,8 @@ class IntroScreenState extends State<IntroScreen> {
                   )),
               PageViewModel(
                   titleWidget: heading1(
-                      text: "...accessible everywhere, anytime!", color: Colors.white),
+                      text: "...accessible everywhere, anytime!",
+                      color: Colors.white),
                   bodyWidget: subtitle1(
                       text:
                           "Chamasoft is available 24/7 from anywhere in the world through various platforms: USSD, Web, Android & iOS. Get started now.",

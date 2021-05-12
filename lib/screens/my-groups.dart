@@ -257,50 +257,52 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                   ),
                                   builder: (ctx, groups, ch) => buildContainer(
                                     ListView.builder(
-                                        padding: EdgeInsets.only(
-                                          top: 10,
-                                          bottom: 5,
-                                          left: 2,
-                                          right: 2,
-                                        ),
-                                        shrinkWrap: true,
-                                        physics:
-                                            AlwaysScrollableScrollPhysics(),
-                                        itemCount: groups.item.length,
-                                        itemBuilder: (ctx2, index) {
-                                          return groupInfoButton(
-                                              context: context,
-                                              leadingIcon:
-                                                  LineAwesomeIcons.group,
-                                              trailingIcon:
-                                                  LineAwesomeIcons.angle_right,
-                                              backgroundColor:
-                                                  primaryColor.withOpacity(0.2),
-                                              title:
-                                                  "${groups.item[index].groupName}",
-                                              subtitle:
-                                                  "${groups.item[index].groupSize} Members",
-                                              description: groups
-                                                      .item[index].isGroupAdmin
-                                                  ? "Group Admin | ${groups.item[index].groupRole}"
-                                                  : groups
-                                                      .item[index].groupRole,
-                                              textColor: Colors.blueGrey,
-                                              borderColor: Colors.blueGrey
-                                                  .withOpacity(0.2),
-                                              action: () {
-                                                Provider.of<Groups>(ctx2,
-                                                        listen: false)
-                                                    .setSelectedGroupId(groups
-                                                        .item[index].groupId);
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          ChamasoftDashboard(),
-                                                ));
-                                              });
-                                        }),
+                                      padding: EdgeInsets.only(
+                                        top: 10,
+                                        bottom: 5,
+                                        left: 2,
+                                        right: 2,
+                                      ),
+                                      shrinkWrap: true,
+                                      physics: AlwaysScrollableScrollPhysics(),
+                                      itemCount: groups.item.length,
+                                      itemBuilder: (ctx2, index) {
+                                        return groupInfoButton(
+                                          context: context,
+                                          leadingIcon: LineAwesomeIcons.group,
+                                          trailingIcon:
+                                              LineAwesomeIcons.angle_right,
+                                          backgroundColor:
+                                              primaryColor.withOpacity(0.2),
+                                          title:
+                                              "${groups.item[index].groupName}",
+                                          subtitle:
+                                              "${groups.item[index].groupSize} Members",
+                                          description: groups
+                                                  .item[index].isGroupAdmin
+                                              ? "Group Admin | ${groups.item[index].groupRole}"
+                                              : groups.item[index].groupRole,
+                                          textColor: Colors.blueGrey,
+                                          borderColor:
+                                              Colors.blueGrey.withOpacity(0.2),
+                                          action: () {
+                                            Provider.of<Groups>(
+                                              ctx2,
+                                              listen: false,
+                                            ).setSelectedGroupId(
+                                              groups.item[index].groupId,
+                                            );
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ChamasoftDashboard(),
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      },
+                                    ),
                                     groups.item.length,
                                   ),
                                 ),

@@ -172,9 +172,17 @@ class _EditMeetingState extends State<EditMeeting> {
     super.dispose();
   }
 
+  Future<void> getMembers() async {
+    final group = Provider.of<Groups>(context);
+    await group.fetchMembers();
+    print("Members >> ");
+    print(group.members);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final group = Provider.of<Groups>(context);
+    final group = Provider.of<Groups>(context, listen: false);
+    getMembers();
     final currentGroup = group.getCurrentGroup();
     _data['groupId'] = currentGroup.groupId;
 

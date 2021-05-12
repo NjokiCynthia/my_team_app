@@ -7,8 +7,10 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class SelectMembers extends StatefulWidget {
   final String type;
+  final Future<dynamic> members;
   SelectMembers({
     @required this.type,
+    @required this.members,
   });
   @override
   _SelectMembersState createState() => _SelectMembersState();

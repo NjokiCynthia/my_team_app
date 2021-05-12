@@ -1786,6 +1786,7 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         _members = []; //clear
         final groupMembers = response['members'] as List<dynamic>;
+        // print(groupMembers);
         addMembers(groupMembers);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
