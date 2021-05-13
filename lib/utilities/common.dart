@@ -42,10 +42,19 @@ Future<dynamic> getLocalData(String key) async {
   return obj;
 }
 
+Future<dynamic> getLocalMembers(String groupId) async {
+  List<dynamic> _data = await dbHelper.queryWhere(
+    DatabaseHelper.membersTable,
+    "group_id",
+    [groupId],
+  );
+  return _data;
+}
+
 Future<bool> entryExistsInDb(
   String table,
   String field,
-  String value,
+  dynamic value,
 ) async {
   var checkRecord = await dbHelper.queryWhere(
     table,
@@ -61,6 +70,13 @@ Future<dynamic> insertToLocalDb(
   Map<String, dynamic> row,
 ) async {
   return await dbHelper.insert(row, table);
+}
+
+Future<dynamic> insertManyToLocalDb(
+  String table,
+  List<dynamic> rows,
+) async {
+  return await dbHelper.batchInsert(rows, table);
 }
 
 Future<dynamic> updateInLocalDb(

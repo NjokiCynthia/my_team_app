@@ -38,7 +38,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   // bool _updateSelectedGroup = false;
 
   _setElevation(double elevation) {
-    double newElevation = elevation > 1 ? appBarElevation : 0;
+    double newElevation = elevation > 0 ? appBarElevation : 0;
     if (_appBarElevation != newElevation) {
       setState(() {
         _appBarElevation = newElevation;

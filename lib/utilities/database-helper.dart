@@ -6,6 +6,7 @@ class DatabaseHelper {
   static final _databaseVersion = 1;
 
   static final dataTable = 'data';
+  static final membersTable = 'members';
   static final meetingsTable = 'meetings';
 
   // make this a singleton class
@@ -39,6 +40,19 @@ class DatabaseHelper {
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               section TEXT NOT NULL,
               value TEXT NOT NULL,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+      // Members table
+      batch.execute('''
+            CREATE TABLE IF NOT EXISTS $membersTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              name TEXT NOT NULL DEFAULT '',
+              avatar TEXT DEFAULT '',
+              user_id INTEGER NOT NULL,
+              identity TEXT NOT NULL DEFAULT '',
               modified_on INTEGER NOT NULL
             )
             ''');

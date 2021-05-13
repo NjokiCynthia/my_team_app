@@ -1784,17 +1784,96 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
+
+        //=== BEGIN: OFFLINE PLUG
+        //=== Check if record exists...
+        bool _exists = await entryExistsInDb(
+          DatabaseHelper.membersTable,
+          "group_id",
+          int.parse(_currentGroupId),
+        );
+
+        //=== ...if it doesn't exist, insert it.
+        if (!_exists) {
+          List<dynamic> rows = [];
+          final _tempMembers = response['members'] as List<dynamic>;
+          _tempMembers.forEach((m) {
+            rows.add({
+              "group_id": int.parse(_currentGroupId),
+              "id": m['id'],
+              "user_id": m['user_id'],
+              "name": m['name'],
+              "avatar": m['avatar'],
+              "identity": m['identity'],
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            });
+          });
+          await insertManyToLocalDb(
+            DatabaseHelper.membersTable,
+            rows,
+          );
+        }
+        //=== If it does exist, update it.
+        else {
+          // TODO: Implement way to update members here...
+        }
+        //=== END: OFFLINE PLUG
+
         _members = []; //clear
         final groupMembers = response['members'] as List<dynamic>;
-        // print(groupMembers);
         addMembers(groupMembers);
       } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          dynamic _localData = await getLocalMembers(_currentGroupId);
+          if (_localData['value'].length > 0) {
+            List<dynamic> rows = [];
+            final _tempMembers = _localData['value'] as List<dynamic>;
+            _tempMembers.forEach((m) {
+              rows.add({
+                "id": m['id'],
+                "user_id": m['user_id'],
+                "name": m['name'],
+                "avatar": m['avatar'],
+                "identity": m['identity'],
+              });
+            });
+            _members = []; //clear
+            addGroups(rows);
+            print(rows);
+          }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        //=== BEGIN: OFFLINE PLUG
+        dynamic _localData = await getLocalMembers(_currentGroupId);
+        print(_localData);
+        if (_localData['value'].length > 0) {
+          List<dynamic> rows = [];
+          final _tempMembers = _localData['value'] as List<dynamic>;
+          _tempMembers.forEach((m) {
+            rows.add({
+              "id": m['id'],
+              "user_id": m['user_id'],
+              "name": m['name'],
+              "avatar": m['avatar'],
+              "identity": m['identity'],
+            });
+          });
+          _members = []; //clear
+          addGroups(rows);
+          print(rows);
+        }
+        //=== END: OFFLINE PLUG
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }

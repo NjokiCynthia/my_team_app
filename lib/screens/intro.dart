@@ -26,8 +26,7 @@ class IntroScreenState extends State<IntroScreen> {
     dynamic groups = Provider.of<Groups>(context, listen: false);
     await groups.fetchAndSetUserGroups();
     await groups.setSelectedGroupId(currentGroupId);
-    print("currentGroupId >>> ");
-    print(currentGroupId);
+    await groups.fetchMembers();
     Navigator.of(context)
         .pushReplacement(
       MaterialPageRoute(
@@ -96,22 +95,28 @@ class IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     PageDecoration _pageDeco({Color pageColor}) {
       return PageDecoration(
-          titleTextStyle: TextStyle(
-              fontSize: 26.0, fontWeight: FontWeight.w900, color: Colors.white),
-          bodyTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
-          descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-          titlePadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 10.0),
-          pageColor: pageColor,
-          imagePadding: EdgeInsets.zero);
+        titleTextStyle: TextStyle(
+          fontSize: 26.0,
+          fontWeight: FontWeight.w900,
+          color: Colors.white,
+        ),
+        bodyTextStyle: TextStyle(fontSize: 16.0, color: Colors.white),
+        descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+        titlePadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 10.0),
+        pageColor: pageColor,
+        imagePadding: EdgeInsets.zero,
+      );
     }
 
     Widget _pageLoading() {
       return Scaffold(
-          backgroundColor: Theme.of(context).backgroundColor,
-          body: Center(
-              child: CircularProgressIndicator(
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: Center(
+          child: CircularProgressIndicator(
             strokeWidth: 3.0,
-          )));
+          ),
+        ),
+      );
     }
 
     return _loading
