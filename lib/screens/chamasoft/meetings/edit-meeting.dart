@@ -23,19 +23,28 @@ class _EditMeetingState extends State<EditMeeting> {
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
+  final _agendaFormKey = GlobalKey<FormState>();
+  final _aobFormKey = GlobalKey<FormState>();
   Map<String, dynamic> _data = {
+    'title': "",
+    'venue': "",
+    'purpose': "",
+    'date': "",
     'members': {
       'present': [],
       'withApology': [],
       'withoutApology': [],
-    }
+    },
+    'agenda': [],
+    'collections': {},
+    'aob': [],
   };
 
   _setMembers(dynamic members) {
     setState(() {
       _data['members'] = members;
     });
-    print(_data);
+    // print(_data);
   }
 
   goTo(int step) {
@@ -171,6 +180,19 @@ class _EditMeetingState extends State<EditMeeting> {
     );
   }
 
+  String summaryList(String type) {
+    String _resp = "";
+    List<dynamic> _list = _data[type];
+    // if (_list.length == 0) return "N/A";
+    _list.forEach((l) {
+      _resp += (_list.indexOf(l) + 1).toString() +
+          ". " +
+          l.toString() +
+          (((_list.indexOf(l) + 1) < _list.length) ? "\n" : "");
+    });
+    return _resp;
+  }
+
   String _getFirstName(String name) {
     String resp = "";
     try {
@@ -179,6 +201,78 @@ class _EditMeetingState extends State<EditMeeting> {
       resp = name;
     }
     return resp;
+  }
+
+  Widget renderAgenda() {
+    List<Widget> _list = [];
+    List<dynamic> agenda = [..._data['agenda']];
+    agenda.forEach((a) {
+      _list.add(agendaItem(
+        agenda: a,
+        action: () {
+          agenda.removeAt(agenda.indexOf(a));
+          setState(() {
+            _data['agenda'] = agenda;
+          });
+        },
+      ));
+    });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: (_list.length > 0)
+          ? _list
+          : [
+              subtitle1(
+                color:
+                    Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                text: "No agenda added",
+                textAlign: TextAlign.left,
+              ),
+              subtitle2(
+                color:
+                    Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                text: "Added agenda items will be displayed here",
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 20.0),
+            ],
+    );
+  }
+
+  Widget renderAob() {
+    List<Widget> _list = [];
+    List<dynamic> aob = [..._data['aob']];
+    aob.forEach((a) {
+      _list.add(agendaItem(
+        agenda: a,
+        action: () {
+          aob.removeAt(aob.indexOf(a));
+          setState(() {
+            _data['aob'] = aob;
+          });
+        },
+      ));
+    });
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: (_list.length > 0)
+          ? _list
+          : [
+              subtitle1(
+                color:
+                    Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                text: "No AOB added",
+                textAlign: TextAlign.left,
+              ),
+              subtitle2(
+                color:
+                    Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                text: "Added AOB items will be displayed here",
+                textAlign: TextAlign.left,
+              ),
+              SizedBox(height: 20.0),
+            ],
+    );
   }
 
   @override
@@ -340,37 +434,50 @@ class _EditMeetingState extends State<EditMeeting> {
         state: currentStep > 2 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
-            Stack(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Add agenda item...',
-                    contentPadding: EdgeInsets.only(bottom: 0.0),
-                  ),
-                ),
-                Positioned(
-                  right: 0.0,
-                  top: 0.0,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.check,
-                      color: primaryColor,
+            Form(
+              key: _agendaFormKey,
+              child: Stack(
+                children: <Widget>[
+                  TextFormField(
+                    validator: (val) {
+                      if (val.isEmpty)
+                        return "Agenda is required";
+                      else if (val.length < 3)
+                        return "Agenda is way too short";
+                      else {
+                        List<dynamic> _tempAgenda = [..._data['agenda']];
+                        _tempAgenda.add(val);
+                        setState(() {
+                          _data['agenda'] = _tempAgenda;
+                        });
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Add agenda item...',
+                      contentPadding: EdgeInsets.only(bottom: 0.0),
                     ),
-                    onPressed: () {},
                   ),
-                ),
-              ],
+                  Positioned(
+                    right: 0.0,
+                    top: 0.0,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.check,
+                        color: primaryColor,
+                      ),
+                      onPressed: () {
+                        if (_agendaFormKey.currentState.validate()) {
+                          _agendaFormKey.currentState.reset();
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 20.0),
-            agendaItem(
-              agenda: "Some text goes here for the agenda item",
-              action: () {},
-            ),
-            agendaItem(
-              agenda:
-                  "Some text goes here for the agenda item text goes here for the agenda item text goes here for the agenda item text goes here for the agenda item.",
-              action: () {},
-            ),
+            renderAgenda(),
           ],
         ),
       ),
@@ -431,37 +538,50 @@ class _EditMeetingState extends State<EditMeeting> {
         state: currentStep > 4 ? StepState.complete : StepState.disabled,
         content: Column(
           children: <Widget>[
-            Stack(
-              children: [
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Add AOB item...',
-                    contentPadding: EdgeInsets.only(bottom: 0.0),
-                  ),
-                ),
-                Positioned(
-                  right: 0.0,
-                  top: 0.0,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.check,
-                      color: primaryColor,
+            Form(
+              key: _aobFormKey,
+              child: Stack(
+                children: <Widget>[
+                  TextFormField(
+                    validator: (val) {
+                      if (val.isEmpty)
+                        return "AOB is required";
+                      else if (val.length < 3)
+                        return "AOB is way too short";
+                      else {
+                        List<dynamic> _tempAob = [..._data['aob']];
+                        _tempAob.add(val);
+                        setState(() {
+                          _data['aob'] = _tempAob;
+                        });
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Add AOB item...',
+                      contentPadding: EdgeInsets.only(bottom: 0.0),
                     ),
-                    onPressed: () {},
                   ),
-                ),
-              ],
+                  Positioned(
+                    right: 0.0,
+                    top: 0.0,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.check,
+                        color: primaryColor,
+                      ),
+                      onPressed: () {
+                        if (_aobFormKey.currentState.validate()) {
+                          _aobFormKey.currentState.reset();
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 20.0),
-            agendaItem(
-              agenda: "Some text goes here for the AOB item",
-              action: () {},
-            ),
-            agendaItem(
-              agenda:
-                  "Some text goes here for the AOB item text goes here for the AOB item text goes here for the AOB item text goes here for the AOB item.",
-              action: () {},
-            ),
+            renderAob(),
           ],
         ),
       ),
@@ -476,21 +596,21 @@ class _EditMeetingState extends State<EditMeeting> {
             children: <Widget>[
               summaryTitle(text: "Meeting title"),
               Text(
-                "Some meeting title goes here",
+                _data["title"],
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 10.0),
               summaryTitle(text: "Venue"),
               Text(
-                "Nairobi, KNH",
+                _data["venue"],
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 10.0),
               summaryTitle(text: "Date"),
               Text(
-                "28th April 2021",
+                _data["date"],
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),
@@ -502,15 +622,17 @@ class _EditMeetingState extends State<EditMeeting> {
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 10.0),
-              summaryTitle(text: "Agenda"),
-              Text(
-                "1. This is agent item\n" +
-                    "2. This is another agenda item\n" +
-                    "3. You can always have a third too, you know.",
-                style: summaryContentFormat(),
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: 10.0),
+              summaryList("agenda") != ""
+                  ? summaryTitle(text: "Agenda")
+                  : SizedBox(),
+              summaryList("agenda") != ""
+                  ? Text(
+                      summaryList("agenda"),
+                      style: summaryContentFormat(),
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : SizedBox(),
+              summaryList("agenda") != "" ? SizedBox(height: 10.0) : SizedBox(),
               summaryTitle(text: "Collections"),
               Text(
                 "1. Group contributions: KES 13,600\n" +
@@ -520,13 +642,15 @@ class _EditMeetingState extends State<EditMeeting> {
                 overflow: TextOverflow.ellipsis,
               ),
               SizedBox(height: 10.0),
-              summaryTitle(text: "AOB"),
-              Text(
-                "1. This is AOB item\n" + "2. This is another AOB item",
-                style: summaryContentFormat(),
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: 10.0),
+              summaryList("aob") != "" ? summaryTitle(text: "AOB") : SizedBox(),
+              summaryList("aob") != ""
+                  ? Text(
+                      summaryList("aob"),
+                      style: summaryContentFormat(),
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : SizedBox(),
+              summaryList("aob") != "" ? SizedBox(height: 10.0) : SizedBox(),
             ],
           ),
         ),
