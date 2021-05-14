@@ -617,7 +617,12 @@ class _EditMeetingState extends State<EditMeeting> {
               SizedBox(height: 10.0),
               summaryTitle(text: "Members"),
               Text(
-                "23 present, 2 absent with apology and 1 absent without",
+                (_data['members']['present'].length).toString() +
+                    " present, " +
+                    (_data['members']['withApology'].length).toString() +
+                    " absent with apology and " +
+                    (_data['members']['withoutApology'].length).toString() +
+                    " absent without",
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),
