@@ -23,7 +23,20 @@ class _EditMeetingState extends State<EditMeeting> {
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
-  Map<String, dynamic> _data = {};
+  Map<String, dynamic> _data = {
+    'members': {
+      'present': [],
+      'withApology': [],
+      'withoutApology': [],
+    }
+  };
+
+  _setMembers(dynamic members) {
+    setState(() {
+      _data['members'] = members;
+    });
+    print(_data);
+  }
 
   goTo(int step) {
     setState(() => currentStep = step);
@@ -158,6 +171,16 @@ class _EditMeetingState extends State<EditMeeting> {
     );
   }
 
+  String _getFirstName(String name) {
+    String resp = "";
+    try {
+      resp = name.split(" ")[0];
+    } catch (e) {
+      resp = name;
+    }
+    return resp;
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -172,18 +195,24 @@ class _EditMeetingState extends State<EditMeeting> {
     super.dispose();
   }
 
-  // Future<void> getMembers() async {
-  //   final group = Provider.of<Groups>(context);
-  //   await group.fetchMembers();
-  //   print("Members >> ");
-  //   print(group.members);
-  // }
-
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
     _data['groupId'] = currentGroup.groupId;
+
+    String _renderMembersText(String type) {
+      List<dynamic> _mbrs = _data['members'][type];
+      if (_mbrs.length == 1)
+        return "1 member";
+      else if (_mbrs.length > 1)
+        return _getFirstName(_data['members'][type][0]['name']) +
+            " & " +
+            (_mbrs.length - 1).toString() +
+            " other members";
+      else
+        return "Tap to select members";
+    }
 
     steps = [
       Step(
@@ -249,11 +278,13 @@ class _EditMeetingState extends State<EditMeeting> {
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectMembers(
                       type: 'present',
+                      selected: _data['members'],
+                      members: (membrs) => _setMembers(membrs),
                     ),
                   ),
                 ),
                 title: "Members present",
-                subtitle: "Martin & 23 other members",
+                subtitle: _renderMembersText("present"),
                 icon: Icons.edit,
                 color: Colors.green,
               ),
@@ -268,11 +299,13 @@ class _EditMeetingState extends State<EditMeeting> {
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectMembers(
                       type: 'with-apology',
+                      selected: _data['members'],
+                      members: (membrs) => _setMembers(membrs),
                     ),
                   ),
                 ),
                 title: "Absent with apology",
-                subtitle: "Aggrey & 2 other members",
+                subtitle: _renderMembersText("withApology"),
                 icon: Icons.edit,
                 color: Colors.orange[700],
               ),
@@ -287,11 +320,13 @@ class _EditMeetingState extends State<EditMeeting> {
                   MaterialPageRoute(
                     builder: (BuildContext context) => SelectMembers(
                       type: 'without-apology',
+                      selected: _data['members'],
+                      members: (membrs) => _setMembers(membrs),
                     ),
                   ),
                 ),
                 title: "Absent without apology",
-                subtitle: "1 member",
+                subtitle: _renderMembersText("withoutApology"),
                 icon: Icons.edit,
                 color: Colors.red[400],
               ),
