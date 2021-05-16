@@ -52,11 +52,11 @@ class _EditMeetingState extends State<EditMeeting> {
     });
   }
 
-  _setCollections(dynamic collections) {
+  _setCollections(dynamic collection, String type) {
     setState(() {
-      _data['collections'] = collections;
+      _data['collections'][type] = collection;
     });
-    // print(_data);
+    print(_data);
   }
 
   goTo(int step) {
@@ -306,6 +306,7 @@ class _EditMeetingState extends State<EditMeeting> {
     final currentGroup = group.getCurrentGroup();
     _data['groupId'] = currentGroup.groupId;
     _groupCurrency = currentGroup.groupCurrency;
+    var formatter = NumberFormat('#,##,##0', "en_US");
 
     String _renderMembersText(String type) {
       List<dynamic> _mbrs = _data['members'][type];
@@ -322,20 +323,26 @@ class _EditMeetingState extends State<EditMeeting> {
 
     String _renderCollectionsText(String type) {
       List<dynamic> _collections = _data['collections'][type];
-      double _total = 0;
+      int _total = 0;
       String _totalAmnt = "";
-      var formatter = NumberFormat('#,##,000');
       _collections.forEach((c) {
         _total = _total + c['amount'];
       });
       _totalAmnt = _groupCurrency + " " + formatter.format(_total);
-      if (_collections.length > 1)
+      if (_collections.length > 0)
         return _totalAmnt +
             " from " +
             (_collections.length).toString() +
-            " members";
+            (_collections.length == 1 ? " member" : " members");
       else
         return "Tap to manage " + type;
+    }
+
+    String _getTotals(String type) {
+      double totals = 0;
+      List<dynamic> _collection = _data['collections'][type];
+      _collection.forEach((c) => totals += c['amount']);
+      return _groupCurrency + " " + formatter.format(totals);
     }
 
     steps = [
@@ -522,16 +529,18 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => EditCollections(
-                      type: 'contributions',
-                      recorded: _data['collections'],
-                      collections: (collections) =>
-                          _setCollections(collections),
+                action: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => EditCollections(
+                        type: 'contributions',
+                        recorded: _data['collections'],
+                        collections: (collection) =>
+                            _setCollections(collection, 'contributions'),
+                      ),
                     ),
-                  ),
-                ),
+                  );
+                },
                 title: "Group Contributions",
                 subtitle: _renderCollectionsText('contributions'),
                 icon: Icons.edit,
@@ -551,8 +560,8 @@ class _EditMeetingState extends State<EditMeeting> {
                     builder: (BuildContext context) => EditCollections(
                       type: 'repayments',
                       recorded: _data['collections'],
-                      collections: (collections) =>
-                          _setCollections(collections),
+                      collections: (collection) =>
+                          _setCollections(collection, 'repayments'),
                     ),
                   ),
                 ),
@@ -575,8 +584,8 @@ class _EditMeetingState extends State<EditMeeting> {
                     builder: (BuildContext context) => EditCollections(
                       type: 'disbursements',
                       recorded: _data['collections'],
-                      collections: (collections) =>
-                          _setCollections(collections),
+                      collections: (collection) =>
+                          _setCollections(collection, 'disbursements'),
                     ),
                   ),
                 ),
@@ -697,9 +706,9 @@ class _EditMeetingState extends State<EditMeeting> {
               summaryList("agenda") != "" ? SizedBox(height: 10.0) : SizedBox(),
               summaryTitle(text: "Collections"),
               Text(
-                "1. Group contributions: KES 13,600\n" +
-                    "2. Loan repayments: KES 31,000\n" +
-                    "3. Loan disbursements: KES 10,500",
+                "1. Group contributions: ${_getTotals('contributions')}\n" +
+                    "2. Loan repayments: ${_getTotals('repayments')}\n" +
+                    "3. Loan disbursements: ${_getTotals('disbursements')}",
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),

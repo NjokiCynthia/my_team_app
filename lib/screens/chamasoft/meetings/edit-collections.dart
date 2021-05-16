@@ -6,13 +6,14 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:dropdown_formfield/dropdown_formfield.dart';
 
 class EditCollections extends StatefulWidget {
   final String type;
-  final Map<dynamic, dynamic> recorded;
+  final Map<String, dynamic> recorded;
   final ValueChanged<dynamic> collections;
   EditCollections({
     @required this.type,
@@ -33,7 +34,8 @@ class _EditCollectionsState extends State<EditCollections> {
   List<dynamic> _groupContributions = [];
   List<dynamic> _groupLoanTypes = [];
   List<dynamic> _data = [];
-  Map<String, dynamic> _selected = {};
+  String _groupCurrency = "KES";
+  var formatter = NumberFormat('#,##,##0', "en_US");
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -44,6 +46,18 @@ class _EditCollectionsState extends State<EditCollections> {
     }
   }
 
+  Map<String, dynamic> getMember(dynamic id) {
+    return _groupMembers.where((m) => m['id'] == id).toList()[0];
+  }
+
+  Map<String, dynamic> getContribution(dynamic id) {
+    return _groupContributions.where((c) => c['id'] == id).toList()[0];
+  }
+
+  Map<String, dynamic> getLoanTypes(dynamic id) {
+    return _groupLoanTypes.where((l) => l['id'] == id).toList()[0];
+  }
+
   void _newCollectionDialog() {
     showDialog(
       context: context,
@@ -51,8 +65,28 @@ class _EditCollectionsState extends State<EditCollections> {
         return NewCollectionDialog(
           selected: (val) {
             setState(() {
-              _selected = val;
-              print(_selected);
+              // _selected = val;
+              // print(_selected);
+              Map<String, dynamic> _member = {};
+              Map<String, dynamic> _contribution = {};
+              Map<String, dynamic> _loan = {};
+              _member = getMember(val['member_id']);
+              if (val['type'] == "contributions")
+                _contribution = getContribution(val['contribution_id']);
+              else
+                _loan = getContribution(val['loan_id']);
+              // print(_member);
+              // print(_contribution);
+              // print(_loan);
+              _data.add({
+                'member': _member,
+                'contribution': _contribution,
+                'loan': _loan,
+                'type': val['type'],
+                'amount': int.parse(val['amount']),
+              });
+              widget.collections(_data);
+              print(_data);
             });
           },
           type: widget.type,
@@ -69,10 +103,12 @@ class _EditCollectionsState extends State<EditCollections> {
       _isLoading = true;
     });
     final group = Provider.of<Groups>(context, listen: false);
+    final currentGroup = group.getCurrentGroup();
     await group.fetchMembers();
     await group.fetchContributions();
     await group.fetchLoanTypes();
     setState(() {
+      _groupCurrency = currentGroup.groupCurrency;
       // Iterate group members
       group.members.forEach((m) {
         _groupMembers.add({
@@ -112,36 +148,72 @@ class _EditCollectionsState extends State<EditCollections> {
         });
         // }
       });
-      print(_groupLoanTypes);
+      _data = widget.recorded[widget.type];
       _isLoading = false;
       _isInit = false;
     });
     return true;
   }
 
+  void _removeCollectionDialog(int index) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: heading2(
+            text: "Remove $_title",
+            textAlign: TextAlign.start,
+            color: Theme.of(context).textSelectionHandleColor,
+          ),
+          content: customTitleWithWrap(
+            text:
+                "Are you sure you want to remove this ${_title.toString().toLowerCase()}?",
+            textAlign: TextAlign.start,
+            color: Theme.of(context).textSelectionHandleColor,
+            maxLines: null,
+          ),
+          actions: <Widget>[
+            negativeActionDialogButton(
+              text: "Cancel",
+              color: Theme.of(context).textSelectionHandleColor,
+              action: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+              child: customTitle(
+                text: "Yes, remove",
+                color: Colors.red,
+                fontWeight: FontWeight.w600,
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _data.removeAt(index);
+                  widget.collections(_data);
+                });
+              },
+              shape: new RoundedRectangleBorder(
+                borderRadius: new BorderRadius.circular(4.0),
+              ),
+              textColor: Colors.red,
+              color: Colors.red.withOpacity(0.15),
+            )
+          ],
+        );
+      },
+    );
+  }
+
   @override
   void initState() {
-    if (widget.type == 'contributions') {
+    if (widget.type == 'contributions')
       _title = "Group Contribution";
-      _selected = {
-        'member_id': '',
-        'amount': '',
-      };
-    } else if (widget.type == 'repayments') {
+    else if (widget.type == 'repayments')
       _title = "Loan Repayment";
-      _selected = {
-        'member_id': '',
-        'loan_id': '',
-        'amount': '',
-      };
-    } else if (widget.type == 'disbursements') {
-      _title = "Loan Disbursement";
-      _selected = {
-        'member_id': '',
-        'loan_id': '',
-        'amount': '',
-      };
-    }
+    else if (widget.type == 'disbursements') _title = "Loan Disbursement";
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     super.initState();
@@ -247,125 +319,163 @@ class _EditCollectionsState extends State<EditCollections> {
                             ),
                             itemCount: _data.length,
                             itemBuilder: (context, index) {
-                              return InkWell(
-                                onTap: () => {},
-                                child: Container(
-                                  padding:
-                                      EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
-                                  width: double.infinity,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                              left: 16.0,
-                                              right: 16.0,
+                              return Container(
+                                padding: EdgeInsets.fromLTRB(
+                                  20.0,
+                                  8.0,
+                                  0.0,
+                                  8.0,
+                                ),
+                                width: double.infinity,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            subtitle1(
+                                              text: _data[index]['member']
+                                                  ['name'],
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
+                                              textAlign: TextAlign.start,
                                             ),
-                                            child: Icon(
-                                              Icons.group,
+                                            subtitle2(
+                                              text: _data[index]['member']
+                                                  ['identity'],
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
+                                              textAlign: TextAlign.start,
+                                            ),
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                  Radius.circular(20),
+                                                ),
+                                                color: widget.type ==
+                                                        "contributions"
+                                                    ? Colors.green[700]
+                                                        .withOpacity(0.1)
+                                                    : widget.type ==
+                                                            "repayments"
+                                                        ? Colors.cyan[700]
+                                                            .withOpacity(0.1)
+                                                        : Colors.brown
+                                                            .withOpacity(0.1),
+                                              ),
+                                              padding: EdgeInsets.fromLTRB(
+                                                8.0,
+                                                2.0,
+                                                8.0,
+                                                2.0,
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                top: 6.0,
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    widget.type ==
+                                                            "contributions"
+                                                        ? _data[index]
+                                                                ['contribution']
+                                                            ['name']
+                                                        : _data[index]
+                                                                [widget.type]
+                                                            ['name'],
+                                                    style: TextStyle(
+                                                      color: widget.type ==
+                                                              "contributions"
+                                                          ? Colors.green[700]
+                                                          : widget.type ==
+                                                                  "repayments"
+                                                              ? Colors.cyan[700]
+                                                              : Colors.brown,
+                                                      fontSize: 12.0,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsets.only(right: 22.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            _groupCurrency,
+                                            style: TextStyle(
                                               color: Theme.of(context)
                                                   .textSelectionHandleColor,
                                             ),
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              subtitle2(
-                                                text: _data[index].date,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
-                                                textAlign: TextAlign.start,
-                                              ),
-                                              subtitle1(
-                                                text: _data[index].title,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor,
-                                                textAlign: TextAlign.start,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    "Members present ",
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w300,
-                                                      fontSize: 13.0,
-                                                      color: Theme.of(context)
-                                                          .textSelectionHandleColor,
-                                                      fontFamily: 'SegoeUI',
-                                                    ),
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                  Text(
-                                                    _data[index]
-                                                        .members['present']
-                                                        .length
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 13.0,
-                                                      color: Theme.of(context)
-                                                          .textSelectionHandleColor,
-                                                      fontFamily: 'SegoeUI',
-                                                    ),
-                                                    textAlign: TextAlign.start,
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
+                                          SizedBox(
+                                            width: 4.0,
+                                          ),
+                                          Text(
+                                            formatter
+                                                .format(_data[index]['amount']),
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textSelectionHandleColor,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 6.0,
+                                          ),
+                                          IconButton(
+                                            icon: Icon(
+                                              Icons.close,
+                                              color: Colors.red,
+                                              size: 18.0,
+                                            ),
+                                            onPressed: () =>
+                                                _removeCollectionDialog(index),
                                           ),
                                         ],
                                       ),
-                                      _data[index].members['synced'] == 1
-                                          ? Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 22.0),
-                                              child: Icon(
-                                                Icons.cloud_done,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor
-                                                    .withOpacity(0.7),
-                                              ),
-                                            )
-                                          : Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 12.0),
-                                              child: IconButton(
-                                                icon: Icon(
-                                                  Icons.file_upload,
-                                                  color: Colors.red[700],
-                                                ),
-                                                onPressed: () => {
-                                                  // Upload meeting
-                                                },
-                                              ),
-                                            ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               );
                             },
                           )
-                        : Container(
-                            height: MediaQuery.of(context).size.height * 0.6,
-                            // alignment: Alignment.center,
-                            child: emptyList(
-                              color: Colors.blue[400],
-                              iconData: LineAwesomeIcons.file_text,
-                              text: "There's nothing to show",
+                        : Flexible(
+                            child: Container(
+                              height: MediaQuery.of(context).size.height * 0.6,
+                              alignment: Alignment.center,
+                              child: emptyList(
+                                color: Colors.blue[400],
+                                iconData: LineAwesomeIcons.file_text,
+                                text: "There's nothing to show",
+                              ),
                             ),
                           ),
                   ],
                 );
               },
             ),
+      floatingActionButton: Visibility(
+        visible: !_isLoading,
+        child: FloatingActionButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          backgroundColor: primaryColor,
+        ),
+      ),
     );
   }
 }
@@ -411,6 +521,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         'member_id': '',
         'contribution_id': '',
         'amount': '',
+        'type': widget.type,
       };
     } else if (widget.type == 'repayments') {
       title = "Loan Repayment";
@@ -418,6 +529,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         'member_id': '',
         'loan_id': '',
         'amount': '',
+        'type': widget.type,
       };
     } else if (widget.type == 'disbursements') {
       title = "Loan Disbursement";
@@ -425,6 +537,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         'member_id': '',
         'loan_id': '',
         'amount': '',
+        'type': widget.type,
       };
     }
     super.initState();
@@ -435,9 +548,10 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
-          text: "New $title",
-          textAlign: TextAlign.start,
-          color: Theme.of(context).textSelectionHandleColor),
+        text: "New $title",
+        textAlign: TextAlign.start,
+        color: Theme.of(context).textSelectionHandleColor,
+      ),
       content: Form(
         key: _formKey,
         child: Column(
@@ -484,13 +598,11 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
               onSaved: (value) {
                 setState(() {
                   _selected['member_id'] = value;
-                  widget.selected(_selected);
                 });
               },
               onChanged: (value) {
                 setState(() {
                   _selected['member_id'] = value;
-                  widget.selected(_selected);
                 });
               },
               validator: (value) {
@@ -516,13 +628,11 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     onSaved: (value) {
                       setState(() {
                         _selected['contribution_id'] = value;
-                        widget.selected(_selected);
                       });
                     },
                     onChanged: (value) {
                       setState(() {
                         _selected['contribution_id'] = value;
-                        widget.selected(_selected);
                       });
                     },
                     validator: (value) {
@@ -549,13 +659,11 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     onSaved: (value) {
                       setState(() {
                         _selected['loan_id'] = value;
-                        widget.selected(_selected);
                       });
                     },
                     onChanged: (value) {
                       setState(() {
                         _selected['loan_id'] = value;
-                        widget.selected(_selected);
                       });
                     },
                     validator: (value) {
@@ -574,7 +682,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                 else {
                   setState(() {
                     _selected['amount'] = val;
-                    widget.selected(_selected);
                   });
                   return null;
                 }
@@ -590,11 +697,12 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       ),
       actions: <Widget>[
         negativeActionDialogButton(
-            text: "Cancel",
-            color: Theme.of(context).textSelectionHandleColor,
-            action: () {
-              Navigator.of(context).pop();
-            }),
+          text: "Cancel",
+          color: Theme.of(context).textSelectionHandleColor,
+          action: () {
+            Navigator.of(context).pop();
+          },
+        ),
         FlatButton(
           padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
           child: customTitle(
@@ -603,7 +711,10 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
             fontWeight: FontWeight.w600,
           ),
           onPressed: () {
-            if (_formKey.currentState.validate()) Navigator.of(context).pop();
+            if (_formKey.currentState.validate()) {
+              Navigator.of(context).pop();
+              widget.selected(_selected);
+            }
           },
           shape: new RoundedRectangleBorder(
             borderRadius: new BorderRadius.circular(4.0),
