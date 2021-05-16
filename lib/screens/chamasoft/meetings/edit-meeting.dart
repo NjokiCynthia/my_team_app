@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -19,7 +20,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 0;
+  int currentStep = 3;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -36,13 +37,24 @@ class _EditMeetingState extends State<EditMeeting> {
       'withoutApology': [],
     },
     'agenda': [],
-    'collections': {},
+    'collections': {
+      'contributions': [],
+      'repayments': [],
+      'disbursements': [],
+    },
     'aob': [],
   };
+  String _groupCurrency = "Ksh";
 
   _setMembers(dynamic members) {
     setState(() {
       _data['members'] = members;
+    });
+  }
+
+  _setCollections(dynamic collections) {
+    setState(() {
+      _data['collections'] = collections;
     });
     // print(_data);
   }
@@ -183,7 +195,6 @@ class _EditMeetingState extends State<EditMeeting> {
   String summaryList(String type) {
     String _resp = "";
     List<dynamic> _list = _data[type];
-    // if (_list.length == 0) return "N/A";
     _list.forEach((l) {
       _resp += (_list.indexOf(l) + 1).toString() +
           ". " +
@@ -294,6 +305,7 @@ class _EditMeetingState extends State<EditMeeting> {
     final group = Provider.of<Groups>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
     _data['groupId'] = currentGroup.groupId;
+    _groupCurrency = currentGroup.groupCurrency;
 
     String _renderMembersText(String type) {
       List<dynamic> _mbrs = _data['members'][type];
@@ -306,6 +318,24 @@ class _EditMeetingState extends State<EditMeeting> {
             " other members";
       else
         return "Tap to select members";
+    }
+
+    String _renderCollectionsText(String type) {
+      List<dynamic> _collections = _data['collections'][type];
+      double _total = 0;
+      String _totalAmnt = "";
+      var formatter = NumberFormat('#,##,000');
+      _collections.forEach((c) {
+        _total = _total + c['amount'];
+      });
+      _totalAmnt = _groupCurrency + " " + formatter.format(_total);
+      if (_collections.length > 1)
+        return _totalAmnt +
+            " from " +
+            (_collections.length).toString() +
+            " members";
+      else
+        return "Tap to manage " + type;
     }
 
     steps = [
@@ -492,9 +522,18 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () {},
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => EditCollections(
+                      type: 'contributions',
+                      recorded: _data['collections'],
+                      collections: (collections) =>
+                          _setCollections(collections),
+                    ),
+                  ),
+                ),
                 title: "Group Contributions",
-                subtitle: "KES 13,600 contributed by 18 members",
+                subtitle: _renderCollectionsText('contributions'),
                 icon: Icons.edit,
                 color: Colors.green[700],
               ),
@@ -507,9 +546,18 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () {},
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => EditCollections(
+                      type: 'repayments',
+                      recorded: _data['collections'],
+                      collections: (collections) =>
+                          _setCollections(collections),
+                    ),
+                  ),
+                ),
                 title: "Loan Repayments",
-                subtitle: "KES 31,000 repaid by 3 members",
+                subtitle: _renderCollectionsText('repayments'),
                 icon: Icons.edit,
                 color: Colors.cyan[700],
               ),
@@ -522,9 +570,18 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () {},
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => EditCollections(
+                      type: 'disbursements',
+                      recorded: _data['collections'],
+                      collections: (collections) =>
+                          _setCollections(collections),
+                    ),
+                  ),
+                ),
                 title: "Loan Disbursements",
-                subtitle: "KES 10,500 disbursed to 4 members",
+                subtitle: _renderCollectionsText('disbursements'),
                 icon: Icons.edit,
                 color: Colors.brown,
               ),
@@ -668,7 +725,7 @@ class _EditMeetingState extends State<EditMeeting> {
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
-        leadingIcon: LineAwesomeIcons.close,
+        leadingIcon: LineAwesomeIcons.arrow_left,
         title: "New Meeting",
       ),
       body: Builder(
