@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -45,6 +48,7 @@ class _EditMeetingState extends State<EditMeeting> {
     'aob': [],
   };
   String _groupCurrency = "Ksh";
+  bool _saving = false;
 
   _setMembers(dynamic members) {
     setState(() {
@@ -74,8 +78,36 @@ class _EditMeetingState extends State<EditMeeting> {
       }
     } else {
       print(_data);
+      setState(() {
+        _saving = true;
+      });
+      saveMeeting();
       setState(() => complete = true);
     }
+  }
+
+  saveMeeting() async {
+    await insertToLocalDb(
+      DatabaseHelper.meetingsTable,
+      {
+        "group_id": _data['groupId'],
+        "title": _data['title'],
+        "venue": _data['venue'],
+        "purpose": _data['purpose'],
+        "date": _data['date'],
+        "members": jsonEncode(_data['members']),
+        "agenda": jsonEncode(_data['agenda']),
+        "collections": jsonEncode(_data['collections']),
+        "aob": jsonEncode(_data['aob']),
+        "submitted_on": 0,
+        "synced_on": 0,
+        "modified_on": DateTime.now().millisecondsSinceEpoch,
+      },
+    );
+    setState(() {
+      _saving = false;
+    });
+    Navigator.of(context).pop();
   }
 
   cancel() {
@@ -802,12 +834,43 @@ class _EditMeetingState extends State<EditMeeting> {
                         mainAxisSize: MainAxisSize.max,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
-                          defaultButton(
-                            context: context,
-                            text: currentStep == 5
-                                ? "Confirm & Submit"
-                                : "Save & Continue",
-                            onPressed: onStepContinue,
+                          RaisedButton(
+                            color: primaryColor,
+                            child: Padding(
+                              padding:
+                                  EdgeInsets.fromLTRB(20.0, 0.0, 20.0, 0.0),
+                              child: Row(
+                                children: [
+                                  Text(
+                                    currentStep == 5
+                                        ? "Confirm & Submit"
+                                        : "Save & Continue",
+                                    style: TextStyle(
+                                        fontFamily: 'SegoeUI',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  (_saving)
+                                      ? SizedBox(width: 10.0)
+                                      : SizedBox(),
+                                  (_saving)
+                                      ? SizedBox(
+                                          height: 16.0,
+                                          width: 16.0,
+                                          child: CircularProgressIndicator(
+                                            strokeWidth: 2.5,
+                                            backgroundColor: Colors.transparent,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                              Colors.grey[700],
+                                            ),
+                                          ),
+                                        )
+                                      : SizedBox(),
+                                ],
+                              ),
+                            ),
+                            textColor: Colors.white,
+                            onPressed: (!_saving) ? onStepContinue : null,
                           ),
                           SizedBox(
                             width: 20.0,
@@ -834,7 +897,7 @@ class _EditMeetingState extends State<EditMeeting> {
                                   highlightedBorderColor: Theme.of(context)
                                       .textSelectionHandleColor
                                       .withOpacity(0.6),
-                                  onPressed: onStepCancel,
+                                  onPressed: (!_saving) ? onStepCancel : null,
                                 )
                               : SizedBox(),
                         ],

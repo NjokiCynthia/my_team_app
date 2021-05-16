@@ -1,6 +1,6 @@
+import 'dart:convert';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-meeting.dart';
-import 'package:chamasoft/screens/chamasoft/models/meeting-model.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -18,7 +18,7 @@ class Meetings extends StatefulWidget {
 class _MeetingsState extends State<Meetings> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
-  List<MeetingModel> meetings = [];
+  List<dynamic> meetings = [];
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -49,28 +49,26 @@ class _MeetingsState extends State<Meetings> {
       "group_id",
       [groupId],
     );
-    for (int i = 0; i < _localData.length; i++) {
-      MeetingModel _meeting;
-      _meeting.groupId = _localData[i]['groupId'];
-      _meeting.title = _localData[i]['title'];
-      _meeting.venue = _localData[i]['venue'];
-      _meeting.purpose = _localData[i]['purpose'];
-      _meeting.date = _localData[i]['date'];
-      _meeting.members = _localData[i]['members'];
-      _meeting.agenda = _localData[i]['agenda'];
-      _meeting.collections = _localData[i]['collections'];
-      _meeting.aob = _localData[i]['aob'];
-      _meeting.synced = _localData[i]['synced'];
+    _localData.forEach((d) {
+      Map<String, dynamic> _meeting = {};
+      _meeting['groupId'] = (d['group_id']).toString();
+      _meeting['title'] = d['title'];
+      _meeting['venue'] = d['venue'];
+      _meeting['purpose'] = d['purpose'];
+      _meeting['date'] = d['date'];
+      _meeting['members'] = jsonDecode(d['members']);
+      _meeting['agenda'] = jsonDecode(d['agenda']);
+      _meeting['collections'] = jsonDecode(d['collections']);
+      _meeting['aob'] = jsonDecode(d['aob']);
+      _meeting['synced'] = d['synced'];
       meetings.add(_meeting);
-    }
-    print(meetings);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context);
     final currentGroup = group.getCurrentGroup();
-    getLocalMeetings(currentGroup.groupId);
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -182,13 +180,13 @@ class _MeetingsState extends State<Meetings> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           subtitle2(
-                                            text: meetings[index].date,
+                                            text: meetings[index]['date'],
                                             color: Theme.of(context)
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start,
                                           ),
                                           subtitle1(
-                                            text: meetings[index].title,
+                                            text: meetings[index]['title'],
                                             color: Theme.of(context)
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start,
@@ -207,8 +205,8 @@ class _MeetingsState extends State<Meetings> {
                                                 textAlign: TextAlign.start,
                                               ),
                                               Text(
-                                                meetings[index]
-                                                    .members['present']
+                                                meetings[index]['members']
+                                                        ['present']
                                                     .length
                                                     .toString(),
                                                 style: TextStyle(
@@ -226,7 +224,7 @@ class _MeetingsState extends State<Meetings> {
                                       ),
                                     ],
                                   ),
-                                  meetings[index].members['synced'] == 1
+                                  meetings[index]['members']['synced'] == 1
                                       ? Padding(
                                           padding: EdgeInsets.only(right: 22.0),
                                           child: Icon(
