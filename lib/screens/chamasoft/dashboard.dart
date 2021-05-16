@@ -155,37 +155,37 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           elevation: _appBarElevation,
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.credit_card,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  ),
-                  onPressed: () => {
-                    _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => Wallet(),
-                      ),
-                    ),
-                  },
-                ),
-                Positioned(
-                  top: 12,
-                  right: 6,
-                  child: Container(
-                    width: 12.0,
-                    height: 12.0,
-                    decoration: new BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            // Stack(
+            //   alignment: Alignment.center,
+            //   children: [
+            //     IconButton(
+            //       icon: Icon(
+            //         Icons.credit_card,
+            //         color: Theme.of(context).textSelectionHandleColor,
+            //       ),
+            //       onPressed: () => {
+            //         _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+            //         Navigator.of(context).push(
+            //           MaterialPageRoute(
+            //             builder: (BuildContext context) => Wallet(),
+            //           ),
+            //         ),
+            //       },
+            //     ),
+            //     Positioned(
+            //       top: 12,
+            //       right: 6,
+            //       child: Container(
+            //         width: 12.0,
+            //         height: 12.0,
+            //         decoration: new BoxDecoration(
+            //           color: Colors.blue,
+            //           shape: BoxShape.circle,
+            //         ),
+            //       ),
+            //     ),
+            //   ],
+            // ),
             IconButton(
               icon: Icon(
                 Icons.notifications_off,

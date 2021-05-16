@@ -492,147 +492,147 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             //     ],
                             //   ),
                             // ),
+                            // Padding(
+                            //   padding: EdgeInsets.fromLTRB(
+                            //     16.0,
+                            //     20.0,
+                            //     16.0,
+                            //     0.0,
+                            //   ),
+                            //   child: Container(
+                            //     padding: EdgeInsets.all(16.0),
+                            //     decoration: cardDecoration(
+                            //       gradient: plainCardGradient(context),
+                            //       context: context,
+                            //     ),
+                            //     child: Column(
+                            //       mainAxisSize: MainAxisSize.min,
+                            //       children: <Widget>[
+                            //         Row(
+                            //           mainAxisAlignment:
+                            //               MainAxisAlignment.spaceBetween,
+                            //           children: <Widget>[
+                            //             Column(
+                            //               crossAxisAlignment:
+                            //                   CrossAxisAlignment.start,
+                            //               children: [
+                            //                 Text(
+                            //                   "Wallet Balance",
+                            //                   style: TextStyle(
+                            //                     color: Colors.blueGrey[400],
+                            //                     fontFamily: 'SegoeUI',
+                            //                     fontSize: 16.0,
+                            //                     fontWeight: FontWeight.w600,
+                            //                   ),
+                            //                   textAlign: TextAlign.start,
+                            //                 ),
+                            //                 Row(
+                            //                   children: [
+                            //                     Text(
+                            //                       "KES",
+                            //                       style: TextStyle(
+                            //                         color: Colors.blueGrey[400],
+                            //                         fontFamily: 'SegoeUI',
+                            //                         fontSize: 32.0,
+                            //                         fontWeight: FontWeight.w300,
+                            //                       ),
+                            //                       textAlign: TextAlign.start,
+                            //                     ),
+                            //                     SizedBox(width: 6.0),
+                            //                     Text(
+                            //                       "12,390",
+                            //                       style: TextStyle(
+                            //                         color: Colors.blueGrey[400],
+                            //                         fontFamily: 'SegoeUI',
+                            //                         fontSize: 32.0,
+                            //                         fontWeight: FontWeight.w600,
+                            //                       ),
+                            //                       textAlign: TextAlign.start,
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //                 SizedBox(height: 12.0),
+                            //                 SizedBox(
+                            //                   height: 32.0,
+                            //                   child: LineChart(
+                            //                     eWalletTrend(),
+                            //                   ),
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //             Column(
+                            //               crossAxisAlignment:
+                            //                   CrossAxisAlignment.end,
+                            //               children: [
+                            //                 Text(
+                            //                   "Deposits",
+                            //                   style: TextStyle(
+                            //                     color: Colors.blueGrey[400],
+                            //                     fontFamily: 'SegoeUI',
+                            //                     fontSize: 12.0,
+                            //                     fontWeight: FontWeight.w300,
+                            //                   ),
+                            //                   textAlign: TextAlign.start,
+                            //                 ),
+                            //                 Row(
+                            //                   children: [
+                            //                     Icon(
+                            //                       Icons.arrow_drop_down_sharp,
+                            //                       color: Colors.red,
+                            //                     ),
+                            //                     Text(
+                            //                       "0.92%",
+                            //                       style: TextStyle(
+                            //                         color: Colors.blueGrey[400],
+                            //                         fontFamily: 'SegoeUI',
+                            //                         fontSize: 12.0,
+                            //                         fontWeight: FontWeight.w600,
+                            //                       ),
+                            //                       textAlign: TextAlign.start,
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //                 SizedBox(height: 12.0),
+                            //                 Text(
+                            //                   "Withdrawals",
+                            //                   style: TextStyle(
+                            //                     color: Colors.blueGrey[400],
+                            //                     fontFamily: 'SegoeUI',
+                            //                     fontSize: 12.0,
+                            //                     fontWeight: FontWeight.w300,
+                            //                   ),
+                            //                   textAlign: TextAlign.start,
+                            //                 ),
+                            //                 Row(
+                            //                   children: [
+                            //                     Icon(
+                            //                       Icons.arrow_drop_up_sharp,
+                            //                       color: Colors.green,
+                            //                     ),
+                            //                     Text(
+                            //                       "1.2%",
+                            //                       style: TextStyle(
+                            //                         color: Colors.blueGrey[400],
+                            //                         fontFamily: 'SegoeUI',
+                            //                         fontSize: 12.0,
+                            //                         fontWeight: FontWeight.w600,
+                            //                       ),
+                            //                       textAlign: TextAlign.start,
+                            //                     ),
+                            //                   ],
+                            //                 ),
+                            //               ],
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ],
+                            //     ),
+                            //   ),
+                            // ),
                             Padding(
                               padding: EdgeInsets.fromLTRB(
-                                16.0,
                                 20.0,
-                                16.0,
-                                0.0,
-                              ),
-                              child: Container(
-                                padding: EdgeInsets.all(16.0),
-                                decoration: cardDecoration(
-                                  gradient: plainCardGradient(context),
-                                  context: context,
-                                ),
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: <Widget>[
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Wallet Balance",
-                                              style: TextStyle(
-                                                color: Colors.blueGrey[400],
-                                                fontFamily: 'SegoeUI',
-                                                fontSize: 16.0,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  "KES",
-                                                  style: TextStyle(
-                                                    color: Colors.blueGrey[400],
-                                                    fontFamily: 'SegoeUI',
-                                                    fontSize: 32.0,
-                                                    fontWeight: FontWeight.w300,
-                                                  ),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                                SizedBox(width: 6.0),
-                                                Text(
-                                                  "12,390",
-                                                  style: TextStyle(
-                                                    color: Colors.blueGrey[400],
-                                                    fontFamily: 'SegoeUI',
-                                                    fontSize: 32.0,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 12.0),
-                                            SizedBox(
-                                              height: 32.0,
-                                              child: LineChart(
-                                                eWalletTrend(),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text(
-                                              "Deposits",
-                                              style: TextStyle(
-                                                color: Colors.blueGrey[400],
-                                                fontFamily: 'SegoeUI',
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.arrow_drop_down_sharp,
-                                                  color: Colors.red,
-                                                ),
-                                                Text(
-                                                  "0.92%",
-                                                  style: TextStyle(
-                                                    color: Colors.blueGrey[400],
-                                                    fontFamily: 'SegoeUI',
-                                                    fontSize: 12.0,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 12.0),
-                                            Text(
-                                              "Withdrawals",
-                                              style: TextStyle(
-                                                color: Colors.blueGrey[400],
-                                                fontFamily: 'SegoeUI',
-                                                fontSize: 12.0,
-                                                fontWeight: FontWeight.w300,
-                                              ),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            Row(
-                                              children: [
-                                                Icon(
-                                                  Icons.arrow_drop_up_sharp,
-                                                  color: Colors.green,
-                                                ),
-                                                Text(
-                                                  "1.2%",
-                                                  style: TextStyle(
-                                                    color: Colors.blueGrey[400],
-                                                    fontFamily: 'SegoeUI',
-                                                    fontSize: 12.0,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                  textAlign: TextAlign.start,
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(
                                 20.0,
-                                10.0,
                                 16.0,
                                 0.0,
                               ),
