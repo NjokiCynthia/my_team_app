@@ -254,10 +254,14 @@ class _MeetingsState extends State<Meetings> {
                           );
                         },
                       )
-                    : emptyList(
-                        color: Colors.blue[400],
-                        iconData: LineAwesomeIcons.file_text,
-                        text: "There are no meetings to show",
+                    : Container(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        // alignment: Alignment.center,
+                        child: emptyList(
+                          color: Colors.blue[400],
+                          iconData: LineAwesomeIcons.file_text,
+                          text: "There are no meetings to show",
+                        ),
                       ),
               ),
             ],
