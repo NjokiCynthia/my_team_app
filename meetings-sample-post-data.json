@@ -1,0 +1,103 @@
+{
+    "groupId": 9199,
+    "title": "Some meeting title here",
+    "venue": "Kasarani, Mwiki",
+    "purpose": "Some purpose goes here",
+    "date": "2021-05-16 14:19",
+    "members": {
+        "present": [
+            {
+                "id": 37880,
+                "name": "Aggrey Koros",
+                "identity": "aggreykoro04@gmail.com",
+                "avatar": "cropped1040863585.jpg",
+                "userId": 13403
+            },
+            {
+                "id": 37878,
+                "name": "Brian Mwangi",
+                "identity": "254716592266",
+                "avatar": "brianmwangi4930831604300992.jpeg",
+                "userId": 31486
+            },
+            {
+                "id": 37882,
+                "name": "Geoffrey Githaiga",
+                "identity": "githaiga.geoffrey@gmail.com",
+                "avatar": "geoffreygithaiga67921599819824.jpeg",
+                "userId": 6792
+            }
+        ],
+        "withApology": [
+            {
+                "id": 39398,
+                "name": "Ian Muriithi",
+                "identity": "ian.muriithi@digitalvision.co.ke",
+                "avatar": null,
+                "userId": 34412
+            },
+            {
+                "id": 37884,
+                "name": "Lucy Muthoni",
+                "identity": "lucy.muthoni@digitalvision.co.ke",
+                "avatar": null,
+                "userId": 4843
+            },
+            {
+                "id": 37879,
+                "name": "Martha Adhiambo",
+                "identity": "marthaadhiambo10@gmail.com",
+                "avatar": null,
+                "userId": 32867
+            }
+        ],
+        "withoutApology": [
+            {
+                "id": 37881,
+                "name": "Martin Nzuki",
+                "identity": "martin.nzuki@digitalvision.co.ke",
+                "avatar": "cropped979045728.jpg",
+                "userId": 14413
+            },
+            {
+                "id": 38299,
+                "name": "Martin Njuguna",
+                "identity": "martin@digitalvision.co.ke",
+                "avatar": "cropped2856320694205963000.jpg",
+                "userId": 407
+            }
+        ]
+    },
+    "agenda": [
+        "Some agenda here",
+        "some more agenda"
+    ],
+    "collections": {
+        "contributions": [
+            {
+                "type": "contributions",
+                "amount": 2000,
+                "member": {
+                    "id": 37881,
+                    "name": "Martin Nzuki",
+                    "identity": "martin.nzuki@digitalvision.co.ke",
+                    "avatar": "cropped979045728.jpg",
+                    "userId": 14413
+                },
+                "contribution": {
+                    "id": 5589,
+                    "name": "Welfare Contribution",
+                    "amount": 500,
+                    "type": "Regular Contribution",
+                },
+                "loan": {}
+            }
+        ],
+        "repayments": [],
+        "disbursements": []
+    },
+    "aob": [
+        "Some AOB here",
+        "Another AOB here, Another",
+    ]
+}

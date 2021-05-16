@@ -20,7 +20,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 3;
+  int currentStep = 0;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -67,13 +67,13 @@ class _EditMeetingState extends State<EditMeeting> {
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
-          print(_data);
           goTo(1);
         }
       } else {
         goTo(currentStep + 1);
       }
     } else {
+      print(_data);
       setState(() => complete = true);
     }
   }

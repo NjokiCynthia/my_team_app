@@ -1840,7 +1840,7 @@ class Groups with ChangeNotifier {
             });
             _members = []; //clear
             addGroups(rows);
-            print(rows);
+            // print(rows);
           }
           //=== END: OFFLINE PLUG
         } else {
@@ -1853,7 +1853,7 @@ class Groups with ChangeNotifier {
       if (error.status == ErrorStatusCode.statusNoInternet) {
         //=== BEGIN: OFFLINE PLUG
         dynamic _localData = await getLocalMembers(_currentGroupId);
-        print(_localData);
+        // print(_localData);
         if (_localData['value'].length > 0) {
           List<dynamic> rows = [];
           final _tempMembers = _localData['value'] as List<dynamic>;
@@ -1868,7 +1868,7 @@ class Groups with ChangeNotifier {
           });
           _members = []; //clear
           addGroups(rows);
-          print(rows);
+          // print(rows);
         }
         //=== END: OFFLINE PLUG
       } else {
