@@ -33,6 +33,8 @@ class _EditCollectionsState extends State<EditCollections> {
   List<dynamic> _groupMembers = [];
   List<dynamic> _groupContributions = [];
   List<dynamic> _groupLoanTypes = [];
+  List<dynamic> _groupAccounts = [];
+  List<dynamic> _groupFineCategories = [];
   List<dynamic> _data = [];
   String _groupCurrency = "KES";
   var formatter = NumberFormat('#,##,##0', "en_US");
@@ -70,9 +72,12 @@ class _EditCollectionsState extends State<EditCollections> {
               Map<String, dynamic> _member = {};
               Map<String, dynamic> _contribution = {};
               Map<String, dynamic> _loan = {};
+              Map<String, dynamic> _fine = {};
               _member = getMember(val['member_id']);
               if (val['type'] == "contributions")
                 _contribution = getContribution(val['contribution_id']);
+              else if (val['type'] == "fines")
+                _fine = getContribution(val['fine_id']);
               else
                 _loan = getContribution(val['loan_id']);
               // print(_member);
@@ -83,6 +88,8 @@ class _EditCollectionsState extends State<EditCollections> {
                 'contribution': _contribution,
                 'loan': _loan,
                 'type': val['type'],
+                'fine': _fine,
+                'account': val['account_id'],
                 'amount': int.parse(val['amount']),
               });
               widget.collections(_data);
@@ -93,6 +100,8 @@ class _EditCollectionsState extends State<EditCollections> {
           groupMembers: _groupMembers,
           groupContributions: _groupContributions,
           groupLoans: _groupLoanTypes,
+          groupAccounts: _groupAccounts,
+          groupFines: _groupFineCategories,
         );
       },
     );
@@ -104,11 +113,33 @@ class _EditCollectionsState extends State<EditCollections> {
     });
     final group = Provider.of<Groups>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
-    await group.fetchMembers();
-    await group.fetchContributions();
-    await group.fetchLoanTypes();
+    // await group.fetchMembers();
+    // await group.fetchContributions();
+    // await group.fetchLoanTypes();
+    // await group.fetchAccounts();
+    List<dynamic> _fineCats = await group.fetchFineCategories();
     setState(() {
+      _groupFineCategories = _fineCats;
+      print(_groupFineCategories);
       _groupCurrency = currentGroup.groupCurrency;
+      List<dynamic> _accs = group.allAccounts;
+      _accs.forEach((a) {
+        List<dynamic> _bccs = a;
+        _bccs.forEach((b) {
+          String prefix = "";
+          if (b.typeId == 1)
+            prefix = "bank";
+          else if (b.typeId == 2)
+            prefix = "sacco";
+          else if (b.typeId == 3)
+            prefix = "mobile";
+          else if (b.typeId == 4) prefix = "petty";
+          _groupAccounts.add({
+            'id': prefix + "-" + (b.id).toString(),
+            'name': b.name,
+          });
+        });
+      });
       // Iterate group members
       group.members.forEach((m) {
         _groupMembers.add({
@@ -116,7 +147,7 @@ class _EditCollectionsState extends State<EditCollections> {
           'name': m.name,
           'identity': m.identity,
           'avatar': m.avatar,
-          'userId': m.userId,
+          'user_id': m.userId,
         });
       });
       // Iterate group contributions
@@ -485,12 +516,16 @@ class NewCollectionDialog extends StatefulWidget {
   final List<dynamic> groupMembers;
   final List<dynamic> groupContributions;
   final List<dynamic> groupLoans;
+  final List<dynamic> groupAccounts;
+  final List<dynamic> groupFines;
   final ValueChanged<dynamic> selected;
   NewCollectionDialog({
     @required this.type,
     @required this.groupMembers,
     @required this.groupContributions,
     @required this.groupLoans,
+    @required this.groupAccounts,
+    @required this.groupFines,
     @required this.selected,
   });
   @override
@@ -520,6 +555,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       _selected = {
         'member_id': '',
         'contribution_id': '',
+        'account_id': '',
         'amount': '',
         'type': widget.type,
       };
@@ -528,6 +564,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       _selected = {
         'member_id': '',
         'loan_id': '',
+        'account_id': '',
         'amount': '',
         'type': widget.type,
       };
@@ -536,6 +573,16 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       _selected = {
         'member_id': '',
         'loan_id': '',
+        'account_id': '',
+        'amount': '',
+        'type': widget.type,
+      };
+    } else if (widget.type == 'fines') {
+      title = "Fine Payment";
+      _selected = {
+        'member_id': '',
+        'fine_id': '',
+        'account_id': '',
         'amount': '',
         'type': widget.type,
       };
@@ -674,6 +721,62 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     },
                   )
                 : SizedBox(),
+            SizedBox(height: 20.0),
+            widget.type == "fines"
+                ? DropDownFormField(
+                    titleText: 'Fine Category',
+                    hintText: 'Select group fine category',
+                    dataSource: widget.groupFines,
+                    textField: 'name',
+                    valueField: 'id',
+                    filled: false,
+                    contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                    value: _selected['fine_id'],
+                    onSaved: (value) {
+                      setState(() {
+                        _selected['fine_id'] = value;
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _selected['fine_id'] = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null)
+                        return "Fine category is required";
+                      else
+                        return null;
+                    },
+                  )
+                : SizedBox(),
+            SizedBox(height: 20.0),
+            DropDownFormField(
+              titleText: 'Group Account',
+              hintText: 'Select group account',
+              dataSource: widget.groupAccounts,
+              textField: 'name',
+              valueField: 'id',
+              filled: false,
+              contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+              value: _selected['account_id'],
+              onSaved: (value) {
+                setState(() {
+                  _selected['account_id'] = value;
+                });
+              },
+              onChanged: (value) {
+                setState(() {
+                  _selected['account_id'] = value;
+                });
+              },
+              validator: (value) {
+                if (value == null)
+                  return "Account is required";
+                else
+                  return null;
+              },
+            ),
             SizedBox(height: 20.0),
             TextFormField(
               validator: (val) {

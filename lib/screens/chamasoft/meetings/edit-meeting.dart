@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
@@ -23,7 +24,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 0;
+  int currentStep = 1;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -38,12 +39,14 @@ class _EditMeetingState extends State<EditMeeting> {
       'present': [],
       'withApology': [],
       'withoutApology': [],
+      'late': [],
     },
     'agenda': [],
     'collections': {
       'contributions': [],
       'repayments': [],
       'disbursements': [],
+      'fines': [],
     },
     'aob': [],
   };
@@ -60,7 +63,9 @@ class _EditMeetingState extends State<EditMeeting> {
     setState(() {
       _data['collections'][type] = collection;
     });
-    print(_data);
+    _data.forEach((final String key, final dynamic value) {
+      print({'$key': '$value'});
+    });
   }
 
   goTo(int step) {
@@ -90,7 +95,8 @@ class _EditMeetingState extends State<EditMeeting> {
     await insertToLocalDb(
       DatabaseHelper.meetingsTable,
       {
-        "group_id": _data['groupId'],
+        "group_id": _data['group_id'],
+        "user_id": _data['user_id'],
         "title": _data['title'],
         "venue": _data['venue'],
         "purpose": _data['purpose'],
@@ -335,8 +341,10 @@ class _EditMeetingState extends State<EditMeeting> {
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false);
+    final auth = Provider.of<Auth>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
-    _data['groupId'] = currentGroup.groupId;
+    _data['group_id'] = currentGroup.groupId;
+    _data['user_id'] = auth.id;
     _groupCurrency = currentGroup.groupCurrency;
     var formatter = NumberFormat('#,##,##0', "en_US");
 
@@ -450,6 +458,27 @@ class _EditMeetingState extends State<EditMeeting> {
                 subtitle: _renderMembersText("present"),
                 icon: Icons.edit,
                 color: Colors.green,
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              color: Colors.cyan.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => SelectMembers(
+                      type: 'late',
+                      selected: _data['members'],
+                      members: (membrs) => _setMembers(membrs),
+                    ),
+                  ),
+                ),
+                title: "Members late",
+                subtitle: _renderMembersText("late"),
+                icon: Icons.edit,
+                color: Colors.cyan,
               ),
             ),
             SizedBox(height: 10.0),
@@ -626,6 +655,33 @@ class _EditMeetingState extends State<EditMeeting> {
                 icon: Icons.edit,
                 color: Colors.brown,
               ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Container(
+              color: Colors.red[700].withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => EditCollections(
+                      type: 'fines',
+                      recorded: _data['collections'],
+                      collections: (collection) =>
+                          _setCollections(collection, 'fines'),
+                    ),
+                  ),
+                ),
+                title: "Fine Payments",
+                subtitle: _renderCollectionsText('fines'),
+                icon: Icons.edit,
+                color: Colors.red[700],
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
             ),
           ],
         ),

@@ -55,10 +55,12 @@ class _SelectMembersState extends State<SelectMembers> {
     _getOtherTypes().forEach((type) {
       count = count + _members[type].length;
       String _type = (type == "present")
-          ? "present"
+          ? "are present"
           : (type == "withApology")
               ? "are absent with apology"
-              : "are absent without apology";
+              : (type == "late")
+                  ? "are late"
+                  : "are absent without apology";
       if (_members[type].length == 1)
         _tmpMbrs.add(subtitle2(
           text: "1 member " + _type,
@@ -97,7 +99,7 @@ class _SelectMembersState extends State<SelectMembers> {
       _isLoading = true;
     });
     final group = Provider.of<Groups>(context, listen: false);
-    await group.fetchMembers();
+    // await group.fetchMembers();
     dynamic _members = widget.selected;
     List<dynamic> _tmpMbrs = [];
     _getOtherTypes().forEach((type) {
@@ -112,7 +114,7 @@ class _SelectMembersState extends State<SelectMembers> {
             'name': m.name,
             'identity': m.identity,
             'avatar': m.avatar,
-            'userId': m.userId,
+            'user_id': m.userId,
             'isCheck': _isSelected(m.id),
           });
         }
@@ -125,18 +127,22 @@ class _SelectMembersState extends State<SelectMembers> {
 
   List<String> _getOtherTypes() {
     if (widget.type == 'present')
-      return ['withApology', 'withoutApology'];
+      return ['withApology', 'withoutApology', 'late'];
     else if (widget.type == 'with-apology')
-      return ['withoutApology', 'present'];
+      return ['withoutApology', 'present', 'late'];
+    else if (widget.type == 'late')
+      return ['withoutApology', 'withApology', 'present'];
     else if (widget.type == 'without-apology')
-      return ['withApology', 'present'];
+      return ['withApology', 'present', 'late'];
     else
-      return ['present', 'withApology', 'withoutApology'];
+      return ['present', 'withApology', 'withoutApology', 'late'];
   }
 
   String _getType() {
     if (widget.type == 'present')
       return 'present';
+    else if (widget.type == 'late')
+      return 'late';
     else if (widget.type == 'with-apology')
       return 'withApology';
     else if (widget.type == 'without-apology')
@@ -178,6 +184,7 @@ class _SelectMembersState extends State<SelectMembers> {
                 Navigator.of(context).pop();
                 widget.members({
                   'present': [],
+                  'late': [],
                   'withApology': [],
                   'withoutApology': [],
                 });
@@ -199,6 +206,8 @@ class _SelectMembersState extends State<SelectMembers> {
   void initState() {
     if (_getType() == 'present')
       _title = "Members Present";
+    else if (_getType() == 'late')
+      _title = "Late Members";
     else if (_getType() == 'withApology')
       _title = "Absent With Apology";
     else if (_getType() == 'withoutApology') _title = "Absent Without Apology";
@@ -402,7 +411,7 @@ class _SelectMembersState extends State<SelectMembers> {
                       'name': m['name'],
                       'identity': m['identity'],
                       'avatar': m['avatar'],
-                      'userId': m['userId'],
+                      'user_id': m['user_id'],
                     });
                   }
                 });

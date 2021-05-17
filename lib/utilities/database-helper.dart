@@ -61,6 +61,7 @@ class DatabaseHelper {
             CREATE TABLE IF NOT EXISTS $meetingsTable (
               id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
+              user_id INTEGER NOT NULL,
               title TEXT NOT NULL DEFAULT '',
               venue TEXT NOT NULL DEFAULT '',
               purpose TEXT NOT NULL DEFAULT '',

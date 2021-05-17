@@ -461,9 +461,7 @@ class EndpointUrl {
 
   //Meetings
   static const String GET_MEETINGS =
-      CustomHelper.baseUrl + "/mobile/group_meetings/list";
+      CustomHelper.baseUrl + "/mobile/meetings/get_group_meetings";
   static const String CREATE_MEETING =
-      CustomHelper.baseUrl + "/mobile/group_meetings/create";
-  static const String EDIT_MEETING =
-      CustomHelper.baseUrl + "/mobile/group_meetings/edit";
+      CustomHelper.baseUrl + "/mobile/meetings/create_group_meeting";
 }

@@ -718,10 +718,11 @@ class Groups with ChangeNotifier {
       for (var bankAccountJSON in groupBankAccounts) {
         ++position;
         final newAccount = Account(
-            id: bankAccountJSON['id'].toString(),
-            name: bankAccountJSON['name'].toString(),
-            uniqueId: position,
-            typeId: accountType);
+          id: bankAccountJSON['id'].toString(),
+          name: bankAccountJSON['name'].toString(),
+          uniqueId: position,
+          typeId: accountType,
+        );
         bankAccounts.add(newAccount);
         _accounts.add(newAccount);
       }
@@ -2935,6 +2936,30 @@ class Groups with ChangeNotifier {
           }
         }
         return null;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<dynamic> fetchFineCategories() async {
+    const url = EndpointUrl.GET_GROUP_FINE_CATEGORIES_LIST;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final groupFineCategories =
+            response['fine_categories'] as List<dynamic>;
+        return groupFineCategories;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
