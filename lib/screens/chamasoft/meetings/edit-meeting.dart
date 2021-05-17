@@ -24,7 +24,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  int currentStep = 1;
+  int currentStep = 0;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -796,7 +796,8 @@ class _EditMeetingState extends State<EditMeeting> {
               Text(
                 "1. Group contributions: ${_getTotals('contributions')}\n" +
                     "2. Loan repayments: ${_getTotals('repayments')}\n" +
-                    "3. Loan disbursements: ${_getTotals('disbursements')}",
+                    "3. Loan disbursements: ${_getTotals('disbursements')}\n" +
+                    "4. Fine payments: ${_getTotals('fines')}",
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),

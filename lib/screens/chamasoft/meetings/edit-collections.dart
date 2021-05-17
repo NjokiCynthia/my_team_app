@@ -56,6 +56,10 @@ class _EditCollectionsState extends State<EditCollections> {
     return _groupContributions.where((c) => c['id'] == id).toList()[0];
   }
 
+  Map<String, dynamic> getFine(dynamic id) {
+    return _groupFineCategories.where((f) => f['id'] == id).toList()[0];
+  }
+
   Map<String, dynamic> getLoanTypes(dynamic id) {
     return _groupLoanTypes.where((l) => l['id'] == id).toList()[0];
   }
@@ -67,8 +71,8 @@ class _EditCollectionsState extends State<EditCollections> {
         return NewCollectionDialog(
           selected: (val) {
             setState(() {
-              // _selected = val;
-              // print(_selected);
+              // print("val >>>> ");
+              // print(val);
               Map<String, dynamic> _member = {};
               Map<String, dynamic> _contribution = {};
               Map<String, dynamic> _loan = {};
@@ -77,23 +81,21 @@ class _EditCollectionsState extends State<EditCollections> {
               if (val['type'] == "contributions")
                 _contribution = getContribution(val['contribution_id']);
               else if (val['type'] == "fines")
-                _fine = getContribution(val['fine_id']);
+                _fine = getFine(val['fine_id']);
               else
-                _loan = getContribution(val['loan_id']);
+                _loan = getLoanTypes(val['loan_id']);
               // print(_member);
-              // print(_contribution);
-              // print(_loan);
               _data.add({
                 'member': _member,
                 'contribution': _contribution,
                 'loan': _loan,
                 'type': val['type'],
-                'fine': _fine,
+                'fines': _fine,
                 'account': val['account_id'],
                 'amount': int.parse(val['amount']),
               });
               widget.collections(_data);
-              print(_data);
+              // print(_data);
             });
           },
           type: widget.type,
@@ -180,6 +182,7 @@ class _EditCollectionsState extends State<EditCollections> {
         // }
       });
       _data = widget.recorded[widget.type];
+      print(_data);
       _isLoading = false;
       _isInit = false;
     });
