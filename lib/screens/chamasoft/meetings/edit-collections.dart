@@ -400,8 +400,13 @@ class _EditCollectionsState extends State<EditCollections> {
                                                             "repayments"
                                                         ? Colors.cyan[700]
                                                             .withOpacity(0.1)
-                                                        : Colors.brown
-                                                            .withOpacity(0.1),
+                                                        : widget.type == "fines"
+                                                            ? Colors.red[700]
+                                                                .withOpacity(
+                                                                    0.1)
+                                                            : Colors.brown
+                                                                .withOpacity(
+                                                                    0.1),
                                               ),
                                               padding: EdgeInsets.fromLTRB(
                                                 8.0,
@@ -430,7 +435,12 @@ class _EditCollectionsState extends State<EditCollections> {
                                                           : widget.type ==
                                                                   "repayments"
                                                               ? Colors.cyan[700]
-                                                              : Colors.brown,
+                                                              : widget.type ==
+                                                                      "fines"
+                                                                  ? Colors
+                                                                      .red[700]
+                                                                  : Colors
+                                                                      .brown,
                                                       fontSize: 12.0,
                                                     ),
                                                   ),

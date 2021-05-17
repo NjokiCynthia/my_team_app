@@ -110,11 +110,13 @@ class _MeetingsState extends State<Meetings> {
                 Icons.add,
                 color: Theme.of(context).textSelectionHandleColor,
               ),
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => EditMeeting(),
-                ),
-              ),
+              onPressed: _isLoading
+                  ? null
+                  : () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => EditMeeting(),
+                        ),
+                      ),
             ),
           ),
         ],
@@ -287,13 +289,16 @@ class _MeetingsState extends State<Meetings> {
                                 );
                               },
                             )
-                          : Container(
-                              height: MediaQuery.of(context).size.height * 0.6,
-                              // alignment: Alignment.center,
-                              child: emptyList(
-                                color: Colors.blue[400],
-                                iconData: LineAwesomeIcons.file_text,
-                                text: "There are no meetings to show",
+                          : Flexible(
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.6,
+                                // alignment: Alignment.center,
+                                child: emptyList(
+                                  color: Colors.blue[400],
+                                  iconData: LineAwesomeIcons.file_text,
+                                  text: "There are no meetings to show",
+                                ),
                               ),
                             ),
                     ),
