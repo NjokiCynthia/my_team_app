@@ -3,6 +3,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-meeting.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/database-helper.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -24,6 +25,8 @@ class _MeetingsState extends State<Meetings> {
   var formatter = NumberFormat('#,##,##0', "en_US");
   bool _isLoading = true;
   bool _isInit = true;
+  bool _syncing = false;
+  Map<int, bool> syncing = {};
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -32,6 +35,19 @@ class _MeetingsState extends State<Meetings> {
         _appBarElevation = newElevation;
       });
     }
+  }
+
+  String getCollectionTotals(Map<String, dynamic> collections) {
+    int _totals = 0;
+    List<dynamic> _contributions = collections['contributions'];
+    List<dynamic> _repayments = collections['repayments'];
+    List<dynamic> _disbursements = collections['disbursements'];
+    List<dynamic> _fines = collections['fines'];
+    _contributions.forEach((a) => _totals = (_totals + a['amount']));
+    _repayments.forEach((a) => _totals = _totals + a['amount']);
+    _disbursements.forEach((a) => _totals = _totals + a['amount']);
+    _fines.forEach((a) => _totals = _totals + a['amount']);
+    return formatter.format(_totals);
   }
 
   Future<void> fetchData() async {
@@ -50,8 +66,11 @@ class _MeetingsState extends State<Meetings> {
       [currentGroup.groupId],
     );
     setState(() {
+      meetings = [];
       _groupCurrency = currentGroup.groupCurrency;
+      int c = 0;
       _localData.forEach((d) {
+        syncing[c] = false;
         Map<String, dynamic> _meeting = {};
         _meeting['group_id'] = (d['group_id']).toString();
         _meeting['title'] = d['title'];
@@ -61,14 +80,25 @@ class _MeetingsState extends State<Meetings> {
         _meeting['members'] = jsonDecode(d['members']);
         _meeting['agenda'] = jsonDecode(d['agenda']);
         _meeting['collections'] = jsonDecode(d['collections']);
+        _meeting['total_collections'] =
+            getCollectionTotals(jsonDecode(d['collections']));
         _meeting['aob'] = jsonDecode(d['aob']);
         _meeting['synced'] = d['synced'];
         meetings.add(_meeting);
+        c++;
+        // print("syncing >> ");
+        // print(syncing);
       });
       _isLoading = false;
       _isInit = false;
     });
     return true;
+  }
+
+  void syncData(int index) {
+    setState(() {
+      syncing[index] = true;
+    });
   }
 
   @override
@@ -112,11 +142,15 @@ class _MeetingsState extends State<Meetings> {
               ),
               onPressed: _isLoading
                   ? null
-                  : () => Navigator.of(context).push(
+                  : () => Navigator.of(context)
+                          .push(
                         MaterialPageRoute(
                           builder: (BuildContext context) => EditMeeting(),
                         ),
-                      ),
+                      )
+                          .then((resp) {
+                        fetchData();
+                      }),
             ),
           ),
         ],
@@ -256,6 +290,65 @@ class _MeetingsState extends State<Meetings> {
                                                   ),
                                                 ],
                                               ),
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(20),
+                                                  ),
+                                                  color: primaryColor
+                                                      .withOpacity(0.1),
+                                                ),
+                                                padding: EdgeInsets.fromLTRB(
+                                                  8.0,
+                                                  2.0,
+                                                  8.0,
+                                                  2.0,
+                                                ),
+                                                margin: EdgeInsets.only(
+                                                  top: 6.0,
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Row(
+                                                      children: [
+                                                        Text(
+                                                          "Total Collections",
+                                                          style: TextStyle(
+                                                            color: primaryColor
+                                                                .withOpacity(
+                                                                    0.7),
+                                                            fontSize: 12.0,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 6.0),
+                                                        Text(
+                                                          _groupCurrency,
+                                                          style: TextStyle(
+                                                            color: primaryColor,
+                                                            fontSize: 12.0,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                          ),
+                                                        ),
+                                                        SizedBox(width: 4.0),
+                                                        Text(
+                                                          meetings[index][
+                                                              'total_collections'],
+                                                          style: TextStyle(
+                                                            color: primaryColor,
+                                                            fontSize: 12.0,
+                                                            fontWeight:
+                                                                FontWeight.w900,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ],
@@ -272,16 +365,41 @@ class _MeetingsState extends State<Meetings> {
                                               ),
                                             )
                                           : Padding(
-                                              padding:
-                                                  EdgeInsets.only(right: 12.0),
-                                              child: IconButton(
-                                                icon: Icon(
-                                                  Icons.file_upload,
-                                                  color: Colors.red[700],
-                                                ),
-                                                onPressed: () => {
-                                                  // Upload meeting
-                                                },
+                                              padding: EdgeInsets.only(
+                                                right: 12.0,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Visibility(
+                                                    visible: (syncing[index]),
+                                                    child: SizedBox(
+                                                      height: 16.0,
+                                                      width: 16.0,
+                                                      child:
+                                                          CircularProgressIndicator(
+                                                        strokeWidth: 1.5,
+                                                        backgroundColor:
+                                                            Colors.transparent,
+                                                        valueColor:
+                                                            AlwaysStoppedAnimation<
+                                                                    Color>(
+                                                                primaryColor),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.file_upload,
+                                                      color: (syncing[index])
+                                                          ? Colors.red[700]
+                                                              .withOpacity(0.5)
+                                                          : Colors.red[700],
+                                                    ),
+                                                    onPressed: (syncing[index])
+                                                        ? null
+                                                        : () => syncData(index),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                     ],

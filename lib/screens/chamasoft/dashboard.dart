@@ -4,6 +4,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
+import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 // import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
@@ -186,6 +187,37 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             //     ),
             //   ],
             // ),
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(
+                    Icons.people_alt,
+                    color: Theme.of(context).textSelectionHandleColor,
+                  ),
+                  onPressed: () => {
+                    _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => Meetings(),
+                      ),
+                    ),
+                  },
+                ),
+                Positioned(
+                  top: 12,
+                  right: 6,
+                  child: Container(
+                    width: 12.0,
+                    height: 12.0,
+                    decoration: new BoxDecoration(
+                      color: Colors.blue,
+                      shape: BoxShape.circle,
+                    ),
+                  ),
+                ),
+              ],
+            ),
             IconButton(
               icon: Icon(
                 Icons.notifications_off,

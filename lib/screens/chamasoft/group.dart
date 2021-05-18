@@ -2,7 +2,6 @@ import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/deposits-v-withdrawals.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
-import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -532,82 +531,6 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               ],
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            20.0,
-                            0.0,
-                            16.0,
-                            0.0,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text(
-                                "Group Meetings",
-                                style: TextStyle(
-                                  color: Colors.blueGrey[400],
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w800,
-                                ),
-                              ),
-                              IconButton(
-                                  icon: Icon(
-                                    Feather.more_horizontal,
-                                    color: Colors.blueGrey,
-                                  ),
-                                  onPressed: () {})
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.fromLTRB(
-                            16.0,
-                            10.0,
-                            16.0,
-                            20.0,
-                          ),
-                          child: Container(
-                              width: double.infinity,
-                              padding: EdgeInsets.all(16.0),
-                              decoration: flatGradient(context),
-                              child: Column(
-                                children: [
-                                  SvgPicture.asset(
-                                    customIcons['no-data'],
-                                    semanticsLabel: 'icon',
-                                    height: 80.0,
-                                  ),
-                                  customTitleWithWrap(
-                                    text: "Nothing to display!",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.0,
-                                    textAlign: TextAlign.center,
-                                    color: Colors.blueGrey[400],
-                                  ),
-                                  customTitleWithWrap(
-                                    text: "Your group hasn't had any meetings",
-                                    //fontWeight: FontWeight.w500,
-                                    fontSize: 12.0,
-                                    textAlign: TextAlign.center,
-                                    color: Colors.blueGrey[400],
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  defaultButton(
-                                    context: context,
-                                    text: "Manage Meetings",
-                                    onPressed: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            Meetings(),
-                                        settings: RouteSettings(arguments: 0),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )),
                         ),
                       ],
                     )
