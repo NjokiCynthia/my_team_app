@@ -10,7 +10,6 @@ import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
-import 'package:chamasoft/screens/chamasoft/models/meeting-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
@@ -413,7 +412,7 @@ class Groups with ChangeNotifier {
   String _currentGroupId;
   // String _currentMemberId;
 
-  List<MeetingModel> _meetings = [];
+  List<dynamic> _meetings = [];
 
   Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
@@ -426,6 +425,10 @@ class Groups with ChangeNotifier {
 
   List<Group> get item {
     return [..._groups];
+  }
+
+  List<dynamic> get meetings {
+    return [..._meetings];
   }
 
   String get userId {
@@ -1328,54 +1331,60 @@ class Groups with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "group_id": _currentGroupId,
+        "user_id": _userId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
+        final groupMeetings = response['meetings'] as List<dynamic>;
 
         //=== BEGIN: OFFLINE PLUG
-        //=== Check if record exists...
-        // bool _exists = await entryExistsInDb(
-        //   DatabaseHelper.dataTable,
-        //   "section",
-        //   "groups",
-        // );
-        //=== ...if it doesn't exist, insert it.
-        // if (!_exists) {
-        //   await insertToLocalDb(
-        //     DatabaseHelper.dataTable,
-        //     {
-        //       "section": "groups",
-        //       "value": jsonEncode(response['user_groups']),
-        //       "modified_on": DateTime.now().millisecondsSinceEpoch,
-        //     },
-        //   );
-        // }
-        //=== If it does exist, update it.
-        // else {
-        //   dynamic _groups = await getLocalData('groups');
-        //   await updateInLocalDb(
-        //     DatabaseHelper.dataTable,
-        //     {
-        //       "id": _groups['id'],
-        //       "section": "groups",
-        //       "value": jsonEncode(response['user_groups']),
-        //       "modified_on": DateTime.now().millisecondsSinceEpoch,
-        //     },
-        //   );
-        // }
-        //=== END: OFFLINE PLUG
-
-        // final groupMeetings = response['user_groups'] as List<dynamic>;
-        final groupMeetings = response as List<dynamic>;
-        // addGroups(userGroups);
+        //=== Remove all synced meetings & insert new ones
+        // List<int> _ids = [];
+        // groupMeetings.forEach((meeting) {
+        //   if (!_ids.contains(int.parse(meeting['group_id'])))
+        //     _ids.add(int.parse(meeting['group_id']));
+        // });
+        await dbHelper.deleteMultiple(
+          [int.parse(_currentGroupId)],
+          DatabaseHelper.meetingsTable,
+        );
+        //=== ...insert records.
+        List<dynamic> rows = [];
+        groupMeetings.forEach((m) {
+          print("groupMeeting: >>>> ");
+          print(m);
+          rows.add({
+            "group_id": int.parse(_currentGroupId),
+            "user_id": int.parse(m['user_id']),
+            "title": m['title'],
+            "venue": m['venue'],
+            "purpose": m['purpose'],
+            "date": m['date'],
+            "members": jsonEncode(m['members']),
+            "agenda": jsonEncode(m['agenda']),
+            "collections": jsonEncode(m['collections']),
+            "aob": jsonEncode(m['aob']),
+            "synced": 1,
+            "submitted_on": int.parse(m['time']),
+            "synced_on": int.parse(m['time']),
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
+          });
+        });
+        if (rows.length > 0)
+          await insertManyToLocalDb(DatabaseHelper.meetingsTable, rows);
+        print("groupMeetings >>>> ");
+        print(groupMeetings);
+        addMeetings(groupMeetings);
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           //=== BEGIN: OFFLINE PLUG
-          // dynamic _localData = await getLocalData('groups');
-          // if (_localData['value'] != null) {
-          //   final userGroups = _localData['value'] as List<dynamic>;
-          //   addGroups(userGroups);
-          // }
+          List<dynamic> _localData = [];
+          _localData = await dbHelper.queryWhere(
+            DatabaseHelper.meetingsTable,
+            "group_id",
+            [_currentGroupId],
+          );
+          addMeetings(_localData);
           //=== END: OFFLINE PLUG
         } else {
           throw CustomException(message: error.message, status: error.status);
@@ -1386,11 +1395,13 @@ class Groups with ChangeNotifier {
     } on CustomException catch (error) {
       if (error.status == ErrorStatusCode.statusNoInternet) {
         //=== BEGIN: OFFLINE PLUG
-        // dynamic _localData = await getLocalData('groups');
-        // if (_localData['value'] != null) {
-        //   final userGroups = _localData['value'] as List<dynamic>;
-        //   addGroups(userGroups);
-        // }
+        List<dynamic> _localData = [];
+        _localData = await dbHelper.queryWhere(
+          DatabaseHelper.meetingsTable,
+          "group_id",
+          [_currentGroupId],
+        );
+        addMeetings(_localData);
         //=== END: OFFLINE PLUG
       } else {
         throw CustomException(message: error.message, status: error.status);
@@ -1398,6 +1409,32 @@ class Groups with ChangeNotifier {
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
+  }
+
+  Future<void> addMeetings(List<dynamic> meetingObject,
+      [bool replace = false,
+      int position = 0,
+      bool isNewMeeting = false]) async {
+    final List<dynamic> loadedMeetings = [];
+    dynamic loadedNewMeeting;
+    if (meetingObject.length > 0) {
+      for (var meetingJSON in meetingObject) {
+        // var meeting = parseSingleGroup(meetingJSON);
+        final newMeeting = meetingJSON;
+
+        loadedMeetings.add(newMeeting);
+        loadedNewMeeting = newMeeting;
+      }
+    }
+    if (replace) {
+      _meetings.removeAt(position);
+      _meetings.insert(position, loadedNewMeeting);
+    } else if (isNewMeeting) {
+      _meetings.add(loadedNewMeeting);
+    } else {
+      _meetings = loadedMeetings;
+    }
+    notifyListeners();
   }
 
   Future<void> fetchAccounts() async {
@@ -4135,6 +4172,7 @@ class Groups with ChangeNotifier {
     _groupFinesSummary = [];
     _accounts = [];
     _members = [];
+    _meetings = [];
     _allAccounts = [];
     _contributions = [];
     _payContributions = [];

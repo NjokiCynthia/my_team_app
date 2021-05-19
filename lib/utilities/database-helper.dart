@@ -156,4 +156,10 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.delete(table, where: 'id = ?', whereArgs: [id]);
   }
+
+  Future<int> deleteMultiple(List<int> ids, String table) async {
+    Database db = await instance.database;
+    return await db.delete(table,
+        where: 'id IN (${ids.join(', ')}) AND synced=1');
+  }
 }

@@ -56,7 +56,14 @@ class IntroScreenState extends State<IntroScreen> {
                         .whenComplete(() {
                         _loading = false;
                       });
-              })
+              }).catchError(
+                (err) => Navigator.of(context)
+                    .pushReplacement(MaterialPageRoute(
+                        builder: (BuildContext context) => Login()))
+                    .whenComplete(() {
+                  _loading = false;
+                }),
+              )
             : Navigator.of(context)
                 .pushReplacement(MaterialPageRoute(
                     builder: (BuildContext context) => Login()))

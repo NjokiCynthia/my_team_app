@@ -10,8 +10,8 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomHelper {
-  //static const String baseUrl = "https://chamasoftbeta.com";
-  static const String baseUrl = "https://app.chamasoft.com";
+  static const String baseUrl = "https://uat.chamasoft.com";
+  // static const String baseUrl = "https://app.chamasoft.com";
   static const String prodBaseUrl = "https://app.chamasoft.com";
   static const String imageUrl = baseUrl + "/uploads/groups/";
 
@@ -25,7 +25,8 @@ class CustomHelper {
   }
 
   static bool validEmail(String email) {
-    Pattern pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    Pattern pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     RegExp regex = new RegExp(pattern);
     if (regex.hasMatch(email))
       return true;
@@ -37,10 +38,13 @@ class CustomHelper {
     return validEmail(identity) || validPhone(identity);
   }
 
-  static Future<bool> validPhoneNumber(String phone, CountryCode countryCode) async {
+  static Future<bool> validPhoneNumber(
+      String phone, CountryCode countryCode) async {
     if (phone.trim().isNotEmpty) {
-      String number = countryCode.dialCode + (phone.startsWith("0") ? phone.replaceFirst("0", "") : phone);
-      bool isValid = await PhoneNumberUtil.isValidPhoneNumber(phoneNumber: number, isoCode: countryCode.code);
+      String number = countryCode.dialCode +
+          (phone.startsWith("0") ? phone.replaceFirst("0", "") : phone);
+      bool isValid = await PhoneNumberUtil.isValidPhoneNumber(
+          phoneNumber: number, isoCode: countryCode.code);
       return isValid;
     } else
       return false;
@@ -109,7 +113,8 @@ class CustomHelper {
       final appDir = await syspaths.getTemporaryDirectory();
       Image image = decodeImage(imageFile.readAsBytesSync());
       Image thumbnail = copyResize(image, width: width);
-      final File thumbnailNew = new File("${appDir.path}/thumbnail.png")..writeAsBytesSync(encodePng(thumbnail));
+      final File thumbnailNew = new File("${appDir.path}/thumbnail.png")
+        ..writeAsBytesSync(encodePng(thumbnail));
       return thumbnailNew;
     } catch (error) {
       print("resize error :  ${error.toString()}");

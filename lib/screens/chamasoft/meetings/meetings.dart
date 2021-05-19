@@ -23,6 +23,7 @@ class _MeetingsState extends State<Meetings> {
   List<dynamic> meetings = [];
   String _groupCurrency = "KES";
   var formatter = NumberFormat('#,##,##0', "en_US");
+  var dateFormatter = DateFormat('EEE, d MMM, yyy HH:mm a', "en_US");
   bool _isLoading = true;
   bool _isInit = true;
   bool _syncing = false;
@@ -50,26 +51,32 @@ class _MeetingsState extends State<Meetings> {
     return formatter.format(_totals);
   }
 
-  Future<void> fetchData() async {
+  Future<void> fetchData({bool reFetchData = true}) async {
     setState(() {
       _isLoading = true;
     });
     final group = Provider.of<Groups>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
-    await group.fetchMembers();
-    await group.fetchContributions();
-    await group.fetchLoanTypes();
-    await group.fetchAccounts();
-    List<dynamic> _localData = await dbHelper.queryWhere(
-      DatabaseHelper.meetingsTable,
-      "group_id",
-      [currentGroup.groupId],
-    );
+    await group.fetchMeetings();
+    if (reFetchData) {
+      await group.fetchMembers();
+      await group.fetchContributions();
+      await group.fetchLoanTypes();
+      await group.fetchAccounts();
+    }
+    // List<dynamic> _localData = await dbHelper.queryWhere(
+    //   DatabaseHelper.meetingsTable,
+    //   "group_id",
+    //   [currentGroup.groupId],
+    // );
     setState(() {
+      print("group.meetings >>>> ");
+      print(group.meetings);
+      _syncing = false;
       meetings = [];
       _groupCurrency = currentGroup.groupCurrency;
       int c = 0;
-      _localData.forEach((d) {
+      group.meetings.forEach((d) {
         syncing[c] = false;
         Map<String, dynamic> _meeting = {};
         _meeting['group_id'] = (d['group_id']).toString();
@@ -97,6 +104,7 @@ class _MeetingsState extends State<Meetings> {
 
   void syncData(int index) {
     setState(() {
+      _syncing = true;
       syncing[index] = true;
     });
   }
@@ -118,7 +126,8 @@ class _MeetingsState extends State<Meetings> {
   @override
   void didChangeDependencies() {
     if (_isInit)
-      WidgetsBinding.instance.addPostFrameCallback((_) => fetchData());
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => fetchData(reFetchData: true));
     super.didChangeDependencies();
   }
 
@@ -149,7 +158,7 @@ class _MeetingsState extends State<Meetings> {
                         ),
                       )
                           .then((resp) {
-                        fetchData();
+                        fetchData(reFetchData: false);
                       }),
             ),
           ),
@@ -221,6 +230,10 @@ class _MeetingsState extends State<Meetings> {
                               itemCount: meetings.length,
                               itemBuilder: (context, index) {
                                 return Container(
+                                  color:
+                                      meetings[index]['members']['synced'] == 0
+                                          ? Colors.white
+                                          : Colors.red[700].withOpacity(0.02),
                                   padding:
                                       EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
                                   width: double.infinity,
@@ -248,7 +261,11 @@ class _MeetingsState extends State<Meetings> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               subtitle2(
-                                                text: meetings[index]['date'],
+                                                text: dateFormatter.format(
+                                                  DateFormat('yyyy-MM-dd HH:mm')
+                                                      .parse(meetings[index]
+                                                          ['date']),
+                                                ),
                                                 color: Theme.of(context)
                                                     .textSelectionHandleColor,
                                                 textAlign: TextAlign.start,
@@ -390,14 +407,20 @@ class _MeetingsState extends State<Meetings> {
                                                   IconButton(
                                                     icon: Icon(
                                                       Icons.file_upload,
-                                                      color: (syncing[index])
-                                                          ? Colors.red[700]
-                                                              .withOpacity(0.5)
-                                                          : Colors.red[700],
+                                                      color:
+                                                          ((syncing[index]) ||
+                                                                  (_syncing))
+                                                              ? Colors.red[700]
+                                                                  .withOpacity(
+                                                                      0.5)
+                                                              : Colors.red[700],
                                                     ),
-                                                    onPressed: (syncing[index])
-                                                        ? null
-                                                        : () => syncData(index),
+                                                    onPressed:
+                                                        ((syncing[index]) ||
+                                                                (_syncing))
+                                                            ? null
+                                                            : () =>
+                                                                syncData(index),
                                                   ),
                                                 ],
                                               ),
@@ -407,16 +430,13 @@ class _MeetingsState extends State<Meetings> {
                                 );
                               },
                             )
-                          : Flexible(
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.6,
-                                // alignment: Alignment.center,
-                                child: emptyList(
-                                  color: Colors.blue[400],
-                                  iconData: LineAwesomeIcons.file_text,
-                                  text: "There are no meetings to show",
-                                ),
+                          : Container(
+                              height: MediaQuery.of(context).size.height * 0.6,
+                              // alignment: Alignment.center,
+                              child: emptyList(
+                                color: Colors.blue[400],
+                                iconData: LineAwesomeIcons.file_text,
+                                text: "There are no meetings to show",
                               ),
                             ),
                     ),
