@@ -2,7 +2,8 @@ import 'dart:convert';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-meeting.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/database-helper.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -44,10 +45,10 @@ class _MeetingsState extends State<Meetings> {
     List<dynamic> _repayments = collections['repayments'];
     List<dynamic> _disbursements = collections['disbursements'];
     List<dynamic> _fines = collections['fines'];
-    _contributions.forEach((a) => _totals = (_totals + a['amount']));
-    _repayments.forEach((a) => _totals = _totals + a['amount']);
-    _disbursements.forEach((a) => _totals = _totals + a['amount']);
-    _fines.forEach((a) => _totals = _totals + a['amount']);
+    _contributions.forEach((a) => _totals += a['amount']);
+    _repayments.forEach((a) => _totals += a['amount']);
+    _disbursements.forEach((a) => _totals += a['amount']);
+    _fines.forEach((a) => _totals += a['amount']);
     return formatter.format(_totals);
   }
 
@@ -70,15 +71,16 @@ class _MeetingsState extends State<Meetings> {
     //   [currentGroup.groupId],
     // );
     setState(() {
-      print("group.meetings >>>> ");
-      print(group.meetings);
       _syncing = false;
       meetings = [];
       _groupCurrency = currentGroup.groupCurrency;
       int c = 0;
-      group.meetings.forEach((d) {
+      List<dynamic> groupMeetings = group.meetings;
+      groupMeetings.forEach((d) {
         syncing[c] = false;
         Map<String, dynamic> _meeting = {};
+        // print("meetingz >>> ");
+        // print((d['synced'] == 1));
         _meeting['group_id'] = (d['group_id']).toString();
         _meeting['title'] = d['title'];
         _meeting['venue'] = d['venue'];
@@ -93,8 +95,6 @@ class _MeetingsState extends State<Meetings> {
         _meeting['synced'] = d['synced'];
         meetings.add(_meeting);
         c++;
-        // print("syncing >> ");
-        // print(syncing);
       });
       _isLoading = false;
       _isInit = false;
@@ -102,11 +102,23 @@ class _MeetingsState extends State<Meetings> {
     return true;
   }
 
-  void syncData(int index) {
+  void syncData(int index) async {
     setState(() {
       _syncing = true;
       syncing[index] = true;
     });
+    try {
+      print("meetings[index] >> ");
+      print(meetings[index]);
+      //await Provider.of<Groups>(context, listen: false).syncMeeting(meetings[index]);
+      setState(() {
+        _syncing = true;
+        syncing[index] = true;
+      });
+      await fetchData(reFetchData: false);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(context: context, error: error);
+    }
   }
 
   @override
@@ -214,9 +226,7 @@ class _MeetingsState extends State<Meetings> {
                         ],
                       ),
                     ),
-                    SingleChildScrollView(
-                      // controller: _scrollController,
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
+                    Flexible(
                       child: meetings.length > 0
                           ? ListView.separated(
                               controller: _scrollController,
@@ -230,10 +240,9 @@ class _MeetingsState extends State<Meetings> {
                               itemCount: meetings.length,
                               itemBuilder: (context, index) {
                                 return Container(
-                                  color:
-                                      meetings[index]['members']['synced'] == 0
-                                          ? Colors.white
-                                          : Colors.red[700].withOpacity(0.02),
+                                  color: (meetings[index]['synced'] == 1)
+                                      ? Colors.white
+                                      : Colors.red[700].withOpacity(0.04),
                                   padding:
                                       EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
                                   width: double.infinity,
@@ -370,14 +379,13 @@ class _MeetingsState extends State<Meetings> {
                                           ),
                                         ],
                                       ),
-                                      meetings[index]['members']['synced'] == 1
+                                      (meetings[index]['synced'] == 1)
                                           ? Padding(
                                               padding:
                                                   EdgeInsets.only(right: 22.0),
                                               child: Icon(
                                                 Icons.cloud_done,
-                                                color: Theme.of(context)
-                                                    .textSelectionHandleColor
+                                                color: Colors.green[700]
                                                     .withOpacity(0.7),
                                               ),
                                             )

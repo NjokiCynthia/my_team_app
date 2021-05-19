@@ -110,7 +110,26 @@
                 }
             }
         ],
-        "repayments": [],
+        "repayments": [
+            {
+                "type": "repayments",
+                "account": 7867,
+                "amount": 2000,
+                "member": {
+                    "id": 37881,
+                    "name": "Martin Nzuki",
+                    "identity": "martin.nzuki@digitalvision.co.ke",
+                    "avatar": "cropped979045728.jpg",
+                    "user_id": 14413
+                },
+                "contribution": {
+                    "id": 5589,
+                    "name": "Welfare Contribution",
+                    "amount": 500,
+                    "type": "Regular Contribution"
+                }
+            }
+        ],
         "disbursements": [],
         "fines": []
     },

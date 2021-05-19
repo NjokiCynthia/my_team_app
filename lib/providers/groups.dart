@@ -1326,6 +1326,39 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> syncMeeting(Map<String, dynamic> meeting) async {
+    try {
+      const url = EndpointUrl.CREATE_MEETING;
+      try {
+        final postRequest = json.encode(meeting);
+        print("request: $postRequest");
+        var response = await PostToServer.post(postRequest, url);
+        print(response);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchLocalMeetings() async {
+    _meetings = [];
+    List<dynamic> _localData = [];
+    _localData = await dbHelper.queryWhere(
+      DatabaseHelper.meetingsTable,
+      "group_id",
+      [_currentGroupId],
+    );
+    print("addMeetings(_localData)");
+    print(_localData);
+    addMeetings(_localData);
+  }
+
   Future<dynamic> fetchMeetings() async {
     const url = EndpointUrl.GET_MEETINGS;
     try {
@@ -1344,15 +1377,13 @@ class Groups with ChangeNotifier {
         //   if (!_ids.contains(int.parse(meeting['group_id'])))
         //     _ids.add(int.parse(meeting['group_id']));
         // });
-        await dbHelper.deleteMultiple(
+        await dbHelper.deleteMultipleMeetings(
           [int.parse(_currentGroupId)],
           DatabaseHelper.meetingsTable,
         );
         //=== ...insert records.
         List<dynamic> rows = [];
         groupMeetings.forEach((m) {
-          print("groupMeeting: >>>> ");
-          print(m);
           rows.add({
             "group_id": int.parse(_currentGroupId),
             "user_id": int.parse(m['user_id']),
@@ -1372,20 +1403,11 @@ class Groups with ChangeNotifier {
         });
         if (rows.length > 0)
           await insertManyToLocalDb(DatabaseHelper.meetingsTable, rows);
-        print("groupMeetings >>>> ");
-        print(groupMeetings);
-        addMeetings(groupMeetings);
+        //=== ...fetch local records
+        await fetchLocalMeetings();
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
-          //=== BEGIN: OFFLINE PLUG
-          List<dynamic> _localData = [];
-          _localData = await dbHelper.queryWhere(
-            DatabaseHelper.meetingsTable,
-            "group_id",
-            [_currentGroupId],
-          );
-          addMeetings(_localData);
-          //=== END: OFFLINE PLUG
+          await fetchLocalMeetings();
         } else {
           throw CustomException(message: error.message, status: error.status);
         }
@@ -1394,15 +1416,7 @@ class Groups with ChangeNotifier {
       }
     } on CustomException catch (error) {
       if (error.status == ErrorStatusCode.statusNoInternet) {
-        //=== BEGIN: OFFLINE PLUG
-        List<dynamic> _localData = [];
-        _localData = await dbHelper.queryWhere(
-          DatabaseHelper.meetingsTable,
-          "group_id",
-          [_currentGroupId],
-        );
-        addMeetings(_localData);
-        //=== END: OFFLINE PLUG
+        await fetchLocalMeetings();
       } else {
         throw CustomException(message: error.message, status: error.status);
       }

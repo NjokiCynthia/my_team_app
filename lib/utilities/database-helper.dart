@@ -71,7 +71,7 @@ class DatabaseHelper {
               collections TEXT NOT NULL DEFAULT '',
               aob TEXT NOT NULL DEFAULT '',
               submitted_on INTEGER NOT NULL,
-              synced INTEGER NOT NULL DEFAULT '0',
+              synced INTEGER NOT NULL DEFAULT 0,
               synced_on INTEGER NOT NULL,
               modified_on INTEGER NOT NULL
             )
@@ -157,9 +157,8 @@ class DatabaseHelper {
     return await db.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 
-  Future<int> deleteMultiple(List<int> ids, String table) async {
+  Future<int> deleteMultipleMeetings(List<int> ids, String table) async {
     Database db = await instance.database;
-    return await db.delete(table,
-        where: 'id IN (${ids.join(', ')}) AND synced=1');
+    return await db.delete(table, where: 'group_id IN (${ids.join(', ')})');
   }
 }
