@@ -24,9 +24,9 @@ launchURL(String url) async {
 
 Future<dynamic> getLocalData(String key) async {
   List<dynamic> _data = await dbHelper.queryWhere(
-    DatabaseHelper.dataTable,
-    "section",
-    [key],
+    table: DatabaseHelper.dataTable,
+    column: "section",
+    whereArguments: [key],
   );
   dynamic obj = (_data.length == 1)
       ? ((_data[0]['value'] != '')
@@ -44,9 +44,9 @@ Future<dynamic> getLocalData(String key) async {
 
 Future<dynamic> getLocalMembers(String groupId) async {
   List<dynamic> _data = await dbHelper.queryWhere(
-    DatabaseHelper.membersTable,
-    "group_id",
-    [groupId],
+    table: DatabaseHelper.membersTable,
+    column: "group_id",
+    whereArguments: [groupId],
   );
   return _data;
 }
@@ -57,9 +57,9 @@ Future<bool> entryExistsInDb(
   dynamic value,
 ) async {
   var checkRecord = await dbHelper.queryWhere(
-    table,
-    field,
-    [value],
+    table: table,
+    column: field,
+    whereArguments: [value],
   );
   if (checkRecord.isEmpty) return false;
   return true;

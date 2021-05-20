@@ -92,6 +92,8 @@ class _EditMeetingState extends State<EditMeeting> {
   }
 
   saveMeeting() async {
+    print("_data >>> ");
+    print(_data);
     await insertToLocalDb(
       DatabaseHelper.meetingsTable,
       {

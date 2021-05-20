@@ -114,14 +114,16 @@ class DatabaseHelper {
     return await db.query(table);
   }
 
-  Future<List<Map<String, dynamic>>> queryWhere(
+  Future<List<Map<String, dynamic>>> queryWhere({
     String table,
     String column,
     List<dynamic> whereArguments,
-  ) async {
+    String orderBy = 'id',
+    String order = 'DESC',
+  }) async {
     Database db = await instance.database;
     return await db.rawQuery(
-      'SELECT * FROM $table WHERE $column = ?',
+      'SELECT * FROM $table WHERE $column = ? ORDER BY $orderBy $order',
       whereArguments,
     );
   }
@@ -159,6 +161,7 @@ class DatabaseHelper {
 
   Future<int> deleteMultipleMeetings(List<int> ids, String table) async {
     Database db = await instance.database;
-    return await db.delete(table, where: 'group_id IN (${ids.join(', ')})');
+    return await db.delete(table,
+        where: 'group_id IN (${ids.join(', ')}) AND synced=1');
   }
 }

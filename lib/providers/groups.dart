@@ -1326,14 +1326,15 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> syncMeeting(Map<String, dynamic> meeting) async {
+  Future<dynamic> syncMeeting(Map<String, dynamic> meeting) async {
     try {
       const url = EndpointUrl.CREATE_MEETING;
       try {
+        meeting['user_id'] = _userId;
         final postRequest = json.encode(meeting);
-        print("request: $postRequest");
+        // print("request: $postRequest");
         var response = await PostToServer.post(postRequest, url);
-        print(response);
+        return response;
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -1347,15 +1348,16 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchLocalMeetings() async {
-    _meetings = [];
     List<dynamic> _localData = [];
     _localData = await dbHelper.queryWhere(
-      DatabaseHelper.meetingsTable,
-      "group_id",
-      [_currentGroupId],
+      table: DatabaseHelper.meetingsTable,
+      column: "group_id",
+      whereArguments: [_currentGroupId],
+      orderBy: 'id',
+      order: 'ASC',
     );
-    print("addMeetings(_localData)");
-    print(_localData);
+    // print("_localData >>>>>>>>>>>>>> ");
+    // print(_localData);
     addMeetings(_localData);
   }
 
@@ -1431,6 +1433,7 @@ class Groups with ChangeNotifier {
       bool isNewMeeting = false]) async {
     final List<dynamic> loadedMeetings = [];
     dynamic loadedNewMeeting;
+    _meetings = [];
     if (meetingObject.length > 0) {
       for (var meetingJSON in meetingObject) {
         // var meeting = parseSingleGroup(meetingJSON);

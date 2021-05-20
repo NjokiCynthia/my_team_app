@@ -138,3 +138,125 @@
         "Another AOB here, Another"
     ]
 }
+
+
+
+
+
+{
+    "group_id": "9305",
+    "title": "New meeting",
+    "venue": "Mombasa",
+    "purpose": "To deliberate on what to do",
+    "date": "2021-05-20 10:45",
+    "members": {
+        "present": [
+            {
+                "id": "38232",
+                "name": "Aggrey Koros",
+                "identity": "aggreykoro04@gmail.com",
+                "avatar": "cropped1040863585.jpg",
+                "user_id": "13403"
+            }
+        ],
+        "withApology": [
+            {
+                "id": "38231",
+                "name": "Martin Nzuki",
+                "identity": "martin.nzuki@digitalvision.co.ke",
+                "avatar": "cropped979045728.jpg",
+                "user_id": "14413"
+            }
+        ],
+        "withoutApology": [],
+        "late": [
+            {
+                "id": "38230",
+                "name": "Geoffrey Githaiga",
+                "identity": "githaiga.geoffrey@gmail.com",
+                "avatar": "geoffreygithaiga67921599819824.jpeg",
+                "user_id": "6792"
+            }
+        ]
+    },
+    "agenda": [
+        "Agenda 1",
+        "Agenda 2"
+    ],
+    "collections": {
+        "contributions": [
+            {
+                "member": {
+                    "id": "38232",
+                    "name": "Aggrey Koros",
+                    "identity": "aggreykoro04@gmail.com",
+                    "avatar": "cropped1040863585.jpg",
+                    "user_id": "13403"
+                },
+                "contribution": {
+                    "id": "5644",
+                    "name": "Welfare",
+                    "amount": "200",
+                    "type": "Regular Contribution"
+                },
+                "loan": {},
+                "type": "contributions",
+                "fines": {},
+                "account": "bank-4828",
+                "amount": 2000
+            },
+            {
+                "member": {
+                    "id": "38231",
+                    "name": "Martin Nzuki",
+                    "identity": "martin.nzuki@digitalvision.co.ke",
+                    "avatar": "cropped979045728.jpg",
+                    "user_id": "14413"
+                },
+                "contribution": {
+                    "id": "5644",
+                    "name": "Welfare",
+                    "amount": "200",
+                    "type": "Regular Contribution"
+                },
+                "loan": {},
+                "type": "contributions",
+                "fines": {},
+                "account": "bank-4828",
+                "amount": 1000
+            }
+        ],
+        "repayments": [],
+        "disbursements": [],
+        "fines": [
+            {
+                "member": {
+                    "id": "38230",
+                    "name": "Geoffrey Githaiga",
+                    "identity": "githaiga.geoffrey@gmail.com",
+                    "avatar": "geoffreygithaiga67921599819824.jpeg",
+                    "user_id": "6792"
+                },
+                "contribution": {},
+                "loan": {},
+                "type": "fines",
+                "fines": {
+                    "id": "53341",
+                    "name": "Phone calls during meetings",
+                    "is_hidden": 0,
+                    "active": 1,
+                    "amount": 0
+                },
+                "account": "bank-4828",
+                "amount": 200
+            }
+        ]
+    },
+    "total_collections": "3,200",
+    "aob": [
+        "AOB item 1",
+        "AOB item 2"
+    ],
+    "synced": 0,
+    "user_id": "14413"
+}

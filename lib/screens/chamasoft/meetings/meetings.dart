@@ -3,6 +3,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-meeting.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -79,8 +80,7 @@ class _MeetingsState extends State<Meetings> {
       groupMeetings.forEach((d) {
         syncing[c] = false;
         Map<String, dynamic> _meeting = {};
-        // print("meetingz >>> ");
-        // print((d['synced'] == 1));
+        _meeting['id'] = d['id'];
         _meeting['group_id'] = (d['group_id']).toString();
         _meeting['title'] = d['title'];
         _meeting['venue'] = d['venue'];
@@ -108,15 +108,27 @@ class _MeetingsState extends State<Meetings> {
       syncing[index] = true;
     });
     try {
-      print("meetings[index] >> ");
-      print(meetings[index]);
-      //await Provider.of<Groups>(context, listen: false).syncMeeting(meetings[index]);
-      setState(() {
-        _syncing = true;
-        syncing[index] = true;
+      await Provider.of<Groups>(context, listen: false)
+          .syncMeeting(meetings[index])
+          .then((resp) async {
+        if (resp['status'] != null) {
+          if (resp['status'] == 1) {
+            // delete meeting from local
+            await dbHelper.delete(
+                meetings[index]['id'], DatabaseHelper.meetingsTable);
+          }
+        }
       });
       await fetchData(reFetchData: false);
+      setState(() {
+        _syncing = false;
+        syncing[index] = false;
+      });
     } on CustomException catch (error) {
+      setState(() {
+        _syncing = false;
+        syncing[index] = false;
+      });
       StatusHandler().handleStatus(context: context, error: error);
     }
   }
