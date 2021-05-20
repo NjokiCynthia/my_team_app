@@ -63,6 +63,7 @@ class _EditMeetingState extends State<EditMeeting> {
     setState(() {
       _data['collections'][type] = collection;
     });
+    print("<<<<<<<< type >>>>>>>> ");
     _data.forEach((final String key, final dynamic value) {
       print({'$key': '$value'});
     });
@@ -613,30 +614,30 @@ class _EditMeetingState extends State<EditMeeting> {
             SizedBox(
               height: 10.0,
             ),
-            Container(
-              color: Colors.cyan[700].withOpacity(0.1),
-              width: double.infinity,
-              child: meetingMegaButton(
-                context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => EditCollections(
-                      type: 'repayments',
-                      recorded: _data['collections'],
-                      collections: (collection) =>
-                          _setCollections(collection, 'repayments'),
-                    ),
-                  ),
-                ),
-                title: "Loan Repayments",
-                subtitle: _renderCollectionsText('repayments'),
-                icon: Icons.edit,
-                color: Colors.cyan[700],
-              ),
-            ),
-            SizedBox(
-              height: 10.0,
-            ),
+            // Container(
+            //   color: Colors.cyan[700].withOpacity(0.1),
+            //   width: double.infinity,
+            //   child: meetingMegaButton(
+            //     context: context,
+            //     action: () => Navigator.of(context).push(
+            //       MaterialPageRoute(
+            //         builder: (BuildContext context) => EditCollections(
+            //           type: 'repayments',
+            //           recorded: _data['collections'],
+            //           collections: (collection) =>
+            //               _setCollections(collection, 'repayments'),
+            //         ),
+            //       ),
+            //     ),
+            //     title: "Loan Repayments",
+            //     subtitle: _renderCollectionsText('repayments'),
+            //     icon: Icons.edit,
+            //     color: Colors.cyan[700],
+            //   ),
+            // ),
+            // SizedBox(
+            //   height: 10.0,
+            // ),
             Container(
               color: Colors.brown.withOpacity(0.1),
               width: double.infinity,
@@ -797,9 +798,9 @@ class _EditMeetingState extends State<EditMeeting> {
               summaryTitle(text: "Collections"),
               Text(
                 "1. Group contributions: ${_getTotals('contributions')}\n" +
-                    "2. Loan repayments: ${_getTotals('repayments')}\n" +
-                    "3. Loan disbursements: ${_getTotals('disbursements')}\n" +
-                    "4. Fine payments: ${_getTotals('fines')}",
+                    // "2. Loan repayments: ${_getTotals('repayments')}\n" +
+                    "2. Loan disbursements: ${_getTotals('disbursements')}\n" +
+                    "3. Fine payments: ${_getTotals('fines')}",
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),

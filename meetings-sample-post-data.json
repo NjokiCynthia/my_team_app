@@ -1,183 +1,45 @@
 {
-    "group_id": 9199,
-    "user_id": 2323,
-    "title": "Some meeting title here",
-    "venue": "Kasarani, Mwiki",
-    "purpose": "Some purpose goes here",
-    "date": "2021-05-16 14:19",
+    "id": 566,
+    "group_id": "3716",
+    "title": "Last test meeting",
+    "venue": "Kasarani",
+    "purpose": "",
+    "date": "2021-05-20 22:50",
     "members": {
         "present": [
             {
-                "id": 37880,
-                "name": "Aggrey Koros",
-                "identity": "aggreykoro04@gmail.com",
-                "avatar": "cropped1040863585.jpg",
-                "user_id": 13403
+                "id": "38236",
+                "name": "Martin Nzuki",
+                "identity": "martin.nzuki@digitalvision.co.ke",
+                "avatar": "cropped979045728.jpg",
+                "user_id": "14413"
             },
             {
-                "id": 37878,
-                "name": "Brian Mwangi",
-                "identity": "254716592266",
-                "avatar": "brianmwangi4930831604300992.jpeg",
-                "user_id": 31486
-            },
-            {
-                "id": 37882,
-                "name": "Geoffrey Githaiga",
-                "identity": "githaiga.geoffrey@gmail.com",
-                "avatar": "geoffreygithaiga67921599819824.jpeg",
-                "user_id": 6792
+                "id": "22165",
+                "name": "Aggrey States",
+                "identity": "14842832816",
+                "avatar": "null",
+                "user_id": "20603"
             }
         ],
-        "withApology": [
-            {
-                "id": 39398,
-                "name": "Ian Muriithi",
-                "identity": "ian.muriithi@digitalvision.co.ke",
-                "avatar": null,
-                "user_id": 34412
-            },
-            {
-                "id": 37884,
-                "name": "Lucy Muthoni",
-                "identity": "lucy.muthoni@digitalvision.co.ke",
-                "avatar": null,
-                "user_id": 4843
-            },
-            {
-                "id": 37879,
-                "name": "Martha Adhiambo",
-                "identity": "marthaadhiambo10@gmail.com",
-                "avatar": null,
-                "user_id": 32867
-            }
-        ],
+        "withApology": [],
         "withoutApology": [
             {
-                "id": 37881,
-                "name": "Martin Nzuki",
-                "identity": "martin.nzuki@digitalvision.co.ke",
-                "avatar": "cropped979045728.jpg",
-                "user_id": 14413
+                "id": "22166",
+                "name": "Wycleff Italia",
+                "identity": "254799123123",
+                "avatar": "null",
+                "user_id": "20604"
             },
             {
-                "id": 38299,
-                "name": "Martin Njuguna",
-                "identity": "martin@digitalvision.co.ke",
-                "avatar": "cropped2856320694205963000.jpg",
-                "user_id": 407
-            }
-        ],
-        "late": [
-            {
-                "id": 37881,
-                "name": "Martin Nzuki",
-                "identity": "martin.nzuki@digitalvision.co.ke",
-                "avatar": "cropped979045728.jpg",
-                "user_id": 14413
-            },
-            {
-                "id": 38299,
-                "name": "Martin Njuguna",
-                "identity": "martin@digitalvision.co.ke",
-                "avatar": "cropped2856320694205963000.jpg",
-                "user_id": 407
-            }
-        ]
-    },
-    "agenda": [
-        "Some agenda here",
-        "some more agenda"
-    ],
-    "collections": {
-        "contributions": [
-            {
-                "type": "contributions",
-                "account": 7867,
-                "amount": 2000,
-                "member": {
-                    "id": 37881,
-                    "name": "Martin Nzuki",
-                    "identity": "martin.nzuki@digitalvision.co.ke",
-                    "avatar": "cropped979045728.jpg",
-                    "user_id": 14413
-                },
-                "contribution": {
-                    "id": 5589,
-                    "name": "Welfare Contribution",
-                    "amount": 500,
-                    "type": "Regular Contribution"
-                }
-            }
-        ],
-        "repayments": [
-            {
-                "type": "repayments",
-                "account": 7867,
-                "amount": 2000,
-                "member": {
-                    "id": 37881,
-                    "name": "Martin Nzuki",
-                    "identity": "martin.nzuki@digitalvision.co.ke",
-                    "avatar": "cropped979045728.jpg",
-                    "user_id": 14413
-                },
-                "contribution": {
-                    "id": 5589,
-                    "name": "Welfare Contribution",
-                    "amount": 500,
-                    "type": "Regular Contribution"
-                }
-            }
-        ],
-        "disbursements": [],
-        "fines": []
-    },
-    "aob": [
-        "Some AOB here",
-        "Another AOB here, Another"
-    ]
-}
-
-
-
-
-
-{
-    "group_id": "9305",
-    "title": "New meeting",
-    "venue": "Mombasa",
-    "purpose": "To deliberate on what to do",
-    "date": "2021-05-20 10:45",
-    "members": {
-        "present": [
-            {
-                "id": "38232",
+                "id": "13817",
                 "name": "Aggrey Koros",
                 "identity": "aggreykoro04@gmail.com",
                 "avatar": "cropped1040863585.jpg",
                 "user_id": "13403"
             }
         ],
-        "withApology": [
-            {
-                "id": "38231",
-                "name": "Martin Nzuki",
-                "identity": "martin.nzuki@digitalvision.co.ke",
-                "avatar": "cropped979045728.jpg",
-                "user_id": "14413"
-            }
-        ],
-        "withoutApology": [],
-        "late": [
-            {
-                "id": "38230",
-                "name": "Geoffrey Githaiga",
-                "identity": "githaiga.geoffrey@gmail.com",
-                "avatar": "geoffreygithaiga67921599819824.jpeg",
-                "user_id": "6792"
-            }
-        ]
+        "late": []
     },
     "agenda": [
         "Agenda 1",
@@ -187,75 +49,158 @@
         "contributions": [
             {
                 "member": {
-                    "id": "38232",
-                    "name": "Aggrey Koros",
-                    "identity": "aggreykoro04@gmail.com",
-                    "avatar": "cropped1040863585.jpg",
-                    "user_id": "13403"
-                },
-                "contribution": {
-                    "id": "5644",
-                    "name": "Welfare",
-                    "amount": "200",
-                    "type": "Regular Contribution"
-                },
-                "loan": {},
-                "type": "contributions",
-                "fines": {},
-                "account": "bank-4828",
-                "amount": 2000
-            },
-            {
-                "member": {
-                    "id": "38231",
+                    "id": "38236",
                     "name": "Martin Nzuki",
                     "identity": "martin.nzuki@digitalvision.co.ke",
                     "avatar": "cropped979045728.jpg",
                     "user_id": "14413"
                 },
                 "contribution": {
-                    "id": "5644",
-                    "name": "Welfare",
-                    "amount": "200",
-                    "type": "Regular Contribution"
+                    "id": "3385",
+                    "name": "Listing",
+                    "amount": "3000",
+                    "type": "Invoicing Disabled"
                 },
-                "loan": {},
+                "loans": {},
                 "type": "contributions",
                 "fines": {},
-                "account": "bank-4828",
+                "account": "bank-1251",
+                "amount": 500
+            },
+            {
+                "member": {
+                    "id": "13817",
+                    "name": "Aggrey Koros",
+                    "identity": "aggreykoro04@gmail.com",
+                    "avatar": "cropped1040863585.jpg",
+                    "user_id": "13403"
+                },
+                "contribution": {
+                    "id": "2473",
+                    "name": "Rogue One",
+                    "amount": "80",
+                    "type": "Regular Contribution"
+                },
+                "loans": {},
+                "type": "contributions",
+                "fines": {},
+                "account": "mobile-211",
                 "amount": 1000
             }
         ],
-        "repayments": [],
-        "disbursements": [],
+        "repayments": [
+            {
+                "member": {
+                    "id": "38236",
+                    "name": "Martin Nzuki",
+                    "identity": "martin.nzuki@digitalvision.co.ke",
+                    "avatar": "cropped979045728.jpg",
+                    "user_id": "14413"
+                },
+                "contribution": {},
+                "loans": {
+                    "id": "186",
+                    "disbursementDate": "null",
+                    "guarantors": "Not Required",
+                    "interestRate": "12% per Per Week on Fixed Balance",
+                    "latePaymentFines": "Disabled",
+                    "loanAmount": "Between KES 1,000.00 - KES 10,000.00",
+                    "loanProcessing": "No Charge",
+                    "name": "Test loan",
+                    "outstandingPaymentFines": "Disabled",
+                    "repaymentPeriod": "Fixed repayment of 12 month(s)",
+                    "isHidden": false
+                },
+                "type": "repayments",
+                "fines": {},
+                "account": "mobile-211",
+                "amount": 4000
+            },
+            {
+                "member": {
+                    "id": "13817",
+                    "name": "Aggrey Koros",
+                    "identity": "aggreykoro04@gmail.com",
+                    "avatar": "cropped1040863585.jpg",
+                    "user_id": "13403"
+                },
+                "contribution": {},
+                "loans": {
+                    "id": "281",
+                    "disbursementDate": "null",
+                    "guarantors": "Not Required",
+                    "interestRate": "8% per Per Month on Fixed Balance",
+                    "latePaymentFines": "Disabled",
+                    "loanAmount": "Between KES 10,000.00 - KES 40,000.00",
+                    "loanProcessing": "No Charge",
+                    "name": "FLEXI LOAN",
+                    "outstandingPaymentFines": "Disabled",
+                    "repaymentPeriod": "Fixed repayment of 3 month(s)",
+                    "isHidden": false
+                },
+                "type": "repayments",
+                "fines": {},
+                "account": "petty-2233",
+                "amount": 5000
+            }
+        ],
+        "disbursements": [
+            {
+                "member": {
+                    "id": "22166",
+                    "name": "Wycleff Italia",
+                    "identity": "254799123123",
+                    "avatar": "null",
+                    "user_id": "20604"
+                },
+                "contribution": {},
+                "loans": {
+                    "id": "281",
+                    "disbursementDate": "null",
+                    "guarantors": "Not Required",
+                    "interestRate": "8% per Per Month on Fixed Balance",
+                    "latePaymentFines": "Disabled",
+                    "loanAmount": "Between KES 10,000.00 - KES 40,000.00",
+                    "loanProcessing": "No Charge",
+                    "name": "FLEXI LOAN",
+                    "outstandingPaymentFines": "Disabled",
+                    "repaymentPeriod": "Fixed repayment of 3 month(s)",
+                    "isHidden": false
+                },
+                "type": "disbursements",
+                "fines": {},
+                "account": "petty-2233",
+                "amount": 8000
+            }
+        ],
         "fines": [
             {
                 "member": {
-                    "id": "38230",
-                    "name": "Geoffrey Githaiga",
-                    "identity": "githaiga.geoffrey@gmail.com",
-                    "avatar": "geoffreygithaiga67921599819824.jpeg",
-                    "user_id": "6792"
+                    "id": "13817",
+                    "name": "Aggrey Koros",
+                    "identity": "aggreykoro04@gmail.com",
+                    "avatar": "cropped1040863585.jpg",
+                    "user_id": "13403"
                 },
                 "contribution": {},
-                "loan": {},
+                "loans": {},
                 "type": "fines",
                 "fines": {
-                    "id": "53341",
-                    "name": "Phone calls during meetings",
+                    "id": "14343",
+                    "name": "Miscellaneous fine",
                     "is_hidden": 0,
                     "active": 1,
                     "amount": 0
                 },
-                "account": "bank-4828",
-                "amount": 200
+                "account": "bank-1251",
+                "amount": 4000
             }
         ]
     },
-    "total_collections": "3,200",
+    "total_collections": "22,500",
     "aob": [
-        "AOB item 1",
-        "AOB item 2"
+        "AOB 1",
+        "AOB 2"
     ],
     "synced": 0,
     "user_id": "14413"

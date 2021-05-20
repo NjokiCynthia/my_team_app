@@ -83,19 +83,20 @@ class _EditCollectionsState extends State<EditCollections> {
               else if (val['type'] == "fines")
                 _fine = getFine(val['fine_id']);
               else
-                _loan = getLoanTypes(val['loan_id']);
+                _loan = getLoanTypes(val['loan_type_id']);
               // print(_member);
               _data.add({
                 'member': _member,
                 'contribution': _contribution,
-                'loan': _loan,
+                'loans': _loan,
                 'type': val['type'],
                 'fines': _fine,
                 'account': val['account_id'],
                 'amount': int.parse(val['amount']),
               });
               widget.collections(_data);
-              // print(_data);
+              print("Collections >>>>>>>>>>");
+              print(_data);
             });
           },
           type: widget.type,
@@ -182,7 +183,7 @@ class _EditCollectionsState extends State<EditCollections> {
         // }
       });
       _data = widget.recorded[widget.type];
-      print(_data);
+      // print(_data);
       _isLoading = false;
       _isInit = false;
     });
@@ -425,9 +426,16 @@ class _EditCollectionsState extends State<EditCollections> {
                                                         ? _data[index]
                                                                 ['contribution']
                                                             ['name']
-                                                        : _data[index]
-                                                                [widget.type]
-                                                            ['name'],
+                                                        : (widget.type ==
+                                                                    "disbursements" ||
+                                                                widget.type ==
+                                                                    "repayments")
+                                                            ? _data[index]
+                                                                    ["loans"]
+                                                                ['name']
+                                                            : _data[index]
+                                                                    ["fines"]
+                                                                ['name'],
                                                     style: TextStyle(
                                                       color: widget.type ==
                                                               "contributions"
@@ -576,7 +584,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       title = "Loan Repayment";
       _selected = {
         'member_id': '',
-        'loan_id': '',
+        'loan_type_id': '',
         'account_id': '',
         'amount': '',
         'type': widget.type,
@@ -585,7 +593,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       title = "Loan Disbursement";
       _selected = {
         'member_id': '',
-        'loan_id': '',
+        'loan_type_id': '',
         'account_id': '',
         'amount': '',
         'type': widget.type,
@@ -715,15 +723,15 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     valueField: 'id',
                     filled: false,
                     contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    value: _selected['loan_id'],
+                    value: _selected['loan_type_id'],
                     onSaved: (value) {
                       setState(() {
-                        _selected['loan_id'] = value;
+                        _selected['loan_type_id'] = value;
                       });
                     },
                     onChanged: (value) {
                       setState(() {
-                        _selected['loan_id'] = value;
+                        _selected['loan_type_id'] = value;
                       });
                     },
                     validator: (value) {
