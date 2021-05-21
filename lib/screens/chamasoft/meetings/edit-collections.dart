@@ -116,10 +116,6 @@ class _EditCollectionsState extends State<EditCollections> {
     });
     final group = Provider.of<Groups>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
-    // await group.fetchMembers();
-    // await group.fetchContributions();
-    // await group.fetchLoanTypes();
-    // await group.fetchAccounts();
     List<dynamic> _fineCats = await group.fetchFineCategories();
     setState(() {
       _groupFineCategories = _fineCats;

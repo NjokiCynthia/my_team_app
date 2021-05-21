@@ -2051,7 +2051,7 @@ class Groups with ChangeNotifier {
               "id": m['id'],
               "user_id": m['user_id'],
               "name": m['name'],
-              "avatar": m['avatar'],
+              "avatar": (m['avatar'] != null) ? m['avatar'] : '',
               "identity": m['identity'],
               "modified_on": DateTime.now().millisecondsSinceEpoch,
             });
@@ -2082,7 +2082,7 @@ class Groups with ChangeNotifier {
                 "id": m['id'],
                 "user_id": m['user_id'],
                 "name": m['name'],
-                "avatar": m['avatar'],
+                "avatar": (m['avatar'] != null) ? m['avatar'] : '',
                 "identity": m['identity'],
               });
             });
@@ -2110,7 +2110,7 @@ class Groups with ChangeNotifier {
               "id": m['id'],
               "user_id": m['user_id'],
               "name": m['name'],
-              "avatar": m['avatar'],
+              "avatar": (m['avatar'] != null) ? m['avatar'] : '',
               "identity": m['identity'],
             });
           });

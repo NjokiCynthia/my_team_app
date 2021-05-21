@@ -60,6 +60,7 @@ class _MeetingsState extends State<Meetings> {
     final group = Provider.of<Groups>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
     await group.fetchMeetings();
+    await group.fetchMembers();
     setState(() {
       _syncing = false;
       meetings = [];

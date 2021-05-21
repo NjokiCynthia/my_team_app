@@ -23,6 +23,7 @@ class EditMeeting extends StatefulWidget {
 class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   int currentStep = 0;
   bool complete = false;
@@ -71,6 +72,11 @@ class _EditMeetingState extends State<EditMeeting> {
 
   goTo(int step) {
     setState(() => currentStep = step);
+  }
+
+  showSnackbar(String msg) {
+    final snackBar = SnackBar(content: Text(msg));
+    _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   next() {
@@ -821,6 +827,7 @@ class _EditMeetingState extends State<EditMeeting> {
     ];
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
