@@ -3,6 +3,7 @@ import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -328,72 +329,89 @@ class _SelectMembersState extends State<SelectMembers> {
                     ),
                     SingleChildScrollView(
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: _groupMembers.length,
-                        controller: _scrollController,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Container(
-                            padding: EdgeInsets.only(top: 2.0, bottom: 2.0),
-                            child: Column(
-                              children: <Widget>[
-                                CheckboxListTile(
-                                  activeColor: primaryColor,
-                                  isThreeLine: false,
-                                  dense: true,
-                                  title: Text(
-                                    _groupMembers[index]['name'],
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w700,
-                                      color: _groupMembers[index]['isCheck']
-                                          ? primaryColor
-                                          : Theme.of(context)
-                                              .textSelectionHandleColor,
-                                    ),
-                                  ),
-                                  subtitle: Text(
-                                    _groupMembers[index]['identity'],
-                                    style: TextStyle(
-                                      fontSize: 12,
-                                      color: _groupMembers[index]['isCheck']
-                                          ? primaryColor
-                                          : Theme.of(context)
-                                              .textSelectionHandleColor,
-                                    ),
-                                  ),
-                                  value: _groupMembers[index]['isCheck'],
-                                  secondary: Container(
-                                    height: 42,
-                                    width: 42,
-                                    child: CircleAvatar(
-                                      foregroundColor: _groupMembers[index]
-                                              ['isCheck']
-                                          ? Colors.white
-                                          : (themeChangeProvider.darkTheme)
-                                              ? Colors.blueGrey[900]
-                                              : Colors.white,
-                                      backgroundColor: _groupMembers[index]
-                                              ['isCheck']
-                                          ? primaryColor
-                                          : Theme.of(context)
-                                              .textSelectionHandleColor,
-                                      child: Text(
-                                        getInitials(
+                      child: (_groupMembers.length) > 0
+                          ? ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: _groupMembers.length,
+                              controller: _scrollController,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Container(
+                                  padding:
+                                      EdgeInsets.only(top: 2.0, bottom: 2.0),
+                                  child: Column(
+                                    children: <Widget>[
+                                      CheckboxListTile(
+                                        activeColor: primaryColor,
+                                        isThreeLine: false,
+                                        dense: true,
+                                        title: Text(
                                           _groupMembers[index]['name'],
+                                          style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w700,
+                                            color: _groupMembers[index]
+                                                    ['isCheck']
+                                                ? primaryColor
+                                                : Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                          ),
                                         ),
-                                      ),
-                                    ),
+                                        subtitle: Text(
+                                          _groupMembers[index]['identity'],
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: _groupMembers[index]
+                                                    ['isCheck']
+                                                ? primaryColor
+                                                : Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                          ),
+                                        ),
+                                        value: _groupMembers[index]['isCheck'],
+                                        secondary: Container(
+                                          height: 42,
+                                          width: 42,
+                                          child: CircleAvatar(
+                                            foregroundColor:
+                                                _groupMembers[index]['isCheck']
+                                                    ? Colors.white
+                                                    : (themeChangeProvider
+                                                            .darkTheme)
+                                                        ? Colors.blueGrey[900]
+                                                        : Colors.white,
+                                            backgroundColor: _groupMembers[
+                                                    index]['isCheck']
+                                                ? primaryColor
+                                                : Theme.of(context)
+                                                    .textSelectionHandleColor,
+                                            child: Text(
+                                              getInitials(
+                                                _groupMembers[index]['name'],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        onChanged: (bool val) {
+                                          itemChange(val, index);
+                                        },
+                                      )
+                                    ],
                                   ),
-                                  onChanged: (bool val) {
-                                    itemChange(val, index);
-                                  },
-                                )
-                              ],
+                                );
+                              },
+                            )
+                          : Flexible(
+                              child: Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.6,
+                                alignment: Alignment.center,
+                                child: emptyList(
+                                  color: Colors.blue[400],
+                                  iconData: LineAwesomeIcons.file_text,
+                                  text: "There are no members to show",
+                                ),
+                              ),
                             ),
-                          );
-                        },
-                      ),
                     ),
                   ],
                 );

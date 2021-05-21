@@ -74,8 +74,11 @@ class _EditMeetingState extends State<EditMeeting> {
     setState(() => currentStep = step);
   }
 
-  showSnackbar(String msg) {
-    final snackBar = SnackBar(content: Text(msg));
+  _showSnackbar(String msg, int duration) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+      duration: Duration(seconds: duration),
+    );
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
@@ -83,13 +86,34 @@ class _EditMeetingState extends State<EditMeeting> {
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
-          goTo(1);
+          if (_data['date'] == '') {
+            _showSnackbar(
+                "You need to select the meeting date to continue.", 4);
+          } else {
+            goTo(1);
+          }
+        } else {
+          _showSnackbar("Fill in the required fields to continue.", 4);
         }
       } else {
-        goTo(currentStep + 1);
+        if (currentStep == 1) {
+          if (_data['members']['present'].length == 0) {
+            _showSnackbar("You need to select members present to continue.", 4);
+          } else {
+            goTo(currentStep + 1);
+          }
+        } else if (currentStep == 2) {
+          if (_data['agenda'].length == 0) {
+            _showSnackbar("You need to add at least one agenda item.", 4);
+          } else {
+            goTo(currentStep + 1);
+          }
+        } else {
+          goTo(currentStep + 1);
+        }
       }
     } else {
-      print(_data);
+      // print(_data);
       setState(() {
         _saving = true;
       });
@@ -99,8 +123,8 @@ class _EditMeetingState extends State<EditMeeting> {
   }
 
   saveMeeting() async {
-    print("_data >>> ");
-    print(_data);
+    // print("_data >>> ");
+    // print(_data);
     await insertToLocalDb(
       DatabaseHelper.meetingsTable,
       {
