@@ -27,6 +27,10 @@ class IntroScreenState extends State<IntroScreen> {
     await groups.fetchAndSetUserGroups();
     await groups.setSelectedGroupId(currentGroupId);
     await groups.fetchMembers();
+    await groups.fetchContributions();
+    await groups.fetchLoanTypes();
+    await groups.fetchAccounts();
+    await groups.fetchFineCategories();
     Navigator.of(context)
         .pushReplacement(
       MaterialPageRoute(

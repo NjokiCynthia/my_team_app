@@ -1,15 +1,15 @@
 import 'dart:async';
-
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 // import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
-import 'package:chamasoft/screens/chamasoft/wallet.dart';
+// import 'package:chamasoft/screens/chamasoft/wallet.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -110,9 +110,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     _getUserGroupsOverlay(context).then((_) async {
-      await Provider.of<Groups>(context, listen: false)
-          .getCurrentGroupId()
-          .then((groupId) {
+      final group = Provider.of<Groups>(context, listen: false);
+      await group.getCurrentGroupId().then((groupId) async {
         _handleSelectedOption(context, groupId, false);
       });
     }).catchError((error) {});
@@ -131,6 +130,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
+    Group _group = Provider.of<Groups>(context).getCurrentGroup();
 
     return GestureDetector(
       onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP'),
@@ -187,36 +187,39 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             //     ),
             //   ],
             // ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                IconButton(
-                  icon: Icon(
-                    Icons.people_alt,
-                    color: Theme.of(context).textSelectionHandleColor,
-                  ),
-                  onPressed: () => {
-                    _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => Meetings(),
+            Visibility(
+              visible: (_group.isGroupAdmin),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.people_alt,
+                      color: Theme.of(context).textSelectionHandleColor,
+                    ),
+                    onPressed: () => {
+                      _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => Meetings(),
+                        ),
                       ),
-                    ),
-                  },
-                ),
-                Positioned(
-                  top: 12,
-                  right: 6,
-                  child: Container(
-                    width: 12.0,
-                    height: 12.0,
-                    decoration: new BoxDecoration(
-                      color: Colors.blue,
-                      shape: BoxShape.circle,
-                    ),
+                    },
                   ),
-                ),
-              ],
+                  // Positioned(
+                  //   top: 12,
+                  //   right: 6,
+                  //   child: Container(
+                  //     width: 12.0,
+                  //     height: 12.0,
+                  //     decoration: new BoxDecoration(
+                  //       color: Colors.blue,
+                  //       shape: BoxShape.circle,
+                  //     ),
+                  //   ),
+                  // ),
+                ],
+              ),
             ),
             IconButton(
               icon: Icon(

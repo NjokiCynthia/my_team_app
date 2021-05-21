@@ -53,24 +53,13 @@ class _MeetingsState extends State<Meetings> {
     return formatter.format(_totals);
   }
 
-  Future<void> fetchData({bool reFetchData = true}) async {
+  Future<void> fetchData() async {
     setState(() {
       _isLoading = true;
     });
     final group = Provider.of<Groups>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
     await group.fetchMeetings();
-    if (reFetchData) {
-      await group.fetchMembers();
-      await group.fetchContributions();
-      await group.fetchLoanTypes();
-      await group.fetchAccounts();
-    }
-    // List<dynamic> _localData = await dbHelper.queryWhere(
-    //   DatabaseHelper.meetingsTable,
-    //   "group_id",
-    //   [currentGroup.groupId],
-    // );
     setState(() {
       _syncing = false;
       meetings = [];
@@ -119,7 +108,7 @@ class _MeetingsState extends State<Meetings> {
           }
         }
       });
-      await fetchData(reFetchData: false);
+      await fetchData();
       setState(() {
         _syncing = false;
         syncing[index] = false;
@@ -150,8 +139,7 @@ class _MeetingsState extends State<Meetings> {
   @override
   void didChangeDependencies() {
     if (_isInit)
-      WidgetsBinding.instance
-          .addPostFrameCallback((_) => fetchData(reFetchData: true));
+      WidgetsBinding.instance.addPostFrameCallback((_) => fetchData());
     super.didChangeDependencies();
   }
 
@@ -182,7 +170,7 @@ class _MeetingsState extends State<Meetings> {
                         ),
                       )
                           .then((resp) {
-                        fetchData(reFetchData: false);
+                        fetchData();
                       }),
             ),
           ),
@@ -243,6 +231,7 @@ class _MeetingsState extends State<Meetings> {
                           ? ListView.separated(
                               controller: _scrollController,
                               shrinkWrap: true,
+                              padding: EdgeInsets.only(bottom: 40.0),
                               separatorBuilder: (context, index) => Divider(
                                 color: Theme.of(context)
                                     .textSelectionHandleColor

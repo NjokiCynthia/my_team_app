@@ -1354,7 +1354,8 @@ class Groups with ChangeNotifier {
       column: "group_id",
       whereArguments: [_currentGroupId],
       orderBy: 'id',
-      order: 'ASC',
+      order: 'DESC',
+      isMeeting: true,
     );
     // print("_localData >>>>>>>>>>>>>> ");
     // print(_localData);
@@ -1466,6 +1467,39 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         _accounts = []; //clear accounts
 
+        //=== BEGIN: OFFLINE PLUG
+        //=== Check if record exists...
+        bool _exists = await entryExistsInDb(
+          DatabaseHelper.dataTable,
+          "section",
+          "accounts",
+        );
+        //=== ...if it doesn't exist, insert it.
+        if (!_exists) {
+          await insertToLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "section": "accounts",
+              "value": jsonEncode(response['accounts']),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+        }
+        //=== If it does exist, update it.
+        else {
+          dynamic _accounts = await getLocalData('accounts');
+          await updateInLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "id": _accounts['id'],
+              "section": "accounts",
+              "value": jsonEncode(response['accounts']),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+        }
+        //=== END: OFFLINE PLUG
+
         _allAccounts = []; //clear all accounts
         final groupBankAccounts =
             response['accounts']['bank_accounts'] as List<dynamic>;
@@ -1480,12 +1514,59 @@ class Groups with ChangeNotifier {
             response['accounts']['petty_cash_accounts'] as List<dynamic>;
         position = addAccounts(groupPettyCashAccountsAccounts, 4, position);
       } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          dynamic _localData = await getLocalData('accounts');
+          if (_localData['value'] != null) {
+            _accounts = []; //clear accounts
+            Map<String, dynamic> _accountsData =
+                jsonDecode(_localData['value']);
+            _allAccounts = []; //clear all accounts
+            final groupBankAccounts =
+                _accountsData['bank_accounts'] as List<dynamic>;
+            position = addAccounts(groupBankAccounts, 1, position);
+            final groupSaccoAccounts =
+                _accountsData['sacco_accounts'] as List<dynamic>;
+            position = addAccounts(groupSaccoAccounts, 2, position);
+            final groupMobileMoneyAccounts =
+                _accountsData['mobile_money_accounts'] as List<dynamic>;
+            position = addAccounts(groupMobileMoneyAccounts, 3, position);
+            final groupPettyCashAccountsAccounts =
+                _accountsData['petty_cash_accounts'] as List<dynamic>;
+            position = addAccounts(groupPettyCashAccountsAccounts, 4, position);
+          }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        //=== BEGIN: OFFLINE PLUG
+        dynamic _localData = await getLocalData('accounts');
+        if (_localData['value'] != null) {
+          _accounts = []; //clear accounts
+          Map<String, dynamic> _accountsData = jsonDecode(_localData['value']);
+          _allAccounts = []; //clear all accounts
+          final groupBankAccounts =
+              _accountsData['bank_accounts'] as List<dynamic>;
+          position = addAccounts(groupBankAccounts, 1, position);
+          final groupSaccoAccounts =
+              _accountsData['sacco_accounts'] as List<dynamic>;
+          position = addAccounts(groupSaccoAccounts, 2, position);
+          final groupMobileMoneyAccounts =
+              _accountsData['mobile_money_accounts'] as List<dynamic>;
+          position = addAccounts(groupMobileMoneyAccounts, 3, position);
+          final groupPettyCashAccountsAccounts =
+              _accountsData['petty_cash_accounts'] as List<dynamic>;
+          position = addAccounts(groupPettyCashAccountsAccounts, 4, position);
+        }
+        //=== END: OFFLINE PLUG
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
@@ -1620,14 +1701,70 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         _contributions = []; //clear
         final groupContributions = response['contributions'] as List<dynamic>;
+
+        //=== BEGIN: OFFLINE PLUG
+        //=== Check if record exists...
+        bool _exists = await entryExistsInDb(
+          DatabaseHelper.dataTable,
+          "section",
+          "contributions",
+        );
+        //=== ...if it doesn't exist, insert it.
+        if (!_exists) {
+          await insertToLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "section": "contributions",
+              "value": jsonEncode(groupContributions),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+        }
+        //=== If it does exist, update it.
+        else {
+          dynamic _contributions = await getLocalData('contributions');
+          await updateInLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "id": _contributions['id'],
+              "section": "contributions",
+              "value": jsonEncode(response['contributions']),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+        }
+        //=== END: OFFLINE PLUG
+
         addContributions(groupContributions);
       } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          dynamic _localData = await getLocalData('contributions');
+          if (_localData['value'] != null) {
+            List<dynamic> _contributionsData = jsonDecode(_localData['value']);
+            _contributions = [];
+            addContributions(_contributionsData);
+          }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        //=== BEGIN: OFFLINE PLUG
+        dynamic _localData = await getLocalData('contributions');
+        if (_localData['value'] != null) {
+          List<dynamic> _contributionsData = jsonDecode(_localData['value']);
+          _contributions = [];
+          addContributions(_contributionsData);
+        }
+        //=== END: OFFLINE PLUG
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
@@ -1817,14 +1954,70 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         _loanTypes = []; //clear
         final groupLoanTypes = response['loan_types'] as List<dynamic>;
+
+        //=== BEGIN: OFFLINE PLUG
+        //=== Check if record exists...
+        bool _exists = await entryExistsInDb(
+          DatabaseHelper.dataTable,
+          "section",
+          "loanTypes",
+        );
+        //=== ...if it doesn't exist, insert it.
+        if (!_exists) {
+          await insertToLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "section": "loanTypes",
+              "value": jsonEncode(groupLoanTypes),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+        }
+        //=== If it does exist, update it.
+        else {
+          dynamic _loanTypes = await getLocalData('loanTypes');
+          await updateInLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "id": _loanTypes['id'],
+              "section": "loanTypes",
+              "value": jsonEncode(groupLoanTypes),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+        }
+        //=== END: OFFLINE PLUG
+
         addLoanTypes(groupLoanTypes);
       } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          dynamic _localData = await getLocalData('loanTypes');
+          if (_localData['value'] != null) {
+            List<dynamic> _loanTypesData = jsonDecode(_localData['value']);
+            _loanTypes = []; //clear
+            addLoanTypes(_loanTypesData);
+          }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        //=== BEGIN: OFFLINE PLUG
+        dynamic _localData = await getLocalData('loanTypes');
+        if (_localData['value'] != null) {
+          List<dynamic> _loanTypesData = jsonDecode(_localData['value']);
+          _loanTypes = []; //clear
+          addLoanTypes(_loanTypesData);
+        }
+        //=== END: OFFLINE PLUG
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
@@ -1894,7 +2087,7 @@ class Groups with ChangeNotifier {
               });
             });
             _members = []; //clear
-            addGroups(rows);
+            addMembers(rows);
             // print(rows);
           }
           //=== END: OFFLINE PLUG
@@ -1922,7 +2115,7 @@ class Groups with ChangeNotifier {
             });
           });
           _members = []; //clear
-          addGroups(rows);
+          addMembers(rows);
           // print(rows);
         }
         //=== END: OFFLINE PLUG
@@ -3011,16 +3204,69 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        final groupFineCategories =
-            response['fine_categories'] as List<dynamic>;
+        List<dynamic> groupFineCategories = [];
+        //=== BEGIN: OFFLINE PLUG
+        //=== Check if record exists...
+        bool _exists = await entryExistsInDb(
+          DatabaseHelper.dataTable,
+          "section",
+          "fine_categories",
+        );
+        //=== ...if it doesn't exist, insert it.
+        if (!_exists) {
+          await insertToLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "section": "fine_categories",
+              "value": jsonEncode(response['fine_categories']),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+          groupFineCategories = response['fine_categories'];
+        }
+        //=== If it does exist, update it.
+        else {
+          dynamic _fineCategories = await getLocalData('fine_categories');
+          await updateInLocalDb(
+            DatabaseHelper.dataTable,
+            {
+              "id": _fineCategories['id'],
+              "section": "fine_categories",
+              "value": jsonEncode(response['fine_categories']),
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            },
+          );
+          groupFineCategories = _fineCategories['value'];
+        }
+        //=== END: OFFLINE PLUG
         return groupFineCategories;
       } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          dynamic _localData = await getLocalData('fine_categories');
+          if (_localData['value'] != null) {
+            final fineCategories = _localData['value'] as List<dynamic>;
+            return fineCategories;
+          }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        //=== BEGIN: OFFLINE PLUG
+        dynamic _localData = await getLocalData('fine_categories');
+        if (_localData['value'] != null) {
+          final fineCategories = _localData['value'] as List<dynamic>;
+          return fineCategories;
+        }
+        //=== END: OFFLINE PLUG
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }

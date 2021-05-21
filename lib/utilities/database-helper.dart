@@ -120,10 +120,16 @@ class DatabaseHelper {
     List<dynamic> whereArguments,
     String orderBy = 'id',
     String order = 'DESC',
+    bool isMeeting = false,
   }) async {
     Database db = await instance.database;
+    String q = 'SELECT * FROM $table WHERE $column = ?';
+    if (isMeeting)
+      q += ' ORDER BY synced ASC, $orderBy $order';
+    else
+      q += ' ORDER BY $orderBy $order';
     return await db.rawQuery(
-      'SELECT * FROM $table WHERE $column = ? ORDER BY $orderBy $order',
+      q,
       whereArguments,
     );
   }
