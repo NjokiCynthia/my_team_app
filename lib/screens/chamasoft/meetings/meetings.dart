@@ -7,6 +7,7 @@ import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -178,10 +179,149 @@ class _MeetingsState extends State<Meetings> {
         ],
       ),
       body: _isLoading
-          ? Center(
+          ? /*Center(
               child: CircularProgressIndicator(
                 strokeWidth: 3.0,
               ),
+            )*/
+          Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 16.0,
+                      bottom: 8.0,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 150,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                            dataLoadingEffect(
+                              context: context,
+                              width: 80,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 100,
+                              height: 16,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 0.0,
+                      bottom: 8.0,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 150,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                            dataLoadingEffect(
+                              context: context,
+                              width: 80,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 100,
+                              height: 16,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 0.0,
+                      bottom: 8.0,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 150,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                            dataLoadingEffect(
+                              context: context,
+                              width: 80,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 100,
+                              height: 16,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             )
           : Builder(
               builder: (BuildContext context) {
