@@ -392,7 +392,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                     child: Container(
                                       height: double.infinity,
                                       width: double.infinity,
-                                      color: primaryColor.withOpacity(0.5),
+                                      color: Colors.black.withOpacity(0.3),
                                       padding: EdgeInsets.only(
                                         right: 16.0,
                                         top: 6.0,
