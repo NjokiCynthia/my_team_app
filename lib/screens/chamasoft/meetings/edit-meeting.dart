@@ -75,6 +75,7 @@ class _EditMeetingState extends State<EditMeeting> {
   }
 
   _showSnackbar(String msg, int duration) {
+    _scaffoldKey.currentState.removeCurrentSnackBar();
     final snackBar = SnackBar(
       content: Text(msg),
       duration: Duration(seconds: duration),
