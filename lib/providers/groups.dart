@@ -1357,6 +1357,7 @@ class Groups with ChangeNotifier {
       order: 'DESC',
       isMeeting: true,
     );
+    // if (_localData.isEmpty) _localData = [];
     // print("_localData >>>>>>>>>>>>>> ");
     // print(_localData);
     addMeetings(_localData);
