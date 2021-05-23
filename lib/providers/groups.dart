@@ -2048,8 +2048,8 @@ class Groups with ChangeNotifier {
           _tempMembers.forEach((m) {
             rows.add({
               "group_id": int.parse(_currentGroupId),
-              "id": m['id'],
-              "user_id": m['user_id'],
+              "id": int.parse(m['id']),
+              "user_id": int.parse(m['user_id']),
               "name": m['name'],
               "avatar": (m['avatar'] != null) ? m['avatar'] : '',
               "identity": m['identity'],
@@ -2079,8 +2079,9 @@ class Groups with ChangeNotifier {
             final _tempMembers = _localData['value'] as List<dynamic>;
             _tempMembers.forEach((m) {
               rows.add({
-                "id": m['id'],
-                "user_id": m['user_id'],
+                "group_id": int.parse(_currentGroupId),
+                "id": int.parse(m['id']),
+                "user_id": int.parse(m['user_id']),
                 "name": m['name'],
                 "avatar": (m['avatar'] != null) ? m['avatar'] : '',
                 "identity": m['identity'],
@@ -2107,8 +2108,9 @@ class Groups with ChangeNotifier {
           final _tempMembers = _localData['value'] as List<dynamic>;
           _tempMembers.forEach((m) {
             rows.add({
-              "id": m['id'],
-              "user_id": m['user_id'],
+              "group_id": int.parse(_currentGroupId),
+              "id": int.parse(m['id']),
+              "user_id": int.parse(m['user_id']),
               "name": m['name'],
               "avatar": (m['avatar'] != null) ? m['avatar'] : '',
               "identity": m['identity'],

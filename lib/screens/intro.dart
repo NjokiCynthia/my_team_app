@@ -123,8 +123,25 @@ class IntroScreenState extends State<IntroScreen> {
       return Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: Center(
-          child: CircularProgressIndicator(
-            strokeWidth: 3.0,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(
+                strokeWidth: 3.0,
+              ),
+              SizedBox(height: 10.0),
+              subtitle2(
+                text: "Fetching data",
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.center,
+              ),
+              subtitle2(
+                text: "This won't take long",
+                color:
+                    Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
         ),
       );
