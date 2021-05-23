@@ -6,6 +6,10 @@ The new Chamasoft Android & iOS app
 
 There are two flavors available: dev & prod:
 
-a) flutter run --flavor dev
+a) `flutter run --flavor dev`
 
-b) flutter run --flavor prod
+b) `flutter run --flavor prod`
+
+## Build for production
+
+`flutter build appbundle --flavor prod`
