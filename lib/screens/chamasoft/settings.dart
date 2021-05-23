@@ -183,47 +183,47 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: heading2(
-                  text: "Share",
-                  color: Colors.blueGrey,
-                ),
-              ),
-            ),
-            ListTile(
-              title: Text(
-                "Refer friends & earn",
-                style: TextStyle(
-                  fontWeight: FontWeight.w500,
-                  fontSize: 16,
-                  color: Theme.of(context).textSelectionHandleColor,
-                ),
-              ),
-              subtitle: Text(
-                "CS67RE5655",
-                style: TextStyle(color: Theme.of(context).bottomAppBarColor),
-              ),
-              trailing: Padding(
-                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                child: Icon(
-                  Icons.share,
-                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                ),
-              ),
-              dense: true,
-              onTap: () async {
-                var response = await FlutterShareMe().shareToSystem(
-                  msg: "Get Ksh 1,000 on Chamasoft Wallet when you sign up here " +
-                      "https://app.chamasoft.com/signup?referral-code=CS675FGF",
-                );
-                if (response != 'success') {
-                  print("An error occurred while sharing!");
-                }
-              },
-            ),
+            // Padding(
+            //   padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
+            //   child: Align(
+            //     alignment: Alignment.centerLeft,
+            //     child: heading2(
+            //       text: "Share",
+            //       color: Colors.blueGrey,
+            //     ),
+            //   ),
+            // ),
+            // ListTile(
+            //   title: Text(
+            //     "Refer friends & earn",
+            //     style: TextStyle(
+            //       fontWeight: FontWeight.w500,
+            //       fontSize: 16,
+            //       color: Theme.of(context).textSelectionHandleColor,
+            //     ),
+            //   ),
+            //   subtitle: Text(
+            //     "CS67RE5655",
+            //     style: TextStyle(color: Theme.of(context).bottomAppBarColor),
+            //   ),
+            //   trailing: Padding(
+            //     padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+            //     child: Icon(
+            //       Icons.share,
+            //       color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+            //     ),
+            //   ),
+            //   dense: true,
+            //   onTap: () async {
+            //     var response = await FlutterShareMe().shareToSystem(
+            //       msg: "Get Ksh 1,000 on Chamasoft Wallet when you sign up here " +
+            //           "https://app.chamasoft.com/signup?referral-code=CS675FGF",
+            //     );
+            //     if (response != 'success') {
+            //       print("An error occurred while sharing!");
+            //     }
+            //   },
+            // ),
             Visibility(
               visible: group.isGroupAdmin,
               child: ListTile(
