@@ -52,6 +52,7 @@ class Styles {
       //in use
       selectedRowColor: isDarkTheme ? Colors.blueGrey[800] : Colors.blue[100],
       //in use
+      // ignore: deprecated_member_use
       textSelectionHandleColor:
           isDarkTheme ? Colors.blueGrey[100] : Colors.blueGrey,
       //in use
@@ -60,6 +61,7 @@ class Styles {
       unselectedWidgetColor:
           isDarkTheme ? Colors.black38 : Colors.blueGrey[100],
       //in use
+      // ignore: deprecated_member_use
       textSelectionColor: isDarkTheme ? Colors.white : Colors.blueGrey[800],
       //in use
       cardColor: isDarkTheme ? Colors.blueGrey : Colors.white,

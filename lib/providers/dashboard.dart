@@ -13,7 +13,8 @@ class BankAccountDashboardSummary {
   final String accountName;
   final double balance;
 
-  BankAccountDashboardSummary({@required this.accountName, @required this.balance});
+  BankAccountDashboardSummary(
+      {@required this.accountName, @required this.balance});
 }
 
 class RecentTransactionSummary {
@@ -59,7 +60,10 @@ class Dashboard with ChangeNotifier {
   // ignore: unused_field
   String _currentGroupId;
 
-  Dashboard(String _userId, String _currentGroupId, Map<String, Map<String, dynamic>> _memberDashboardData,
+  Dashboard(
+      String _userId,
+      String _currentGroupId,
+      Map<String, Map<String, dynamic>> _memberDashboardData,
       Map<String, Map<String, dynamic>> _groupDashboardData) {
     this._memberDashboardData = _memberDashboardData;
     this._groupDashboardData = _groupDashboardData;
@@ -232,13 +236,23 @@ class Dashboard with ChangeNotifier {
 
   void _updateMemberDashboardData(String groupId) async {
     if (_memberDashboardData[groupId].containsKey("member_details")) {
-      var memberDetails = _memberDashboardData[groupId]["member_details"] as Map<String, dynamic>;
-      _memberContributionAmount = double.tryParse(memberDetails["total_contributions"].toString()) ?? 0.0;
-      _memberContributionArrears = double.tryParse(memberDetails["contribution_arrears"].toString()) ?? 0.0;
-      _memberFineArrears = double.tryParse(memberDetails["fine_arrears"].toString()) ?? 0.0;
-      _memberLoanArrears = double.tryParse(memberDetails["loan_arrears"].toString()) ?? 0.0;
-      _memberTotalLoanBalance = double.tryParse(memberDetails["total_loan_balances"].toString()) ?? 0.0;
-      String contributionDate = memberDetails["next_contribution_date"].toString();
+      var memberDetails = _memberDashboardData[groupId]["member_details"]
+          as Map<String, dynamic>;
+      _memberContributionAmount =
+          double.tryParse(memberDetails["total_contributions"].toString()) ??
+              0.0;
+      _memberContributionArrears =
+          double.tryParse(memberDetails["contribution_arrears"].toString()) ??
+              0.0;
+      _memberFineArrears =
+          double.tryParse(memberDetails["fine_arrears"].toString()) ?? 0.0;
+      _memberLoanArrears =
+          double.tryParse(memberDetails["loan_arrears"].toString()) ?? 0.0;
+      _memberTotalLoanBalance =
+          double.tryParse(memberDetails["total_loan_balances"].toString()) ??
+              0.0;
+      String contributionDate =
+          memberDetails["next_contribution_date"].toString();
       var recentTransactions = memberDetails["recent_transactions"];
       _recentTransactionSummary = [];
       if (recentTransactions.length > 0) {
@@ -259,7 +273,8 @@ class Dashboard with ChangeNotifier {
           }
         }).toList();
       }
-      var memberContributionSummary = memberDetails["member_contribution_summary"];
+      var memberContributionSummary =
+          memberDetails["member_contribution_summary"];
       _memberContributionSummary = [];
       if (memberContributionSummary.length > 0) {
         memberContributionSummary.map((summary) {
@@ -278,27 +293,44 @@ class Dashboard with ChangeNotifier {
     notifyListeners();
   }
 
-  void _updateGroupDashboardData(String groupId, [bool addChartData = false]) async {
+  void _updateGroupDashboardData(String groupId,
+      [bool addChartData = false]) async {
     if (!addChartData) {
       if (_groupDashboardData[groupId].containsKey("group_details")) {
-        var groupDetails = _groupDashboardData[groupId]["group_details"] as Map<String, dynamic>;
-        _cashBalances = double.tryParse(groupDetails["cash_balances"].toString()) ?? 0.0;
-        _bankBalances = double.tryParse(groupDetails["bank_balances"].toString()) ?? 0.0;
-        _groupContributionAmount = double.tryParse(groupDetails["total_contributions"].toString()) ?? 0.0;
-        _groupExpenses = double.tryParse(groupDetails["total_expense_payments"].toString()) ?? 0.0;
-        _groupPendingLoan = double.tryParse(groupDetails["total_loan_balances"].toString()) ?? 0.0;
-        _groupFinePayments = double.tryParse(groupDetails["total_fines"].toString()) ?? 0.0;
-        _groupLoanedAmount = double.tryParse(groupDetails["total_loaned_amount"].toString()) ?? 0.0;
-        _groupLoanPaid = double.tryParse(groupDetails["total_loan_repaid"].toString()) ?? 0.0;
+        var groupDetails = _groupDashboardData[groupId]["group_details"]
+            as Map<String, dynamic>;
+        _cashBalances =
+            double.tryParse(groupDetails["cash_balances"].toString()) ?? 0.0;
+        _bankBalances =
+            double.tryParse(groupDetails["bank_balances"].toString()) ?? 0.0;
+        _groupContributionAmount =
+            double.tryParse(groupDetails["total_contributions"].toString()) ??
+                0.0;
+        _groupExpenses = double.tryParse(
+                groupDetails["total_expense_payments"].toString()) ??
+            0.0;
+        _groupPendingLoan =
+            double.tryParse(groupDetails["total_loan_balances"].toString()) ??
+                0.0;
+        _groupFinePayments =
+            double.tryParse(groupDetails["total_fines"].toString()) ?? 0.0;
+        _groupLoanedAmount =
+            double.tryParse(groupDetails["total_loaned_amount"].toString()) ??
+                0.0;
+        _groupLoanPaid =
+            double.tryParse(groupDetails["total_loan_repaid"].toString()) ??
+                0.0;
 
         var accountBalances = groupDetails["account_balances"];
         _bankAccountDashboardSummary = [];
         if (accountBalances.length > 0) {
           accountBalances.map((accountBalance) {
             var accountName = accountBalance["description"].toString();
-            var balance = double.tryParse(accountBalance["balance"].toString()) ?? 0.0;
+            var balance =
+                double.tryParse(accountBalance["balance"].toString()) ?? 0.0;
             //if(balance > 1.0){
-            _bankAccountDashboardSummary.add(BankAccountDashboardSummary(accountName: accountName, balance: balance));
+            _bankAccountDashboardSummary.add(BankAccountDashboardSummary(
+                accountName: accountName, balance: balance));
             //}
           }).toList();
         }
@@ -308,7 +340,8 @@ class Dashboard with ChangeNotifier {
     if (_groupDashboardData[groupId].containsKey("chart_data")) {
       double maxY = 0;
       int divider = 1;
-      var transactions = _groupDashboardData[groupId]["chart_data"]["group_transactions"] as Map<String, dynamic>;
+      var transactions = _groupDashboardData[groupId]["chart_data"]
+          ["group_transactions"] as Map<String, dynamic>;
       var depositsMap = transactions["deposits"] as Map;
       var withdrawalsMap = transactions["withdrawals"] as Map;
       List<String> months = [];
@@ -318,7 +351,8 @@ class Dashboard with ChangeNotifier {
       if (depositsMap != null) {
         for (final key in depositsMap.keys) {
           final deposit = double.tryParse(depositsMap[key].toString()) ?? 0;
-          final withdrawal = double.tryParse(withdrawalsMap[key].toString()) ?? 0;
+          final withdrawal =
+              double.tryParse(withdrawalsMap[key].toString()) ?? 0;
           final larger = deposit > withdrawal ? deposit : withdrawal;
           maxY = maxY < larger ? larger : maxY;
           months.add(key);
@@ -336,10 +370,12 @@ class Dashboard with ChangeNotifier {
         }
 
         for (int i = 0; i < months.length; i++) {
-          groupedData.add(makeGroupData(i, deposits[i] / divider, withdrawals[i] / divider));
+          groupedData.add(makeGroupData(
+              i, deposits[i] / divider, withdrawals[i] / divider));
         }
       }
-      _chartYAxisParameters[0] = maxY.toInt() > 999 ? round(maxY.toInt(), 1000) : maxY;
+      _chartYAxisParameters[0] =
+          maxY.toInt() > 999 ? round(maxY.toInt(), 1000) : maxY;
       _chartYAxisParameters[1] = divider;
       _depositsVWithdrawals = groupedData;
       _months = months;
@@ -438,18 +474,20 @@ class Dashboard with ChangeNotifier {
     const Color withdrawalsBarColor = Colors.red;
     const double width = 7;
 
-    return BarChartGroupData(barsSpace: 4, x: x, barRods: [
-      BarChartRodData(
-        y: y1,
-        color: depositsBarColor,
-        width: width,
-      ),
-      BarChartRodData(
-        y: y2,
-        color: withdrawalsBarColor,
-        width: width,
-      ),
-    ]);
+    return BarChartGroupData();
+
+    // return BarChartGroupData(barsSpace: 4, x: x, barRods: [
+    //   BarChartRodData(
+    //     y: y1,
+    //     color: depositsBarColor,
+    //     width: width,
+    //   ),
+    //   BarChartRodData(
+    //     y: y2,
+    //     color: withdrawalsBarColor,
+    //     width: width,
+    //   ),
+    // ]);
   }
 
   int round(int number, int multiple) {

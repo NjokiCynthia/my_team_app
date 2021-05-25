@@ -55,7 +55,8 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                         show: true,
                         bottomTitles: SideTitles(
                           showTitles: true,
-                          textStyle: TextStyle(
+                          getTextStyles: (value) => TextStyle(
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               fontFamily: 'SegoeUI',
                               fontWeight: FontWeight.bold,
@@ -73,7 +74,8 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                         ),
                         leftTitles: SideTitles(
                           showTitles: true,
-                          textStyle: TextStyle(
+                          getTextStyles: (val) => TextStyle(
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               fontFamily: 'SegoeUI',
                               fontWeight: FontWeight.bold,
@@ -92,8 +94,9 @@ class DepositsVWithdrawalsState extends State<DepositsVWithdrawals> {
                         ),
                         rightTitles: SideTitles(
                             showTitles: true,
-                            textStyle: TextStyle(
+                            getTextStyles: (val) => TextStyle(
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontFamily: 'SegoeUI',
                                 fontWeight: FontWeight.bold,

@@ -1,8 +1,6 @@
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -56,7 +54,7 @@ class _WalletState extends State<Wallet> {
       gridData: FlGridData(show: false),
       titlesData: FlTitlesData(show: false),
       borderData: FlBorderData(show: false),
-      clipToBorder: true,
+      // clipToBorder: true,
       minX: 0,
       maxX: 11,
       minY: 0,
