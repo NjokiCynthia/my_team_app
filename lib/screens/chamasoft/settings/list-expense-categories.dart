@@ -59,7 +59,8 @@ class _ListExpenseCategoriesState extends State<ListExpenseCategories> {
                     padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
                     itemCount: groupData.expenseCategories.length,
                     itemBuilder: (context, index) {
-                      ExpenseCategories expense = groupData.expenseCategories[index];
+                      ExpenseCategories expense =
+                          groupData.expenseCategories[index];
                       return ListTile(
                         dense: true,
                         title: Row(
@@ -79,12 +80,15 @@ class _ListExpenseCategoriesState extends State<ListExpenseCategories> {
                                       ),
                                       SizedBox(width: 10.0),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
                                             '${expense.name}',
                                             style: TextStyle(
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
                                               fontWeight: FontWeight.w800,
                                               fontSize: 18.0,
                                             ),
@@ -108,14 +112,18 @@ class _ListExpenseCategoriesState extends State<ListExpenseCategories> {
                                         padding: EdgeInsets.all(12.0),
                                         child: circleIconButton(
                                           icon: Icons.edit,
-                                          backgroundColor: primaryColor.withOpacity(.3),
+                                          backgroundColor:
+                                              primaryColor.withOpacity(.3),
                                           color: primaryColor,
                                           iconSize: 18.0,
                                           padding: 0.0,
                                           onPressed: () async {
-                                            await Navigator.of(context).push(MaterialPageRoute(
-                                              builder: (context) => EditExpenseCategory(
-                                                expenseCategoryId: int.parse(expense.id),
+                                            await Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditExpenseCategory(
+                                                expenseCategoryId:
+                                                    int.parse(expense.id),
                                               ),
                                             ));
                                           },
@@ -137,7 +145,9 @@ class _ListExpenseCategoriesState extends State<ListExpenseCategories> {
                       );
                     },
                   )
-                : betterEmptyList(message: "Sorry, you have not added any expense categories");
+                : betterEmptyList(
+                    message:
+                        "Sorry, you have not added any expense categories");
           })),
     );
   }

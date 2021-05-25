@@ -53,8 +53,11 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
-      final pickedFile =
-          await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
+      final pickedFile = await _picker.getImage(
+          source: source,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: IMAGE_QUALITY);
       setState(() {
         avatar = pickedFile;
       });
@@ -80,7 +83,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _groupAvatar = Provider.of<Groups>(context, listen: false).getCurrentGroupDisplayAvatar();
+    _groupAvatar = Provider.of<Groups>(context, listen: false)
+        .getCurrentGroupDisplayAvatar();
     super.initState();
   }
 
@@ -94,15 +98,18 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateName(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false).updateGroupName(groupName);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupName(groupName);
       Navigator.of(context).pop(); //pop progress view
       if (response['status'] == 1) {
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Name",
         )));
       } else {
         errorText = response['message'];
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating Group Name",
@@ -120,15 +127,18 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateEmail(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false).updateGroupEmail(emailAddress);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupEmail(emailAddress);
       Navigator.of(context).pop();
       if (response['status'] == 1) {
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group email",
         )));
       } else {
         errorText = response['message'];
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating Group Email",
@@ -144,16 +154,19 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdatePhone(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false).updateGroupPhoneNumber(phoneNumber);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupPhoneNumber(phoneNumber);
       Navigator.of(context).pop();
       if (response['status'] == 1) {
         //Navigator.of(context).push(new MaterialPageRoute(builder: (context) => Verification()));
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated group phone number",
         )));
       } else {
         errorText = response['message'];
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating group phone number",
@@ -169,15 +182,18 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateCurrency(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false).updateGroupCurrency(currencyId);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupCurrency(currencyId);
       Navigator.of(context).pop();
       if (response['status'] == 1) {
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Currency",
         )));
       } else {
         errorText = response['message'];
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating group currency",
@@ -193,15 +209,18 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
   Future<void> doUpdateCountry(BuildContext context) async {
     errorText = '';
     try {
-      final response = await Provider.of<Groups>(context, listen: false).updateGroupCountry(countryId);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .updateGroupCountry(countryId);
       Navigator.of(context).pop();
       if (response['status'] == 1) {
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group Country",
         )));
       } else {
         errorText = response['message'];
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "Error updating group country",
@@ -223,6 +242,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           title: heading2(
               text: "Update Phone Number",
               textAlign: TextAlign.start,
+              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor),
           content: Form(
             key: _formKey,
@@ -230,9 +250,17 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 TextFormField(
-                  initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone != null
-                      ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone != "null"
-                          ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupPhone
+                  initialValue: Provider.of<Groups>(context, listen: false)
+                              .getCurrentGroup()
+                              .groupPhone !=
+                          null
+                      ? Provider.of<Groups>(context, listen: false)
+                                  .getCurrentGroup()
+                                  .groupPhone !=
+                              "null"
+                          ? Provider.of<Groups>(context, listen: false)
+                              .getCurrentGroup()
+                              .groupPhone
                           : ""
                       : "",
                   keyboardType: TextInputType.phone,
@@ -264,6 +292,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
@@ -297,7 +326,10 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
-              text: "Update Group Name", textAlign: TextAlign.start, color: Theme.of(context).textSelectionHandleColor),
+              text: "Update Group Name",
+              textAlign: TextAlign.start,
+              // ignore: deprecated_member_use
+              color: Theme.of(context).textSelectionHandleColor),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -310,7 +342,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
               Form(
                 key: _formKey,
                 child: TextFormField(
-                  initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupName,
+                  initialValue: Provider.of<Groups>(context, listen: false)
+                      .getCurrentGroup()
+                      .groupName,
                   keyboardType: TextInputType.text,
                   onChanged: (value) {
                     setState(() {
@@ -340,6 +374,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
@@ -375,13 +410,22 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           title: heading2(
               text: "Update Group Email Address",
               textAlign: TextAlign.start,
+              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor),
           content: Form(
             key: _formKey,
             child: TextFormField(
-              initialValue: Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail != null
-                  ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail != "null"
-                      ? Provider.of<Groups>(context, listen: false).getCurrentGroup().groupEmail
+              initialValue: Provider.of<Groups>(context, listen: false)
+                          .getCurrentGroup()
+                          .groupEmail !=
+                      null
+                  ? Provider.of<Groups>(context, listen: false)
+                              .getCurrentGroup()
+                              .groupEmail !=
+                          "null"
+                      ? Provider.of<Groups>(context, listen: false)
+                          .getCurrentGroup()
+                          .groupEmail
                       : ""
                   : "",
               keyboardType: TextInputType.emailAddress,
@@ -411,6 +455,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
@@ -447,6 +492,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             title: heading2(
                 text: "Update Group Currency",
                 textAlign: TextAlign.start,
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor),
             content: Column(
               mainAxisSize: MainAxisSize.min,
@@ -455,7 +501,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                   key: _formKey,
                   child: CurrencyDropdown(
                     labelText: 'Select Currency',
-                    listItems: Provider.of<Groups>(context, listen: false).currencyOptions,
+                    listItems: Provider.of<Groups>(context, listen: false)
+                        .currencyOptions,
                     selectedItem: currencyId,
                     onChanged: (value) {
                       setState(() {
@@ -469,6 +516,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             actions: <Widget>[
               negativeActionDialogButton(
                   text: "Cancel",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
@@ -525,6 +573,7 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
             actions: <Widget>[
               negativeActionDialogButton(
                   text: "Cancel",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   action: () {
                     Navigator.of(context).pop();
@@ -556,10 +605,12 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
         _isLoadingImage = true;
       });
       try {
-        await Provider.of<Groups>(context, listen: false).updateGroupAvatar(File(avatar.path));
+        await Provider.of<Groups>(context, listen: false)
+            .updateGroupAvatar(File(avatar.path));
         setState(() {
           _groupAvatar = null;
         });
+        // ignore: deprecated_member_use
         Scaffold.of(context).showSnackBar(SnackBar(
             content: Text(
           "You have successfully updated Group profile picture",
@@ -582,7 +633,8 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
 
   @override
   Widget build(BuildContext context) {
-    final currentGroup = Provider.of<Groups>(context, listen: true).getCurrentGroup();
+    final currentGroup =
+        Provider.of<Groups>(context, listen: true).getCurrentGroup();
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -603,9 +655,14 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 SizedBox(
                   height: 40.0,
                 ),
-                heading1(text: "Update Group Profile", color: Theme.of(context).textSelectionHandleColor),
+                heading1(
+                    text: "Update Group Profile",
+                    // ignore: deprecated_member_use
+                    color: Theme.of(context).textSelectionHandleColor),
                 subtitle2(
-                    text: "Update the profile info for your Group", color: Theme.of(context).textSelectionHandleColor),
+                    text: "Update the profile info for your Group",
+                    // ignore: deprecated_member_use
+                    color: Theme.of(context).textSelectionHandleColor),
                 SizedBox(
                   height: 20.0,
                 ),
@@ -622,42 +679,56 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                           : _groupAvatar != null
                               ? CachedNetworkImage(
                                   imageUrl: _groupAvatar,
-                                  placeholder: (context, url) => const CircleAvatar(
+                                  placeholder: (context, url) =>
+                                      const CircleAvatar(
                                     radius: 45.0,
-                                    backgroundImage: const AssetImage('assets/no-user.png'),
+                                    backgroundImage:
+                                        const AssetImage('assets/no-user.png'),
                                   ),
-                                  imageBuilder: (context, image) => CircleAvatar(
+                                  imageBuilder: (context, image) =>
+                                      CircleAvatar(
                                     backgroundImage: image,
                                     radius: 45.0,
                                   ),
-                                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
                                   fadeOutDuration: const Duration(seconds: 1),
                                   fadeInDuration: const Duration(seconds: 3),
                                 )
-                              : !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                              : !kIsWeb &&
+                                      defaultTargetPlatform ==
+                                          TargetPlatform.android
                                   ? FutureBuilder<void>(
                                       future: retrieveLostData(),
-                                      builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<void> snapshot) {
                                         switch (snapshot.connectionState) {
                                           case ConnectionState.none:
                                           case ConnectionState.waiting:
                                             return CircleAvatar(
-                                              backgroundImage: AssetImage('assets/no-user.png'),
-                                              backgroundColor: Colors.transparent,
+                                              backgroundImage: AssetImage(
+                                                  'assets/no-user.png'),
+                                              backgroundColor:
+                                                  Colors.transparent,
                                               radius: 45,
                                             );
                                           case ConnectionState.done:
                                             return CircleAvatar(
                                               backgroundImage: avatar == null
-                                                  ? AssetImage('assets/no-user.png')
-                                                  : FileImage(File(avatar.path)),
-                                              backgroundColor: Colors.transparent,
+                                                  ? AssetImage(
+                                                      'assets/no-user.png')
+                                                  : FileImage(
+                                                      File(avatar.path)),
+                                              backgroundColor:
+                                                  Colors.transparent,
                                               radius: 45,
                                             );
                                           default:
                                             return CircleAvatar(
-                                              backgroundImage: AssetImage('assets/no-user.png'),
-                                              backgroundColor: Colors.transparent,
+                                              backgroundImage: AssetImage(
+                                                  'assets/no-user.png'),
+                                              backgroundColor:
+                                                  Colors.transparent,
                                               radius: 45,
                                             );
                                         }
@@ -697,7 +768,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Group Phone Number",
-                  updateText: currentGroup.groupPhone == "null" ? "Set group phone number" : currentGroup.groupPhone,
+                  updateText: currentGroup.groupPhone == "null"
+                      ? "Set group phone number"
+                      : currentGroup.groupPhone,
                   icon: Icons.edit,
                   onPressed: () {
                     _updatePhoneNumber(context);
@@ -705,7 +778,9 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Group Email Address",
-                  updateText: currentGroup.groupEmail == 'null' ? "Set group email address" : currentGroup.groupEmail,
+                  updateText: currentGroup.groupEmail == 'null'
+                      ? "Set group email address"
+                      : currentGroup.groupEmail,
                   icon: Icons.edit,
                   onPressed: () {
                     _updateEmailAddress(context);
@@ -713,19 +788,25 @@ class _UpdateGroupProfileState extends State<UpdateGroupProfile> {
                 ),
                 InfoUpdateTile(
                   labelText: "Currency",
-                  updateText: currentGroup.groupCurrency == "null" ? "Set group currency" : currentGroup.groupCurrency,
+                  updateText: currentGroup.groupCurrency == "null"
+                      ? "Set group currency"
+                      : currentGroup.groupCurrency,
                   icon: Icons.edit,
                   onPressed: () async {
                     setState(() {
-                      currencyId =
-                          int.parse(Provider.of<Groups>(context, listen: false).getCurrentGroup().groupCurrencyId);
+                      currencyId = int.parse(
+                          Provider.of<Groups>(context, listen: false)
+                              .getCurrentGroup()
+                              .groupCurrencyId);
                     });
                     _updateCurrency(context);
                   },
                 ),
                 InfoUpdateTile(
                   labelText: "Country",
-                  updateText: currentGroup.groupCountryName == "null" ? "Set country" : currentGroup.groupCountryName,
+                  updateText: currentGroup.groupCountryName == "null"
+                      ? "Set country"
+                      : currentGroup.groupCountryName,
                   icon: Icons.edit,
                   onPressed: () {
                     setState(() {
@@ -768,6 +849,7 @@ class InfoUpdateTile extends StatelessWidget {
       subtitle: customTitle(
         text: "$updateText",
         textAlign: TextAlign.start,
+        // ignore: deprecated_member_use
         color: Theme.of(context).textSelectionHandleColor,
         fontSize: 20.0,
       ),

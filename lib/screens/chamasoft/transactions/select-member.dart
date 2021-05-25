@@ -101,6 +101,7 @@ class SelectMemberState extends State<SelectMember> {
                   backgroundColor: Theme.of(context).backgroundColor,
                   title: new Text("Please select a member"),
                   actions: <Widget>[
+                    // ignore: deprecated_member_use
                     new FlatButton(
                       child: new Text(
                         "OK",
@@ -200,11 +201,13 @@ class SelectMemberState extends State<SelectMember> {
                                                     text: entry.name,
                                                     textAlign: TextAlign.start,
                                                     color: Theme.of(context)
+                                                        // ignore: deprecated_member_use
                                                         .textSelectionHandleColor),
                                                 subtitle: subtitle2(
                                                     text: entry.phoneNumber,
                                                     textAlign: TextAlign.start,
                                                     color: Theme.of(context)
+                                                        // ignore: deprecated_member_use
                                                         .textSelectionHandleColor),
                                               ),
                                             )
@@ -247,6 +250,7 @@ class SelectMemberState extends State<SelectMember> {
                                                         textAlign:
                                                             TextAlign.start,
                                                         color: Theme.of(context)
+                                                            // ignore: deprecated_member_use
                                                             .textSelectionHandleColor),
                                                     subtitle: subtitle1(
                                                         text:
@@ -255,6 +259,7 @@ class SelectMemberState extends State<SelectMember> {
                                                         textAlign:
                                                             TextAlign.start,
                                                         color: Theme.of(context)
+                                                            // ignore: deprecated_member_use
                                                             .textSelectionHandleColor),
                                                   ),
                                                 )

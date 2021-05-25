@@ -18,7 +18,11 @@ class LoanFeesAndGuarantors extends StatefulWidget {
   final dynamic loanDetails;
   final Function(dynamic) onButtonPressed;
 
-  LoanFeesAndGuarantors({this.responseData, this.isEditMode, this.loanDetails, @required this.onButtonPressed});
+  LoanFeesAndGuarantors(
+      {this.responseData,
+      this.isEditMode,
+      this.loanDetails,
+      @required this.onButtonPressed});
 
   @override
   _LoanFeesAndGuarantorsState createState() => _LoanFeesAndGuarantorsState();
@@ -29,7 +33,8 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
   bool _isFormEnabled = true;
   var _isLoading = false;
 
-  String requestId = ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
+  String requestId =
+      ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
   String loanTypeID;
 
   bool enableLoanGuarantors = false;
@@ -54,23 +59,38 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
 
       log(settings.toString());
       chargeLoanProcessingFee =
-          (int.tryParse(settings['enable_loan_processing_fee'].toString()) ?? 0) == 1 ? true : false;
-      loanProcessingFeeTypeId = parseZeroDropdownValues(settings, "loan_processing_fee_type");
-      loanProcessingFeeAmount = settings['loan_processing_fee_fixed_amount'].toString() != '0'
-          ? settings['loan_processing_fee_fixed_amount'].toString()
-          : '';
-      loanProcessingFeePercentage = settings['loan_processing_fee_percentage_rate'].toString() != '0'
-          ? settings['loan_processing_fee_percentage_rate'].toString()
-          : '';
-      loanProcessingFeePercentageChargedOnId =
-          parseZeroDropdownValues(settings, "loan_processing_fee_percentage_charged_on");
+          (int.tryParse(settings['enable_loan_processing_fee'].toString()) ??
+                      0) ==
+                  1
+              ? true
+              : false;
+      loanProcessingFeeTypeId =
+          parseZeroDropdownValues(settings, "loan_processing_fee_type");
+      loanProcessingFeeAmount =
+          settings['loan_processing_fee_fixed_amount'].toString() != '0'
+              ? settings['loan_processing_fee_fixed_amount'].toString()
+              : '';
+      loanProcessingFeePercentage =
+          settings['loan_processing_fee_percentage_rate'].toString() != '0'
+              ? settings['loan_processing_fee_percentage_rate'].toString()
+              : '';
+      loanProcessingFeePercentageChargedOnId = parseZeroDropdownValues(
+          settings, "loan_processing_fee_percentage_charged_on");
 
-      enableLoanGuarantors = (int.tryParse(settings['enable_loan_guarantors'].toString()) ?? 0) == 1 ? true : false;
-      guarantorOptionId = (int.tryParse(settings["loan_guarantors_type"].toString()) ?? 1) == 0
-          ? 1
-          : (int.tryParse(settings["loan_guarantors_type"].toString()) ?? 1);
+      enableLoanGuarantors =
+          (int.tryParse(settings['enable_loan_guarantors'].toString()) ?? 0) ==
+                  1
+              ? true
+              : false;
+      guarantorOptionId =
+          (int.tryParse(settings["loan_guarantors_type"].toString()) ?? 1) == 0
+              ? 1
+              : (int.tryParse(settings["loan_guarantors_type"].toString()) ??
+                  1);
       minimumAllowedGuarantors =
-          settings['minimum_guarantors'].toString() != '0' ? settings['minimum_guarantors'].toString() : '';
+          settings['minimum_guarantors'].toString() != '0'
+              ? settings['minimum_guarantors'].toString()
+              : '';
     } else
       loanTypeID = widget.responseData['id'].toString();
   }
@@ -106,12 +126,15 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
     formData["enable_loan_processing_fee"] = chargeLoanProcessingFee ? 1 : 0;
     formData["loan_processing_fee_type"] = loanProcessingFeeTypeId;
     formData["loan_processing_fee_fixed_amount"] = loanProcessingFeeAmount;
-    formData["loan_processing_fee_percentage_rate"] = loanProcessingFeePercentage;
-    formData["loan_processing_fee_percentage_charged_on"] = loanProcessingFeePercentageChargedOnId;
+    formData["loan_processing_fee_percentage_rate"] =
+        loanProcessingFeePercentage;
+    formData["loan_processing_fee_percentage_charged_on"] =
+        loanProcessingFeePercentageChargedOnId;
 
     print("$formData");
     try {
-      final response = await Provider.of<Groups>(context, listen: false).addLoanTypeStepThree(formData);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .addLoanTypeStepThree(formData);
       print(response);
       requestId = null;
       alertDialogWithAction(context, response["message"].toString(), () {
@@ -151,6 +174,7 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
             children: <Widget>[
               customTitle(
                   text: "General Details",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   fontWeight: FontWeight.w400,
                   textAlign: TextAlign.start),
@@ -161,6 +185,7 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
             children: <Widget>[
               subtitle2(
                   text: "Set Guarantor Requirements and Loan Fees",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start),
             ],
@@ -176,6 +201,7 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                       children: <Widget>[
                         customTitle(
                             text: "Enable loan guarantors",
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.start),
@@ -189,13 +215,16 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                         )
                       ],
                     ),
-                    Visibility(visible: enableLoanGuarantors, child: SizedBox(height: 5)),
+                    Visibility(
+                        visible: enableLoanGuarantors,
+                        child: SizedBox(height: 5)),
                     Visibility(
                       visible: enableLoanGuarantors,
                       child: Row(
                         children: [
                           customTitle(
                             text: "Choose guarantor option",
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             fontWeight: FontWeight.w500,
                             textAlign: TextAlign.start,
@@ -218,6 +247,7 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                           ),
                           customTitleWithWrap(
                               text: "Every time member applying loan",
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               fontWeight: FontWeight.w500,
                               textAlign: TextAlign.start),
@@ -240,8 +270,11 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                           ),
                           Expanded(
                             child: customTitleWithWrap(
-                                text: "When a member loan request exceeds maximum loan amount",
-                                color: Theme.of(context).textSelectionHandleColor,
+                                text:
+                                    "When a member loan request exceeds maximum loan amount",
+                                color:
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500,
                                 textAlign: TextAlign.start),
                           ),
@@ -251,7 +284,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                     Visibility(
                       visible: enableLoanGuarantors,
                       child: numberDecimalFieldWithInitialValue(
-                          initialValue: minimumAllowedGuarantors != null ? minimumAllowedGuarantors : '',
+                          initialValue: minimumAllowedGuarantors != null
+                              ? minimumAllowedGuarantors
+                              : '',
                           isFormEnabled: _isFormEnabled,
                           context: context,
                           labelText: 'Enter minimum allowed guarantors',
@@ -265,7 +300,8 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                               if (value.trim() == '' || value.trim() == null) {
                                 return "This field is required";
                               } else {
-                                if ((int.tryParse(value) ?? 0) < 1) return "Minimum is 1";
+                                if ((int.tryParse(value) ?? 0) < 1)
+                                  return "Minimum is 1";
                               }
                             }
                             return null;
@@ -277,6 +313,7 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                       children: <Widget>[
                         customTitle(
                             text: "Charge loan processing fee",
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.start),
@@ -309,9 +346,12 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                           }),
                     ),
                     Visibility(
-                      visible: chargeLoanProcessingFee && loanProcessingFeeTypeId == 1,
+                      visible: chargeLoanProcessingFee &&
+                          loanProcessingFeeTypeId == 1,
                       child: numberDecimalFieldWithInitialValue(
-                          initialValue: loanProcessingFeeAmount != null ? loanProcessingFeeAmount : '',
+                          initialValue: loanProcessingFeeAmount != null
+                              ? loanProcessingFeeAmount
+                              : '',
                           context: context,
                           isFormEnabled: _isFormEnabled,
                           labelText: 'Enter processing fee amount',
@@ -321,18 +361,23 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                             });
                           },
                           validator: (value) {
-                            if (chargeLoanProcessingFee && loanProcessingFeeTypeId == 1) {
+                            if (chargeLoanProcessingFee &&
+                                loanProcessingFeeTypeId == 1) {
                               if (value.trim() == '' || value.trim() == null) {
                                 return "This field is required";
-                              } else if ((int.tryParse(value) ?? 0) < 1) return "Minimum is 1";
+                              } else if ((int.tryParse(value) ?? 0) < 1)
+                                return "Minimum is 1";
                             }
                             return null;
                           }),
                     ),
                     Visibility(
-                      visible: chargeLoanProcessingFee && loanProcessingFeeTypeId == 2,
+                      visible: chargeLoanProcessingFee &&
+                          loanProcessingFeeTypeId == 2,
                       child: numberDecimalFieldWithInitialValue(
-                          initialValue: loanProcessingFeePercentage != null ? loanProcessingFeePercentage : '',
+                          initialValue: loanProcessingFeePercentage != null
+                              ? loanProcessingFeePercentage
+                              : '',
                           isFormEnabled: _isFormEnabled,
                           context: context,
                           labelText: 'Enter processing fee percentage',
@@ -342,16 +387,19 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                             });
                           },
                           validator: (value) {
-                            if (chargeLoanProcessingFee && loanProcessingFeeTypeId == 2) {
+                            if (chargeLoanProcessingFee &&
+                                loanProcessingFeeTypeId == 2) {
                               if (value.trim() == '' || value.trim() == null) {
                                 return "This field is required";
-                              } else if ((double.tryParse(value) ?? 0) < 0.01) return "Minimum is 0.01";
+                              } else if ((double.tryParse(value) ?? 0) < 0.01)
+                                return "Minimum is 0.01";
                             }
                             return null;
                           }),
                     ),
                     Visibility(
-                      visible: chargeLoanProcessingFee && loanProcessingFeeTypeId == 2,
+                      visible: chargeLoanProcessingFee &&
+                          loanProcessingFeeTypeId == 2,
                       child: CustomDropDownButton(
                           labelText: "Percentage charged on",
                           listItems: loanProcessingFeePercentageChargedOn,
@@ -362,7 +410,9 @@ class _LoanFeesAndGuarantorsState extends State<LoanFeesAndGuarantors> {
                             });
                           },
                           validator: (value) {
-                            if (chargeLoanProcessingFee && loanProcessingFeeTypeId == 2) if (value == null) {
+                            if (chargeLoanProcessingFee &&
+                                loanProcessingFeeTypeId ==
+                                    2) if (value == null) {
                               return "This field is required";
                             }
                             return null;

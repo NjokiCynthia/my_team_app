@@ -121,7 +121,8 @@ class MyLoansCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
       child: InkWell(
@@ -148,6 +149,7 @@ class MyLoansCard extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.w500,
                             fontSize: 16.0,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
                           textAlign: TextAlign.start,
@@ -177,12 +179,14 @@ class MyLoansCard extends StatelessWidget {
                             subtitle2(
                                 text: "Applied On",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
                             subtitle1(
                                 text: defaultDateFormat
                                     .format(application.requestDate),
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start)
                           ],
@@ -196,6 +200,7 @@ class MyLoansCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 16.0,
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -206,6 +211,7 @@ class MyLoansCard extends StatelessWidget {
                               style: TextStyle(
                                 fontSize: 20.0,
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w700,
                               ),

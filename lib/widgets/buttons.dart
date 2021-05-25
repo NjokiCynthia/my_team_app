@@ -7,6 +7,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 Widget defaultButton({BuildContext context, String text, Function onPressed}) {
+  // ignore: deprecated_member_use
   return RaisedButton(
     color: primaryColor,
     child: Padding(
@@ -31,6 +32,7 @@ Widget screenActionButton(
   return Container(
     width: buttonSize,
     height: buttonSize,
+    // ignore: deprecated_member_use
     child: FlatButton(
       padding: EdgeInsets.all(0.0),
       child: Icon(
@@ -62,6 +64,7 @@ Widget groupInfoButton(
     width: MediaQuery.of(context).size.width,
     margin: EdgeInsets.only(bottom: 10.0),
     // height: 42.0,
+    // ignore: deprecated_member_use
     child: OutlineButton(
       padding: EdgeInsets.all(0.0),
       child: ListTile(
@@ -131,6 +134,7 @@ Widget smallBadgeButton(
     double textSize = 12.0}) {
   return Container(
     height: buttonHeight,
+    // ignore: deprecated_member_use
     child: FlatButton(
       padding: EdgeInsets.symmetric(horizontal: 6.0),
       child: customTitle(
@@ -158,6 +162,7 @@ Widget smallBadgeButtonWithIcon(
     IconData iconData = LineAwesomeIcons.warning}) {
   return Container(
     height: buttonHeight,
+    // ignore: deprecated_member_use
     child: FlatButton(
       padding: EdgeInsets.symmetric(horizontal: 6.0),
       child: Row(
@@ -195,6 +200,7 @@ Widget cardAmountButton(
     Function action,
     double size,
     Color color}) {
+  // ignore: deprecated_member_use
   return FlatButton(
     padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
     child: Row(
@@ -241,6 +247,7 @@ Widget plainButtonWithArrow(
     double size,
     Color color,
     double spacing = 4.0}) {
+  // ignore: deprecated_member_use
   return FlatButton(
     padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
     child: Row(
@@ -278,6 +285,7 @@ Widget plainButton(
     double size,
     Color color,
     double spacing = 4.0}) {
+  // ignore: deprecated_member_use
   return FlatButton(
     padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
     child: Row(
@@ -315,6 +323,7 @@ Widget paymentActionButton(
     Color textColor,
     bool showIcon = true}) {
   return (!isFlat)
+      // ignore: deprecated_member_use
       ? OutlineButton(
           color: Colors.white,
           child: Row(
@@ -351,6 +360,7 @@ Widget paymentActionButton(
           highlightedBorderColor: color,
           onPressed: action,
         )
+      // ignore: deprecated_member_use
       : FlatButton(
           padding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
           child: Row(
@@ -400,6 +410,7 @@ Widget gridButton(
     decoration: cardDecoration(
         gradient: isHighlighted ? csCardGradient() : plainCardGradient(context),
         context: context),
+    // ignore: deprecated_member_use
     child: FlatButton(
       padding: EdgeInsets.all(0),
       child: Stack(
@@ -478,6 +489,7 @@ Widget svgGridButton(
     decoration: cardDecoration(
         gradient: isHighlighted ? csCardGradient() : plainCardGradient(context),
         context: context),
+    // ignore: deprecated_member_use
     child: FlatButton(
       padding: EdgeInsets.all(0),
       child: Stack(
@@ -579,6 +591,7 @@ Widget circleIconButton(
 
 Widget negativeActionDialogButton(
     {String text = "Cancel", Color color, Function action}) {
+  // ignore: deprecated_member_use
   return FlatButton(
     padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
     child: Row(
@@ -599,6 +612,7 @@ Widget negativeActionDialogButton(
 }
 
 Widget positiveActionDialogButton({String text, Color color, Function action}) {
+  // ignore: deprecated_member_use
   return FlatButton(
     padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
     child: customTitle(
@@ -618,6 +632,7 @@ ButtonTheme groupSetupButton(
     BuildContext context, String text, Function action) {
   return ButtonTheme(
     height: 36,
+    // ignore: deprecated_member_use
     child: FlatButton(
       onPressed: action,
       padding: EdgeInsets.only(left: 4, right: 4),
@@ -640,6 +655,7 @@ ButtonTheme groupSetupButton(
           customTitle(
               text: text,
               fontSize: 12,
+              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor),
         ],
       ),
@@ -654,6 +670,7 @@ Widget meetingMegaButton(
     Color color,
     IconData icon,
     Function action}) {
+  // ignore: deprecated_member_use
   return OutlineButton(
     color: Colors.white,
     child: Padding(

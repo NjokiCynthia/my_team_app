@@ -55,16 +55,19 @@ class _GroupSettingsState extends State<GroupSettings> {
           content: new Text(
               "Are you sure you want to delete the group? You will lose all information regarding this group."),
           actions: <Widget>[
+            // ignore: deprecated_member_use
             new FlatButton(
               child: new Text(
                 "Cancel",
                 style: TextStyle(
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
+            // ignore: deprecated_member_use
             new FlatButton(
               child: new Text(
                 "Delete",
@@ -111,6 +114,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -133,6 +137,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -156,6 +161,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -178,6 +184,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -201,6 +208,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -223,6 +231,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -245,6 +254,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -264,6 +274,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -286,6 +297,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -308,6 +320,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         ),
       );
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     }
   }
@@ -374,6 +387,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                       children: <Widget>[
                         heading2(
                             text: currentGroup.groupName,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor),
                         Row(
                           children: [
@@ -483,6 +497,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Accounts",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
                 subtitle: customTitle(
@@ -519,6 +534,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Contributions",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
                 subtitle: customTitle(
@@ -554,6 +570,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Members",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
                 subtitle: customTitle(
@@ -589,6 +606,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Expense Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
                 subtitle: customTitle(
@@ -626,6 +644,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Fine Types",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
                 subtitle: customTitle(
@@ -661,6 +680,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Loan Types",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
                 subtitle: customTitle(
@@ -696,6 +716,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Income Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
                 subtitle: customTitle(
@@ -731,6 +752,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                   text: "Asset Categories",
                   fontWeight: FontWeight.w700,
                   textAlign: TextAlign.start,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
                 subtitle: customTitle(

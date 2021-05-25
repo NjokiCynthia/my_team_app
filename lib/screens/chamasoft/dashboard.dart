@@ -195,6 +195,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   IconButton(
                     icon: Icon(
                       Icons.people_alt,
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                     ),
                     onPressed: () => {
@@ -225,6 +226,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               icon: Icon(
                 Icons.notifications_off,
                 color:
+                    // ignore: deprecated_member_use
                     Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
               ),
               onPressed: null, // Disable notifications for now
@@ -240,6 +242,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             IconButton(
               icon: Icon(
                 Icons.settings,
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
               ),
               onPressed: () => {
@@ -267,6 +270,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 Feather.user,
                 color: _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
               ),
+              // ignore: deprecated_member_use
               title: Text(
                 toBeginningOfSentenceCase(getUserName(auth.userName)),
                 style: TextStyle(
@@ -282,6 +286,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 Feather.users,
                 color: _currentPage == 1 ? primaryColor : Colors.blueGrey[300],
               ),
+              // ignore: deprecated_member_use
               title: Text(
                 "My Group",
                 style: TextStyle(
@@ -296,6 +301,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 Feather.credit_card,
                 color: _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
               ),
+              // ignore: deprecated_member_use
               title: Text(
                 "Transactions",
                 style: TextStyle(
@@ -310,6 +316,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 Feather.copy,
                 color: _currentPage == 3 ? primaryColor : Colors.blueGrey[300],
               ),
+              // ignore: deprecated_member_use
               title: Text(
                 "Reports",
                 style: TextStyle(

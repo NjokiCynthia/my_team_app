@@ -58,7 +58,8 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
     try {
       _authData["identity"] = _identity;
       _authData["pin"] = _pinEditingController.text;
-      final response = await Provider.of<Auth>(context, listen: false).verifyPin(_authData) as Map<String, dynamic>;
+      final response = await Provider.of<Auth>(context, listen: false)
+          .verifyPin(_authData) as Map<String, dynamic>;
       print(response);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -85,11 +86,19 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
   }
 
   void _resendOtp(BuildContext context) async {
-    final snackBar = SnackBar(content: subtitle2(text: "Resending verification code", textAlign: TextAlign.start));
+    final snackBar = SnackBar(
+        content: subtitle2(
+            text: "Resending verification code", textAlign: TextAlign.start));
+    // ignore: deprecated_member_use
     Scaffold.of(context).showSnackBar(snackBar);
     try {
-      await Provider.of<Auth>(context, listen: false).resendPin(_identity,appSignature);
-      final snackBar = SnackBar(content: subtitle2(text: "Verification code has been sent", textAlign: TextAlign.start));
+      await Provider.of<Auth>(context, listen: false)
+          .resendPin(_identity, appSignature);
+      final snackBar = SnackBar(
+          content: subtitle2(
+              text: "Verification code has been sent",
+              textAlign: TextAlign.start));
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -132,22 +141,41 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                               height: 100.0,
                             ),
                           ),
-                          heading2(text: "Change Phone Number", color: Theme.of(context).textSelectionHandleColor),
+                          heading2(
+                              text: "Change Phone Number",
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 10,
                           ),
-                          subtitle1(text: "A verification code has been sent to", color: Theme.of(context).textSelectionHandleColor),
-                          customTitle(text: _identity, color: Theme.of(context).textSelectionHandleColor),
+                          subtitle1(
+                              text: "A verification code has been sent to",
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor),
+                          customTitle(
+                              text: _identity,
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 12,
                           ),
-                          subtitle2(text: "Enter your code here", color: Theme.of(context).textSelectionHandleColor),
+                          subtitle2(
+                              text: "Enter your code here",
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor),
                           Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
                             child: PinInputTextFormField(
                               pinLength: 4,
                               decoration: UnderlineDecoration(
-                                colorBuilder:  PinListenColorBuilder(primaryColor,Theme.of(context).textSelectionHandleColor),
+                                colorBuilder: PinListenColorBuilder(
+                                    primaryColor,
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context).textSelectionHandleColor),
                                 lineHeight: 2.0,
                                 textStyle: TextStyle(
                                   color: primaryColor,
@@ -195,7 +223,11 @@ class _ChangeNumberVerification extends State<ChangeNumberVerification> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               customTitle(
-                                  text: "Didn't receive verification code? ", color: Theme.of(context).textSelectionHandleColor, fontSize: 13.0),
+                                  text: "Didn't receive verification code? ",
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  fontSize: 13.0),
                               InkWell(
                                 child: Text(
                                   'Resend',

@@ -88,7 +88,8 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(acc: true, fineOptions: true);
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(acc: true, fineOptions: true);
     setState(() {
       _isInit = false;
     });
@@ -98,7 +99,9 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
   Iterable<Widget> get memberWidgets sync* {
     for (MembersFilterEntry member in selectedMembersList) {
       yield ListTile(
-        title: Container(width: 200, child: Text(member.name, style: TextStyle(fontSize: 17))),
+        title: Container(
+            width: 200,
+            child: Text(member.name, style: TextStyle(fontSize: 17))),
         contentPadding: EdgeInsets.all(4.0),
         subtitle: Container(
             width: 200,
@@ -133,7 +136,8 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                     iconSize: 18,
                     onPressed: () {
                       setState(() {
-                        selectedMembersList.removeWhere((MembersFilterEntry entry) {
+                        selectedMembersList
+                            .removeWhere((MembersFilterEntry entry) {
                           return entry.name == member.name;
                         });
                       });
@@ -164,11 +168,13 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
     _formData['member_type_id'] = memberTypeId;
     _formData['individual_payments'] = _individualMemberContributions;
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordFinePayments(_formData);
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordFinePayments(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => DepositReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -207,7 +213,11 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
             controller: _scrollController,
             child: Column(
               children: <Widget>[
-                toolTip(context: context, title: "Manually record fine payments", message: "", showTitle: true),
+                toolTip(
+                    context: context,
+                    title: "Manually record fine payments",
+                    message: "",
+                    showTitle: true),
                 Padding(
                   padding: inputPagePadding,
                   child: Form(
@@ -225,7 +235,8 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                                 labelText: 'Select Deposit Date',
                                 lastDate: DateTime.now(),
                                 selectedDate: finePaymentDate == null
-                                    ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                    ? new DateTime(
+                                        now.year, now.month, now.day - 1, 6, 30)
                                     : finePaymentDate,
                                 selectDate: (selectedDate) {
                                   setState(() {
@@ -264,7 +275,9 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                         CustomDropDownButton(
                           labelText: "Select Fine",
                           enabled: _isFormInputEnabled,
-                          listItems: formLoadData.containsKey("finesOptions") ? formLoadData["finesOptions"] : [],
+                          listItems: formLoadData.containsKey("finesOptions")
+                              ? formLoadData["finesOptions"]
+                              : [],
                           selectedItem: fineId,
                           onChanged: (value) {
                             setState(() {
@@ -284,7 +297,9 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                         CustomDropDownButton(
                           labelText: "Select Deposit Account",
                           enabled: _isFormInputEnabled,
-                          listItems: formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                          listItems: formLoadData.containsKey("accountOptions")
+                              ? formLoadData["accountOptions"]
+                              : [],
                           selectedItem: accountId,
                           onChanged: (value) {
                             setState(() {
@@ -312,7 +327,8 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SelectMember(
-                                            initialMembersList: selectedMembersList,
+                                            initialMembersList:
+                                                selectedMembersList,
                                             //membersList: memberOptions,
                                           ))).then((value) {
                                 setState(() {
@@ -337,13 +353,15 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                                 Column(
                                   children: memberWidgets.toList(),
                                 ),
+                                // ignore: deprecated_member_use
                                 FlatButton(
                                   onPressed: () async {
                                     await Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => SelectMember(
-                                                  initialMembersList: selectedMembersList,
+                                                  initialMembersList:
+                                                      selectedMembersList,
                                                 ))).then((value) {
                                       setState(() {
                                         selectedMembersList = value;
@@ -389,7 +407,8 @@ class _RecordFinePaymentState extends State<RecordFinePayment> {
                         _isLoading
                             ? Padding(
                                 padding: EdgeInsets.all(10),
-                                child: Center(child: CircularProgressIndicator()),
+                                child:
+                                    Center(child: CircularProgressIndicator()),
                               )
                             : SizedBox(
                                 width: 200,

@@ -87,13 +87,16 @@ class _EditExpenseCategoryState extends State<EditExpenseCategory> {
           });
 
       await Provider.of<Groups>(context, listen: false).editExpenseCategory(
-          name: categoryName, description: description.toString(), id: id.toString());
+          name: categoryName,
+          description: description.toString(),
+          id: id.toString());
 
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-            "You have successfully updated the expense category",
-          )));
+        "You have successfully updated the expense category",
+      )));
 
       _formModified = 1;
       Future.delayed(const Duration(seconds: 4), () {
@@ -102,10 +105,11 @@ class _EditExpenseCategoryState extends State<EditExpenseCategory> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
-            "Error updating the Expense Category. ${error.message} ",
-          )));
+        "Error updating the Expense Category. ${error.message} ",
+      )));
     }
   }
 
@@ -123,77 +127,77 @@ class _EditExpenseCategoryState extends State<EditExpenseCategory> {
       body: Builder(builder: (context) {
         return pageLoaded
             ? Form(
-          key: _formKey,
-          child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              scrollDirection: Axis.vertical,
-              controller: _scrollController,
-              child: Column(
-                children: <Widget>[
-                  toolTip(
-                      context: context,
-                      title: "",
-                      message: "Update Expense Category",
-                      showTitle: false),
-                  Padding(
-                    padding:
-                    const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                key: _formKey,
+                child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    controller: _scrollController,
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          simpleTextInputField(
-                              context: context,
-                              labelText: 'Enter expense name',
-                              validator: (value) {
-                                Pattern pattern =
-                                    r'^([A-Za-z0-9_ ]{2,})$';
-                                RegExp regex = new RegExp(pattern);
-                                if (!regex.hasMatch(value))
-                                  return 'Invalid name';
-                                else
-                                  return null;
-                              },
-                              onSaved: (value) => categoryName = value,
-                              controller: nameTextController,
-                              onChanged: (value) {
-                                setState(() {
-                                  categoryName = value;
-                                });
-                              }),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          simpleTextInputField(
+                      children: <Widget>[
+                        toolTip(
                             context: context,
-                            labelText: 'Enter description',
-                            controller: descriptionTextController,
-                            onChanged: (value) {
-                              setState(() {
-                                description = value;
-                              });
-                            },
-                            validator: (value) {
-                              return null;
-                            },
-                          ),
-                          SizedBox(
-                            height: 24,
-                          ),
-                          defaultButton(
-                            context: context,
-                            text: "EDIT CATEGORY",
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                await editExpenseCategory(context);
-                              }
-                            },
-                          ),
-                        ]),
-                  ),
-                ],
-              )),
-        )
+                            title: "",
+                            message: "Update Expense Category",
+                            showTitle: false),
+                        Padding(
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                simpleTextInputField(
+                                    context: context,
+                                    labelText: 'Enter expense name',
+                                    validator: (value) {
+                                      Pattern pattern =
+                                          r'^([A-Za-z0-9_ ]{2,})$';
+                                      RegExp regex = new RegExp(pattern);
+                                      if (!regex.hasMatch(value))
+                                        return 'Invalid name';
+                                      else
+                                        return null;
+                                    },
+                                    onSaved: (value) => categoryName = value,
+                                    controller: nameTextController,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        categoryName = value;
+                                      });
+                                    }),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                simpleTextInputField(
+                                  context: context,
+                                  labelText: 'Enter description',
+                                  controller: descriptionTextController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      description = value;
+                                    });
+                                  },
+                                  validator: (value) {
+                                    return null;
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                defaultButton(
+                                  context: context,
+                                  text: "EDIT CATEGORY",
+                                  onPressed: () async {
+                                    if (_formKey.currentState.validate()) {
+                                      await editExpenseCategory(context);
+                                    }
+                                  },
+                                ),
+                              ]),
+                        ),
+                      ],
+                    )),
+              )
             : Center(child: CircularProgressIndicator());
       }),
     );

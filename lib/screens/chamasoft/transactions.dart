@@ -607,6 +607,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                               .paymentTitle,
                                                           color: Theme.of(
                                                                   context)
+                                                              // ignore: deprecated_member_use
                                                               .textSelectionHandleColor,
                                                           textAlign:
                                                               TextAlign.start),
@@ -615,6 +616,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                               .description,
                                                           color: Theme.of(
                                                                   context)
+                                                              // ignore: deprecated_member_use
                                                               .textSelectionHandleColor,
                                                           textAlign:
                                                               TextAlign.start),
@@ -624,6 +626,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                               " Payment",
                                                           color: Theme.of(
                                                                   context)
+                                                              // ignore: deprecated_member_use
                                                               .textSelectionHandleColor,
                                                           textAlign:
                                                               TextAlign.start)
@@ -644,11 +647,13 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                                           transaction
                                                               .paymentAmount),
                                                   color: Theme.of(context)
+                                                      // ignore: deprecated_member_use
                                                       .textSelectionHandleColor,
                                                   textAlign: TextAlign.start),
                                               subtitle2(
                                                   text: transaction.paymentDate,
                                                   color: Theme.of(context)
+                                                      // ignore: deprecated_member_use
                                                       .textSelectionHandleColor,
                                                   textAlign: TextAlign.start),
                                             ],

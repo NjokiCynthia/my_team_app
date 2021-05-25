@@ -317,6 +317,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
 
   Widget groupSwitcherButton(
       {BuildContext context, String title, String role}) {
+    // ignore: deprecated_member_use
     return FlatButton(
       padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
       child: Column(

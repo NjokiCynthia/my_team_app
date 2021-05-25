@@ -233,12 +233,14 @@ class _FilterContainerState extends State<FilterContainer> {
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w600,
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor),
                             Visibility(
                                 visible: _showStatusFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
                                     size: 12,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor))
                           ],
                         ),
@@ -267,12 +269,14 @@ class _FilterContainerState extends State<FilterContainer> {
                                 fontSize: 12.0,
                                 fontWeight: FontWeight.w600,
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor),
                             Visibility(
                                 visible: _showMemberFilter,
                                 child: Icon(LineAwesomeIcons.chevron_right,
                                     size: 12,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor))
                           ],
                         ),
@@ -294,6 +298,7 @@ class _FilterContainerState extends State<FilterContainer> {
                           text: title,
                           textAlign: TextAlign.center,
                           fontWeight: FontWeight.w600,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor),
                       Visibility(
                         visible:
@@ -304,6 +309,7 @@ class _FilterContainerState extends State<FilterContainer> {
                               text: "Select All",
                               textAlign: TextAlign.start,
                               color:
+                                  // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
                           value: _selectAll,
                           onChanged: (value) {
@@ -331,6 +337,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                     textAlign: TextAlign.center,
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor);
                               } else
                                 return CheckboxListTile(
@@ -366,6 +373,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                       text: item.name,
                                       textAlign: TextAlign.start,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor),
                                   activeColor: primaryColor,
                                 );
@@ -386,6 +394,7 @@ class _FilterContainerState extends State<FilterContainer> {
                                     text: item.name,
                                     textAlign: TextAlign.start,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor),
                                 activeColor: primaryColor,
                               );
@@ -416,6 +425,7 @@ class _FilterContainerState extends State<FilterContainer> {
                         title: subtitle1(
                             text: "Select All",
                             textAlign: TextAlign.start,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor),
                         value: _selectAllMembers,
                         onChanged: (value) {
@@ -450,11 +460,13 @@ class _FilterContainerState extends State<FilterContainer> {
                               title: subtitle1(
                                   text: member.name,
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                               subtitle: subtitle2(
                                   text: member.identity,
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                             );

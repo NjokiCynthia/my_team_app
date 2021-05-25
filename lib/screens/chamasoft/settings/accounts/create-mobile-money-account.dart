@@ -13,7 +13,8 @@ import 'package:provider/provider.dart';
 
 class CreateMobileMoneyAccount extends StatefulWidget {
   @override
-  _CreateMobileMoneyAccountState createState() => _CreateMobileMoneyAccountState();
+  _CreateMobileMoneyAccountState createState() =>
+      _CreateMobileMoneyAccountState();
 }
 
 class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
@@ -21,7 +22,8 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
   ScrollController _scrollController;
   int _formModified = 0;
   TextEditingController mobileMoneyTextController = TextEditingController();
-  TextEditingController mobileMoneyBranchTextController = TextEditingController();
+  TextEditingController mobileMoneyBranchTextController =
+      TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   void _scrollListener() {
@@ -70,7 +72,8 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
             );
           });
 
-      await Provider.of<Groups>(context, listen: false).createMobileMoneyAccount(
+      await Provider.of<Groups>(context, listen: false)
+          .createMobileMoneyAccount(
         accountName: mobileMoneyAccountName,
         accountNumber: accountNumber,
         mobileMoneyProviderId: selectedMobileMoneyProviderId.toString(),
@@ -78,6 +81,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
       );
 
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully added a Mobile Money Account",
@@ -90,6 +94,7 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Mobile Money Account. ${error.message} ",
@@ -104,7 +109,11 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
         return StatefulBuilder(builder: (context, setState) {
           return AlertDialog(
             backgroundColor: Theme.of(context).backgroundColor,
-            title: heading2(text: "Select Mobile Money Provider", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+            title: heading2(
+                text: "Select Mobile Money Provider",
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start),
             content: Container(
               //height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
@@ -136,43 +145,65 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
                       child: ListView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
-                          itemCount: Provider.of<Groups>(context, listen: false).mobileMoneyProviderOptions.length,
+                          itemCount: Provider.of<Groups>(context, listen: false)
+                              .mobileMoneyProviderOptions
+                              .length,
                           itemBuilder: (context, index) {
-                            MobileMoneyProvider mobileMoneyProvider = Provider.of<Groups>(context, listen: false).mobileMoneyProviderOptions[index];
+                            MobileMoneyProvider mobileMoneyProvider =
+                                Provider.of<Groups>(context, listen: false)
+                                    .mobileMoneyProviderOptions[index];
 
-                            return mobileMoneyFilter == null || mobileMoneyFilter == ""
+                            return mobileMoneyFilter == null ||
+                                    mobileMoneyFilter == ""
                                 ? RadioListTile(
                                     activeColor: primaryColor,
                                     title: Text(
                                       mobileMoneyProvider.name,
-                                      style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     onChanged: (value) async {
                                       setState(() {
                                         selectedMobileMoneyProviderId = value;
-                                        selectedMobileMoneyName = mobileMoneyProvider.name;
-                                        mobileMoneyTextController.text = selectedMobileMoneyName;
+                                        selectedMobileMoneyName =
+                                            mobileMoneyProvider.name;
+                                        mobileMoneyTextController.text =
+                                            selectedMobileMoneyName;
                                       });
                                     },
                                     value: mobileMoneyProvider.id,
                                     groupValue: selectedMobileMoneyProviderId,
                                   )
-                                : mobileMoneyProvider.name.toLowerCase().contains(mobileMoneyFilter.toLowerCase())
+                                : mobileMoneyProvider.name
+                                        .toLowerCase()
+                                        .contains(
+                                            mobileMoneyFilter.toLowerCase())
                                     ? RadioListTile(
                                         activeColor: primaryColor,
                                         title: Text(
                                           mobileMoneyProvider.name,
-                                          style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w500),
+                                          style: TextStyle(
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
+                                              fontWeight: FontWeight.w500),
                                         ),
                                         onChanged: (value) async {
                                           setState(() {
-                                            selectedMobileMoneyProviderId = value;
-                                            selectedMobileMoneyName = mobileMoneyProvider.name;
-                                            mobileMoneyTextController.text = selectedMobileMoneyName;
+                                            selectedMobileMoneyProviderId =
+                                                value;
+                                            selectedMobileMoneyName =
+                                                mobileMoneyProvider.name;
+                                            mobileMoneyTextController.text =
+                                                selectedMobileMoneyName;
                                           });
                                         },
                                         value: mobileMoneyProvider.id,
-                                        groupValue: selectedMobileMoneyProviderId,
+                                        groupValue:
+                                            selectedMobileMoneyProviderId,
                                       )
                                     : new Container();
                           }),
@@ -182,19 +213,25 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
               ),
             ),
             actions: <Widget>[
+              // ignore: deprecated_member_use
               new FlatButton(
                 child: new Text(
                   "Cancel",
-                  style: TextStyle(color: Theme.of(context).textSelectionHandleColor, fontFamily: 'SegoeUI'),
+                  style: TextStyle(
+                      // ignore: deprecated_member_use
+                      color: Theme.of(context).textSelectionHandleColor,
+                      fontFamily: 'SegoeUI'),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
+              // ignore: deprecated_member_use
               new FlatButton(
                 child: new Text(
                   "Continue",
-                  style: new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
+                  style:
+                      new TextStyle(color: primaryColor, fontFamily: 'SegoeUI'),
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
@@ -232,90 +269,101 @@ class _CreateMobileMoneyAccountState extends State<CreateMobileMoneyAccount> {
                 controller: _scrollController,
                 child: Column(
                   children: <Widget>[
-                    toolTip(context: context, title: "", message: "Create a new mobile money account", showTitle: false),
+                    toolTip(
+                        context: context,
+                        title: "",
+                        message: "Create a new mobile money account",
+                        showTitle: false),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-                      child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
-                        simpleTextInputField(
-                            context: context,
-                            labelText: 'Enter account name',
-                            validator: (value) {
-                              Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
-                              RegExp regex = new RegExp(pattern);
-                              if (!regex.hasMatch(value))
-                                return 'Invalid mobile money account name';
-                              else
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            simpleTextInputField(
+                                context: context,
+                                labelText: 'Enter account name',
+                                validator: (value) {
+                                  Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
+                                  RegExp regex = new RegExp(pattern);
+                                  if (!regex.hasMatch(value))
+                                    return 'Invalid mobile money account name';
+                                  else
+                                    return null;
+                                },
+                                onSaved: (value) =>
+                                    mobileMoneyAccountName = value,
+                                onChanged: (value) {
+                                  setState(() {
+                                    mobileMoneyAccountName = value;
+                                  });
+                                }),
+                            TextFormField(
+                              controller: mobileMoneyTextController,
+                              readOnly: true,
+                              style: inputTextStyle(),
+                              decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                  color: Theme.of(context).hintColor,
+                                  width: 1.0,
+                                )),
+                                hintText: 'Select Mobile Money Provider',
+                                labelText: 'Select Mobile Money Provider',
+                              ),
+                              onTap: () {
+                                //show popup to select mobileMoney
+                                _mobileMoneyPrompt();
+                              },
+                            ),
+                            numberTextInputField(
+                              context: context,
+                              labelText: 'Enter account number',
+                              onChanged: (value) {
+                                setState(() {
+                                  accountNumber = value;
+                                });
+                              },
+                              validator: (value) {
+                                Pattern pattern = r'^([0-9]{8,20})$';
+                                RegExp regex = new RegExp(pattern);
+                                if (!regex.hasMatch(value))
+                                  return 'Invalid MobileMoney account number';
+                                else
+                                  return null;
+                              },
+                              onSaved: (value) => accountNumber = value,
+                            ),
+                            amountTextInputField(
+                              context: context,
+                              labelText: 'Initial Balance',
+                              onChanged: (value) {
+                                setState(() {
+                                  initialBalance = double.parse(value);
+                                });
+                              },
+                              validator: (value) {
                                 return null;
-                            },
-                            onSaved: (value) => mobileMoneyAccountName = value,
-                            onChanged: (value) {
-                              setState(() {
-                                mobileMoneyAccountName = value;
-                              });
-                            }),
-                        TextFormField(
-                          controller: mobileMoneyTextController,
-                          readOnly: true,
-                          style: inputTextStyle(),
-                          decoration: InputDecoration(
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(
-                              color: Theme.of(context).hintColor,
-                              width: 1.0,
-                            )),
-                            hintText: 'Select Mobile Money Provider',
-                            labelText: 'Select Mobile Money Provider',
-                          ),
-                          onTap: () {
-                            //show popup to select mobileMoney
-                            _mobileMoneyPrompt();
-                          },
-                        ),
-                        numberTextInputField(
-                          context: context,
-                          labelText: 'Enter account number',
-                          onChanged: (value) {
-                            setState(() {
-                              accountNumber = value;
-                            });
-                          },
-                          validator: (value) {
-                            Pattern pattern = r'^([0-9]{8,20})$';
-                            RegExp regex = new RegExp(pattern);
-                            if (!regex.hasMatch(value))
-                              return 'Invalid MobileMoney account number';
-                            else
-                              return null;
-                          },
-                          onSaved: (value) => accountNumber = value,
-                        ),
-                        amountTextInputField(
-                          context: context,
-                          labelText: 'Initial Balance',
-                          onChanged: (value) {
-                            setState(() {
-                              initialBalance = double.parse(value);
-                            });
-                          },
-                          validator: (value) {
-                            return null;
-                          },
-                          onSaved: (value) => initialBalance = double.parse(value),
-                        ),
-                        SizedBox(
-                          height: 24,
-                        ),
-                        defaultButton(
-                          context: context,
-                          text: "CREATE ACCOUNT",
-                          onPressed: () async {
-                            if (_formKey.currentState.validate() && selectedMobileMoneyProviderId > 0) {
-                              await createNewMobileMoneyAccount(context);
-                            }
-                          },
-                        ),
-                      ]),
+                              },
+                              onSaved: (value) =>
+                                  initialBalance = double.parse(value),
+                            ),
+                            SizedBox(
+                              height: 24,
+                            ),
+                            defaultButton(
+                              context: context,
+                              text: "CREATE ACCOUNT",
+                              onPressed: () async {
+                                if (_formKey.currentState.validate() &&
+                                    selectedMobileMoneyProviderId > 0) {
+                                  await createNewMobileMoneyAccount(context);
+                                }
+                              },
+                            ),
+                          ]),
                     ),
                   ],
                 )),

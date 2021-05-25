@@ -79,36 +79,46 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                       ),
                                       SizedBox(width: 10.0),
                                       Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: <Widget>[
                                           Text(
                                             '${fineType.name}',
                                             style: TextStyle(
-                                              color: Theme.of(context).textSelectionHandleColor,
+                                              color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
                                               fontWeight: FontWeight.w800,
                                               fontSize: 18.0,
                                             ),
                                           ),
                                           Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                             children: <Widget>[
                                               Row(
                                                 children: <Widget>[
                                                   Text(
                                                     'Balance: ',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w600,
-                                                      color:
-                                                          Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Theme.of(context)
+                                                          // ignore: deprecated_member_use
+                                                          .textSelectionHandleColor
+                                                          .withOpacity(0.5),
                                                       fontSize: 12.0,
                                                     ),
                                                   ),
                                                   Text(
                                                     '${fineType.balance}',
                                                     style: TextStyle(
-                                                      fontWeight: FontWeight.w700,
-                                                      color:
-                                                          Theme.of(context).textSelectionHandleColor.withOpacity(0.7),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Theme.of(context)
+            // ignore: deprecated_member_use
+                                                          .textSelectionHandleColor
+                                                          .withOpacity(0.7),
                                                       fontSize: 12.0,
                                                     ),
                                                   ),
@@ -135,14 +145,18 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                         padding: EdgeInsets.all(12.0),
                                         child: circleIconButton(
                                           icon: Icons.edit,
-                                          backgroundColor: primaryColor.withOpacity(.3),
+                                          backgroundColor:
+                                              primaryColor.withOpacity(.3),
                                           color: primaryColor,
                                           iconSize: 18.0,
                                           padding: 0.0,
                                           onPressed: () async {
-                                            await Navigator.of(context).push(MaterialPageRoute(
-                                              builder: (context) => EditFineType(
-                                                fineCategoryId: int.parse(fineType.id),
+                                            await Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                              builder: (context) =>
+                                                  EditFineType(
+                                                fineCategoryId:
+                                                    int.parse(fineType.id),
                                               ),
                                             ));
                                           },
@@ -164,7 +178,8 @@ class _ListFineTypesState extends State<ListFineTypes> {
                       );
                     },
                   )
-                : betterEmptyList(message: "Sorry, you have not added any fine types");
+                : betterEmptyList(
+                    message: "Sorry, you have not added any fine types");
           })),
     );
   }

@@ -134,6 +134,7 @@ class LoanApplicationCard extends StatelessWidget {
                     text: "$loanName",
                     fontWeight: FontWeight.w700,
                     fontSize: 16.0,
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.start,
                   ),
@@ -145,12 +146,14 @@ class LoanApplicationCard extends StatelessWidget {
                       customTitle(
                         text: "Ksh ",
                         fontSize: 16.0,
+                        // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
                       ),
                       customTitle(
                         text: "$amount",
                         fontWeight: FontWeight.w700,
                         fontSize: 16.0,
+                        // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
@@ -166,11 +169,13 @@ class LoanApplicationCard extends StatelessWidget {
                 children: <Widget>[
                   subtitle2(
                       text: "Applied By",
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       textAlign: TextAlign.start),
                   SizedBox(height: 22),
                   subtitle2(
                       text: "Applied On",
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       textAlign: TextAlign.start),
                 ],
@@ -180,12 +185,14 @@ class LoanApplicationCard extends StatelessWidget {
                 children: <Widget>[
                   customTitle(
                     text: "$borrowerName",
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.start,
                   ),
                   SizedBox(height: 22),
                   customTitle(
                     text: "$requestDate",
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.start,
                   ),
@@ -205,6 +212,7 @@ class LoanApplicationCard extends StatelessWidget {
                       size: 16.0,
                       spacing: 2.0,
                       color: Theme.of(context)
+                          // ignore: deprecated_member_use
                           .textSelectionHandleColor
                           .withOpacity(.8),
                       action: onPressed),

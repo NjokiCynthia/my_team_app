@@ -5,14 +5,14 @@ import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
-import 'package:chamasoft/utilities/svg-icons.dart';
+// import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'models/group-model.dart';
@@ -27,7 +27,7 @@ class ChamasoftGroup extends StatefulWidget {
 
 class _ChamasoftGroupState extends State<ChamasoftGroup> {
   ScrollController _scrollController;
-  ScrollController _chartScrollController;
+  // ScrollController _chartScrollController;
   List<BankAccountDashboardSummary> _iteratableData = [];
   String _groupCurrency = "Ksh";
   Group _currentGroup;
@@ -201,6 +201,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -212,6 +213,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                   .groupContributionAmount),
                                           size: 16.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -230,6 +232,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -241,6 +244,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                   .groupFinePaymentAmount),
                                           size: 16.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -258,6 +262,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -416,6 +421,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -426,6 +432,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                               dashboardData.groupLoanedAmount),
                                           size: 16.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -443,6 +450,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -453,6 +461,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                               dashboardData.groupLoanPaid),
                                           size: 14.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -470,6 +479,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -481,6 +491,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                   .groupPendingLoanBalance),
                                           size: 14.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),

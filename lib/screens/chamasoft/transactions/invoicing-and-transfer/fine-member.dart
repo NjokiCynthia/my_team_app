@@ -87,7 +87,8 @@ class FineMemberState extends State<FineMember> {
             );
           });
     });
-    _formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(fineOptions: true);
+    _formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(fineOptions: true);
     setState(() {
       _isInit = false;
     });
@@ -188,8 +189,10 @@ class FineMemberState extends State<FineMember> {
                       DatePicker(
                         labelText: 'Select Deposit Date',
                         lastDate: DateTime.now(),
-                        selectedDate:
-                            fineDate == null ? new DateTime(now.year, now.month, now.day - 1, 6, 30) : fineDate,
+                        selectedDate: fineDate == null
+                            ? new DateTime(
+                                now.year, now.month, now.day - 1, 6, 30)
+                            : fineDate,
                         selectDate: (selectedDate) {
                           setState(() {
                             fineDate = selectedDate;
@@ -199,7 +202,9 @@ class FineMemberState extends State<FineMember> {
                       CustomDropDownButton(
                         labelText: 'Select Fine type',
                         enabled: _isFormInputEnabled,
-                        listItems: _formLoadData.containsKey("finesOptions") ? _formLoadData["finesOptions"] : [],
+                        listItems: _formLoadData.containsKey("finesOptions")
+                            ? _formLoadData["finesOptions"]
+                            : [],
                         selectedItem: fineTypeId,
                         validator: (value) {
                           if (value == null || value == "") {
@@ -230,7 +235,8 @@ class FineMemberState extends State<FineMember> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SelectMember(
-                                          initialMembersList: selectedMembersList,
+                                          initialMembersList:
+                                              selectedMembersList,
                                           //membersList: memberOptions,
                                         ))).then((value) {
                               setState(() {
@@ -253,14 +259,17 @@ class FineMemberState extends State<FineMember> {
                             Wrap(
                               children: memberWidgets.toList(),
                             ),
+                            // ignore: deprecated_member_use
                             FlatButton(
                               onPressed: () async {
                                 //open select members dialog
                                 await Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            SelectMember(initialMembersList: selectedMembersList))).then((value) {
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => SelectMember(
+                                                initialMembersList:
+                                                    selectedMembersList)))
+                                    .then((value) {
                                   setState(() {
                                     selectedMembersList = value;
                                   });

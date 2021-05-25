@@ -135,12 +135,14 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
       setState(() {
         refreshSettings();
       });
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated Group Settings",
       )));
     } on CustomException catch (error) {
       Navigator.of(context).pop();
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating Group Settings. ${error.message}",
@@ -186,7 +188,9 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                           child: CustomDropDownStringOnlyButton(
                             labelText: "List Members By",
                             listItems: orderByFields,
-                            selectedItem: orderByFieldId==""?"users.first_name":orderByFieldId,
+                            selectedItem: orderByFieldId == ""
+                                ? "users.first_name"
+                                : orderByFieldId,
                             onChanged: (value) async {
                               showDialog(
                                   context: context,
@@ -208,7 +212,9 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                           child: CustomDropDownStringOnlyButton(
                             labelText: "Order Members Direction",
                             listItems: orderMembersDirection,
-                            selectedItem: selectedMemberOrderDirection==""?"ASC":selectedMemberOrderDirection,
+                            selectedItem: selectedMemberOrderDirection == ""
+                                ? "ASC"
+                                : selectedMemberOrderDirection,
                             onChanged: (value) async {
                               showDialog(
                                   context: context,
@@ -229,6 +235,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             "Member Information Privacy",
                             style: TextStyle(
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -257,6 +264,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             "Show Contribution Arrears",
                             style: TextStyle(
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -285,6 +293,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             "Enable Ignoring of Contribution Transfer",
                             style: TextStyle(
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -313,6 +322,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             "Send Monthly Statements to Members",
                             style: TextStyle(
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -341,6 +351,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             "Absolute Reducing Balance Loan\nRecalculation",
                             style: TextStyle(
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),
@@ -369,6 +380,7 @@ class _ConfigurePreferencesState extends State<ConfigurePreferences> {
                             "Disable Member Edit Profile",
                             style: TextStyle(
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w500),
                           ),

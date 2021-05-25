@@ -159,11 +159,13 @@ class _CreateGroupState extends State<CreateGroup> {
                           heading1(
                               text: "Create Group",
                               color:
+                                  // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
                           subtitle1(
                               text:
                                   "Give your group a name, profile photo and country",
                               color:
+                                  // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 24,

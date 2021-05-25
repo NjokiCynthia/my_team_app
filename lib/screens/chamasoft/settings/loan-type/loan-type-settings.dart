@@ -16,7 +16,8 @@ class LoanTypeSettings extends StatefulWidget {
   final dynamic loanDetails;
   final Function(dynamic) onButtonPressed;
 
-  LoanTypeSettings({this.isEditMode, this.loanDetails, @required this.onButtonPressed});
+  LoanTypeSettings(
+      {this.isEditMode, this.loanDetails, @required this.onButtonPressed});
 
   @override
   _LoanTypeSettingsState createState() => _LoanTypeSettingsState();
@@ -26,7 +27,8 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
   final _formKey = GlobalKey<FormState>();
   bool _isFormEnabled = true;
   var _isLoading = false;
-  String requestId = ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
+  String requestId =
+      ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
 
   String loanTypeID;
   String loanTypeName = '';
@@ -62,7 +64,8 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
     formData["maximum_loan_amount"] = maximumLoanAmount;
     formData['savings_times'] = timesNumberOfSavings;
     formData["interest_type"] = interestTypeId;
-    formData["enable_reducing_balance_installment_recalculation"] = enableLoanReducingBalanceRecalculation ? 1 : 0;
+    formData["enable_reducing_balance_installment_recalculation"] =
+        enableLoanReducingBalanceRecalculation ? 1 : 0;
     formData["interest_rate"] = loanInterestRate;
     formData["interest_rate_per"] = loanInterestRatePerId;
     formData["repayment_period_type"] = loanRepaymentTypeId;
@@ -74,8 +77,8 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
     print(formData);
 
     try {
-      final response =
-          await Provider.of<Groups>(context, listen: false).addLoanTypeStepOne(formData, widget.isEditMode);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .addLoanTypeStepOne(formData, widget.isEditMode);
       print(response);
       requestId = null;
       alertDialogWithAction(context, response["message"].toString(), () {
@@ -105,21 +108,33 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
     setState(() {
       loanTypeID = settings['id'].toString();
       loanTypeName = settings['name'].toString();
-      loanAmountTypeId = int.tryParse(settings['loan_amount_type'].toString()) ?? null;
+      loanAmountTypeId =
+          int.tryParse(settings['loan_amount_type'].toString()) ?? null;
       minimumLoanAmount = settings['minimum_loan_amount'].toString();
       maximumLoanAmount = settings['maximum_loan_amount'].toString();
       timesNumberOfSavings = settings['savings_times'].toString();
-      interestTypeId = int.tryParse(settings['interest_type'].toString()) ?? null;
-      enableLoanReducingBalanceRecalculation =
-          (int.tryParse(settings['enable_reducing_balance_installment_recalculation'].toString()) ?? 0) == 1
-              ? true
-              : false;
-      loanInterestRate = double.tryParse(settings['interest_rate'].toString()) ?? null;
-      loanInterestRatePerId = int.tryParse(settings['loan_interest_rate_per'].toString()) ?? null;
-      loanRepaymentTypeId = int.tryParse(settings['loan_repayment_period_type'].toString()) ?? null;
-      fixedRepaymentPeriod = int.tryParse(settings['fixed_repayment_period'].toString()) ?? null;
-      minimumRepaymentPeriod = int.tryParse(settings['minimum_repayment_period'].toString()) ?? null;
-      maximumRepaymentPeriod = int.tryParse(settings['maximum_repayment_period'].toString()) ?? null;
+      interestTypeId =
+          int.tryParse(settings['interest_type'].toString()) ?? null;
+      enableLoanReducingBalanceRecalculation = (int.tryParse(settings[
+                          'enable_reducing_balance_installment_recalculation']
+                      .toString()) ??
+                  0) ==
+              1
+          ? true
+          : false;
+      loanInterestRate =
+          double.tryParse(settings['interest_rate'].toString()) ?? null;
+      loanInterestRatePerId =
+          int.tryParse(settings['loan_interest_rate_per'].toString()) ?? null;
+      loanRepaymentTypeId =
+          int.tryParse(settings['loan_repayment_period_type'].toString()) ??
+              null;
+      fixedRepaymentPeriod =
+          int.tryParse(settings['fixed_repayment_period'].toString()) ?? null;
+      minimumRepaymentPeriod =
+          int.tryParse(settings['minimum_repayment_period'].toString()) ?? null;
+      maximumRepaymentPeriod =
+          int.tryParse(settings['maximum_repayment_period'].toString()) ?? null;
     });
   }
 
@@ -144,6 +159,7 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
             children: <Widget>[
               customTitle(
                   text: "Loan Details",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   fontWeight: FontWeight.w400,
                   textAlign: TextAlign.start),
@@ -154,6 +170,7 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
             children: <Widget>[
               subtitle2(
                   text: "Configure the behaviour of your loan",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start),
             ],
@@ -162,7 +179,8 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
-                child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                child:
+                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   TextFormField(
                     initialValue: loanTypeName != null ? loanTypeName : '',
                     keyboardType: TextInputType.text,
@@ -172,7 +190,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                     decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
                         enabledBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                            borderSide: BorderSide(
+                                color: Theme.of(context).hintColor,
+                                width: 1.0)),
                         labelText: 'Loan Type Name',
                         labelStyle: inputTextStyle()),
                     onChanged: (value) {
@@ -204,7 +224,8 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                   Visibility(
                     visible: loanAmountTypeId == 1,
                     child: TextFormField(
-                      initialValue: minimumLoanAmount != null ? minimumLoanAmount : '',
+                      initialValue:
+                          minimumLoanAmount != null ? minimumLoanAmount : '',
                       style: inputTextStyle(),
                       enabled: _isFormEnabled,
                       keyboardType: TextInputType.numberWithOptions(
@@ -214,7 +235,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                       decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
                           enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).hintColor,
+                                  width: 1.0)),
                           labelText: 'Minimum Loan Amount',
                           labelStyle: inputTextStyle()),
                       onChanged: (value) {
@@ -234,7 +257,8 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                   Visibility(
                       visible: loanAmountTypeId == 1,
                       child: TextFormField(
-                        initialValue: maximumLoanAmount != null ? maximumLoanAmount : '',
+                        initialValue:
+                            maximumLoanAmount != null ? maximumLoanAmount : '',
                         style: inputTextStyle(),
                         enabled: _isFormEnabled,
                         keyboardType: TextInputType.numberWithOptions(
@@ -244,7 +268,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                         decoration: InputDecoration(
                             floatingLabelBehavior: FloatingLabelBehavior.auto,
                             enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).hintColor,
+                                    width: 1.0)),
                             labelText: 'Maximum  Loan Amount',
                             labelStyle: inputTextStyle()),
                         onChanged: (value) {
@@ -263,7 +289,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                   Visibility(
                       visible: loanAmountTypeId == 2,
                       child: TextFormField(
-                          initialValue: timesNumberOfSavings != null ? timesNumberOfSavings : '',
+                          initialValue: timesNumberOfSavings != null
+                              ? timesNumberOfSavings
+                              : '',
                           style: inputTextStyle(),
                           enabled: _isFormEnabled,
                           keyboardType: TextInputType.numberWithOptions(
@@ -273,7 +301,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                           decoration: InputDecoration(
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).hintColor,
+                                      width: 1.0)),
                               labelText: 'How many times the member savings',
                               labelStyle: inputTextStyle()),
                           onChanged: (value) {
@@ -313,6 +343,7 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                         children: <Widget>[
                           customTitle(
                               text: "Enable late loan repayment fines",
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               fontWeight: FontWeight.w500,
                               textAlign: TextAlign.start),
@@ -329,7 +360,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                     ),
                   ),
                   TextFormField(
-                      initialValue: loanInterestRate != null ? loanInterestRate.toString() : '',
+                      initialValue: loanInterestRate != null
+                          ? loanInterestRate.toString()
+                          : '',
                       style: inputTextStyle(),
                       enabled: _isFormEnabled,
                       keyboardType: TextInputType.numberWithOptions(
@@ -339,7 +372,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                       decoration: InputDecoration(
                           floatingLabelBehavior: FloatingLabelBehavior.auto,
                           enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).hintColor,
+                                  width: 1.0)),
                           labelText: 'Loan Interest Rate(%)',
                           labelStyle: inputTextStyle()),
                       onChanged: (value) {
@@ -386,7 +421,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                   Visibility(
                       visible: loanRepaymentTypeId == 1,
                       child: TextFormField(
-                          initialValue: fixedRepaymentPeriod != null ? fixedRepaymentPeriod.toString() : '',
+                          initialValue: fixedRepaymentPeriod != null
+                              ? fixedRepaymentPeriod.toString()
+                              : '',
                           style: inputTextStyle(),
                           enabled: _isFormEnabled,
                           keyboardType: TextInputType.numberWithOptions(
@@ -396,7 +433,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                           decoration: InputDecoration(
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).hintColor,
+                                      width: 1.0)),
                               labelText: 'Fixed Repayment Period',
                               hintText: 'Value in months . E.g 3',
                               labelStyle: inputTextStyle()),
@@ -415,7 +454,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                   Visibility(
                       visible: loanRepaymentTypeId == 2,
                       child: TextFormField(
-                          initialValue: minimumRepaymentPeriod != null ? minimumRepaymentPeriod.toString() : '',
+                          initialValue: minimumRepaymentPeriod != null
+                              ? minimumRepaymentPeriod.toString()
+                              : '',
                           style: inputTextStyle(),
                           enabled: _isFormEnabled,
                           keyboardType: TextInputType.numberWithOptions(
@@ -425,7 +466,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                           decoration: InputDecoration(
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).hintColor,
+                                      width: 1.0)),
                               labelText: 'Minimum Repayment Period',
                               hintText: 'Value in months . E.g 3',
                               labelStyle: inputTextStyle()),
@@ -444,7 +487,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                   Visibility(
                       visible: loanRepaymentTypeId == 2,
                       child: TextFormField(
-                          initialValue: maximumRepaymentPeriod != null ? maximumRepaymentPeriod.toString() : '',
+                          initialValue: maximumRepaymentPeriod != null
+                              ? maximumRepaymentPeriod.toString()
+                              : '',
                           style: inputTextStyle(),
                           enabled: _isFormEnabled,
                           keyboardType: TextInputType.numberWithOptions(
@@ -454,7 +499,9 @@ class _LoanTypeSettingsState extends State<LoanTypeSettings> {
                           decoration: InputDecoration(
                               floatingLabelBehavior: FloatingLabelBehavior.auto,
                               enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                                  borderSide: BorderSide(
+                                      color: Theme.of(context).hintColor,
+                                      width: 1.0)),
                               labelText: 'Maximum Repayment period',
                               hintText: 'Value in months . E.g 12',
                               labelStyle: inputTextStyle()),

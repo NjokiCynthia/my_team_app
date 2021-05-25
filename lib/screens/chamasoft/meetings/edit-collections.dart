@@ -195,23 +195,27 @@ class _EditCollectionsState extends State<EditCollections> {
           title: heading2(
             text: "Remove $_title",
             textAlign: TextAlign.start,
+            // ignore: deprecated_member_use
             color: Theme.of(context).textSelectionHandleColor,
           ),
           content: customTitleWithWrap(
             text:
                 "Are you sure you want to remove this ${_title.toString().toLowerCase()}?",
             textAlign: TextAlign.start,
+            // ignore: deprecated_member_use
             color: Theme.of(context).textSelectionHandleColor,
             maxLines: null,
           ),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
+              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
+            // ignore: deprecated_member_use
             FlatButton(
               padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
               child: customTitle(
@@ -281,6 +285,7 @@ class _EditCollectionsState extends State<EditCollections> {
               tooltip: "Add New",
               icon: Icon(
                 Icons.add,
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
               ),
               onPressed: _isLoading ? null : () => _newCollectionDialog(),
@@ -309,6 +314,7 @@ class _EditCollectionsState extends State<EditCollections> {
                         children: <Widget>[
                           Icon(
                             Icons.lightbulb_outline,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             size: 24.0,
                           ),
@@ -323,12 +329,14 @@ class _EditCollectionsState extends State<EditCollections> {
                                   text: "About ${widget.type}",
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                 ),
                                 subtitle2(
                                   text:
                                       "You can add or remove ${widget.type} from the list",
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
@@ -344,6 +352,7 @@ class _EditCollectionsState extends State<EditCollections> {
                             shrinkWrap: true,
                             separatorBuilder: (context, index) => Divider(
                               color: Theme.of(context)
+                                  // ignore: deprecated_member_use
                                   .textSelectionHandleColor
                                   .withOpacity(0.5),
                               height: 0.0,
@@ -374,6 +383,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                               text: _data[index]['member']
                                                   ['name'],
                                               color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
                                                   .textSelectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
@@ -381,6 +391,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                               text: _data[index]['member']
                                                   ['identity'],
                                               color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
                                                   .textSelectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
@@ -463,6 +474,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                             _groupCurrency,
                                             style: TextStyle(
                                               color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
                                                   .textSelectionHandleColor,
                                             ),
                                           ),
@@ -474,6 +486,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                                 .format(_data[index]['amount']),
                                             style: TextStyle(
                                               color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
                                                   .textSelectionHandleColor,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -614,6 +627,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       title: heading2(
         text: "New $title",
         textAlign: TextAlign.start,
+        // ignore: deprecated_member_use
         color: Theme.of(context).textSelectionHandleColor,
       ),
       content: Form(
@@ -818,11 +832,13 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       actions: <Widget>[
         negativeActionDialogButton(
           text: "Cancel",
+          // ignore: deprecated_member_use
           color: Theme.of(context).textSelectionHandleColor,
           action: () {
             Navigator.of(context).pop();
           },
         ),
+        // ignore: deprecated_member_use
         FlatButton(
           padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
           child: customTitle(

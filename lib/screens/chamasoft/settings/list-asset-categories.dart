@@ -63,6 +63,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
         message = "${incomeCategory.name} has been deleted";
       }
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
@@ -139,6 +140,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           text: "Edit",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor),
                     ),
                   ),
@@ -165,6 +167,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                           text: incomeCategory.isHidden ? "UnHide" : "Hide",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor),
                     ),
                   ),
@@ -266,6 +269,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                 text: '${incomeCategory.name}',
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                               ),
                                               Visibility(
@@ -275,6 +279,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                   text:
                                                       '${incomeCategory.description}',
                                                   color: Theme.of(context)
+                                                      // ignore: deprecated_member_use
                                                       .textSelectionHandleColor,
                                                   fontWeight: FontWeight.w400,
                                                   fontSize: 12.0,
@@ -285,6 +290,7 @@ class _ListAssetCategoriesState extends State<ListAssetCategories> {
                                                 text:
                                                     '${incomeCategory.isHidden ? "Hidden" : "Active"}',
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 fontWeight: FontWeight.w400,
                                                 fontSize: 12.0,

@@ -81,7 +81,9 @@ class _ListGroupRolesState extends State<ListGroupRoles> {
                                     Text(
                                       '${expense.name}',
                                       style: TextStyle(
-                                        color: Theme.of(context).textSelectionHandleColor,
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
                                         fontWeight: FontWeight.w800,
                                         fontSize: 18.0,
                                       ),
@@ -102,7 +104,8 @@ class _ListGroupRolesState extends State<ListGroupRoles> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
                                 smallBadgeButton(
-                                  backgroundColor: primaryColor.withOpacity(0.2),
+                                  backgroundColor:
+                                      primaryColor.withOpacity(0.2),
                                   textColor: primaryColor,
                                   text: '${expense.amount}',
                                   action: () {},

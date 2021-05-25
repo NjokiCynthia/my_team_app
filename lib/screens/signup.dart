@@ -41,8 +41,11 @@ class _SignUpState extends State<SignUp> {
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
-      final pickedFile =
-          await _picker.getImage(source: source, maxHeight: 300, maxWidth: 300, imageQuality: IMAGE_QUALITY);
+      final pickedFile = await _picker.getImage(
+          source: source,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: IMAGE_QUALITY);
       setState(() {
         avatar = pickedFile;
       });
@@ -91,7 +94,9 @@ class _SignUpState extends State<SignUp> {
       _authData['avatar'] = File(avatar.path);
       _authData['uniqueCode'] = _uniqueCode;
       await Provider.of<Auth>(context, listen: false).registerUser(_authData);
-      Navigator.of(context).pushNamedAndRemoveUntil(MyGroups.namedRoute, ModalRoute.withName('/'), arguments: 0);
+      Navigator.of(context).pushNamedAndRemoveUntil(
+          MyGroups.namedRoute, ModalRoute.withName('/'),
+          arguments: 0);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -109,7 +114,8 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final modalRoute = ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final modalRoute =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     if (modalRoute.length > 0) {
       _identity = modalRoute['identity'];
       _uniqueCode = modalRoute['uniqueCode'];
@@ -128,24 +134,32 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    heading1(text: "Profile", color: Theme.of(context).textSelectionHandleColor),
+                    heading1(
+                        text: "Profile",
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                     subtitle1(
                         text: "Fill details to complete\naccount setup",
+                        // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor),
                     Padding(
                       padding: EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 20.0),
                       child: Stack(
                         alignment: AlignmentDirectional.bottomEnd,
                         children: <Widget>[
-                          !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                          !kIsWeb &&
+                                  defaultTargetPlatform ==
+                                      TargetPlatform.android
                               ? FutureBuilder<void>(
                                   future: retrieveLostData(),
-                                  builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<void> snapshot) {
                                     switch (snapshot.connectionState) {
                                       case ConnectionState.none:
                                       case ConnectionState.waiting:
                                         return CircleAvatar(
-                                          backgroundImage: AssetImage('assets/no-user.png'),
+                                          backgroundImage:
+                                              AssetImage('assets/no-user.png'),
                                           backgroundColor: Colors.transparent,
                                           radius: 50,
                                         );
@@ -159,7 +173,8 @@ class _SignUpState extends State<SignUp> {
                                         );
                                       default:
                                         return CircleAvatar(
-                                          backgroundImage: AssetImage('assets/no-user.png'),
+                                          backgroundImage:
+                                              AssetImage('assets/no-user.png'),
                                           backgroundColor: Colors.transparent,
                                           radius: 50,
                                         );
@@ -167,8 +182,9 @@ class _SignUpState extends State<SignUp> {
                                   },
                                 )
                               : CircleAvatar(
-                                  backgroundImage:
-                                      avatar == null ? AssetImage('assets/no-user.png') : FileImage(File(avatar.path)),
+                                  backgroundImage: avatar == null
+                                      ? AssetImage('assets/no-user.png')
+                                      : FileImage(File(avatar.path)),
                                   backgroundColor: Colors.transparent,
                                   radius: 50,
                                 ),
@@ -182,7 +198,8 @@ class _SignUpState extends State<SignUp> {
                                 size: 30.0,
                               ),
                               onPressed: () async {
-                                _onImagePickerClicked(ImageSource.gallery, context);
+                                _onImagePickerClicked(
+                                    ImageSource.gallery, context);
                               },
                             ),
                           )
@@ -246,7 +263,10 @@ class _SignUpState extends State<SignUp> {
                     ),
                     _isLoading
                         ? CircularProgressIndicator()
-                        : defaultButton(context: context, text: "Finish", onPressed: () => _submit(context))
+                        : defaultButton(
+                            context: context,
+                            text: "Finish",
+                            onPressed: () => _submit(context))
                   ],
                 ),
               ),

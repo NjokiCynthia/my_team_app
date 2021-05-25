@@ -162,6 +162,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
     final snackBar = SnackBar(
         content: subtitle2(
             text: "Resending verification code", textAlign: TextAlign.start));
+    // ignore: deprecated_member_use
     Scaffold.of(context).showSnackBar(snackBar);
     try {
       await Provider.of<Auth>(context, listen: false)
@@ -170,6 +171,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
           content: subtitle2(
               text: "Verification code has been sent",
               textAlign: TextAlign.start));
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(snackBar);
       _start = 60;
       _countDownTimer();
@@ -217,6 +219,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                           heading1(
                               text: "Verification",
                               color:
+                                  // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 10,
@@ -224,10 +227,12 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                           subtitle1(
                               text: "A verification code has been sent to",
                               color:
+                                  // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
                           customTitle(
                               text: _identity,
                               color:
+                                  // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
                           SizedBox(
                             height: 12,
@@ -235,6 +240,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                           subtitle2(
                               text: "Enter your code here",
                               color:
+                                  // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
                           Padding(
                             padding: EdgeInsets.fromLTRB(50.0, 0.0, 50.0, 0.0),
@@ -243,6 +249,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                               decoration: UnderlineDecoration(
                                 colorBuilder: PinListenColorBuilder(
                                     primaryColor,
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor),
                                 lineHeight: 2.0,
                                 textStyle: TextStyle(
@@ -292,11 +299,13 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                             children: <Widget>[
                               Icon(LineAwesomeIcons.clock_o,
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor),
                               subtitle1(
                                   text:
                                       _start > 9 ? "00:$_start" : "00:0$_start",
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor),
                               SizedBox(width: 20),
                               InkWell(
@@ -307,6 +316,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                                     color: _enableResend
                                         ? primaryColor
                                         : Theme.of(context)
+                                            // ignore: deprecated_member_use
                                             .textSelectionHandleColor,
                                     fontWeight: FontWeight.w700,
                                     decoration: TextDecoration.underline,

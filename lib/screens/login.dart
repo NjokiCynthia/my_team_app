@@ -139,7 +139,9 @@ class _LoginState extends State<Login> {
 
     String title = "Confirm Email Address";
     if (!_identity.contains("@")) {
-      _identity = _identity.startsWith("0") ? _identity.replaceFirst("0", "") : _identity;
+      _identity = _identity.startsWith("0")
+          ? _identity.replaceFirst("0", "")
+          : _identity;
       _identity = _countryCode.dialCode + _identity;
       title = "Confirm Phone Number";
     }
@@ -155,9 +157,11 @@ class _LoginState extends State<Login> {
             _isFormInputEnabled = false;
           });
           try {
-            await Provider.of<Auth>(context, listen: false).generatePin(_identity,appSignature);
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: (BuildContext context) => Verification(), settings: RouteSettings(arguments: _identity)));
+            await Provider.of<Auth>(context, listen: false)
+                .generatePin(_identity, appSignature);
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (BuildContext context) => Verification(),
+                settings: RouteSettings(arguments: _identity)));
           } on CustomException catch (error) {
             StatusHandler().handleStatus(
                 context: context,
@@ -197,12 +201,21 @@ class _LoginState extends State<Login> {
                         height: 100.0,
                       ),
                     ),
-                    heading1(text: "Chamasoft", color: Theme.of(context).textSelectionHandleColor),
+                    heading1(
+                        text: "Chamasoft",
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                     SizedBox(
                       height: 10,
                     ),
-                    subtitle1(text: "Let's verify your identity first", color: Theme.of(context).textSelectionHandleColor),
-                    subtitle2(text: "Enter your phone number or email address below", color: Theme.of(context).textSelectionHandleColor),
+                    subtitle1(
+                        text: "Let's verify your identity first",
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle2(
+                        text: "Enter your phone number or email address below",
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
 
                     Row(
                       children: <Widget>[
@@ -231,15 +244,22 @@ class _LoginState extends State<Login> {
                                         flagWidth: 28.0,
                                         enabled: _isFormInputEnabled,
                                         textStyle: TextStyle(
-                                          fontFamily: 'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                          fontFamily:
+                                              'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
                                         ),
-                                        searchStyle:
-                                            TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                                        searchStyle: TextStyle(
+                                            fontFamily: 'SegoeUI',
+                                            fontSize: 16,
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor),
                                         onChanged: (countryCode) {
                                           setState(() {
                                             _countryCode = countryCode;
-                                            _countryCodeController.text = countryCode.dialCode;
-                                            print("Code: " + countryCode.dialCode);
+                                            _countryCodeController.text =
+                                                countryCode.dialCode;
+                                            print("Code: " +
+                                                countryCode.dialCode);
                                           });
                                         },
                                       ),
@@ -330,9 +350,11 @@ class _LoginState extends State<Login> {
                     //               },
                     //               favorite: ['+254', 'KE'],
                     //               showFlag: true,
-                    //               textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,*/ color: Theme.of(context).textSelectionHandleColor),
+                    //               textStyle: TextStyle(fontFamily: 'SegoeUI', /*fontSize: 16,*/ // ignore: deprecated_member_use
+//  color: Theme.of(context).textSelectionHandleColor),
                     //               showCountryOnly: false,
-                    //               searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, color: Theme.of(context).textSelectionHandleColor),
+                    //               searchStyle: TextStyle(fontFamily: 'SegoeUI', fontSize: 16, // ignore: deprecated_member_use
+//  color: Theme.of(context).textSelectionHandleColor),
                     //               showOnlyCountryWhenClosed: false,
                     //               alignLeft: true,
                     //               onChanged: (countryCode) {
@@ -392,20 +414,25 @@ class _LoginState extends State<Login> {
                     SizedBox(
                       height: 24,
                     ),
-                    textWithExternalLinks(color: Theme.of(context).textSelectionHandleColor, size: 12.0, textData: {
-                      'By continuing you agree to our': {},
-                      'terms & conditions': {
-                        "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-                        "color": primaryColor,
-                        "weight": FontWeight.w500
-                      },
-                      // 'and': {},
-                      // 'privacy policy.': {
-                      //   "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
-                      //   "color": primaryColor,
-                      //   "weight": FontWeight.w500
-                      // },
-                    }),
+                    textWithExternalLinks(
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor,
+                        size: 12.0,
+                        textData: {
+                          'By continuing you agree to our': {},
+                          'terms & conditions': {
+                            "url": () => launchURL(
+                                'https://chamasoft.com/terms-and-conditions/'),
+                            "color": primaryColor,
+                            "weight": FontWeight.w500
+                          },
+                          // 'and': {},
+                          // 'privacy policy.': {
+                          //   "url": () => launchURL('https://chamasoft.com/terms-and-conditions/'),
+                          //   "color": primaryColor,
+                          //   "weight": FontWeight.w500
+                          // },
+                        }),
                   ],
                 ),
               ),
