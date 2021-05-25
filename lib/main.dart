@@ -14,12 +14,19 @@ import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import './providers/auth.dart';
 import './providers/groups.dart';
 
 void main() async {
+  SystemChrome.setSystemUIOverlayStyle(
+    SystemUiOverlayStyle(
+      statusBarColor: Color(0xff00a9f0),
+      statusBarIconBrightness: Brightness.light,
+    ),
+  );
   runApp(MyApp());
 }
 
