@@ -21,6 +21,7 @@ import './providers/auth.dart';
 import './providers/groups.dart';
 
 void main() async {
+  //  Status bar fixes
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
       statusBarColor: Color(0xff00a9f0),
