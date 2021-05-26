@@ -470,8 +470,8 @@ class Dashboard with ChangeNotifier {
   }
 
   BarChartGroupData makeGroupData(int x, double y1, double y2) {
-    const Color depositsBarColor = const Color(0xff00AAF0);
-    const Color withdrawalsBarColor = Colors.red;
+    // const Color depositsBarColor = const Color(0xff00AAF0);
+    // const Color withdrawalsBarColor = Colors.red;
     const double width = 7;
 
     return BarChartGroupData();

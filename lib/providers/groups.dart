@@ -2064,6 +2064,7 @@ class Groups with ChangeNotifier {
         }
         //=== If it does exist, update it.
         else {
+          // ignore: todo
           // TODO: Implement way to update members here...
         }
         //=== END: OFFLINE PLUG
@@ -3897,6 +3898,7 @@ class Groups with ChangeNotifier {
     }
   }
 
+  // ignore: todo
   /// ********************TODO: consolidate with fetchAccounts()********************/
   Future<void> temporaryFetchAccounts() async {
     const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
