@@ -91,6 +91,7 @@ List<CategorisedAccount> parseAccountsJson(List<dynamic> accountsJson, int typeI
     String id = account['id'].toString();
     String name = account['name'].toString();
 
+    // ignore: todo
     //TODO: add account number to API response
     String accountNumber = "";
     if (typeId != 4) {

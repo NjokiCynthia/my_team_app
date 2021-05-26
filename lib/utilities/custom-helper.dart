@@ -142,6 +142,7 @@ class CustomException implements Exception {
 
   @override
   String toString() {
+    // ignore: todo
     // TODO: implement toString
     return message.toString();
   }

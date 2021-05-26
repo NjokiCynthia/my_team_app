@@ -99,6 +99,7 @@ Future setPreference(String key, dynamic data) async {
   prefs.setString(key, data);
 }
 
+// ignore: todo
 //TODO: this is a temporary fix
 TextStyle inputTextStyle() {
   return TextStyle(fontFamily: 'SegoeUI');

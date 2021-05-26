@@ -123,7 +123,9 @@ class RecordLoanPaymentState extends State<RecordLoanPayment> {
     Map<String, dynamic> data = {};
     data['request_id'] = requestId;
     data['loan_repayments_break_down'] = [_formData];
+    // ignore: todo
     data['send_sms_notification'] = 0; //TODO change to dynamic?
+    // ignore: todo
     data['send_email_notification'] = 1; //TODO change to dynamic?
 
     log(data.toString());

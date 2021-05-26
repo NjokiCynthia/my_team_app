@@ -480,6 +480,7 @@ class WithdrawalRequestCard extends StatelessWidget {
                             : request.hasResponded == 0
                                 ? "RESPOND"
                                 : "VIEW",
+                        // ignore: todo
                         //TODO: Admin Restrictions
                         size: 16.0,
                         spacing: 2.0,

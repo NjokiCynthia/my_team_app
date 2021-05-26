@@ -2050,11 +2050,89 @@ class Groups with ChangeNotifier {
             "identity": m['identity'],
             "modified_on": DateTime.now().millisecondsSinceEpoch,
           });
+        });
+        await insertManyToLocalDb(
+          DatabaseHelper.membersTable,
+          rows,
+        );
+        //=== END: OFFLINE PLUG
+
+        _members = []; //clear
+        // final groupMembers = response['members'] as List<dynamic>;
+        print("addMembers(rows) >>>>>>> ");
+        print(rows);
+        addMembers(rows);
+      } on CustomException catch (error) {
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          //=== BEGIN: OFFLINE PLUG
+          dynamic _localData = await getLocalMembers(_currentGroupId);
+          if (_localData['value'].length > 0) {
+            List<dynamic> rows = [];
+            final _tempMembers = _localData['value'] as List<dynamic>;
+            _tempMembers.forEach((m) {
+              rows.add({
+                "group_id": int.parse(_currentGroupId),
+                "id": int.parse(m['id']),
+                "user_id": int.parse(m['user_id']),
+                "name": m['name'],
+                "avatar": (m['avatar'] != null) ? m['avatar'] : '',
+                "identity": m['identity'],
+              });
+            });
+            _members = []; //clear
+            addMembers(rows);
+            // print(rows);
+          }
+          //=== END: OFFLINE PLUG
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        //=== BEGIN: OFFLINE PLUG
+        dynamic _localData = await getLocalMembers(_currentGroupId);
+        // print(_localData);
+        if (_localData['value'].length > 0) {
+          List<dynamic> rows = [];
+          final _tempMembers = _localData['value'] as List<dynamic>;
+          _tempMembers.forEach((m) {
+            rows.add({
+              "group_id": int.parse(_currentGroupId),
+              "id": int.parse(m['id']),
+              "user_id": int.parse(m['user_id']),
+              "name": m['name'],
+              "avatar": (m['avatar'] != null) ? m['avatar'] : '',
+              "identity": m['identity'],
+            });
+          });
+          _members = []; //clear
+          addMembers(rows);
+          // print(rows);
+        }
+        //=== END: OFFLINE PLUG
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchGroupDepositors() async {
+    const url = EndpointUrl.GET_GROUP_DEPOSITOR_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);
         _depositors = []; //clear
         final groupDepositors = response['depositors'] as List<dynamic>;
+        addDepositors(groupDepositors);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {

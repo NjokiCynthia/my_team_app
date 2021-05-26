@@ -56,6 +56,7 @@ class _ListContactsState extends State<ListContacts> {
 
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     super.initState();
 
@@ -70,6 +71,7 @@ class _ListContactsState extends State<ListContacts> {
 
   @override
   void dispose() {
+    // ignore: todo
     // TODO: implement dispose
     super.dispose();
     controller.dispose();
