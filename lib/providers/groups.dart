@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'dart:developer';
+// import 'dart:developer';
 import 'dart:io' as io;
 import 'dart:io';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
@@ -691,7 +691,7 @@ class Groups with ChangeNotifier {
     });
     try {
       final response = await PostToServer.post(postRequest, url);
-      log(response.toString());
+      // log(response.toString());
       final group = response['user_groups'];
       if (group.length > 0) {
         int i = 0;
@@ -3806,7 +3806,7 @@ class Groups with ChangeNotifier {
       // print("Post: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
-        log(response.toString());
+        // log(response.toString());
         final data = response['posts'] as List<dynamic>;
         addWithdrawalRequestList(data);
       } on CustomException catch (error) {
@@ -3829,7 +3829,7 @@ class Groups with ChangeNotifier {
           .encode({"user_id": _userId, "group_id": _currentGroupId, "id": id});
       try {
         final response = await PostToServer.post(postRequest, url);
-        log(response.toString());
+        // log(response.toString());
         final data = response as dynamic;
         addWithdrawalRequestDetails(data);
       } on CustomException catch (error) {
@@ -4097,7 +4097,7 @@ class Groups with ChangeNotifier {
       formData['account_id'] = _getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
-      log(formData.toString());
+      // log(formData.toString());
       try {
         final postRequest = json.encode(formData);
         final response = await PostToServer.post(postRequest, url);
@@ -4121,7 +4121,7 @@ class Groups with ChangeNotifier {
       formData['group_id'] = currentGroupId;
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
-      log(formData.toString());
+      // log(formData.toString());
       try {
         final postRequest = json.encode(formData);
         final response = await PostToServer.post(postRequest, url);
