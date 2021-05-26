@@ -2033,44 +2033,35 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-
         //=== BEGIN: OFFLINE PLUG
-        //=== Check if record exists...
-        bool _exists = await entryExistsInDb(
-          DatabaseHelper.membersTable,
-          "group_id",
-          int.parse(_currentGroupId),
-        );
+        //=== Delete all current group members...
+        await dbHelper.deleteGroupMembers(int.parse(_currentGroupId));
 
         //=== ...if it doesn't exist, insert it.
-        if (!_exists) {
-          List<dynamic> rows = [];
-          final _tempMembers = response['members'] as List<dynamic>;
-          _tempMembers.forEach((m) {
-            rows.add({
-              "group_id": int.parse(_currentGroupId),
-              "id": int.parse(m['id']),
-              "user_id": int.parse(m['user_id']),
-              "name": m['name'],
-              "avatar": (m['avatar'] != null) ? m['avatar'] : '',
-              "identity": m['identity'],
-              "modified_on": DateTime.now().millisecondsSinceEpoch,
-            });
+        List<dynamic> rows = [];
+        final _tempMembers = response['members'] as List<dynamic>;
+        _tempMembers.forEach((m) {
+          rows.add({
+            "group_id": int.parse(_currentGroupId),
+            "id": int.parse(m['id']),
+            "user_id": int.parse(m['user_id']),
+            "name": m['name'],
+            "avatar": (m['avatar'] != null) ? m['avatar'] : '',
+            "identity": m['identity'],
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
           });
-          await insertManyToLocalDb(
-            DatabaseHelper.membersTable,
-            rows,
-          );
-        }
-        //=== If it does exist, update it.
-        else {
-          // TODO: Implement way to update members here...
-        }
+        });
+        await insertManyToLocalDb(
+          DatabaseHelper.membersTable,
+          rows,
+        );
         //=== END: OFFLINE PLUG
 
         _members = []; //clear
-        final groupMembers = response['members'] as List<dynamic>;
-        addMembers(groupMembers);
+        // final groupMembers = response['members'] as List<dynamic>;
+        print("addMembers(rows) >>>>>>> ");
+        print(rows);
+        addMembers(rows);
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           //=== BEGIN: OFFLINE PLUG

@@ -48,7 +48,10 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   }
 
   _handleSelectedOption(
-      BuildContext context, String option, _updateSelectedGroup) {
+    BuildContext context,
+    String option,
+    _updateSelectedGroup,
+  ) {
     if (option == '0') {
       // CREATE NEW Selected, handle it!
       Navigator.of(context).push(

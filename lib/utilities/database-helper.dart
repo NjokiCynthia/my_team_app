@@ -170,4 +170,9 @@ class DatabaseHelper {
     return await db.delete(table,
         where: 'group_id IN (${ids.join(', ')}) AND synced=1');
   }
+
+  Future<int> deleteGroupMembers(int id) async {
+    Database db = await instance.database;
+    return await db.delete(membersTable, where: 'id = ?', whereArgs: [id]);
+  }
 }
