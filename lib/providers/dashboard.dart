@@ -470,24 +470,24 @@ class Dashboard with ChangeNotifier {
   }
 
   BarChartGroupData makeGroupData(int x, double y1, double y2) {
-    // const Color depositsBarColor = const Color(0xff00AAF0);
-    // const Color withdrawalsBarColor = Colors.red;
-    // const double width = 7;
+    const Color depositsBarColor = const Color(0xff00AAF0);
+    const Color withdrawalsBarColor = Colors.red;
+    const double width = 7;
 
-    return BarChartGroupData();
+    // return BarChartGroupData();
 
-    // return BarChartGroupData(barsSpace: 4, x: x, barRods: [
-    //   BarChartRodData(
-    //     y: y1,
-    //     color: depositsBarColor,
-    //     width: width,
-    //   ),
-    //   BarChartRodData(
-    //     y: y2,
-    //     color: withdrawalsBarColor,
-    //     width: width,
-    //   ),
-    // ]);
+    return BarChartGroupData(barsSpace: 4, x: x, barRods: [
+      BarChartRodData(
+        y: y1,
+        colors: [depositsBarColor],
+        width: width,
+      ),
+      BarChartRodData(
+        y: y2,
+        colors: [withdrawalsBarColor],
+        width: width,
+      ),
+    ]);
   }
 
   int round(int number, int multiple) {
