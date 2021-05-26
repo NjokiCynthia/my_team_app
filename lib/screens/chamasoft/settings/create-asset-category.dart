@@ -72,7 +72,9 @@ class _CreateAssetCategoryState extends State<CreateAssetCategory> {
       await Provider.of<Groups>(context, listen: false).createAssetCategory(
           name: _nameTextController.text,
           description: _descriptionTextController.text,
-          action: widget.isEdit ? SettingActions.actionEdit : SettingActions.actionAdd,
+          action: widget.isEdit
+              ? SettingActions.actionEdit
+              : SettingActions.actionAdd,
           id: id);
 
       Navigator.pop(context);
@@ -80,6 +82,7 @@ class _CreateAssetCategoryState extends State<CreateAssetCategory> {
       if (widget.isEdit) {
         message = "You have successfully updated the asset category";
       }
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
@@ -123,7 +126,9 @@ class _CreateAssetCategoryState extends State<CreateAssetCategory> {
                   toolTip(
                       context: context,
                       title: "",
-                      message: widget.isEdit ? "Update Asset Category" : "Create Asset Category",
+                      message: widget.isEdit
+                          ? "Update Asset Category"
+                          : "Create Asset Category",
                       showTitle: false),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),

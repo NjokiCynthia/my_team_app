@@ -138,6 +138,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                         children: <Widget>[
                           heading2(
                               text: "Total ",
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.start),
                           Row(
@@ -146,6 +147,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                               subtitle2(
                                   text: "Account balances",
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                             ],
@@ -156,6 +158,7 @@ class _AccountBalancesState extends State<AccountBalances> {
                     heading2(
                         text: "${groupObject.groupCurrency} " +
                             currencyFormat.format(_totalBalance),
+                        // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.start)
                   ],

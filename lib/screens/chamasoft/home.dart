@@ -520,6 +520,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                   ),
                                   SizedBox(
@@ -539,6 +540,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                 0
                                             ? Colors.red[400]
                                             : Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                         action: () {}),
                                   ),
@@ -556,6 +558,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                   ),
                                   SizedBox(
@@ -569,12 +572,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                 dashboardData
                                                     .memberFineArrears),
                                         size: 14.0,
-                                        color:
-                                            (dashboardData.memberFineArrears) >
-                                                    0
-                                                ? Colors.red[400]
-                                                : Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                        color: (dashboardData
+                                                    .memberFineArrears) >
+                                                0
+                                            ? Colors.red[400]
+                                            : Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
                                         action: () {}),
                                   ),
                                 ],
@@ -591,6 +595,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                   ),
                                   SizedBox(
@@ -606,6 +611,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                 0
                                             ? Colors.red[400]
                                             : Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                         action: () {}),
                                   ),
@@ -623,6 +629,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                   ),
                                   SizedBox(
@@ -632,12 +639,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                         amount: currencyFormat.format(
                                             dashboardData.memberLoanArrears),
                                         size: 14.0,
-                                        color:
-                                            (dashboardData.memberLoanArrears) >
-                                                    0
-                                                ? Colors.red[400]
-                                                : Theme.of(context)
-                                                    .textSelectionHandleColor,
+                                        color: (dashboardData
+                                                    .memberLoanArrears) >
+                                                0
+                                            ? Colors.red[400]
+                                            : Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
                                         action: () {}),
                                   ),
                                 ],

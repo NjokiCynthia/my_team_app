@@ -127,6 +127,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                         children: <Widget>[
                           heading2(
                             text: title,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
@@ -139,6 +140,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                               subtitle1(
                                 text: "$namePlaceholder: ",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               Expanded(
@@ -147,6 +149,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                   text: widget.formData['name'],
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
@@ -161,6 +164,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                 subtitle1(
                                   text: "$typePlaceholder: ",
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                 ),
                                 Expanded(
@@ -171,6 +175,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                         : '',
                                     fontWeight: FontWeight.w600,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
@@ -186,6 +191,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                 subtitle1(
                                   text: "Bank: ",
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                 ),
                                 Expanded(
@@ -195,6 +201,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                       ? widget.formData['bank_name']
                                       : '',
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   fontWeight: FontWeight.w600,
                                 )),
@@ -209,6 +216,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                     ? "Recipient Contact: "
                                     : "Recipient Account: ",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               Expanded(
@@ -218,6 +226,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                     ? widget.formData['phone']
                                     : widget.formData['account_number'],
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w600,
                               )),
@@ -231,6 +240,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                 subtitle1(
                                   text: "Description: ",
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                 ),
                                 Expanded(
@@ -240,6 +250,7 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                         ? widget.formData['description']
                                         : '',
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                     fontWeight: FontWeight.w600,
                                   ),

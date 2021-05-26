@@ -72,7 +72,9 @@ class _CreateIncomeCategoryState extends State<CreateIncomeCategory> {
       await Provider.of<Groups>(context, listen: false).createIncomeCategory(
           name: _nameTextController.text,
           description: _descriptionTextController.text,
-          action: widget.isEdit ? SettingActions.actionEdit : SettingActions.actionAdd,
+          action: widget.isEdit
+              ? SettingActions.actionEdit
+              : SettingActions.actionAdd,
           id: id);
 
       Navigator.pop(context);
@@ -80,6 +82,7 @@ class _CreateIncomeCategoryState extends State<CreateIncomeCategory> {
       if (widget.isEdit) {
         message = "You have successfully updated the income category";
       }
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
@@ -123,7 +126,9 @@ class _CreateIncomeCategoryState extends State<CreateIncomeCategory> {
                   toolTip(
                       context: context,
                       title: "",
-                      message: widget.isEdit ? "Update Income Category" : "Create Income Category",
+                      message: widget.isEdit
+                          ? "Update Income Category"
+                          : "Create Income Category",
                       showTitle: false),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),

@@ -23,7 +23,8 @@ class StatementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
       child: Card(
@@ -50,10 +51,12 @@ class StatementBody extends StatelessWidget {
                       children: <Widget>[
                         subtitle1(
                             text: row.title,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
                             text: row.description,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start)
                       ],
@@ -66,11 +69,17 @@ class StatementBody extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
                 subtitle1(
-                    text: groupObject.groupCurrency + " " + currencyFormat.format(row.amount),
+                    text: groupObject.groupCurrency +
+                        " " +
+                        currencyFormat.format(row.amount),
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.start),
                 subtitle2(
-                    text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    text: row.date,
+                    // ignore: deprecated_member_use
+                    color: Theme.of(context).textSelectionHandleColor,
+                    textAlign: TextAlign.start),
               ],
             )
           ],
@@ -95,8 +104,11 @@ class StatementHeader extends StatelessWidget {
       child: Card(
         elevation: 0,
         color: Theme.of(context).backgroundColor,
-        child:
-            subtitle2(text: row.month, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+        child: subtitle2(
+            text: row.month,
+            // ignore: deprecated_member_use
+            color: Theme.of(context).textSelectionHandleColor,
+            textAlign: TextAlign.start),
       ),
     );
   }
@@ -112,7 +124,8 @@ class AmortizationBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
       child: Card(
@@ -126,10 +139,14 @@ class AmortizationBody extends StatelessWidget {
               children: <Widget>[
                 subtitle1(
                     text: defaultDateFormat.format(installment.date),
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.start),
                 subtitle2(
-                    text: "Installment", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                    text: "Installment",
+                    // ignore: deprecated_member_use
+                    color: Theme.of(context).textSelectionHandleColor,
+                    textAlign: TextAlign.start),
               ],
             ),
             Column(
@@ -137,10 +154,13 @@ class AmortizationBody extends StatelessWidget {
               children: <Widget>[
                 subtitle1(
                     text: groupObject.groupCurrency + " " + installment.amount,
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.end),
                 subtitle2(
-                    text: "Balance: ${groupObject.groupCurrency} " + installment.balance,
+                    text: "Balance: ${groupObject.groupCurrency} " +
+                        installment.balance,
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.end),
               ],
@@ -160,10 +180,13 @@ class LoanStatementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
       color: position
-          ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+          ? (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Color(0xffededfe)
           : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
@@ -176,23 +199,35 @@ class LoanStatementBody extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   subtitle1(
-                      text: row.type, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                      text: row.type,
+                      // ignore: deprecated_member_use
+                      color: Theme.of(context).textSelectionHandleColor,
+                      textAlign: TextAlign.start),
                   subtitle2(
-                      text: row.date, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+                      text: row.date,
+                      // ignore: deprecated_member_use
+                      color: Theme.of(context).textSelectionHandleColor,
+                      textAlign: TextAlign.start),
                 ],
               ),
             ),
             Expanded(
               flex: 1,
               child: subtitle1(
-                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.paid),
+                  text: groupObject.groupCurrency +
+                      " " +
+                      currencyFormat.format(row.paid),
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.end),
             ),
             Expanded(
               flex: 1,
               child: subtitle1(
-                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.balance),
+                  text: groupObject.groupCurrency +
+                      " " +
+                      currencyFormat.format(row.balance),
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.end),
             ),
@@ -210,7 +245,8 @@ class ContributionSummaryBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     final contributionSummary = _statementType == 1
         ? Provider.of<Groups>(context).groupContributionSummary
         : Provider.of<Groups>(context).groupFinesSummary;
@@ -218,7 +254,9 @@ class ContributionSummaryBody extends StatelessWidget {
       child: ListView.builder(
         itemBuilder: (ctx, index) => Container(
           color: (index % 2 == 0)
-              ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+              ? (themeChangeProvider.darkTheme)
+                  ? Colors.blueGrey[800]
+                  : Color(0xffededfe)
               : Theme.of(context).backgroundColor,
           child: Padding(
             padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
@@ -241,6 +279,7 @@ class ContributionSummaryBody extends StatelessWidget {
                       Expanded(
                         child: subtitle1(
                             text: contributionSummary[index].memberName,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start),
                       ),
@@ -252,7 +291,9 @@ class ContributionSummaryBody extends StatelessWidget {
                   child: subtitle1(
                       text: groupObject.groupCurrency +
                           " " +
-                          currencyFormat.format(contributionSummary[index].paidAmount),
+                          currencyFormat
+                              .format(contributionSummary[index].paidAmount),
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       textAlign: TextAlign.end),
                 ),
@@ -261,11 +302,13 @@ class ContributionSummaryBody extends StatelessWidget {
                   child: subtitle1(
                       text: groupObject.groupCurrency +
                           " " +
-                          currencyFormat.format(contributionSummary[index].balanceAmount),
+                          currencyFormat
+                              .format(contributionSummary[index].balanceAmount),
                       color: (contributionSummary[index].balanceAmount > 0)
                           ? Colors.red
                           : (contributionSummary[index].balanceAmount < 0
                               ? Colors.green
+                              // ignore: deprecated_member_use
                               : Theme.of(context).textSelectionHandleColor),
                       textAlign: TextAlign.end),
                 ),
@@ -295,7 +338,10 @@ class AccountHeader extends StatelessWidget {
         elevation: 0,
         color: Theme.of(context).backgroundColor,
         child: subtitle2(
-            text: header.header, color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+            text: header.header,
+            // ignore: deprecated_member_use
+            color: Theme.of(context).textSelectionHandleColor,
+            textAlign: TextAlign.start),
       ),
     );
   }
@@ -311,7 +357,8 @@ class AccountBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     final amount = int.tryParse(account.balance) ?? 0;
     return Padding(
       padding: EdgeInsets.fromLTRB(16.0, 4.0, 16.0, 4.0),
@@ -341,11 +388,13 @@ class AccountBody extends StatelessWidget {
                         customTitleWithWrap(
                             text: account.name,
                             maxLines: 2,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start),
                         if (account.accountNumber != "0")
                           subtitle2(
                               text: account.accountNumber,
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.start)
                       ],
@@ -385,10 +434,13 @@ class LoanSummaryBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
       color: position
-          ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+          ? (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Color(0xffededfe)
           : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
@@ -402,11 +454,13 @@ class LoanSummaryBody extends StatelessWidget {
                 children: <Widget>[
                   customTitleWithWrap(
                       text: row.name,
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       fontSize: 13,
                       textAlign: TextAlign.start),
                   customTitle(
                       text: defaultDateFormat.format(row.date),
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       fontSize: 10,
                       fontWeight: FontWeight.w400,
@@ -417,7 +471,10 @@ class LoanSummaryBody extends StatelessWidget {
             Expanded(
               flex: 2,
               child: customTitle(
-                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.amountDue),
+                  text: groupObject.groupCurrency +
+                      " " +
+                      currencyFormat.format(row.amountDue),
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
@@ -425,7 +482,10 @@ class LoanSummaryBody extends StatelessWidget {
             Expanded(
               flex: 2,
               child: customTitle(
-                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.paid),
+                  text: groupObject.groupCurrency +
+                      " " +
+                      currencyFormat.format(row.paid),
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
@@ -433,7 +493,10 @@ class LoanSummaryBody extends StatelessWidget {
             Expanded(
               flex: 2,
               child: customTitle(
-                  text: groupObject.groupCurrency + " " + currencyFormat.format(row.balance),
+                  text: groupObject.groupCurrency +
+                      " " +
+                      currencyFormat.format(row.balance),
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   fontSize: 13,
                   textAlign: TextAlign.center),
@@ -453,10 +516,13 @@ class ExpenseBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
       color: position
-          ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+          ? (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Color(0xffededfe)
           : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
@@ -478,13 +544,17 @@ class ExpenseBody extends StatelessWidget {
                   Expanded(
                       child: customTitleWithWrap(
                           text: row.name,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.start)),
                 ],
               ),
             ),
             customTitle(
-                text: groupObject.groupCurrency + " " + currencyFormat.format(row.paid),
+                text: groupObject.groupCurrency +
+                    " " +
+                    currencyFormat.format(row.paid),
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 fontWeight: FontWeight.w400,
                 textAlign: TextAlign.end),
@@ -503,10 +573,13 @@ class TransactionStatementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Container(
       color: position
-          ? (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe)
+          ? (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Color(0xffededfe)
           : Theme.of(context).backgroundColor,
       child: Padding(
         padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
@@ -521,6 +594,7 @@ class TransactionStatementBody extends StatelessWidget {
                   flex: 1,
                   child: customTitle(
                       text: row.date,
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       fontSize: 13,
                       textAlign: TextAlign.start),
@@ -528,23 +602,35 @@ class TransactionStatementBody extends StatelessWidget {
                 Expanded(
                   flex: 1,
                   child: customTitle(
-                      text: groupObject.groupCurrency + " " + currencyFormat.format(row.deposit),
-                      color: row.deposit == 0 ? Theme.of(context).textSelectionHandleColor : Colors.green,
+                      text: groupObject.groupCurrency +
+                          " " +
+                          currencyFormat.format(row.deposit),
+                      color: row.deposit == 0
+                          // ignore: deprecated_member_use
+                          ? Theme.of(context).textSelectionHandleColor
+                          : Colors.green,
                       fontSize: 13,
                       textAlign: TextAlign.center),
                 ),
                 Expanded(
                   flex: 1,
                   child: customTitle(
-                      text: groupObject.groupCurrency + " " + currencyFormat.format(row.withdrawal),
-                      color: row.withdrawal == 0 ? Theme.of(context).textSelectionHandleColor : Colors.red,
+                      text: groupObject.groupCurrency +
+                          " " +
+                          currencyFormat.format(row.withdrawal),
+                      color: row.withdrawal == 0
+                          // ignore: deprecated_member_use
+                          ? Theme.of(context).textSelectionHandleColor
+                          : Colors.red,
                       fontSize: 13,
                       textAlign: TextAlign.center),
                 ),
                 Expanded(
                   flex: 1,
                   child: customTitle(
-                      text: groupObject.groupCurrency + " " + currencyFormat.format(row.balance),
+                      text: groupObject.groupCurrency +
+                          " " +
+                          currencyFormat.format(row.balance),
                       color: Theme.of(context).primaryColor,
                       fontSize: 13,
                       textAlign: TextAlign.center),
@@ -556,6 +642,7 @@ class TransactionStatementBody extends StatelessWidget {
             ),
             subtitle2(
               text: row.description,
+              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor,
               textAlign: TextAlign.start,
             )

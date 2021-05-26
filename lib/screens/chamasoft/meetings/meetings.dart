@@ -160,6 +160,7 @@ class _MeetingsState extends State<Meetings> {
             child: IconButton(
               icon: Icon(
                 Icons.add,
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
               ),
               onPressed: _isLoading
@@ -178,12 +179,7 @@ class _MeetingsState extends State<Meetings> {
         ],
       ),
       body: _isLoading
-          ? /*Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 3.0,
-              ),
-            )*/
-          Column(
+          ? Column(
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
@@ -336,6 +332,7 @@ class _MeetingsState extends State<Meetings> {
                         children: <Widget>[
                           Icon(
                             Icons.lightbulb_outline,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             size: 24.0,
                             semanticLabel: 'You should know...',
@@ -351,12 +348,14 @@ class _MeetingsState extends State<Meetings> {
                                   text: "You should know...",
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                 ),
                                 subtitle2(
                                   text:
                                       "That everytime you have your regular group meetings, Chamasoft helps you keep minutes for future reference, and also record any transactions.",
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
@@ -374,6 +373,7 @@ class _MeetingsState extends State<Meetings> {
                               padding: EdgeInsets.only(bottom: 40.0),
                               separatorBuilder: (context, index) => Divider(
                                 color: Theme.of(context)
+                                    // ignore: deprecated_member_use
                                     .textSelectionHandleColor
                                     .withOpacity(0.5),
                                 height: 0.0,
@@ -382,7 +382,7 @@ class _MeetingsState extends State<Meetings> {
                               itemBuilder: (context, index) {
                                 return Container(
                                   color: (meetings[index]['synced'] == 1)
-                                      ? Colors.white
+                                      ? Theme.of(context).backgroundColor
                                       : Colors.red[700].withOpacity(0.04),
                                   padding:
                                       EdgeInsets.fromLTRB(0.0, 8.0, 0.0, 8.0),
@@ -403,6 +403,7 @@ class _MeetingsState extends State<Meetings> {
                                             child: Icon(
                                               Icons.group,
                                               color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
                                                   .textSelectionHandleColor,
                                             ),
                                           ),
@@ -417,12 +418,14 @@ class _MeetingsState extends State<Meetings> {
                                                           ['date']),
                                                 ),
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 textAlign: TextAlign.start,
                                               ),
                                               subtitle1(
                                                 text: meetings[index]['title'],
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 textAlign: TextAlign.start,
                                               ),
@@ -435,6 +438,7 @@ class _MeetingsState extends State<Meetings> {
                                                           FontWeight.w300,
                                                       fontSize: 13.0,
                                                       color: Theme.of(context)
+                                                          // ignore: deprecated_member_use
                                                           .textSelectionHandleColor,
                                                       fontFamily: 'SegoeUI',
                                                     ),
@@ -450,6 +454,7 @@ class _MeetingsState extends State<Meetings> {
                                                           FontWeight.w600,
                                                       fontSize: 13.0,
                                                       color: Theme.of(context)
+                                                          // ignore: deprecated_member_use
                                                           .textSelectionHandleColor,
                                                       fontFamily: 'SegoeUI',
                                                     ),

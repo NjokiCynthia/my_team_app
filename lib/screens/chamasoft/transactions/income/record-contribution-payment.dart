@@ -23,7 +23,8 @@ import '../select-member.dart';
 
 class RecordContributionPayment extends StatefulWidget {
   @override
-  _RecordContributionPaymentState createState() => _RecordContributionPaymentState();
+  _RecordContributionPaymentState createState() =>
+      _RecordContributionPaymentState();
 }
 
 class _RecordContributionPaymentState extends State<RecordContributionPayment> {
@@ -70,7 +71,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
             );
           });
     });
-    formLoadData = await Provider.of<Groups>(context, listen: false).loadInitialFormData(contr: true, acc: true);
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(contr: true, acc: true);
     setState(() {
       _isInit = false;
     });
@@ -96,11 +98,13 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['individual_payments'] = _individualMemberContributions;
     log(_formData.toString());
     try {
-      String message = await Provider.of<Groups>(context, listen: false).recordContributionPayments(_formData);
+      String message = await Provider.of<Groups>(context, listen: false)
+          .recordContributionPayments(_formData);
       StatusHandler().showSuccessSnackBar(context, message);
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => DepositReceipts()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (BuildContext context) => DepositReceipts()));
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -135,7 +139,9 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
   Iterable<Widget> get memberWidgets sync* {
     for (MembersFilterEntry member in selectedMembersList) {
       yield ListTile(
-        title: Container(width: 200, child: Text(member.name, style: TextStyle(fontSize: 17))),
+        title: Container(
+            width: 200,
+            child: Text(member.name, style: TextStyle(fontSize: 17))),
         contentPadding: EdgeInsets.all(4.0),
         subtitle: Container(
             width: 200,
@@ -170,7 +176,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                     iconSize: 18,
                     onPressed: () {
                       setState(() {
-                        selectedMembersList.removeWhere((MembersFilterEntry entry) {
+                        selectedMembersList
+                            .removeWhere((MembersFilterEntry entry) {
                           return entry.name == member.name;
                         });
                       });
@@ -214,7 +221,10 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                 child: Column(
                   children: <Widget>[
                     toolTip(
-                        context: context, title: "Manually record contribution payments", message: "", showTitle: true),
+                        context: context,
+                        title: "Manually record contribution payments",
+                        message: "",
+                        showTitle: true),
                     Padding(
                       padding: inputPagePadding,
                       child: Form(
@@ -232,7 +242,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                       labelText: 'Select Deposit Date',
                                       lastDate: DateTime.now(),
                                       selectedDate: contributionDate == null
-                                          ? new DateTime(now.year, now.month, now.day - 1, 6, 30)
+                                          ? new DateTime(now.year, now.month,
+                                              now.day - 1, 6, 30)
                                           : contributionDate,
                                       selectDate: (selectedDate) {
                                         setState(() {
@@ -272,7 +283,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               CustomDropDownButton(
                                 labelText: "Select Contribution",
                                 enabled: _isFormInputEnabled,
-                                listItems: formLoadData.containsKey("contributionOptions")
+                                listItems: formLoadData
+                                        .containsKey("contributionOptions")
                                     ? formLoadData["contributionOptions"]
                                     : [],
                                 selectedItem: contributionId,
@@ -295,7 +307,9 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 labelText: "Select Account",
                                 enabled: _isFormInputEnabled,
                                 listItems:
-                                    formLoadData.containsKey("accountOptions") ? formLoadData["accountOptions"] : [],
+                                    formLoadData.containsKey("accountOptions")
+                                        ? formLoadData["accountOptions"]
+                                        : [],
                                 selectedItem: accountId,
                                 onChanged: (value) {
                                   setState(() {
@@ -323,7 +337,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => SelectMember(
-                                                  initialMembersList: selectedMembersList,
+                                                  initialMembersList:
+                                                      selectedMembersList,
                                                   //membersList: memberOptions,
                                                 ))).then((value) {
                                       setState(() {
@@ -348,20 +363,24 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                                 visible: memberTypeId == 1,
                                 child: SingleChildScrollView(
                                   child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     mainAxisSize: MainAxisSize.min,
                                     children: <Widget>[
                                       Column(
                                         children: memberWidgets.toList(),
                                       ),
+                                      // ignore: deprecated_member_use
                                       FlatButton(
                                         onPressed: () async {
                                           //open select members dialog
                                           await Navigator.push(
                                               context,
                                               MaterialPageRoute(
-                                                  builder: (context) => SelectMember(
-                                                        initialMembersList: selectedMembersList,
+                                                  builder: (context) =>
+                                                      SelectMember(
+                                                        initialMembersList:
+                                                            selectedMembersList,
                                                         //membersList: memberOptions,
                                                       ))).then((value) {
                                             setState(() {
@@ -406,7 +425,8 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
                               _isLoading
                                   ? Padding(
                                       padding: EdgeInsets.all(10),
-                                      child: Center(child: CircularProgressIndicator()),
+                                      child: Center(
+                                          child: CircularProgressIndicator()),
                                     )
                                   : defaultButton(
                                       context: context,

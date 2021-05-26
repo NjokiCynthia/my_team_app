@@ -112,10 +112,12 @@ class _ListAccountsState extends State<ListAccounts> {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
+                // ignore: deprecated_member_use
                 FlatButton(
                   child: Text(
                     'Add Bank Account',
                     style: TextStyle(
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w400,
                       fontSize: 16.0,
@@ -146,10 +148,12 @@ class _ListAccountsState extends State<ListAccounts> {
                     }
                   },
                 ),
+                // ignore: deprecated_member_use
                 FlatButton(
                   child: Text(
                     'Add Sacco Account',
                     style: TextStyle(
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w400,
                       fontSize: 16.0,
@@ -181,10 +185,12 @@ class _ListAccountsState extends State<ListAccounts> {
                     }
                   },
                 ),
+                // ignore: deprecated_member_use
                 FlatButton(
                   child: Text(
                     'Add Mobile Money Account',
                     style: TextStyle(
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w400,
                       fontSize: 16.0,
@@ -216,10 +222,12 @@ class _ListAccountsState extends State<ListAccounts> {
                     }
                   },
                 ),
+                // ignore: deprecated_member_use
                 FlatButton(
                   child: Text(
                     'Add Petty Cash Account',
                     style: TextStyle(
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       fontWeight: FontWeight.w400,
                       fontSize: 16.0,
@@ -301,6 +309,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                 fontWeight: FontWeight.w600,
                                 textAlign: TextAlign.start,
                                 color: Theme.of(context)
+                                    // ignore: deprecated_member_use
                                     .textSelectionHandleColor
                                     .withOpacity(0.6),
                                 fontSize: 13.0,
@@ -324,6 +333,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                         customTitleWithWrap(
                                           text: account.name,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           textAlign: TextAlign.start,
                                           fontWeight: FontWeight.w700,
@@ -335,6 +345,7 @@ class _ListAccountsState extends State<ListAccounts> {
                                                 fontWeight: FontWeight.w600,
                                                 textAlign: TextAlign.start,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor
                                                     .withOpacity(0.5),
                                                 fontSize: 12.0,

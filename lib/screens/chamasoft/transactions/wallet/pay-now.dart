@@ -300,6 +300,7 @@ class _PayNowState extends State<PayNow> {
             children: [
               heading2(
                   text: "Confirm Payment Number",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start),
               SizedBox(
@@ -322,6 +323,7 @@ class _PayNowState extends State<PayNow> {
             initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
+              // ignore: deprecated_member_use
               WhitelistingTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
@@ -341,6 +343,7 @@ class _PayNowState extends State<PayNow> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
@@ -440,6 +443,7 @@ class _PayNowState extends State<PayNow> {
                                       child: Center(
                                           child: CircularProgressIndicator()),
                                     )
+                                  // ignore: deprecated_member_use
                                   : RaisedButton(
                                       color: primaryColor,
                                       child: Padding(

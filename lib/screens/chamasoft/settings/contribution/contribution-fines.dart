@@ -18,10 +18,15 @@ class ContributionFineSettings extends StatefulWidget {
   final dynamic contributionDetails;
   final Function(dynamic) onButtonPressed;
 
-  ContributionFineSettings({@required this.responseData, this.isEditMode, this.contributionDetails, @required this.onButtonPressed});
+  ContributionFineSettings(
+      {@required this.responseData,
+      this.isEditMode,
+      this.contributionDetails,
+      @required this.onButtonPressed});
 
   @override
-  _ContributionFineSettingsState createState() => _ContributionFineSettingsState();
+  _ContributionFineSettingsState createState() =>
+      _ContributionFineSettingsState();
 }
 
 class _ContributionFineSettingsState extends State<ContributionFineSettings> {
@@ -29,7 +34,8 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
   bool _isFormEnabled = true;
   var _isLoading = false;
 
-  String requestId = ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
+  String requestId =
+      ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
 
   String contributionId;
   bool fineSettingsEnabled = false;
@@ -46,29 +52,49 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
     contributionId = widget.responseData['contribution_id'].toString();
 
     if (widget.isEditMode) {
-      dynamic settings = widget.contributionDetails['contribution_settings'] as dynamic;
+      dynamic settings =
+          widget.contributionDetails['contribution_settings'] as dynamic;
       final enableFines = ParseHelper.getIntFromJson(settings, 'enable_fines');
       if (enableFines == 1) {
-        List<dynamic> list = widget.contributionDetails['contribution_fine_settings'] as List<dynamic>;
+        List<dynamic> list = widget
+            .contributionDetails['contribution_fine_settings'] as List<dynamic>;
         if (list.length > 0) {
           dynamic fineSettings = list[0];
           setState(() {
-            fineTypeId = int.tryParse(fineSettings["fine_type"].toString()) ?? null;
+            fineTypeId =
+                int.tryParse(fineSettings["fine_type"].toString()) ?? null;
 
             if (fineTypeId == 1) {
-              fineAmount = double.tryParse(fineSettings["fixed_amount"].toString()) ?? null;
-              fineForId = int.tryParse(fineSettings["fixed_fine_mode"].toString()) ?? null;
-              fineFrequencyId = int.tryParse(fineSettings["fixed_fine_frequency"].toString()) ?? null;
-              fineChargeableOn = fineSettings["fixed_fine_chargeable_on"].toString();
+              fineAmount =
+                  double.tryParse(fineSettings["fixed_amount"].toString()) ??
+                      null;
+              fineForId =
+                  int.tryParse(fineSettings["fixed_fine_mode"].toString()) ??
+                      null;
+              fineFrequencyId = int.tryParse(
+                      fineSettings["fixed_fine_frequency"].toString()) ??
+                  null;
+              fineChargeableOn =
+                  fineSettings["fixed_fine_chargeable_on"].toString();
             } else {
-              fineAmount = double.tryParse(fineSettings["percentage_rate"].toString()) ?? null;
-              fineForId = int.tryParse(fineSettings["percentage_fine_mode"].toString()) ?? null;
-              fineFrequencyId = int.tryParse(fineSettings["percentage_fine_frequency"].toString()) ?? null;
-              fineChargeableOn = fineSettings["percentage_fine_chargeable_on"].toString();
-              percentageFineOptionId = int.tryParse(fineSettings["percentage_fine_on"].toString()) ?? null;
+              fineAmount =
+                  double.tryParse(fineSettings["percentage_rate"].toString()) ??
+                      null;
+              fineForId = int.tryParse(
+                      fineSettings["percentage_fine_mode"].toString()) ??
+                  null;
+              fineFrequencyId = int.tryParse(
+                      fineSettings["percentage_fine_frequency"].toString()) ??
+                  null;
+              fineChargeableOn =
+                  fineSettings["percentage_fine_chargeable_on"].toString();
+              percentageFineOptionId =
+                  int.tryParse(fineSettings["percentage_fine_on"].toString()) ??
+                      null;
             }
 
-            fineLimitId = int.tryParse(fineSettings["fine_limit"].toString()) ?? null;
+            fineLimitId =
+                int.tryParse(fineSettings["fine_limit"].toString()) ?? null;
             fineSettingsEnabled = true;
           });
         }
@@ -111,7 +137,8 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
     print(formData);
 
     try {
-      final response = await Provider.of<Groups>(context, listen: false).addContributionStepThree(formData);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .addContributionStepThree(formData);
       print(response);
       requestId = null;
       alertDialogWithAction(context, response["message"].toString(), () {
@@ -150,13 +177,22 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              customTitle(text: "Fines", color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w400, textAlign: TextAlign.start),
+              customTitle(
+                  text: "Fines",
+                  // ignore: deprecated_member_use
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontWeight: FontWeight.w400,
+                  textAlign: TextAlign.start),
             ],
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              subtitle2(text: "Set Fines for Late Payments", color: Theme.of(context).textSelectionHandleColor, textAlign: TextAlign.start),
+              subtitle2(
+                  text: "Set Fines for Late Payments",
+                  // ignore: deprecated_member_use
+                  color: Theme.of(context).textSelectionHandleColor,
+                  textAlign: TextAlign.start),
             ],
           ),
           Row(
@@ -164,6 +200,7 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
             children: <Widget>[
               customTitle(
                   text: "Activate Fine Settings",
+            // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   fontWeight: FontWeight.w500,
                   textAlign: TextAlign.start),
@@ -183,182 +220,192 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
               child: Form(
                 key: _formKey,
                 child: SingleChildScrollView(
-                  child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
-                    CustomDropDownButton(
-                      labelText: "Select fine type",
-                      listItems: fineTypesList,
-                      selectedItem: fineTypeId,
-                      enabled: _isFormEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          fineTypeId = value;
-                        });
-                      },
-                      validator: (_) {
-                        if (fineSettingsEnabled && fineTypeId == null) {
-                          return 'This field is required';
-                        }
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        CustomDropDownButton(
+                          labelText: "Select fine type",
+                          listItems: fineTypesList,
+                          selectedItem: fineTypeId,
+                          enabled: _isFormEnabled,
+                          onChanged: (value) {
+                            setState(() {
+                              fineTypeId = value;
+                            });
+                          },
+                          validator: (_) {
+                            if (fineSettingsEnabled && fineTypeId == null) {
+                              return 'This field is required';
+                            }
 
-                        return null;
-                      },
-                    ),
-                    Visibility(
-                      visible: (fineTypeId == 1 || fineTypeId == 2),
-                      child: TextFormField(
-                        initialValue: fineAmount > 0.1 ? fineAmount.toString() : '',
-                        style: TextStyle(fontFamily: 'SegoeUI'),
-                        enabled: _isFormEnabled,
-                        keyboardType: TextInputType.numberWithOptions(
-                          decimal: true,
-                          signed: false,
+                            return null;
+                          },
                         ),
-                        decoration: InputDecoration(
-                            floatingLabelBehavior: FloatingLabelBehavior.auto,
-                            enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
-                            labelText: fineTypeId == 1 ? 'Fixed Amount' : "Percentage Rate",
-                            labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                        onChanged: (value) {
-                          fineAmount = double.tryParse(value) ?? 0;
-                        },
-                        validator: (_) {
-                          if (fineAmount == null) {
-                            return 'This field is required';
-                          } else if (fineAmount < 0.1) {
-                            return 'This field is required';
-                          }
+                        Visibility(
+                          visible: (fineTypeId == 1 || fineTypeId == 2),
+                          child: TextFormField(
+                            initialValue:
+                                fineAmount > 0.1 ? fineAmount.toString() : '',
+                            style: TextStyle(fontFamily: 'SegoeUI'),
+                            enabled: _isFormEnabled,
+                            keyboardType: TextInputType.numberWithOptions(
+                              decimal: true,
+                              signed: false,
+                            ),
+                            decoration: InputDecoration(
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.auto,
+                                enabledBorder: UnderlineInputBorder(
+                                    borderSide: BorderSide(
+                                        color: Theme.of(context).hintColor,
+                                        width: 1.0)),
+                                labelText: fineTypeId == 1
+                                    ? 'Fixed Amount'
+                                    : "Percentage Rate",
+                                labelStyle: TextStyle(fontFamily: 'SegoeUI')),
+                            onChanged: (value) {
+                              fineAmount = double.tryParse(value) ?? 0;
+                            },
+                            validator: (_) {
+                              if (fineAmount == null) {
+                                return 'This field is required';
+                              } else if (fineAmount < 0.1) {
+                                return 'This field is required';
+                              }
 
-                          return null;
-                        },
-                      ),
-                    ),
-                    Visibility(
-                      visible: fineTypeId == 2,
-                      child: CustomDropDownButton(
-                        labelText: "Select percentage fine option",
-                        listItems: percentageFineOnOptions,
-                        enabled: _isFormEnabled,
-                        selectedItem: percentageFineOptionId,
-                        onChanged: (value) {
-                          setState(() {
-                            percentageFineOptionId = value;
-                          });
-                        },
-                        validator: (_) {
-                          if (!ValidateSettings().validateFines(
-                              fineType: fineTypeId,
-                              fineFor: fineForId,
-                              fineChargeableOn: fineChargeableOn,
-                              fineFrequency: fineFrequencyId,
-                              fineLimit: fineLimitId,
-                              percentageFineOn: percentageFineOptionId)) {
-                            return 'This field is required';
-                          }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Visibility(
+                          visible: fineTypeId == 2,
+                          child: CustomDropDownButton(
+                            labelText: "Select percentage fine option",
+                            listItems: percentageFineOnOptions,
+                            enabled: _isFormEnabled,
+                            selectedItem: percentageFineOptionId,
+                            onChanged: (value) {
+                              setState(() {
+                                percentageFineOptionId = value;
+                              });
+                            },
+                            validator: (_) {
+                              if (!ValidateSettings().validateFines(
+                                  fineType: fineTypeId,
+                                  fineFor: fineForId,
+                                  fineChargeableOn: fineChargeableOn,
+                                  fineFrequency: fineFrequencyId,
+                                  fineLimit: fineLimitId,
+                                  percentageFineOn: percentageFineOptionId)) {
+                                return 'This field is required';
+                              }
 
-                          return null;
-                        },
-                      ),
-                    ),
-                    CustomDropDownButton(
-                      labelText: "Select Fine For",
-                      listItems: fineForList,
-                      selectedItem: fineForId,
-                      enabled: _isFormEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          fineForId = value;
-                        });
-                      },
-                      validator: (_) {
-                        if (!ValidateSettings().validateFines(
-                            fineType: fineTypeId,
-                            fineFor: fineForId,
-                            fineChargeableOn: fineChargeableOn,
-                            fineFrequency: fineFrequencyId,
-                            fineLimit: fineLimitId,
-                            percentageFineOn: percentageFineOptionId)) {
-                          return 'This field is required';
-                        }
+                              return null;
+                            },
+                          ),
+                        ),
+                        CustomDropDownButton(
+                          labelText: "Select Fine For",
+                          listItems: fineForList,
+                          selectedItem: fineForId,
+                          enabled: _isFormEnabled,
+                          onChanged: (value) {
+                            setState(() {
+                              fineForId = value;
+                            });
+                          },
+                          validator: (_) {
+                            if (!ValidateSettings().validateFines(
+                                fineType: fineTypeId,
+                                fineFor: fineForId,
+                                fineChargeableOn: fineChargeableOn,
+                                fineFrequency: fineFrequencyId,
+                                fineLimit: fineLimitId,
+                                percentageFineOn: percentageFineOptionId)) {
+                              return 'This field is required';
+                            }
 
-                        return null;
-                      },
-                    ),
-                    CustomDropDownStringOnlyButton(
-                      labelText: "Select Fine Chargeable On",
-                      listItems: fineChargeableOnOptions,
-                      selectedItem: fineChargeableOn,
-                      enabled: _isFormEnabled,
-                      onChanged: (value) {
-                        setState(() {
-                          fineChargeableOn = value;
-                        });
-                      },
-                      validator: (_) {
-                        print('called');
-                        if (!ValidateSettings().validateFines(
-                            fineType: fineTypeId,
-                            fineFor: fineForId,
-                            fineChargeableOn: fineChargeableOn,
-                            fineFrequency: fineFrequencyId,
-                            fineLimit: fineLimitId,
-                            percentageFineOn: percentageFineOptionId)) {
-                          return 'This field is required';
-                        }
+                            return null;
+                          },
+                        ),
+                        CustomDropDownStringOnlyButton(
+                          labelText: "Select Fine Chargeable On",
+                          listItems: fineChargeableOnOptions,
+                          selectedItem: fineChargeableOn,
+                          enabled: _isFormEnabled,
+                          onChanged: (value) {
+                            setState(() {
+                              fineChargeableOn = value;
+                            });
+                          },
+                          validator: (_) {
+                            print('called');
+                            if (!ValidateSettings().validateFines(
+                                fineType: fineTypeId,
+                                fineFor: fineForId,
+                                fineChargeableOn: fineChargeableOn,
+                                fineFrequency: fineFrequencyId,
+                                fineLimit: fineLimitId,
+                                percentageFineOn: percentageFineOptionId)) {
+                              return 'This field is required';
+                            }
 
-                        return null;
-                      },
-                    ),
-                    CustomDropDownButton(
-                      labelText: "Select Fine Frequency",
-                      listItems: fineFrequencyOptions,
-                      enabled: _isFormEnabled,
-                      selectedItem: fineFrequencyId,
-                      onChanged: (value) {
-                        setState(() {
-                          fineFrequencyId = value;
-                        });
-                      },
-                      validator: (_) {
-                        if (!ValidateSettings().validateFines(
-                            fineType: fineTypeId,
-                            fineFor: fineForId,
-                            fineChargeableOn: fineChargeableOn,
-                            fineFrequency: fineFrequencyId,
-                            fineLimit: fineLimitId,
-                            percentageFineOn: percentageFineOptionId)) {
-                          return 'This field is required';
-                        }
+                            return null;
+                          },
+                        ),
+                        CustomDropDownButton(
+                          labelText: "Select Fine Frequency",
+                          listItems: fineFrequencyOptions,
+                          enabled: _isFormEnabled,
+                          selectedItem: fineFrequencyId,
+                          onChanged: (value) {
+                            setState(() {
+                              fineFrequencyId = value;
+                            });
+                          },
+                          validator: (_) {
+                            if (!ValidateSettings().validateFines(
+                                fineType: fineTypeId,
+                                fineFor: fineForId,
+                                fineChargeableOn: fineChargeableOn,
+                                fineFrequency: fineFrequencyId,
+                                fineLimit: fineLimitId,
+                                percentageFineOn: percentageFineOptionId)) {
+                              return 'This field is required';
+                            }
 
-                        return null;
-                      },
-                    ),
-                    Visibility(
-                      visible: fineForId == 1,
-                      child: CustomDropDownButton(
-                        labelText: "Select Fine Limit",
-                        listItems: fineLimitOptions,
-                        enabled: _isFormEnabled,
-                        selectedItem: fineLimitId,
-                        onChanged: (value) {
-                          setState(() {
-                            fineLimitId = value;
-                          });
-                        },
-                        validator: (_) {
-                          if (!ValidateSettings().validateFines(
-                              fineType: fineTypeId,
-                              fineFor: fineForId,
-                              fineChargeableOn: fineChargeableOn,
-                              fineFrequency: fineFrequencyId,
-                              fineLimit: fineLimitId,
-                              percentageFineOn: percentageFineOptionId)) {
-                            return 'This field is required';
-                          }
+                            return null;
+                          },
+                        ),
+                        Visibility(
+                          visible: fineForId == 1,
+                          child: CustomDropDownButton(
+                            labelText: "Select Fine Limit",
+                            listItems: fineLimitOptions,
+                            enabled: _isFormEnabled,
+                            selectedItem: fineLimitId,
+                            onChanged: (value) {
+                              setState(() {
+                                fineLimitId = value;
+                              });
+                            },
+                            validator: (_) {
+                              if (!ValidateSettings().validateFines(
+                                  fineType: fineTypeId,
+                                  fineFor: fineForId,
+                                  fineChargeableOn: fineChargeableOn,
+                                  fineFrequency: fineFrequencyId,
+                                  fineLimit: fineLimitId,
+                                  percentageFineOn: percentageFineOptionId)) {
+                                return 'This field is required';
+                              }
 
-                          return null;
-                        },
-                      ),
-                    ),
-                  ]),
+                              return null;
+                            },
+                          ),
+                        ),
+                      ]),
                 ),
               ),
             ),

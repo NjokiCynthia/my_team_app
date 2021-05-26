@@ -88,13 +88,15 @@ class _EditBankAccountState extends State<EditBankAccount> {
 
   Future<void> fetchBankAccount(BuildContext context) async {
     try {
-      final response = await Provider.of<Groups>(context, listen: false).fetchBankAccount(widget.bankAccountId);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .fetchBankAccount(widget.bankAccountId);
       if (response != null) {
         await fetchBankOptions(context);
 
         this.setState(() {
           selectedBankId = int.parse(response['bank_id'].toString());
-          selectedBankBranchId = int.parse(response['bank_branch_id'].toString());
+          selectedBankBranchId =
+              int.parse(response['bank_branch_id'].toString());
 
           bankAccountName = response['account_name'].toString();
           accountNumber = response['account_number'].toString();
@@ -120,7 +122,8 @@ class _EditBankAccountState extends State<EditBankAccount> {
 
   Future<void> fetchBankBranchOptions(BuildContext context) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchBankBranchOptions(selectedBankId.toString());
+      await Provider.of<Groups>(context, listen: false)
+          .fetchBankBranchOptions(selectedBankId.toString());
     } on CustomException catch (error) {
       print(error.message);
       Navigator.pop(context);
@@ -147,6 +150,7 @@ class _EditBankAccountState extends State<EditBankAccount> {
       );
 
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the Bank Account",
@@ -188,135 +192,161 @@ class _EditBankAccountState extends State<EditBankAccount> {
                     controller: _scrollController,
                     child: Column(
                       children: <Widget>[
-                        toolTip(context: context, title: "", message: "Edit bank account", showTitle: false),
+                        toolTip(
+                            context: context,
+                            title: "",
+                            message: "Edit bank account",
+                            showTitle: false),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
-                            simpleTextInputField(
-                                context: context,
-                                labelText: 'Enter account name',
-                                controller: accountNameTextController,
-                                validator: (value) {
-                                  Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
-                                  RegExp regex = new RegExp(pattern);
-                                  if (!regex.hasMatch(value))
-                                    return 'Invalid bank account name';
-                                  else
-                                    return null;
-                                },
-                                onSaved: (value) => bankAccountName = value,
-                                onChanged: (value) {
-                                  setState(() {
-                                    bankAccountName = value;
-                                  });
-                                }),
-                            TextFormField(
-                              controller: bankTextController,
-                              readOnly: true,
-                              style: inputTextStyle(),
-                              decoration: InputDecoration(
-                                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                  color: Theme.of(context).hintColor,
-                                  width: 1.0,
-                                )),
-                                hintText: 'Select Bank',
-                                labelText: 'Select Bank',
-                              ),
-                              onTap: () async {
-                                final arguments =
-                                    await Navigator.pushNamed(context, ListInstitutions.namedRoute, arguments: InstitutionFlag.flagBanks);
-                                if (arguments != null) {
-                                  var details = arguments as InstitutionArguments;
-                                  setState(() {
-                                    Bank bank = details.bank as Bank;
-                                    bankTextController.text = bank.name;
-                                    selectedBankId = bank.id;
-                                    selectedBankName = bank.name;
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                simpleTextInputField(
+                                    context: context,
+                                    labelText: 'Enter account name',
+                                    controller: accountNameTextController,
+                                    validator: (value) {
+                                      Pattern pattern =
+                                          r'^([A-Za-z0-9_ ]{2,})$';
+                                      RegExp regex = new RegExp(pattern);
+                                      if (!regex.hasMatch(value))
+                                        return 'Invalid bank account name';
+                                      else
+                                        return null;
+                                    },
+                                    onSaved: (value) => bankAccountName = value,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        bankAccountName = value;
+                                      });
+                                    }),
+                                TextFormField(
+                                  controller: bankTextController,
+                                  readOnly: true,
+                                  style: inputTextStyle(),
+                                  decoration: InputDecoration(
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.auto,
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                      color: Theme.of(context).hintColor,
+                                      width: 1.0,
+                                    )),
+                                    hintText: 'Select Bank',
+                                    labelText: 'Select Bank',
+                                  ),
+                                  onTap: () async {
+                                    final arguments = await Navigator.pushNamed(
+                                        context, ListInstitutions.namedRoute,
+                                        arguments: InstitutionFlag.flagBanks);
+                                    if (arguments != null) {
+                                      var details =
+                                          arguments as InstitutionArguments;
+                                      setState(() {
+                                        Bank bank = details.bank as Bank;
+                                        bankTextController.text = bank.name;
+                                        selectedBankId = bank.id;
+                                        selectedBankName = bank.name;
 
-                                    selectedBankBranchId = 0;
-                                    selectedBankBranchName = "";
-                                    bankBranchTextController.text = selectedBankBranchName;
-                                  });
-                                }
-                              },
-                            ),
-                            TextFormField(
-                              controller: bankBranchTextController,
-                              readOnly: true,
-                              style: inputTextStyle(),
-                              decoration: InputDecoration(
-                                floatingLabelBehavior: FloatingLabelBehavior.auto,
-                                enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(
-                                  color: Theme.of(context).hintColor,
-                                  width: 1.0,
-                                )),
-                                enabled: selectedBankId > 0,
-                                hintText: selectedBankId > 0 ? 'Select bank branch' : 'Select bank First',
-                                labelText: selectedBankId > 0 ? 'Select bank branch' : 'Select bank First',
-                              ),
-                              onTap: () async {
-                                final arguments =
-                                    await Navigator.pushNamed(context, ListInstitutions.namedRoute, arguments: InstitutionFlag.flagBankBranches);
-                                if (arguments != null) {
-                                  var details = arguments as InstitutionArguments;
-                                  setState(() {
-                                    BankBranch branch = details.bank as BankBranch;
-                                    selectedBankBranchId = branch.id;
-                                    selectedBankBranchName = branch.name;
-                                    bankBranchTextController.text = selectedBankBranchName;
-                                  });
-                                }
-                              },
-                            ),
-                            simpleTextInputField(
-                              context: context,
-                              labelText: 'Enter account number',
-                              controller: accountNumberTextController,
-                              onChanged: (value) {
-                                setState(() {
-                                  accountNumber = value;
-                                });
-                              },
-                              validator: (value) {
-                                Pattern pattern = r'^([0-9]{8,20})$';
-                                RegExp regex = new RegExp(pattern);
-                                if (!regex.hasMatch(value))
-                                  return 'Invalid Bank account number';
-                                else
-                                  return null;
-                              },
-                              onSaved: (value) => accountNumber = value,
-                            ),
-                            amountTextInputField(
-                              context: context,
-                              labelText: 'Initial Balance',
-                              controller: initialAmountTextController,
-                              onChanged: (value) {
-                                setState(() {
-                                  initialBalance = double.parse(value);
-                                });
-                              },
-                              validator: (value) {
-                                return null;
-                              },
-                              onSaved: (value) => initialBalance = double.parse(value),
-                            ),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            defaultButton(
-                              context: context,
-                              text: "EDIT ACCOUNT",
-                              onPressed: () async {
-                                if (_formKey.currentState.validate() && selectedBankId > 0 && selectedBankBranchId > 0) {
-                                  await editBankAccount(context);
-                                }
-                              },
-                            ),
-                          ]),
+                                        selectedBankBranchId = 0;
+                                        selectedBankBranchName = "";
+                                        bankBranchTextController.text =
+                                            selectedBankBranchName;
+                                      });
+                                    }
+                                  },
+                                ),
+                                TextFormField(
+                                  controller: bankBranchTextController,
+                                  readOnly: true,
+                                  style: inputTextStyle(),
+                                  decoration: InputDecoration(
+                                    floatingLabelBehavior:
+                                        FloatingLabelBehavior.auto,
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(
+                                      color: Theme.of(context).hintColor,
+                                      width: 1.0,
+                                    )),
+                                    enabled: selectedBankId > 0,
+                                    hintText: selectedBankId > 0
+                                        ? 'Select bank branch'
+                                        : 'Select bank First',
+                                    labelText: selectedBankId > 0
+                                        ? 'Select bank branch'
+                                        : 'Select bank First',
+                                  ),
+                                  onTap: () async {
+                                    final arguments = await Navigator.pushNamed(
+                                        context, ListInstitutions.namedRoute,
+                                        arguments:
+                                            InstitutionFlag.flagBankBranches);
+                                    if (arguments != null) {
+                                      var details =
+                                          arguments as InstitutionArguments;
+                                      setState(() {
+                                        BankBranch branch =
+                                            details.bank as BankBranch;
+                                        selectedBankBranchId = branch.id;
+                                        selectedBankBranchName = branch.name;
+                                        bankBranchTextController.text =
+                                            selectedBankBranchName;
+                                      });
+                                    }
+                                  },
+                                ),
+                                simpleTextInputField(
+                                  context: context,
+                                  labelText: 'Enter account number',
+                                  controller: accountNumberTextController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      accountNumber = value;
+                                    });
+                                  },
+                                  validator: (value) {
+                                    Pattern pattern = r'^([0-9]{8,20})$';
+                                    RegExp regex = new RegExp(pattern);
+                                    if (!regex.hasMatch(value))
+                                      return 'Invalid Bank account number';
+                                    else
+                                      return null;
+                                  },
+                                  onSaved: (value) => accountNumber = value,
+                                ),
+                                amountTextInputField(
+                                  context: context,
+                                  labelText: 'Initial Balance',
+                                  controller: initialAmountTextController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      initialBalance = double.parse(value);
+                                    });
+                                  },
+                                  validator: (value) {
+                                    return null;
+                                  },
+                                  onSaved: (value) =>
+                                      initialBalance = double.parse(value),
+                                ),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                defaultButton(
+                                  context: context,
+                                  text: "EDIT ACCOUNT",
+                                  onPressed: () async {
+                                    if (_formKey.currentState.validate() &&
+                                        selectedBankId > 0 &&
+                                        selectedBankBranchId > 0) {
+                                      await editBankAccount(context);
+                                    }
+                                  },
+                                ),
+                              ]),
                         ),
                       ],
                     )),

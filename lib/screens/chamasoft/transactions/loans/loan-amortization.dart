@@ -86,11 +86,13 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     Expanded(
                       child: heading2(
                           text: "Emergency Loan for Corona Virus",
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.start),
                     ),
                     heading2(
                         text: "Ksh 180,000",
+                        // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.start)
                   ],
@@ -106,11 +108,13 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       children: <Widget>[
                         subtitle1(
                           text: "Interest Rate: ",
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
                           text: "12%",
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
                         ),
@@ -121,11 +125,13 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       children: <Widget>[
                         subtitle1(
                           text: "Repayment Period: ",
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
                           text: "1 Month",
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
                         ),
@@ -136,11 +142,13 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       children: <Widget>[
                         subtitle1(
                           text: "Application Date: ",
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
                           text: "May 12, 2020",
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
                         ),

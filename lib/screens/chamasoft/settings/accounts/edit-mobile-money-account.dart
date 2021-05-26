@@ -128,6 +128,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
       );
 
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the Mobile Money Account",
@@ -137,10 +138,10 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
       Future.delayed(const Duration(seconds: 4), () {
         Navigator.of(context).pop(_formModified);
       });
-
     } on CustomException catch (error) {
       Navigator.pop(context);
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Mobile Money Account. ${error.message} ",
@@ -157,6 +158,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
             backgroundColor: Theme.of(context).backgroundColor,
             title: heading2(
                 text: "Select Mobile Money Provider",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start),
             content: Container(
@@ -206,6 +208,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
                                       mobileMoneyProvider.name,
                                       style: TextStyle(
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           fontWeight: FontWeight.w500),
                                     ),
@@ -221,14 +224,17 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
                                     value: mobileMoneyProvider.id,
                                     groupValue: selectedMobileProviderMoneyId,
                                   )
-                                : mobileMoneyProvider.name.toLowerCase().contains(
-                                        mobileMoneyFilter.toLowerCase())
+                                : mobileMoneyProvider.name
+                                        .toLowerCase()
+                                        .contains(
+                                            mobileMoneyFilter.toLowerCase())
                                     ? RadioListTile(
                                         activeColor: primaryColor,
                                         title: Text(
                                           mobileMoneyProvider.name,
                                           style: TextStyle(
                                               color: Theme.of(context)
+                                                  // ignore: deprecated_member_use
                                                   .textSelectionHandleColor,
                                               fontWeight: FontWeight.w500),
                                         ),
@@ -254,10 +260,12 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
               ),
             ),
             actions: <Widget>[
+              // ignore: deprecated_member_use
               new FlatButton(
                 child: new Text(
                   "Cancel",
                   style: TextStyle(
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor,
                       fontFamily: 'SegoeUI'),
                 ),
@@ -265,6 +273,7 @@ class _EditMobileMoneyAccountState extends State<EditMobileMoneyAccount> {
                   Navigator.of(context).pop();
                 },
               ),
+              // ignore: deprecated_member_use
               new FlatButton(
                 child: new Text(
                   "Continue",

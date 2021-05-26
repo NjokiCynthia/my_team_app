@@ -65,10 +65,12 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
     }
 
     try {
-      await Provider.of<Groups>(context, listen: false).addGroupMembers(members);
+      await Provider.of<Groups>(context, listen: false)
+          .addGroupMembers(members);
       Navigator.of(context).pop();
 
-      alertDialogWithAction(context, "You have successfully added members to your group", () {
+      alertDialogWithAction(
+          context, "You have successfully added members to your group", () {
         Navigator.of(context).pop();
         Navigator.of(context).pop(true);
       }, false);
@@ -132,18 +134,24 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                       behavior: CustomScrollBehavior(),
                       child: ListView.separated(
                         shrinkWrap: true,
-                        separatorBuilder: (BuildContext context, int index) => Divider(
+                        separatorBuilder: (BuildContext context, int index) =>
+                            Divider(
                           color: Theme.of(context).dividerColor,
                         ),
                         itemBuilder: (context, index) {
                           GroupRoles groupRole = tempRoles[index];
                           return CupertinoDialogAction(
                             child: customTitleWithWrap(
-                                text: groupRole.roleName, textAlign: TextAlign.center, color: Theme.of(context).textSelectionHandleColor),
+                                text: groupRole.roleName,
+                                textAlign: TextAlign.center,
+                                color:
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context).textSelectionHandleColor),
                             onPressed: () {
                               print(groupRole.roleName + " tapped");
                               setState(() {
-                                _updateRoleStatus(selectedContacts[position].role, groupRole);
+                                _updateRoleStatus(
+                                    selectedContacts[position].role, groupRole);
                                 selectedContacts[position].role = groupRole;
                               });
                               Navigator.of(ctx).pop();
@@ -156,7 +164,11 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                   ),
                 ],
               ),
-              title: heading2(text: "Set Role", textAlign: TextAlign.center, color: Theme.of(context).textSelectionHandleColor),
+              title: heading2(
+                  text: "Set Role",
+                  textAlign: TextAlign.center,
+                  // ignore: deprecated_member_use
+                  color: Theme.of(context).textSelectionHandleColor),
               actions: <Widget>[
                 CupertinoDialogAction(
                   child: subtitle1(text: "Close", color: primaryColor),
@@ -179,7 +191,8 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
     });
 
     try {
-      await Provider.of<Groups>(context, listen: false).fetchUnAssignedGroupRoles();
+      await Provider.of<Groups>(context, listen: false)
+          .fetchUnAssignedGroupRoles();
       setState(() {
         _isInit = false;
       });
@@ -207,7 +220,8 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
-    _rolesStatusAndCurrentMemberStatus = Provider.of<Groups>(context).getGroupRolesAndCurrentMemberStatus;
+    _rolesStatusAndCurrentMemberStatus =
+        Provider.of<Groups>(context).getGroupRolesAndCurrentMemberStatus;
     roles = Provider.of<Groups>(context).getCurrentGroup().groupRoles;
 
     if (_rolesStatusAndCurrentMemberStatus != null) {
@@ -218,7 +232,11 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
           List<Item> item = [];
           item.add(Item(value: auth.userIdentity));
           CustomContact customContact = CustomContact(
-              contact: Contact(displayName: auth.userName, givenName: auth.firstNameOnly, familyName: auth.lastNameOnly, phones: item),
+              contact: Contact(
+                  displayName: auth.userName,
+                  givenName: auth.firstNameOnly,
+                  familyName: auth.lastNameOnly,
+                  phones: item),
               role: memberRole);
           selectedContacts.insert(0, customContact);
         }
@@ -271,8 +289,10 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                 child: Row(
                   children: <Widget>[
                     CircleAvatar(
-                      backgroundColor: Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                      child: Text(displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24)),
+                      backgroundColor: Colors
+                          .primaries[Random().nextInt(Colors.primaries.length)],
+                      child: Text(displayName[0].toUpperCase(),
+                          style: TextStyle(color: Colors.white, fontSize: 24)),
                     ),
                     SizedBox(
                       width: 10,
@@ -282,9 +302,13 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          subtitle1(text: displayName ?? "", textAlign: TextAlign.start),
+                          subtitle1(
+                              text: displayName ?? "",
+                              textAlign: TextAlign.start),
                           phoneList.length >= 1 && phoneList[0]?.value != null
-                              ? subtitle1(text: phoneList[0].value, textAlign: TextAlign.start)
+                              ? subtitle1(
+                                  text: phoneList[0].value,
+                                  textAlign: TextAlign.start)
                               : Text(''),
                         ],
                       ),

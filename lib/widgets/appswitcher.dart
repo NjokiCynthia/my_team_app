@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'backgrounds.dart';
 
@@ -317,6 +320,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
 
   Widget groupSwitcherButton(
       {BuildContext context, String title, String role}) {
+    // ignore: deprecated_member_use
     return FlatButton(
       padding: EdgeInsets.fromLTRB(20.0, 0.0, 2.0, 0.0),
       child: Column(
@@ -599,12 +603,25 @@ class _AppSwitcherState extends State<AppSwitcher> {
     _toggleEntry(false);
   }
 
+  Future<void> _prepMeetings() async {
+    dynamic group = Provider.of<Groups>(context, listen: false);
+    Group _currentGroup = group.getCurrentGroup();
+    if (_currentGroup.isGroupAdmin) {
+      await group.fetchMembers();
+      await group.fetchContributions();
+      await group.fetchLoanTypes();
+      await group.fetchAccounts();
+      await group.fetchFineCategories();
+    }
+  }
+
   void _handleSelection(selectedOption, idx) {
     // Move the selected item to top of the list
     dynamic _selected = _listItems.removeAt(idx);
     _listItems.insert(1, _selected);
     widget.selectedOption(selectedOption);
     _exitSwitcher();
+    _prepMeetings();
   }
 
   void _handleStream(ev) {

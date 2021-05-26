@@ -195,9 +195,10 @@ class CreateInvoiceState extends State<CreateInvoice> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => SelectMember(
-                                        initialMembersList: selectedMembersList,
-                                        //membersList: memberOptions,
-                                      ))).then((value) {
+                                            initialMembersList:
+                                                selectedMembersList,
+                                            //membersList: memberOptions,
+                                          ))).then((value) {
                                 setState(() {
                                   memberTypeId = selected;
                                   selectedMembersList = value;
@@ -218,6 +219,7 @@ class CreateInvoiceState extends State<CreateInvoice> {
                               Wrap(
                                 children: memberWidgets.toList(),
                               ),
+                              // ignore: deprecated_member_use
                               FlatButton(
                                 onPressed: () async {
                                   //open select members dialog

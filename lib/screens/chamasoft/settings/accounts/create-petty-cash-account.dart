@@ -61,6 +61,7 @@ class _CreatePettyCashAccountState extends State<CreatePettyCashAccount> {
       );
 
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully added a Petty Cash Account",
@@ -73,6 +74,7 @@ class _CreatePettyCashAccountState extends State<CreatePettyCashAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Petty Cash Account. ${error.message} ",
@@ -100,40 +102,47 @@ class _CreatePettyCashAccountState extends State<CreatePettyCashAccount> {
               controller: _scrollController,
               child: Column(
                 children: <Widget>[
-                  toolTip(context: context, title: "", message: "Create a new Petty Cash account", showTitle: false),
+                  toolTip(
+                      context: context,
+                      title: "",
+                      message: "Create a new Petty Cash account",
+                      showTitle: false),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-                    child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
-                      simpleTextInputField(
-                          context: context,
-                          labelText: 'Enter account name',
-                          validator: (value) {
-                            Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
-                            RegExp regex = new RegExp(pattern);
-                            if (!regex.hasMatch(value))
-                              return 'Invalid petty cash account name';
-                            else
-                              return null;
-                          },
-                          onSaved: (value) => pettyCashAccountName = value,
-                          onChanged: (value) {
-                            setState(() {
-                              pettyCashAccountName = value;
-                            });
-                          }),
-                      SizedBox(
-                        height: 24,
-                      ),
-                      defaultButton(
-                        context: context,
-                        text: "CREATE ACCOUNT",
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            await createNewPettyCashAccount(context);
-                          }
-                        },
-                      ),
-                    ]),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          simpleTextInputField(
+                              context: context,
+                              labelText: 'Enter account name',
+                              validator: (value) {
+                                Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
+                                RegExp regex = new RegExp(pattern);
+                                if (!regex.hasMatch(value))
+                                  return 'Invalid petty cash account name';
+                                else
+                                  return null;
+                              },
+                              onSaved: (value) => pettyCashAccountName = value,
+                              onChanged: (value) {
+                                setState(() {
+                                  pettyCashAccountName = value;
+                                });
+                              }),
+                          SizedBox(
+                            height: 24,
+                          ),
+                          defaultButton(
+                            context: context,
+                            text: "CREATE ACCOUNT",
+                            onPressed: () async {
+                              if (_formKey.currentState.validate()) {
+                                await createNewPettyCashAccount(context);
+                              }
+                            },
+                          ),
+                        ]),
                   ),
                 ],
               )),

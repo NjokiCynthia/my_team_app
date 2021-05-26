@@ -57,7 +57,8 @@ class _EditPettyCashAccountState extends State<EditPettyCashAccount> {
 
   Future<void> fetchPettyCashAccount(BuildContext context) async {
     try {
-      final response = await Provider.of<Groups>(context, listen: false).fetchPettyCashAccount(widget.pettyCashAccountId);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .fetchPettyCashAccount(widget.pettyCashAccountId);
       if (response != null) {
         this.setState(() {
           pettyCashAccountName = response['account_name'].toString();
@@ -86,6 +87,7 @@ class _EditPettyCashAccountState extends State<EditPettyCashAccount> {
       );
 
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the Petty Cash Account",
@@ -97,6 +99,7 @@ class _EditPettyCashAccountState extends State<EditPettyCashAccount> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Petty Cash Account. ${error.message} ",
@@ -125,41 +128,51 @@ class _EditPettyCashAccountState extends State<EditPettyCashAccount> {
                     controller: _scrollController,
                     child: Column(
                       children: <Widget>[
-                        toolTip(context: context, title: "", message: "Edit Petty Cash account", showTitle: false),
+                        toolTip(
+                            context: context,
+                            title: "",
+                            message: "Edit Petty Cash account",
+                            showTitle: false),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-                          child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, mainAxisSize: MainAxisSize.min, children: <Widget>[
-                            simpleTextInputField(
-                                context: context,
-                                labelText: 'Enter account name',
-                                controller: accountNameTextController,
-                                validator: (value) {
-                                  Pattern pattern = r'^([A-Za-z0-9_ ]{2,})$';
-                                  RegExp regex = new RegExp(pattern);
-                                  if (!regex.hasMatch(value))
-                                    return 'Invalid Petty Cash account name';
-                                  else
-                                    return null;
-                                },
-                                onSaved: (value) => pettyCashAccountName = value,
-                                onChanged: (value) {
-                                  setState(() {
-                                    pettyCashAccountName = value;
-                                  });
-                                }),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            defaultButton(
-                              context: context,
-                              text: "EDIT ACCOUNT",
-                              onPressed: () async {
-                                if (_formKey.currentState.validate()) {
-                                  await editPettyCashAccount(context);
-                                }
-                              },
-                            ),
-                          ]),
+                          padding:
+                              const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                simpleTextInputField(
+                                    context: context,
+                                    labelText: 'Enter account name',
+                                    controller: accountNameTextController,
+                                    validator: (value) {
+                                      Pattern pattern =
+                                          r'^([A-Za-z0-9_ ]{2,})$';
+                                      RegExp regex = new RegExp(pattern);
+                                      if (!regex.hasMatch(value))
+                                        return 'Invalid Petty Cash account name';
+                                      else
+                                        return null;
+                                    },
+                                    onSaved: (value) =>
+                                        pettyCashAccountName = value,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        pettyCashAccountName = value;
+                                      });
+                                    }),
+                                SizedBox(
+                                  height: 24,
+                                ),
+                                defaultButton(
+                                  context: context,
+                                  text: "EDIT ACCOUNT",
+                                  onPressed: () async {
+                                    if (_formKey.currentState.validate()) {
+                                      await editPettyCashAccount(context);
+                                    }
+                                  },
+                                ),
+                              ]),
                         ),
                       ],
                     )),

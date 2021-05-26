@@ -59,6 +59,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     var begin = '-----BEGIN PUBLIC KEY-----\n';
     var end = '\n-----END PUBLIC KEY-----';
     int splitCount = str.length ~/ 64;
+    // ignore: deprecated_member_use
     List<String> strList = List();
 
     for (int i = 0; i < splitCount; i++) {
@@ -75,6 +76,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
     var begin = '-----BEGIN PRIVATE KEY-----\n';
     var end = '\n-----END PRIVATE KEY-----';
     int splitCount = str.length ~/ 64;
+    // ignore: deprecated_member_use
     List<String> strList = List();
 
     for (int i = 0; i < splitCount; i++) {

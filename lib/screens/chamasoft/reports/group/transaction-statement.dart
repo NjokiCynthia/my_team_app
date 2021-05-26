@@ -147,6 +147,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                               heading2(
                                   text: "Total Balance",
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                               SizedBox(
@@ -158,11 +159,13 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                   subtitle2(
                                       text: "Deposits ",
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                       textAlign: TextAlign.start),
                                   subtitle1(
                                       text: "-",
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                       textAlign: TextAlign.start),
                                 ],
@@ -173,11 +176,13 @@ class _TransactionStatementState extends State<TransactionStatement> {
                                   subtitle2(
                                       text: "Withdrawals ",
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                       textAlign: TextAlign.start),
                                   subtitle1(
                                       text: "-",
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                       textAlign: TextAlign.start),
                                 ],
@@ -189,6 +194,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                       heading2(
                           text: "${groupObject.groupCurrency} " +
                               currencyFormat.format(_totalBalance),
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.start)
                     ],
@@ -204,6 +210,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                         children: <Widget>[
                           subtitle2(
                             text: "Statement as At",
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
@@ -211,6 +218,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                             text: _statementAsAt,
                             fontSize: 12,
                             fontWeight: FontWeight.w500,
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             textAlign: TextAlign.start,
                           ),
@@ -222,6 +230,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                           children: <Widget>[
                             subtitle2(
                               text: "Statement Period",
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
@@ -229,6 +238,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                               fontSize: 12,
                               fontWeight: FontWeight.w500,
                               text: _statementFrom + " to " + _statementTo,
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
@@ -259,6 +269,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                     child: customTitle(
                         text: "Deposits",
                         fontSize: 13.0,
+                        // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.center),
                   ),
@@ -267,6 +278,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                     child: customTitle(
                         text: "Withdrawals",
                         fontSize: 13.0,
+                        // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.center),
                   ),
@@ -275,6 +287,7 @@ class _TransactionStatementState extends State<TransactionStatement> {
                     child: customTitle(
                         text: "Balance",
                         fontSize: 13.0,
+                        // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.center),
                   ),

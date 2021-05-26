@@ -99,6 +99,8 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
             child: customTitle(
                 text: "ADD FROM CONTACTS",
                 fontSize: 12,
+                // ignore: deprecated_member_use
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor),
           ),
           PopupMenuItem(
@@ -106,11 +108,13 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
             child: customTitle(
                 text: "ADD MANUALLY",
                 fontSize: 12,
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor),
           ),
         ],
         child: ButtonTheme(
           height: 36,
+          // ignore: deprecated_member_use
           child: FlatButton(
             ///DON'T ADD 'onPressed', otherwise it will intercept the click event and prevent the
             ///PopupMenu from being triggered. Should have used a different widget, I know :(
@@ -134,6 +138,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
                 customTitle(
                     text: "ADD MEMBERS",
                     fontSize: 12,
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor),
                 Container(
                   height: 36,
@@ -505,6 +510,7 @@ class AccountsTabView extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                     textAlign: TextAlign.start,
                     color: Theme.of(context)
+                        // ignore: deprecated_member_use
                         .textSelectionHandleColor
                         .withOpacity(0.6),
                     fontSize: 13.0,
@@ -534,6 +540,7 @@ class AccountsTabView extends StatelessWidget {
                                   customTitleWithWrap(
                                     text: account.name,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                     textAlign: TextAlign.start,
                                     fontWeight: FontWeight.w700,
@@ -545,6 +552,7 @@ class AccountsTabView extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
@@ -655,6 +663,7 @@ class ContributionsTabView extends StatelessWidget {
                                 customTitle(
                                   text: '${contribution.name}',
                                   color: Theme.of(context)
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   fontWeight: FontWeight.w700,
                                   textAlign: TextAlign.start,
@@ -670,6 +679,7 @@ class ContributionsTabView extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
@@ -680,6 +690,7 @@ class ContributionsTabView extends StatelessWidget {
                                             fontWeight: FontWeight.w700,
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor
                                                 .withOpacity(0.7),
                                             fontSize: 12.0,
@@ -694,6 +705,7 @@ class ContributionsTabView extends StatelessWidget {
                                           fontWeight: FontWeight.w600,
                                           textAlign: TextAlign.start,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor
                                               .withOpacity(0.5),
                                           fontSize: 12.0,
@@ -704,6 +716,7 @@ class ContributionsTabView extends StatelessWidget {
                                             fontWeight: FontWeight.w700,
                                             textAlign: TextAlign.start,
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor
                                                 .withOpacity(0.7),
                                             fontSize: 12.0,
@@ -809,6 +822,7 @@ class MembersTabView extends StatelessWidget {
                         children: <Widget>[
                           customTitleWithWrap(
                             text: '${member.name}',
+                            // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                             fontWeight: FontWeight.w800,
                             textAlign: TextAlign.start,
@@ -819,6 +833,7 @@ class MembersTabView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             textAlign: TextAlign.start,
                             color: Theme.of(context)
+                                // ignore: deprecated_member_use
                                 .textSelectionHandleColor
                                 .withOpacity(0.5),
                             fontSize: 12.0,

@@ -63,6 +63,7 @@ class _CreateExpenseCategoryState extends State<CreateExpenseCategory> {
       );
 
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully added an expense category",
@@ -75,6 +76,7 @@ class _CreateExpenseCategoryState extends State<CreateExpenseCategory> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error Adding the Expense Category. ${error.message} ",

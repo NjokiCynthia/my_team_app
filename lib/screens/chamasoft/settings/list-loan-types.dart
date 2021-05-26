@@ -114,6 +114,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
         message = "${loanType.name} has been deleted";
       }
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         message,
@@ -165,6 +166,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                           text: "Edit Loan Type",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor),
                     ),
                   ),
@@ -191,6 +193,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                           text: loanType.isHidden ? "UnHide" : "Hide",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor),
                     ),
                   ),
@@ -213,6 +216,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                           text: "Delete",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor),
                     ),
                   ),
@@ -316,12 +320,14 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 fontWeight: FontWeight.w700,
                                                 fontSize: 16.0,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                               ),
                                               richTextWithWrap(
                                                 title: 'Loan Amount: ',
                                                 message: loanType.loanAmount,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -331,6 +337,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 message:
                                                     loanType.repaymentPeriod,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -339,6 +346,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 title: 'Interest Rate: ',
                                                 message: loanType.interestRate,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -348,6 +356,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 message:
                                                     loanType.loanProcessing,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -356,6 +365,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 title: 'Guarantors: ',
                                                 message: loanType.guarantors,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -365,6 +375,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 message:
                                                     loanType.latePaymentFines,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,
@@ -375,6 +386,7 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
                                                 message: loanType
                                                     .outstandingPaymentFines,
                                                 color: Theme.of(context)
+                                                    // ignore: deprecated_member_use
                                                     .textSelectionHandleColor,
                                                 fontSize: 12.0,
                                                 textAlign: TextAlign.start,

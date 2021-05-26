@@ -154,6 +154,7 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                             child: heading2(
                                 text: "Total Loaned Out",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
                           ),
@@ -164,11 +165,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                 fontWeight: FontWeight.w400,
                                 fontSize: 18.0,
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               heading2(
                                 text: currencyFormat.format(_totalLoanedOut),
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.end,
                               ),
@@ -196,12 +199,14 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             text:
                                                 "Payable: ${groupObject.groupCurrency} ",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text:
                                                 currencyFormat.format(_payable),
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
@@ -215,11 +220,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             text:
                                                 "Paid: ${groupObject.groupCurrency} ",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: currencyFormat.format(_paid),
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
@@ -233,12 +240,14 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                             text:
                                                 "Balance: ${groupObject.groupCurrency} ",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text:
                                                 currencyFormat.format(_balance),
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
@@ -259,11 +268,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                         subtitle2(
                                             text: "Active Loans: ",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: "-",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
@@ -277,11 +288,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                         subtitle2(
                                             text: "Fully Paid: ",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: "-",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),
@@ -295,11 +308,13 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
                                         subtitle2(
                                             text: "Bad Loans: ",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             textAlign: TextAlign.start),
                                         customTitle(
                                             text: "-",
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
                                             fontSize: 12,
                                             textAlign: TextAlign.start),

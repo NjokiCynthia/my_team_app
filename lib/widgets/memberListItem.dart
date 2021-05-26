@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 class CartItem extends StatelessWidget {
   final String id;
   final String productId;
@@ -8,32 +7,46 @@ class CartItem extends StatelessWidget {
   final double price;
   final int quantity;
 
-  CartItem({this.id, this.title, this.quantity, this.price,this.productId});
+  CartItem({this.id, this.title, this.quantity, this.price, this.productId});
   @override
   Widget build(BuildContext context) {
     return Dismissible(
       key: ValueKey(id),
       background: Container(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
-        color:Theme.of(context).errorColor,
-        child: Icon(Icons.delete, color: Colors.white,size: 40,),
+        color: Theme.of(context).errorColor,
+        child: Icon(
+          Icons.delete,
+          color: Colors.white,
+          size: 40,
+        ),
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right:20),
+        padding: EdgeInsets.only(right: 20),
       ),
       direction: DismissDirection.endToStart,
-      confirmDismiss: (direction){
-        return showDialog(context: context,builder: (ctx) => AlertDialog(
-          title: Text("Are you sure?"),
-          content: Text("Confirm removal of $title from the cart"),
-          actions: <Widget>[
-            FlatButton(onPressed: (){
-              Navigator.of(ctx).pop(false);
-            },child: Text("No"),),
-            FlatButton(onPressed: (){
-              Navigator.of(ctx).pop(true);
-            },child: Text("Yes"),)
-          ],
-        ));
+      confirmDismiss: (direction) {
+        return showDialog(
+            context: context,
+            builder: (ctx) => AlertDialog(
+                  title: Text("Are you sure?"),
+                  content: Text("Confirm removal of $title from the cart"),
+                  actions: <Widget>[
+                    // ignore: deprecated_member_use
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop(false);
+                      },
+                      child: Text("No"),
+                    ),
+                    // ignore: deprecated_member_use
+                    FlatButton(
+                      onPressed: () {
+                        Navigator.of(ctx).pop(true);
+                      },
+                      child: Text("Yes"),
+                    )
+                  ],
+                ));
       },
       child: Card(
         margin: EdgeInsets.symmetric(horizontal: 15, vertical: 4),
@@ -63,7 +76,7 @@ class CartItem extends StatelessWidget {
           ),
         ),
       ),
-      onDismissed: (direction){
+      onDismissed: (direction) {
         // final provider = Provider.of<Cart>(context,listen: false);
         // provider.removeItem(productId);
       },

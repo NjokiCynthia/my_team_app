@@ -20,7 +20,10 @@ class ContributionSettings extends StatefulWidget {
   final dynamic contributionDetails;
   final Function(dynamic) onButtonPressed;
 
-  ContributionSettings({this.isEditMode, this.contributionDetails, @required this.onButtonPressed});
+  ContributionSettings(
+      {this.isEditMode,
+      this.contributionDetails,
+      @required this.onButtonPressed});
 
   @override
   _ContributionSettingsState createState() => _ContributionSettingsState();
@@ -31,7 +34,8 @@ class _ContributionSettingsState extends State<ContributionSettings> {
   bool _isFormEnabled = true;
   var _isLoading = false;
   String contributionId;
-  String requestId = ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
+  String requestId =
+      ((DateTime.now().millisecondsSinceEpoch / 1000).truncate()).toString();
   String _contributionAmount;
   int startingMonthId;
   String _contributionName;
@@ -80,7 +84,8 @@ class _ContributionSettingsState extends State<ContributionSettings> {
     formData["id"] = contributionId; //TODO: Editing
 
     try {
-      final response = await Provider.of<Groups>(context, listen: false).addContributionStepOne(formData, widget.isEditMode);
+      final response = await Provider.of<Groups>(context, listen: false)
+          .addContributionStepOne(formData, widget.isEditMode);
       print(response);
       requestId = null;
       alertDialogWithAction(context, response["message"].toString(), () {
@@ -104,27 +109,40 @@ class _ContributionSettingsState extends State<ContributionSettings> {
 
   void _prepareForm() {
     log('${widget.contributionDetails}');
-    dynamic settings = widget.contributionDetails['contribution_settings'] as dynamic;
+    dynamic settings =
+        widget.contributionDetails['contribution_settings'] as dynamic;
 
     setState(() {
       contributionId = settings['id'].toString();
       _contributionAmount = settings['amount'].toString();
       _contributionName = settings['name'].toString();
       _contributionTypeId = int.tryParse(settings['type'].toString()) ?? null;
-      contributionFrequencyId = int.tryParse(settings['contribution_frequency'].toString()) ?? null;
-      _daysOfTheMonth = int.tryParse(settings['month_day_monthly'].toString()) ?? null;
-      startingMonthId = int.tryParse(settings['start_month_multiple'].toString()) ?? null;
-      weekNumberId = int.tryParse(settings['week_number_fortnight'].toString()) ?? null;
+      contributionFrequencyId =
+          int.tryParse(settings['contribution_frequency'].toString()) ?? null;
+      _daysOfTheMonth =
+          int.tryParse(settings['month_day_monthly'].toString()) ?? null;
+      startingMonthId =
+          int.tryParse(settings['start_month_multiple'].toString()) ?? null;
+      weekNumberId =
+          int.tryParse(settings['week_number_fortnight'].toString()) ?? null;
       _weekDay = int.tryParse(settings['week_day_monthly'].toString()) ?? null;
-      _weekDayWeeklyId = int.tryParse(settings['week_day_weekly'].toString()) ?? null;
+      _weekDayWeeklyId =
+          int.tryParse(settings['week_day_weekly'].toString()) ?? null;
 
-      int contributionTimestamp = ParseHelper.getIntFromJson(settings, "contribution_date");
+      int contributionTimestamp =
+          ParseHelper.getIntFromJson(settings, "contribution_date");
       print('contributionTimestamp: $contributionTimestamp');
-      int contributionDate = contributionTimestamp != 0 ? contributionTimestamp : int.parse(requestId);
-      int invoiceTimestamp = ParseHelper.getIntFromJson(settings, "invoice_date");
-      int invoiceDate = invoiceTimestamp != 0 ? invoiceTimestamp : int.parse(requestId);
-      _contributionDate = new DateTime.fromMillisecondsSinceEpoch(contributionDate * 1000);
-      _invoiceDate = new DateTime.fromMillisecondsSinceEpoch(invoiceDate * 1000);
+      int contributionDate = contributionTimestamp != 0
+          ? contributionTimestamp
+          : int.parse(requestId);
+      int invoiceTimestamp =
+          ParseHelper.getIntFromJson(settings, "invoice_date");
+      int invoiceDate =
+          invoiceTimestamp != 0 ? invoiceTimestamp : int.parse(requestId);
+      _contributionDate =
+          new DateTime.fromMillisecondsSinceEpoch(contributionDate * 1000);
+      _invoiceDate =
+          new DateTime.fromMillisecondsSinceEpoch(invoiceDate * 1000);
     });
   }
 
@@ -148,7 +166,11 @@ class _ContributionSettingsState extends State<ContributionSettings> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               customTitle(
-                  text: "Settings", color: Theme.of(context).textSelectionHandleColor, fontWeight: FontWeight.w400, textAlign: TextAlign.start),
+                  text: "Settings",
+                  // ignore: deprecated_member_use
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontWeight: FontWeight.w400,
+                  textAlign: TextAlign.start),
             ],
           ),
           Row(
@@ -156,6 +178,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
             children: <Widget>[
               subtitle2(
                   text: "Configure the behaviour of your contribution",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start),
             ],
@@ -164,7 +187,8 @@ class _ContributionSettingsState extends State<ContributionSettings> {
             child: SingleChildScrollView(
               child: Form(
                 key: _formKey,
-                child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+                child:
+                    Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
                   CustomDropDownButton(
                     labelText: "Select Contribution Type",
                     listItems: contributionTypeOptions,
@@ -234,8 +258,12 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                           ),
                         ),
                         Visibility(
-                          visible: (_daysOfTheMonth != null && (_daysOfTheMonth < 5 || _daysOfTheMonth == 32)) &&
-                              (contributionFrequencyId != 6 && contributionFrequencyId != 7 && contributionFrequencyId != 8),
+                          visible: (_daysOfTheMonth != null &&
+                                  (_daysOfTheMonth < 5 ||
+                                      _daysOfTheMonth == 32)) &&
+                              (contributionFrequencyId != 6 &&
+                                  contributionFrequencyId != 7 &&
+                                  contributionFrequencyId != 8),
                           child: CustomDropDownButton(
                             labelText: "Select Day",
                             listItems: getMonthDays,
@@ -249,7 +277,8 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                           ),
                         ),
                         Visibility(
-                          visible: contributionFrequencyId == 6 || contributionFrequencyId == 7,
+                          visible: contributionFrequencyId == 6 ||
+                              contributionFrequencyId == 7,
                           child: CustomDropDownButton(
                             labelText: "Select Day of Week",
                             listItems: getWeekDays,
@@ -371,14 +400,18 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                     ),
                   ),
                   TextFormField(
-                    initialValue: _contributionName != null ? _contributionName : '',
+                    initialValue:
+                        _contributionName != null ? _contributionName : '',
                     keyboardType: TextInputType.text,
                     textCapitalization: TextCapitalization.words,
                     style: TextStyle(fontFamily: 'SegoeUI'),
                     enabled: _isFormEnabled,
                     decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).hintColor,
+                                width: 1.0)),
                         labelText: "Contribution Name",
                         labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                     onChanged: (value) {
@@ -392,7 +425,8 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                     },
                   ),
                   TextFormField(
-                    initialValue: _contributionAmount != null ? _contributionAmount : '',
+                    initialValue:
+                        _contributionAmount != null ? _contributionAmount : '',
                     style: TextStyle(fontFamily: 'SegoeUI'),
                     enabled: _isFormEnabled,
                     keyboardType: TextInputType.numberWithOptions(
@@ -401,7 +435,10 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                     ),
                     decoration: InputDecoration(
                         floatingLabelBehavior: FloatingLabelBehavior.auto,
-                        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                        enabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(
+                                color: Theme.of(context).hintColor,
+                                width: 1.0)),
                         labelText: "Contribution Amount",
                         labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                     onChanged: (value) {

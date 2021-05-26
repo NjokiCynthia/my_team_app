@@ -90,6 +90,7 @@ class _EditFineTypeState extends State<EditFineType> {
           name: fineTypeName, amount: amount.toString(), id: id.toString());
 
       Navigator.pop(context);
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "You have successfully updated the fine category",
@@ -102,6 +103,7 @@ class _EditFineTypeState extends State<EditFineType> {
     } on CustomException catch (error) {
       Navigator.pop(context);
 
+      // ignore: deprecated_member_use
       Scaffold.of(context).showSnackBar(SnackBar(
           content: Text(
         "Error updating the Fine Category. ${error.message} ",

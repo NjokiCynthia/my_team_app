@@ -5,14 +5,14 @@ import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
-import 'package:chamasoft/utilities/svg-icons.dart';
+// import 'package:chamasoft/utilities/svg-icons.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'models/group-model.dart';
@@ -37,10 +37,30 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     widget.appBarElevation(_scrollController.offset);
   }
 
+  void _scrollChartToEnd() {
+    _chartScrollController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _chartScrollController.animateTo(
+        _chartScrollController.position.maxScrollExtent,
+        duration: Duration(seconds: 1),
+        curve: Curves.ease,
+      );
+      //     .then((value) async {
+      //   await Future.delayed(Duration(seconds: 2));
+      //   _chartScrollController.animateTo(
+      //     _chartScrollController.position.minScrollExtent,
+      //     duration: Duration(seconds: 1),
+      //     curve: Curves.ease,
+      //   );
+      // });
+    });
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    _scrollChartToEnd();
     super.initState();
   }
 
@@ -48,6 +68,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
   void dispose() {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
+    _chartScrollController?.dispose();
     super.dispose();
   }
 
@@ -107,6 +128,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     try {
       await Provider.of<Dashboard>(context, listen: false)
           .getGroupDepositVWithdrawals(_currentGroup.groupId);
+      _scrollChartToEnd();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -201,6 +223,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -212,6 +235,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                   .groupContributionAmount),
                                           size: 16.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -230,6 +254,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -241,6 +266,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                   .groupFinePaymentAmount),
                                           size: 16.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -258,6 +284,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -416,6 +443,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -426,6 +454,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                               dashboardData.groupLoanedAmount),
                                           size: 16.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -443,6 +472,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -453,6 +483,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                               dashboardData.groupLoanPaid),
                                           size: 14.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -470,6 +501,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       fontSize: 14,
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                     ),
                                     SizedBox(
@@ -481,6 +513,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                                   .groupPendingLoanBalance),
                                           size: 14.0,
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           action: () {}),
                                     ),
@@ -525,6 +558,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   ],
                                 ),
                                 SingleChildScrollView(
+                                  controller: _chartScrollController,
                                   scrollDirection: Axis.horizontal,
                                   child: DepositsVWithdrawals(),
                                 )

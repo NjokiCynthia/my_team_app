@@ -58,10 +58,12 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
     }
 
     try {
-      await Provider.of<Groups>(context, listen: false).addGroupMembers(members);
+      await Provider.of<Groups>(context, listen: false)
+          .addGroupMembers(members);
       Navigator.of(context).pop();
 
-      alertDialogWithAction(context, "You have successfully added members to your group", () {
+      alertDialogWithAction(
+          context, "You have successfully added members to your group", () {
         Navigator.of(context).pop();
         Navigator.of(context).pop(true);
       });
@@ -89,7 +91,8 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
     });
 
     try {
-      await Provider.of<Groups>(context, listen: false).fetchUnAssignedGroupRoles();
+      await Provider.of<Groups>(context, listen: false)
+          .fetchUnAssignedGroupRoles();
       setState(() {
         _isInit = false;
       });
@@ -154,18 +157,24 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                       behavior: CustomScrollBehavior(),
                       child: ListView.separated(
                         shrinkWrap: true,
-                        separatorBuilder: (BuildContext context, int index) => Divider(
+                        separatorBuilder: (BuildContext context, int index) =>
+                            Divider(
                           color: Theme.of(context).dividerColor,
                         ),
                         itemBuilder: (context, index) {
                           GroupRoles groupRole = tempRoles[index];
                           return CupertinoDialogAction(
                             child: customTitleWithWrap(
-                                text: groupRole.roleName, textAlign: TextAlign.center, color: Theme.of(context).textSelectionHandleColor),
+                                text: groupRole.roleName,
+                                textAlign: TextAlign.center,
+                                color:
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context).textSelectionHandleColor),
                             onPressed: () {
                               print(groupRole.roleName + " tapped");
                               setState(() {
-                                _updateRoleStatus(selectedContacts[position].role, groupRole);
+                                _updateRoleStatus(
+                                    selectedContacts[position].role, groupRole);
                                 selectedContacts[position].role = groupRole;
                               });
                               Navigator.of(ctx).pop();
@@ -178,7 +187,11 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                   ),
                 ],
               ),
-              title: heading2(text: "Set Role", textAlign: TextAlign.center, color: Theme.of(context).textSelectionHandleColor),
+              title: heading2(
+                  text: "Set Role",
+                  textAlign: TextAlign.center,
+                  // ignore: deprecated_member_use
+                  color: Theme.of(context).textSelectionHandleColor),
               actions: <Widget>[
                 CupertinoDialogAction(
                   child: subtitle1(text: "Close", color: primaryColor),
@@ -196,7 +209,8 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
-    _rolesStatusAndCurrentMemberStatus = Provider.of<Groups>(context).getGroupRolesAndCurrentMemberStatus;
+    _rolesStatusAndCurrentMemberStatus =
+        Provider.of<Groups>(context).getGroupRolesAndCurrentMemberStatus;
     roles = Provider.of<Groups>(context).getCurrentGroup().groupRoles;
 
     if (_rolesStatusAndCurrentMemberStatus != null) {
@@ -212,7 +226,8 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
               lastName: auth.lastNameOnly,
               phoneNumber: auth.phoneNumber,
               email: auth.emailAddress);
-          CustomContact customContact = CustomContact.simpleContact(simpleContact: simpleContact, role: memberRole);
+          CustomContact customContact = CustomContact.simpleContact(
+              simpleContact: simpleContact, role: memberRole);
           selectedContacts.insert(0, customContact);
         }
       }
@@ -258,11 +273,15 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 Container(
-                  margin: const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                  margin:
+                      const EdgeInsets.only(top: 8.0, right: 8.0, bottom: 8.0),
+                  // ignore: deprecated_member_use
                   child: FlatButton(
                     onPressed: () async {
                       //addMember(context);
-                      CustomContact contact = await Navigator.of(context).push(new MaterialPageRoute<CustomContact>(builder: (BuildContext context) {
+                      CustomContact contact = await Navigator.of(context).push(
+                          new MaterialPageRoute<CustomContact>(
+                              builder: (BuildContext context) {
                         return AddMemberDialog();
                       }));
 
@@ -276,7 +295,10 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                     },
                     padding: EdgeInsets.only(left: 4, right: 4),
                     shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Theme.of(context).hintColor, width: 1.0, style: BorderStyle.solid),
+                        side: BorderSide(
+                            color: Theme.of(context).hintColor,
+                            width: 1.0,
+                            style: BorderStyle.solid),
                         borderRadius: BorderRadius.circular(4)),
                     child: Row(
                       children: <Widget>[
@@ -288,7 +310,11 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                         SizedBox(
                           width: 4,
                         ),
-                        customTitle(text: "ADD MEMBER", fontSize: 12, color: Theme.of(context).textSelectionHandleColor),
+                        customTitle(
+                            text: "ADD MEMBER",
+                            fontSize: 12,
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor),
                       ],
                     ),
                   ),
@@ -298,7 +324,8 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
             Expanded(
                 child: selectedContacts.length > 0
                     ? ListView.separated(
-                        separatorBuilder: (BuildContext context, int index) => Divider(
+                        separatorBuilder: (BuildContext context, int index) =>
+                            Divider(
                               color: Theme.of(context).dividerColor,
                             ),
                         itemCount: selectedContacts.length,
@@ -310,8 +337,11 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                             child: Row(
                               children: <Widget>[
                                 CircleAvatar(
-                                  backgroundColor: primaryColor, // Colors.primaries[Random().nextInt(Colors.primaries.length)],
-                                  child: Text(displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24)),
+                                  backgroundColor:
+                                      primaryColor, // Colors.primaries[Random().nextInt(Colors.primaries.length)],
+                                  child: Text(displayName[0].toUpperCase(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 24)),
                                 ),
                                 SizedBox(
                                   width: 10,
@@ -319,10 +349,16 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                 Expanded(
                                     flex: 2,
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: <Widget>[
-                                        subtitle1(text: displayName, textAlign: TextAlign.start),
-                                        subtitle1(text: customContact.simpleContact.phoneNumber, textAlign: TextAlign.start)
+                                        subtitle1(
+                                            text: displayName,
+                                            textAlign: TextAlign.start),
+                                        subtitle1(
+                                            text: customContact
+                                                .simpleContact.phoneNumber,
+                                            textAlign: TextAlign.start)
                                       ],
                                     )),
                                 Expanded(
@@ -332,24 +368,32 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: <Widget>[
                                         smallBadgeButton(
-                                          backgroundColor: Colors.blueGrey.withOpacity(0.2),
+                                          backgroundColor:
+                                              Colors.blueGrey.withOpacity(0.2),
                                           textColor: Colors.blueGrey,
                                           text: customContact.role.roleName,
-                                          action: () => _showGroupRoles(context, index),
+                                          action: () =>
+                                              _showGroupRoles(context, index),
                                           buttonHeight: 24.0,
                                           textSize: 12.0,
                                         ),
                                         SizedBox(width: 10.0),
                                         Visibility(
-                                          visible: !(addedCurrentUser && index == 0),
+                                          visible:
+                                              !(addedCurrentUser && index == 0),
                                           child: screenActionButton(
                                             icon: LineAwesomeIcons.close,
-                                            backgroundColor: Colors.red.withOpacity(0.1),
+                                            backgroundColor:
+                                                Colors.red.withOpacity(0.1),
                                             textColor: Colors.red,
                                             action: () {
                                               setState(() {
-                                                _updateRoleStatus(selectedContacts[index].role, memberRole);
-                                                selectedContacts.removeAt(index);
+                                                _updateRoleStatus(
+                                                    selectedContacts[index]
+                                                        .role,
+                                                    memberRole);
+                                                selectedContacts
+                                                    .removeAt(index);
                                               });
                                             },
                                             buttonSize: 30.0,
@@ -368,7 +412,11 @@ class _AddMembersManuallyState extends State<AddMembersManually> {
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: customTitleWithWrap(
-                              text: "Start adding members by clicking on the button above", color: Theme.of(context).textSelectionHandleColor),
+                              text:
+                                  "Start adding members by clicking on the button above", // ignore: deprecated_member_use
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor),
                         ),
                       )),
             SizedBox(

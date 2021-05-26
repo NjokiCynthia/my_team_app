@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'backgrounds.dart';
+// import 'backgrounds.dart';
 
 Widget dataLoadingEffect(
     {BuildContext context,

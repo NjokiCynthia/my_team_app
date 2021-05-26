@@ -34,7 +34,8 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
   void _submitMember() async {
     _formKey.currentState.save();
 
-    bool value = await CustomHelper.validPhoneNumber(_phoneNumber, _countryCode);
+    bool value =
+        await CustomHelper.validPhoneNumber(_phoneNumber, _countryCode);
     if (!value) {
       setState(() {
         _isValid = false;
@@ -124,8 +125,9 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                 textCapitalization: TextCapitalization.words,
                 decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder:
-                        UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(
+                            color: Theme.of(context).hintColor, width: 1.0)),
                     labelText: "Full Name",
                     labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                 onChanged: (value) {
@@ -155,6 +157,7 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                       text: "Phone Number",
                       textAlign: TextAlign.start,
                       fontSize: 11,
+                      // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor),
                 ],
               ),
@@ -173,7 +176,8 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                             children: <Widget>[
                               Container(
                                 height: 34,
-                                padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
+                                padding:
+                                    EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
                                 child: CountryCodePicker(
                                   // key: _countryKey,
                                   initialSelection: 'KE',
@@ -189,7 +193,9 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                                   searchStyle: TextStyle(
                                       fontFamily: 'SegoeUI',
                                       fontSize: 16,
-                                      color: Theme.of(context).textSelectionHandleColor),
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor),
                                   onChanged: (countryCode) {
                                     setState(() {
                                       _countryCode = countryCode;
@@ -220,7 +226,8 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                                   hintText: '',
                                 ),
                                 focusNode: _focusNode,
-                                style: TextStyle(fontFamily: 'SegoeUI', fontSize: 16),
+                                style: TextStyle(
+                                    fontFamily: 'SegoeUI', fontSize: 16),
                                 onSaved: (value) {
                                   _phoneNumber = value.trim();
                                 },
@@ -248,8 +255,9 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                       floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      enabledBorder:
-                          UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+                      enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: Theme.of(context).hintColor, width: 1.0)),
                       labelText: "Email Address",
                       labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                   onChanged: (value) {
@@ -258,7 +266,10 @@ class _AddMemberDialogState extends State<AddMemberDialog> {
               SizedBox(
                 height: 20,
               ),
-              defaultButton(context: context, text: "Add Member", onPressed: () => _submitMember())
+              defaultButton(
+                  context: context,
+                  text: "Add Member",
+                  onPressed: () => _submitMember())
             ],
           ),
         ),

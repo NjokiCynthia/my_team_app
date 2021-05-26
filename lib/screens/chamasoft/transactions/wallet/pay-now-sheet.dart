@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
@@ -285,6 +283,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
             children: [
               heading2(
                   text: "Confirm Payment Number",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start),
               SizedBox(
@@ -307,6 +306,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
             initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
+              // ignore: deprecated_member_use
               WhitelistingTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
@@ -326,6 +326,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();
@@ -378,6 +379,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
               ),
               heading2(
                   text: "Wallet Payment",
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   textAlign: TextAlign.start),
               SizedBox(
@@ -437,6 +439,7 @@ class _PayNowSheetState extends State<PayNowSheet> {
                                   child: Center(
                                       child: CircularProgressIndicator()),
                                 )
+                              // ignore: deprecated_member_use
                               : RaisedButton(
                                   color: primaryColor,
                                   child: Padding(

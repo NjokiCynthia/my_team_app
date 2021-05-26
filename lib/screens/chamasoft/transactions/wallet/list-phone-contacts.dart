@@ -32,6 +32,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
 
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.undetermined;
+  // ignore: deprecated_member_use
   List<CustomContact> _contacts = new List<CustomContact>();
   bool _isLoading = false;
   String floatingButtonLabel;
@@ -96,6 +97,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Set Recipient Contact",
+              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
@@ -103,6 +105,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
             style: inputTextStyle(),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
+              // ignore: deprecated_member_use
               WhitelistingTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
@@ -119,6 +122,7 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();

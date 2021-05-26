@@ -30,11 +30,6 @@ class _WalletState extends State<Wallet> {
     }
   }
 
-  Future<bool> _onWillPop() async {
-    // await Navigator.of(context).pushReplacementNamed(MyGroups.namedRoute);
-    return null;
-  }
-
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -308,6 +303,7 @@ class _WalletState extends State<Wallet> {
                         padding: EdgeInsets.symmetric(
                           horizontal: 16.0,
                         ),
+                        // ignore: deprecated_member_use
                         child: FlatButton(
                           padding: EdgeInsets.symmetric(
                             vertical: 10.0,
@@ -343,6 +339,7 @@ class _WalletState extends State<Wallet> {
                         padding: EdgeInsets.symmetric(
                           horizontal: 16.0,
                         ),
+                        // ignore: deprecated_member_use
                         child: OutlineButton(
                           color: Colors.white,
                           child: Row(

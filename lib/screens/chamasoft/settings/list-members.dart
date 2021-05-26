@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'group-setup/add-members-manually.dart';
 import 'group-setup/list-contacts.dart';
-import '../../../widgets/memberListItem.dart';
+// import '../../../widgets/memberListItem.dart';
 
 class ListMembers extends StatefulWidget {
   @override
@@ -58,6 +58,7 @@ class _ListMembersState extends State<ListMembers> {
                           text: "Select From Contacts",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor),
                     ),
                   ),
@@ -84,6 +85,7 @@ class _ListMembersState extends State<ListMembers> {
                           text: "Add Manually",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor),
                     ),
                   ),
@@ -250,6 +252,7 @@ class _ListMembersState extends State<ListMembers> {
                                         customTitle(
                                           text: '${member.name}',
                                           color: Theme.of(context)
+                                              // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
                                           fontWeight: FontWeight.w800,
                                           fontSize: 18.0,
@@ -264,6 +267,7 @@ class _ListMembersState extends State<ListMembers> {
                                                   text: '${member.identity}',
                                                   fontWeight: FontWeight.w700,
                                                   color: Theme.of(context)
+                                                      // ignore: deprecated_member_use
                                                       .textSelectionHandleColor
                                                       .withOpacity(0.7),
                                                   fontSize: 12.0,

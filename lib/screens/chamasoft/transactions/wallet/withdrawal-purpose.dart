@@ -67,7 +67,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
         });
     try {
       _formLoadData = await Provider.of<Groups>(context, listen: false)
-          .loadInitialFormData(contr: true, member: true, exp: true, loanTypes: true);
+          .loadInitialFormData(
+              contr: true, member: true, exp: true, loanTypes: true);
       Navigator.of(context).pop();
       setState(() {
         _isInit = false;
@@ -150,7 +151,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     if (flag == 1) {
       //send to bank
       formData['recipient'] = "3";
-      List<Bank> _banksList = Provider.of<Groups>(context, listen: false).bankOptions;
+      List<Bank> _banksList =
+          Provider.of<Groups>(context, listen: false).bankOptions;
       if (_banksList.length < 1) {
         showDialog(
             context: context,
@@ -161,8 +163,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
             });
         await fetchBankOptions(context);
         Navigator.pop(context);
-        final result = await Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) => ListBanks(formData: formData)));
+        final result = await Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => ListBanks(formData: formData)));
         if (result != null) {
           final id = int.tryParse(result) ?? 0;
           if (id != 0) {
@@ -173,8 +175,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
           }
         }
       } else {
-        final result = await Navigator.of(context)
-            .push(MaterialPageRoute(builder: (BuildContext context) => ListBanks(formData: formData)));
+        final result = await Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => ListBanks(formData: formData)));
         if (result != null) {
           final id = int.tryParse(result) ?? 0;
           if (id != 0) {
@@ -188,8 +190,9 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     } else {
       //send to phone
       formData['recipient'] = "1";
-      final result = await Navigator.of(context)
-          .push(MaterialPageRoute(builder: (BuildContext context) => ListPhoneContacts(formData: formData)));
+      final result = await Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) =>
+              ListPhoneContacts(formData: formData)));
       if (result != null) {
         print("result: $result");
         final id = int.tryParse(result) ?? 0;
@@ -215,7 +218,9 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) WidgetsBinding.instance.addPostFrameCallback((_) => _fetchDefaultValues(context));
+    if (_isInit)
+      WidgetsBinding.instance
+          .addPostFrameCallback((_) => _fetchDefaultValues(context));
     super.didChangeDependencies();
   }
 
@@ -234,9 +239,11 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     final List<BankAccountDashboardSummary> accountBalances =
-        Provider.of<Dashboard>(context, listen: false).bankAccountDashboardSummary;
+        Provider.of<Dashboard>(context, listen: false)
+            .bankAccountDashboardSummary;
 
     String accountName = "";
     double balance = 0;
@@ -244,7 +251,9 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
       for (var account in accountBalances) {
         if (account.accountName.contains("Chamasoft E-Wallet")) {
           try {
-            accountName = account.accountName.replaceAll("Chamasoft E-Wallet -", "").trim();
+            accountName = account.accountName
+                .replaceAll("Chamasoft E-Wallet -", "")
+                .trim();
           } catch (error) {
             accountName = account.accountName;
           }
@@ -275,11 +284,14 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                     ? Container(
                         padding: EdgeInsets.all(16.0),
                         width: double.infinity,
-                        color: (themeChangeProvider.darkTheme) ? Colors.blueGrey[800] : Color(0xffededfe),
+                        color: (themeChangeProvider.darkTheme)
+                            ? Colors.blueGrey[800]
+                            : Color(0xffededfe),
                         child: Column(
                           children: [
                             subtitle1(
                               text: accountName,
+                              // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.center,
                             ),
@@ -292,15 +304,21 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                               children: <Widget>[
                                 subtitle1(
                                   text: "Account Balance ",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.center,
                                 ),
                                 SizedBox(
                                   width: 5,
                                 ),
                                 heading2(
-                                  text: "${groupObject.groupCurrency} ${currencyFormat.format(balance)}",
-                                  color: Theme.of(context).textSelectionHandleColor,
+                                  text:
+                                      "${groupObject.groupCurrency} ${currencyFormat.format(balance)}",
+                                  // ignore: deprecated_member_use
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
                                   textAlign: TextAlign.center,
                                 ),
                               ],
@@ -311,7 +329,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                     : toolTip(
                         context: context,
                         title: "",
-                        message: "Withdrawal requests will be sent to the group signatories for approval",
+                        message:
+                            "Withdrawal requests will be sent to the group signatories for approval",
                         showTitle: false),
                 Padding(
                   padding: inputPagePadding,
@@ -346,9 +365,10 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                           child: CustomDropDownButton(
                             enabled: _isFormInputEnabled,
                             labelText: "Select Expense Category",
-                            listItems: _formLoadData.containsKey("expenseCategories")
-                                ? _formLoadData["expenseCategories"]
-                                : [],
+                            listItems:
+                                _formLoadData.containsKey("expenseCategories")
+                                    ? _formLoadData["expenseCategories"]
+                                    : [],
                             selectedItem: _expenseCategoryId,
                             validator: (value) {
                               if (_withdrawalPurpose == 1 && value == null) {
@@ -364,14 +384,20 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                           ),
                         ),
                         Visibility(
-                          visible: _withdrawalPurpose != null && _withdrawalPurpose != 1,
+                          visible: _withdrawalPurpose != null &&
+                              _withdrawalPurpose != 1,
                           child: CustomDropDownButton(
                             enabled: _isFormInputEnabled,
                             labelText: "Select Member",
-                            listItems: _formLoadData.containsKey("memberOptions") ? _formLoadData["memberOptions"] : [],
+                            listItems:
+                                _formLoadData.containsKey("memberOptions")
+                                    ? _formLoadData["memberOptions"]
+                                    : [],
                             selectedItem: _memberId,
                             validator: (value) {
-                              if (_withdrawalPurpose != null && _withdrawalPurpose != 1 && value == null) {
+                              if (_withdrawalPurpose != null &&
+                                  _withdrawalPurpose != 1 &&
+                                  value == null) {
                                 return "This field is required";
                               }
                               return null;
@@ -391,9 +417,10 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                           child: CustomDropDownButton(
                             enabled: _isFormInputEnabled,
                             labelText: "Select Contribution",
-                            listItems: _formLoadData.containsKey("contributionOptions")
-                                ? _formLoadData["contributionOptions"]
-                                : [],
+                            listItems:
+                                _formLoadData.containsKey("contributionOptions")
+                                    ? _formLoadData["contributionOptions"]
+                                    : [],
                             selectedItem: _contributionId,
                             validator: (value) {
                               if (_withdrawalPurpose == 2 && value == null) {
@@ -414,7 +441,9 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                             enabled: _isFormInputEnabled,
                             labelText: "Select Loan Type",
                             listItems:
-                                _formLoadData.containsKey("loanTypeOptions") ? _formLoadData["loanTypeOptions"] : [],
+                                _formLoadData.containsKey("loanTypeOptions")
+                                    ? _formLoadData["loanTypeOptions"]
+                                    : [],
                             selectedItem: _loanTypeId,
                             validator: (value) {
                               if (_withdrawalPurpose == 4 && value == null) {
@@ -457,7 +486,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     isFlat: false,
                                     text: "Send To Bank",
                                     iconSize: 12.0,
-                                    action: () => _prepareSubmission(context, 1),
+                                    action: () =>
+                                        _prepareSubmission(context, 1),
                                     showIcon: false),
                               ),
                               SizedBox(
@@ -471,7 +501,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     isFlat: true,
                                     text: "Send To Mobile",
                                     iconSize: 12.0,
-                                    action: () => _prepareSubmission(context, 2),
+                                    action: () =>
+                                        _prepareSubmission(context, 2),
                                     showIcon: false),
                               )
                             ],
@@ -491,7 +522,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 }
 
 class GridItem extends StatelessWidget {
-  const GridItem({Key key, @required this.title, this.icon, this.onTapped}) : super(key: key);
+  const GridItem({Key key, @required this.title, this.icon, this.onTapped})
+      : super(key: key);
 
   final String title;
   final IconData icon;
@@ -503,7 +535,8 @@ class GridItem extends StatelessWidget {
       margin: EdgeInsets.all(16),
       padding: EdgeInsets.all(4.0),
       height: 150,
-      decoration: cardDecoration(gradient: plainCardGradient(context), context: context),
+      decoration: cardDecoration(
+          gradient: plainCardGradient(context), context: context),
       child: Material(
         type: MaterialType.transparency,
         child: InkWell(
@@ -520,7 +553,10 @@ class GridItem extends StatelessWidget {
               SizedBox(
                 height: 15.0,
               ),
-              subtitle1(text: title, color: primaryColor, textAlign: TextAlign.center),
+              subtitle1(
+                  text: title,
+                  color: primaryColor,
+                  textAlign: TextAlign.center),
             ],
           ),
         ),

@@ -87,16 +87,19 @@ class ReviewLoanState extends State<ReviewLoan> {
             ),
           ),
           actions: <Widget>[
+            // ignore: deprecated_member_use
             new FlatButton(
               child: new Text(
                 "Cancel",
                 style: TextStyle(
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
+            // ignore: deprecated_member_use
             new FlatButton(
               child: new Text(
                 "Save",
@@ -167,6 +170,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                       text:
                                           "${widget.loanApplication.loanName}",
                                       color: Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                       textAlign: TextAlign.start,
                                     ),
@@ -188,6 +192,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                     text: "Ksh ",
                                     fontSize: 18.0,
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                     fontWeight: FontWeight.w400,
                                   ),
@@ -195,6 +200,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                     text:
                                         "${numberFormat.format(widget.loanApplication.amount)}",
                                     color: Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                     textAlign: TextAlign.end,
                                   ),
@@ -211,12 +217,14 @@ class ReviewLoanState extends State<ReviewLoan> {
                               subtitle1(
                                 text: "Interest Rate: ",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               customTitle(
                                 textAlign: TextAlign.start,
                                 text: "12%",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -228,12 +236,14 @@ class ReviewLoanState extends State<ReviewLoan> {
                               subtitle1(
                                 text: "Repayment Period: ",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               customTitle(
                                 textAlign: TextAlign.start,
                                 text: "1 Month",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -245,6 +255,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                               subtitle1(
                                 text: "Applied On: ",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                               ),
                               customTitle(
@@ -252,6 +263,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                                 text:
                                     "${dateFormat.format(widget.loanApplication.requestDate)}",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 fontWeight: FontWeight.w600,
                               ),
@@ -269,6 +281,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                             heading2(
                                 text: "Signatories",
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start),
                             SizedBox(
@@ -309,6 +322,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+                    // ignore: deprecated_member_use
                     FlatButton(
                       color: Colors.blueAccent.withOpacity(.2),
                       onPressed: () {},
@@ -323,6 +337,7 @@ class ReviewLoanState extends State<ReviewLoan> {
                         ),
                       ),
                     ),
+                    // ignore: deprecated_member_use
                     FlatButton(
                       color: Colors.redAccent.withOpacity(.2),
                       onPressed: () {
@@ -345,6 +360,7 @@ class ReviewLoanState extends State<ReviewLoan> {
               Visibility(
                 visible: flag == VIEW_APPLICATION_STATUS,
                 child: Center(
+                  // ignore: deprecated_member_use
                   child: FlatButton(
                     color: Colors.redAccent.withOpacity(.2),
                     onPressed: () {
@@ -399,11 +415,13 @@ class LoanSignatoryCard extends StatelessWidget {
             children: <Widget>[
               subtitle1(
                 text: isCurrentUser ? "$userName (You)" : "$userName",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
               ),
               subtitle2(
                 text: "$userRole",
                 color:
+                    // ignore: deprecated_member_use
                     Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
               ),
             ],
@@ -416,6 +434,7 @@ class LoanSignatoryCard extends StatelessWidget {
                   "${approvalStatus <= (approvalStatuses.length - 1) ? approvalStatuses[this.approvalStatus] : ''}",
               textColor: approvalStatus == 2
                   ? primaryColor
+                  // ignore: deprecated_member_use
                   : Theme.of(context).textSelectionHandleColor,
               backgroundColor: Theme.of(context).hintColor.withOpacity(0.1)),
         ],

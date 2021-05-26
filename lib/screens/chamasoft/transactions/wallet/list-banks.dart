@@ -45,6 +45,7 @@ class _ListBanksState extends State<ListBanks> {
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
               text: "Set Bank Account",
+              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor,
               textAlign: TextAlign.start),
           content: TextFormField(
@@ -52,6 +53,7 @@ class _ListBanksState extends State<ListBanks> {
             style: inputTextStyle(),
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
+              // ignore: deprecated_member_use
               WhitelistingTextInputFormatter.digitsOnly
             ],
             decoration: InputDecoration(
@@ -68,6 +70,7 @@ class _ListBanksState extends State<ListBanks> {
           actions: <Widget>[
             negativeActionDialogButton(
                 text: "Cancel",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 action: () {
                   Navigator.of(context).pop();

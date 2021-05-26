@@ -25,7 +25,9 @@ class _ListContactsState extends State<ListContacts> {
 
   final Permission _permission = Permission.contacts;
   PermissionStatus _permissionStatus = PermissionStatus.undetermined;
+  // ignore: deprecated_member_use
   List<CustomContact> _contacts = new List<CustomContact>();
+  // ignore: deprecated_member_use
   List<CustomContact> _selectedContacts = List<CustomContact>();
   bool _isLoading = false;
   String floatingButtonLabel;
@@ -82,7 +84,8 @@ class _ListContactsState extends State<ListContacts> {
           action: () => Navigator.of(context).pop(),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.close,
-          title: "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
+          title:
+              "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
           trailingIcon: LineAwesomeIcons.check,
           trailingAction: () async {
             if (_selectedContacts.length > 0) {
@@ -120,9 +123,12 @@ class _ListContactsState extends State<ListContacts> {
 
                         return filter == null || filter == ""
                             ? _buildListTile(index, _contact, _phonesList)
-                            : displayName.toLowerCase().contains(filter.toLowerCase())
+                            : displayName
+                                    .toLowerCase()
+                                    .contains(filter.toLowerCase())
                                 ? _buildListTile(index, _contact, _phonesList)
-                                : Visibility(visible: false, child: new Container());
+                                : Visibility(
+                                    visible: false, child: new Container());
                       },
                     ),
                   ),
@@ -133,7 +139,10 @@ class _ListContactsState extends State<ListContacts> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[CircularProgressIndicator(), subtitle1(text: "Retrieving contact list")],
+                children: <Widget>[
+                  CircularProgressIndicator(),
+                  subtitle1(text: "Retrieving contact list")
+                ],
               ),
             ),
     );
@@ -156,8 +165,10 @@ class _ListContactsState extends State<ListContacts> {
   CheckboxListTile _buildListTile(int index, Contact contact, List<Item> list) {
     return CheckboxListTile(
       secondary: CircleAvatar(
-          backgroundColor: primaryColor, //Colors.primaries[Random().nextInt(Colors.primaries.length)],
-          child: Text(contact.displayName[0].toUpperCase(), style: TextStyle(color: Colors.white, fontSize: 24))),
+          backgroundColor:
+              primaryColor, //Colors.primaries[Random().nextInt(Colors.primaries.length)],
+          child: Text(contact.displayName[0].toUpperCase(),
+              style: TextStyle(color: Colors.white, fontSize: 24))),
       value: _selectedContacts.contains(_contacts[index]),
       onChanged: (value) {
         setState(() {
@@ -168,8 +179,11 @@ class _ListContactsState extends State<ListContacts> {
           }
         });
       },
-      title: subtitle1(text: contact.displayName ?? "", textAlign: TextAlign.start),
-      subtitle: list.length >= 1 && list[0]?.value != null ? subtitle1(text: list[0].value, textAlign: TextAlign.start) : Text(''),
+      title: subtitle1(
+          text: contact.displayName ?? "", textAlign: TextAlign.start),
+      subtitle: list.length >= 1 && list[0]?.value != null
+          ? subtitle1(text: list[0].value, textAlign: TextAlign.start)
+          : Text(''),
     );
   }
 
@@ -190,7 +204,8 @@ class _ListContactsState extends State<ListContacts> {
     }
 
     setState(() {
-      _contacts.sort((a, b) => a.contact.displayName.compareTo(b.contact.displayName));
+      _contacts.sort(
+          (a, b) => a.contact.displayName.compareTo(b.contact.displayName));
       _isLoading = false;
     });
   }

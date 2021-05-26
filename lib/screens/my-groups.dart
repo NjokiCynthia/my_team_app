@@ -92,23 +92,27 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
           title: heading2(
             text: "Logout",
             textAlign: TextAlign.start,
+            // ignore: deprecated_member_use
             color: Theme.of(context).textSelectionHandleColor,
           ),
           content: customTitleWithWrap(
             text:
                 "Are you sure you want to log out? You'll have to login again to continue.",
             textAlign: TextAlign.start,
+            // ignore: deprecated_member_use
             color: Theme.of(context).textSelectionHandleColor,
             maxLines: null,
           ),
           actions: <Widget>[
             negativeActionDialogButton(
               text: "Cancel",
+              // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor,
               action: () {
                 Navigator.of(context).pop();
               },
             ),
+            // ignore: deprecated_member_use
             FlatButton(
               padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
               child: customTitle(
@@ -167,10 +171,12 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                 children: [
                   heading1(
                     text: "My Groups",
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                   ),
                   subtitle1(
                     text: "All groups I belong to",
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                   ),
                   Padding(
@@ -200,11 +206,13 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                   ),
                   heading2(
                     text: auth.userName,
+                    // ignore: deprecated_member_use
                     color: Theme.of(context).textSelectionHandleColor,
                   ),
                   subtitle1(
                     text: auth.phoneNumber,
                     color: Theme.of(context)
+                        // ignore: deprecated_member_use
                         .textSelectionHandleColor
                         .withOpacity(0.6),
                   ),

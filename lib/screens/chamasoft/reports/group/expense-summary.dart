@@ -147,6 +147,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                   heading2(
                                     text: "Total Expenses",
                                     color: Theme.of(context)
+            // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                   ),
                                   subtitle2(
@@ -154,6 +155,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                         ? "1 Expense"
                                         : "${_expenseRows.length} Expenses",
                                     color: Theme.of(context)
+            // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
@@ -167,11 +169,13 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
                                   color: Theme.of(context)
+            // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                 ),
                                 heading2(
                                   text: currencyFormat.format(_totalExpenses),
                                   color: Theme.of(context)
+            // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),

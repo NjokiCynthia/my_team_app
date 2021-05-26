@@ -132,12 +132,14 @@ class IntroScreenState extends State<IntroScreen> {
               SizedBox(height: 10.0),
               subtitle2(
                 text: "Fetching data",
+                // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.center,
               ),
               subtitle2(
                 text: "This won't take long",
                 color:
+                    // ignore: deprecated_member_use
                     Theme.of(context).textSelectionHandleColor.withOpacity(0.6),
                 textAlign: TextAlign.center,
               ),
