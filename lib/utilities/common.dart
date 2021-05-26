@@ -42,7 +42,7 @@ Future<dynamic> getLocalData(String key) async {
   return obj;
 }
 
-Future<dynamic> getLocalMembers(String groupId) async {
+Future<dynamic> getLocalMembers(int groupId) async {
   List<dynamic> _data = await dbHelper.queryWhere(
     table: DatabaseHelper.membersTable,
     column: "group_id",

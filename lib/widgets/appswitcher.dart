@@ -614,7 +614,6 @@ class _AppSwitcherState extends State<AppSwitcher> {
       await group.fetchFineCategories();
     }
   }
-  //
 
   void _handleSelection(selectedOption, idx) {
     // Move the selected item to top of the list

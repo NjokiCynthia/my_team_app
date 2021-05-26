@@ -2024,6 +2024,28 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> _fetchOfflineMembers() async {
+    //=== BEGIN: OFFLINE PLUG
+    dynamic _localData = await getLocalMembers(int.parse(_currentGroupId));
+    if (_localData['value'].length > 0) {
+      List<dynamic> rows = [];
+      final _tempMembers = _localData['value'] as List<dynamic>;
+      _tempMembers.forEach((m) {
+        rows.add({
+          "group_id": int.parse(_currentGroupId),
+          "id": int.parse(m['id']),
+          "user_id": int.parse(m['user_id']),
+          "name": m['name'],
+          "avatar": (m['avatar'] != null) ? m['avatar'] : '',
+          "identity": m['identity'],
+        });
+      });
+      _members = []; //clear
+      addMembers(rows);
+    }
+    //=== END: OFFLINE PLUG
+  }
+
   Future<void> fetchMembers() async {
     const url = EndpointUrl.GET_GROUP_MEMBERS;
     try {
@@ -2058,32 +2080,10 @@ class Groups with ChangeNotifier {
         //=== END: OFFLINE PLUG
 
         _members = []; //clear
-        // final groupMembers = response['members'] as List<dynamic>;
-        print("addMembers(rows) >>>>>>> ");
-        print(rows);
         addMembers(rows);
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
-          //=== BEGIN: OFFLINE PLUG
-          dynamic _localData = await getLocalMembers(_currentGroupId);
-          if (_localData['value'].length > 0) {
-            List<dynamic> rows = [];
-            final _tempMembers = _localData['value'] as List<dynamic>;
-            _tempMembers.forEach((m) {
-              rows.add({
-                "group_id": int.parse(_currentGroupId),
-                "id": int.parse(m['id']),
-                "user_id": int.parse(m['user_id']),
-                "name": m['name'],
-                "avatar": (m['avatar'] != null) ? m['avatar'] : '',
-                "identity": m['identity'],
-              });
-            });
-            _members = []; //clear
-            addMembers(rows);
-            // print(rows);
-          }
-          //=== END: OFFLINE PLUG
+          _fetchOfflineMembers();
         } else {
           throw CustomException(message: error.message, status: error.status);
         }
@@ -2092,27 +2092,7 @@ class Groups with ChangeNotifier {
       }
     } on CustomException catch (error) {
       if (error.status == ErrorStatusCode.statusNoInternet) {
-        //=== BEGIN: OFFLINE PLUG
-        dynamic _localData = await getLocalMembers(_currentGroupId);
-        // print(_localData);
-        if (_localData['value'].length > 0) {
-          List<dynamic> rows = [];
-          final _tempMembers = _localData['value'] as List<dynamic>;
-          _tempMembers.forEach((m) {
-            rows.add({
-              "group_id": int.parse(_currentGroupId),
-              "id": int.parse(m['id']),
-              "user_id": int.parse(m['user_id']),
-              "name": m['name'],
-              "avatar": (m['avatar'] != null) ? m['avatar'] : '',
-              "identity": m['identity'],
-            });
-          });
-          _members = []; //clear
-          addMembers(rows);
-          // print(rows);
-        }
-        //=== END: OFFLINE PLUG
+        _fetchOfflineMembers();
       } else {
         throw CustomException(message: error.message, status: error.status);
       }
