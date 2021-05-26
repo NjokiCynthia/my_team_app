@@ -27,7 +27,7 @@ class ChamasoftGroup extends StatefulWidget {
 
 class _ChamasoftGroupState extends State<ChamasoftGroup> {
   ScrollController _scrollController;
-  // ScrollController _chartScrollController;
+  ScrollController _chartScrollController;
   List<BankAccountDashboardSummary> _iteratableData = [];
   String _groupCurrency = "Ksh";
   Group _currentGroup;
@@ -37,10 +37,30 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     widget.appBarElevation(_scrollController.offset);
   }
 
+  void _scrollChartToEnd() {
+    _chartScrollController = ScrollController();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _chartScrollController.animateTo(
+        _chartScrollController.position.maxScrollExtent,
+        duration: Duration(seconds: 1),
+        curve: Curves.ease,
+      );
+      //     .then((value) async {
+      //   await Future.delayed(Duration(seconds: 2));
+      //   _chartScrollController.animateTo(
+      //     _chartScrollController.position.minScrollExtent,
+      //     duration: Duration(seconds: 1),
+      //     curve: Curves.ease,
+      //   );
+      // });
+    });
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    _scrollChartToEnd();
     super.initState();
   }
 
@@ -48,6 +68,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
   void dispose() {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
+    _chartScrollController?.dispose();
     super.dispose();
   }
 
@@ -107,6 +128,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     try {
       await Provider.of<Dashboard>(context, listen: false)
           .getGroupDepositVWithdrawals(_currentGroup.groupId);
+      _scrollChartToEnd();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -536,6 +558,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                   ],
                                 ),
                                 SingleChildScrollView(
+                                  controller: _chartScrollController,
                                   scrollDirection: Axis.horizontal,
                                   child: DepositsVWithdrawals(),
                                 )
