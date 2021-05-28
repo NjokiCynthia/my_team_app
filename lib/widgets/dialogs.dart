@@ -71,15 +71,30 @@ void twoButtonAlertDialog(
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor),
             actions: <Widget>[
-              negativeActionDialogButton(
-                  text: noText,
-                  // ignore: deprecated_member_use
-                  color: Theme.of(context).textSelectionHandleColor,
-                  action: () {
-                    Navigator.of(context).pop();
-                  }),
-              positiveActionDialogButton(
-                  text: yesText, color: primaryColor, action: action)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  negativeActionDialogButton(
+                    text: noText,
+                    // ignore: deprecated_member_use
+                    color: Theme.of(context).textSelectionHandleColor,
+                    action: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(
+                    width: 20.0,
+                  ),
+                  positiveActionDialogButton(
+                    text: yesText,
+                    color: primaryColor,
+                    action: action,
+                  ),
+                  SizedBox(
+                    width: 6.0,
+                  ),
+                ],
+              ),
             ],
           ));
 }
