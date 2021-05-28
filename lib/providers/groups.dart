@@ -920,42 +920,50 @@ class Groups with ChangeNotifier {
   void addNotification(List<dynamic> newNotifications) {
     if (newNotifications.length > 0) {
       for (var notificationJson in newNotifications) {
-        final notification = Notification(
-          id: notificationJson['id'].toInt(),
-          fromMemberId: notificationJson['fromMemberId'].toString(),
-          fromUserId: notificationJson['fromUserId'].toString(),
-          toUserId: notificationJson['toUserId'].toString(),
-          toMemberId: notificationJson['toMemberId'].toString(),
-          subject: notificationJson['subject'].toString(),
-          message: notificationJson['message'].toString(),
-          groupId: notificationJson['groupId'].toString(),
-          isRead: notificationJson['isRead'].toString(),
-          createdBy: notificationJson['createdBy'].toString(),
-          createdOn: notificationJson['createdOn'].toString(),
-          modifiedBy: notificationJson['modifiedBy'].toString(),
-          modifiedOn: notificationJson['modifiedOn'].toString(),
-          callToAction: notificationJson['callToAction'].toString(),
-          callToActionLink: notificationJson['callToActionLink'].toString(),
-          category: notificationJson['category'].toString(),
-          active: notificationJson['active'].toString(),
-          invoiceId: notificationJson['invoiceId'].toString(),
-          depositId: notificationJson['depositId'].toString(),
-          transactionAlertId: notificationJson['transactionAlertId'].toString(),
-          fileSize: notificationJson['fileSize'].toString(),
-          filePath: notificationJson['filePath'].toString(),
-          fileType: notificationJson['fileType'].toString(),
-          referenceNumber: notificationJson['referenceNumber'].toString(),
-          paymentRequestStatus:
-              notificationJson['paymentRequestStatus'].toString(),
-          withdrawalRequestId:
-              notificationJson['withdrawalRequestId'].toString(),
-          withdrawalApprovalRequestId:
-              notificationJson['withdrawalApprovalRequestId'].toString(),
-          loanId: notificationJson['loanId'].toString(),
-          count: notificationJson['count'].toString(),
-          timeAgo: notificationJson['timeAgo'].toString(),
-        );
-        _notifications.add(notification);
+          final noticeBody = Notification(
+            id: int.parse(notificationJson["id"]),
+            message: notificationJson["message"]..toString(),
+            isRead: notificationJson["is_read"]..toString(),
+            timeAgo: notificationJson["time_ago"]..toString()
+          );
+          _notifications.add(noticeBody);
+        // final notification = Notification(
+        //   id: notificationJson['id'].toInt(),
+        //   message: "this is sample"
+        //   // fromMemberId: notificationJson['fromMemberId'].toString(),
+        //   // fromUserId: notificationJson['fromUserId'].toString(),
+        //   // toUserId: notificationJson['toUserId'].toString(),
+        //   // toMemberId: notificationJson['toMemberId'].toString(),
+        //   // subject: notificationJson['subject'].toString(),
+        //   // message: notificationJson['message'].toString(),
+        //   // groupId: notificationJson['groupId'].toString(),
+        //   // isRead: notificationJson['isRead'].toString(),
+        //   // createdBy: notificationJson['createdBy'].toString(),
+        //   // createdOn: notificationJson['createdOn'].toString(),
+        //   // modifiedBy: notificationJson['modifiedBy'].toString(),
+        //   // modifiedOn: notificationJson['modifiedOn'].toString(),
+        //   // callToAction: notificationJson['callToAction'].toString(),
+        //   // callToActionLink: notificationJson['callToActionLink'].toString(),
+        //   // category: notificationJson['category'].toString(),
+        //   // active: notificationJson['active'].toString(),
+        //   // invoiceId: notificationJson['invoiceId'].toString(),
+        //   // depositId: notificationJson['depositId'].toString(),
+        //   // transactionAlertId: notificationJson['transactionAlertId'].toString(),
+        //   // fileSize: notificationJson['fileSize'].toString(),
+        //   // filePath: notificationJson['filePath'].toString(),
+        //   // fileType: notificationJson['fileType'].toString(),
+        //   // referenceNumber: notificationJson['referenceNumber'].toString(),
+        //   // paymentRequestStatus:
+        //   //     notificationJson['paymentRequestStatus'].toString(),
+        //   // withdrawalRequestId:
+        //   //     notificationJson['withdrawalRequestId'].toString(),
+        //   // withdrawalApprovalRequestId:
+        //   //     notificationJson['withdrawalApprovalRequestId'].toString(),
+        //   // loanId: notificationJson['loanId'].toString(),
+        //   // count: notificationJson['count'].toString(),
+        //   // timeAgo: notificationJson['timeAgo'].toString(),
+        // );
+        // _notifications.add(notification);
       }
     }
     notifyListeners();
