@@ -1,3 +1,4 @@
+import 'package:chamasoft/config.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -86,5 +87,6 @@ class Styles {
   }
 }
 
-const primaryColor = Color(0xff00a9f0);
-const backgroundColor = Color(0xffEDEDFE);
+Color primaryColor =
+    Config.appName == 'chamasoft' ? Color(0xff00a9f0) : Color(0xff8f2c21);
+Color backgroundColor = Color(0xffEDEDFE);

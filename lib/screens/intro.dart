@@ -1,9 +1,11 @@
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
@@ -163,7 +165,7 @@ class IntroScreenState extends State<IntroScreen> {
                       color: Colors.white),
                   image: _buildImage('onboarding_1'),
                   decoration: _pageDeco(
-                    pageColor: Colors.blue[900],
+                    pageColor: primaryColor.withAlpha(120),
                   )),
               PageViewModel(
                   titleWidget: heading1(
@@ -175,7 +177,7 @@ class IntroScreenState extends State<IntroScreen> {
                       color: Colors.white),
                   image: _buildImage('onboarding_2'),
                   decoration: _pageDeco(
-                    pageColor: Colors.blue[800],
+                    pageColor: primaryColor.withAlpha(240),
                   )),
               PageViewModel(
                   titleWidget: heading1(
@@ -187,10 +189,10 @@ class IntroScreenState extends State<IntroScreen> {
                       color: Colors.white),
                   image: _buildImage('onboarding_3'),
                   decoration: _pageDeco(
-                    pageColor: Colors.blue[900],
+                    pageColor: primaryColor.withAlpha(120),
                   ))
             ],
-            globalBackgroundColor: Colors.blue[900],
+            globalBackgroundColor: primaryColor.withAlpha(210),
             onDone: () => _onIntroEnd(context),
             //onSkip: () => _onIntroEnd(context),
             showSkipButton: true,
@@ -200,7 +202,7 @@ class IntroScreenState extends State<IntroScreen> {
                 style: TextStyle(
                     fontFamily: 'SegoeUI',
                     fontSize: 16.0,
-                    color: Colors.blue[200])),
+                    color: Colors.white54)),
             next: Text("Next",
                 style: TextStyle(
                     fontFamily: 'SegoeUI',
@@ -214,7 +216,7 @@ class IntroScreenState extends State<IntroScreen> {
                     color: Colors.white)),
             dotsDecorator: DotsDecorator(
                 size: Size(10.0, 10.0),
-                color: Colors.blue[200],
+                color: Colors.white54,
                 activeSize: Size(16.0, 10.0),
                 activeShape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(25.0))),
