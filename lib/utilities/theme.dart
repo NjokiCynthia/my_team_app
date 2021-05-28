@@ -33,7 +33,7 @@ class Styles {
   static ThemeData themeData(bool isDarkTheme, BuildContext context) {
     return Config.appName.toLowerCase() == 'chamasoft'
         ? ThemeData(
-            primarySwatch: Colors.orange[900],
+            primarySwatch: Colors.blue,
             backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
