@@ -24,8 +24,9 @@ void main() async {
   //  Status bar fixes
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor:
-          Config.appName == 'chamasoft' ? Color(0xff00a9f0) : Color(0xff8f2c21),
+      statusBarColor: Config.appName.toLowerCase() == 'chamasoft'
+          ? Color(0xff00a9f0)
+          : Color(0xff8f2c21),
       statusBarIconBrightness: Brightness.light,
     ),
   );
@@ -50,10 +51,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    print(" <<<<<< APP_FLAVOR >>>>> ");
-    print(Config.APP_FLAVOR);
-    print(Config.appName);
-
     getCurrentAppTheme();
     initDB();
     super.initState();

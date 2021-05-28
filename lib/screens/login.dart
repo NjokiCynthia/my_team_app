@@ -1,3 +1,4 @@
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -23,7 +24,9 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  String _logo = "cs.png";
+  String _logo = Config.appName.toLowerCase() == 'chamasoft'
+      ? "cs.png"
+      : "equity-logo.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   // final GlobalKey<CountryCodePickerState> _countryKey = GlobalKey();
   String _identity;
@@ -66,7 +69,13 @@ class _LoginState extends State<Login> {
 
   @override
   void initState() {
-    (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
+    (themeChangeProvider.darkTheme)
+        ? _logo = Config.appName.toLowerCase() == 'chamasoft'
+            ? "cs-alt.png"
+            : "equity-logo-alt.png"
+        : _logo = Config.appName.toLowerCase() == 'chamasoft'
+            ? "cs.png"
+            : "equity-logo.png";
     super.initState();
     _phoneController.addListener(_printLatestValues);
     _focusNode = new FocusNode();
@@ -198,11 +207,18 @@ class _LoginState extends State<Login> {
                       padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                       child: Image(
                         image: AssetImage('assets/$_logo'),
-                        height: 100.0,
+                        height: Config.appName.toLowerCase() == 'chamasoft'
+                            ? 100.0
+                            : 50.0,
                       ),
                     ),
+                    SizedBox(
+                      height: Config.appName.toLowerCase() == 'chamasoft'
+                          ? 0.0
+                          : 6.0,
+                    ),
                     heading1(
-                        text: "Chamasoft",
+                        text: Config.appName,
                         // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor),
                     SizedBox(
