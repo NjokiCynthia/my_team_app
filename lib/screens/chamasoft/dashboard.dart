@@ -235,24 +235,43 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 ],
               ),
             ),
-            IconButton(
-              icon: Icon(
-                Icons.notifications_off,
-                color: Config.appName.toLowerCase() == 'chamasoft'
-                    ?
-                    // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor
-                    : primaryColor,
-              ),
-              // onPressed: null, // Disable notifications for now
-              onPressed: () => {
-                _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ChamasoftNotifications(),
+            Stack(
+              children: [
+                IconButton(
+                    icon: Icon(
+                      Icons.notifications_off,
+                      color: Config.appName.toLowerCase() == 'chamasoft'
+                          ?
+                          // ignore: deprecated_member_use
+                          Theme.of(context).textSelectionHandleColor
+                          : primaryColor,
+                    ),
+                    // onPressed: null, // Disable notifications for now
+                    onPressed: () => {
+                          _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ChamasoftNotifications(),
+                            ),
+                          ),
+                        }),
+                Visibility(
+                  visible: (_group.isGroupAdmin),
+                  child: Positioned(
+                    top: 12,
+                    right: 6,
+                    child: Container(
+                      width: 12.0,
+                      height: 12.0,
+                      decoration: new BoxDecoration(
+                        color: Colors.blue,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
                   ),
-                ),
-              }
+                )
+              ],
             ),
             IconButton(
               icon: Icon(
