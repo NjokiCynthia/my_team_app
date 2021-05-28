@@ -77,8 +77,7 @@ class Styles {
           )
         : ThemeData(
             primarySwatch: Colors.brown,
-            backgroundColor:
-                isDarkTheme ? Colors.blueGrey[900] : Colors.orange[50],
+            backgroundColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             splashColor: isDarkTheme ? Colors.blueGrey[900] : Colors.white,
             primaryColor: isDarkTheme ? Colors.blueGrey[100] : primaryColor,
             indicatorColor:

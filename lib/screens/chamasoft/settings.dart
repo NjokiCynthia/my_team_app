@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -260,16 +261,18 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: heading2(
-                  text: "Preferences",
-                  color: Colors.blueGrey,
-                ),
-              ),
-            ),
+            Config.appName.toLowerCase() == 'chamasoft'
+                ? Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: heading2(
+                        text: "Preferences",
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                  )
+                : SizedBox(),
             // SwitchListTile(
             //   title: Text(
             //     "Push Notifications",
@@ -336,73 +339,78 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
             //         )),
             //   ],
             // ),
-            PopupMenuButton(
-              child: ListTile(
-                dense: true,
-                title: Text(
-                  "Theme",
-                  style: TextStyle(
-                    // ignore: deprecated_member_use
-                    color: Theme.of(context).textSelectionHandleColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16.0,
-                  ),
-                ),
-                subtitle: Text(
-                  theme,
-                  style: TextStyle(color: Theme.of(context).bottomAppBarColor),
-                ),
-                trailing: Padding(
-                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-                  child: Icon(
-                    Icons.color_lens,
-                    color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-                  ),
-                ),
-              ),
-              onSelected: (value) {
-                setState(() {
-                  theme = value;
-                  (theme == "Dark")
-                      ? themeChange.darkTheme = true
-                      : themeChange.darkTheme = false;
-                });
-              },
-              tooltip: "Change theme",
-              offset: Offset.fromDirection(1.0),
-              itemBuilder: (context) => [
-                PopupMenuItem(
-                    value: "Light",
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        // Icon(MaterialCommunityIcons.weather_sunny, color: Theme.of(context).indicatorColor),
-                        // Padding(
-                        //   padding: EdgeInsets.only(left: 10.0)
-                        // ),
-                        Text("Light",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).indicatorColor)),
-                      ],
-                    )),
-                PopupMenuItem(
-                    value: "Dark",
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        // Icon(MaterialCommunityIcons.weather_night, color: Theme.of(context).indicatorColor),
-                        // Padding(
-                        //   padding: EdgeInsets.only(left: 10.0)
-                        // ),
-                        Text("Dark",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Theme.of(context).indicatorColor)),
-                      ],
-                    )),
-              ],
-            ),
+            Config.appName.toLowerCase() == 'chamasoft'
+                ? PopupMenuButton(
+                    child: ListTile(
+                      dense: true,
+                      title: Text(
+                        "Theme",
+                        style: TextStyle(
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 16.0,
+                        ),
+                      ),
+                      subtitle: Text(
+                        theme,
+                        style: TextStyle(
+                            color: Theme.of(context).bottomAppBarColor),
+                      ),
+                      trailing: Padding(
+                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+                        child: Icon(
+                          Icons.color_lens,
+                          color: Theme.of(context)
+                              .bottomAppBarColor
+                              .withOpacity(0.6),
+                        ),
+                      ),
+                    ),
+                    onSelected: (value) {
+                      setState(() {
+                        theme = value;
+                        (theme == "Dark")
+                            ? themeChange.darkTheme = true
+                            : themeChange.darkTheme = false;
+                      });
+                    },
+                    tooltip: "Change theme",
+                    offset: Offset.fromDirection(1.0),
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                          value: "Light",
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              // Icon(MaterialCommunityIcons.weather_sunny, color: Theme.of(context).indicatorColor),
+                              // Padding(
+                              //   padding: EdgeInsets.only(left: 10.0)
+                              // ),
+                              Text("Light",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context).indicatorColor)),
+                            ],
+                          )),
+                      PopupMenuItem(
+                          value: "Dark",
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: <Widget>[
+                              // Icon(MaterialCommunityIcons.weather_night, color: Theme.of(context).indicatorColor),
+                              // Padding(
+                              //   padding: EdgeInsets.only(left: 10.0)
+                              // ),
+                              Text("Dark",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Theme.of(context).indicatorColor)),
+                            ],
+                          )),
+                    ],
+                  )
+                : SizedBox(),
             Padding(
               padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
               child: Align(

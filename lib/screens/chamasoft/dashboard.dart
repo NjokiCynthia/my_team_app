@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
@@ -142,11 +143,15 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         key: dashboardScaffoldKey,
         backgroundColor: (themeChangeProvider.darkTheme)
             ? Colors.blueGrey[900]
-            : Colors.blue[50],
+            : Config.appName.toLowerCase() == 'chamasoft'
+                ? Colors.blue[50]
+                : Colors.white,
         appBar: AppBar(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[900]
-              : Colors.blue[50],
+              : Config.appName.toLowerCase() == 'chamasoft'
+                  ? Colors.blue[50]
+                  : Colors.orange[100],
           centerTitle: false,
           title: AppSwitcher(
             key: ObjectKey('$_overlayItems'),
@@ -263,7 +268,9 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         bottomNavigationBar: BottomNavigationBar(
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[900] //.withOpacity(0.95)
-              : Colors.blue[50],
+              : Config.appName.toLowerCase() == 'chamasoft'
+                  ? Colors.blue[50]
+                  : Colors.orange[50],
           //.withOpacity(0.89),
           elevation: 0,
           currentIndex: _currentPage,
@@ -288,14 +295,21 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.users,
-                color: _currentPage == 1 ? primaryColor : Colors.blueGrey[300],
+                color: _currentPage == 1
+                    ? primaryColor
+                    : Config.appName.toLowerCase() == 'chamasoft'
+                        ? Colors.blueGrey[300]
+                        : Colors.blueGrey[300].withOpacity(0.5),
               ),
               // ignore: deprecated_member_use
               title: Text(
                 "My Group",
                 style: TextStyle(
-                    color:
-                        _currentPage == 1 ? primaryColor : Colors.blueGrey[300],
+                    color: _currentPage == 1
+                        ? primaryColor
+                        : Config.appName.toLowerCase() == 'chamasoft'
+                            ? Colors.blueGrey[300]
+                            : Colors.blueGrey[300].withOpacity(0.5),
                     fontFamily: 'SegoeUI',
                     fontWeight: FontWeight.w700),
               ),
@@ -303,14 +317,21 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.credit_card,
-                color: _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
+                color: _currentPage == 2
+                    ? primaryColor
+                    : Config.appName.toLowerCase() == 'chamasoft'
+                        ? Colors.blueGrey[300]
+                        : Colors.blueGrey[300].withOpacity(0.5),
               ),
               // ignore: deprecated_member_use
               title: Text(
                 "Transactions",
                 style: TextStyle(
-                    color:
-                        _currentPage == 2 ? primaryColor : Colors.blueGrey[300],
+                    color: _currentPage == 2
+                        ? primaryColor
+                        : Config.appName.toLowerCase() == 'chamasoft'
+                            ? Colors.blueGrey[300]
+                            : Colors.blueGrey[300].withOpacity(0.5),
                     fontFamily: 'SegoeUI',
                     fontWeight: FontWeight.w700),
               ),
@@ -318,22 +339,33 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             BottomNavigationBarItem(
               icon: Icon(
                 Feather.copy,
-                color: _currentPage == 3 ? primaryColor : Colors.blueGrey[300],
+                color: _currentPage == 3
+                    ? primaryColor
+                    : Config.appName.toLowerCase() == 'chamasoft'
+                        ? Colors.blueGrey[300]
+                        : Colors.blueGrey[300].withOpacity(0.5),
               ),
               // ignore: deprecated_member_use
               title: Text(
                 "Reports",
                 style: TextStyle(
-                    color:
-                        _currentPage == 3 ? primaryColor : Colors.blueGrey[300],
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w700),
+                  color: _currentPage == 3
+                      ? primaryColor
+                      : Config.appName.toLowerCase() == 'chamasoft'
+                          ? Colors.blueGrey[300]
+                          : Colors.blueGrey[300].withOpacity(0.5),
+                  fontFamily: 'SegoeUI',
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ],
           onTap: (index) {
             setState(() {
-              _currentPage = index;
+              if ((Config.appName.toLowerCase() != 'chamasoft') && (index > 0))
+                _currentPage = 0;
+              else
+                _currentPage = index;
             });
           },
         ),
@@ -353,6 +385,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   }
 
   getPage(int page) {
+    if ((Config.appName.toLowerCase() != 'chamasoft') && (page > 0)) {
+      return ChamasoftHome(
+        appBarElevation: (elevation) => _setElevation(elevation),
+      );
+    }
     switch (page) {
       case 0:
         return ChamasoftHome(
