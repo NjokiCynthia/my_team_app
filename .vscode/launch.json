@@ -7,7 +7,8 @@
         "type": "dart",
         "args": [
           "--flavor",
-          "chamasoftDev"
+          "chamasoftDev",
+          "--dart-define=flavor=chamasoftDev",
         ]
       },
       {
@@ -16,7 +17,8 @@
         "type": "dart",
         "args": [
           "--flavor",
-          "chamasoftProd"
+          "chamasoftProd",
+          "--dart-define=flavor=chamasoftProd",
         ]
       },
       {
@@ -25,7 +27,8 @@
         "type": "dart",
         "args": [
           "--flavor",
-          "eazzyclubDev"
+          "eazzyclubDev",
+          "--dart-define=flavor=eazzyclubDev",
         ]
       },
       {
@@ -34,7 +37,8 @@
         "type": "dart",
         "args": [
           "--flavor",
-          "eazzyclubProd"
+          "eazzyclubProd",
+          "--dart-define=flavor=eazzyclubProd",
         ]
       },
     ]
