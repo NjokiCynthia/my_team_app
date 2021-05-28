@@ -182,7 +182,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
           // print("_encryptAESCryptoJS: $postRequest");
           try {
             final http.Response response = await http
-                .post(url, headers: headers, body: postRequest)
+                .post( Uri.parse(url), headers: headers, body: postRequest)
                 .timeout(const Duration(seconds: 60), onTimeout: () {
               throw CustomException(
                   message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);

@@ -31,7 +31,8 @@ class _ListPhoneContactsState extends State<ListPhoneContacts> {
   int count = 0;
 
   final Permission _permission = Permission.contacts;
-  PermissionStatus _permissionStatus = PermissionStatus.undetermined;
+  PermissionStatus _permissionStatus = PermissionStatus.denied;
+  // undetermined
   // ignore: deprecated_member_use
   List<CustomContact> _contacts = new List<CustomContact>();
   bool _isLoading = false;

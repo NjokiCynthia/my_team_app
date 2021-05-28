@@ -24,7 +24,8 @@ class _ListContactsState extends State<ListContacts> {
   int count = 0;
 
   final Permission _permission = Permission.contacts;
-  PermissionStatus _permissionStatus = PermissionStatus.undetermined;
+  PermissionStatus _permissionStatus = PermissionStatus.denied;
+  // initially permissionstatus was undetermined
   // ignore: deprecated_member_use
   List<CustomContact> _contacts = new List<CustomContact>();
   // ignore: deprecated_member_use

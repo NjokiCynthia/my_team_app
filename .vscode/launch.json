@@ -19,5 +19,23 @@
           "chamasoftProd"
         ]
       },
+      {
+        "name": "Eazzyclub DEV",
+        "request": "launch",
+        "type": "dart",
+        "args": [
+          "--flavor",
+          "eazzyclubDev"
+        ]
+      },
+      {
+        "name": "Eazzyclub PROD",
+        "request": "launch",
+        "type": "dart",
+        "args": [
+          "--flavor",
+          "eazzyclubProd"
+        ]
+      },
     ]
   }
