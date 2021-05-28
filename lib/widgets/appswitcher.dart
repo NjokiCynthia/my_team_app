@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -337,7 +338,9 @@ class _AppSwitcherState extends State<AppSwitcher> {
                       Text(
                         title.toUpperCase(),
                         style: TextStyle(
-                          color: Colors.blueGrey[400],
+                          color: Config.appName.toLowerCase() == 'chamasoft'
+                              ? Colors.blueGrey[400]
+                              : primaryColor,
                           fontWeight: FontWeight.w700,
                           fontSize: 16.0,
                           fontFamily: 'SegoeUI',
@@ -362,7 +365,10 @@ class _AppSwitcherState extends State<AppSwitcher> {
                               child: Text(
                                 role, //.toUpperCase(),
                                 style: TextStyle(
-                                  color: Colors.blueGrey[300],
+                                  color: Config.appName.toLowerCase() ==
+                                          'chamasoft'
+                                      ? Colors.blueGrey[300]
+                                      : primaryColor.withOpacity(0.8),
                                   fontWeight: FontWeight.w700,
                                   fontSize: 11.0,
                                   fontFamily: 'SegoeUI',
@@ -390,7 +396,9 @@ class _AppSwitcherState extends State<AppSwitcher> {
                             topLeft: Radius.circular(20.0),
                             bottomLeft: Radius.circular(20.0))
                         : BorderRadius.circular(40.0),
-                    color: Theme.of(context).hintColor.withOpacity(0.6),
+                    color: Config.appName.toLowerCase() == 'chamasoft'
+                        ? Theme.of(context).hintColor.withOpacity(0.6)
+                        : primaryColor.withOpacity(0.6),
                   ),
                   child: Icon(
                     Feather.users,

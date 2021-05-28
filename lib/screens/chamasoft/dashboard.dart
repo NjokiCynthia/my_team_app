@@ -151,7 +151,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               ? Colors.blueGrey[900]
               : Config.appName.toLowerCase() == 'chamasoft'
                   ? Colors.blue[50]
-                  : Colors.orange[100],
+                  : Colors.white70,
           centerTitle: false,
           title: AppSwitcher(
             key: ObjectKey('$_overlayItems'),
@@ -204,8 +204,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   IconButton(
                     icon: Icon(
                       Icons.people_alt,
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
+                      color: Config.appName.toLowerCase() == 'chamasoft'
+                          ?
+                          // ignore: deprecated_member_use
+                          Theme.of(context).textSelectionHandleColor
+                          : primaryColor,
                     ),
                     onPressed: () => {
                       _eventDispatcher.add('TAP'), //Closes the AppSwitcher
@@ -234,9 +237,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             IconButton(
               icon: Icon(
                 Icons.notifications_off,
-                color:
+                color: Config.appName.toLowerCase() == 'chamasoft'
+                    ?
                     // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor.withOpacity(0.5),
+                    Theme.of(context).textSelectionHandleColor.withOpacity(0.5)
+                    : primaryColor.withOpacity(0.5),
               ),
               onPressed: null, // Disable notifications for now
               // onPressed: () => {
@@ -251,8 +256,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             IconButton(
               icon: Icon(
                 Icons.settings,
-                // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
+                color: Config.appName.toLowerCase() == 'chamasoft'
+                    ?
+                    // ignore: deprecated_member_use
+                    Theme.of(context).textSelectionHandleColor
+                    : primaryColor,
               ),
               onPressed: () => {
                 _eventDispatcher.add('TAP'), //Closes the AppSwitcher
@@ -270,7 +278,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               ? Colors.blueGrey[900] //.withOpacity(0.95)
               : Config.appName.toLowerCase() == 'chamasoft'
                   ? Colors.blue[50]
-                  : Colors.orange[50],
+                  : Colors.white,
           //.withOpacity(0.89),
           elevation: 0,
           currentIndex: _currentPage,
