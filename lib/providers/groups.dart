@@ -3336,11 +3336,13 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchGroupNotifications() async {
-    const url = EndpointUrl.EDIT_EXPENSE_CATEGORY;
+    const url = EndpointUrl.GET_GROUP_NOTIFICATIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
+        "lower_limit" : 0,
+        "upper_limit" : 50
       });
       try {
         final response = await PostToServer.post(postRequest, url);

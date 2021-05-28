@@ -6,6 +6,7 @@ import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 // import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
@@ -240,18 +241,18 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 color: Config.appName.toLowerCase() == 'chamasoft'
                     ?
                     // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor.withOpacity(0.5)
-                    : primaryColor.withOpacity(0.5),
+                    Theme.of(context).textSelectionHandleColor
+                    : primaryColor,
               ),
-              onPressed: null, // Disable notifications for now
-              // onPressed: () => {
-              //   _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-              //   Navigator.of(context).push(
-              //     MaterialPageRoute(
-              //       builder: (BuildContext context) => ChamasoftNotifications(),
-              //     ),
-              //   ),
-              // }
+              // onPressed: null, // Disable notifications for now
+              onPressed: () => {
+                _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ChamasoftNotifications(),
+                  ),
+                ),
+              }
             ),
             IconButton(
               icon: Icon(
