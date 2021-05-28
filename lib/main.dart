@@ -36,11 +36,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-//  void disableCrashlytics() async {
-//    if (kDebugMode) {
-//      await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
-//    } else {}
-//  }
+  static const APP_FLAVOR = String.fromEnvironment(
+    'flavor',
+    defaultValue: "chamasoft-dev",
+  );
 
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
@@ -54,10 +53,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // Firebase.initializeApp().whenComplete(() {
-    //   disableCrashlytics();
-    //   setState(() {});
-    // });
+    print(" <<<<<< APP_FLAVOR >>>>> ");
+    print(APP_FLAVOR);
+
     getCurrentAppTheme();
     initDB();
     super.initState();

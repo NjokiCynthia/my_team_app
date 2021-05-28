@@ -43,7 +43,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "chamasoft.app"
         minSdkVersion 19
         targetSdkVersion 30
@@ -76,21 +75,21 @@ android {
     productFlavors {
         chamasoftProd {
             dimension "app"
-            applicationId "com.chamasoft"
+            applicationId "chamasoft.app"
         }
         chamasoftDev {
             dimension "app"
             versionNameSuffix "-chamasoftDev"
-            applicationId "com.chamasoft.dev"
+            applicationId "chamasoft.app.dev"
         }
         eazzyclubProd {
             dimension "app"
-            applicationId "co.ug.eazzyclub"
+            applicationId "eazzyclub.app"
         }
         eazzyclubDev {
             dimension "app"
             versionNameSuffix "-eazzyclubDev"
-            applicationId "co.ug.eazzyclub.dev"
+            applicationId "eazzyclub.app.dev"
         }
     }
 }
