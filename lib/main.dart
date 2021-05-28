@@ -1,3 +1,4 @@
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -23,7 +24,8 @@ void main() async {
   //  Status bar fixes
   SystemChrome.setSystemUIOverlayStyle(
     SystemUiOverlayStyle(
-      statusBarColor: Color(0xff00a9f0),
+      statusBarColor:
+          Config.appName == 'chamasoft' ? Color(0xff00a9f0) : Color(0xff8f2c21),
       statusBarIconBrightness: Brightness.light,
     ),
   );
@@ -36,11 +38,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  static const APP_FLAVOR = String.fromEnvironment(
-    'flavor',
-    defaultValue: "chamasoft-dev",
-  );
-
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
         await themeChangeProvider.darkThemePreference.getTheme();
@@ -54,7 +51,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     print(" <<<<<< APP_FLAVOR >>>>> ");
-    print(APP_FLAVOR);
+    print(Config.APP_FLAVOR);
+    print(Config.appName);
 
     getCurrentAppTheme();
     initDB();
