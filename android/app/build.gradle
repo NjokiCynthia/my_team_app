@@ -74,13 +74,23 @@ android {
     flavorDimensions "app"
 
     productFlavors {
-        dev {
+        chamasoftProd {
             dimension "app"
-            versionNameSuffix "-dev"
-            applicationIdSuffix ".dev"
+            applicationId "com.chamasoft"
         }
-        prod {
+        chamasoftDev {
             dimension "app"
+            versionNameSuffix "-chamasoftDev"
+            applicationId "com.chamasoft.dev"
+        }
+        eazzyclubProd {
+            dimension "app"
+            applicationId "co.ug.eazzyclub"
+        }
+        eazzyclubDev {
+            dimension "app"
+            versionNameSuffix "-eazzyclubDev"
+            applicationId "co.ug.eazzyclub.dev"
         }
     }
 }

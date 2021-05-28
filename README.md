@@ -1,15 +1,15 @@
 # Chamasoft Android & iOS App
 
-The new Chamasoft Android & iOS app
+The Chamasoft Android & iOS app, flavored.
 
-## You should know:
+## Available flavors
 
-There are two flavors available: dev & prod:
+`chamasoftDev`, `chamasoftProd`, `eazzyclubDev` and `eazzyclubProd`
 
-a) `flutter run --flavor dev`
+## Run in development
 
-b) `flutter run --flavor prod`
+`flutter run --flavor {flavorName}`
 
 ## Build for production
 
-`flutter build appbundle --flavor prod`
+`flutter build appbundle --flavor {flavorName}`

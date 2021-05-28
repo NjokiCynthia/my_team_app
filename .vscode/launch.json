@@ -1,22 +1,22 @@
 {
-    "version": "0.2.0",
+    "version": "0.2.1",
     "configurations": [
       {
-        "name": "DEV",
+        "name": "Chamasoft DEV",
         "request": "launch",
         "type": "dart",
         "args": [
           "--flavor",
-          "dev"
+          "chamasoftDev"
         ]
       },
       {
-        "name": "PROD",
+        "name": "Chamasoft PROD",
         "request": "launch",
         "type": "dart",
         "args": [
           "--flavor",
-          "prod"
+          "chamasoftProd"
         ]
       },
     ]
