@@ -1,3 +1,4 @@
+import 'package:chamasoft/config.dart';
 import 'package:flutter/material.dart';
 
 BoxDecoration primaryGradient(BuildContext context) {
@@ -26,7 +27,9 @@ Gradient plainCardGradient(BuildContext context) {
 
 Gradient csCardGradient() {
   return LinearGradient(
-    colors: [Color(0xFF00ABF2), Color(0xFF008CC5)],
+    colors: Config.appName.toLowerCase() == 'chamasoft'
+        ? [Color(0xFF00ABF2), Color(0xFF008CC5)]
+        : [Color(0xff8f2c21), Color(0xff561913)],
     stops: [0.0, 1.0],
     begin: FractionalOffset.topCenter,
     end: FractionalOffset.bottomCenter,
