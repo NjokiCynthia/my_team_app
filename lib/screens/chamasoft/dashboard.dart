@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+// import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
@@ -51,9 +52,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   }
 
   _setNotificationCount(double notificationCount) {
-    setState(() {
-      _notificationCount = notificationCount > 0 ? true : false;
-    });
+    print("count $notificationCount");
+    if (this.mounted) {
+      setState(() {
+        _notificationCount = notificationCount > 0 ? true : false;
+      });
+    }
   }
 
   _handleSelectedOption(
@@ -243,10 +247,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               ),
             ),
             Stack(
+              alignment: Alignment.center,
               children: [
                 IconButton(
                     icon: Icon(
-                      Icons.notifications_off,
+                      Icons.notifications,
                       color: Config.appName.toLowerCase() == 'chamasoft'
                           ?
                           // ignore: deprecated_member_use
@@ -429,7 +434,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       case 0:
         return ChamasoftHome(
           appBarElevation: (elevation) => _setElevation(elevation),
-          notificationCount: (_notificationCount) => _setNotificationCount(_notificationCount),
+          notificationCount: (_notificationCount) =>
+              _setNotificationCount(_notificationCount),
         );
       case 1:
         return ChamasoftGroup(

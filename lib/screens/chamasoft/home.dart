@@ -25,7 +25,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ChamasoftHome extends StatefulWidget {
   ChamasoftHome({
-    this.appBarElevation,this.notificationCount
+    this.appBarElevation,
+    this.notificationCount
   });
 
   final ValueChanged<double> appBarElevation;
@@ -149,10 +150,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Future<void> _getMemberDashboardData([bool hardRefresh = false]) async {
     try {
       if (hardRefresh) {
-        Provider.of<Dashboard>(context, listen: false)
+        Provider.of<Dashboard>(context,listen: false)
             .resetMemberDashboardData(_currentGroup.groupId);
       }
-      if (!Provider.of<Dashboard>(context, listen: false)
+      if (!Provider.of<Dashboard>(context,listen: false)
           .memberGroupDataExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -161,7 +162,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             });
           }
         }
-        await Provider.of<Dashboard>(context, listen: false)
+        await Provider.of<Dashboard>(context,listen: false)
             .getMemberDashboardData(_currentGroup.groupId);
       }
     } on CustomException catch (error) {
@@ -344,6 +345,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       _iteratableRecentTransactionSummary =
           dashboardData.recentMemberTransactions;
       _itableContributionSummary = dashboardData.memberContributionSummary;
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => (){
       widget.notificationCount(dashboardData.notificationCount);
     });
 
