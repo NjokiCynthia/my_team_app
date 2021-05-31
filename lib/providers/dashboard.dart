@@ -83,6 +83,7 @@ class Dashboard with ChangeNotifier {
   }
 
   //***************member****************/
+  double _notificationCount = 0.0;
   double _memberContributionAmount = 0.0;
   double _memberFinesAmount = 0.0;
   double _memberContributionArrears = 0.0;
@@ -111,6 +112,10 @@ class Dashboard with ChangeNotifier {
 
   double get memberContributionAmount {
     return _memberContributionAmount;
+  }
+
+  double get notificationCount {
+    return _notificationCount;
   }
 
   double get memberFineAmount {
@@ -238,6 +243,9 @@ class Dashboard with ChangeNotifier {
     if (_memberDashboardData[groupId].containsKey("member_details")) {
       var memberDetails = _memberDashboardData[groupId]["member_details"]
           as Map<String, dynamic>;
+      _notificationCount =
+          double.tryParse(memberDetails["notification_count"].toString()) ??
+              0.0;
       _memberContributionAmount =
           double.tryParse(memberDetails["total_contributions"].toString()) ??
               0.0;

@@ -38,6 +38,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   int _currentPage;
   double _appBarElevation = 0;
   int _selectedGroupIndex = 0;
+  bool _notificationCount = false;
   // bool _updateSelectedGroup = false;
 
   _setElevation(double elevation) {
@@ -47,6 +48,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         _appBarElevation = newElevation;
       });
     }
+  }
+
+  _setNotificationCount(double notificationCount) {
+    setState(() {
+      _notificationCount = notificationCount > 0 ? true : false;
+    });
   }
 
   _handleSelectedOption(
@@ -257,7 +264,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                           ),
                         }),
                 Visibility(
-                  visible: (_group.isGroupAdmin),
+                  visible: (_notificationCount),
                   child: Positioned(
                     top: 12,
                     right: 6,
@@ -422,6 +429,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       case 0:
         return ChamasoftHome(
           appBarElevation: (elevation) => _setElevation(elevation),
+          notificationCount: (_notificationCount) => _setNotificationCount(_notificationCount),
         );
       case 1:
         return ChamasoftGroup(

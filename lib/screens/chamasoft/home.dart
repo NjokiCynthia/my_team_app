@@ -25,10 +25,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ChamasoftHome extends StatefulWidget {
   ChamasoftHome({
-    this.appBarElevation,
+    this.appBarElevation,this.notificationCount
   });
 
   final ValueChanged<double> appBarElevation;
+  final ValueChanged<double> notificationCount;
 
   @override
   _ChamasoftHomeState createState() => _ChamasoftHomeState();
@@ -343,6 +344,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       _iteratableRecentTransactionSummary =
           dashboardData.recentMemberTransactions;
       _itableContributionSummary = dashboardData.memberContributionSummary;
+      widget.notificationCount(dashboardData.notificationCount);
     });
 
     return WillPopScope(

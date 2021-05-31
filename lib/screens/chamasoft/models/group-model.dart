@@ -23,7 +23,6 @@ class Group {
   final String groupRoleId;
   final String groupRole;
   final bool isGroupAdmin;
-  final bool hasNotifications;
   final String groupCurrency;
 
   Group({
@@ -51,8 +50,7 @@ class Group {
     this.groupPhone,
     this.groupEmail,
     this.groupCountryName,
-    this.avatar,
-    @required this.hasNotifications
+    this.avatar
   });
 }
 
