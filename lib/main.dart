@@ -60,12 +60,6 @@ void main() async {
   runApp(MyApp());
 }
 
-
-
-
-
-
-
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -90,39 +84,41 @@ class _MyAppState extends State<MyApp> {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage message) {
-      if (message != null) {
-        print("initial message $message");
-        // Navigator.pushNamed(context, '/message',
-        //     arguments: MessageArguments(message, true));
-      }
+          print("initial message2 $message");
+      // if (message != null) {
+        
+      //   // Navigator.pushNamed(context, '/message',
+      //   //     arguments: MessageArguments(message, true));
+      // }
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      if (notification != null && android != null) {
-        NotificationManager.flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                NotificationManager.channel.id,
-                NotificationManager.channel.name,
-                NotificationManager.channel.description,
-                // TODO add a proper drawable resource to android, for now using
-                //      one that already exists in example app.
-                icon: 'launch_background',
-              ),
-            ));
-      }
+      print(message);
+      // RemoteNotification notification = message.notification;
+      // AndroidNotification android = message.notification?.android;
+      // if (notification != null && android != null) {
+      //   NotificationManager.flutterLocalNotificationsPlugin.show(
+      //       notification.hashCode,
+      //       notification.title,
+      //       notification.body,
+      //       NotificationDetails(
+      //         android: AndroidNotificationDetails(
+      //           NotificationManager.channel.id,
+      //           NotificationManager.channel.name,
+      //           NotificationManager.channel.description,
+      //           // TODO add a proper drawable resource to android, for now using
+      //           //      one that already exists in example app.
+      //           icon: 'launch_background',
+      //         ),
+      //       ));
+      // }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
       // Navigator.pushNamed(context, '/message',
       //     arguments: MessageArguments(message, true));
-      print("initial message $message");
+      print(message.data);
     });
   }
 
@@ -135,13 +131,7 @@ class _MyAppState extends State<MyApp> {
   void didChangeDependencies() {
     // TODO: implement didChangeDependencies
     FirebaseMessaging.instance.subscribeToTopic('chamasoft');
-    _getUserFirebaseToken();
     super.didChangeDependencies();
-  }
-
-  void _getUserFirebaseToken() async{
-    String token = await FirebaseMessaging.instance.getToken();
-    print("Token: $token");
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -123,6 +124,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
           Provider.of<Groups>(context, listen: false)
               .addGroups(response['userGroups']);
         }
+        NotificationManager.registerUserToken(context,response["userId"]);
         Navigator.of(context).pushNamedAndRemoveUntil(
             MyGroups.namedRoute, ModalRoute.withName('/'),
             arguments: 0);

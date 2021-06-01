@@ -256,7 +256,7 @@ class Auth with ChangeNotifier {
         final accessToken1 = response["access_token"]..toString();
         await setAccessToken(accessToken1);
         await setPreference(isLoggedIn, "true");
-        userResponse = {'userExists': 1, 'userGroups': response['user_groups']};
+        userResponse = {'userExists': 1, 'userGroups': response['user_groups'],"userId":userUserId};
       } else {
         userResponse = {
           'userExists': 2,
@@ -266,6 +266,19 @@ class Auth with ChangeNotifier {
       }
       notifyListeners();
       return userResponse;
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> updateUserToken(Map<String, String> object) async {
+    const url = EndpointUrl.UPDATE_USER_MOBILE_TOKEN;
+    final postRequest = json.encode(object);
+    try {
+      await PostToServer.post(postRequest, url);
+      notifyListeners();
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
