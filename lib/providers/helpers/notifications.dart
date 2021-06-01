@@ -1,9 +1,14 @@
+import 'package:flutter/material.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 class NotificationManager{
 
-  NotificationManager();
+  NotificationManager(){
+    WidgetsFlutterBinding.ensureInitialized();
+  }
 
   /// Create a [AndroidNotificationChannel] for heads up notifications
   static const AndroidNotificationChannel channel = AndroidNotificationChannel(
@@ -12,6 +17,17 @@ class NotificationManager{
     'This channel is used for important notifications.', // description
     importance: Importance.high,
   );
+
+  /// Initialize the [FlutterLocalNotificationsPlugin] package.
+  static final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
+
+  static Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+    // If you're going to use other Firebase services in the background, such as Firestore,
+    // make sure you call `initializeApp` before using other Firebase services.
+    await Firebase.initializeApp();
+    print('Handling a background message ${message.messageId}');
+  }
 
 
 }
