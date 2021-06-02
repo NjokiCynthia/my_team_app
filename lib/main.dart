@@ -15,11 +15,9 @@ import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 import './providers/auth.dart';
 import './providers/groups.dart';
@@ -34,29 +32,7 @@ void main() async {
       statusBarIconBrightness: Brightness.light,
     ),
   );
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-
-  // Set the background messaging handler early on, as a named top-level function
-  FirebaseMessaging.onBackgroundMessage(NotificationManager.firebaseMessagingBackgroundHandler);
-
-  /// Create an Android Notification Channel.
-  ///
-  /// We use this channel in the `AndroidManifest.xml` file to override the
-  /// default FCM channel to enable heads up notifications.
-  await NotificationManager.flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(NotificationManager.channel);
-
-  /// Update the iOS foreground notification presentation options to allow
-  /// heads up notifications.
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
+  NotificationManager.firebaseMessageNotificationHandler();
   runApp(MyApp());
 }
 
@@ -70,7 +46,6 @@ class _MyAppState extends State<MyApp> {
     themeChangeProvider.darkTheme =
         await themeChangeProvider.darkThemePreference.getTheme();
   }
-
   initDB() async {
     // Any call to the DB will instantiate it, whether valid or invalid
     await getLocalData('app');
@@ -81,46 +56,7 @@ class _MyAppState extends State<MyApp> {
     getCurrentAppTheme();
     initDB();
     super.initState();
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage message) {
-          print("initial message2 $message");
-      // if (message != null) {
-        
-      //   // Navigator.pushNamed(context, '/message',
-      //   //     arguments: MessageArguments(message, true));
-      // }
-    });
-
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print("Listening to a message");
-      print(message.data);
-      // RemoteNotification notification = message.notification;
-      // AndroidNotification android = message.notification?.android;
-      // if (notification != null && android != null) {
-      //   NotificationManager.flutterLocalNotificationsPlugin.show(
-      //       notification.hashCode,
-      //       notification.title,
-      //       notification.body,
-      //       NotificationDetails(
-      //         android: AndroidNotificationDetails(
-      //           NotificationManager.channel.id,
-      //           NotificationManager.channel.name,
-      //           NotificationManager.channel.description,
-      //           // TODO add a proper drawable resource to android, for now using
-      //           //      one that already exists in example app.
-      //           icon: 'launch_background',
-      //         ),
-      //       ));
-      // }
-    });
-
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      // Navigator.pushNamed(context, '/message',
-      //     arguments: MessageArguments(message, true));
-      print(message.data);
-    });
+    NotificationManager.firebaseNotificationListenHandler();
   }
 
   @override
