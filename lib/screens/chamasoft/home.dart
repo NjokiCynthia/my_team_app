@@ -162,7 +162,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             });
           }
         }
-        await Provider.of<Dashboard>(context,listen: false)
+        await Provider.of<Dashboard>(context)
             .getMemberDashboardData(_currentGroup.groupId);
       }
     } on CustomException catch (error) {

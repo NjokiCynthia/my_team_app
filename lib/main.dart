@@ -36,24 +36,24 @@ void main() async {
   );
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  NotificationManager.firebaseMessageNotificationHandler();
+  // // Set the background messaging handler early on, as a named top-level function
+  // FirebaseMessaging.onBackgroundMessage(NotificationManager.firebaseMessagingBackgroundHandler);
 
-  // Set the background messaging handler early on, as a named top-level function
-  FirebaseMessaging.onBackgroundMessage(NotificationManager.firebaseMessagingBackgroundHandler);
+  // /// We use this channel in the `AndroidManifest.xml` file to override the
+  // /// default FCM channel to enable heads up notifications.
+  // await NotificationManager.flutterLocalNotificationsPlugin
+  //     .resolvePlatformSpecificImplementation<
+  //         AndroidFlutterLocalNotificationsPlugin>()
+  //     ?.createNotificationChannel(NotificationManager.channel);
 
-  /// We use this channel in the `AndroidManifest.xml` file to override the
-  /// default FCM channel to enable heads up notifications.
-  await NotificationManager.flutterLocalNotificationsPlugin
-      .resolvePlatformSpecificImplementation<
-          AndroidFlutterLocalNotificationsPlugin>()
-      ?.createNotificationChannel(NotificationManager.channel);
-
-  /// Update the iOS foreground notification presentation options to allow
-  /// heads up notifications.
-  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
+  // /// Update the iOS foreground notification presentation options to allow
+  // /// heads up notifications.
+  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+  //   alert: true,
+  //   badge: true,
+  //   sound: true,
+  // );
 
   runApp(MyApp());
 }

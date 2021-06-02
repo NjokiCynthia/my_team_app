@@ -53,8 +53,8 @@ class NotificationManager {
   }
 
   static Future<void> firebaseMessageNotificationHandler() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
+    // WidgetsFlutterBinding.ensureInitialized();
+    // await Firebase.initializeApp();
 
     // Set the background messaging handler early on, as a named top-level function
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
@@ -74,6 +74,14 @@ class NotificationManager {
       badge: true,
       sound: true,
     );
+
+    // String token = await FirebaseMessaging.instance.getToken();
+    // print("token $token");
+
+    Stream<String> _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
+    _tokenStream.listen((token) { 
+      print("new token $token");
+    });
   }
 
   static void firebaseNotificationListenHandler() {
