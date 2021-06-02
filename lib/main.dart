@@ -60,7 +60,6 @@ class _MyAppState extends State<MyApp> {
     getCurrentAppTheme();
     initDB();
     super.initState();
-    NotificationManager.firebaseNotificationListenHandler();
   }
 
   @override
@@ -72,6 +71,7 @@ class _MyAppState extends State<MyApp> {
   void didChangeDependencies() {
     // ignore: todo
     // TODO: implement didChangeDependencies
+    NotificationManager.firebaseNotificationListenHandler(context);
     FirebaseMessaging.instance.subscribeToTopic('chamasoft');
     NotificationManager.listenTokenChange(context);
     super.didChangeDependencies();

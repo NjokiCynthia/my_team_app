@@ -9,6 +9,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 class NotificationManager {
+   static const notificationNamedRoute = '/screens/notifications/notifications';
   NotificationManager() {
     WidgetsFlutterBinding.ensureInitialized();
   }
@@ -81,7 +82,7 @@ class NotificationManager {
     // print("token $token");
   }
 
-  static void firebaseNotificationListenHandler() {
+  static void firebaseNotificationListenHandler(BuildContext context) {
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage message) {
@@ -119,9 +120,10 @@ class NotificationManager {
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('A new onMessageOpenedApp event was published!');
-      // Navigator.pushNamed(context, '/message',
-      //     arguments: MessageArguments(message, true));
+      
       print(message.data);
+      Navigator.pushNamed(context,notificationNamedRoute,
+          arguments: {message, true});
     });
   }
 
