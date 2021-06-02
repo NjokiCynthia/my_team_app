@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -12,14 +13,19 @@ class NotificationManager{
     WidgetsFlutterBinding.ensureInitialized();
   }
 
+  // Register a user token, then map it to the auth provider. This helps ensure that even after an update, a user whom
+  // does not logout still updates their token
   static Future<void> registerUserToken(BuildContext context, String userId) async{
     String token = await FirebaseMessaging.instance.getToken();
     Map<String, String> notificationData = {
       'user_id': userId,
-      'token': token,
+      'mobile_token': token,
     };
-    await Provider.of<Auth>(context, listen: false)
-          .updateUserToken(notificationData) as Map<String, dynamic>;
+    final response = await Provider.of<Auth>(context, listen: false)
+          .updateUserToken(notificationData);
+    if(response){
+      Provider.of<Auth>(context, listen: false).setUserMobileToken(token);
+    }
   }
 
   /// Create a [AndroidNotificationChannel] for heads up notifications

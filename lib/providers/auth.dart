@@ -93,6 +93,10 @@ class Auth with ChangeNotifier {
     return _mobileToken;
   }
 
+  void setUserMobileToken(String token){
+    _mobileToken = token;
+  }
+
   static Future<bool> imageExists(avatarUrl) async {
     return io.File(avatarUrl).exists();
   }
@@ -283,12 +287,13 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<void> updateUserToken(Map<String, String> object) async {
+  Future<bool> updateUserToken(Map<String, String> object) async {
     const url = EndpointUrl.UPDATE_USER_MOBILE_TOKEN;
     final postRequest = json.encode(object);
     try {
       await PostToServer.post(postRequest, url);
       notifyListeners();
+      return true;
     } on CustomException catch (error) {
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/helpers/notifications.dart';
 // import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
@@ -116,8 +117,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         .toList();
   }
 
-  Future<void> _checkUserAuthentication() async{
-    
+  Future<void> _checkUserAuthentication(BuildContext context) async{
+    print("token");
+    print(Provider.of<Auth>(context,listen: false).mobileToken);
+    if(Provider.of<Auth>(context,listen: false).mobileToken == ""){
+      NotificationManager.registerUserToken(context, Provider.of<Auth>(context,listen: false).id);
+    }
   }
 
   @override
@@ -136,7 +141,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         _handleSelectedOption(context, groupId, false);
       });
     }).catchError((error) {});
-    _checkUserAuthentication();
+    _checkUserAuthentication(context);
     super.didChangeDependencies();
   }
 
