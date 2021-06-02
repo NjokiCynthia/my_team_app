@@ -116,6 +116,10 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         .toList();
   }
 
+  Future<void> _checkUserAuthentication() async{
+    
+  }
+
   @override
   void initState() {
     _currentPage = 0;
@@ -132,6 +136,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         _handleSelectedOption(context, groupId, false);
       });
     }).catchError((error) {});
+    _checkUserAuthentication();
     super.didChangeDependencies();
   }
 

@@ -17,15 +17,17 @@ class User {
   final String phone;
   final String avatarName;
   final String email;
+  final String mobileToken;
 
-  User(
+  User( 
       {@required this.userId,
       @required this.firstName,
       @required this.lastName,
       @required this.accessToken,
       this.phone,
       this.email,
-      this.avatarName});
+      this.avatarName,
+      this.mobileToken});
 
   String get userName {
     return firstName + " " + lastName;
@@ -49,6 +51,7 @@ class Auth with ChangeNotifier {
   String _userId = "";
   String _emailAddress = "";
   String _avatar = "";
+  String _mobileToken = "";
 
   String get userName {
     return _firstName + " " + _lastName;
@@ -84,6 +87,10 @@ class Auth with ChangeNotifier {
 
   String get avatar {
     return _avatar;
+  }
+
+  String get mobileToken{
+    return _mobileToken;
   }
 
   static Future<bool> imageExists(avatarUrl) async {
@@ -239,6 +246,7 @@ class Auth with ChangeNotifier {
         String userUserEmail = response['user']["email"]..toString();
         String userUserPhone = response['user']["phone"]..toString();
         String userUserAvatar = response['user']["avatar"]..toString();
+        String userMobileToken = response['user']["mobile_token"]..toString();
         setUserObject(json.encode({
           userId: userUserId,
           firstName: userFirstName,
@@ -246,6 +254,7 @@ class Auth with ChangeNotifier {
           email: userUserEmail,
           phone: userUserPhone,
           userAvatar: userUserAvatar,
+          mobileToken: userMobileToken,
         }));
         _firstName = userFirstName;
         _lastName = userLastName;
@@ -253,6 +262,7 @@ class Auth with ChangeNotifier {
         _emailAddress = userUserEmail;
         _phoneNumber = userUserPhone;
         _avatar = userUserAvatar;
+        _mobileToken = userMobileToken;
         final accessToken1 = response["access_token"]..toString();
         await setAccessToken(accessToken1);
         await setPreference(isLoggedIn, "true");
