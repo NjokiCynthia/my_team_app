@@ -57,15 +57,14 @@ class NotificationManager {
     await Firebase.initializeApp();
 
     // Set the background messaging handler early on, as a named top-level function
-    FirebaseMessaging.onBackgroundMessage(
-        NotificationManager.firebaseMessagingBackgroundHandler);
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     /// We use this channel in the `AndroidManifest.xml` file to override the
     /// default FCM channel to enable heads up notifications.
-    await NotificationManager.flutterLocalNotificationsPlugin
+    await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(NotificationManager.channel);
+        ?.createNotificationChannel(channel);
 
     /// Update the iOS foreground notification presentation options to allow
     /// heads up notifications.
@@ -95,15 +94,15 @@ class NotificationManager {
       RemoteNotification notification = message.notification;
       AndroidNotification android = message.notification?.android;
       if (notification != null && android != null) {
-        NotificationManager.flutterLocalNotificationsPlugin.show(
+        flutterLocalNotificationsPlugin.show(
             notification.hashCode,
             notification.title,
             notification.body,
             NotificationDetails(
               android: AndroidNotificationDetails(
-                NotificationManager.channel.id,
-                NotificationManager.channel.name,
-                NotificationManager.channel.description,
+                channel.id,
+                channel.name,
+                channel.description,
                 // ignore: todo
                 // TODO add a proper drawable resource to android, for now using
                 //      one that already exists in example app.
