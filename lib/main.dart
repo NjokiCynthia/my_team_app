@@ -73,7 +73,7 @@ class _MyAppState extends State<MyApp> {
     // ignore: todo
     // TODO: implement didChangeDependencies
     FirebaseMessaging.instance.subscribeToTopic('chamasoft');
-    NotificationManager.listenTokenUpdate(context);
+    NotificationManager.listenTokenChange(context);
     super.didChangeDependencies();
   }
 

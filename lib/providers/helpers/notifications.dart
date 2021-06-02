@@ -125,7 +125,7 @@ class NotificationManager {
     });
   }
 
-  static void listenTokenUpdate(BuildContext context) {
+  static void listenTokenChange(BuildContext context) {
     Stream<String> _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
     _tokenStream.listen((token) async {
       print("new token $token");
