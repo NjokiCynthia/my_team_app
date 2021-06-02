@@ -93,7 +93,8 @@ class _MyAppState extends State<MyApp> {
     });
 
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      print(message);
+      print("Listening to a message");
+      print(message.data);
       // RemoteNotification notification = message.notification;
       // AndroidNotification android = message.notification?.android;
       // if (notification != null && android != null) {
@@ -129,6 +130,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void didChangeDependencies() {
+    // ignore: todo
     // TODO: implement didChangeDependencies
     FirebaseMessaging.instance.subscribeToTopic('chamasoft');
     super.didChangeDependencies();
