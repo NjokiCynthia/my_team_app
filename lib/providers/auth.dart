@@ -94,6 +94,7 @@ class Auth with ChangeNotifier {
   }
 
   void setUserMobileToken(String token){
+    print("this is the token to set $token");
     _mobileToken = token;
   }
 

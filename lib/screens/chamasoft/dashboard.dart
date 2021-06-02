@@ -117,11 +117,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         .toList();
   }
 
-  Future<void> _checkUserAuthentication(BuildContext context) async{
-    print("token");
-    print(Provider.of<Auth>(context,listen: false).mobileToken);
-    if(Provider.of<Auth>(context,listen: false).mobileToken == ""){
-      NotificationManager.registerUserToken(context, Provider.of<Auth>(context,listen: false).id);
+  Future<void> _checkUserAuthentication(BuildContext context) async {
+    if ((Provider.of<Auth>(context, listen: false).mobileToken) == null ||
+        (Provider.of<Auth>(context, listen: false).mobileToken).isEmpty) {
+      NotificationManager.registerUserToken(
+          context, Provider.of<Auth>(context, listen: false).id);
+      print(Provider.of<Auth>(context, listen: false).mobileToken);
     }
   }
 
