@@ -33,7 +33,7 @@ class EndpointUrl {
   static const String UPDATE_USER_EMAIL_ADDRESS =
       CustomHelper.baseUrl + "/mobile/users/update_email";
   static const String UPDATE_USER_MOBILE_TOKEN =
-      CustomHelper.baseUrl + "/mobile/users/update_user_mobile_toke";
+      CustomHelper.baseUrl + "/mobile/users/update_user_mobile_token";
 
   //Initial group setup
   static const String CREATE_GROUP =

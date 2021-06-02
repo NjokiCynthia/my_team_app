@@ -15,7 +15,7 @@ class NotificationManager{
   static Future<void> registerUserToken(BuildContext context, String userId) async{
     String token = await FirebaseMessaging.instance.getToken();
     Map<String, String> notificationData = {
-      'userId': userId,
+      'user_id': userId,
       'token': token,
     };
     await Provider.of<Auth>(context, listen: false)
