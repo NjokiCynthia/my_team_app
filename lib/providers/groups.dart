@@ -97,7 +97,7 @@ class Notification {
     this.fromUserId,
     this.toUserId,
     this.toMemberId,
-    this.subject,
+    @required this.subject,
     this.groupId,
     this.isRead,
     this.createdBy,
@@ -924,7 +924,8 @@ class Groups with ChangeNotifier {
             id: int.parse(notificationJson["id"]),
             message: notificationJson["message"]..toString(),
             isRead: notificationJson["is_read"]..toString(),
-            timeAgo: notificationJson["time_ago"]..toString()
+            timeAgo: notificationJson["time_ago"]..toString(), 
+            subject: notificationJson["subject"]..toString()
           );
           _notifications.add(noticeBody);
         // final notification = Notification(

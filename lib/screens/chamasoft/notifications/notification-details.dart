@@ -1,4 +1,4 @@
-import 'package:chamasoft/providers/groups.dart' as GroupProvider;
+import 'package:chamasoft/providers/groups.dart' as Groups;
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -9,8 +9,10 @@ import 'package:flutter/services.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class NotificationDetails extends StatefulWidget {
-  final GroupProvider.Notification notification;
-  NotificationDetails({this.notification});
+  final Groups.Notification notification;
+  NotificationDetails({this.notification}) {
+    print(this.notification.subject);
+  }
   @override
   _NotificationDetailsState createState() => _NotificationDetailsState();
 }
@@ -84,7 +86,7 @@ class _NotificationDetailsState extends State<NotificationDetails> {
       appBar: secondaryPageAppbar(
           context: context,
           title: widget.notification.subject,
-          action: () => Navigator.pop(context),
+          action: () => Navigator.pop(context,true),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.close),
       backgroundColor: Theme.of(context).backgroundColor,

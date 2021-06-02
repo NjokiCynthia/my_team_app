@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:chamasoft/providers/groups.dart' as GroupProvider;
-// import 'package:chamasoft/screens/chamasoft/notifications/notification-details.dart';
+import 'package:chamasoft/screens/chamasoft/notifications/notification-details.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -12,6 +12,8 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+
+import 'notification-details.dart';
 
 class ChamasoftNotifications extends StatefulWidget {
   @override
@@ -74,7 +76,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
       appBar: secondaryPageAppbar(
           context: context,
           title: "Notifications",
-          action: () => Navigator.pop(context),
+          action: () => Navigator.pop(context,true),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -154,14 +156,13 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                 GroupProvider.Notification notification =
                                     groupData.notifications[index];
                                 return InkWell(
-                                  onTap: null,
-                                  // () => Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //     builder: (BuildContext context) =>
-                                  //         NotificationDetails(
-                                  //             notification: notification),
-                                  //   ),
-                                  // ),
+                                  onTap: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          NotificationDetails(
+                                              notification: notification),
+                                    ),
+                                  ),
                                   child: Container(
                                     child: Column(
                                       children: <Widget>[
