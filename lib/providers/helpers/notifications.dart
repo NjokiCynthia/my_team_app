@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:flutter/material.dart';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -21,6 +22,7 @@ class NotificationManager {
       'user_id': userId,
       'mobile_token': token,
     };
+    print("refresh toke stream");
     await Provider.of<Auth>(context, listen: false)
         .updateUserToken(notificationData)
         .then((response) => {
@@ -77,11 +79,6 @@ class NotificationManager {
 
     // String token = await FirebaseMessaging.instance.getToken();
     // print("token $token");
-
-    Stream<String> _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
-    _tokenStream.listen((token) { 
-      print("new token $token");
-    });
   }
 
   static void firebaseNotificationListenHandler() {
@@ -125,6 +122,29 @@ class NotificationManager {
       // Navigator.pushNamed(context, '/message',
       //     arguments: MessageArguments(message, true));
       print(message.data);
+    });
+  }
+
+  static void listenTokenUpdate(BuildContext context) {
+    Stream<String> _tokenStream = FirebaseMessaging.instance.onTokenRefresh;
+    _tokenStream.listen((token) async {
+      print("new token $token");
+      if (await getPreference("isLoggedIn") == true) {
+        String token = await FirebaseMessaging.instance.getToken();
+        Map<String, String> notificationData = {
+          'user_id': Provider.of<Auth>(context,listen: false).id,
+          'mobile_token': token,
+        };
+        await Provider.of<Auth>(context, listen: false)
+            .updateUserToken(notificationData)
+            .then((response) => {
+                  if (response)
+                    {
+                      Provider.of<Auth>(context, listen: false)
+                          .setUserMobileToken(token)
+                    }
+                });
+      }
     });
   }
 }
