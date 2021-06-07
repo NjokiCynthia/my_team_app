@@ -27,7 +27,7 @@ dependencies:
   tuple: ^1.0.3
   cached_network_image: ^2.2.0+1
   country_code_picker: ^1.4.0
-  libphonenumber: ^1.0.1
+  libphonenumber: ^2.0.0
   shimmer: ^1.1.1
   flutter_svg: ^0.19.3
   image_picker: ^0.7.5+3

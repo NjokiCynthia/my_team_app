@@ -127,6 +127,7 @@ class _LoginState extends State<Login> {
         _isValid = true;
       });
     } else {
+      print(_identity);
       bool value = await CustomHelper.validPhoneNumber(_identity, _countryCode);
       if (!value) {
         print("Invalid");
