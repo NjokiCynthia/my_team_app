@@ -9,6 +9,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:chamasoft/config.dart';
 
 class IntroScreen extends StatefulWidget {
   static const namedRoute = "intro-screen";
@@ -157,7 +158,7 @@ class IntroScreenState extends State<IntroScreen> {
             pages: [
               PageViewModel(
                   titleWidget: heading1(
-                      text: "A fix for your Chama", color: Colors.white),
+                      text: "A fix for your Group", color: Colors.white),
                   bodyWidget: subtitle1(
                       text:
                           "Leading book keeping tool for investment groups that handles all your financial administration as you focus on your investments.",
@@ -172,7 +173,7 @@ class IntroScreenState extends State<IntroScreen> {
                       color: Colors.white),
                   bodyWidget: subtitle1(
                       text:
-                          "Financial information stored on Chamasoft is only visible to authorized users. Communication with our servers is encrypted.",
+                          "Financial information stored on ${Config.appName} is only visible to authorized users. Communication with our servers is encrypted.",
                       color: Colors.white),
                   image: _buildImage('onboarding_2'),
                   decoration: _pageDeco(
@@ -184,7 +185,7 @@ class IntroScreenState extends State<IntroScreen> {
                       color: Colors.white),
                   bodyWidget: subtitle1(
                       text:
-                          "Chamasoft is available 24/7 from anywhere in the world through various platforms: USSD, Web, Android & iOS. Get started now.",
+                          "${Config.appName} is available 24/7 from anywhere in the world through various platforms: USSD, Web, Android & iOS. Get started now.",
                       color: Colors.white),
                   image: _buildImage('onboarding_3'),
                   decoration: _pageDeco(

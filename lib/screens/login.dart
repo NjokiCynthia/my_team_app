@@ -97,7 +97,7 @@ class _LoginState extends State<Login> {
         );
       } else {
         _custInputBorderSide = BorderSide(
-          color: (!_isValid) ? Colors.red : Colors.blue,
+          color: (!_isValid) ? Colors.red : primaryColor,
           width: 2.0,
         );
       }
