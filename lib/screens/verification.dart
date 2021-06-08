@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/my-groups.dart';
@@ -10,7 +10,6 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:pin_input_text_field/pin_input_text_field.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
-
 import '../providers/auth.dart';
 import '../screens/signup.dart';
 import '../utilities/common.dart';
@@ -27,7 +26,9 @@ class Verification extends StatefulWidget {
 }
 
 class _VerificationState extends State<Verification> with CodeAutoFill {
-  String _logo = "cs.png";
+  String _logo = Config.appName.toLowerCase() == 'chamasoft'
+      ? "cs.png"
+      : "equity-logo.png";
   final GlobalKey<FormState> _formKey = GlobalKey();
   String _identity;
   bool _isInit = true;
@@ -81,7 +82,13 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
 
   @override
   void initState() {
-    (themeChangeProvider.darkTheme) ? _logo = "cs-alt.png" : _logo = "cs.png";
+    (themeChangeProvider.darkTheme)
+        ? _logo = Config.appName.toLowerCase() == 'chamasoft'
+            ? "cs-alt.png"
+            : "equity-logo-alt.png"
+        : _logo = Config.appName.toLowerCase() == 'chamasoft'
+            ? "cs.png"
+            : "equity-logo.png";
     listenForCode();
     SmsAutoFill().getAppSignature.then((signature) {
       setState(() {
@@ -124,7 +131,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
           Provider.of<Groups>(context, listen: false)
               .addGroups(response['userGroups']);
         }
-        NotificationManager.registerUserToken(context,response["userId"]);
+        NotificationManager.registerUserToken(context, response["userId"]);
         Navigator.of(context).pushNamedAndRemoveUntil(
             MyGroups.namedRoute, ModalRoute.withName('/'),
             arguments: 0);
@@ -215,7 +222,10 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
                             padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                             child: Image(
                               image: AssetImage('assets/$_logo'),
-                              height: 100.0,
+                              height:
+                                  Config.appName.toLowerCase() == 'chamasoft'
+                                      ? 100.0
+                                      : 50.0,
                             ),
                           ),
                           heading1(
