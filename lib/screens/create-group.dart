@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/configure-group.dart';
 import 'package:chamasoft/utilities/common.dart';

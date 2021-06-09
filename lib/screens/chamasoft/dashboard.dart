@@ -16,6 +16,7 @@ import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
 // import 'package:chamasoft/screens/chamasoft/wallet.dart';
 import 'package:chamasoft/screens/create-group.dart';
+import 'package:chamasoft/screens/new-group/new-group.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
@@ -424,6 +425,21 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               ),
             );
           },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _eventDispatcher.add('TAP'); //Closes the AppSwitcher
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (BuildContext context) => NewGroup(),
+              ),
+            );
+          },
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
+          backgroundColor: primaryColor,
         ),
       ),
     );
