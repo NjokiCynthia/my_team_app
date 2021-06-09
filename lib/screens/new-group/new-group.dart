@@ -140,7 +140,20 @@ class _NewGroupState extends State<NewGroup> {
         content: Form(
           key: _stepOneFormKey,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              subtitle1(
+                text: "Tell us more about your group.",
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start,
+              ),
+              subtitle2(
+                text: "All fields are required",
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start,
+              ),
               TextFormField(
                 validator: (val) => validateGroupInfo('name', val),
                 decoration: InputDecoration(
