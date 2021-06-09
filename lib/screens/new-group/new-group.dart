@@ -1,10 +1,13 @@
+import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +29,38 @@ class _NewGroupState extends State<NewGroup> {
     "name": '',
   };
   bool _saving = false;
+
+  PickedFile avatar;
+  File imageFile;
+  final ImagePicker _picker = ImagePicker();
+
+  void _onImagePickerClicked(ImageSource source, BuildContext context) async {
+    try {
+      final pickedFile = await _picker.getImage(
+          source: source,
+          maxHeight: 300,
+          maxWidth: 300,
+          imageQuality: IMAGE_QUALITY);
+      setState(() {
+        avatar = pickedFile;
+        imageFile = File(avatar.path);
+      });
+    } catch (e) {
+      //show SnackBar?
+      //setState(() {});
+    }
+  }
+
+  Future<void> retrieveLostData() async {
+    final LostData lostData = await _picker.getLostData();
+    if (lostData.isEmpty) return;
+
+    if (lostData.file != null) {
+      setState(() {
+        avatar = lostData.file;
+      });
+    } else {}
+  }
 
   goTo(int step) {
     setState(() => currentStep = step);
@@ -143,16 +178,86 @@ class _NewGroupState extends State<NewGroup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               subtitle1(
-                text: "Tell us more about your group.",
+                text: "Select group avatar",
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start,
               ),
-              subtitle2(
-                text: "All fields are required",
-                // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
-                textAlign: TextAlign.start,
+              Padding(
+                padding: EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: <Widget>[
+                    !kIsWeb && defaultTargetPlatform == TargetPlatform.android
+                        ? FutureBuilder<void>(
+                            future: retrieveLostData(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<void> snapshot) {
+                              switch (snapshot.connectionState) {
+                                case ConnectionState.none:
+                                case ConnectionState.waiting:
+                                  return CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('assets/no-group.png'),
+                                    backgroundColor: Colors.transparent,
+                                    radius: 50,
+                                  );
+                                case ConnectionState.done:
+                                  return CircleAvatar(
+                                    backgroundImage: avatar == null
+                                        ? AssetImage('assets/no-group.png')
+                                        : FileImage(File(avatar.path)),
+                                    backgroundColor: Colors.transparent,
+                                    radius: 50,
+                                  );
+                                default:
+                                  return CircleAvatar(
+                                    backgroundImage:
+                                        AssetImage('assets/no-group.png'),
+                                    backgroundColor: Colors.transparent,
+                                    radius: 50,
+                                  );
+                              }
+                            },
+                          )
+                        : CircleAvatar(
+                            backgroundImage: avatar == null
+                                ? AssetImage('assets/no-group.png')
+                                : FileImage(File(avatar.path)),
+                            backgroundColor: Colors.transparent,
+                            radius: 50,
+                          ),
+                    Positioned(
+                      bottom: -8.0,
+                      right: -8.0,
+                      child: IconButton(
+                        icon: Container(
+                          padding: EdgeInsets.all(2.0),
+                          width: 42.0,
+                          height: 42.0,
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                            size: 20.0,
+                          ),
+                          decoration: BoxDecoration(
+                            color: primaryColor,
+                            border: Border.all(
+                              color: Theme.of(context).backgroundColor,
+                              width: 2.0,
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(32),
+                            ),
+                          ),
+                        ),
+                        onPressed: () async {
+                          _onImagePickerClicked(ImageSource.gallery, context);
+                        },
+                      ),
+                    )
+                  ],
+                ),
               ),
               TextFormField(
                 validator: (val) => validateGroupInfo('name', val),
@@ -207,7 +312,7 @@ class _NewGroupState extends State<NewGroup> {
         ),
       ),
       Step(
-        title: formatStep(5, "Summary"),
+        title: formatStep(5, "Confirmation"),
         isActive: currentStep >= 5 ? true : false,
         state: currentStep > 5 ? StepState.complete : StepState.disabled,
         content: Container(
@@ -266,7 +371,7 @@ class _NewGroupState extends State<NewGroup> {
                             // ),
                             subtitle2(
                               text:
-                                  "Follow all the steps and provide all required data about this meeting. You'll be able to preview a summary of the meeting before you submit.",
+                                  "Follow all the steps and provide all required data about this group. You'll be able to preview a summary of the group before you submit.",
                               // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.start,
