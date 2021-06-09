@@ -8,6 +8,7 @@ import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/notifications/notification-alert.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 // import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
@@ -155,6 +156,29 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   String getUserName(String name) =>
       name.isNotEmpty ? name.trim().split(' ')[0].toLowerCase() : 'Home';
 
+  notificationAlertDialog() {
+    return showGeneralDialog(
+      // barrierColor: Colors.white.withOpacity(0.5),
+      barrierDismissible: false,
+      transitionBuilder: (context, a1, a2, widget) {
+        final curvedValue = Curves.easeInOutBack.transform(a1.value) - 1.0;
+        return Transform(
+          transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+          child: Opacity(
+            opacity: a1.value,
+            child: NotificationAlert(),
+          ),
+        );
+      },
+      transitionDuration: Duration(milliseconds: 400),
+      barrierLabel: '',
+      context: context,
+      pageBuilder: (context, animation1, animation2) {
+        return SizedBox();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
@@ -188,37 +212,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           elevation: _appBarElevation,
           automaticallyImplyLeading: false,
           actions: <Widget>[
-            // Stack(
-            //   alignment: Alignment.center,
-            //   children: [
-            //     IconButton(
-            //       icon: Icon(
-            //         Icons.credit_card,
-            //         color: Theme.of(context).textSelectionHandleColor,
-            //       ),
-            //       onPressed: () => {
-            //         _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-            //         Navigator.of(context).push(
-            //           MaterialPageRoute(
-            //             builder: (BuildContext context) => Wallet(),
-            //           ),
-            //         ),
-            //       },
-            //     ),
-            //     Positioned(
-            //       top: 12,
-            //       right: 6,
-            //       child: Container(
-            //         width: 12.0,
-            //         height: 12.0,
-            //         decoration: new BoxDecoration(
-            //           color: Colors.blue,
-            //           shape: BoxShape.circle,
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
             Visibility(
               visible: (_group.isGroupAdmin),
               child: Stack(
@@ -272,12 +265,13 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                     // onPressed: null, // Disable notifications for now
                     onPressed: () => {
                           _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ChamasoftNotifications(),
-                            ),
-                          ),
+                          notificationAlertDialog()
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (BuildContext context) =>
+                          //         ChamasoftNotifications(),
+                          //   ),
+                          // ),
                         }),
                 Visibility(
                   visible: (_notificationCount),
