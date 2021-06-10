@@ -1,7 +1,10 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -21,9 +24,16 @@ class SelectGroupMembers extends StatefulWidget {
 
 class _SelectGroupMembersState extends State<SelectGroupMembers> {
   String _title = "Add Members";
+  Future<void> _memberFuture;
+  Map<String, String> roles = {
+    "1": "Chairperson",
+    "2": "Secretary",
+    "3": "Member",
+    "4": "Treasurer",
+  };
   final List<Map<String, dynamic>> addChoices = [
-    {'title': 'From Contacts', 'icon': Icons.perm_contact_calendar},
-    {'title': 'Add manually', 'icon': Icons.edit},
+    {'id': 1, 'title': 'From Contacts', 'icon': Icons.perm_contact_calendar},
+    {'id': 2, 'title': 'Add manually', 'icon': Icons.edit},
   ];
   double _appBarElevation = 0;
   ScrollController _scrollController;
@@ -55,21 +65,16 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
       _isLoading = true;
     });
     final group = Provider.of<Groups>(context, listen: false);
-    // await group.fetchMembers();
-    List<dynamic> _members = widget.selected;
-    List<dynamic> _tmpMbrs = [];
+    await group.fetchMembers();
     setState(() {
       group.members.forEach((m) {
-        int selCount = _tmpMbrs.where((i) => i['id'] == m.id).toList().length;
-        if (selCount == 0) {
-          _groupMembers.add({
-            'id': m.id,
-            'name': m.name,
-            'identity': m.identity,
-            'avatar': m.avatar,
-            'user_id': m.userId,
-          });
-        }
+        _groupMembers.add({
+          'id': m.id,
+          'name': m.name,
+          'identity': m.identity,
+          'avatar': m.avatar,
+          'user_id': m.userId,
+        });
       });
       _isLoading = false;
       _isInit = false;
@@ -83,9 +88,10 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
 
   @override
   void initState() {
+    super.initState();
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    super.initState();
+    // _memberFuture = _getMembers();
   }
 
   @override
@@ -150,10 +156,144 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
         ],
       ),
       body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 3.0,
-              ),
+          ? Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 16.0,
+                      bottom: 8.0,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 150,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                            dataLoadingEffect(
+                              context: context,
+                              width: 80,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 100,
+                              height: 16,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 0.0,
+                      bottom: 8.0,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 150,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                            dataLoadingEffect(
+                              context: context,
+                              width: 80,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 100,
+                              height: 16,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0),
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 0.0,
+                      bottom: 8.0,
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 150,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                            dataLoadingEffect(
+                              context: context,
+                              width: 80,
+                              height: 20,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 8.0,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            dataLoadingEffect(
+                              context: context,
+                              width: 100,
+                              height: 16,
+                              borderRadius: 16.0,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             )
           : Builder(
               builder: (BuildContext context) {
