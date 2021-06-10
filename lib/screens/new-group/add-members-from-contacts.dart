@@ -88,7 +88,7 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
         elevation: 0,
         leadingIcon: LineAwesomeIcons.close,
         title:
-            "Add Members${_selectedContacts.length == 0 ? '' : '(${_selectedContacts.length})'}",
+            "Select Members${_selectedContacts.length == 0 ? '' : ' (${_selectedContacts.length})'}",
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
           if (_selectedContacts.length > 0) {
@@ -111,13 +111,30 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
                     color: (themeChangeProvider.darkTheme)
                         ? Colors.blueGrey[800]
                         : Color(0xffededfe),
-                    padding: EdgeInsets.only(top: 20.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: "Search Contact",
-                        prefixIcon: Icon(LineAwesomeIcons.search),
+                    padding: EdgeInsets.all(10.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.5),
+                        borderRadius: BorderRadius.circular(32),
                       ),
-                      controller: controller,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          labelText: "Search contact",
+                          prefixIcon: Icon(LineAwesomeIcons.search),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          contentPadding: EdgeInsets.only(
+                            left: 15,
+                            bottom: 11,
+                            top: 11,
+                            right: 15,
+                          ),
+                        ),
+                        controller: controller,
+                      ),
                     ),
                   ),
                   Expanded(
