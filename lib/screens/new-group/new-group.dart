@@ -30,6 +30,7 @@ class _NewGroupState extends State<NewGroup> {
   final _stepOneFormKey = GlobalKey<FormState>();
   Map<String, dynamic> _data = {
     "name": '',
+    "members": [],
   };
   bool _saving = false;
   bool _isInit = true;
