@@ -1,9 +1,10 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/new-group/add-members-from-contacts.dart';
+import 'package:chamasoft/screens/new-group/add-members-manually.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -23,8 +24,7 @@ class SelectGroupMembers extends StatefulWidget {
 }
 
 class _SelectGroupMembersState extends State<SelectGroupMembers> {
-  String _title = "Add Members";
-  Future<void> _memberFuture;
+  String _title = "Group Members";
   Map<String, String> roles = {
     "1": "Chairperson",
     "2": "Secretary",
@@ -83,7 +83,12 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
   }
 
   void choiceAction(String choice) {
-    print('choice >>>>> $choice');
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) =>
+            choice == '1' ? SelectFromContacts() : AddGroupMembersManually(),
+      ),
+    );
   }
 
   @override
@@ -126,10 +131,11 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                 Icons.add,
               ),
               onSelected: choiceAction,
+              enabled: !_isLoading,
               itemBuilder: (BuildContext context) {
                 return addChoices.map((Map<String, dynamic> choice) {
                   return PopupMenuItem<String>(
-                    value: choice['title'],
+                    value: choice['id'].toString(),
                     child: Row(
                       children: [
                         Icon(
@@ -359,27 +365,38 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                       ListTile(
                                         isThreeLine: false,
                                         dense: true,
-                                        title: Text(
-                                          _groupMembers[index]['name'],
-                                          style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w700,
-                                            color: primaryColor,
-                                          ),
+                                        title: customTitleWithWrap(
+                                          text:
+                                              '${_groupMembers[index]['name']}',
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                          fontWeight: FontWeight.w800,
+                                          textAlign: TextAlign.start,
+                                          fontSize: 15.0,
                                         ),
-                                        subtitle: Text(
-                                          _groupMembers[index]['identity'],
-                                          style: TextStyle(
-                                            fontSize: 12,
-                                            color: primaryColor,
-                                          ),
+                                        subtitle: customTitleWithWrap(
+                                          text:
+                                              '${_groupMembers[index]['identity']}',
+                                          fontWeight: FontWeight.w600,
+                                          textAlign: TextAlign.start,
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor
+                                              .withOpacity(0.5),
+                                          fontSize: 12.0,
                                         ),
                                         leading: Container(
                                           height: 42,
                                           width: 42,
                                           child: CircleAvatar(
-                                            foregroundColor: Colors.white,
-                                            backgroundColor: primaryColor,
+                                            foregroundColor:
+                                                (themeChangeProvider.darkTheme)
+                                                    ? Colors.blueGrey[900]
+                                                    : Colors.white,
+                                            backgroundColor: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
                                             child: Text(
                                               getInitials(
                                                 _groupMembers[index]['name'],
@@ -387,7 +404,16 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                             ),
                                           ),
                                         ),
-                                      )
+                                        trailing: smallBadgeButton(
+                                          backgroundColor:
+                                              Colors.blueGrey.withOpacity(0.2),
+                                          textColor: Colors.blueGrey,
+                                          text: roles["3"],
+                                          action: () {},
+                                          buttonHeight: 24.0,
+                                          textSize: 12.0,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 );
