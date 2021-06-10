@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/new-group/select-members.dart';
+import 'package:chamasoft/screens/new-group/select-group-members.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
