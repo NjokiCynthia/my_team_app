@@ -36,6 +36,7 @@ class _NewGroupState extends State<NewGroup> {
   List<Country> _countryOptions = [];
   int countryId = 1;
 
+  bool _isFormInputEnabled = true;
   PickedFile avatar;
   File imageFile;
   final ImagePicker _picker = ImagePicker();
@@ -90,7 +91,8 @@ class _NewGroupState extends State<NewGroup> {
           if (_data['name'] == '') {
             _showSnackbar("You need to fill group info to continue.", 4);
           } else {
-            goTo(1);
+            // goTo(1);
+            _createGroup();
           }
         } else {
           _showSnackbar("Fill in the required fields to continue.", 4);
@@ -151,14 +153,42 @@ class _NewGroupState extends State<NewGroup> {
     }
   }
 
+  void _createGroup() async {
+    setState(() {
+      _isFormInputEnabled = false;
+      _saving = true;
+    });
+
+    try {
+      await Provider.of<Groups>(context, listen: false).createGroup(
+          groupName: _data['name'], countryId: countryId, avatar: imageFile);
+      goTo(1);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _createGroup();
+          });
+    } finally {
+      setState(() {
+        _saving = false;
+        _isFormInputEnabled = true;
+      });
+    }
+  }
+
   Future<void> _fetchCountryOptions(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       showDialog<String>(
+          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: primaryColor,
+              ),
             );
           });
     });
@@ -306,6 +336,8 @@ class _NewGroupState extends State<NewGroup> {
                 ),
               ),
               TextFormField(
+                enabled: _isFormInputEnabled,
+                textCapitalization: TextCapitalization.words,
                 validator: (val) => validateGroupInfo('name', val),
                 decoration: InputDecoration(
                   labelText: 'Group Name',
