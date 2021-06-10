@@ -6,6 +6,7 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
@@ -24,7 +25,7 @@ class _NewGroupState extends State<NewGroup> {
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int currentStep = 0;
+  int currentStep = 1;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -211,6 +212,29 @@ class _NewGroupState extends State<NewGroup> {
     }
   }
 
+  String _getFirstName(String name) {
+    String resp = "";
+    try {
+      resp = name.split(" ")[0];
+    } catch (e) {
+      resp = name;
+    }
+    return resp;
+  }
+
+  String _renderMembersText() {
+    List<dynamic> _mbrs = _data['members'];
+    if (_mbrs.length == 1)
+      return "1 member";
+    else if (_mbrs.length > 1)
+      return _getFirstName(_data['members'][0]['name']) +
+          " & " +
+          (_mbrs.length - 1).toString() +
+          " other members";
+    else
+      return "Tap to add members";
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -374,7 +398,30 @@ class _NewGroupState extends State<NewGroup> {
         isActive: currentStep >= 1 ? true : false,
         state: currentStep > 1 ? StepState.complete : StepState.disabled,
         content: Column(
-          children: <Widget>[],
+          children: <Widget>[
+            Container(
+              color: primaryColor.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action:
+                    () {} /*=> Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => SelectMembers(
+                      type: 'present',
+                      selected: _data['members'],
+                      members: (membrs) => _setMembers(membrs),
+                    ),
+                  ),
+                )*/
+                ,
+                title: "Group Members",
+                subtitle: _renderMembersText(),
+                icon: Icons.add,
+                color: primaryColor,
+              ),
+            ),
+          ],
         ),
       ),
       Step(
