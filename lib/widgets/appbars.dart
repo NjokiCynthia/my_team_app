@@ -74,7 +74,7 @@ Widget tertiaryPageAppbar(
     List<Widget> actions}) {
   return AppBar(
     title: Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         screenActionButton(
@@ -83,12 +83,20 @@ Widget tertiaryPageAppbar(
           textColor: primaryColor,
           action: action,
         ),
+        SizedBox(width: 20.0),
         heading2(color: primaryColor, text: title),
-        screenActionButton(
-          icon: trailingIcon,
-          backgroundColor: primaryColor.withOpacity(0.1),
-          textColor: primaryColor,
-          action: trailingAction,
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              screenActionButton(
+                icon: trailingIcon,
+                backgroundColor: primaryColor.withOpacity(0.1),
+                textColor: primaryColor,
+                action: trailingAction,
+              ),
+            ],
+          ),
         ),
       ],
     ),
