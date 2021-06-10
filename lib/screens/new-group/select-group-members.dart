@@ -2,7 +2,6 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +20,11 @@ class SelectGroupMembers extends StatefulWidget {
 }
 
 class _SelectGroupMembersState extends State<SelectGroupMembers> {
-  String _title = "Select Members";
+  String _title = "Add Members";
+  final List<Map<String, dynamic>> addChoices = [
+    {'title': 'From Contacts', 'icon': Icons.perm_contact_calendar},
+    {'title': 'Add manually', 'icon': Icons.edit},
+  ];
   double _appBarElevation = 0;
   ScrollController _scrollController;
   bool _isLoading = true;
@@ -74,60 +77,8 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
     return true;
   }
 
-  void _clearMembersDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: Theme.of(context).backgroundColor,
-          title: heading2(
-              text: "Clear Selection",
-              textAlign: TextAlign.start,
-              // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor),
-          content: customTitleWithWrap(
-              text: "Are you sure you want to clear all selected members?",
-              textAlign: TextAlign.start,
-              // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
-              maxLines: null),
-          actions: <Widget>[
-            negativeActionDialogButton(
-              text: "Cancel",
-              // ignore: deprecated_member_use
-              color: Theme.of(context).textSelectionHandleColor,
-              action: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            // ignore: deprecated_member_use
-            FlatButton(
-              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-              child: customTitle(
-                text: "Yes, clear all",
-                color: Colors.red,
-                fontWeight: FontWeight.w600,
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-                widget.members({
-                  'present': [],
-                  'late': [],
-                  'withApology': [],
-                  'withoutApology': [],
-                });
-                Navigator.of(context).pop();
-              },
-              shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(4.0),
-              ),
-              textColor: Colors.red,
-              color: Colors.red.withOpacity(0.2),
-            )
-          ],
-        );
-      },
-    );
+  void choiceAction(String choice) {
+    print('choice >>>>> $choice');
   }
 
   @override
@@ -161,6 +112,42 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
         title: _title,
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: PopupMenuButton<String>(
+              icon: Icon(
+                Icons.add,
+              ),
+              onSelected: choiceAction,
+              itemBuilder: (BuildContext context) {
+                return addChoices.map((Map<String, dynamic> choice) {
+                  return PopupMenuItem<String>(
+                    value: choice['title'],
+                    child: Row(
+                      children: [
+                        Icon(
+                          choice['icon'],
+                          size: 22.0,
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                        ),
+                        SizedBox(width: 12.0),
+                        Text(
+                          choice['title'],
+                          style: TextStyle(
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }).toList();
+              },
+            ),
+          ),
+        ],
       ),
       body: _isLoading
           ? Center(
@@ -186,7 +173,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                 // ignore: deprecated_member_use
                                 .textSelectionHandleColor,
                             size: 24.0,
-                            semanticLabel: 'Select members...',
+                            semanticLabel: 'Add members...',
                           ),
                           SizedBox(
                             width: 10,
@@ -196,7 +183,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 subtitle1(
-                                  text: "Select members",
+                                  text: "Group members",
                                   textAlign: TextAlign.start,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
@@ -204,24 +191,13 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                                 ),
                                 subtitle2(
                                   text:
-                                      "Select the members you want to add and save.",
+                                      "Select the members you want to add to the group, you can also update their roles.",
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
                               ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: 10.0),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.close,
-                                color: Colors.red[500],
-                              ),
-                              highlightColor: Colors.red[100].withOpacity(0.8),
-                              onPressed: () => _clearMembersDialog(),
                             ),
                           ),
                         ],
