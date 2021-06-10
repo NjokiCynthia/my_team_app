@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/new-group/select-members.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -129,6 +130,12 @@ class _NewGroupState extends State<NewGroup> {
         fontWeight: currentStep >= step ? FontWeight.bold : FontWeight.normal,
       ),
     );
+  }
+
+  _setMembers(dynamic members) {
+    setState(() {
+      _data['members'] = members;
+    });
   }
 
   void _scrollListener() {
@@ -404,17 +411,14 @@ class _NewGroupState extends State<NewGroup> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action:
-                    () {} /*=> Navigator.of(context).push(
+                action: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (BuildContext context) => SelectMembers(
-                      type: 'present',
+                    builder: (BuildContext context) => SelectGroupMembers(
                       selected: _data['members'],
                       members: (membrs) => _setMembers(membrs),
                     ),
                   ),
-                )*/
-                ,
+                ),
                 title: "Group Members",
                 subtitle: _renderMembersText(),
                 icon: Icons.add,
