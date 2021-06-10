@@ -239,9 +239,18 @@ class _NewGroupState extends State<NewGroup> {
 
     steps = [
       Step(
-        title: formatStep(0, "Group Info"),
-        isActive: currentStep >= 0 ? true : false,
-        state: currentStep > 0 ? StepState.complete : StepState.disabled,
+        title: currentStep == 0
+            ? formatStep(0, "Group Info")
+            : Text(
+                "Group Info",
+                style: TextStyle(
+                  // ignore: deprecated_member_use
+                  color: Theme.of(context).textSelectionHandleColor,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+        isActive: currentStep == 0 ? true : false,
+        state: StepState.disabled,
         content: Form(
           key: _stepOneFormKey,
           child: Column(
