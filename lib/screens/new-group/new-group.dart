@@ -2,8 +2,11 @@ import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/country-dropdown.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +32,9 @@ class _NewGroupState extends State<NewGroup> {
     "name": '',
   };
   bool _saving = false;
+  bool _isInit = true;
+  List<Country> _countryOptions = [];
+  int countryId = 1;
 
   PickedFile avatar;
   File imageFile;
@@ -145,6 +151,35 @@ class _NewGroupState extends State<NewGroup> {
     }
   }
 
+  Future<void> _fetchCountryOptions(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
+      setState(() {
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    } on CustomException catch (error) {
+      Navigator.of(context, rootNavigator: true).pop();
+      StatusHandler().handleStatus(
+        context: context,
+        error: error,
+        callback: () {
+          _fetchCountryOptions(context);
+        },
+      );
+    }
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -166,6 +201,11 @@ class _NewGroupState extends State<NewGroup> {
     final currentGroup = group.getCurrentGroup();
     _data['group_id'] = currentGroup.groupId;
     _data['user_id'] = auth.id;
+    // Handle countries
+    _countryOptions = Provider.of<Groups>(context).countryOptions;
+    if (_countryOptions == null || _countryOptions.isEmpty) {
+      if (_isInit) _fetchCountryOptions(context);
+    }
 
     steps = [
       Step(
@@ -179,6 +219,12 @@ class _NewGroupState extends State<NewGroup> {
             children: <Widget>[
               subtitle1(
                 text: "Select group avatar",
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start,
+              ),
+              subtitle2(
+                text: "Could be a logo or an image associated with your group",
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start,
@@ -241,7 +287,7 @@ class _NewGroupState extends State<NewGroup> {
                             size: 20.0,
                           ),
                           decoration: BoxDecoration(
-                            color: primaryColor,
+                            color: Colors.black,
                             border: Border.all(
                               color: Theme.of(context).backgroundColor,
                               width: 2.0,
@@ -267,13 +313,15 @@ class _NewGroupState extends State<NewGroup> {
                   // contentPadding: EdgeInsets.only(bottom: 0.0),
                 ),
               ),
-              TextFormField(
-                validator: (val) => validateGroupInfo('country', val),
-                decoration: InputDecoration(
-                  labelText: 'Country',
-                  hintText: 'The country of operation for this group',
-                  // contentPadding: EdgeInsets.only(bottom: 0.0),
-                ),
+              CountryDropdown(
+                labelText: 'Select Country',
+                listItems: _countryOptions,
+                selectedItem: countryId,
+                onChanged: (value) {
+                  setState(() {
+                    countryId = value;
+                  });
+                },
               ),
             ],
           ),
@@ -296,7 +344,7 @@ class _NewGroupState extends State<NewGroup> {
         ),
       ),
       Step(
-        title: formatStep(3, "Loans"),
+        title: formatStep(3, "Accounts"),
         isActive: currentStep >= 3 ? true : false,
         state: currentStep > 3 ? StepState.complete : StepState.disabled,
         content: Column(
@@ -304,17 +352,9 @@ class _NewGroupState extends State<NewGroup> {
         ),
       ),
       Step(
-        title: formatStep(4, "Accounts"),
+        title: formatStep(4, "Confirmation"),
         isActive: currentStep >= 4 ? true : false,
         state: currentStep > 4 ? StepState.complete : StepState.disabled,
-        content: Column(
-          children: <Widget>[],
-        ),
-      ),
-      Step(
-        title: formatStep(5, "Confirmation"),
-        isActive: currentStep >= 5 ? true : false,
-        state: currentStep > 5 ? StepState.complete : StepState.disabled,
         content: Container(
           width: double.infinity,
           child: Column(
