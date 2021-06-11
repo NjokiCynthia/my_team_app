@@ -1,13 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:chamasoft/providers/groups.dart' as Groups;
+import 'package:chamasoft/providers/groups.dart' as GroupsProvider;
+import 'package:provider/provider.dart';
 
 class NotificationAlert extends StatefulWidget {
-  final Groups.Notification notification;
+  final GroupsProvider.Notification notification;
 
   const NotificationAlert({this.notification});
 
@@ -22,6 +24,16 @@ class _NotificationAlertState extends State<NotificationAlert> {
     // ignore: todo
     // TODO: implement initState
     super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // ignore: todo
+    // TODO: implement didChangeDependencies
+    //mark notification as read
+    Provider.of<Groups>(context, listen: false).markNotificationAsRead((widget.notification.id).toString());
+
+    super.didChangeDependencies();
   }
 
   void _takeNotificationAction(){

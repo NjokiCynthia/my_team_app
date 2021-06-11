@@ -241,11 +241,13 @@ class Dashboard with ChangeNotifier {
 
   void _updateMemberDashboardData(String groupId) async {
     if (_memberDashboardData[groupId].containsKey("member_details")) {
-      var memberDetails = _memberDashboardData[groupId]["member_details"]
+      var groupMemberObject = _memberDashboardData[groupId];
+      var memberDetails = groupMemberObject["member_details"]
           as Map<String, dynamic>;
       _notificationCount =
-          double.tryParse(memberDetails["notification_count"].toString()) ??
+          double.tryParse(groupMemberObject["notification_count"].toString()) ??
               0.0;
+      print("notifications count in function: $_notificationCount");
       _memberContributionAmount =
           double.tryParse(memberDetails["total_contributions"].toString()) ??
               0.0;
