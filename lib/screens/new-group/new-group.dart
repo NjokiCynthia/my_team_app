@@ -407,6 +407,44 @@ class _NewGroupState extends State<NewGroup> {
     }
   }
 
+  Widget _custRadio(dynamic option, String type, Function action) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Radio(
+          activeColor: primaryColor,
+          value: option['value'],
+          // title: Text(option['name']),
+          groupValue: type == "referral" ? _hasReferralCode : _isNgoAssociated,
+          onChanged: (val) => {
+            setState(() {
+              type == "referral"
+                  ? _hasReferralCode = val
+                  : _isNgoAssociated = val;
+            })
+          },
+        ),
+        GestureDetector(
+          onTap: action,
+          child: Text(
+            option['name'],
+            style: TextStyle(
+              color:
+                  (type == "referral" ? _hasReferralCode : _isNgoAssociated) ==
+                          option['value']
+                      ? primaryColor
+                      : Theme.of(context)
+                          // ignore: deprecated_member_use
+                          .textSelectionHandleColor,
+            ),
+            textAlign: TextAlign.left,
+          ),
+        ),
+        SizedBox(width: 15.0),
+      ],
+    );
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -693,39 +731,15 @@ class _NewGroupState extends State<NewGroup> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: _radOptions
-                      .map((option) => Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Radio(
-                                activeColor: primaryColor,
-                                value: option['value'],
-                                // title: Text(option['name']),
-                                groupValue: _isNgoAssociated,
-                                onChanged: (val) {
-                                  setState(() {
-                                    _isNgoAssociated = val;
-                                  });
-                                },
-                              ),
-                              GestureDetector(
-                                onTap: () => setState(() {
-                                  _isNgoAssociated = option['value'];
-                                }),
-                                child: Text(
-                                  option['name'],
-                                  style: TextStyle(
-                                    color: _isNgoAssociated == option['value']
-                                        ? primaryColor
-                                        : Theme.of(context)
-                                            // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              SizedBox(width: 15.0),
-                            ],
-                          ))
+                      .map(
+                        (option) => _custRadio(
+                          option,
+                          "associated",
+                          () => setState(() {
+                            _isNgoAssociated = option['value'];
+                          }),
+                        ),
+                      )
                       .toList(),
                 ),
               ),
@@ -748,39 +762,15 @@ class _NewGroupState extends State<NewGroup> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: _radOptions
-                      .map((option) => Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Radio(
-                                activeColor: primaryColor,
-                                value: option['value'],
-                                // title: Text(option['name']),
-                                groupValue: _hasReferralCode,
-                                onChanged: (val) {
-                                  setState(() {
-                                    _hasReferralCode = val;
-                                  });
-                                },
-                              ),
-                              GestureDetector(
-                                onTap: () => setState(() {
-                                  _hasReferralCode = option['value'];
-                                }),
-                                child: Text(
-                                  option['name'],
-                                  style: TextStyle(
-                                    color: _hasReferralCode == option['value']
-                                        ? primaryColor
-                                        : Theme.of(context)
-                                            // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
-                                  ),
-                                  textAlign: TextAlign.left,
-                                ),
-                              ),
-                              SizedBox(width: 15.0),
-                            ],
-                          ))
+                      .map(
+                        (option) => _custRadio(
+                          option,
+                          "referral",
+                          () => setState(() {
+                            _hasReferralCode = option['value'];
+                          }),
+                        ),
+                      )
                       .toList(),
                 ),
               ),
