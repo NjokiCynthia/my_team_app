@@ -2293,7 +2293,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<bool> completeGroupSetup(String referralCode) async {
-    const url = EndpointUrl.ADD_MEMBERS;
+    const url = EndpointUrl.COMPLETE_GROUP_SETUP;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
