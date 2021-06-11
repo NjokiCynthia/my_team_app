@@ -4,13 +4,31 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:chamasoft/providers/groups.dart' as Groups;
 
 class NotificationAlert extends StatefulWidget {
+  final Groups.Notification notification;
+
+  const NotificationAlert({this.notification});
+
   @override
   _NotificationAlertState createState() => _NotificationAlertState();
 }
 
 class _NotificationAlertState extends State<NotificationAlert> {
+
+  @override
+  void initState() {
+    // ignore: todo
+    // TODO: implement initState
+    super.initState();
+  }
+
+  void _takeNotificationAction(){
+    return null;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -31,7 +49,9 @@ class _NotificationAlertState extends State<NotificationAlert> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   heading2(
-                    text: "Some notification title",
+                    text: widget.notification.subject != null
+                        ? widget.notification.subject
+                        : "Null subject",
                     color: primaryColor.withOpacity(0.8),
                     textAlign: TextAlign.center,
                   ),
@@ -62,8 +82,9 @@ class _NotificationAlertState extends State<NotificationAlert> {
                     height: 20.0,
                   ),
                   subtitle2(
-                    text:
-                        "Lorem ipsum dolor simet lorem ipsum dolor simet lorem ipsum dolor simet lorem ipsum dolor simet lorem ipsum dolor simet lorem ipsum dolor simet lorem ipsum.",
+                    text: widget.notification.message != null
+                        ? widget.notification.message
+                        : "The message is null",
                     color: primaryColor.withOpacity(0.8),
                     textAlign: TextAlign.center,
                   ),
@@ -71,18 +92,37 @@ class _NotificationAlertState extends State<NotificationAlert> {
                     height: 20.0,
                   ),
                   // ignore: deprecated_member_use
-                  FlatButton(
-                    padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-                    child: customTitle(
-                      text: "Action Here",
-                      color: primaryColor,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    onPressed: () {},
-                    shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(4.0)),
-                    textColor: primaryColor,
-                    color: primaryColor.withOpacity(0.2),
+                  Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      TextButton(
+                        child: customTitle(
+                          text: "Cancel",
+                          color:  Colors.red,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        onPressed: ()=> Navigator.of(context).pop(),
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.red.withOpacity(0.2),
+                          padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(4.0))
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: _takeNotificationAction, 
+                        child: customTitle(
+                          text: "View Statement",
+                          color:  primaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                        style: TextButton.styleFrom(
+                          primary: primaryColor, 
+                          backgroundColor: primaryColor.withOpacity(0.2),
+                          padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(4.0))
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
