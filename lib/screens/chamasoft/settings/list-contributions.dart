@@ -164,28 +164,56 @@ class _ListContributionsState extends State<ListContributions> {
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Contributions",
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        backgroundColor: primaryColor,
-        onPressed: () async {
-          final result =
-              Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
-            builder: (_) => CreateContribution(),
-          ));
+        actions: [
+          Padding(
+            padding: EdgeInsets.only(right: 20.0),
+            child: IconButton(
+              icon: Icon(
+                Icons.add,
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+              ),
+              onPressed: () async {
+                Navigator.of(_scaffoldKey.currentContext)
+                    .push(
+                  MaterialPageRoute(
+                    builder: (_) => CreateContribution(),
+                  ),
+                )
+                    .then((value) {
+                  _refreshIndicatorKey.currentState.show();
+                  _fetchContributions(_scaffoldKey.currentContext);
+                });
+                // final result = Navigator.of(_scaffoldKey.currentContext)
+                //     .push(MaterialPageRoute(
+                //   builder: (_) => CreateContribution(),
+                // ),);
 
-          if (result != null) {
-            int status = int.tryParse(result.toString()) ?? 0;
-            if (status == 1) {
-              _refreshIndicatorKey.currentState.show();
-              _fetchContributions(_scaffoldKey.currentContext);
-            }
-          }
-        },
+                // if (result != null) {
+                //   int status = int.tryParse(result.toString()) ?? 0;
+                //   if (status == 1) {
+                //     _refreshIndicatorKey.currentState.show();
+                //     _fetchContributions(_scaffoldKey.currentContext);
+                //   }
+                // }
+              },
+            ),
+          ),
+        ],
       ),
+      floatingActionButton:
+          Provider.of<Groups>(context, listen: false).contributions.length > 0
+              ? FloatingActionButton(
+                  child: const Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  ),
+                  backgroundColor: primaryColor,
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              : SizedBox(),
       backgroundColor: Theme.of(context).backgroundColor,
       // backgroundColor: Colors.transparent,
       body: Builder(
