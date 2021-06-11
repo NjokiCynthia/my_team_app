@@ -167,6 +167,7 @@ class _LoginState extends State<Login> {
             _isFormInputEnabled = false;
           });
           try {
+            print("signature: $appSignature");
             await Provider.of<Auth>(context, listen: false)
                 .generatePin(_identity, appSignature);
             Navigator.of(context).push(MaterialPageRoute(
