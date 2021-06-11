@@ -63,11 +63,12 @@ class _ListContributionsState extends State<ListContributions> {
       await Provider.of<Groups>(context, listen: false).fetchContributions();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchContributions(context);
-          });
+        context: context,
+        error: error,
+        callback: () {
+          _fetchContributions(context);
+        },
+      );
     }
   }
 
@@ -159,6 +160,7 @@ class _ListContributionsState extends State<ListContributions> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
+        elevation: 0,
         context: context,
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
@@ -185,8 +187,8 @@ class _ListContributionsState extends State<ListContributions> {
           }
         },
       ),
-      //backgroundColor: Theme.of(context).backgroundColor,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Theme.of(context).backgroundColor,
+      // backgroundColor: Colors.transparent,
       body: Builder(
         builder: (BuildContext context) {
           return RefreshIndicator(
@@ -196,10 +198,11 @@ class _ListContributionsState extends State<ListContributions> {
             key: _refreshIndicatorKey,
             onRefresh: () => _fetchContributions(_scaffoldKey.currentContext),
             child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                decoration: primaryGradient(context),
-                child: Consumer<Groups>(builder: (context, groupData, child) {
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+              // decoration: primaryGradient(context),
+              child: Consumer<Groups>(
+                builder: (context, groupData, child) {
                   return groupData.contributions.length > 0
                       ? ListView.separated(
                           padding: EdgeInsets.only(bottom: 50.0),
@@ -303,10 +306,16 @@ class _ListContributionsState extends State<ListContributions> {
                             );
                           },
                         )
-                      : betterEmptyList(
-                          message:
-                              "Sorry, you have not added any contributions");
-                })),
+                      : Padding(
+                          child: betterEmptyList(
+                            message:
+                                "Sorry, you have not added any contributions",
+                          ),
+                          padding: EdgeInsets.only(bottom: 80.0),
+                        );
+                },
+              ),
+            ),
           );
         },
       ),
