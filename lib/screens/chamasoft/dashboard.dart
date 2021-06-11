@@ -14,7 +14,6 @@ import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
 // import 'package:chamasoft/screens/chamasoft/wallet.dart';
-import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/new-group/new-group.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -71,7 +70,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
       // CREATE NEW Selected, handle it!
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (BuildContext context) => CreateGroup(),
+          builder: (BuildContext context) => NewGroup(),
         ),
       );
     } else {
@@ -424,21 +423,21 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             );
           },
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _eventDispatcher.add('TAP'); //Closes the AppSwitcher
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (BuildContext context) => NewGroup(),
-              ),
-            );
-          },
-          child: const Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          backgroundColor: primaryColor,
-        ),
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: () {
+        //     _eventDispatcher.add('TAP');
+        //     Navigator.of(context).push(
+        //       MaterialPageRoute(
+        //         builder: (BuildContext context) => NewGroup(),
+        //       ),
+        //     );
+        //   },
+        //   child: const Icon(
+        //     Icons.add,
+        //     color: Colors.white,
+        //   ),
+        //   backgroundColor: primaryColor,
+        // ),
       ),
     );
   }

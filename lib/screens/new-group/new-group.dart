@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-accounts.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
 import 'package:chamasoft/screens/new-group/select-group-members.dart';
@@ -32,11 +33,13 @@ class _NewGroupState extends State<NewGroup> {
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
+  final _lastStepFormKey = GlobalKey<FormState>();
   Map<String, dynamic> _data = {
     "name": '',
     "members": [],
     "contributions": [],
     "accounts": [],
+    "referral": '',
   };
   bool _saving = false;
   bool _isInit = true;
@@ -48,7 +51,6 @@ class _NewGroupState extends State<NewGroup> {
   File imageFile;
   final ImagePicker _picker = ImagePicker();
 
-  int _isNgoAssociated = 0;
   int _hasReferralCode = 0;
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
@@ -126,11 +128,51 @@ class _NewGroupState extends State<NewGroup> {
         goTo(currentStep + 1);
       }
     } else {
-      // print(_data);
+      if (_hasReferralCode == 1) {
+        if (_lastStepFormKey.currentState.validate()) {
+          // print(_data['referral']);
+          if (_data['referral'] == '') {
+            _showSnackbar("Your referral code is required.", 4);
+          } else {
+            setState(() {
+              _saving = true;
+            });
+            completeGroupSetup();
+          }
+        }
+      } else {
+        // print(_data['referral']);
+        setState(() {
+          _saving = true;
+        });
+        completeGroupSetup();
+      }
+    }
+  }
+
+  completeGroupSetup() async {
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .completeGroupSetup(_data["referral"]);
       setState(() {
-        _saving = true;
+        _saving = false;
+        complete = true;
       });
-      setState(() => complete = true);
+      _showSnackbar("Group set up completed successfully.", 4);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (BuildContext context) => ChamasoftDashboard(),
+        ),
+      );
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+        context: context,
+        error: error,
+        callback: () => _showSnackbar(
+          "An error occurred while saving your changes, please try again.",
+          6,
+        ),
+      );
     }
   }
 
@@ -177,6 +219,15 @@ class _NewGroupState extends State<NewGroup> {
         return "Group name is way too short";
       else {
         _data['name'] = value;
+        return null;
+      }
+    } else if (field == 'referral') {
+      if (value.isEmpty)
+        return "Referral code is required";
+      else if (value.length < 3)
+        return "Referral code is way too short";
+      else {
+        _data['referral'] = value;
         return null;
       }
     } else {
@@ -405,44 +456,6 @@ class _NewGroupState extends State<NewGroup> {
             _fetchAccounts(context);
           });
     }
-  }
-
-  Widget _custRadio(dynamic option, String type, Function action) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Radio(
-          activeColor: primaryColor,
-          value: option['value'],
-          // title: Text(option['name']),
-          groupValue: type == "referral" ? _hasReferralCode : _isNgoAssociated,
-          onChanged: (val) => {
-            setState(() {
-              type == "referral"
-                  ? _hasReferralCode = val
-                  : _isNgoAssociated = val;
-            })
-          },
-        ),
-        GestureDetector(
-          onTap: action,
-          child: Text(
-            option['name'],
-            style: TextStyle(
-              color:
-                  (type == "referral" ? _hasReferralCode : _isNgoAssociated) ==
-                          option['value']
-                      ? primaryColor
-                      : Theme.of(context)
-                          // ignore: deprecated_member_use
-                          .textSelectionHandleColor,
-            ),
-            textAlign: TextAlign.left,
-          ),
-        ),
-        SizedBox(width: 15.0),
-      ],
-    );
   }
 
   @override
@@ -714,44 +727,13 @@ class _NewGroupState extends State<NewGroup> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               subtitle1(
-                text: "Is this group associated with an NGO?",
-                // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
-                textAlign: TextAlign.start,
-              ),
-              subtitle2(
-                text: "Some groups are managed by NGOs",
-                // ignore: deprecated_member_use
-                color: Theme.of(context).textSelectionHandleColor,
-                textAlign: TextAlign.start,
-              ),
-              Container(
-                width: double.infinity,
-                child: Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: _radOptions
-                      .map(
-                        (option) => _custRadio(
-                          option,
-                          "associated",
-                          () => setState(() {
-                            _isNgoAssociated = option['value'];
-                          }),
-                        ),
-                      )
-                      .toList(),
-                ),
-              ),
-              SizedBox(height: 20.0),
-              subtitle1(
                 text: "Do you have a referral code?",
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start,
               ),
               subtitle2(
-                text: "You might have been referred",
+                text: "Use if referred by a Bank, an NGO, a Partner or anyone",
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start,
@@ -762,16 +744,56 @@ class _NewGroupState extends State<NewGroup> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: _radOptions
-                      .map(
-                        (option) => _custRadio(
-                          option,
-                          "referral",
-                          () => setState(() {
-                            _hasReferralCode = option['value'];
-                          }),
-                        ),
-                      )
+                      .map((option) => Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Radio(
+                                activeColor: primaryColor,
+                                value: option['value'],
+                                // title: Text(option['name']),
+                                groupValue: _hasReferralCode,
+                                onChanged: (val) {
+                                  setState(() {
+                                    _hasReferralCode = val;
+                                  });
+                                },
+                              ),
+                              GestureDetector(
+                                onTap: () => setState(() {
+                                  _hasReferralCode = option['value'];
+                                }),
+                                child: Text(
+                                  option['name'],
+                                  style: TextStyle(
+                                    color: _hasReferralCode == option['value']
+                                        ? primaryColor
+                                        : Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                              SizedBox(width: 15.0),
+                            ],
+                          ))
                       .toList(),
+                ),
+              ),
+              Visibility(
+                visible: (_hasReferralCode == 1),
+                child: Form(
+                  key: _lastStepFormKey,
+                  child: TextFormField(
+                    enabled: _isFormInputEnabled,
+                    textCapitalization: TextCapitalization.characters,
+                    validator: (val) => validateGroupInfo('referral', val),
+                    decoration: InputDecoration(
+                      labelText: 'Referral Code',
+                      hintText: 'The referral code shared',
+                      // contentPadding: EdgeInsets.only(bottom: 0.0),
+                    ),
+                  ),
                 ),
               ),
               SizedBox(height: 20.0),
