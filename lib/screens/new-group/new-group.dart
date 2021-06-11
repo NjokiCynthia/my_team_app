@@ -171,6 +171,9 @@ class _NewGroupState extends State<NewGroup> {
     try {
       await Provider.of<Groups>(context, listen: false).createGroup(
           groupName: _data['name'], countryId: countryId, avatar: imageFile);
+      setState(() {
+        _isInit = true;
+      });
       goTo(1);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -245,6 +248,53 @@ class _NewGroupState extends State<NewGroup> {
       return "Tap to add members";
   }
 
+  Future<void> getGroupMembers(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        showDialog<String>(
+          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: primaryColor,
+              ),
+            );
+          },
+        );
+      },
+    );
+    try {
+      final group = Provider.of<Groups>(context, listen: false);
+      await group.fetchMembers();
+      setState(() {
+        List<Map<String, dynamic>> _mbrs = [];
+        group.members.forEach((m) {
+          _mbrs.add({
+            'id': m.id,
+            'name': m.name,
+            'identity': m.identity,
+            'avatar': m.avatar,
+            'user_id': m.userId,
+          });
+        });
+        _data['members'] = _mbrs;
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    } on CustomException catch (error) {
+      Navigator.of(context, rootNavigator: true).pop();
+      StatusHandler().handleStatus(
+        context: context,
+        error: error,
+        callback: () {
+          getGroupMembers(context);
+        },
+      );
+    }
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -268,9 +318,11 @@ class _NewGroupState extends State<NewGroup> {
     _data['user_id'] = auth.id;
     // Handle countries
     _countryOptions = Provider.of<Groups>(context).countryOptions;
-    if (_countryOptions == null || _countryOptions.isEmpty) {
-      if (_isInit && currentStep == 0) _fetchCountryOptions(context);
+    if ((_countryOptions == null || _countryOptions.isEmpty) &&
+        currentStep == 0) {
+      if (_isInit) _fetchCountryOptions(context);
     }
+    if (_isInit && currentStep == 1) getGroupMembers(context);
 
     steps = [
       Step(
