@@ -100,6 +100,12 @@ class _NewGroupState extends State<NewGroup> {
         } else {
           _showSnackbar("Fill in the required fields to continue.", 4);
         }
+      } else if (currentStep == 1) {
+        if (_data['members'].length < 3) {
+          _showSnackbar("You need to add at least 3 members to continue", 6);
+        } else {
+          goTo(2);
+        }
       } else {
         goTo(currentStep + 1);
       }

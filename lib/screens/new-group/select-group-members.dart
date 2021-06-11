@@ -67,6 +67,7 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
     final group = Provider.of<Groups>(context, listen: false);
     await group.fetchMembers();
     setState(() {
+      _groupMembers = [];
       group.members.forEach((m) {
         _groupMembers.add({
           'id': m.id,
@@ -83,11 +84,17 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
   }
 
   void choiceAction(String choice) {
-    Navigator.of(context).push(
+    Navigator.of(context)
+        .push(
       MaterialPageRoute(
         builder: (BuildContext context) =>
             choice == '1' ? SelectFromContacts() : AddGroupMembersManually(),
       ),
+    )
+        .then(
+      (resp) {
+        getGroupMembers();
+      },
     );
   }
 
