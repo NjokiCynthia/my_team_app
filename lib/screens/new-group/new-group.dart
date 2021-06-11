@@ -577,14 +577,18 @@ class _NewGroupState extends State<NewGroup> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => SelectGroupMembers(
-                      selected: _data['members'],
-                      members: (membrs) => _setMembers(membrs),
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectGroupMembers(
+                          selected: _data['members'],
+                          members: (membrs) => _setMembers(membrs),
+                        ),
+                      ),
+                    )
+                    .then(
+                      (resp) => getGroupMembers(context),
                     ),
-                  ),
-                ),
                 title: "Group Members",
                 subtitle: _renderMembersText(),
                 icon: Icons.add,
