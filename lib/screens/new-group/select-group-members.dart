@@ -448,19 +448,18 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
             ? null
             : () {
                 List<dynamic> _selected = [];
-                _groupMembers.forEach((m) {
-                  _selected.add({
-                    'id': m['id'],
-                    'name': m['name'],
-                    'identity': m['identity'],
-                    'avatar': m['avatar'],
-                    'user_id': m['user_id'],
-                  });
-                });
-                dynamic _members = widget.selected;
-                // print("_members >> ");
-                // print(_members);
-                widget.members(_members);
+                _groupMembers.forEach(
+                  (m) {
+                    _selected.add({
+                      'id': m['id'],
+                      'name': m['name'],
+                      'identity': m['identity'],
+                      'avatar': m['avatar'],
+                      'user_id': m['user_id'],
+                    });
+                  },
+                );
+                widget.members(_selected);
                 Navigator.of(context).pop();
               },
         child: const Icon(

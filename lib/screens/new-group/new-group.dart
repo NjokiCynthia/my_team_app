@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
 import 'package:chamasoft/screens/new-group/select-group-members.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
@@ -26,13 +27,14 @@ class _NewGroupState extends State<NewGroup> {
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int currentStep = 1;
+  int currentStep = 2;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
   Map<String, dynamic> _data = {
     "name": '',
     "members": [],
+    "contributions": [],
   };
   bool _saving = false;
   bool _isInit = true;
@@ -249,7 +251,8 @@ class _NewGroupState extends State<NewGroup> {
       return _getFirstName(_data['members'][0]['name']) +
           " & " +
           (_mbrs.length - 1).toString() +
-          " other members";
+          " other member" +
+          (((_mbrs.length - 1) == 1) ? "" : "s");
     else
       return "Tap to add members";
   }
@@ -494,7 +497,24 @@ class _NewGroupState extends State<NewGroup> {
         isActive: currentStep >= 2 ? true : false,
         state: currentStep > 2 ? StepState.complete : StepState.disabled,
         content: Column(
-          children: <Widget>[],
+          children: <Widget>[
+            Container(
+              color: primaryColor.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ListContributions(),
+                  ),
+                ),
+                title: "Group Contributions",
+                subtitle: "Tap to manage contributions",
+                icon: Icons.edit,
+                color: primaryColor,
+              ),
+            ),
+          ],
         ),
       ),
       Step(
@@ -638,7 +658,7 @@ class _NewGroupState extends State<NewGroup> {
                           SizedBox(
                             width: 20.0,
                           ),
-                          currentStep > 0
+                          currentStep > 1
                               // ignore: deprecated_member_use
                               ? OutlineButton(
                                   color: Colors.white,
