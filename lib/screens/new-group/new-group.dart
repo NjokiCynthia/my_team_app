@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/settings/list-accounts.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
 import 'package:chamasoft/screens/new-group/select-group-members.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -27,7 +28,7 @@ class _NewGroupState extends State<NewGroup> {
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int currentStep = 2;
+  int currentStep = 3;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -35,6 +36,7 @@ class _NewGroupState extends State<NewGroup> {
     "name": '',
     "members": [],
     "contributions": [],
+    "accounts": [],
   };
   bool _saving = false;
   bool _isInit = true;
@@ -75,7 +77,10 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   goTo(int step) {
-    setState(() => currentStep = step);
+    setState(() {
+      currentStep = step;
+      _isInit = true;
+    });
   }
 
   _showSnackbar(String msg, int duration) {
@@ -107,6 +112,12 @@ class _NewGroupState extends State<NewGroup> {
           _showSnackbar("You need to add at least 3 members to continue", 6);
         } else {
           goTo(2);
+        }
+      } else if (currentStep == 2) {
+        if (_data['contributions'].length < 1) {
+          _showSnackbar("You need to setup a contribution to continue", 6);
+        } else {
+          goTo(3);
         }
       } else {
         goTo(currentStep + 1);
@@ -304,6 +315,95 @@ class _NewGroupState extends State<NewGroup> {
     }
   }
 
+  Future<void> _fetchContributions(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        showDialog<String>(
+          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: primaryColor,
+              ),
+            );
+          },
+        );
+      },
+    );
+    try {
+      final group = Provider.of<Groups>(context, listen: false);
+      await group.fetchContributions();
+      setState(() {
+        List<dynamic> _ctrbs = [];
+        group.contributions.forEach((m) {
+          _ctrbs.add({
+            'id': m.id,
+            'name': m.name,
+            'amount': m.amount,
+            'contributionDate': m.contributionDate,
+            'contributionType': m.contributionType,
+          });
+        });
+        _data['contributions'] = _ctrbs;
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+        context: context,
+        error: error,
+        callback: () {
+          _fetchContributions(context);
+        },
+      );
+    }
+  }
+
+  Future<void> _fetchAccounts(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        showDialog<String>(
+          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: primaryColor,
+              ),
+            );
+          },
+        );
+      },
+    );
+    try {
+      final group = Provider.of<Groups>(context, listen: false);
+      await group.temporaryFetchAccounts();
+      setState(() {
+        List<dynamic> _accs = [];
+        group.accounts.forEach((m) {
+          _accs.add({
+            'id': m.id,
+            'name': m.name,
+            'typeId': m.typeId,
+          });
+        });
+        _data['accounts'] = _accs;
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchAccounts(context);
+          });
+    }
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -332,6 +432,8 @@ class _NewGroupState extends State<NewGroup> {
       if (_isInit) _fetchCountryOptions(context);
     }
     if (_isInit && currentStep == 1) getGroupMembers(context);
+    if (_isInit && currentStep == 2) _fetchContributions(context);
+    if (_isInit && currentStep == 3) _fetchAccounts(context);
 
     steps = [
       Step(
@@ -503,11 +605,15 @@ class _NewGroupState extends State<NewGroup> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ListContributions(),
-                  ),
-                ),
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ListContributions(),
+                      ),
+                    )
+                    .then(
+                      (resp) => _fetchContributions(context),
+                    ),
                 title: "Group Contributions",
                 subtitle: "Tap to manage contributions",
                 icon: Icons.edit,
@@ -522,11 +628,28 @@ class _NewGroupState extends State<NewGroup> {
         isActive: currentStep >= 3 ? true : false,
         state: currentStep > 3 ? StepState.complete : StepState.disabled,
         content: Column(
-          children: <Widget>[],
+          children: <Widget>[
+            Container(
+              color: primaryColor.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ListAccounts(),
+                  ),
+                ),
+                title: "Group Accounts",
+                subtitle: "Tap to manage accounts",
+                icon: Icons.edit,
+                color: primaryColor,
+              ),
+            ),
+          ],
         ),
       ),
       Step(
-        title: formatStep(4, "Confirmation"),
+        title: formatStep(4, "Finish"),
         isActive: currentStep >= 4 ? true : false,
         state: currentStep > 4 ? StepState.complete : StepState.disabled,
         content: Container(

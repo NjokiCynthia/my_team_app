@@ -8,7 +8,6 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -263,6 +262,7 @@ class _ListAccountsState extends State<ListAccounts> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: secondaryPageAppbar(
+        elevation: 0,
         context: context,
         action: () => Navigator.of(context).pop(),
         leadingIcon: LineAwesomeIcons.arrow_left,
@@ -284,9 +284,10 @@ class _ListAccountsState extends State<ListAccounts> {
           key: _refreshIndicatorKey,
           onRefresh: () => _fetchAccounts(context),
           child: Container(
+              color: Theme.of(context).backgroundColor,
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              decoration: primaryGradient(context),
+              // decoration: primaryGradient(context),
               child: Consumer<Groups>(builder: (context, groupData, child) {
                 List<CategorisedAccount> accounts =
                     groupData.getAllCategorisedAccounts;
