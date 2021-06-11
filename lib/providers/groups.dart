@@ -920,14 +920,13 @@ class Groups with ChangeNotifier {
   void addNotification(List<dynamic> newNotifications) {
     if (newNotifications.length > 0) {
       for (var notificationJson in newNotifications) {
-          final noticeBody = Notification(
+        final noticeBody = Notification(
             id: int.parse(notificationJson["id"]),
             message: notificationJson["message"]..toString(),
             isRead: notificationJson["is_read"]..toString(),
-            timeAgo: notificationJson["time_ago"]..toString(), 
-            subject: notificationJson["subject"]..toString()
-          );
-          _notifications.add(noticeBody);
+            timeAgo: notificationJson["time_ago"]..toString(),
+            subject: notificationJson["subject"]..toString());
+        _notifications.add(noticeBody);
         // final notification = Notification(
         //   id: notificationJson['id'].toInt(),
         //   message: "this is sample"
@@ -2293,6 +2292,29 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<bool> completeGroupSetup(String referralCode) async {
+    const url = EndpointUrl.ADD_MEMBERS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "referral_code": referralCode,
+      });
+      try {
+        await PostToServer.post(postRequest, url);
+        return true;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   Future<dynamic> addLoanTypeStepOne(
       Map<String, dynamic> formData, bool isEditMode) async {
     var url = EndpointUrl.CREATE_LOAN_TYPE;
@@ -3350,8 +3372,8 @@ class Groups with ChangeNotifier {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
-        "lower_limit" : 0,
-        "upper_limit" : 50
+        "lower_limit": 0,
+        "upper_limit": 50
       });
       try {
         final response = await PostToServer.post(postRequest, url);

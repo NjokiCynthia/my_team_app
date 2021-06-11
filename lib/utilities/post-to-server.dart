@@ -177,19 +177,19 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             "Versioncode": versionCode,
             "Authorization": userAccessToken,
           };
-          print("Request: $jsonObject");
+          print("Request >>>>>>> $jsonObject");
           final String postRequest = _encryptAESCryptoJS(jsonObject, randomKey);
           // print("_encryptAESCryptoJS: $postRequest");
           try {
             final http.Response response = await http
-                .post( Uri.parse(url), headers: headers, body: postRequest)
+                .post(Uri.parse(url), headers: headers, body: postRequest)
                 .timeout(const Duration(seconds: 60), onTimeout: () {
               throw CustomException(
                   message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
               final responseBody = await generateResponse(response.body);
-              print("Server Response: $responseBody");
+              print("Server Response >>>>>>>> $responseBody");
               String message = responseBody["message"].toString();
               switch (responseBody['status']) {
                 case 0:
