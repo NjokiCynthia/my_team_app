@@ -49,6 +49,7 @@ class _NewGroupState extends State<NewGroup> {
   final ImagePicker _picker = ImagePicker();
 
   int _isNgoAssociated = 0;
+  int _hasReferralCode = 0;
 
   void _onImagePickerClicked(ImageSource source, BuildContext context) async {
     try {
@@ -437,14 +438,14 @@ class _NewGroupState extends State<NewGroup> {
     if (_isInit && currentStep == 2) _fetchContributions(context);
     if (_isInit && currentStep == 3) _fetchAccounts(context);
 
-    final List<Map<String, dynamic>> _ngoOptions = [
-      {
-        "value": 0,
-        "name": "No",
-      },
+    final List<Map<String, dynamic>> _radOptions = [
       {
         "value": 1,
         "name": "Yes",
+      },
+      {
+        "value": 0,
+        "name": "No",
       },
     ];
 
@@ -686,13 +687,12 @@ class _NewGroupState extends State<NewGroup> {
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start,
               ),
-              SizedBox(height: 10.0),
               Container(
                 width: double.infinity,
                 child: Row(
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: _ngoOptions
+                  children: _radOptions
                       .map((option) => Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -707,7 +707,6 @@ class _NewGroupState extends State<NewGroup> {
                                   });
                                 },
                               ),
-                              // SizedBox(width: 2.0),
                               GestureDetector(
                                 onTap: () => setState(() {
                                   _isNgoAssociated = option['value'];
@@ -730,7 +729,62 @@ class _NewGroupState extends State<NewGroup> {
                       .toList(),
                 ),
               ),
-              SizedBox(height: 40.0),
+              SizedBox(height: 20.0),
+              subtitle1(
+                text: "Do you have a referral code?",
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start,
+              ),
+              subtitle2(
+                text: "You might have been referred",
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start,
+              ),
+              Container(
+                width: double.infinity,
+                child: Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: _radOptions
+                      .map((option) => Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Radio(
+                                activeColor: primaryColor,
+                                value: option['value'],
+                                // title: Text(option['name']),
+                                groupValue: _hasReferralCode,
+                                onChanged: (val) {
+                                  setState(() {
+                                    _hasReferralCode = val;
+                                  });
+                                },
+                              ),
+                              GestureDetector(
+                                onTap: () => setState(() {
+                                  _hasReferralCode = option['value'];
+                                }),
+                                child: Text(
+                                  option['name'],
+                                  style: TextStyle(
+                                    color: _hasReferralCode == option['value']
+                                        ? primaryColor
+                                        : Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ),
+                              SizedBox(width: 15.0),
+                            ],
+                          ))
+                      .toList(),
+                ),
+              ),
+              SizedBox(height: 20.0),
             ],
           ),
         ),
