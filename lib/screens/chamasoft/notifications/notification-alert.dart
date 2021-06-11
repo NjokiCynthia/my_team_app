@@ -31,8 +31,10 @@ class _NotificationAlertState extends State<NotificationAlert> {
     // ignore: todo
     // TODO: implement didChangeDependencies
     //mark notification as read
-    Provider.of<Groups>(context, listen: false).markNotificationAsRead((widget.notification.id).toString());
-
+    if(widget.notification.isRead=='0'){
+      Provider.of<Groups>(context, listen: false).markNotificationAsRead((widget.notification.id).toString());
+    }
+    
     super.didChangeDependencies();
   }
 

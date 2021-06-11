@@ -3402,8 +3402,6 @@ class Groups with ChangeNotifier {
       });
       try {
         await PostToServer.post(postRequest, url);
-        int id = int.tryParse(notificationId);
-        print("notification ${_notifications[id]}");
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
