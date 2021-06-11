@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:chamasoft/providers/groups.dart' as GroupProvider;
-import 'package:chamasoft/screens/chamasoft/notifications/notification-details.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -12,8 +11,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
-
-import 'notification-details.dart';
+import 'notification-alert.dart';
 
 class ChamasoftNotifications extends StatefulWidget {
   @override
@@ -159,8 +157,8 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                   onTap: () => Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (BuildContext context) =>
-                                          NotificationDetails(
-                                              notification: notification),
+                                        NotificationAlert(notification: notification,),
+                                          // NotificationDetails(notification: notification),
                                     ),
                                   ),
                                   child: Container(

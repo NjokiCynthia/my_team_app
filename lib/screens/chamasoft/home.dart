@@ -24,10 +24,7 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ChamasoftHome extends StatefulWidget {
-  ChamasoftHome({
-    this.appBarElevation,
-    this.notificationCount
-  });
+  ChamasoftHome({this.appBarElevation, this.notificationCount});
 
   final ValueChanged<double> appBarElevation;
   final ValueChanged<double> notificationCount;
@@ -150,10 +147,10 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   Future<void> _getMemberDashboardData([bool hardRefresh = false]) async {
     try {
       if (hardRefresh) {
-        Provider.of<Dashboard>(context,listen: false)
+        Provider.of<Dashboard>(context, listen: false)
             .resetMemberDashboardData(_currentGroup.groupId);
       }
-      if (!Provider.of<Dashboard>(context,listen: false)
+      if (!Provider.of<Dashboard>(context, listen: false)
           .memberGroupDataExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -345,10 +342,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       _iteratableRecentTransactionSummary =
           dashboardData.recentMemberTransactions;
       _itableContributionSummary = dashboardData.memberContributionSummary;
-    });
-
-    WidgetsBinding.instance.addPostFrameCallback((_) => (){
-      widget.notificationCount(dashboardData.notificationCount);
+      WidgetsBinding.instance.addPostFrameCallback((_) => () {
+            widget.notificationCount(dashboardData.notificationCount);
+          });
     });
 
     return WillPopScope(

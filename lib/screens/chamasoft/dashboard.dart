@@ -10,7 +10,6 @@ import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notification-alert.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
-// import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
@@ -266,13 +265,12 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                     // onPressed: null, // Disable notifications for now
                     onPressed: () => {
                           _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                          notificationAlertDialog()
-                          // Navigator.of(context).push(
-                          //   MaterialPageRoute(
-                          //     builder: (BuildContext context) =>
-                          //         ChamasoftNotifications(),
-                          //   ),
-                          // ),
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ChamasoftNotifications(),
+                            ),
+                          ),
                         }),
                 Visibility(
                   visible: (_notificationCount),
