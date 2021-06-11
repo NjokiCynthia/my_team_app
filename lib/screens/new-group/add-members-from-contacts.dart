@@ -165,7 +165,21 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   CircularProgressIndicator(),
-                  subtitle1(text: "Retrieving contact list")
+                  SizedBox(
+                    height: 20,
+                  ),
+                  subtitle1(
+                    text: "Retrieving contact list",
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  subtitle2(
+                    text: "Please be patient",
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
                 ],
               ),
             ),
@@ -204,9 +218,14 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
         });
       },
       title: subtitle1(
-          text: contact.displayName ?? "", textAlign: TextAlign.start),
+        text: contact.displayName ?? "",
+        textAlign: TextAlign.start,
+      ),
       subtitle: list.length >= 1 && list[0]?.value != null
-          ? subtitle1(text: list[0].value, textAlign: TextAlign.start)
+          ? subtitle1(
+              text: list[0].value,
+              textAlign: TextAlign.start,
+            )
           : Text(''),
     );
   }
