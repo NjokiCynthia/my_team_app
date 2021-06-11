@@ -269,7 +269,7 @@ class _NewGroupState extends State<NewGroup> {
     // Handle countries
     _countryOptions = Provider.of<Groups>(context).countryOptions;
     if (_countryOptions == null || _countryOptions.isEmpty) {
-      if (_isInit) _fetchCountryOptions(context);
+      if (_isInit && currentStep == 0) _fetchCountryOptions(context);
     }
 
     steps = [
