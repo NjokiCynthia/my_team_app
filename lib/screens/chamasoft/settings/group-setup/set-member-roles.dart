@@ -4,6 +4,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/custom-scroll-behaviour.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -252,83 +253,147 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
 
     return Scaffold(
       appBar: tertiaryPageAppbar(
-          context: context,
-          title: "Set Group Roles",
-          action: () {
-            Navigator.of(context).pop();
-          },
-          elevation: 2.5,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          trailingIcon: LineAwesomeIcons.check,
-          trailingAction: () async {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                });
-            await _submitMembers(context);
-          }),
+        context: context,
+        title: "Set Group Roles",
+        action: () {
+          Navigator.of(context).pop();
+        },
+        elevation: 0,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        trailingIcon: LineAwesomeIcons.check,
+        trailingAction: () async {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          );
+          await _submitMembers(context);
+        },
+      ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Container(
         width: double.infinity,
         height: double.infinity,
         margin: EdgeInsets.only(top: 8.0),
-        child: ListView.separated(
-            separatorBuilder: (BuildContext context, int index) => Divider(
+        child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+              color: (themeChangeProvider.darkTheme)
+                  ? Colors.blueGrey[800]
+                  : Color(0xffededfe),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Icon(
+                    Icons.lightbulb_outline,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                    size: 24.0,
+                    semanticLabel: 'Group roles...',
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        subtitle1(
+                          text: "Group roles",
+                          textAlign: TextAlign.start,
+                          color: Theme.of(context)
+                              // ignore: deprecated_member_use
+                              .textSelectionHandleColor,
+                        ),
+                        subtitle2(
+                          text: "Tap on the respective role to update it.",
+                          color: Theme.of(context)
+                              // ignore: deprecated_member_use
+                              .textSelectionHandleColor,
+                          textAlign: TextAlign.start,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView.separated(
+                padding: EdgeInsets.only(top: 8.0),
+                shrinkWrap: true,
+                separatorBuilder: (BuildContext context, int index) => Divider(
                   color: Theme.of(context).dividerColor,
                 ),
-            itemCount: selectedContacts.length,
-            itemBuilder: (BuildContext context, int index) {
-              CustomContact customContact = selectedContacts[index];
-              String displayName = customContact.contact.displayName;
-              var phoneList = customContact.contact.phones.toList();
-              return Container(
-                padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
-                child: Row(
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors
-                          .primaries[Random().nextInt(Colors.primaries.length)],
-                      child: Text(displayName[0].toUpperCase(),
-                          style: TextStyle(color: Colors.white, fontSize: 24)),
+                itemCount: selectedContacts.length,
+                itemBuilder: (BuildContext context, int index) {
+                  CustomContact customContact = selectedContacts[index];
+                  String displayName = customContact.contact.displayName;
+                  var phoneList = customContact.contact.phones.toList();
+                  return Container(
+                    padding: EdgeInsets.fromLTRB(12.0, 8.0, 12.0, 8.0),
+                    child: Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.primaries[
+                              Random().nextInt(Colors.primaries.length)],
+                          child: Text(displayName[0].toUpperCase(),
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 24)),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 3,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              heading2(
+                                text: displayName ?? "",
+                                textAlign: TextAlign.start,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
+                              phoneList.length >= 1 &&
+                                      phoneList[0]?.value != null
+                                  ? subtitle1(
+                                      text: phoneList[0].value,
+                                      textAlign: TextAlign.start,
+                                      color: Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                    )
+                                  : Text(''),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: smallBadgeButton(
+                            backgroundColor: Colors.blueGrey.withOpacity(0.2),
+                            textColor: Colors.blueGrey,
+                            text: customContact.role.roleName,
+                            // == null ? "Member" : customContact.role.roleName,
+                            action: () => _showGroupRoles(context, index),
+                            buttonHeight: 24.0,
+                            textSize: 12.0,
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      flex: 3,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          subtitle1(
-                              text: displayName ?? "",
-                              textAlign: TextAlign.start),
-                          phoneList.length >= 1 && phoneList[0]?.value != null
-                              ? subtitle1(
-                                  text: phoneList[0].value,
-                                  textAlign: TextAlign.start)
-                              : Text(''),
-                        ],
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: smallBadgeButton(
-                        backgroundColor: Colors.blueGrey.withOpacity(0.2),
-                        textColor: Colors.blueGrey,
-                        text: customContact.role.roleName,
-                        // == null ? "Member" : customContact.role.roleName,
-                        action: () => _showGroupRoles(context, index),
-                        buttonHeight: 24.0,
-                        textSize: 12.0,
-                      ),
-                    ),
-                  ],
-                ),
-              );
-            }),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

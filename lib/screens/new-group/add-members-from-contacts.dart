@@ -92,10 +92,13 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
           if (_selectedContacts.length > 0) {
-            final result = await Navigator.of(context).push(MaterialPageRoute(
+            final result = await Navigator.of(context).push(
+              MaterialPageRoute(
                 builder: (BuildContext context) => SetMemberRoles(
-                      initialSelectedContacts: _selectedContacts.toList(),
-                    )));
+                  initialSelectedContacts: _selectedContacts.toList(),
+                ),
+              ),
+            );
             if (result != null && result) {
               Navigator.of(context).pop(true);
             }
