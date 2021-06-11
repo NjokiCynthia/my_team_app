@@ -42,6 +42,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   List<RecentTransactionSummary> _iteratableRecentTransactionSummary = [];
   List<ContributionsSummary> _itableContributionSummary = [];
   bool _showMeetingsBanner = false;
+  Dashboard dashboardData;
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -159,8 +160,16 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             });
           }
         }
-        await Provider.of<Dashboard>(context)
-            .getMemberDashboardData(_currentGroup.groupId);
+        await Provider.of<Dashboard>(context,listen: false)
+            .getMemberDashboardData(_currentGroup.groupId).then((_) => {
+              setState((){
+                dashboardData = Provider.of<Dashboard>(context,listen: false);
+                // WidgetsBinding.instance.addPostFrameCallback((_) => () {
+                  print("inside here ${dashboardData.notificationCount}");
+                  widget.notificationCount(dashboardData.notificationCount);
+                // });
+              })
+            });
       }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -337,7 +346,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
   @override
   Widget build(BuildContext context) {
-    final dashboardData = Provider.of<Dashboard>(context);
+    dashboardData = Provider.of<Dashboard>(context);
     setState(() {
       _iteratableRecentTransactionSummary =
           dashboardData.recentMemberTransactions;
