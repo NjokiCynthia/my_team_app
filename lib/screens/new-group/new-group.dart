@@ -28,7 +28,7 @@ class _NewGroupState extends State<NewGroup> {
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  int currentStep = 3;
+  int currentStep = 0;
   bool complete = false;
   List<Step> steps = [];
   final _stepOneFormKey = GlobalKey<FormState>();
@@ -656,7 +656,21 @@ class _NewGroupState extends State<NewGroup> {
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[],
+            children: <Widget>[
+              subtitle1(
+                text: "Is this group associated with an NGO?",
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start,
+              ),
+              subtitle2(
+                text: "Some groups are managed by NGOs",
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.start,
+              ),
+              SizedBox(height: 40.0),
+            ],
           ),
         ),
       ),
