@@ -203,10 +203,13 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
   CheckboxListTile _buildListTile(int index, Contact contact, List<Item> list) {
     return CheckboxListTile(
       secondary: CircleAvatar(
-          backgroundColor:
-              primaryColor, //Colors.primaries[Random().nextInt(Colors.primaries.length)],
-          child: Text(contact.displayName[0].toUpperCase(),
-              style: TextStyle(color: Colors.white, fontSize: 24))),
+        backgroundColor:
+            primaryColor, //Colors.primaries[Random().nextInt(Colors.primaries.length)],
+        child: Text(
+          contact.displayName[0].toUpperCase(),
+          style: TextStyle(color: Colors.white, fontSize: 24),
+        ),
+      ),
       value: _selectedContacts.contains(_contacts[index]),
       onChanged: (value) {
         setState(() {
@@ -217,14 +220,24 @@ class _SelectFromContactsState extends State<SelectFromContacts> {
           }
         });
       },
-      title: subtitle1(
+      title: heading2(
         text: contact.displayName ?? "",
         textAlign: TextAlign.start,
+        color: _selectedContacts.contains(_contacts[index])
+            ? primaryColor
+            : Theme.of(context)
+                // ignore: deprecated_member_use
+                .textSelectionHandleColor,
       ),
       subtitle: list.length >= 1 && list[0]?.value != null
           ? subtitle1(
               text: list[0].value,
               textAlign: TextAlign.start,
+              color: _selectedContacts.contains(_contacts[index])
+                  ? primaryColor
+                  : Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
             )
           : Text(''),
     );
