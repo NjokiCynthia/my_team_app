@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -107,173 +108,243 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: secondaryPageAppbar(
-          context: context,
-          title: "Add Member",
-          action: () => Navigator.of(context).pop(),
-          elevation: 1.0,
-          leadingIcon: LineAwesomeIcons.close,
-          actions: []),
+        context: context,
+        title: "Add Member",
+        action: () => Navigator.of(context).pop(),
+        elevation: 0,
+        leadingIcon: LineAwesomeIcons.close,
+        actions: [],
+      ),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(40.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextFormField(
-                keyboardType: TextInputType.text,
-                textCapitalization: TextCapitalization.words,
-                decoration: InputDecoration(
-                    floatingLabelBehavior: FloatingLabelBehavior.auto,
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).hintColor, width: 1.0)),
-                    labelText: "Full Name",
-                    labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                onChanged: (value) {
-                  _fullName = value.trim();
-                },
-                validator: (value) {
-                  if (value.trim() == '' || value.trim() == null) {
-                    return 'Enter a valid name name';
-                  } else {
-                    var name = value.trim();
-                    var names = name.split(new RegExp("\\s+"));
-                    if (names.length < 2) {
-                      print("Name: $name");
-                      return "Enter at least two names";
-                    }
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  customTitle(
-                      text: "Phone Number",
-                      textAlign: TextAlign.start,
-                      fontSize: 11,
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+            color: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Color(0xffededfe),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.lightbulb_outline,
+                  color: Theme.of(context)
                       // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor),
-                ],
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: _customInputBorderSide,
-                        ),
+                      .textSelectionHandleColor,
+                  size: 24.0,
+                  semanticLabel: 'Add member...',
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      subtitle1(
+                        text: "Add member",
+                        textAlign: TextAlign.start,
+                        color: Theme.of(context)
+                            // ignore: deprecated_member_use
+                            .textSelectionHandleColor,
                       ),
-                      child: Row(
-                        children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                height: 34,
-                                padding:
-                                    EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 8.0),
-                                child: CountryCodePicker(
-                                  // key: _countryKey,
-                                  initialSelection: 'KE',
-                                  favorite: ['KE', 'UG', 'TZ', 'RW'],
-                                  showCountryOnly: false,
-                                  showOnlyCountryWhenClosed: false,
-                                  alignLeft: false,
-                                  flagWidth: 28.0,
-                                  textStyle: TextStyle(
-                                    fontFamily:
-                                        'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
-                                  ),
-                                  searchStyle: TextStyle(
-                                      fontFamily: 'SegoeUI',
-                                      fontSize: 16,
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor),
-                                  onChanged: (countryCode) {
-                                    setState(() {
-                                      _countryCode = countryCode;
-                                      print("Code: " + countryCode.dialCode);
-                                    });
-                                  },
-                                ),
-                              ),
-                              SizedBox(
-                                width: 10,
-                              ),
-                            ],
+                      subtitle2(
+                        text:
+                            "Fill in the details below to add a member to the group.",
+                        color: Theme.of(context)
+                            // ignore: deprecated_member_use
+                            .textSelectionHandleColor,
+                        textAlign: TextAlign.start,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(20.0, 20.0, 20.0, 20.0),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    TextFormField(
+                      keyboardType: TextInputType.text,
+                      textCapitalization: TextCapitalization.words,
+                      decoration: InputDecoration(
+                        floatingLabelBehavior: FloatingLabelBehavior.auto,
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Theme.of(context).hintColor,
+                            width: 1.0,
                           ),
-                          Expanded(
-                            child: Container(
-                              height: 34,
-                              padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 3.0),
-                              child: TextFormField(
-                                controller: _phoneController,
-                                keyboardType: TextInputType.phone,
-                                decoration: InputDecoration(
-                                  border: InputBorder.none,
-                                  isDense: true,
-                                  focusedBorder: InputBorder.none,
-                                  enabledBorder: InputBorder.none,
-                                  errorBorder: InputBorder.none,
-                                  disabledBorder: InputBorder.none,
-                                  hintText: '',
-                                ),
-                                focusNode: _focusNode,
-                                style: TextStyle(
-                                    fontFamily: 'SegoeUI', fontSize: 16),
-                                onSaved: (value) {
-                                  _phoneNumber = value.trim();
-                                },
+                        ),
+                        labelText: "Full Name",
+                        labelStyle: TextStyle(fontFamily: 'SegoeUI'),
+                      ),
+                      onChanged: (value) {
+                        _fullName = value.trim();
+                      },
+                      validator: (value) {
+                        if (value.trim() == '' || value.trim() == null) {
+                          return 'Enter a valid name name';
+                        } else {
+                          var name = value.trim();
+                          var names = name.split(new RegExp("\\s+"));
+                          if (names.length < 2) {
+                            print("Name: $name");
+                            return "Enter at least two names";
+                          }
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        customTitle(
+                          text: "Phone Number",
+                          textAlign: TextAlign.start,
+                          fontSize: 11,
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: _customInputBorderSide,
                               ),
                             ),
-                          )
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      height: 34,
+                                      padding: EdgeInsets.fromLTRB(
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        8.0,
+                                      ),
+                                      child: CountryCodePicker(
+                                        // key: _countryKey,
+                                        initialSelection: 'KE',
+                                        favorite: ['KE', 'UG', 'TZ', 'RW'],
+                                        showCountryOnly: false,
+                                        showOnlyCountryWhenClosed: false,
+                                        alignLeft: false,
+                                        flagWidth: 28.0,
+                                        textStyle: TextStyle(
+                                          fontFamily:
+                                              'SegoeUI', /*fontSize: 16,color: Theme.of(context).textSelectionHandleColor*/
+                                        ),
+                                        searchStyle: TextStyle(
+                                            fontFamily: 'SegoeUI',
+                                            fontSize: 16,
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor),
+                                        onChanged: (countryCode) {
+                                          setState(() {
+                                            _countryCode = countryCode;
+                                            print("Code: " +
+                                                countryCode.dialCode);
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Container(
+                                    height: 34,
+                                    padding:
+                                        EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 3.0),
+                                    child: TextFormField(
+                                      controller: _phoneController,
+                                      keyboardType: TextInputType.phone,
+                                      decoration: InputDecoration(
+                                        border: InputBorder.none,
+                                        isDense: true,
+                                        focusedBorder: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        hintText: '',
+                                      ),
+                                      focusNode: _focusNode,
+                                      style: TextStyle(
+                                          fontFamily: 'SegoeUI', fontSize: 16),
+                                      onSaved: (value) {
+                                        _phoneNumber = value.trim();
+                                      },
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Visibility(
+                      visible: !_isValid,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(5.0, 5.0, 0.0, 0.5),
+                            child: customTitle(
+                              text: 'Enter valid phone number',
+                              color: Colors.red,
+                              fontSize: 12.0,
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                ],
-              ),
-              Visibility(
-                visible: !_isValid,
-                child: Padding(
-                  padding: EdgeInsets.fromLTRB(5.0, 0.0, 0.0, 0.5),
-                  child: customTitle(
-                    text: 'Enter valid phone number',
-                    color: Colors.red,
-                    fontSize: 12.0,
-                  ),
+                    TextFormField(
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            floatingLabelBehavior: FloatingLabelBehavior.auto,
+                            enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Theme.of(context).hintColor,
+                                    width: 1.0)),
+                            labelText: "Email Address",
+                            labelStyle: TextStyle(fontFamily: 'SegoeUI')),
+                        onChanged: (value) {
+                          _email = value;
+                        }),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    defaultButton(
+                        context: context,
+                        text: "Add Member",
+                        onPressed: () => _submitMember())
+                  ],
                 ),
               ),
-              TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  decoration: InputDecoration(
-                      floatingLabelBehavior: FloatingLabelBehavior.auto,
-                      enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Theme.of(context).hintColor, width: 1.0)),
-                      labelText: "Email Address",
-                      labelStyle: TextStyle(fontFamily: 'SegoeUI')),
-                  onChanged: (value) {
-                    _email = value;
-                  }),
-              SizedBox(
-                height: 20,
-              ),
-              defaultButton(
-                  context: context,
-                  text: "Add Member",
-                  onPressed: () => _submitMember())
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
