@@ -188,8 +188,9 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   Future<void> _fetchCountryOptions(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showDialog<String>(
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        showDialog<String>(
           barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
           context: context,
           barrierDismissible: false,
@@ -199,8 +200,10 @@ class _NewGroupState extends State<NewGroup> {
                 color: primaryColor,
               ),
             );
-          });
-    });
+          },
+        );
+      },
+    );
     try {
       await Provider.of<Groups>(context, listen: false).fetchCountryOptions();
       setState(() {

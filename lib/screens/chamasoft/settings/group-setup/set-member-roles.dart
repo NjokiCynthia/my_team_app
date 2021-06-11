@@ -122,15 +122,15 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
   }
 
   void _showGroupRoles(BuildContext context, int position) {
-    showCupertinoDialog(
+    showDialog(
         context: context,
-        builder: (ctx) => CupertinoAlertDialog(
+        builder: (ctx) => AlertDialog(
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Container(
-                    width: 300,
-                    height: 300,
+                    width: 280,
+                    height: 280,
                     child: ScrollConfiguration(
                       behavior: CustomScrollBehavior(),
                       child: ListView.separated(
@@ -150,11 +150,14 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                                     Theme.of(context).textSelectionHandleColor),
                             onPressed: () {
                               print(groupRole.roleName + " tapped");
-                              setState(() {
-                                _updateRoleStatus(
-                                    selectedContacts[position].role, groupRole);
-                                selectedContacts[position].role = groupRole;
-                              });
+                              setState(
+                                () {
+                                  _updateRoleStatus(
+                                      selectedContacts[position].role,
+                                      groupRole);
+                                  selectedContacts[position].role = groupRole;
+                                },
+                              );
                               Navigator.of(ctx).pop();
                             },
                           );
@@ -166,7 +169,7 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
                 ],
               ),
               title: heading2(
-                  text: "Set Role",
+                  text: "Select Role",
                   textAlign: TextAlign.center,
                   // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor),
@@ -180,16 +183,22 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
   }
 
   Future<void> _getUnAssignedGroupRoles(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      showDialog<String>(
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        showDialog<String>(
+          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                color: primaryColor,
+              ),
             );
-          });
-    });
+          },
+        );
+      },
+    );
 
     try {
       await Provider.of<Groups>(context, listen: false)
@@ -233,12 +242,14 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
           List<Item> item = [];
           item.add(Item(value: auth.userIdentity));
           CustomContact customContact = CustomContact(
-              contact: Contact(
-                  displayName: auth.userName,
-                  givenName: auth.firstNameOnly,
-                  familyName: auth.lastNameOnly,
-                  phones: item),
-              role: memberRole);
+            contact: Contact(
+              displayName: auth.userName,
+              givenName: auth.firstNameOnly,
+              familyName: auth.lastNameOnly,
+              phones: item,
+            ),
+            role: memberRole,
+          );
           selectedContacts.insert(0, customContact);
         }
       }
@@ -262,11 +273,15 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
         leadingIcon: LineAwesomeIcons.arrow_left,
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
-          showDialog(
+          showDialog<String>(
+            barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
             context: context,
+            barrierDismissible: false,
             builder: (BuildContext context) {
               return Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: primaryColor,
+                ),
               );
             },
           );
