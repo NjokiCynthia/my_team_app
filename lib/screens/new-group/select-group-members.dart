@@ -136,6 +136,8 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
             child: PopupMenuButton<String>(
               icon: Icon(
                 Icons.add,
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor,
               ),
               onSelected: choiceAction,
               enabled: !_isLoading,
