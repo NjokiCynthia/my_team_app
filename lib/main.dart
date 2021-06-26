@@ -71,7 +71,13 @@ class _MyAppState extends State<MyApp> {
   void didChangeDependencies() {
     // ignore: todo
     // TODO: implement didChangeDependencies
-    NotificationManager.firebaseNotificationListenHandler(context);
+    // firebaseNotificationListenHandler
+
+    Map<String,dynamic> messageBody = NotificationManager.firebaseNotificationListenHandler();
+    if(messageBody.length>0){
+      print("message here $messageBody");
+    }
+
     FirebaseMessaging.instance.subscribeToTopic('chamasoft');
     NotificationManager.listenTokenChange(context);
     super.didChangeDependencies();

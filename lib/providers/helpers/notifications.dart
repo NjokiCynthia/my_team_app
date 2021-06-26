@@ -82,7 +82,8 @@ class NotificationManager {
     // print("token $token");
   }
 
-  static void firebaseNotificationListenHandler(BuildContext context) {
+  static Map<String,dynamic>  firebaseNotificationListenHandler() {
+    Map<String,dynamic> _message = {};
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage message) {
@@ -119,12 +120,11 @@ class NotificationManager {
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      print('A new onMessageOpenedApp event was published!');
-      
-      print(message.data);
-      Navigator.pushNamed(context,notificationNamedRoute,
-          arguments: {message, true});
+      RemoteNotification notification = message.notification;
+      print("notification ${notification.title}");
     });
+
+    return _message;
   }
 
   static void listenTokenChange(BuildContext context) {
