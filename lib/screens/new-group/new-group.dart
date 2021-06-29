@@ -733,7 +733,7 @@ class _NewGroupState extends State<NewGroup> {
                 textAlign: TextAlign.start,
               ),
               subtitle2(
-                text: "Use if referred by a Bank, an NGO, a Partner or anyone",
+                text: "Use it if referred by a Bank, an NGO, a Partner or anyone",
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start,
