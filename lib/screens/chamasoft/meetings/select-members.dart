@@ -235,6 +235,7 @@ class _SelectMembersState extends State<SelectMembers> {
   void didChangeDependencies() {
     if (_isInit)
       WidgetsBinding.instance.addPostFrameCallback((_) => getGroupMembers());
+    print(_groupMembers);
     super.didChangeDependencies();
   }
 

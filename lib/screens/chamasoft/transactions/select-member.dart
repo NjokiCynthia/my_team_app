@@ -3,8 +3,8 @@ import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -80,6 +80,81 @@ class SelectMemberState extends State<SelectMember> {
     } finally {}
   }
 
+  Widget _memberListDisplay(
+      MembersFilterEntry entry, bool isSelected, int index) {
+    return Container(
+      padding: EdgeInsets.only(top: 1.0, bottom: 1.0),
+      child: Column(
+        children: <Widget>[
+          CheckboxListTile(
+            activeColor: primaryColor,
+            isThreeLine: false,
+            dense: true,
+            title: Text(
+              entry.name,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w700,
+                color: isSelected
+                    ? primaryColor
+                    : Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+              ),
+            ),
+            subtitle: Text(
+              entry.phoneNumber,
+              style: TextStyle(
+                fontSize: 12,
+                color: isSelected
+                    ? primaryColor
+                    : Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+              ),
+            ),
+            value: isSelected,
+            secondary: Container(
+              height: 42,
+              width: 42,
+              child: CircleAvatar(
+                foregroundColor: isSelected
+                    ? Colors.white
+                    : (themeChangeProvider.darkTheme)
+                        ? Colors.blueGrey[900]
+                        : Colors.white,
+                backgroundColor: isSelected
+                    ? primaryColor
+                    : Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                child: Text(
+                  CustomHelper.getInitials(
+                    entry.name,
+                  ),
+                ),
+              ),
+            ),
+            onChanged: (value) {
+              setState(() {
+                if (value) {
+                  selectedMembersList.add(_membersList[index]);
+                } else {
+                  for (var selected in selectedMembersList) {
+                    if (selected.memberId == entry.memberId) {
+                      selectedMembersList.remove(selected);
+                      break;
+                    }
+                  }
+                }
+              });
+            },
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -122,7 +197,7 @@ class SelectMemberState extends State<SelectMember> {
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Container(
-          height: MediaQuery.of(context).size.height,
+          height: (MediaQuery.of(context).size.height) - (_membersList.length),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
@@ -138,137 +213,65 @@ class SelectMemberState extends State<SelectMember> {
                 controller: controller,
               ),
               Expanded(
-                child: _membersList == null
-                    ? Center(
-                        child: Text("There are no members to select"),
-                      )
-                    : FutureBuilder(
-                        future: _future,
-                        builder: (ctx, snapshot) => snapshot.connectionState ==
-                                ConnectionState.waiting
-                            ? Center(child: CircularProgressIndicator())
-                            : RefreshIndicator(
-                                backgroundColor: (themeChangeProvider.darkTheme)
-                                    ? Colors.blueGrey[800]
-                                    : Colors.white,
-                                onRefresh: () =>
-                                    _getGroupMembers(context, true),
-                                child: Consumer<Groups>(
-                                  child: Center(
-                                    child: Text("Groups"),
-                                  ),
-                                  builder: (ctx, groups, ch) =>
-                                      ListView.builder(
-                                    itemCount: _membersList.length,
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      MembersFilterEntry entry =
-                                          _membersList[index];
-                                      bool isSelected = false;
-                                      for (var selected
-                                          in selectedMembersList) {
-                                        if (selected.memberId ==
-                                            entry.memberId) {
-                                          isSelected = true;
-                                          break;
-                                        }
-                                      }
-                                      return filter == null || filter == ""
-                                          ? Card(
-                                              child: CheckboxListTile(
-                                                secondary:
-                                                    const Icon(Icons.person),
-                                                value: isSelected,
-                                                onChanged: (value) {
-                                                  setState(() {
-                                                    if (value) {
-                                                      selectedMembersList
-                                                          .add(entry);
-                                                    } else {
-                                                      for (var selected
-                                                          in selectedMembersList) {
-                                                        if (selected.memberId ==
-                                                            entry.memberId) {
-                                                          selectedMembersList
-                                                              .remove(selected);
-                                                          break;
-                                                        }
-                                                      }
-                                                    }
-                                                  });
-                                                },
-                                                title: customTitle(
-                                                    text: entry.name,
-                                                    textAlign: TextAlign.start,
-                                                    color: Theme.of(context)
-                                                        // ignore: deprecated_member_use
-                                                        .textSelectionHandleColor),
-                                                subtitle: subtitle2(
-                                                    text: entry.phoneNumber,
-                                                    textAlign: TextAlign.start,
-                                                    color: Theme.of(context)
-                                                        // ignore: deprecated_member_use
-                                                        .textSelectionHandleColor),
-                                              ),
-                                            )
-                                          : _membersList[index]
-                                                  .name
-                                                  .toLowerCase()
-                                                  .contains(
-                                                      filter.toLowerCase())
-                                              ? Card(
-                                                  child: CheckboxListTile(
-                                                    secondary: const Icon(
-                                                        Icons.person),
-                                                    value: isSelected,
-                                                    onChanged: (value) {
-                                                      setState(() {
-                                                        if (value) {
-                                                          selectedMembersList
-                                                              .add(_membersList[
-                                                                  index]);
-                                                        } else {
-                                                          for (var selected
-                                                              in selectedMembersList) {
-                                                            if (selected
-                                                                    .memberId ==
-                                                                entry
-                                                                    .memberId) {
-                                                              selectedMembersList
-                                                                  .remove(
-                                                                      selected);
-                                                              break;
-                                                            }
-                                                          }
-                                                        }
-                                                      });
-                                                    },
-                                                    title: customTitle(
-                                                        text: entry.name,
-                                                        fontWeight:
-                                                            FontWeight.w800,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        color: Theme.of(context)
-                                                            // ignore: deprecated_member_use
-                                                            .textSelectionHandleColor),
-                                                    subtitle: subtitle1(
-                                                        text:
-                                                            _membersList[index]
-                                                                .phoneNumber,
-                                                        textAlign:
-                                                            TextAlign.start,
-                                                        color: Theme.of(context)
-                                                            // ignore: deprecated_member_use
-                                                            .textSelectionHandleColor),
-                                                  ),
-                                                )
-                                              : new Container();
-                                    },
+                child: Container(
+                  // height: MediaQuery.of(context).size.height,
+                  padding: EdgeInsets.only(bottom: 20.0),
+                  margin: EdgeInsets.only(bottom: 50.0),
+                  child: _membersList == null
+                      ? Center(
+                          child: Text("There are no members to select"),
+                        )
+                      : FutureBuilder(
+                          future: _future,
+                          builder: (ctx, snapshot) => snapshot
+                                      .connectionState ==
+                                  ConnectionState.waiting
+                              ? Center(child: CircularProgressIndicator())
+                              : RefreshIndicator(
+                                  backgroundColor:
+                                      (themeChangeProvider.darkTheme)
+                                          ? Colors.blueGrey[800]
+                                          : Colors.white,
+                                  onRefresh: () =>
+                                      _getGroupMembers(context, true),
+                                  child: Consumer<Groups>(
+                                    child: Center(
+                                      child: Text("Groups"),
+                                    ),
+                                    builder: (ctx, groups, ch) =>
+                                        ListView.builder(
+                                            itemCount: _membersList.length,
+                                            itemBuilder: (context, index) {
+                                              bool isSelected = false;
+                                              MembersFilterEntry entry =
+                                                  _membersList[index];
+                                              for (var selected
+                                                  in selectedMembersList) {
+                                                if (selected.memberId ==
+                                                    entry.memberId) {
+                                                  isSelected = true;
+                                                  break;
+                                                }
+                                              }
+                                              return filter == null ||
+                                                      filter == ""
+                                                  ? _memberListDisplay(
+                                                      entry, isSelected, index)
+                                                  : _membersList[index]
+                                                          .name
+                                                          .toLowerCase()
+                                                          .contains(filter
+                                                              .toLowerCase())
+                                                      ? _memberListDisplay(
+                                                          entry,
+                                                          isSelected,
+                                                          index)
+                                                      : new Container();
+                                            }),
                                   ),
                                 ),
-                              ),
-                      ),
+                        ),
+                ),
               ),
             ],
           ),

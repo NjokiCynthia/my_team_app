@@ -431,56 +431,56 @@ class _EditMeetingState extends State<EditMeeting> {
     }
 
     steps = [
+      // Step(
+      //   title: formatStep(0, "Name & Venue"),
+      //   isActive: currentStep >= 0 ? true : false,
+      //   state: currentStep > 0 ? StepState.complete : StepState.disabled,
+      //   content: Form(
+      //     key: _stepOneFormKey,
+      //     child: Column(
+      //       children: <Widget>[
+      //         TextFormField(
+      //           validator: (val) => validateMeeting('title', val),
+      //           decoration: InputDecoration(
+      //             labelText: 'Meeting Title',
+      //             hintText: 'The title for this meeting',
+      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
+      //           ),
+      //         ),
+      //         TextFormField(
+      //           validator: (val) => validateMeeting('venue', val),
+      //           decoration: InputDecoration(
+      //             labelText: 'Venue',
+      //             hintText: 'The venue for this meeting',
+      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
+      //           ),
+      //         ),
+      //         TextFormField(
+      //           validator: (val) => validateMeeting('purpose', val),
+      //           decoration: InputDecoration(
+      //             labelText: 'Meeting Purpose (Optional)',
+      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
+      //           ),
+      //         ),
+      //         DateTimePicker(
+      //           type: DateTimePickerType.dateTime,
+      //           initialValue: '',
+      //           firstDate: DateTime(2020),
+      //           lastDate: DateTime(2030),
+      //           dateLabelText: 'Meeting Date & Time',
+      //           onChanged: (val) => _data['date'] = val,
+      //           validator: (val) {
+      //             _data['date'] = val;
+      //             return null;
+      //           },
+      //           onSaved: (val) => print(val),
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
       Step(
-        title: formatStep(0, "Name & Venue"),
-        isActive: currentStep >= 0 ? true : false,
-        state: currentStep > 0 ? StepState.complete : StepState.disabled,
-        content: Form(
-          key: _stepOneFormKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                validator: (val) => validateMeeting('title', val),
-                decoration: InputDecoration(
-                  labelText: 'Meeting Title',
-                  hintText: 'The title for this meeting',
-                  // contentPadding: EdgeInsets.only(bottom: 0.0),
-                ),
-              ),
-              TextFormField(
-                validator: (val) => validateMeeting('venue', val),
-                decoration: InputDecoration(
-                  labelText: 'Venue',
-                  hintText: 'The venue for this meeting',
-                  // contentPadding: EdgeInsets.only(bottom: 0.0),
-                ),
-              ),
-              TextFormField(
-                validator: (val) => validateMeeting('purpose', val),
-                decoration: InputDecoration(
-                  labelText: 'Meeting Purpose (Optional)',
-                  // contentPadding: EdgeInsets.only(bottom: 0.0),
-                ),
-              ),
-              DateTimePicker(
-                type: DateTimePickerType.dateTime,
-                initialValue: '',
-                firstDate: DateTime(2020),
-                lastDate: DateTime(2030),
-                dateLabelText: 'Meeting Date & Time',
-                onChanged: (val) => _data['date'] = val,
-                validator: (val) {
-                  _data['date'] = val;
-                  return null;
-                },
-                onSaved: (val) => print(val),
-              ),
-            ],
-          ),
-        ),
-      ),
-      Step(
-        title: formatStep(1, "Members"),
+        title: formatStep(0, "Members"),
         isActive: currentStep >= 1 ? true : false,
         state: currentStep > 1 ? StepState.complete : StepState.disabled,
         content: Column(

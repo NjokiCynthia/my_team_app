@@ -24,6 +24,8 @@ class CustomHelper {
       return false;
   }
 
+  static String getInitials(String name) => name.isNotEmpty ? name.trim().split(' ').map((l) => l[0]).take(2).join(): '';
+
   static bool validEmail(String email) {
     Pattern pattern =
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
