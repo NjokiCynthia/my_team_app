@@ -4,6 +4,8 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
+import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/select-member.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -24,6 +26,7 @@ class _EditMeetingState extends State<EditMeeting> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  //  List<MembersFilterEntry> selectedMembersList = [];
 
   int currentStep = 0;
   bool complete = false;
@@ -54,10 +57,34 @@ class _EditMeetingState extends State<EditMeeting> {
   String _groupCurrency = "Ksh";
   bool _saving = false;
 
-  _setMembers(dynamic members) {
+  _setMembers(String type, dynamic members) {
+    List<dynamic> _groupMember = [];
+    for (MembersFilterEntry member in members) {
+      _groupMember.add({
+        'id': member.memberId,
+        'name': member.name,
+        'identity': member.phoneNumber,
+        'avatar': member.avatar,
+        'user_id': member.userId,
+      });
+    }
     setState(() {
-      _data['members'] = members;
+      _data['members'][type] = _groupMember;
     });
+  }
+
+  List<MembersFilterEntry> _setSelectedMembers(String type) {
+    List<MembersFilterEntry> _selectedMemberList = [];
+    var members = _data["members"][type];
+    if (members.length > 0) {
+      for (int i = 0; i < members.length; i++) {
+        _selectedMemberList.add(MembersFilterEntry(
+          memberId: members[i]["id"],
+          name: members[i]["name"],
+        ));
+      }
+    }
+    return _selectedMemberList;
   }
 
   _setCollections(dynamic collection, String type) {
@@ -431,56 +458,56 @@ class _EditMeetingState extends State<EditMeeting> {
     }
 
     steps = [
-      // Step(
-      //   title: formatStep(0, "Name & Venue"),
-      //   isActive: currentStep >= 0 ? true : false,
-      //   state: currentStep > 0 ? StepState.complete : StepState.disabled,
-      //   content: Form(
-      //     key: _stepOneFormKey,
-      //     child: Column(
-      //       children: <Widget>[
-      //         TextFormField(
-      //           validator: (val) => validateMeeting('title', val),
-      //           decoration: InputDecoration(
-      //             labelText: 'Meeting Title',
-      //             hintText: 'The title for this meeting',
-      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
-      //           ),
-      //         ),
-      //         TextFormField(
-      //           validator: (val) => validateMeeting('venue', val),
-      //           decoration: InputDecoration(
-      //             labelText: 'Venue',
-      //             hintText: 'The venue for this meeting',
-      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
-      //           ),
-      //         ),
-      //         TextFormField(
-      //           validator: (val) => validateMeeting('purpose', val),
-      //           decoration: InputDecoration(
-      //             labelText: 'Meeting Purpose (Optional)',
-      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
-      //           ),
-      //         ),
-      //         DateTimePicker(
-      //           type: DateTimePickerType.dateTime,
-      //           initialValue: '',
-      //           firstDate: DateTime(2020),
-      //           lastDate: DateTime(2030),
-      //           dateLabelText: 'Meeting Date & Time',
-      //           onChanged: (val) => _data['date'] = val,
-      //           validator: (val) {
-      //             _data['date'] = val;
-      //             return null;
-      //           },
-      //           onSaved: (val) => print(val),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
       Step(
-        title: formatStep(0, "Members"),
+        title: formatStep(0, "Name & Venue"),
+        isActive: currentStep >= 0 ? true : false,
+        state: currentStep > 0 ? StepState.complete : StepState.disabled,
+        content: Form(
+          key: _stepOneFormKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                validator: (val) => validateMeeting('title', val),
+                decoration: InputDecoration(
+                  labelText: 'Meeting Title',
+                  hintText: 'The title for this meeting',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
+                ),
+              ),
+              TextFormField(
+                validator: (val) => validateMeeting('venue', val),
+                decoration: InputDecoration(
+                  labelText: 'Venue',
+                  hintText: 'The venue for this meeting',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
+                ),
+              ),
+              TextFormField(
+                validator: (val) => validateMeeting('purpose', val),
+                decoration: InputDecoration(
+                  labelText: 'Meeting Purpose (Optional)',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
+                ),
+              ),
+              DateTimePicker(
+                type: DateTimePickerType.dateTime,
+                initialValue: '',
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2030),
+                dateLabelText: 'Meeting Date & Time',
+                onChanged: (val) => _data['date'] = val,
+                validator: (val) {
+                  _data['date'] = val;
+                  return null;
+                },
+                onSaved: (val) => print(val),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Step(
+        title: formatStep(1, "Members"),
         isActive: currentStep >= 1 ? true : false,
         state: currentStep > 1 ? StepState.complete : StepState.disabled,
         content: Column(
@@ -490,15 +517,17 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => SelectMembers(
-                      type: 'present',
-                      selected: _data['members'],
-                      members: (membrs) => _setMembers(membrs),
-                    ),
-                  ),
-                ),
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectMember(
+                          initialMembersList: _setSelectedMembers("present"),
+                          pageTitle: "Select Present Members",
+                          hideFromList: [],
+                        ),
+                      ),
+                    )
+                    .then((value) => {_setMembers('present', value)}),
                 title: "Members present",
                 subtitle: _renderMembersText("present"),
                 icon: Icons.edit,
@@ -511,15 +540,17 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => SelectMembers(
-                      type: 'late',
-                      selected: _data['members'],
-                      members: (membrs) => _setMembers(membrs),
-                    ),
-                  ),
-                ),
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectMember(
+                          initialMembersList: _setSelectedMembers("late"),
+                          pageTitle: "Select Members Late",
+                          hideFromList: _setSelectedMembers("present"),
+                        ),
+                      ),
+                    )
+                    .then((value) => {_setMembers('late', value)}),
                 title: "Members late",
                 subtitle: _renderMembersText("late"),
                 icon: Icons.edit,
@@ -532,15 +563,17 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => SelectMembers(
-                      type: 'with-apology',
-                      selected: _data['members'],
-                      members: (membrs) => _setMembers(membrs),
-                    ),
-                  ),
-                ),
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectMember(
+                          initialMembersList: _setSelectedMembers("withApology"),
+                          pageTitle: "Members Late With Apology",
+                          hideFromList: _setSelectedMembers("present")+_setSelectedMembers("late"),
+                        ),
+                      ),
+                    )
+                    .then((value) => {_setMembers('withApology', value)}),
                 title: "Absent with apology",
                 subtitle: _renderMembersText("withApology"),
                 icon: Icons.edit,
@@ -553,15 +586,17 @@ class _EditMeetingState extends State<EditMeeting> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => SelectMembers(
-                      type: 'without-apology',
-                      selected: _data['members'],
-                      members: (membrs) => _setMembers(membrs),
-                    ),
-                  ),
-                ),
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectMember(
+                          initialMembersList: _setSelectedMembers("withoutApology"),
+                          pageTitle: "Members Absent Without Apology",
+                          hideFromList: _setSelectedMembers("present")+_setSelectedMembers("late")+_setSelectedMembers("withApology"),
+                        ),
+                      ),
+                    )
+                    .then((value) => {_setMembers('withoutApology', value)}),
                 title: "Absent without apology",
                 subtitle: _renderMembersText("withoutApology"),
                 icon: Icons.edit,
@@ -656,49 +691,25 @@ class _EditMeetingState extends State<EditMeeting> {
             SizedBox(
               height: 10.0,
             ),
-            // Container(
-            //   color: Colors.cyan[700].withOpacity(0.1),
-            //   width: double.infinity,
-            //   child: meetingMegaButton(
-            //     context: context,
-            //     action: () => Navigator.of(context).push(
-            //       MaterialPageRoute(
-            //         builder: (BuildContext context) => EditCollections(
-            //           type: 'repayments',
-            //           recorded: _data['collections'],
-            //           collections: (collection) =>
-            //               _setCollections(collection, 'repayments'),
-            //         ),
-            //       ),
-            //     ),
-            //     title: "Loan Repayments",
-            //     subtitle: _renderCollectionsText('repayments'),
-            //     icon: Icons.edit,
-            //     color: Colors.cyan[700],
-            //   ),
-            // ),
-            // SizedBox(
-            //   height: 10.0,
-            // ),
             Container(
-              color: Colors.brown.withOpacity(0.1),
+              color: Colors.cyan[700].withOpacity(0.1),
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
                 action: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (BuildContext context) => EditCollections(
-                      type: 'disbursements',
+                      type: 'repayments',
                       recorded: _data['collections'],
                       collections: (collection) =>
-                          _setCollections(collection, 'disbursements'),
+                          _setCollections(collection, 'repayments'),
                     ),
                   ),
                 ),
-                title: "Loan Disbursements",
-                subtitle: _renderCollectionsText('disbursements'),
+                title: "Loan Repayments",
+                subtitle: _renderCollectionsText('repayments'),
                 icon: Icons.edit,
-                color: Colors.brown,
+                color: Colors.cyan[700],
               ),
             ),
             SizedBox(
@@ -723,6 +734,30 @@ class _EditMeetingState extends State<EditMeeting> {
                 subtitle: _renderCollectionsText('fines'),
                 icon: Icons.edit,
                 color: Colors.red[700],
+              ),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            Container(
+              color: Colors.brown.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => EditCollections(
+                      type: 'disbursements',
+                      recorded: _data['collections'],
+                      collections: (collection) =>
+                          _setCollections(collection, 'disbursements'),
+                    ),
+                  ),
+                ),
+                title: "Loan Disbursements",
+                subtitle: _renderCollectionsText('disbursements'),
+                icon: Icons.edit,
+                color: Colors.brown,
               ),
             ),
             SizedBox(

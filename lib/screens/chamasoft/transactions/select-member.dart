@@ -11,8 +11,10 @@ import 'package:provider/provider.dart';
 
 class SelectMember extends StatefulWidget {
   final List<MembersFilterEntry> initialMembersList;
+  final String pageTitle;
+  final List<MembersFilterEntry> hideFromList;
 
-  SelectMember({@required this.initialMembersList});
+  SelectMember({@required this.initialMembersList,this.pageTitle,this.hideFromList});
 
   @override
   State<StatefulWidget> createState() => new SelectMemberState();
@@ -25,11 +27,14 @@ class SelectMemberState extends State<SelectMember> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   List<MembersFilterEntry> _membersList = <MembersFilterEntry>[];
-  List<MembersFilterEntry> selectedMembersList = [];
+  List<MembersFilterEntry> selectedMembersList,hideFromList = [];
+  String pageTitle = "";
 
   @override
   void initState() {
-    selectedMembersList = widget.initialMembersList;
+    selectedMembersList = widget.initialMembersList==null?[]:widget.initialMembersList;
+    hideFromList = widget.hideFromList==null?[]:widget.hideFromList;
+    pageTitle = widget.pageTitle==null?"Select members":widget.pageTitle;
     controller.addListener(() {
       setState(() {
         filter = controller.text;
@@ -82,6 +87,7 @@ class SelectMemberState extends State<SelectMember> {
 
   Widget _memberListDisplay(
       MembersFilterEntry entry, bool isSelected, int index) {
+     if(hideFromList.indexWhere((element) => element.memberId == entry.memberId)>=0) return Container();
     return Container(
       padding: EdgeInsets.only(top: 1.0, bottom: 1.0),
       child: Column(
@@ -163,7 +169,7 @@ class SelectMemberState extends State<SelectMember> {
         action: () => Navigator.pop(context, selectedMembersList),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
-        title: "Select Members",
+        title: pageTitle,
         trailingIcon: LineAwesomeIcons.check,
         trailingAction: () async {
           if (selectedMembersList.length > 0) {
