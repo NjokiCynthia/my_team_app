@@ -140,6 +140,7 @@ class _EditCollectionsState extends State<EditCollections> {
         });
       });
       // Iterate group members
+      print(group.members);
       group.members.forEach((m) {
         _groupMembers.add({
           'id': m.id,
