@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -36,6 +37,7 @@ class _EditCollectionsState extends State<EditCollections> {
   List<dynamic> _groupAccounts = [];
   List<dynamic> _groupFineCategories = [];
   List<dynamic> _data = [];
+  Map<String, dynamic> formLoadData = {};
   String _groupCurrency = "KES";
   var formatter = NumberFormat('#,##,##0', "en_US");
 
@@ -52,6 +54,10 @@ class _EditCollectionsState extends State<EditCollections> {
     return _groupMembers.where((m) => m['id'] == id).toList()[0];
   }
 
+  Map<String, dynamic> getGroupAccount(dynamic id) {
+    return _groupAccounts.where((m) => m['id'] == id).toList()[0];
+  }
+
   Map<String, dynamic> getContribution(dynamic id) {
     return _groupContributions.where((c) => c['id'] == id).toList()[0];
   }
@@ -62,6 +68,25 @@ class _EditCollectionsState extends State<EditCollections> {
 
   Map<String, dynamic> getLoanTypes(dynamic id) {
     return _groupLoanTypes.where((l) => l['id'] == id).toList()[0];
+  }
+
+  List<dynamic> _convertToDataSource(List<NamesListItem> formData) {
+    if (formData.length > 0) {
+      List<dynamic> _result = [];
+      formData.forEach((element) {
+        String identity = "";
+        try {
+          identity = element.identity;
+        } catch (err) {}
+        _result.add({
+          "id": element.id,
+          "name": element.name,
+          "identity": identity,
+        });
+      });
+      return _result;
+    }
+    return [];
   }
 
   void _newCollectionDialog() {
@@ -91,7 +116,7 @@ class _EditCollectionsState extends State<EditCollections> {
                 'loans': _loan,
                 'type': val['type'],
                 'fines': _fine,
-                'account': val['account_id'],
+                'account': getGroupAccount(val['account_id']),
                 'amount': int.parse(val['amount']),
               });
               widget.collections(_data);
@@ -116,71 +141,92 @@ class _EditCollectionsState extends State<EditCollections> {
     });
     final group = Provider.of<Groups>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
-    List<dynamic> _fineCats = await group.fetchFineCategories();
+    // List<dynamic> _fineCats = await group.fetchFineCategories();
+    formLoadData = await group.loadInitialFormData(
+        acc: true,
+        fineOptions: true,
+        member: true,
+        contr: true,
+        memberOngoingLoans: true);
+    print(group.members);
     setState(() {
-      _groupFineCategories = _fineCats;
-      print(_groupFineCategories);
+      _groupFineCategories = _convertToDataSource(
+          formLoadData.containsKey("finesOptions")
+              ? formLoadData["finesOptions"]
+              : []);
       _groupCurrency = currentGroup.groupCurrency;
-      List<dynamic> _accs = group.allAccounts;
-      _accs.forEach((a) {
-        List<dynamic> _bccs = a;
-        _bccs.forEach((b) {
-          String prefix = "";
-          if (b.typeId == 1)
-            prefix = "bank";
-          else if (b.typeId == 2)
-            prefix = "sacco";
-          else if (b.typeId == 3)
-            prefix = "mobile";
-          else if (b.typeId == 4) prefix = "petty";
-          _groupAccounts.add({
-            'id': prefix + "-" + (b.id).toString(),
-            'name': b.name,
-          });
-        });
-      });
-      // Iterate group members
-      print(group.members);
-      group.members.forEach((m) {
-        _groupMembers.add({
-          'id': m.id,
-          'name': m.name,
-          'identity': m.identity,
-          'avatar': m.avatar,
-          'user_id': m.userId,
-        });
-      });
-      // Iterate group contributions
-      group.contributions.forEach((c) {
-        if (c.active == '1' && c.isHidden == '0') {
-          _groupContributions.add({
-            'id': c.id,
-            'name': c.name,
-            'amount': c.amount,
-            'type': c.type,
-          });
-        }
-      });
-      // Iterate group loan types
-      group.loanTypes.forEach((l) {
-        // if (l.isHidden == false) {
-        _groupLoanTypes.add({
-          'id': l.id,
-          'disbursementDate': l.disbursementDate,
-          'guarantors': l.guarantors,
-          'interestRate': l.interestRate,
-          'latePaymentFines': l.latePaymentFines,
-          'loanAmount': l.loanAmount,
-          'loanProcessing': l.loanProcessing,
-          'name': l.name,
-          'outstandingPaymentFines': l.outstandingPaymentFines,
-          'repaymentPeriod': l.repaymentPeriod,
-          'isHidden': l.isHidden,
-        });
-        // }
-      });
-      _data = widget.recorded[widget.type];
-      // print(_data);
+      _groupAccounts = _convertToDataSource(
+          formLoadData.containsKey("accountOptions")
+              ? formLoadData["accountOptions"]
+              : []);
+      _groupMembers = _convertToDataSource(
+          formLoadData.containsKey("memberOptions")
+              ? formLoadData["memberOptions"]
+              : []);
+      _groupContributions = _convertToDataSource(
+          formLoadData.containsKey("contributionOptions")
+              ? formLoadData["contributionOptions"]
+              : []);
+      // List<dynamic> _accs = group.allAccounts;
+      // _accs.forEach((a) {
+      //   List<dynamic> _bccs = a;
+      //   _bccs.forEach((b) {
+      //     String prefix = "";
+      //     if (b.typeId == 1)
+      //       prefix = "bank";
+      //     else if (b.typeId == 2)
+      //       prefix = "sacco";
+      //     else if (b.typeId == 3)
+      //       prefix = "mobile";
+      //     else if (b.typeId == 4) prefix = "petty";
+      //     _groupAccounts.add({
+      //       'id': prefix + "-" + (b.id).toString(),
+      //       'name': b.name,
+      //     });
+      //   });
+      // });
+      // // Iterate group members
+      // print(group.members);
+      // group.members.forEach((m) {
+      //   _groupMembers.add({
+      //     'id': m.id,
+      //     'name': m.name,
+      //     'identity': m.identity,
+      //     'avatar': m.avatar,
+      //     'user_id': m.userId,
+      //   });
+      // });
+      // // Iterate group contributions
+      // group.contributions.forEach((c) {
+      //   if (c.active == '1' && c.isHidden == '0') {
+      //     _groupContributions.add({
+      //       'id': c.id,
+      //       'name': c.name,
+      //       'amount': c.amount,
+      //       'type': c.type,
+      //     });
+      //   }
+      // });
+      // // Iterate group loan types
+      // group.loanTypes.forEach((l) {
+      //   // if (l.isHidden == false) {
+      //   _groupLoanTypes.add({
+      //     'id': l.id,
+      //     'disbursementDate': l.disbursementDate,
+      //     'guarantors': l.guarantors,
+      //     'interestRate': l.interestRate,
+      //     'latePaymentFines': l.latePaymentFines,
+      //     'loanAmount': l.loanAmount,
+      //     'loanProcessing': l.loanProcessing,
+      //     'name': l.name,
+      //     'outstandingPaymentFines': l.outstandingPaymentFines,
+      //     'repaymentPeriod': l.repaymentPeriod,
+      //     'isHidden': l.isHidden,
+      //   });
+      //   // }
+      // });
+      // _data = widget.recorded[widget.type];
+      // // print(_data);
       _isLoading = false;
       _isInit = false;
     });
@@ -360,6 +406,7 @@ class _EditCollectionsState extends State<EditCollections> {
                             ),
                             itemCount: _data.length,
                             itemBuilder: (context, index) {
+                              print("data here >>>> $_data");
                               return Container(
                                 padding: EdgeInsets.fromLTRB(
                                   20.0,
@@ -850,6 +897,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               Navigator.of(context).pop();
+              print(">>> $_selected");
               widget.selected(_selected);
             }
           },

@@ -3977,7 +3977,7 @@ class Groups with ChangeNotifier {
 
       _members
           .map((member) => memberOptions.add(
-              NamesListItem(id: int.tryParse(member.id), name: member.name)))
+              NamesListItem(id: int.tryParse(member.id), name: member.name,identity: member.identity)))
           .toList();
     }
 
@@ -4042,9 +4042,7 @@ class Groups with ChangeNotifier {
                   "${bankLoan.description} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.balance)}")))
           .toList();
     }
-
     if (memberOngoingLoans) {
-      // print(_ongoingMemberLoans);
       if (_ongoingMemberLoans.length == 0 && _loanPulled == false) {
         await fetchGroupMembersOngoingLoans();
       }

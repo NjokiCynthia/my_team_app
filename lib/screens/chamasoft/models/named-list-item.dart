@@ -1,7 +1,8 @@
 class NamesListItem {
   String name;
   int id;
-  NamesListItem({this.id, this.name});
+  String identity;
+  NamesListItem({this.id, this.name,this.identity});
 }
 
 class NamesListItemString{
