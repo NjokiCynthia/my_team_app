@@ -3932,7 +3932,6 @@ class Groups with ChangeNotifier {
       {bool contr = false,
       bool acc = false,
       bool member = false,
-      bool = false,
       bool incomeCats = false,
       bool depositor = false,
       bool fineOptions = false,
