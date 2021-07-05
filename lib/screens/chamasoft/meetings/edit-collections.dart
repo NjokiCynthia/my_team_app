@@ -34,6 +34,7 @@ class _EditCollectionsState extends State<EditCollections> {
   List<dynamic> _groupMembers = [];
   List<dynamic> _groupContributions = [];
   List<dynamic> _groupLoanTypes = [];
+  List<dynamic> _groupMemberLoanOptions = [];
   List<dynamic> _groupAccounts = [];
   List<dynamic> _groupFineCategories = [];
   List<dynamic> _data = [];
@@ -68,6 +69,10 @@ class _EditCollectionsState extends State<EditCollections> {
 
   Map<String, dynamic> getLoanTypes(dynamic id) {
     return _groupLoanTypes.where((l) => l['id'] == id).toList()[0];
+  }
+
+  Map<String, dynamic> getMemberLoan(dynamic id) {
+    return _groupMemberLoanOptions.where((l) => l['id'] == id).toList()[0];
   }
 
   List<dynamic> _convertToDataSource(List<NamesListItem> formData) {
@@ -127,9 +132,11 @@ class _EditCollectionsState extends State<EditCollections> {
           type: widget.type,
           groupMembers: _groupMembers,
           groupContributions: _groupContributions,
-          groupLoans: _groupLoanTypes,
+          groupLoanTypes: _groupLoanTypes,
           groupAccounts: _groupAccounts,
           groupFines: _groupFineCategories,
+          groupMemberLoans: _groupMemberLoanOptions,
+          groupCurrency: _groupCurrency,
         );
       },
     );
@@ -147,6 +154,7 @@ class _EditCollectionsState extends State<EditCollections> {
         fineOptions: true,
         member: true,
         contr: true,
+        loanTypes: true,
         memberOngoingLoans: true);
     print(group.members);
     setState(() {
@@ -167,6 +175,12 @@ class _EditCollectionsState extends State<EditCollections> {
           formLoadData.containsKey("contributionOptions")
               ? formLoadData["contributionOptions"]
               : []);
+      _groupLoanTypes = _convertToDataSource(
+          formLoadData.containsKey("loanTypeOptions")
+              ? formLoadData["loanTypeOptions"]
+              : []);
+      _groupMemberLoanOptions =
+          Provider.of<Groups>(context, listen: false).getMemberOngoingLoans;
       // List<dynamic> _accs = group.allAccounts;
       // _accs.forEach((a) {
       //   List<dynamic> _bccs = a;
@@ -593,18 +607,22 @@ class NewCollectionDialog extends StatefulWidget {
   final String type;
   final List<dynamic> groupMembers;
   final List<dynamic> groupContributions;
-  final List<dynamic> groupLoans;
+  final List<dynamic> groupLoanTypes;
   final List<dynamic> groupAccounts;
   final List<dynamic> groupFines;
+  final List<dynamic> groupMemberLoans;
   final ValueChanged<dynamic> selected;
+  final String groupCurrency;
   NewCollectionDialog({
     @required this.type,
     @required this.groupMembers,
     @required this.groupContributions,
-    @required this.groupLoans,
+    @required this.groupLoanTypes,
     @required this.groupAccounts,
     @required this.groupFines,
     @required this.selected,
+    @required this.groupMemberLoans,
+    @required this.groupCurrency,
   });
   @override
   _NewCollectionDialogState createState() => new _NewCollectionDialogState();
@@ -614,16 +632,40 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
   final _formKey = GlobalKey<FormState>();
   Map<String, dynamic> _selected = {};
   String title = "";
+  List<dynamic> memberLoans = [];
 
   String getAlertText() {
     String _resp = "You're not allowed to do anything here";
     if (widget.groupMembers.length == 0)
       _resp = "There are no group members found";
-    else if (widget.groupContributions.length == 0)
+    if (widget.type == 'contributions' && widget.groupContributions.length == 0)
       _resp = "There are no group contributions found";
-    else if (widget.groupLoans.length == 0)
+    if (widget.type == 'disbursements' && widget.groupLoanTypes.length == 0)
       _resp = "There are no loan types found";
+    if (widget.type == 'repayments' && widget.groupMemberLoans.length == 0)
+      _resp = "There are no member loans to repay";
     return _resp + ", you cannot continue.";
+  }
+
+  void _prepareMemberLoans(String currency, String selectedMemberID) {
+    List<dynamic> _result = [];
+    if (widget.groupMemberLoans != null && widget.groupMemberLoans.isNotEmpty) {
+      for (var loan in widget.groupMemberLoans) {
+        if (loan.memberId == selectedMemberID) {
+          _result.add({
+            "id": int.tryParse(loan.id),
+            "name":
+                "${loan.loanType} of $currency ${currencyFormat.format(loan.amount)} balance $currency ${currencyFormat.format(loan.balance)}"
+          });
+        }
+      }
+    }
+    setState(() {
+      memberLoans.clear();
+      memberLoans = _result;
+      
+      print("member loans >>  $memberLoans and result $_result");
+    });
   }
 
   @override
@@ -641,7 +683,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       title = "Loan Repayment";
       _selected = {
         'member_id': '',
-        'loan_type_id': '',
+        'loan_id': '',
         'account_id': '',
         'amount': '',
         'type': widget.type,
@@ -685,9 +727,10 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
           children: <Widget>[
             ((widget.groupContributions.length == 0 &&
                         widget.type == "contributions") ||
-                    (widget.groupLoans.length == 0 &&
-                        (widget.type == "repayments" ||
-                            widget.type == "disbursements")) ||
+                    (widget.groupMemberLoans.length == 0 &&
+                        widget.type == "repayments") ||
+                    (widget.type == "disbursements" &&
+                        widget.groupLoanTypes.length == 0) ||
                     widget.groupMembers.length == 0)
                 ? Container(
                     width: double.infinity,
@@ -724,11 +767,13 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
               onSaved: (value) {
                 setState(() {
                   _selected['member_id'] = value;
+                  _prepareMemberLoans(widget.groupCurrency, value.toString());
                 });
               },
               onChanged: (value) {
                 setState(() {
                   _selected['member_id'] = value;
+                  _prepareMemberLoans(widget.groupCurrency, value.toString());
                 });
               },
               validator: (value) {
@@ -769,14 +814,14 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     },
                   )
                 : SizedBox(),
-            (widget.type == "repayments" || widget.type == "disbursements")
+            (widget.type == "disbursements")
                 ? SizedBox(height: 20.0)
                 : SizedBox(),
-            (widget.type == "repayments" || widget.type == "disbursements")
+            (widget.type == "disbursements")
                 ? DropDownFormField(
                     titleText: 'Loan Type',
                     hintText: 'Select group loan type',
-                    dataSource: widget.groupLoans,
+                    dataSource: widget.groupLoanTypes,
                     textField: 'name',
                     valueField: 'id',
                     filled: false,
@@ -795,6 +840,36 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     validator: (value) {
                       if (value == null)
                         return "Loan type is required";
+                      else
+                        return null;
+                    },
+                  )
+                : SizedBox(),
+            SizedBox(height: 20.0),
+            (widget.type == "repayments") ? SizedBox(height: 20.0) : SizedBox(),
+            (widget.type == "repayments")
+                ? DropDownFormField(
+                    titleText: 'Member Loan',
+                    hintText: 'Select member ongoing loan',
+                    dataSource: memberLoans,
+                    textField: 'name',
+                    valueField: 'id',
+                    filled: false,
+                    contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                    value: _selected['loan_id'],
+                    onSaved: (value) {
+                      setState(() {
+                        _selected['loan_id'] = value;
+                      });
+                    },
+                    onChanged: (value) {
+                      setState(() {
+                        _selected['loan_id'] = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null)
+                        return "Member loan is required";
                       else
                         return null;
                     },
