@@ -35,6 +35,7 @@ class _EditCollectionsState extends State<EditCollections> {
   List<dynamic> _groupContributions = [];
   List<dynamic> _groupLoanTypes = [];
   List<dynamic> _groupMemberLoanOptions = [];
+  List<dynamic> _memberLoanOptions = [];
   List<dynamic> _groupAccounts = [];
   List<dynamic> _groupFineCategories = [];
   List<dynamic> _data = [];
@@ -72,7 +73,7 @@ class _EditCollectionsState extends State<EditCollections> {
   }
 
   Map<String, dynamic> getMemberLoan(dynamic id) {
-    return _groupMemberLoanOptions.where((l) => l['id'] == id).toList()[0];
+    return _memberLoanOptions.where((l) => l['id'] == id).toList()[0];
   }
 
   List<dynamic> _convertToDataSource(List<NamesListItem> formData) {
@@ -112,6 +113,8 @@ class _EditCollectionsState extends State<EditCollections> {
                 _contribution = getContribution(val['contribution_id']);
               else if (val['type'] == "fines")
                 _fine = getFine(val['fine_id']);
+              else if (val['type'] == "repayments")
+                _loan = getMemberLoan(val['loan_id']);
               else
                 _loan = getLoanTypes(val['loan_type_id']);
               // print(_member);
@@ -179,68 +182,14 @@ class _EditCollectionsState extends State<EditCollections> {
           formLoadData.containsKey("loanTypeOptions")
               ? formLoadData["loanTypeOptions"]
               : []);
+      _memberLoanOptions = _convertToDataSource(
+          formLoadData.containsKey("memberOngoingLoanOptions")
+              ? formLoadData["memberOngoingLoanOptions"]
+              : []);
       _groupMemberLoanOptions =
           Provider.of<Groups>(context, listen: false).getMemberOngoingLoans;
-      // List<dynamic> _accs = group.allAccounts;
-      // _accs.forEach((a) {
-      //   List<dynamic> _bccs = a;
-      //   _bccs.forEach((b) {
-      //     String prefix = "";
-      //     if (b.typeId == 1)
-      //       prefix = "bank";
-      //     else if (b.typeId == 2)
-      //       prefix = "sacco";
-      //     else if (b.typeId == 3)
-      //       prefix = "mobile";
-      //     else if (b.typeId == 4) prefix = "petty";
-      //     _groupAccounts.add({
-      //       'id': prefix + "-" + (b.id).toString(),
-      //       'name': b.name,
-      //     });
-      //   });
-      // });
-      // // Iterate group members
-      // print(group.members);
-      // group.members.forEach((m) {
-      //   _groupMembers.add({
-      //     'id': m.id,
-      //     'name': m.name,
-      //     'identity': m.identity,
-      //     'avatar': m.avatar,
-      //     'user_id': m.userId,
-      //   });
-      // });
-      // // Iterate group contributions
-      // group.contributions.forEach((c) {
-      //   if (c.active == '1' && c.isHidden == '0') {
-      //     _groupContributions.add({
-      //       'id': c.id,
-      //       'name': c.name,
-      //       'amount': c.amount,
-      //       'type': c.type,
-      //     });
-      //   }
-      // });
-      // // Iterate group loan types
-      // group.loanTypes.forEach((l) {
-      //   // if (l.isHidden == false) {
-      //   _groupLoanTypes.add({
-      //     'id': l.id,
-      //     'disbursementDate': l.disbursementDate,
-      //     'guarantors': l.guarantors,
-      //     'interestRate': l.interestRate,
-      //     'latePaymentFines': l.latePaymentFines,
-      //     'loanAmount': l.loanAmount,
-      //     'loanProcessing': l.loanProcessing,
-      //     'name': l.name,
-      //     'outstandingPaymentFines': l.outstandingPaymentFines,
-      //     'repaymentPeriod': l.repaymentPeriod,
-      //     'isHidden': l.isHidden,
-      //   });
-      //   // }
-      // });
-      // _data = widget.recorded[widget.type];
-      // // print(_data);
+      _data = widget.recorded[widget.type];
+      print("data >>>>>>> $_data");
       _isLoading = false;
       _isInit = false;
     });
@@ -663,7 +612,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
     setState(() {
       memberLoans.clear();
       memberLoans = _result;
-      
+
       print("member loans >>  $memberLoans and result $_result");
     });
   }
