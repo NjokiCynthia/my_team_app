@@ -594,15 +594,10 @@ Widget negativeActionDialogButton(
   // ignore: deprecated_member_use
   return FlatButton(
     padding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        customTitle(
-          text: text,
-          color: color,
-          fontWeight: FontWeight.w600,
-        )
-      ],
+    child: customTitle(
+      text: text,
+      color: color,
+      fontWeight: FontWeight.w600,
     ),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
     onPressed: action,
