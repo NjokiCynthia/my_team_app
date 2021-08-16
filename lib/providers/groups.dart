@@ -736,7 +736,7 @@ class Groups with ChangeNotifier {
   }
 
   // ignore: missing_return
-  String _getAccountFormId(int position) {
+  String getAccountFormId(int position) {
     for (var accountOption in _allAccounts) {
       for (var account in accountOption) {
         if (position == account.uniqueId) {
@@ -3975,8 +3975,10 @@ class Groups with ChangeNotifier {
       }
 
       _members
-          .map((member) => memberOptions.add(
-              NamesListItem(id: int.tryParse(member.id), name: member.name,identity: member.identity)))
+          .map((member) => memberOptions.add(NamesListItem(
+              id: int.tryParse(member.id),
+              name: member.name,
+              identity: member.identity)))
           .toList();
     }
 
@@ -4078,7 +4080,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
 
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
@@ -4104,7 +4106,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.RECORD_MEMBER_LOAN;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
       // log(formData.toString());
@@ -4153,7 +4155,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.NEW_RECORD_FINE_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
 
@@ -4179,7 +4181,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.NEW_RECORD_INCOME;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
       try {
@@ -4205,7 +4207,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.NEW_RECORD_MISCELLANEOUS_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
 
@@ -4230,7 +4232,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.RECORD_BANK_LOAN;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
 
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
@@ -4256,7 +4258,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.NEW_RECORD_EXPENSES;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
       try {
@@ -4280,7 +4282,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.RECORD_BANK_LOAN_REPAYMENT;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
 
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
@@ -4306,7 +4308,7 @@ class Groups with ChangeNotifier {
       const url = EndpointUrl.RECORD_CONTRIBUTION_REFUND;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
-      formData['account_id'] = _getAccountFormId(formData['account_id']);
+      formData['account_id'] = getAccountFormId(formData['account_id']);
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";
 
@@ -4358,8 +4360,8 @@ class Groups with ChangeNotifier {
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['from_account_id'] =
-          _getAccountFormId(formData['from_account_id']);
-      formData['to_account_id'] = _getAccountFormId(formData['to_account_id']);
+          getAccountFormId(formData['from_account_id']);
+      formData['to_account_id'] = getAccountFormId(formData['to_account_id']);
 
       formData['request_id'] =
           "${formData['request_id']}_${_userId}_$_identity";

@@ -88,6 +88,7 @@ class _EditCollectionsState extends State<EditCollections> {
           "id": element.id,
           "name": element.name,
           "identity": identity,
+          "account_id" : Provider.of<Groups>(context, listen: false).getAccountFormId(element.id),
         });
       });
       return _result;
@@ -794,7 +795,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     },
                   )
                 : SizedBox(),
-            SizedBox(height: 20.0),
             (widget.type == "repayments") ? SizedBox(height: 20.0) : SizedBox(),
             (widget.type == "repayments")
                 ? DropDownFormField(
@@ -824,7 +824,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                     },
                   )
                 : SizedBox(),
-            SizedBox(height: 20.0),
+            (widget.type == "fines") ? SizedBox(height: 20.0) : SizedBox(),
             widget.type == "fines"
                 ? DropDownFormField(
                     titleText: 'Fine Category',

@@ -454,6 +454,7 @@ class _EditMeetingState extends State<EditMeeting> {
       double totals = 0;
       List<dynamic> _collection = _data['collections'][type];
       _collection.forEach((c) => totals += c['amount']);
+      print("totals : $totals");
       return _groupCurrency + " " + formatter.format(totals);
     }
 
@@ -875,9 +876,9 @@ class _EditMeetingState extends State<EditMeeting> {
               summaryTitle(text: "Collections"),
               Text(
                 "1. Group contributions: ${_getTotals('contributions')}\n" +
-                    // "2. Loan repayments: ${_getTotals('repayments')}\n" +
-                    "2. Loan disbursements: ${_getTotals('disbursements')}\n" +
-                    "3. Fine payments: ${_getTotals('fines')}",
+                    "2. Loan repayments: ${_getTotals('repayments')}\n" +
+                    "3. Fine payments: ${_getTotals('fines')}"+
+                    "4. Loan disbursements: ${_getTotals('disbursements')}\n",
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),
