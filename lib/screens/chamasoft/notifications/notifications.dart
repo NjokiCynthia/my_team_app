@@ -154,13 +154,13 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                 GroupProvider.Notification notification =
                                     groupData.notifications[index];
                                 return InkWell(
-                                  onTap: () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                        NotificationAlert(notification: notification,),
-                                          // NotificationDetails(notification: notification),
-                                    ),
-                                  ),
+                                  // onTap: () => Navigator.of(context).push(
+                                  //   MaterialPageRoute(
+                                  //     builder: (BuildContext context) =>
+                                  //       NotificationAlert(notification: notification,),
+                                  //         // NotificationDetails(notification: notification),
+                                  //   ),
+                                  // ),
                                   child: Container(
                                     child: Column(
                                       children: <Widget>[
