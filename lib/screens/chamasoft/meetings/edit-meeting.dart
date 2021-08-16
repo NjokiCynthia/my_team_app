@@ -458,207 +458,207 @@ class _EditMeetingState extends State<EditMeeting> {
     }
 
     steps = [
-      // Step(
-      //   title: formatStep(0, "Name & Venue"),
-      //   isActive: currentStep >= 0 ? true : false,
-      //   state: currentStep > 0 ? StepState.complete : StepState.disabled,
-      //   content: Form(
-      //     key: _stepOneFormKey,
-      //     child: Column(
-      //       children: <Widget>[
-      //         TextFormField(
-      //           validator: (val) => validateMeeting('title', val),
-      //           decoration: InputDecoration(
-      //             labelText: 'Meeting Title',
-      //             hintText: 'The title for this meeting',
-      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
-      //           ),
-      //         ),
-      //         TextFormField(
-      //           validator: (val) => validateMeeting('venue', val),
-      //           decoration: InputDecoration(
-      //             labelText: 'Venue',
-      //             hintText: 'The venue for this meeting',
-      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
-      //           ),
-      //         ),
-      //         TextFormField(
-      //           validator: (val) => validateMeeting('purpose', val),
-      //           decoration: InputDecoration(
-      //             labelText: 'Meeting Purpose (Optional)',
-      //             // contentPadding: EdgeInsets.only(bottom: 0.0),
-      //           ),
-      //         ),
-      //         DateTimePicker(
-      //           type: DateTimePickerType.dateTime,
-      //           initialValue: '',
-      //           firstDate: DateTime(2020),
-      //           lastDate: DateTime(2030),
-      //           dateLabelText: 'Meeting Date & Time',
-      //           onChanged: (val) => _data['date'] = val,
-      //           validator: (val) {
-      //             _data['date'] = val;
-      //             return null;
-      //           },
-      //           onSaved: (val) => print(val),
-      //         ),
-      //       ],
-      //     ),
-      //   ),
-      // ),
-      // Step(
-      //   title: formatStep(1, "Members"),
-      //   isActive: currentStep >= 1 ? true : false,
-      //   state: currentStep > 1 ? StepState.complete : StepState.disabled,
-      //   content: Column(
-      //     children: <Widget>[
-      //       Container(
-      //         color: Colors.green.withOpacity(0.1),
-      //         width: double.infinity,
-      //         child: meetingMegaButton(
-      //           context: context,
-      //           action: () => Navigator.of(context)
-      //               .push(
-      //                 MaterialPageRoute(
-      //                   builder: (BuildContext context) => SelectMember(
-      //                     initialMembersList: _setSelectedMembers("present"),
-      //                     pageTitle: "Select Present Members",
-      //                     hideFromList: [],
-      //                   ),
-      //                 ),
-      //               )
-      //               .then((value) => {_setMembers('present', value)}),
-      //           title: "Members present",
-      //           subtitle: _renderMembersText("present"),
-      //           icon: Icons.edit,
-      //           color: Colors.green,
-      //         ),
-      //       ),
-      //       SizedBox(height: 10.0),
-      //       Container(
-      //         color: Colors.cyan.withOpacity(0.1),
-      //         width: double.infinity,
-      //         child: meetingMegaButton(
-      //           context: context,
-      //           action: () => Navigator.of(context)
-      //               .push(
-      //                 MaterialPageRoute(
-      //                   builder: (BuildContext context) => SelectMember(
-      //                     initialMembersList: _setSelectedMembers("late"),
-      //                     pageTitle: "Select Members Late",
-      //                     hideFromList: _setSelectedMembers("present"),
-      //                   ),
-      //                 ),
-      //               )
-      //               .then((value) => {_setMembers('late', value)}),
-      //           title: "Members late",
-      //           subtitle: _renderMembersText("late"),
-      //           icon: Icons.edit,
-      //           color: Colors.cyan,
-      //         ),
-      //       ),
-      //       SizedBox(height: 10.0),
-      //       Container(
-      //         color: Colors.orange[700].withOpacity(0.1),
-      //         width: double.infinity,
-      //         child: meetingMegaButton(
-      //           context: context,
-      //           action: () => Navigator.of(context)
-      //               .push(
-      //                 MaterialPageRoute(
-      //                   builder: (BuildContext context) => SelectMember(
-      //                     initialMembersList: _setSelectedMembers("withApology"),
-      //                     pageTitle: "Members Late With Apology",
-      //                     hideFromList: _setSelectedMembers("present")+_setSelectedMembers("late"),
-      //                   ),
-      //                 ),
-      //               )
-      //               .then((value) => {_setMembers('withApology', value)}),
-      //           title: "Absent with apology",
-      //           subtitle: _renderMembersText("withApology"),
-      //           icon: Icons.edit,
-      //           color: Colors.orange[700],
-      //         ),
-      //       ),
-      //       SizedBox(height: 10.0),
-      //       Container(
-      //         color: Colors.red[400].withOpacity(0.1),
-      //         width: double.infinity,
-      //         child: meetingMegaButton(
-      //           context: context,
-      //           action: () => Navigator.of(context)
-      //               .push(
-      //                 MaterialPageRoute(
-      //                   builder: (BuildContext context) => SelectMember(
-      //                     initialMembersList: _setSelectedMembers("withoutApology"),
-      //                     pageTitle: "Members Absent Without Apology",
-      //                     hideFromList: _setSelectedMembers("present")+_setSelectedMembers("late")+_setSelectedMembers("withApology"),
-      //                   ),
-      //                 ),
-      //               )
-      //               .then((value) => {_setMembers('withoutApology', value)}),
-      //           title: "Absent without apology",
-      //           subtitle: _renderMembersText("withoutApology"),
-      //           icon: Icons.edit,
-      //           color: Colors.red[400],
-      //         ),
-      //       ),
-      //     ],
-      //   ),
-      // ),
-      // Step(
-      //   title: formatStep(2, "Agenda"),
-      //   isActive: currentStep >= 2 ? true : false,
-      //   state: currentStep > 2 ? StepState.complete : StepState.disabled,
-      //   content: Column(
-      //     children: <Widget>[
-      //       Form(
-      //         key: _agendaFormKey,
-      //         child: Stack(
-      //           children: <Widget>[
-      //             TextFormField(
-      //               validator: (val) {
-      //                 if (val.isEmpty)
-      //                   return "Agenda is required";
-      //                 else if (val.length < 3)
-      //                   return "Agenda is way too short";
-      //                 else {
-      //                   List<dynamic> _tempAgenda = [..._data['agenda']];
-      //                   _tempAgenda.add(val);
-      //                   setState(() {
-      //                     _data['agenda'] = _tempAgenda;
-      //                   });
-      //                   return null;
-      //                 }
-      //               },
-      //               decoration: InputDecoration(
-      //                 labelText: 'Add agenda item...',
-      //                 contentPadding: EdgeInsets.only(bottom: 0.0),
-      //               ),
-      //             ),
-      //             Positioned(
-      //               right: 0.0,
-      //               top: 0.0,
-      //               child: IconButton(
-      //                 icon: Icon(
-      //                   Icons.check,
-      //                   color: primaryColor,
-      //                 ),
-      //                 onPressed: () {
-      //                   if (_agendaFormKey.currentState.validate()) {
-      //                     _agendaFormKey.currentState.reset();
-      //                   }
-      //                 },
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       ),
-      //       SizedBox(height: 20.0),
-      //       renderAgenda(),
-      //     ],
-      //   ),
-      // ),
+      Step(
+        title: formatStep(0, "Name & Venue"),
+        isActive: currentStep >= 0 ? true : false,
+        state: currentStep > 0 ? StepState.complete : StepState.disabled,
+        content: Form(
+          key: _stepOneFormKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                validator: (val) => validateMeeting('title', val),
+                decoration: InputDecoration(
+                  labelText: 'Meeting Title',
+                  hintText: 'The title for this meeting',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
+                ),
+              ),
+              TextFormField(
+                validator: (val) => validateMeeting('venue', val),
+                decoration: InputDecoration(
+                  labelText: 'Venue',
+                  hintText: 'The venue for this meeting',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
+                ),
+              ),
+              TextFormField(
+                validator: (val) => validateMeeting('purpose', val),
+                decoration: InputDecoration(
+                  labelText: 'Meeting Purpose (Optional)',
+                  // contentPadding: EdgeInsets.only(bottom: 0.0),
+                ),
+              ),
+              DateTimePicker(
+                type: DateTimePickerType.dateTime,
+                initialValue: '',
+                firstDate: DateTime(2020),
+                lastDate: DateTime(2030),
+                dateLabelText: 'Meeting Date & Time',
+                onChanged: (val) => _data['date'] = val,
+                validator: (val) {
+                  _data['date'] = val;
+                  return null;
+                },
+                onSaved: (val) => print(val),
+              ),
+            ],
+          ),
+        ),
+      ),
+      Step(
+        title: formatStep(1, "Members"),
+        isActive: currentStep >= 1 ? true : false,
+        state: currentStep > 1 ? StepState.complete : StepState.disabled,
+        content: Column(
+          children: <Widget>[
+            Container(
+              color: Colors.green.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectMember(
+                          initialMembersList: _setSelectedMembers("present"),
+                          pageTitle: "Select Present Members",
+                          hideFromList: [],
+                        ),
+                      ),
+                    )
+                    .then((value) => {_setMembers('present', value)}),
+                title: "Members present",
+                subtitle: _renderMembersText("present"),
+                icon: Icons.edit,
+                color: Colors.green,
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              color: Colors.cyan.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectMember(
+                          initialMembersList: _setSelectedMembers("late"),
+                          pageTitle: "Select Members Late",
+                          hideFromList: _setSelectedMembers("present"),
+                        ),
+                      ),
+                    )
+                    .then((value) => {_setMembers('late', value)}),
+                title: "Members late",
+                subtitle: _renderMembersText("late"),
+                icon: Icons.edit,
+                color: Colors.cyan,
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              color: Colors.orange[700].withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectMember(
+                          initialMembersList: _setSelectedMembers("withApology"),
+                          pageTitle: "Members Late With Apology",
+                          hideFromList: _setSelectedMembers("present")+_setSelectedMembers("late"),
+                        ),
+                      ),
+                    )
+                    .then((value) => {_setMembers('withApology', value)}),
+                title: "Absent with apology",
+                subtitle: _renderMembersText("withApology"),
+                icon: Icons.edit,
+                color: Colors.orange[700],
+              ),
+            ),
+            SizedBox(height: 10.0),
+            Container(
+              color: Colors.red[400].withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => SelectMember(
+                          initialMembersList: _setSelectedMembers("withoutApology"),
+                          pageTitle: "Members Absent Without Apology",
+                          hideFromList: _setSelectedMembers("present")+_setSelectedMembers("late")+_setSelectedMembers("withApology"),
+                        ),
+                      ),
+                    )
+                    .then((value) => {_setMembers('withoutApology', value)}),
+                title: "Absent without apology",
+                subtitle: _renderMembersText("withoutApology"),
+                icon: Icons.edit,
+                color: Colors.red[400],
+              ),
+            ),
+          ],
+        ),
+      ),
+      Step(
+        title: formatStep(2, "Agenda"),
+        isActive: currentStep >= 2 ? true : false,
+        state: currentStep > 2 ? StepState.complete : StepState.disabled,
+        content: Column(
+          children: <Widget>[
+            Form(
+              key: _agendaFormKey,
+              child: Stack(
+                children: <Widget>[
+                  TextFormField(
+                    validator: (val) {
+                      if (val.isEmpty)
+                        return "Agenda is required";
+                      else if (val.length < 3)
+                        return "Agenda is way too short";
+                      else {
+                        List<dynamic> _tempAgenda = [..._data['agenda']];
+                        _tempAgenda.add(val);
+                        setState(() {
+                          _data['agenda'] = _tempAgenda;
+                        });
+                        return null;
+                      }
+                    },
+                    decoration: InputDecoration(
+                      labelText: 'Add agenda item...',
+                      contentPadding: EdgeInsets.only(bottom: 0.0),
+                    ),
+                  ),
+                  Positioned(
+                    right: 0.0,
+                    top: 0.0,
+                    child: IconButton(
+                      icon: Icon(
+                        Icons.check,
+                        color: primaryColor,
+                      ),
+                      onPressed: () {
+                        if (_agendaFormKey.currentState.validate()) {
+                          _agendaFormKey.currentState.reset();
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20.0),
+            renderAgenda(),
+          ],
+        ),
+      ),
       Step(
         title: formatStep(3, "Collections"),
         isActive: currentStep >= 3 ? true : false,
