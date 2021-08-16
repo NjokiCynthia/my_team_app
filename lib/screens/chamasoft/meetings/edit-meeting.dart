@@ -877,7 +877,7 @@ class _EditMeetingState extends State<EditMeeting> {
               Text(
                 "1. Group contributions: ${_getTotals('contributions')}\n" +
                     "2. Loan repayments: ${_getTotals('repayments')}\n" +
-                    "3. Fine payments: ${_getTotals('fines')}"+
+                    "3. Fine payments: ${_getTotals('fines')}\n"+
                     "4. Loan disbursements: ${_getTotals('disbursements')}\n",
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
