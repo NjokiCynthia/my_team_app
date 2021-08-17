@@ -98,25 +98,26 @@ class NotificationManager {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       print("Listening to a message");
       print(message.data);
-      RemoteNotification notification = message.notification;
-      AndroidNotification android = message.notification?.android;
-      if (notification != null && android != null) {
-        flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                channel.description,
-                // ignore: todo
-                // TODO add a proper drawable resource to android, for now using
-                //      one that already exists in example app.
-                icon: 'launch_background',
-              ),
-            ));
-      }
+      //  uncomment this section when we get a nice icon
+      // RemoteNotification notification = message.notification;
+      // AndroidNotification android = message.notification?.android;
+      // if (notification != null && android != null) {
+      //   flutterLocalNotificationsPlugin.show(
+      //       notification.hashCode,
+      //       notification.title,
+      //       notification.body,
+      //       NotificationDetails(
+      //         android: AndroidNotificationDetails(
+      //           channel.id,
+      //           channel.name,
+      //           channel.description,
+      //           // ignore: todo
+      //           // TODO add a proper drawable resource to android, for now using
+      //           //      one that already exists in example app.
+      //           icon: 'launch_background',
+      //         ),
+      //       ));
+      // }
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {

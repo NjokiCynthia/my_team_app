@@ -1340,7 +1340,7 @@ class Groups with ChangeNotifier {
       try {
         meeting['user_id'] = _userId;
         final postRequest = json.encode(meeting);
-        // print("request: $postRequest");
+        print("request: $postRequest");
         var response = await PostToServer.post(postRequest, url);
         return response;
       } on CustomException catch (error) {

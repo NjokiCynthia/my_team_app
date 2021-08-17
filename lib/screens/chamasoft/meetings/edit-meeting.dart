@@ -854,6 +854,8 @@ class _EditMeetingState extends State<EditMeeting> {
               Text(
                 (_data['members']['present'].length).toString() +
                     " present, " +
+                    (_data['members']['late'].length).toString() +
+                    " late, " +
                     (_data['members']['withApology'].length).toString() +
                     " absent with apology and " +
                     (_data['members']['withoutApology'].length).toString() +
