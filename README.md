@@ -13,3 +13,5 @@ The Chamasoft Android & iOS app, flavored.
 ## Build for production
 
 `flutter build appbundle --flavor {flavorName} --dart-define=flavor={flavorName}`
+
+`flutter build apk --flavor {flavorName} --dart-define=flavor={flavorName}`
