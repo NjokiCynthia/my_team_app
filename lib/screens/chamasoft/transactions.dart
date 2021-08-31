@@ -258,6 +258,17 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
       SizedBox(
         width: 16.0,
       ),
+      Container(
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['money-bag'],
+              title: 'RECONCILE DEPOSITS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () {},
+              margin: 0,
+              imageHeight: 100.0))
     ];
 
     List<Widget> expenditureOptions = [
