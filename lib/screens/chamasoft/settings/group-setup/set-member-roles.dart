@@ -262,6 +262,8 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
       }
     }
 
+    print("Initially selected contacts ${selectedContacts[1].contact.toMap()}");
+
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,

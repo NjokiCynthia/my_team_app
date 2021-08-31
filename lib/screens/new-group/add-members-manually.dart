@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-member-roles.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -67,16 +68,33 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
 
     List<Item> item = [];
     item.add(Item(value: _phoneNumber));
-    CustomContact customContact = CustomContact.simpleContact(
-        simpleContact: SimpleContact(
-            name: _fullName,
-            firstName: _firstName,
-            lastName: _lastName,
-            phoneNumber: _countryCode.dialCode + _phoneNumber,
-            email: _email),
-        role: memberRole);
 
-    Navigator.of(context).pop(customContact);
+    // New
+    CustomContact customContact = CustomContact(
+        contact: Contact(
+            displayName: _fullName,
+            givenName: _firstName,
+            familyName: _lastName,
+            emails: [
+          Item(label: "email", value: _email)
+        ],
+            phones: [
+          Item(
+              label: "mobile", value: "${_countryCode.dialCode + _phoneNumber}")
+        ]));
+
+    final result = await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (BuildContext context) =>
+            SetMemberRoles(initialSelectedContacts: [customContact]),
+      ),
+    );
+    if (result != null && result) {
+      Navigator.of(context).pop(true);
+    }
+
+    // print("redirecting..");
+    // Navigator.of(context).pop(customContact);
   }
 
   void _handleFocusChange() {
@@ -260,8 +278,6 @@ class _AddGroupMembersManuallyState extends State<AddGroupMembersManually> {
                                         onChanged: (countryCode) {
                                           setState(() {
                                             _countryCode = countryCode;
-                                            print("Code: " +
-                                                countryCode.dialCode);
                                           });
                                         },
                                       ),
