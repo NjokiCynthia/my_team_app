@@ -41,10 +41,12 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
   Future<void> _submitMembers(BuildContext context) async {
     List<Map<String, String>> members = [];
     for (CustomContact customContact in selectedContacts) {
+      // show the member selected.
+
       Map<String, String> map = {};
       var phoneList = customContact.contact.phones.toList();
 
-      String email = "";
+      String email = customContact.contact.emails.toList()[0].value;
       String phone = phoneList[0].value;
       if (phone.contains("@")) {
         email = phone;
@@ -261,8 +263,6 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
         _getUnAssignedGroupRoles(context);
       }
     }
-
-    print("Initially selected contacts ${selectedContacts[1].contact.toMap()}");
 
     return Scaffold(
       appBar: tertiaryPageAppbar(
