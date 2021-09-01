@@ -57,6 +57,7 @@ flutter:
   assets:
     - assets/
     - assets/tiles/
+    - assets/images/backspace.png
     - assets/certificates/mpesachama.crt
     - assets/certificates/mobile.key
     - assets/certificates/pubkey.pem

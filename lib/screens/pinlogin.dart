@@ -122,8 +122,9 @@ class _PinLoginState extends State<PinLogin> {
     return Expanded(
       child: Container(
         alignment: Alignment.bottomCenter,
+        padding: EdgeInsets.all(0.0),
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 5.0),
+          padding: const EdgeInsets.only(bottom: 20.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
@@ -231,10 +232,10 @@ class _PinLoginState extends State<PinLogin> {
                       onPressed: () {
                         clearPin();
                       },
-                      // child: Image.asset(
-                      //   "assets/images/backspace.png",
-                      //   color: Colors.black,
-                      // ),
+                      child: Image.asset(
+                        "assets/images/backspace.png",
+                        color: Colors.black,
+                      ),
                     ),
                   )
                 ],
@@ -345,25 +346,48 @@ class _PinLoginState extends State<PinLogin> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  profileImage(),
-                  profileName(),
+                  // Expanded(
+                  //   child: Container(
+                  //     child: Column(
+                  //       mainAxisSize: MainAxisSize.min, 
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: <Widget>[
+                  //         profileImage(),
+                  //         SizedBox(
+                  //           height: 5.0,
+                  //         ),
+                  //         profileName(),
+                  //       ],
+                  //     )
+                  //   )
+                  // ),
                   Expanded(
                     child: Container(
                       alignment: Alignment(0, 0.5),
-                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      margin: EdgeInsets.only(top: 50.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
+                          profileImage(),
+                          SizedBox(
+                            height: 5.0,
+                          ),
+                          profileName(),
+                          SizedBox(
+                            height: 50.0,
+                          ),
                           buildSecurityText(),
                           SizedBox(
-                            height: 25.0,
+                            height: 100.0,
                           ),
                           buildPinRow(),
+                          buildNumberPad(),
                         ],
                       ),
                     ),
                   ),
-                  buildNumberPad(),
                   forgortPasswordText(),
                 ],
               ),
@@ -387,6 +411,7 @@ class PinNumber extends StatelessWidget {
     return Container(
       width: 50.0,
       height: 50.0,
+      padding: EdgeInsets.all(0.0),
       child: TextField(
         controller: textEditingController,
         enabled: true,
@@ -424,6 +449,7 @@ class KeyBoardNumber extends StatelessWidget {
     return Container(
       width: 60.0,
       height: 60.0,
+      padding: EdgeInsets.all(5.0),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: primaryColor.withOpacity(0.1),
