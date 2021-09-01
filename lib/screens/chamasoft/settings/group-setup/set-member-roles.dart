@@ -41,12 +41,14 @@ class _SetMemberRolesState extends State<SetMemberRoles> {
   Future<void> _submitMembers(BuildContext context) async {
     List<Map<String, String>> members = [];
     for (CustomContact customContact in selectedContacts) {
-      // show the member selected.
-
       Map<String, String> map = {};
-      var phoneList = customContact.contact.phones.toList();
 
-      String email = customContact.contact.emails.toList()[0].value;
+      var phoneList = customContact.contact.phones.toList();
+      var emailList = customContact.contact.emails != null
+          ? customContact.contact.emails.toList()
+          : [];
+
+      String email = emailList.isNotEmpty ? emailList[0].value : "";
       String phone = phoneList[0].value;
       if (phone.contains("@")) {
         email = phone;

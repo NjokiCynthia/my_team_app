@@ -1,6 +1,7 @@
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -482,7 +483,8 @@ Widget svgGridButton(
     Function action,
     bool isHighlighted,
     double margin = 18,
-    double imageHeight = 120}) {
+    double imageHeight = 120,
+    int notifications = 0}) {
   return Container(
     margin: EdgeInsets.all(margin),
     height: 150,
@@ -492,60 +494,78 @@ Widget svgGridButton(
     // ignore: deprecated_member_use
     child: FlatButton(
       padding: EdgeInsets.all(0),
-      child: Stack(
-          fit: StackFit.expand,
-          alignment: Alignment.center,
-          children: <Widget>[
-            Positioned(
-              top: 0.0,
-              right: 0.0,
-              left: 0.0,
-              child: SvgPicture.asset(
-                icon,
-                semanticsLabel: 'icon',
-                height: imageHeight,
+      child:
+          Stack(fit: StackFit.expand, alignment: Alignment.center, children: [
+        // Show the icon based on available notifications
+        if (notifications > 0)
+          Positioned(
+            top: 0.0,
+            right: 2.0,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(50),
+              child: Container(
+                color: color,
+                height: 30,
+                width: 30,
+                padding: EdgeInsets.all(5),
+                child: Text(
+                  "$notifications",
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                // SvgPicture.asset(
-                //   icon,
-                //   semanticsLabel: 'icon',
-                //   height: 100.0,
-                // ),
-                SizedBox(
-                  height: 100.0,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    title,
-                    style: TextStyle(
-                      color: color,
-                      fontWeight: FontWeight.w800,
-                      fontSize: 12.0,
-                      fontFamily: 'SegoeUI',
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Text(
-                    subtitle,
-                    style: TextStyle(
-                      color: color.withOpacity(0.6),
-                      fontWeight: FontWeight.w600,
-                      fontFamily: 'SegoeUI',
-                      fontSize: 10.0,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
+          ),
+        Positioned(
+          top: 0.0,
+          right: 0.0,
+          left: 0.0,
+          child: SvgPicture.asset(
+            icon,
+            semanticsLabel: 'icon',
+            height: imageHeight,
+          ),
+        ),
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            // SvgPicture.asset(
+            //   icon,
+            //   semanticsLabel: 'icon',
+            //   height: 100.0,
+            // ),
+            SizedBox(
+              height: 100.0,
             ),
-          ]),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(
+                title,
+                style: TextStyle(
+                  color: color,
+                  fontWeight: FontWeight.w800,
+                  fontSize: 12.0,
+                  fontFamily: 'SegoeUI',
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 10.0),
+              child: Text(
+                subtitle,
+                style: TextStyle(
+                  color: color.withOpacity(0.6),
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'SegoeUI',
+                  fontSize: 10.0,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
+      ]),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
       highlightColor: primaryColor.withOpacity(0.1),
       onPressed: action,
