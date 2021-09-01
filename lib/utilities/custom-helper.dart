@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomHelper {
-  static const String baseUrl ="https://app.chamasoft.com";
+  static const String baseUrl ="https://uat.chamasoft.com";
   static const String prodBaseUrl = "https://app.chamasoft.com";
   static const String imageUrl = baseUrl + "/uploads/groups/";
 
