@@ -376,13 +376,16 @@ class _PinLoginState extends State<PinLogin> {
                           ),
                           profileName(),
                           SizedBox(
-                            height: 50.0,
+                            height: 100.0,
                           ),
                           buildSecurityText(),
                           SizedBox(
-                            height: 100.0,
+                            height: 10.0,
                           ),
                           buildPinRow(),
+                          SizedBox(
+                            height: 50.0,
+                          ),
                           buildNumberPad(),
                         ],
                       ),
