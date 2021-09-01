@@ -12,6 +12,7 @@ import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
+import 'package:chamasoft/screens/pinlogin.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -147,6 +148,7 @@ class _MyAppState extends State<MyApp> {
             AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
             ListInstitutions.namedRoute: (ctx) => ListInstitutions(),
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
+            PinLogin.namedRoute: (ctx) => PinLogin(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => IntroScreen());

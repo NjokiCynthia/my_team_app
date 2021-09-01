@@ -3,6 +3,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/new-group/new-group.dart';
+import 'package:chamasoft/screens/pinlogin.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -333,6 +334,21 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                         ),
                       ),
                     ],
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(2, 10, 2, 0),
+                    child: groupInfoButton(
+                      context: context,
+                      leadingIcon: LineAwesomeIcons.plus,
+                      trailingIcon: LineAwesomeIcons.angle_right,
+                      hideTrailingIcon: true,
+                      backgroundColor: primaryColor.withOpacity(0.2),
+                      title: "Pin CODE SCREEN",
+                      textColor: primaryColor,
+                      borderColor: primaryColor,
+                      action: () => Navigator.of(context)
+                          .pushNamed(PinLogin.namedRoute),      
+                    ),
                   ),
                 ],
               ),
