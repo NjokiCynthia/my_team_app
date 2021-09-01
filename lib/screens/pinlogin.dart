@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -272,7 +273,7 @@ class _PinLoginState extends State<PinLogin> {
             "Forgot your Pin ?",
             style: TextStyle(
                 color: Colors.black54,
-                fontSize: 21.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold),
           ),
         ),
@@ -285,7 +286,7 @@ class _PinLoginState extends State<PinLogin> {
             "Reset Here!",
             style: TextStyle(
                 color: Colors.lightBlue,
-                fontSize: 21.0,
+                fontSize: 20.0,
                 fontWeight: FontWeight.bold),
           ),
         )
@@ -385,6 +386,7 @@ class PinNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 50.0,
+      height: 50.0,
       child: TextField(
         controller: textEditingController,
         enabled: true,
@@ -424,7 +426,7 @@ class KeyBoardNumber extends StatelessWidget {
       height: 60.0,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.purpleAccent.withOpacity(0.1),
+        color: primaryColor.withOpacity(0.1),
       ),
       alignment: Alignment.center,
       child: MaterialButton(
@@ -439,7 +441,7 @@ class KeyBoardNumber extends StatelessWidget {
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 24 * MediaQuery.of(context).textScaleFactor,
-            color: Colors.grey,
+            color: Colors.blueGrey[800].withOpacity(0.8),
             fontWeight: FontWeight.bold,
           ),
         ),
