@@ -3,6 +3,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/new-group/new-group.dart';
+import 'package:chamasoft/screens/pinlogin.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -333,6 +334,22 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                         ),
                       ),
                     ],
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    // ignore: deprecated_member_use
+                    child: RaisedButton(
+                      onPressed: () => {
+                        Navigator.of(context).pushNamed(PinLogin.namedRoute)
+                      },
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.add_alarm), // icon
+                          Text("Test Pin"), // text
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
