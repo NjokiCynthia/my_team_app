@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -1022,14 +1023,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                       isFlat: true,
                                       text: "APPLY LOAN",
                                       iconSize: 12.0,
-                                      action: () => {},
-                                      
-                                      // Navigator.of(context).push(
-                                      //   MaterialPageRoute(
-                                      //     builder: (BuildContext context) =>
-                                      //         ApplyLoan(),
-                                      //   ),
-                                      // ),
+                                      action: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ApplyLoan(),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),

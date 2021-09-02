@@ -9,7 +9,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
 
 class NotificationManager {
-   static const notificationNamedRoute = '/screens/notifications/notifications';
+  static const notificationNamedRoute = '/screens/notifications/notifications';
   NotificationManager() {
     WidgetsFlutterBinding.ensureInitialized();
   }
@@ -82,8 +82,8 @@ class NotificationManager {
     // print("token $token");
   }
 
-  static Map<String,dynamic>  firebaseNotificationListenHandler() {
-    Map<String,dynamic> _message = {};
+  static Map<String, dynamic> firebaseNotificationListenHandler() {
+    Map<String, dynamic> _message = {};
     FirebaseMessaging.instance
         .getInitialMessage()
         .then((RemoteMessage message) {
@@ -135,7 +135,7 @@ class NotificationManager {
       if (await getPreference("isLoggedIn") == true) {
         String token = await FirebaseMessaging.instance.getToken();
         Map<String, String> notificationData = {
-          'user_id': Provider.of<Auth>(context,listen: false).id,
+          'user_id': Provider.of<Auth>(context, listen: false).id,
           'mobile_token': token,
         };
         await Provider.of<Auth>(context, listen: false)
