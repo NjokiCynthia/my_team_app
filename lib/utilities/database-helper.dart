@@ -8,6 +8,7 @@ class DatabaseHelper {
   static final dataTable = 'data';
   static final membersTable = 'members';
   static final meetingsTable = 'meetings';
+  static final payContributionsTable = 'payContributions';
 
   // make this a singleton class
   DatabaseHelper._privateConstructor();
@@ -27,7 +28,7 @@ class DatabaseHelper {
     var documentsDirectory = await getDatabasesPath();
     String path = p.join(documentsDirectory, _databaseName);
     return await openDatabase(path,
-        version: _databaseVersion, onCreate: _onCreate);
+        version: _databaseVersion, onCreate: _onCreate, onUpgrade: _onUpgrade);
   }
 
   // SQL code to create the database tables
@@ -76,9 +77,48 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
+
+      // Contributions table
+      batch.execute('''
+            CREATE TABLE IF NOT EXISTS $payContributionsTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              name TEXT NOT NULL DEFAULT '',
+              active INTEGER NOT NULL DEFAULT 1,
+              amount DOUBLE NOT NULL DEFAULT 0,
+              is_hidden INTERGER NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
       await batch.commit();
     } catch (error) {
       print(error);
+    }
+  }
+
+  //upgrade tables after a database is created
+  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    // In this case, oldVersion is 1, newVersion is 2
+    if (oldVersion == 1) {
+      try {
+        Batch batch = db.batch();
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $payContributionsTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              name TEXT NOT NULL DEFAULT '',
+              active INTEGER NOT NULL DEFAULT 1,
+              amount DOUBLE NOT NULL DEFAULT 0,
+              is_hidden INTERGER NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+        await batch.commit();
+      } catch (error) {
+        throw (error);
+      }
     }
   }
 
@@ -169,6 +209,12 @@ class DatabaseHelper {
     Database db = await instance.database;
     return await db.delete(table,
         where: 'group_id IN (${ids.join(', ')}) AND synced=1');
+  }
+
+  Future<int> deleteMultiple(List<int> ids, String table) async {
+    Database db = await instance.database;
+    return await db.delete(table,
+        where: 'group_id IN (${ids.join(', ')})');
   }
 
   Future<int> deleteGroupMembers(int id) async {
