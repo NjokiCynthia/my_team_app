@@ -4,7 +4,9 @@ import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class PinLogin extends StatefulWidget {
   static const namedRoute = "/pinlogin";
@@ -38,7 +40,7 @@ class _PinLoginState extends State<PinLogin> {
     auth = Provider.of<Auth>(context, listen: false);
   }
 
-  void pinIndexSetup(String s) {
+  void pinIndexSetup(String s, BuildContext context) async {
     if (pinIndex == 0) {
       pinIndex = 1;
     } else if (pinIndex < 4) pinIndex++;
@@ -48,7 +50,18 @@ class _PinLoginState extends State<PinLogin> {
     currentPin.forEach((element) {
       strpin += element;
     });
-    if (pinIndex == 4) print(strpin);
+    if (pinIndex == 4) {
+      print(strpin);
+      print('Final Submission...');
+
+      if (strpin != '1234') {
+        Fluttertoast.showToast(msg: "Incorrect Password");
+      } else {
+        // context.loaderOverlay.show();
+        final overlay = LoadingOverlay.of(context);
+        overlay.during();
+      }
+    }
   }
 
   setPin(int /*pinIndex*/ n, String s) {
@@ -118,7 +131,7 @@ class _PinLoginState extends State<PinLogin> {
     );
   }
 
-  buildNumberPad() {
+  buildNumberPad(BuildContext context) {
     return Expanded(
       child: Container(
         alignment: Alignment.bottomCenter,
@@ -134,19 +147,19 @@ class _PinLoginState extends State<PinLogin> {
                   KeyBoardNumber(
                     n: 1,
                     onPressed: () {
-                      pinIndexSetup("1");
+                      pinIndexSetup("1", context);
                     },
                   ),
                   KeyBoardNumber(
                     n: 2,
                     onPressed: () {
-                      pinIndexSetup("2");
+                      pinIndexSetup("2", context);
                     },
                   ),
                   KeyBoardNumber(
                     n: 3,
                     onPressed: () {
-                      pinIndexSetup("3");
+                      pinIndexSetup("3", context);
                     },
                   ),
                 ],
@@ -157,19 +170,19 @@ class _PinLoginState extends State<PinLogin> {
                   KeyBoardNumber(
                     n: 4,
                     onPressed: () {
-                      pinIndexSetup("4");
+                      pinIndexSetup("4", context);
                     },
                   ),
                   KeyBoardNumber(
                     n: 5,
                     onPressed: () {
-                      pinIndexSetup("5");
+                      pinIndexSetup("5", context);
                     },
                   ),
                   KeyBoardNumber(
                     n: 6,
                     onPressed: () {
-                      pinIndexSetup("6");
+                      pinIndexSetup("6", context);
                     },
                   ),
                 ],
@@ -180,19 +193,19 @@ class _PinLoginState extends State<PinLogin> {
                   KeyBoardNumber(
                     n: 7,
                     onPressed: () {
-                      pinIndexSetup("7");
+                      pinIndexSetup("7", context);
                     },
                   ),
                   KeyBoardNumber(
                     n: 8,
                     onPressed: () {
-                      pinIndexSetup("8");
+                      pinIndexSetup("8", context);
                     },
                   ),
                   KeyBoardNumber(
                     n: 9,
                     onPressed: () {
-                      pinIndexSetup("9");
+                      pinIndexSetup("9", context);
                     },
                   ),
                 ],
@@ -219,7 +232,7 @@ class _PinLoginState extends State<PinLogin> {
                   KeyBoardNumber(
                     n: 0,
                     onPressed: () {
-                      pinIndexSetup("0");
+                      pinIndexSetup("0", context);
                     },
                   ),
                   Container(
@@ -294,7 +307,7 @@ class _PinLoginState extends State<PinLogin> {
       ],
     );
   }
-  
+
   buildSecurityText() {
     return subtitle1(
       text: "Please enter your secure pin to proceed",
@@ -333,6 +346,8 @@ class _PinLoginState extends State<PinLogin> {
 
   @override
   Widget build(BuildContext context) {
+    // context.loaderOverlay.show();
+
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Builder(builder: (BuildContext context) {
@@ -349,7 +364,7 @@ class _PinLoginState extends State<PinLogin> {
                   // Expanded(
                   //   child: Container(
                   //     child: Column(
-                  //       mainAxisSize: MainAxisSize.min, 
+                  //       mainAxisSize: MainAxisSize.min,
                   //       mainAxisAlignment: MainAxisAlignment.center,
                   //       children: <Widget>[
                   //         profileImage(),
@@ -383,10 +398,16 @@ class _PinLoginState extends State<PinLogin> {
                             height: 10.0,
                           ),
                           buildPinRow(),
+                          LoaderOverlay(
+                            useDefaultLoading: false,
+                            child: Text(''),
+                            overlayWidget: Text(''),
+                            overlayOpacity: 0.2,
+                          ),
                           SizedBox(
                             height: 50.0,
                           ),
-                          buildNumberPad(),
+                          buildNumberPad(context),
                         ],
                       ),
                     ),
@@ -396,8 +417,42 @@ class _PinLoginState extends State<PinLogin> {
               ),
             ),
           );
-          
         }));
+  }
+}
+
+class LoadingOverlay {
+  BuildContext _context;
+
+  void hide() {
+    Navigator.of(_context).pop();
+  }
+
+  void show() {
+    showDialog(
+        context: _context,
+        barrierDismissible: false,
+        builder: (_context) => _FullScreenLoader());
+  }
+
+  void during<T>() {
+    show();
+    // return future.whenComplete(() => hide());
+  }
+
+  LoadingOverlay._create(this._context);
+
+  factory LoadingOverlay.of(BuildContext context) {
+    return LoadingOverlay._create(context);
+  }
+}
+
+class _FullScreenLoader extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(color: Color.fromRGBO(0, 0, 0, 0.5)),
+        child: Center(child: CircularProgressIndicator()));
   }
 }
 
@@ -434,7 +489,6 @@ class PinNumber extends StatelessWidget {
     );
   }
 }
-
 
 class KeyBoardNumber extends StatelessWidget {
   //const KeyBoardNumber({Key? key}) : super(key: key);

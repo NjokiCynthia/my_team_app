@@ -69,7 +69,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    final deposits = Provider.of<Deposits>(context, listen: false).deposits;
+    final deposits = Provider.of<Deposits>(context, listen: true).deposits;
     final List<RecentTransactionSummary> recentTransactions =
         Provider.of<Dashboard>(context, listen: false).recentMemberTransactions;
     if (recentTransactions.length > 10) {
