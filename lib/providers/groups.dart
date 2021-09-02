@@ -779,26 +779,53 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addPayContributions(List<dynamic> groupContributions) {
+  Future<void> addPayContributions({List<dynamic> groupContributions,bool isLocal = false}) async {
     if (groupContributions.length > 0) {
-      for (var groupContributionJSON in groupContributions) {
-        final newContribution = Contribution(
-          id: groupContributionJSON['id'].toString(),
-          name: groupContributionJSON['name'].toString(),
-          amount: groupContributionJSON['amount'].toString(),
-          type: groupContributionJSON['type'].toString(),
-          contributionType:
-              groupContributionJSON['contribution_type'].toString(),
-          frequency: groupContributionJSON['frequency'].toString(),
-          invoiceDate: groupContributionJSON['invoice_date'].toString(),
-          contributionDate:
-              groupContributionJSON['contribution_date'].toString(),
-          oneTimeContributionSetting:
-              groupContributionJSON['one_time_contribution_setting'].toString(),
-          isHidden: groupContributionJSON['is_hidden'].toString(),
-          active: groupContributionJSON['active'].toString(),
-        );
-        _payContributions.add(newContribution);
+      if(isLocal){
+        for (var groupContributionJSON in groupContributions) {
+          print(groupContributionJSON);
+          final newContribution = Contribution(
+            id: groupContributionJSON['id'].toString(),
+            name: groupContributionJSON['name'].toString(),
+            amount: groupContributionJSON['amount'].toString(),
+            isHidden: groupContributionJSON['is_hidden'].toString(),
+            active: groupContributionJSON['active'].toString(),
+          );
+          _payContributions.add(newContribution);
+        }
+      }else{
+        List<Map> _contributionsList = [];
+        for (var groupContributionJSON in groupContributions) {
+          final newContribution = Contribution(
+            id: groupContributionJSON['id'].toString(),
+            name: groupContributionJSON['name'].toString(),
+            amount: groupContributionJSON['amount'].toString(),
+            type: groupContributionJSON['type'].toString(),
+            contributionType:
+                groupContributionJSON['contribution_type'].toString(),
+            frequency: groupContributionJSON['frequency'].toString(),
+            invoiceDate: groupContributionJSON['invoice_date'].toString(),
+            contributionDate:
+                groupContributionJSON['contribution_date'].toString(),
+            oneTimeContributionSetting:
+                groupContributionJSON['one_time_contribution_setting'].toString(),
+            isHidden: groupContributionJSON['is_hidden'].toString(),
+            active: groupContributionJSON['active'].toString(),
+          );
+          var contributionMap = {
+            "id": int.parse(groupContributionJSON['id'].toString()),
+            "group_id": int.parse(_currentGroupId),
+            "active": int.parse(groupContributionJSON['active'].toString()),
+            "amount": double.parse(groupContributionJSON['amount'].toString()),
+            "name": groupContributionJSON['name'].toString(),
+            "is_hidden": int.parse(groupContributionJSON['is_hidden'].toString()),
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
+          };
+          _contributionsList.add(contributionMap);
+          _payContributions.add(newContribution);
+        }
+        await dbHelper.deleteMultiple([int.parse(_currentGroupId)],DatabaseHelper.payContributionsTable);
+        await dbHelper.batchInsert(_contributionsList, DatabaseHelper.payContributionsTable);
       }
     }
     notifyListeners();
@@ -1786,15 +1813,27 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
-      try {
-        final response = await PostToServer.post(postRequest, url);
-        _payContributions = []; //clear
-        final groupContributions = response['contributions'] as List<dynamic>;
-        addPayContributions(groupContributions);
-      } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
-      } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
+      List<dynamic> _localData = [];
+      _localData = await dbHelper.queryWhere(
+        table: DatabaseHelper.payContributionsTable,
+        column: "group_id",
+        whereArguments: [_currentGroupId],
+        orderBy: 'id',
+        order: 'DESC',
+      );
+      if(_localData.length > 0) {
+        addPayContributions(groupContributions: _localData, isLocal: true);
+      }else{
+        try {
+          final response = await PostToServer.post(postRequest, url);
+          _payContributions = []; //clear
+          final groupContributions = response['contributions'] as List<dynamic>;
+          addPayContributions(groupContributions:groupContributions);
+        } on CustomException catch (error) {
+          throw CustomException(message: error.message, status: error.status);
+        } catch (error) {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
       }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
