@@ -1,9 +1,11 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/deposits.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposits.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-bank-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
@@ -67,6 +69,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final deposits = Provider.of<Deposits>(context, listen: false).deposits;
     final List<RecentTransactionSummary> recentTransactions =
         Provider.of<Dashboard>(context, listen: false).recentMemberTransactions;
     if (recentTransactions.length > 10) {
@@ -183,10 +186,11 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               subtitle: 'DEPOSITS',
               color: Colors.blue[400],
               isHighlighted: false,
-              action: () {},
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext ctx) => ReconcileDeposits())),
               margin: 0,
               imageHeight: 100.0,
-              notifications: 2)),
+              notifications: deposits.length)),
       SizedBox(
         width: 16.0,
       ),

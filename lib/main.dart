@@ -1,5 +1,6 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/dashboard.dart';
+import 'package:chamasoft/providers/deposits.dart';
 import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -74,8 +75,9 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement didChangeDependencies
     // firebaseNotificationListenHandler
 
-    Map<String,dynamic> messageBody = NotificationManager.firebaseNotificationListenHandler();
-    if(messageBody.length>0){
+    Map<String, dynamic> messageBody =
+        NotificationManager.firebaseNotificationListenHandler();
+    if (messageBody.length > 0) {
       print("message here $messageBody");
     }
 
@@ -94,6 +96,11 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(
           create: (_) {
             return themeChangeProvider;
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (_) {
+            return Deposits();
           },
         ),
         ChangeNotifierProxyProvider<Auth, Groups>(
