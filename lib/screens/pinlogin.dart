@@ -53,12 +53,13 @@ class _PinLoginState extends State<PinLogin> {
     if (pinIndex == 4) {
       print(strpin);
       print('Final Submission...');
-      // context.loaderOverlay.show();
-      final overlay = LoadingOverlay.of(context);
-      overlay.during();
 
       if (strpin != '1234') {
         Fluttertoast.showToast(msg: "Incorrect Password");
+      } else {
+        // context.loaderOverlay.show();
+        final overlay = LoadingOverlay.of(context);
+        overlay.during();
       }
     }
   }
