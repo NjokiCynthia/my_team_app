@@ -2,6 +2,7 @@ import 'package:chamasoft/providers/deposits.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 // import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -44,7 +45,8 @@ class _ReconcileDepositsState extends State<ReconcileDeposits> {
 
   @override
   Widget build(BuildContext context) {
-    final deposits = Provider.of<Deposits>(context, listen: false).deposits;
+    final deposits = Provider.of<Deposits>(context, listen: true).deposits;
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -89,6 +91,15 @@ class _ReconcileDepositsState extends State<ReconcileDeposits> {
                                 Container(
                                     padding: EdgeInsets.all(6.0),
                                     child: subtitle1(
+                                        text:
+                                            "Kshs ${deposit.amountTransacted}",
+                                        //fontSize: 10.0,
+                                        color: Theme.of(context)
+                                            .textSelectionHandleColor,
+                                        textAlign: TextAlign.start)),
+                                Container(
+                                    padding: EdgeInsets.all(6.0),
+                                    child: subtitle2(
                                         text: "${deposit.transactionDets}.",
                                         //fontSize: 10.0,
                                         color: Theme.of(context)
@@ -99,9 +110,9 @@ class _ReconcileDepositsState extends State<ReconcileDeposits> {
                                   children: [
                                     Padding(
                                       padding: EdgeInsets.all(6.0),
-                                      child: RaisedButton(
-                                          child: Text("Reconcile"),
-                                          color: Theme.of(context).accentColor,
+                                      child: defaultButton(
+                                          context: context,
+                                          text: "Reconcile",
                                           onPressed: () => Navigator.of(context)
                                               .push(MaterialPageRoute(
                                                   builder: (BuildContext ctx) =>
