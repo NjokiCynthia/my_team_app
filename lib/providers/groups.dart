@@ -2094,6 +2094,12 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchMembers() async {
+    
+
+    
+
+
+
     const url = EndpointUrl.GET_GROUP_MEMBERS;
     try {
       final postRequest = json.encode({
@@ -2127,7 +2133,7 @@ class Groups with ChangeNotifier {
         //=== END: OFFLINE PLUG
 
         _members = []; //clear
-        addMembers(rows);
+        addMembers(_tempMembers);
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           _fetchOfflineMembers();
