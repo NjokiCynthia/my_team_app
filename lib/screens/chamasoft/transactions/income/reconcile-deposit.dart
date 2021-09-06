@@ -80,7 +80,12 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         appBar: secondaryPageAppbar(
             context: context,
             title: "Reconcile deposit",
-            action: () => Navigator.of(context).pop(),
+            action: () {
+              // reset formdata and formFields
+              depositReconciliation.reset();
+              // back to the previous screen
+              Navigator.of(context).pop();
+            },
             leadingIcon: LineAwesomeIcons.arrow_left,
             elevation: _appBBarElevation),
         backgroundColor: Theme.of(context).backgroundColor,
