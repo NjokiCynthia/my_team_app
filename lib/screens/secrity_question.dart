@@ -133,8 +133,9 @@ class _ResetPinState extends State<ResetPin> {
         Padding(
           padding: EdgeInsets.only(top: 20),
           child: FlutterToggleTab(
-            width: 70,
-            borderRadius: 15,
+            width: 70.0,
+            height: 70.0,
+            borderRadius: 25.0,
             labels: ["Send Money", "Request Money"],
             initialIndex: 0,
             selectedLabelIndex: (index) {
