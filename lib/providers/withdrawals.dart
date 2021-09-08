@@ -19,70 +19,6 @@ class WithDrawal {
   });
 }
 
-class Withdrawals with ChangeNotifier {
-  List<WithDrawal> _withdrawals = [
-    WithDrawal(
-        id: "1",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092495312),
-        amountTransacted: 500.00,
-        transactionDets:
-            "Payment reversal to 254728747061 - GEOFFREY GITHAIGA for payment id OC33HSOFP9",
-        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
-        isReconciled: false),
-    WithDrawal(
-        id: "2",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092744336),
-        amountTransacted: 100.00,
-        transactionDets: "254725882136 - GEORGE KAMARA Withdrawal charge",
-        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
-        isReconciled: false),
-    WithDrawal(
-        id: "3",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092874502),
-        amountTransacted: 16200.00,
-        transactionDets: "254725882136 - GEORGE KAMARA",
-        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
-        isReconciled: false),
-    WithDrawal(
-        id: "4",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092495312),
-        amountTransacted: 500.00,
-        transactionDets:
-            "Payment reversal to 254728747061 - GEOFFREY GITHAIGA for payment id OC33HSOFP9",
-        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
-        isReconciled: false),
-    WithDrawal(
-        id: "5",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092952795),
-        amountTransacted: 1000.00,
-        transactionDets: "254716258084 - MARTIN THUKU NDUNGU",
-        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
-        isReconciled: false),
-  ];
-
-  List<WithDrawal> get withdrawals {
-    List<WithDrawal> result = _withdrawals
-        .where((withdrawal) => withdrawal.isReconciled == false)
-        .toList();
-    return result;
-  }
-
-  // reconcile withdrawal
-  void reconcileWithdrawal(String id) {
-    WithDrawal selectedWithdrawal =
-        _withdrawals.firstWhere((entity) => entity.id == id);
-
-    selectedWithdrawal.isReconciled = true;
-
-    notifyListeners();
-  }
-
-  // get the withdrawal
-  WithDrawal withdrawal(String id) {
-    return _withdrawals.firstWhere((entity) => entity.id == id);
-  }
-}
-
 class WithdrawalDefaults {
   List<Map> withdrawalTypes = [
     {"id": 1, "name": "Expense"},
@@ -164,100 +100,6 @@ class WithdrawalDefaults {
     {"id": 1, "name": "Borrower a"},
     {"id": 2, "name": "Borrower b"},
   ];
-
-  List<NamesListItem> get withdrawalOptions {
-    return withdrawalTypes.map((withdrawal) {
-      return NamesListItem(
-          id: withdrawal['id'],
-          name: withdrawal['name'],
-          identity: "${withdrawal['id']}");
-    }).toList();
-  }
-
-  List<NamesListItem> get expenseCategoryOptions {
-    return expenseCategories.map((expense) {
-      return NamesListItem(
-          id: expense['id'],
-          name: expense['name'],
-          identity: "${expense['id']}");
-    }).toList();
-  }
-
-  List<NamesListItem> get assetOptions {
-    return assets
-        .map((asset) => NamesListItem(
-            id: asset['id'], name: asset['name'], identity: "${asset['id']}"))
-        .toList();
-  }
-
-  List<NamesListItem> get memberOptions {
-    return members
-        .map((member) => NamesListItem(
-            id: member['id'],
-            name: member['name'],
-            identity: "${member['id']}"))
-        .toList();
-  }
-
-  List<NamesListItem> get loanOptions {
-    return loans
-        .map((loan) => NamesListItem(
-            id: loan['id'], name: loan['name'], identity: "${loan['id']}"))
-        .toList();
-  }
-
-  List<NamesListItem> get moneyMarketInvestmentOptions {
-    return moneyMarketInvestments
-        .map((moneyMarketInvestment) => NamesListItem(
-            id: moneyMarketInvestment['id'],
-            name: moneyMarketInvestment['name'],
-            identity: "${moneyMarketInvestment['id']}"))
-        .toList();
-  }
-
-  List<NamesListItem> get contributionOptions {
-    return contributions
-        .map((contribution) => NamesListItem(
-            id: contribution['id'],
-            name: contribution['name'],
-            identity: "${contribution['id']}"))
-        .toList();
-  }
-
-  List<NamesListItem> get bankLoanOptions {
-    return bankLoans
-        .map((bankLoan) => NamesListItem(
-            id: bankLoan['id'],
-            name: bankLoan['name'],
-            identity: "${bankLoan['id']}"))
-        .toList();
-  }
-
-  List<NamesListItem> get accountOptions {
-    return accounts
-        .map((account) => NamesListItem(
-            id: account['id'],
-            name: account['name'],
-            identity: "${account['id']}"))
-        .toList();
-  }
-
-  List<NamesListItem> get borrowerOptions {
-    return borrowers
-        .map((borrower) => NamesListItem(
-            id: borrower['id'],
-            name: borrower['name'],
-            identity: "${borrower['id']}"))
-        .toList();
-  }
-
-  String getWithdrawalType(int id) {
-    return withdrawalTypes.firstWhere((entity) => entity['id'] == id)['name'];
-  }
-
-  String getMember(int id) {
-    return members.firstWhere((entity) => entity['id'] == id)['name'];
-  }
 }
 
 class ReconciledWithdrawal {
@@ -309,7 +151,175 @@ class ReconciledWithdrawal {
       this.dividendDesc});
 }
 
-class ReconcileWithdrawal with ChangeNotifier {
+class Withdrawals with ChangeNotifier {
+  List<WithDrawal> _withdrawals = [
+    WithDrawal(
+        id: "1",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092495312),
+        amountTransacted: 500.00,
+        transactionDets:
+            "Payment reversal to 254728747061 - GEOFFREY GITHAIGA for payment id OC33HSOFP9",
+        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
+        isReconciled: false),
+    WithDrawal(
+        id: "2",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092744336),
+        amountTransacted: 100.00,
+        transactionDets: "254725882136 - GEORGE KAMARA Withdrawal charge",
+        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
+        isReconciled: false),
+    WithDrawal(
+        id: "3",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092874502),
+        amountTransacted: 16200.00,
+        transactionDets: "254725882136 - GEORGE KAMARA",
+        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
+        isReconciled: false),
+    WithDrawal(
+        id: "4",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092495312),
+        amountTransacted: 500.00,
+        transactionDets:
+            "Payment reversal to 254728747061 - GEOFFREY GITHAIGA for payment id OC33HSOFP9",
+        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
+        isReconciled: false),
+    WithDrawal(
+        id: "5",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1631092952795),
+        amountTransacted: 1000.00,
+        transactionDets: "254716258084 - MARTIN THUKU NDUNGU",
+        account: "Chamasoft E-Wallet - VIUSASA C.E.W (10020860)",
+        isReconciled: false),
+  ];
+
+  List<WithDrawal> get withdrawals {
+    List<WithDrawal> result = _withdrawals
+        .where((withdrawal) => withdrawal.isReconciled == false)
+        .toList();
+    return result;
+  }
+
+  // reconcile withdrawal
+  void reconcileWithdrawal(String id) {
+    WithDrawal selectedWithdrawal =
+        _withdrawals.firstWhere((entity) => entity.id == id);
+
+    selectedWithdrawal.isReconciled = true;
+
+    notifyListeners();
+  }
+
+  // get the withdrawal
+  WithDrawal withdrawal(String id) {
+    return _withdrawals.firstWhere((entity) => entity.id == id);
+  }
+
+  List<NamesListItem> get withdrawalOptions {
+    return new WithdrawalDefaults().withdrawalTypes.map((withdrawal) {
+      return NamesListItem(
+          id: withdrawal['id'],
+          name: withdrawal['name'],
+          identity: "${withdrawal['id']}");
+    }).toList();
+  }
+
+  List<NamesListItem> get expenseCategoryOptions {
+    return new WithdrawalDefaults().expenseCategories.map((expense) {
+      return NamesListItem(
+          id: expense['id'],
+          name: expense['name'],
+          identity: "${expense['id']}");
+    }).toList();
+  }
+
+  List<NamesListItem> get assetOptions {
+    return new WithdrawalDefaults()
+        .assets
+        .map((asset) => NamesListItem(
+            id: asset['id'], name: asset['name'], identity: "${asset['id']}"))
+        .toList();
+  }
+
+  List<NamesListItem> get memberOptions {
+    return new WithdrawalDefaults()
+        .members
+        .map((member) => NamesListItem(
+            id: member['id'],
+            name: member['name'],
+            identity: "${member['id']}"))
+        .toList();
+  }
+
+  List<NamesListItem> get loanOptions {
+    return new WithdrawalDefaults()
+        .loans
+        .map((loan) => NamesListItem(
+            id: loan['id'], name: loan['name'], identity: "${loan['id']}"))
+        .toList();
+  }
+
+  List<NamesListItem> get moneyMarketInvestmentOptions {
+    return new WithdrawalDefaults()
+        .moneyMarketInvestments
+        .map((moneyMarketInvestment) => NamesListItem(
+            id: moneyMarketInvestment['id'],
+            name: moneyMarketInvestment['name'],
+            identity: "${moneyMarketInvestment['id']}"))
+        .toList();
+  }
+
+  List<NamesListItem> get contributionOptions {
+    return new WithdrawalDefaults()
+        .contributions
+        .map((contribution) => NamesListItem(
+            id: contribution['id'],
+            name: contribution['name'],
+            identity: "${contribution['id']}"))
+        .toList();
+  }
+
+  List<NamesListItem> get bankLoanOptions {
+    return new WithdrawalDefaults()
+        .bankLoans
+        .map((bankLoan) => NamesListItem(
+            id: bankLoan['id'],
+            name: bankLoan['name'],
+            identity: "${bankLoan['id']}"))
+        .toList();
+  }
+
+  List<NamesListItem> get accountOptions {
+    return new WithdrawalDefaults()
+        .accounts
+        .map((account) => NamesListItem(
+            id: account['id'],
+            name: account['name'],
+            identity: "${account['id']}"))
+        .toList();
+  }
+
+  List<NamesListItem> get borrowerOptions {
+    return new WithdrawalDefaults()
+        .borrowers
+        .map((borrower) => NamesListItem(
+            id: borrower['id'],
+            name: borrower['name'],
+            identity: "${borrower['id']}"))
+        .toList();
+  }
+
+  String getWithdrawalType(int id) {
+    return new WithdrawalDefaults()
+        .withdrawalTypes
+        .firstWhere((entity) => entity['id'] == id)['name'];
+  }
+
+  String getMember(int id) {
+    return new WithdrawalDefaults()
+        .members
+        .firstWhere((entity) => entity['id'] == id)['name'];
+  }
+
   List<ReconciledWithdrawal> _reconciledWithdrawals = [];
 
   // get the reconciled withdrawals.

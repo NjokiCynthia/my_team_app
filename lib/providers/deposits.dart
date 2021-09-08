@@ -19,6 +19,137 @@ class Deposit {
   });
 }
 
+class DepositDefaults {
+  List<Map> depositTypes = [
+    {"id": 1, "name": "Contribution payment"},
+    {"id": 2, "name": "Fine payment"},
+    {"id": 3, "name": "Miscellaneous payment"},
+    {"id": 4, "name": "Income"},
+    {"id": 5, "name": "Loan repayment"},
+    {"id": 6, "name": "Bank loan disbursement"},
+    {"id": 7, "name": "Funds transfer"},
+    {"id": 8, "name": "Stock sale"},
+    {"id": 9, "name": "Asset sale"},
+    {"id": 10, "name": "Money market cash in"},
+    {"id": 11, "name": "Loan processing income"},
+    {"id": 12, "name": "External loan repayment"},
+  ];
+
+  List<Map> members = [
+    {"id": 1, "name": "Jane doe"},
+    {"id": 2, "name": "John doe"},
+    {"id": 3, "name": "Alex doe"},
+  ];
+
+  List<Map> contributions = [
+    {"id": 1, "name": "Contribution a"},
+    {"id": 2, "name": "Contribution b"},
+  ];
+
+  List<Map> fineCategories = [
+    {"id": 1, "name": "Absent without apology"},
+    {"id": 2, "name": "Lateness to attend meeting"},
+    {"id": 3, "name": "Rude behavior"},
+    {"id": 4, "name": "Phone calls during meeting"},
+    {"id": 5, "name": "Absent with apology"},
+    {"id": 6, "name": "Absconding duty"},
+    {"id": 7, "name": "Miscellaneous fine"},
+  ];
+
+  List<Map> incomeCategories = [
+    {"id": 1, "name": "Rent"},
+    {"id": 2, "name": "Interest"},
+    {"id": 3, "name": "Sales"},
+    {"id": 4, "name": "Miscellaneous income"},
+    {"id": 5, "name": "Dividends"},
+    {"id": 6, "name": "Lease"},
+  ];
+
+  List<Map> depositors = [
+    {"id": 1, "name": "John doe"},
+    {"id": 2, "name": "Jane doe"},
+    {"id": 3, "name": "Alex doe"},
+  ];
+
+  List<Map> loans = [
+    {"id": 1, "name": "Loan a"},
+    {"id": 2, "name": "Loan b"},
+  ];
+
+  List<Map> accounts = [
+    {"id": 1, "name": "E-wallet"},
+    {"id": 2, "name": "Cash at hand"},
+  ];
+
+  List<Map> stocks = [
+    {"id": 1, "name": "Stock a"},
+    {"id": 2, "name": "Stock b"},
+  ];
+
+  List<Map> assets = [
+    {"id": 1, "name": "Asset a"},
+    {"id": 2, "name": "Asset b"}
+  ];
+
+  List<Map> moneyMarketInvsts = [
+    {"id": 1, "name": "Investment a"},
+    {"id": 2, "name": "Investment b"},
+  ];
+
+  List<Map> borrowers = [
+    {"id": 1, "name": "John doe"},
+    {"id": 2, "name": "Jane doe"},
+    {"id": 3, "name": "Alex doe"},
+  ];
+}
+
+class ReconciledDeposit {
+  final String paymentDescription, bankLoanDescription, transferDescription;
+
+  final double amount,
+      amountPayable,
+      amountDisbursed,
+      transferredAmount,
+      pricePerShare;
+
+  final int depositTypeId,
+      memberId,
+      contributionId,
+      fineCategoryId,
+      depositorId,
+      incomeCategoryId,
+      loanId,
+      accountId,
+      stockId,
+      assetId,
+      moneyMarketInvstId,
+      borrowerId,
+      numberOfSharesSold;
+
+  ReconciledDeposit(
+      {this.paymentDescription,
+      this.bankLoanDescription,
+      this.transferDescription,
+      this.amount,
+      this.amountPayable,
+      this.amountDisbursed,
+      this.transferredAmount,
+      this.pricePerShare,
+      this.depositTypeId,
+      this.memberId,
+      this.contributionId,
+      this.fineCategoryId,
+      this.depositorId,
+      this.incomeCategoryId,
+      this.loanId,
+      this.accountId,
+      this.stockId,
+      this.assetId,
+      this.moneyMarketInvstId,
+      this.borrowerId,
+      this.numberOfSharesSold});
+}
+
 class Deposits with ChangeNotifier {
   // Dummy deposits.
   final List<Deposit> _deposits = [
@@ -87,109 +218,164 @@ class Deposits with ChangeNotifier {
     notifyListeners();
   }
 
-  List<NamesListItem> get depositTypes {
-    return [
-      NamesListItem(name: "Contribution payment", id: 1, identity: "1"),
-      NamesListItem(name: "Fine payment", id: 2, identity: "2"),
-      NamesListItem(name: "Miscellaneous payment", id: 3, identity: "3"),
-      NamesListItem(name: "Income", id: 4, identity: "4"),
-      NamesListItem(name: "Loan repayment", id: 5, identity: "5"),
-      NamesListItem(name: "Bank loan disbursement", id: 6, identity: "6"),
-      NamesListItem(name: "Funds transfer", id: 7, identity: "7"),
-      NamesListItem(name: "Stock sale", id: 8, identity: "8"),
-      NamesListItem(name: "Asset sale", id: 9, identity: "9"),
-      NamesListItem(name: "Money market cash in", id: 10, identity: "10"),
-      NamesListItem(name: "Loan processing income", id: 11, identity: "11"),
-      NamesListItem(name: "External loan repayment", id: 12, identity: "12"),
-    ];
+  List<NamesListItem> get depositOptions {
+    return new DepositDefaults().depositTypes.map((depositType) {
+      return NamesListItem(
+          id: depositType['id'],
+          name: depositType['name'],
+          identity: "${depositType['id']}");
+    }).toList();
   }
 
-  List<NamesListItem> get members {
-    return [
-      NamesListItem(name: 'Jane doe', id: 1, identity: "1"),
-      NamesListItem(name: 'John doe', id: 2, identity: "2"),
-      NamesListItem(name: 'Alex doe', id: 3, identity: "3")
-    ];
+  List<NamesListItem> get memberOptions {
+    return new DepositDefaults().members.map((member) {
+      return NamesListItem(
+          id: member['id'], name: member['name'], identity: "${member['id']}");
+    }).toList();
   }
 
-  List<NamesListItem> get contributions {
-    return [
-      NamesListItem(name: 'Contribution a', id: 1, identity: "1"),
-      NamesListItem(name: 'Contribution b', id: 2, identity: "2"),
-    ];
+  List<NamesListItem> get contributionOptions {
+    return new DepositDefaults().contributions.map((contrib) {
+      return NamesListItem(
+          id: contrib['id'],
+          name: contrib['name'],
+          identity: "${contrib['id']}");
+    }).toList();
   }
 
-  List<NamesListItem> get fineCategories {
-    return [
-      NamesListItem(name: 'Absent without apology', id: 1, identity: "1"),
-      NamesListItem(name: 'Lateness to attend meeting', id: 2, identity: "2"),
-      NamesListItem(name: 'Rude behavior', id: 3, identity: "3"),
-      NamesListItem(name: 'Phone calls during meeting', id: 4, identity: "4"),
-      NamesListItem(name: 'Absent with apology', id: 5, identity: "5"),
-      NamesListItem(name: 'Absconding duty', id: 6, identity: "6"),
-      NamesListItem(name: 'Miscellaneous fine', id: 7, identity: "7"),
-    ];
+  List<NamesListItem> get fineCategoryOptions {
+    return new DepositDefaults().fineCategories.map((category) {
+      return NamesListItem(
+          id: category['id'],
+          name: category['name'],
+          identity: "${category['id']}");
+    }).toList();
   }
 
-  List<NamesListItem> get incomeCategories {
-    return [
-      NamesListItem(name: 'Rent', id: 1, identity: "1"),
-      NamesListItem(name: 'Interest', id: 2, identity: "2"),
-      NamesListItem(name: 'Sales', id: 3, identity: "3"),
-      NamesListItem(name: 'Miscellaneous income', id: 4, identity: "4"),
-      NamesListItem(name: 'Dividends', id: 5, identity: "5"),
-      NamesListItem(name: 'Lease', id: 6, identity: "6"),
-    ];
+  List<NamesListItem> get incomeCategoryOptions {
+    return new DepositDefaults().incomeCategories.map((incomeCategory) {
+      return NamesListItem(
+          id: incomeCategory['id'],
+          name: incomeCategory['name'],
+          identity: "${incomeCategory['id']}");
+    });
   }
 
-  List<NamesListItem> get depositors {
-    return [
-      NamesListItem(name: 'John doe', id: 1, identity: "1"),
-      NamesListItem(name: 'Jane doe', id: 2, identity: "2"),
-      NamesListItem(name: 'Alex doe', id: 3, identity: "3")
-    ];
+  List<NamesListItem> get depositorOptions {
+    return new DepositDefaults().depositors.map((depositor) {
+      return NamesListItem(
+          id: depositor['id'],
+          name: depositor['name'],
+          identity: "${depositor['id']}");
+    });
   }
 
-  List<NamesListItem> get loans {
-    return [
-      NamesListItem(name: 'Loan a', id: 1, identity: "1"),
-      NamesListItem(name: 'Loan b', id: 2, identity: "2")
-    ];
+  List<NamesListItem> get loanOptions {
+    return new DepositDefaults().loans.map((loan) {
+      return NamesListItem(
+          id: loan['id'], name: loan['name'], identity: "${loan['id']}");
+    });
   }
 
-  List<NamesListItem> get accounts {
-    return [
-      NamesListItem(name: 'E-wallet', id: 1, identity: "1"),
-      NamesListItem(name: 'Cash at hand', id: 2, identity: "2"),
-    ];
+  List<NamesListItem> get accountOptions {
+    return new DepositDefaults().accounts.map((account) {
+      return NamesListItem(
+          id: account['id'],
+          name: account['name'],
+          identity: "${account['id']}");
+    });
   }
 
-  List<NamesListItem> get stocks {
-    return [
-      NamesListItem(name: 'Stock a', id: 1, identity: "1"),
-      NamesListItem(name: 'Stock b', id: 2, identity: "2"),
-    ];
+  List<NamesListItem> get stockOptions {
+    return new DepositDefaults().stocks.map((stock) {
+      return NamesListItem(
+          id: stock['id'], name: stock['name'], identity: "${stock['id']}");
+    });
   }
 
-  List<NamesListItem> get assets {
-    return [
-      NamesListItem(name: 'Asset a', id: 1, identity: "1"),
-      NamesListItem(name: 'Asset b', id: 2, identity: "2"),
-    ];
+  List<NamesListItem> get assetOptions {
+    return new DepositDefaults().assets.map((asset) {
+      return NamesListItem(
+          id: asset['id'], name: asset['name'], identity: "${asset['id']}");
+    });
   }
 
   List<NamesListItem> get moneyMarketInvestments {
-    return [
-      NamesListItem(name: 'Investment a', id: 1, identity: "1"),
-      NamesListItem(name: 'Investment b', id: 2, identity: "2"),
-    ];
+    return new DepositDefaults().moneyMarketInvsts.map((invst) {
+      return NamesListItem(
+          id: invst['id'], name: invst['name'], identity: "${invst['id']}");
+    });
   }
 
-  List<NamesListItem> get borrowers {
-    return [
-      NamesListItem(name: 'John doe', id: 1, identity: "1"),
-      NamesListItem(name: 'Jane doe', id: 2, identity: "2"),
-      NamesListItem(name: 'Alex doe', id: 3, identity: "3"),
-    ];
+  List<NamesListItem> get borrowerOptions {
+    return new DepositDefaults().borrowers.map((borrower) {
+      return NamesListItem(
+          id: borrower['id'],
+          name: borrower['name'],
+          identity: "${borrower['id']}");
+    });
+  }
+
+  // get the deposit type
+  String getDepositType(int id) {
+    return new DepositDefaults()
+        .depositTypes
+        .firstWhere((type) => type['id'] == id)['name'];
+  }
+
+  // get the member
+  String getMember(int id) {
+    return new DepositDefaults()
+        .members
+        .firstWhere((member) => member['id'] == id)['name'];
+  }
+
+  List<ReconciledDeposit> _reconciledDeposits = [];
+
+  // get the reconciled deposits
+  List<ReconciledDeposit> get reconciledDeposits {
+    return [..._reconciledDeposits];
+  }
+
+  // add reconciled deposit
+  void addReconciledDeposit(ReconciledDeposit data) {
+    _reconciledDeposits.add(data);
+    notifyListeners();
+  }
+
+  // remove reconciled deposit
+  void removeReconciledDeposit(index) {
+    _reconciledDeposits.removeAt(index);
+    notifyListeners();
+  }
+
+  // get the total amount entered.
+  double get totalReconciled {
+    double total = 0.0;
+
+    // ensure that formData has data.
+    if (_reconciledDeposits.length > 0) {
+      // loop through the data.
+      for (var entity in reconciledDeposits) {
+        if (entity.amount != null) {
+          total += entity.amount;
+        } else if (entity.amountDisbursed != null) {
+          total += entity.amountDisbursed;
+        } else if (entity.transferredAmount != null) {
+          total += entity.transferredAmount;
+        } else {
+          continue;
+        }
+      }
+
+      return total;
+    } else {
+      return total;
+    }
+  }
+
+  // reset
+  void reset() {
+    _reconciledDeposits = [];
   }
 }

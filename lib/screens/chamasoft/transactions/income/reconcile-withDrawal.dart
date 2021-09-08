@@ -34,16 +34,16 @@ class _ReconcileWithDrawalState extends State<ReconcileWithDrawal> {
         builder: (BuildContext context) => ReconcileWithdrawalForm());
   }
 
-  void _submit(BuildContext context, String withdrawalId, withdrawals,
-      WithDrawal withdrawal, reconcile) async {
+  void _submit(BuildContext context, String withdrawalId, WithDrawal withdrawal,
+      withdrawalProv) async {
     // get the amount entered.
-    double total = reconcile.totalReconciled;
+    double total = withdrawalProv.totalReconciled;
     // compare it with the total amount transacted
     if (total == withdrawal.amountTransacted) {
       // reconcile the deposit.
-      withdrawals.reconcileWithdrawal(withdrawalId);
+      withdrawalProv.reconcileWithdrawal(withdrawalId);
       // reset formdata and formFields
-      reconcile.reset();
+      withdrawalProv.reset();
       // back to the reconciled deposits
       Navigator.pop(context);
     } else if (total > withdrawal.amountTransacted) {
@@ -74,11 +74,9 @@ class _ReconcileWithDrawalState extends State<ReconcileWithDrawal> {
 
   @override
   Widget build(BuildContext context) {
-    final defaults = Provider.of<WithdrawalDefaults>(context, listen: false);
     final withdrawalId = ModalRoute.of(context).settings.arguments as String;
-    final reconcile = Provider.of<ReconcileWithdrawal>(context, listen: true);
-    final withdrawals = Provider.of<Withdrawals>(context, listen: false);
-    final withdrawal = withdrawals.withdrawal(withdrawalId);
+    final withdrawalProv = Provider.of<Withdrawals>(context, listen: true);
+    final withdrawal = withdrawalProv.withdrawal(withdrawalId);
 
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -86,7 +84,7 @@ class _ReconcileWithDrawalState extends State<ReconcileWithDrawal> {
           title: "Reconcile withdrawal",
           action: () {
             // reset the reconciled withdrawals.
-            reconcile.reset();
+            withdrawalProv.reset();
             // back to the previous screen
             Navigator.of(context).pop();
           },
@@ -107,7 +105,7 @@ class _ReconcileWithDrawalState extends State<ReconcileWithDrawal> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _submit(context, withdrawalId, withdrawals, withdrawal, reconcile);
+            _submit(context, withdrawalId, withdrawal, withdrawalProv);
           },
           child: Icon(Icons.check),
           backgroundColor: Theme.of(context).accentColor,
@@ -133,26 +131,27 @@ class _ReconcileWithDrawalState extends State<ReconcileWithDrawal> {
                     height: MediaQuery.of(context).size.height * 0.64,
                     child: ListView.builder(
                       itemBuilder: (_, index) {
-                        var entity = reconcile.reconciledWithdrawals[index];
+                        var entity =
+                            withdrawalProv.reconciledWithdrawals[index];
 
                         return ListTile(
                           title: entity.memberId != null
                               ? Text(
-                                  "${defaults.getWithdrawalType(entity.withdrawalTypeId)} - ${defaults.getMember(entity.memberId)}")
+                                  "${withdrawalProv.getWithdrawalType(entity.withdrawalTypeId)} - ${withdrawalProv.getMember(entity.memberId)}")
                               : Text(
-                                  "${defaults.getWithdrawalType(entity.withdrawalTypeId)}"),
+                                  "${withdrawalProv.getWithdrawalType(entity.withdrawalTypeId)}"),
                           subtitle: entity.amount != null
                               ? Text("Kshs ${entity.amount}")
                               : null,
                           trailing: IconButton(
-                            onPressed: () =>
-                                reconcile.removeReconciledWithdrawal(index),
+                            onPressed: () => withdrawalProv
+                                .removeReconciledWithdrawal(index),
                             icon: Icon(Icons.delete),
                             color: Theme.of(context).errorColor,
                           ),
                         );
                       },
-                      itemCount: reconcile.reconciledWithdrawals.length,
+                      itemCount: withdrawalProv.reconciledWithdrawals.length,
                     ),
                   ),
                   Container(
@@ -162,7 +161,8 @@ class _ReconcileWithDrawalState extends State<ReconcileWithDrawal> {
                           'Total amount reconciled',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text("Kshs ${reconcile.totalReconciled}"),
+                        subtitle:
+                            Text("Kshs ${withdrawalProv.totalReconciled}"),
                       ))
                 ],
               ),

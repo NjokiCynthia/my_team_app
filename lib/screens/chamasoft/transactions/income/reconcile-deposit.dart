@@ -1,4 +1,3 @@
-import 'package:chamasoft/providers/deposit-reconciliation.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -36,16 +35,16 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         builder: (BuildContext context) => ReconcileDepositForm());
   }
 
-  void _submit(BuildContext context, String depositId, depositDefaults, deposit,
-      depositReconciliation) async {
+  void _submit(
+      BuildContext context, String depositId, deposit, depositProv) async {
     // get the amount entered.
-    double total = depositReconciliation.totalReconciled;
+    double total = depositProv.totalReconciled;
     // compare it with the total amount transacted
     if (total == deposit.amountTransacted) {
       // reconcile the deposit.
-      depositDefaults.reconcileDeposit(depositId);
+      depositProv.reconcileDeposit(depositId);
       // reset formdata and formFields
-      depositReconciliation.reset();
+      depositProv.reset();
       // back to the reconciled deposits
       Navigator.pop(context);
     } else if (total > deposit.amountTransacted) {
@@ -76,11 +75,9 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
 
   @override
   Widget build(BuildContext context) {
-    final depositDefaults = Provider.of<Deposits>(context);
+    final depositProv = Provider.of<Deposits>(context, listen: true);
     final depositId = ModalRoute.of(context).settings.arguments as String;
-    final deposit = depositDefaults.deposit(depositId);
-    final depositReconciliation =
-        Provider.of<DepositReconciliation>(context, listen: true);
+    final deposit = depositProv.deposit(depositId);
 
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -88,7 +85,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
           title: "Reconcile deposit",
           action: () {
             // reset formdata and formFields
-            depositReconciliation.reset();
+            depositProv.reset();
             // back to the previous screen
             Navigator.of(context).pop();
           },
@@ -109,8 +106,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _submit(context, depositId, depositDefaults, deposit,
-                depositReconciliation);
+            _submit(context, depositId, deposit, depositProv);
           },
           child: Icon(Icons.check),
           backgroundColor: Theme.of(context).accentColor,
@@ -136,36 +132,34 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                     height: MediaQuery.of(context).size.height * 0.64,
                     child: ListView.builder(
                       itemBuilder: (_, index) {
-                        var entity =
-                            depositReconciliation.reconciledDeposits[index];
+                        var entity = depositProv.reconciledDeposits[index];
 
                         return ListTile(
                           title: entity.memberId != null
                               ? Text(
-                                  "${depositReconciliation.getDepositType(entity.depositTypeId)} - ${depositReconciliation.getMember(entity.memberId)}")
+                                  "${depositProv.getDepositType(entity.depositTypeId)} - ${depositProv.getMember(entity.memberId)}")
                               : entity.depositorId != null
                                   ? Text(
-                                      "${depositReconciliation.getDepositType(entity.depositTypeId)} - ${depositReconciliation.getMember(entity.depositorId)}")
+                                      "${depositProv.getDepositType(entity.depositTypeId)} - ${depositProv.getMember(entity.depositorId)}")
                                   : entity.borrowerId != null
                                       ? Text(
-                                          "${depositReconciliation.getDepositType(entity.depositTypeId)} - ${depositReconciliation.getMember(entity.borrowerId)}")
+                                          "${depositProv.getDepositType(entity.depositTypeId)} - ${depositProv.getMember(entity.borrowerId)}")
                                       : Text(
-                                          "${depositReconciliation.getDepositType(entity.depositTypeId)}"),
+                                          "${depositProv.getDepositType(entity.depositTypeId)}"),
                           subtitle: entity.amount != null
                               ? Text("Kshs ${entity.amount}")
                               : entity.amountDisbursed != null
                                   ? Text("Kshs ${entity.amountDisbursed}")
                                   : Text("Kshs ${entity.transferredAmount}"),
                           trailing: IconButton(
-                            onPressed: () => depositReconciliation
-                                .removeReconciledDeposit(index),
+                            onPressed: () =>
+                                depositProv.removeReconciledDeposit(index),
                             icon: Icon(Icons.delete),
                             color: Theme.of(context).errorColor,
                           ),
                         );
                       },
-                      itemCount:
-                          depositReconciliation.reconciledDeposits.length,
+                      itemCount: depositProv.reconciledDeposits.length,
                     ),
                   ),
                   Container(
@@ -175,8 +169,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                           'Total amount reconciled',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(
-                            "Kshs ${depositReconciliation.totalReconciled}"),
+                        subtitle: Text("Kshs ${depositProv.totalReconciled}"),
                       ))
                 ],
               ),
