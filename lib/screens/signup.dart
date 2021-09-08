@@ -91,7 +91,7 @@ class _SignUpState extends State<SignUp> {
       _authData['firstName'] = _firstName;
       _authData['lastName'] = _lastName;
       _authData['identity'] = _identity;
-      _authData['avatar'] = File(avatar.path);
+      _authData['avatar'] = ((avatar!=null)?File(avatar.path):null);
       _authData['uniqueCode'] = _uniqueCode;
       await Provider.of<Auth>(context, listen: false).registerUser(_authData);
       Navigator.of(context).pushNamedAndRemoveUntil(

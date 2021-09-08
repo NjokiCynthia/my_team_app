@@ -26,6 +26,11 @@ class IntroScreenState extends State<IntroScreen> {
   _dashNav() async {
     String currentGroupId = await getPreference("selectedGroupId");
     dynamic groups = Provider.of<Groups>(context, listen: false);
+    
+    print("groups ${groups.items.length}");
+
+
+
     await groups.fetchAndSetUserGroups();
     await groups.setSelectedGroupId(currentGroupId);
     // await groups.fetchMembers();

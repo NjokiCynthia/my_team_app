@@ -609,6 +609,12 @@ class Groups with ChangeNotifier {
     return prefs.getString(selectedGroupId);
   }
 
+  removeCurrentGroupId() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    await preferences.remove(selectedGroupId);
+  }
+
+
   Group getCurrentGroup() {
     Group group;
     bool groupFound = false;
@@ -4579,6 +4585,7 @@ class Groups with ChangeNotifier {
   void switchGroupValuesToDefault({bool removeGroups = false}) {
     if (removeGroups) {
       _groups = [];
+      removeCurrentGroupId();
     }
     _groupContributionSummary = [];
     _groupFinesSummary = [];
