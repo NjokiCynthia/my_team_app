@@ -1269,10 +1269,10 @@ class Groups with ChangeNotifier {
     List<OngoingMemberLoanOptions> memberLoansSummary = [];
     if (memberLoansList.length > 0) {
       if (isLocal) {
-        print(memberLoansList);
         for (var object in memberLoansList) {
           final memberId = object['member_id'].toString();
-          final bool isSelected = object['is_selected'] == 1 ? true : false;
+          final bool isSelected =
+              object['is_selected'].toString() == "1" ? true : false;
           memberLoansSummary.add(OngoingMemberLoanOptions(
               id: object['id'].toString(),
               memberId: memberId,
@@ -1280,8 +1280,10 @@ class Groups with ChangeNotifier {
               description: object['description'],
               amount: object['amount'],
               balance: object['balance'],
-              loanType: object['name']));
+              loanType: object['loanType']));
         }
+        _ongoingMemberLoans = memberLoansSummary;
+        _loanPulled = true;
       } else {
         List<Map> _ongoingMemberLoanList = [];
         for (var object in memberLoansList) {
@@ -1296,12 +1298,12 @@ class Groups with ChangeNotifier {
               amount: double.tryParse(object['amount'].toString()) ?? 0.0,
               balance: double.tryParse(object['balance'].toString()) ?? 0.0,
               loanType: object['name'].toString()));
-          var memberLoansMap = {
+          Map<String, dynamic> memberLoansMap = {
             "id": int.parse(object['id'].toString()),
             "group_id": int.tryParse(_currentGroupId),
             "user_id": int.tryParse(_userId),
             "member_id": int.tryParse(memberId),
-            "isSelected": isSelected,
+            "is_selected": int.tryParse(object['is_selected'].toString()) ?? 0,
             "description": object['description'].toString(),
             "loanType": object['name'].toString(),
             "amount": double.tryParse(object['amount'].toString()),
@@ -1310,14 +1312,18 @@ class Groups with ChangeNotifier {
           };
           _ongoingMemberLoanList.add(memberLoansMap);
         }
-        // await dbHelper.deleteMultiple(
-        //     [int.tryParse(_currentGroupId)], DatabaseHelper.memberLoanOptions);
-        await dbHelper.batchInsert(
-            _ongoingMemberLoanList, DatabaseHelper.memberLoanOptions);
+        _ongoingMemberLoans = memberLoansSummary;
+        _loanPulled = true;
+        try {
+          await dbHelper.deleteMultiple(
+          [int.parse(_currentGroupId)], DatabaseHelper.memberLoanOptions);
+          await dbHelper.batchInsert(
+              _ongoingMemberLoanList, DatabaseHelper.memberLoanOptions);
+        } catch (e) {
+          throw e;
+        }
       }
     }
-    _ongoingMemberLoans = memberLoansSummary;
-    _loanPulled = true;
     notifyListeners();
   }
 
@@ -3662,13 +3668,14 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
       });
       List<dynamic> _localData = [];
-      // _localData = await dbHelper.queryMultipleWhere(
-      //   table: DatabaseHelper.memberLoanOptions,
-      //   columns: ["group_id", "user_id"],
-      //   whereArguments: [_currentGroupId, _userId],
-      //   orderBy: 'id',
-      //   order: 'DESC',
-      // );
+      _localData = await dbHelper.queryMultipleWhere(
+        table: DatabaseHelper.memberLoanOptions,
+        columns: ["group_id", "user_id"],
+        whereArguments: [_currentGroupId, _userId],
+        orderBy: 'id',
+        order: 'DESC',
+      );
+      print("local loans $_localData");
       if (_localData.length > 0) {
         addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
       } else {
@@ -4178,13 +4185,12 @@ class Groups with ChangeNotifier {
           .toList();
     }
     if (memberOngoingLoans) {
-      print("we here");
       if (_ongoingMemberLoans.length == 0 && _loanPulled == false) {
         await fetchGroupMembersOngoingLoans();
       }
 
       for (var loan in _ongoingMemberLoans) {
-        print("member loans $_ongoingMemberLoans");
+        print("is selected ${loan.isSelected}");
         if (loan.isSelected) {
           memberOngoingLoanOptions.add(NamesListItem(
               id: int.tryParse(loan.id),

@@ -3,7 +3,7 @@ import 'package:path/path.dart' as p;
 
 class DatabaseHelper {
   static final _databaseName = "chamasoft-app.db";
-  static final _databaseVersion = 1;
+  static final _databaseVersion = 2;
 
   static final dataTable = 'data';
   static final membersTable = 'members';
@@ -84,50 +84,6 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
-
-      // Contributions table
-      batch.execute('''
-            CREATE TABLE IF NOT EXISTS $payContributionsTable (
-              _id INTEGER PRIMARY KEY AUTOINCREMENT,
-              group_id INTEGER NOT NULL,
-              id INTEGER NOT NULL,
-              name TEXT NOT NULL DEFAULT '',
-              active INTEGER NOT NULL DEFAULT 1,
-              amount DOUBLE NOT NULL DEFAULT 0,
-              is_hidden INTERGER NOT NULL DEFAULT 0,
-              modified_on INTEGER NOT NULL
-            )
-            ''');
-
-      // Fines Category table
-      batch.execute('''
-            CREATE TABLE IF NOT EXISTS $fineCategories (
-              _id INTEGER PRIMARY KEY AUTOINCREMENT,
-              group_id INTEGER NOT NULL,
-              id INTEGER NOT NULL,
-              name TEXT NOT NULL DEFAULT '',
-              active INTEGER NOT NULL DEFAULT 1,
-              amount DOUBLE NOT NULL DEFAULT 0,
-              balance DOUBLE NOT NULL DEFAULT 0,
-              modified_on INTEGER NOT NULL
-            )
-            ''');
-      // Member loans options table
-      batch.execute('''
-            CREATE TABLE IF NOT EXISTS $memberLoanOptions (
-              _id INTEGER PRIMARY KEY AUTOINCREMENT,
-              id INTEGER NOT NULL,
-              group_id INTEGER NOT NULL,
-              member_id INTEGER NOT NULL,
-              user_id INTEGER NOT NULL,
-              isSelected INTEGER NOT NULL DEFAULT 0,
-              description TEXT NOT NULL DEFAULT '',
-              loanType TEXT NOT NULL DEFAULT '',
-              amount DOUBLE NOT NULL DEFAULT 0,
-              balance DOUBLE NOT NULL DEFAULT 0,
-              modified_on INTEGER NOT NULL
-            )
-            ''');
       await batch.commit();
     } catch (error) {
       print("error1 $error");
@@ -141,6 +97,33 @@ class DatabaseHelper {
       try {
         Batch batch = db.batch();
         // Sample table to be used on upgrade
+        // Contributions table
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $payContributionsTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              name TEXT NOT NULL DEFAULT '',
+              active INTEGER NOT NULL DEFAULT 1,
+              amount DOUBLE NOT NULL DEFAULT 0,
+              is_hidden INTERGER NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+
+        // Fines Category table
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $fineCategories (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              name TEXT NOT NULL DEFAULT '',
+              active INTEGER NOT NULL DEFAULT 1,
+              amount DOUBLE NOT NULL DEFAULT 0,
+              balance DOUBLE NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
         // Member loans options table
         batch.execute('''
             CREATE TABLE IF NOT EXISTS $memberLoanOptions (
@@ -149,7 +132,7 @@ class DatabaseHelper {
               group_id INTEGER NOT NULL,
               member_id INTEGER NOT NULL,
               user_id INTEGER NOT NULL,
-              isSelected INTEGER NOT NULL DEFAULT 0,
+              is_selected INTEGER NOT NULL DEFAULT 0,
               description TEXT NOT NULL DEFAULT '',
               loanType TEXT NOT NULL DEFAULT '',
               amount DOUBLE NOT NULL DEFAULT 0,
@@ -228,20 +211,15 @@ class DatabaseHelper {
     String q = 'SELECT * FROM $table';
     if (columns.length > 0) {
       for (var i = 0; i < columns.length; i++) {
-        if(i==0)
-          q += ' WHERE ';
-        q+= ' ${columns[i]} = ? ';
-        try{
-          if(columns[i+1] != null)
-            q+= ' AND ';
-        }catch(e){
-        }
+        if (i == 0) q += ' WHERE ';
+        q += ' ${columns[i]} = ? ';
+        try {
+          if (columns[i + 1] != null) q += ' AND ';
+        } catch (e) {}
       }
     }
     q += ' ORDER BY $orderBy $order';
-    return await db.rawQuery(
-      q,whereArguments
-    );
+    return await db.rawQuery(q, whereArguments);
   }
 
   // All of the methods (insert, query, update, delete) can also be done using
