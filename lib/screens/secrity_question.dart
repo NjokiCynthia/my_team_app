@@ -2,6 +2,8 @@ import 'package:chamasoft/screens/confirm_temp_pin.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 class ResetPin extends StatefulWidget {
 //  const ResetPin({ Key? key }) : super(key: key);
@@ -38,6 +40,10 @@ class _ResetPinState extends State<ResetPin> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+                      switches(),
+                      SizedBox(
+                        height: 30.0,
+                      ),
                       securityQuestion(),
                       SizedBox(
                         height: 30.0,
@@ -117,6 +123,34 @@ class _ResetPinState extends State<ResetPin> {
             return null;
           },
         ))
+      ],
+    );
+  }
+
+  switches() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: FlutterToggleTab(
+            width: 70.0,
+            height: 70.0,
+            borderRadius: 25.0,
+            labels: ["Send Money", "Request Money"],
+            initialIndex: 0,
+            selectedLabelIndex: (index) {
+              setState(() {});
+            },
+            selectedTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600),
+            unSelectedTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400),
+          ),
+        )
       ],
     );
   }

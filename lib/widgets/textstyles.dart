@@ -590,6 +590,72 @@ List<Widget> resetTransactions(
   return _data;
 }
 
+Widget transactionToolTip(
+    {BuildContext context,
+    @required String title,
+    @required String date,
+    @required String message,
+    bool visible = true,
+    Function toggleToolTip}) {
+  return Visibility(
+    visible: visible,
+    child: Container(
+        padding: EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+        color: (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Color(0xffededfe),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Icon(
+              Icons.lightbulb_outline,
+              // ignore: deprecated_member_use
+              color: Theme.of(context).textSelectionHandleColor,
+              size: 24.0,
+              semanticLabel: 'Text to announce in accessibility modes',
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  subtitle1(
+                      text: title,
+                      textAlign: TextAlign.start,
+                      // ignore: deprecated_member_use
+                      color: Theme.of(context).textSelectionHandleColor),
+                  (date.length > 0)
+                      ? subtitle2(
+                          text: date,
+                          textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor)
+                      : Container(),
+                  (message.length > 0)
+                      ? subtitle2(
+                          text: message,
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                          textAlign: TextAlign.start)
+                      : Container(),
+                ],
+              ),
+            ),
+            Visibility(
+              visible: false,
+              child: screenActionButton(
+                  icon: LineAwesomeIcons.close,
+                  // ignore: deprecated_member_use
+                  textColor: Theme.of(context).textSelectionHandleColor,
+                  action: toggleToolTip),
+            ),
+          ],
+        )),
+  );
+}
+
 Widget toolTip(
     {BuildContext context,
     @required String title,

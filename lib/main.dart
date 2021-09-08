@@ -1,8 +1,8 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/dashboard.dart';
-import 'package:chamasoft/providers/deposit-reconciliation.dart';
 import 'package:chamasoft/providers/deposits.dart';
 import 'package:chamasoft/providers/helpers/notifications.dart';
+import 'package:chamasoft/providers/withdrawals.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/list-institutions.dart';
@@ -105,7 +105,7 @@ class _MyAppState extends State<MyApp> {
           },
         ),
         ChangeNotifierProvider(create: (_) {
-          return DepositReconciliation();
+          return Withdrawals();
         }),
         ChangeNotifierProxyProvider<Auth, Groups>(
           update: (ctx, auth, previousGroups) => Groups(

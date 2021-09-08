@@ -88,7 +88,8 @@ class _EditCollectionsState extends State<EditCollections> {
           "id": element.id,
           "name": element.name,
           "identity": identity,
-          "account_id" : Provider.of<Groups>(context, listen: false).getAccountFormId(element.id),
+          "account_id": Provider.of<Groups>(context, listen: false)
+              .getAccountFormId(element.id),
         });
       });
       return _result;
