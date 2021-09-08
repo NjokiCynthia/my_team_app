@@ -2,8 +2,6 @@ import 'package:chamasoft/providers/deposits.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
-import 'package:chamasoft/widgets/buttons.dart';
-// import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -124,7 +122,6 @@ class _ReconcileDepositsState extends State<ReconcileDeposits> {
             color: Theme.of(context).accentColor,
           ),
         ),
-        
       ),
     );
   }

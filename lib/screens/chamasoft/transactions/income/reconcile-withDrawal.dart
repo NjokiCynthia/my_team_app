@@ -97,6 +97,7 @@ class _ReconcileWithDrawalState extends State<ReconcileWithDrawal> {
                 onPressed: () => _newReconcileWithdrawalDialog(),
                 icon: Icon(
                   Icons.add,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
               ),
