@@ -2,6 +2,7 @@ import 'package:chamasoft/screens/confirm_temp_pin.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 class ResetPin extends StatefulWidget {
@@ -131,16 +132,22 @@ class _ResetPinState extends State<ResetPin> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(top: 20),
-          child: LiteRollingSwitch(
-            value: true,
-            textOn: 'Send Money',
-            textOff: 'Request Money',
-            colorOn: Colors.lightGreen,
-            colorOff: Colors.lightBlue,
-            iconOn: Icons.check,
-            iconOff: Icons.power_settings_new,
-            animationDuration: Duration(milliseconds: 800),
-            onChanged: (bool state) {},
+          child: FlutterToggleTab(
+            width: 70,
+            borderRadius: 15,
+            labels: ["Send Money", "Request Money"],
+            initialIndex: 0,
+            selectedLabelIndex: (index) {
+              setState(() {});
+            },
+            selectedTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600),
+            unSelectedTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 16.0,
+                fontWeight: FontWeight.w400),
           ),
         )
       ],
