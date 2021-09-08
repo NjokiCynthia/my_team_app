@@ -2,6 +2,7 @@ import 'package:chamasoft/screens/confirm_temp_pin.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:lite_rolling_switch/lite_rolling_switch.dart';
 
 class ResetPin extends StatefulWidget {
 //  const ResetPin({ Key? key }) : super(key: key);
@@ -38,6 +39,10 @@ class _ResetPinState extends State<ResetPin> {
                     mainAxisSize: MainAxisSize.min,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: <Widget>[
+                      switches(),
+                      SizedBox(
+                        height: 30.0,
+                      ),
                       securityQuestion(),
                       SizedBox(
                         height: 30.0,
@@ -117,6 +122,27 @@ class _ResetPinState extends State<ResetPin> {
             return null;
           },
         ))
+      ],
+    );
+  }
+
+  switches() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: LiteRollingSwitch(
+            value: true,
+            textOn: 'Send Money',
+            textOff: 'Request Money',
+            colorOn: Colors.lightGreen,
+            colorOff: Colors.lightBlue,
+            iconOn: Icons.check,
+            iconOff: Icons.power_settings_new,
+            animationDuration: Duration(milliseconds: 800),
+            onChanged: (bool state) {},
+          ),
+        )
       ],
     );
   }
