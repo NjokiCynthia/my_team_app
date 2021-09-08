@@ -60,6 +60,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       title: heading2(
           text: 'Reconcile deposit',
           textAlign: TextAlign.start,
+          // ignore: deprecated_member_use
           color: Theme.of(context).textSelectionHandleColor),
       content: Container(
         width: MediaQuery.of(context).size.width * 0.8,
@@ -566,10 +567,12 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       actions: [
         negativeActionDialogButton(
             text: "Cancel",
+            // ignore: deprecated_member_use
             color: Theme.of(context).textSelectionHandleColor,
             action: () {
               Navigator.of(context).pop();
             }),
+        // ignore: deprecated_member_use
         FlatButton(
             padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
             child: customTitle(

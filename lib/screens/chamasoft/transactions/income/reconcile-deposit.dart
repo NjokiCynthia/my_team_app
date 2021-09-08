@@ -98,6 +98,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                 onPressed: () => _newReconcileDepositDialog(),
                 icon: Icon(
                   Icons.add,
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                 ),
               ),
