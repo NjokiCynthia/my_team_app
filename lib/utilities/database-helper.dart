@@ -98,9 +98,39 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
+
+      // Fines Category table
+      batch.execute('''
+            CREATE TABLE IF NOT EXISTS $fineCategories (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              id INTEGER NOT NULL,
+              name TEXT NOT NULL DEFAULT '',
+              active INTEGER NOT NULL DEFAULT 1,
+              amount DOUBLE NOT NULL DEFAULT 0,
+              balance DOUBLE NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+      // Member loans options table
+      batch.execute('''
+            CREATE TABLE IF NOT EXISTS $memberLoanOptions (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              id INTEGER NOT NULL,
+              group_id INTEGER NOT NULL,
+              member_id INTEGER NOT NULL,
+              user_id INTEGER NOT NULL,
+              isSelected INTEGER NOT NULL DEFAULT 0,
+              description TEXT NOT NULL DEFAULT '',
+              loanType TEXT NOT NULL DEFAULT '',
+              amount DOUBLE NOT NULL DEFAULT 0,
+              balance DOUBLE NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
       await batch.commit();
     } catch (error) {
-      print(error);
+      print("error1 $error");
     }
   }
 
@@ -110,21 +140,26 @@ class DatabaseHelper {
     if (oldVersion == 1) {
       try {
         Batch batch = db.batch();
+        // Sample table to be used on upgrade
+        // Member loans options table
         batch.execute('''
-            CREATE TABLE IF NOT EXISTS $payContributionsTable (
+            CREATE TABLE IF NOT EXISTS $memberLoanOptions (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
-              group_id INTEGER NOT NULL,
               id INTEGER NOT NULL,
-              name TEXT NOT NULL DEFAULT '',
-              active INTEGER NOT NULL DEFAULT 1,
+              group_id INTEGER NOT NULL,
+              member_id INTEGER NOT NULL,
+              user_id INTEGER NOT NULL,
+              isSelected INTEGER NOT NULL DEFAULT 0,
+              description TEXT NOT NULL DEFAULT '',
+              loanType TEXT NOT NULL DEFAULT '',
               amount DOUBLE NOT NULL DEFAULT 0,
-              is_hidden INTERGER NOT NULL DEFAULT 0,
+              balance DOUBLE NOT NULL DEFAULT 0,
               modified_on INTEGER NOT NULL
             )
             ''');
         await batch.commit();
       } catch (error) {
-        throw (error);
+        print("error2 $error");
       }
     }
   }
@@ -181,6 +216,34 @@ class DatabaseHelper {
     );
   }
 
+  Future<List<Map<String, dynamic>>> queryMultipleWhere({
+    String table,
+    List<dynamic> columns,
+    List<dynamic> whereArguments,
+    String orderBy = 'id',
+    String order = 'DESC',
+    bool isMeeting = false,
+  }) async {
+    Database db = await instance.database;
+    String q = 'SELECT * FROM $table';
+    if (columns.length > 0) {
+      for (var i = 0; i < columns.length; i++) {
+        if(i==0)
+          q += ' WHERE ';
+        q+= ' ${columns[i]} = ? ';
+        try{
+          if(columns[i+1] != null)
+            q+= ' AND ';
+        }catch(e){
+        }
+      }
+    }
+    q += ' ORDER BY $orderBy $order';
+    return await db.rawQuery(
+      q,whereArguments
+    );
+  }
+
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
   Future<int> queryRowCount(String table) async {
@@ -220,8 +283,7 @@ class DatabaseHelper {
 
   Future<int> deleteMultiple(List<int> ids, String table) async {
     Database db = await instance.database;
-    return await db.delete(table,
-        where: 'group_id IN (${ids.join(', ')})');
+    return await db.delete(table, where: 'group_id IN (${ids.join(', ')})');
   }
 
   Future<int> deleteGroupMembers(int id) async {

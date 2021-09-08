@@ -779,11 +779,12 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addPayContributions({List<dynamic> groupContributions,bool isLocal = false}) async {
+  Future<void> addPayContributions(
+      {List<dynamic> groupContributions, bool isLocal = false}) async {
     if (groupContributions.length > 0) {
-      if(isLocal){
+      if (isLocal) {
         for (var groupContributionJSON in groupContributions) {
-          print(groupContributionJSON);
+          // print(groupContributionJSON);
           final newContribution = Contribution(
             id: groupContributionJSON['id'].toString(),
             name: groupContributionJSON['name'].toString(),
@@ -793,7 +794,7 @@ class Groups with ChangeNotifier {
           );
           _payContributions.add(newContribution);
         }
-      }else{
+      } else {
         List<Map> _contributionsList = [];
         for (var groupContributionJSON in groupContributions) {
           final newContribution = Contribution(
@@ -808,7 +809,8 @@ class Groups with ChangeNotifier {
             contributionDate:
                 groupContributionJSON['contribution_date'].toString(),
             oneTimeContributionSetting:
-                groupContributionJSON['one_time_contribution_setting'].toString(),
+                groupContributionJSON['one_time_contribution_setting']
+                    .toString(),
             isHidden: groupContributionJSON['is_hidden'].toString(),
             active: groupContributionJSON['active'].toString(),
           );
@@ -818,14 +820,17 @@ class Groups with ChangeNotifier {
             "active": int.parse(groupContributionJSON['active'].toString()),
             "amount": double.parse(groupContributionJSON['amount'].toString()),
             "name": groupContributionJSON['name'].toString(),
-            "is_hidden": int.parse(groupContributionJSON['is_hidden'].toString()),
+            "is_hidden":
+                int.parse(groupContributionJSON['is_hidden'].toString()),
             "modified_on": DateTime.now().millisecondsSinceEpoch,
           };
           _contributionsList.add(contributionMap);
           _payContributions.add(newContribution);
         }
-        await dbHelper.deleteMultiple([int.parse(_currentGroupId)],DatabaseHelper.payContributionsTable);
-        await dbHelper.batchInsert(_contributionsList, DatabaseHelper.payContributionsTable);
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.payContributionsTable);
+        await dbHelper.batchInsert(
+            _contributionsList, DatabaseHelper.payContributionsTable);
       }
     }
     notifyListeners();
@@ -844,15 +849,44 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addFineTypes(List<dynamic> groupFineTypes) {
+  Future<void> addFineTypes(
+      {List<dynamic> groupFineTypes, isLocal = false}) async {
     if (groupFineTypes.length > 0) {
-      for (var groupFineTypesJSON in groupFineTypes) {
-        final newFineType = FineType(
+      if (isLocal) {
+        for (var groupFineTypesJSON in groupFineTypes) {
+          // print(groupContributionJSON);
+          final newFineType = FineType(
             id: groupFineTypesJSON['id'].toString(),
             name: groupFineTypesJSON['name'].toString(),
             amount: groupFineTypesJSON['amount'].toString(),
-            balance: groupFineTypesJSON['balance'].toString());
-        _fineTypes.add(newFineType);
+            balance: groupFineTypesJSON['balance'].toString(),
+          );
+          _fineTypes.add(newFineType);
+        }
+      } else {
+        List<Map> _fineTypesList = [];
+        for (var groupFineTypesJSON in groupFineTypes) {
+          final newFineType = FineType(
+              id: groupFineTypesJSON['id'].toString(),
+              name: groupFineTypesJSON['name'].toString(),
+              amount: groupFineTypesJSON['amount'].toString(),
+              balance: groupFineTypesJSON['balance'].toString());
+
+          var fineTypeMap = {
+            "id": int.parse(groupFineTypesJSON['id'].toString()),
+            "group_id": int.parse(_currentGroupId),
+            "amount": double.parse(groupFineTypesJSON['amount'].toString()),
+            "balance": double.parse(groupFineTypesJSON['balance'].toString()),
+            "name": groupFineTypesJSON['name'].toString(),
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
+          };
+          _fineTypes.add(newFineType);
+          _fineTypesList.add(fineTypeMap);
+        }
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.fineCategories);
+        await dbHelper.batchInsert(
+            _fineTypesList, DatabaseHelper.fineCategories);
       }
     }
     notifyListeners();
@@ -1230,19 +1264,56 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addOngoingMemberLoans(List<dynamic> memberLoansList) {
+  Future<void> addOngoingMemberLoans(
+      {List<dynamic> memberLoansList, isLocal = false}) async {
     List<OngoingMemberLoanOptions> memberLoansSummary = [];
     if (memberLoansList.length > 0) {
-      for (var object in memberLoansList) {
-        var memberId = object['member_id'].toString();
-        memberLoansSummary.add(OngoingMemberLoanOptions(
-            id: object['id'].toString(),
-            memberId: memberId,
-            isSelected: object['is_selected'].toString() == "1" ? true : false,
-            description: object['description'].toString(),
-            amount: double.tryParse(object['amount'].toString()) ?? 0.0,
-            balance: double.tryParse(object['balance'].toString()) ?? 0.0,
-            loanType: object['name'].toString()));
+      if (isLocal) {
+        print(memberLoansList);
+        for (var object in memberLoansList) {
+          final memberId = object['member_id'].toString();
+          final bool isSelected = object['is_selected'] == 1 ? true : false;
+          memberLoansSummary.add(OngoingMemberLoanOptions(
+              id: object['id'].toString(),
+              memberId: memberId,
+              isSelected: isSelected,
+              description: object['description'],
+              amount: object['amount'],
+              balance: object['balance'],
+              loanType: object['name']));
+        }
+      } else {
+        List<Map> _ongoingMemberLoanList = [];
+        for (var object in memberLoansList) {
+          final memberId = object['member_id'].toString();
+          final bool isSelected =
+              object['is_selected'].toString() == "1" ? true : false;
+          memberLoansSummary.add(OngoingMemberLoanOptions(
+              id: object['id'].toString(),
+              memberId: memberId,
+              isSelected: isSelected,
+              description: object['description'].toString(),
+              amount: double.tryParse(object['amount'].toString()) ?? 0.0,
+              balance: double.tryParse(object['balance'].toString()) ?? 0.0,
+              loanType: object['name'].toString()));
+          var memberLoansMap = {
+            "id": int.parse(object['id'].toString()),
+            "group_id": int.tryParse(_currentGroupId),
+            "user_id": int.tryParse(_userId),
+            "member_id": int.tryParse(memberId),
+            "isSelected": isSelected,
+            "description": object['description'].toString(),
+            "loanType": object['name'].toString(),
+            "amount": double.tryParse(object['amount'].toString()),
+            "balance": double.tryParse(object['balance'].toString()),
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
+          };
+          _ongoingMemberLoanList.add(memberLoansMap);
+        }
+        // await dbHelper.deleteMultiple(
+        //     [int.tryParse(_currentGroupId)], DatabaseHelper.memberLoanOptions);
+        await dbHelper.batchInsert(
+            _ongoingMemberLoanList, DatabaseHelper.memberLoanOptions);
       }
     }
     _ongoingMemberLoans = memberLoansSummary;
@@ -1818,17 +1889,17 @@ class Groups with ChangeNotifier {
         table: DatabaseHelper.payContributionsTable,
         column: "group_id",
         whereArguments: [_currentGroupId],
-        orderBy: 'id',
+        orderBy: 'name',
         order: 'DESC',
       );
-      if(_localData.length > 0) {
+      if (_localData.length > 0) {
         addPayContributions(groupContributions: _localData, isLocal: true);
-      }else{
+      } else {
         try {
           final response = await PostToServer.post(postRequest, url);
           _payContributions = []; //clear
           final groupContributions = response['contributions'] as List<dynamic>;
-          addPayContributions(groupContributions:groupContributions);
+          addPayContributions(groupContributions: groupContributions);
         } on CustomException catch (error) {
           throw CustomException(message: error.message, status: error.status);
         } catch (error) {
@@ -1873,16 +1944,28 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
-      try {
-        final response = await PostToServer.post(postRequest, url);
-        _fineTypes = []; //clear accounts
-        final groupFineTypes =
-            response['fine_category_options'] as List<dynamic>;
-        addFineTypes(groupFineTypes);
-      } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
-      } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
+      List<dynamic> _localData = [];
+      _localData = await dbHelper.queryWhere(
+        table: DatabaseHelper.fineCategories,
+        column: "group_id",
+        whereArguments: [_currentGroupId],
+        orderBy: 'name',
+        order: 'DESC',
+      );
+      if (_localData.length > 0) {
+        addFineTypes(groupFineTypes: _localData, isLocal: true);
+      } else {
+        try {
+          final response = await PostToServer.post(postRequest, url);
+          _fineTypes = []; //clear accounts
+          final groupFineTypes =
+              response['fine_category_options'] as List<dynamic>;
+          addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
+        } on CustomException catch (error) {
+          throw CustomException(message: error.message, status: error.status);
+        } catch (error) {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
       }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
@@ -2094,12 +2177,6 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchMembers() async {
-    
-
-    
-
-
-
     const url = EndpointUrl.GET_GROUP_MEMBERS;
     try {
       final postRequest = json.encode({
@@ -3584,14 +3661,26 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
-      try {
-        final response = await PostToServer.post(postRequest, url);
-        final data = response['loans'] as List<dynamic>;
-        addOngoingMemberLoans(data);
-      } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
-      } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
+      List<dynamic> _localData = [];
+      // _localData = await dbHelper.queryMultipleWhere(
+      //   table: DatabaseHelper.memberLoanOptions,
+      //   columns: ["group_id", "user_id"],
+      //   whereArguments: [_currentGroupId, _userId],
+      //   orderBy: 'id',
+      //   order: 'DESC',
+      // );
+      if (_localData.length > 0) {
+        addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
+      } else {
+        try {
+          final response = await PostToServer.post(postRequest, url);
+          final data = response['loans'] as List<dynamic>;
+          addOngoingMemberLoans(memberLoansList: data);
+        } on CustomException catch (error) {
+          throw CustomException(message: error.message, status: error.status);
+        } catch (error) {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
       }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
@@ -4089,11 +4178,13 @@ class Groups with ChangeNotifier {
           .toList();
     }
     if (memberOngoingLoans) {
+      print("we here");
       if (_ongoingMemberLoans.length == 0 && _loanPulled == false) {
         await fetchGroupMembersOngoingLoans();
       }
 
       for (var loan in _ongoingMemberLoans) {
+        print("member loans $_ongoingMemberLoans");
         if (loan.isSelected) {
           memberOngoingLoanOptions.add(NamesListItem(
               id: int.tryParse(loan.id),
