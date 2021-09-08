@@ -10,6 +10,13 @@ class DatabaseHelper {
   static final meetingsTable = 'meetings';
   static final payContributionsTable = 'payContributions';
 
+  // create databases for the following tables:
+
+  static final contributionsTable = 'contributions';
+  static final fineCategories = 'fineCategories';
+  static final memberLoanOptions = 'memberLoanOptions';
+  static final loanTypes = 'loanTypes';
+
   // make this a singleton class
   DatabaseHelper._privateConstructor();
   static final DatabaseHelper instance = DatabaseHelper._privateConstructor();

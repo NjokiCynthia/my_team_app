@@ -1,28 +1,24 @@
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/screens/secrity_question.dart';
 import 'package:chamasoft/utilities/theme.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/material.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 
-class PinLogin extends StatefulWidget {
-  static const namedRoute = "/pinlogin";
+class TempolaryPin extends StatefulWidget {
+  //const TempolaryPin({ Key? key }) : super(key: key);
 
   @override
-  _PinLoginState createState() => _PinLoginState();
+  _TempolaryPinState createState() => _TempolaryPinState();
 }
 
-class _PinLoginState extends State<PinLogin> {
+class _TempolaryPinState extends State<TempolaryPin> {
   List<String> currentPin = ["", "", "", ""];
   TextEditingController currentPin1 = TextEditingController();
   TextEditingController currentPin2 = TextEditingController();
   TextEditingController currentPin3 = TextEditingController();
   TextEditingController currentPin4 = TextEditingController();
-  Auth auth;
 
   var outlineInputBorder = OutlineInputBorder(
       borderRadius: BorderRadius.circular(10.0),
@@ -31,15 +27,6 @@ class _PinLoginState extends State<PinLogin> {
   int pinIndex = 0;
 
   bool loading = false;
-
-  @override
-  void didChangeDependencies() {
-    // ignore: todo
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-
-    auth = Provider.of<Auth>(context, listen: false);
-  }
 
   void pinIndexSetup(String s, BuildContext context) async {
     if (pinIndex == 0) {
@@ -95,16 +82,6 @@ class _PinLoginState extends State<PinLogin> {
       setPin(pinIndex, "");
       currentPin[pinIndex - 1] = "";
       pinIndex--;
-    }
-  }
-
-  void confirmPin() {
-    if (currentPin.isEmpty) {
-      //print("Pin is required to proceed");
-
-      // Toast.show("Pin is required to proceed", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
-
-      // _showToast(context);
     }
   }
 
@@ -221,9 +198,7 @@ class _PinLoginState extends State<PinLogin> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(60.0),
                       ),
-                      onPressed: () {
-                        confirmPin();
-                      },
+                      onPressed: () {},
                       // child: Image.asset(
                       //   "assets/images/check.png",
                       //   color: Colors.black,
@@ -270,54 +245,9 @@ class _PinLoginState extends State<PinLogin> {
     );
   }
 
-  profileName() {
-    return heading2(
-      text: auth.userName,
-      // ignore: deprecated_member_use
-      color: Theme.of(context).textSelectionHandleColor,
-    );
-  }
-
-  forgortPasswordText() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text(
-            "Forgot your Pin ?",
-            style: TextStyle(
-                color: Colors.black54,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold),
-          ),
-        ),
-        SizedBox(
-          width: 7.0,
-        ),
-        Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ResetPin()),
-                  );
-                },
-                child: Text(
-                  "Reset Here!",
-                  style: TextStyle(
-                      color: Colors.lightBlue,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
-                )))
-      ],
-    );
-  }
-
   buildSecurityText() {
     return subtitle1(
-      text: "Please enter your secure pin to proceed",
+      text: "Please enter the code that you recieved via sms. ",
       color: Theme.of(context)
           // ignore: deprecated_member_use
           .textSelectionHandleColor
@@ -325,36 +255,8 @@ class _PinLoginState extends State<PinLogin> {
     );
   }
 
-  profileImage() {
-    return Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-      Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: auth.displayAvatar != null
-              ? CachedNetworkImage(
-                  imageUrl: auth.displayAvatar,
-                  placeholder: (context, url) => const CircleAvatar(
-                    radius: 35.0,
-                    backgroundImage: const AssetImage('assets/no-user.png'),
-                  ),
-                  imageBuilder: (context, image) => CircleAvatar(
-                    backgroundImage: image,
-                    radius: 35.0,
-                  ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                  fadeOutDuration: const Duration(seconds: 1),
-                  fadeInDuration: const Duration(seconds: 3),
-                )
-              : const CircleAvatar(
-                  backgroundImage: const AssetImage('assets/no-user.png'),
-                  radius: 35.0,
-                ))
-    ]);
-  }
-
   @override
   Widget build(BuildContext context) {
-    // context.loaderOverlay.show();
-
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Builder(builder: (BuildContext context) {
@@ -368,21 +270,6 @@ class _PinLoginState extends State<PinLogin> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  // Expanded(
-                  //   child: Container(
-                  //     child: Column(
-                  //       mainAxisSize: MainAxisSize.min,
-                  //       mainAxisAlignment: MainAxisAlignment.center,
-                  //       children: <Widget>[
-                  //         profileImage(),
-                  //         SizedBox(
-                  //           height: 5.0,
-                  //         ),
-                  //         profileName(),
-                  //       ],
-                  //     )
-                  //   )
-                  // ),
                   Expanded(
                     child: Container(
                       alignment: Alignment(0, 0.5),
@@ -392,14 +279,6 @@ class _PinLoginState extends State<PinLogin> {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          profileImage(),
-                          SizedBox(
-                            height: 5.0,
-                          ),
-                          profileName(),
-                          SizedBox(
-                            height: 100.0,
-                          ),
                           buildSecurityText(),
                           SizedBox(
                             height: 10.0,
@@ -418,8 +297,7 @@ class _PinLoginState extends State<PinLogin> {
                         ],
                       ),
                     ),
-                  ),
-                  forgortPasswordText(),
+                  )
                 ],
               ),
             ),
