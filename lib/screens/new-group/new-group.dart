@@ -477,7 +477,11 @@ class _NewGroupState extends State<NewGroup> {
     final group = Provider.of<Groups>(context, listen: false);
     final auth = Provider.of<Auth>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
-    _data['group_id'] = currentGroup.groupId;
+    try{
+      _data['group_id'] = currentGroup.groupId;
+    }catch (e){ 
+      throw (e);
+    }
     _data['user_id'] = auth.id;
     // Handle countries
     _countryOptions = Provider.of<Groups>(context).countryOptions;
