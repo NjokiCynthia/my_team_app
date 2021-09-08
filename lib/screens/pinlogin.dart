@@ -358,6 +358,8 @@ class _PinLoginState extends State<PinLogin> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Builder(builder: (BuildContext context) {
+          // ignore: unnecessary_statements
+          ThemeMode.light;
           return Container(
             alignment: Alignment.center,
             decoration: primaryGradient(context),
