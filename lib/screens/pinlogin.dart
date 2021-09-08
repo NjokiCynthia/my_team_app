@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/screens/secrity_question.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -295,15 +296,21 @@ class _PinLoginState extends State<PinLogin> {
           width: 7.0,
         ),
         Padding(
-          padding: const EdgeInsets.all(5.0),
-          child: Text(
-            "Reset Here!",
-            style: TextStyle(
-                color: Colors.lightBlue,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold),
-          ),
-        )
+            padding: const EdgeInsets.all(5.0),
+            child: TextButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ResetPin()),
+                  );
+                },
+                child: Text(
+                  "Reset Here!",
+                  style: TextStyle(
+                      color: Colors.lightBlue,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                )))
       ],
     );
   }
