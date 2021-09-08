@@ -1,23 +1,21 @@
-import 'package:chamasoft/providers/deposit-reconciliation.dart';
+import 'package:chamasoft/providers/withdrawals.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/reconcile-withdrawal-form.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import "package:flutter/material.dart";
-import "package:provider/provider.dart";
-import "package:intl/intl.dart";
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:chamasoft/providers/deposits.dart';
-import 'package:chamasoft/widgets/reconcile-deposit-form.dart';
+import 'package:provider/provider.dart';
 
-class ReconcileDeposit extends StatefulWidget {
-  const ReconcileDeposit({Key key}) : super(key: key);
+class ReconcileWithDrawal extends StatefulWidget {
+  const ReconcileWithDrawal({Key key}) : super(key: key);
 
   @override
-  _ReconcileDepositState createState() => _ReconcileDepositState();
+  _ReconcileWithDrawalState createState() => _ReconcileWithDrawalState();
 }
 
-class _ReconcileDepositState extends State<ReconcileDeposit>
-    with ChangeNotifier {
+class _ReconcileWithDrawalState extends State<ReconcileWithDrawal> {
   double _appBBarElevation = 0;
   ScrollController _scrollController;
 
@@ -30,25 +28,25 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
     }
   }
 
-  void _newReconcileDepositDialog() {
+  void _newReconcileWithdrawalDialog() {
     showDialog(
         context: context,
-        builder: (BuildContext context) => ReconcileDepositForm());
+        builder: (BuildContext context) => ReconcileWithdrawalForm());
   }
 
-  void _submit(BuildContext context, String depositId, depositDefaults, deposit,
-      depositReconciliation) async {
+  void _submit(BuildContext context, String withdrawalId, withdrawals,
+      WithDrawal withdrawal, reconcile) async {
     // get the amount entered.
-    double total = depositReconciliation.totalReconciled;
+    double total = reconcile.totalReconciled;
     // compare it with the total amount transacted
-    if (total == deposit.amountTransacted) {
+    if (total == withdrawal.amountTransacted) {
       // reconcile the deposit.
-      depositDefaults.reconcileDeposit(depositId);
+      withdrawals.reconcileWithdrawal(withdrawalId);
       // reset formdata and formFields
-      depositReconciliation.reset();
+      reconcile.reset();
       // back to the reconciled deposits
       Navigator.pop(context);
-    } else if (total > deposit.amountTransacted) {
+    } else if (total > withdrawal.amountTransacted) {
       final snackBar = SnackBar(
           content:
               Text('The amount reconciled is greater than amount transacted'));
@@ -76,19 +74,19 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
 
   @override
   Widget build(BuildContext context) {
-    final depositDefaults = Provider.of<Deposits>(context);
-    final depositId = ModalRoute.of(context).settings.arguments as String;
-    final deposit = depositDefaults.deposit(depositId);
-    final depositReconciliation =
-        Provider.of<DepositReconciliation>(context, listen: true);
+    final defaults = Provider.of<WithdrawalDefaults>(context, listen: false);
+    final withdrawalId = ModalRoute.of(context).settings.arguments as String;
+    final reconcile = Provider.of<ReconcileWithdrawal>(context, listen: true);
+    final withdrawals = Provider.of<Withdrawals>(context, listen: false);
+    final withdrawal = withdrawals.withdrawal(withdrawalId);
 
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
-          title: "Reconcile deposit",
+          title: "Reconcile withdrawal",
           action: () {
-            // reset formdata and formFields
-            depositReconciliation.reset();
+            // reset the reconciled withdrawals.
+            reconcile.reset();
             // back to the previous screen
             Navigator.of(context).pop();
           },
@@ -98,7 +96,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
             Padding(
               padding: EdgeInsets.only(right: 20.0),
               child: IconButton(
-                onPressed: () => _newReconcileDepositDialog(),
+                onPressed: () => _newReconcileWithdrawalDialog(),
                 icon: Icon(
                   Icons.add,
                   color: Theme.of(context).textSelectionHandleColor,
@@ -109,8 +107,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _submit(context, depositId, depositDefaults, deposit,
-                depositReconciliation);
+            _submit(context, withdrawalId, withdrawals, withdrawal, reconcile);
           },
           child: Icon(Icons.check),
           backgroundColor: Theme.of(context).accentColor,
@@ -124,11 +121,11 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
               child: Column(
                 children: [
                   transactionToolTip(
-                    title: deposit.transactionDets,
+                    title: withdrawal.transactionDets,
                     date:
-                        "Date of transaction: ${DateFormat.yMEd().add_jms().format(deposit.dateOfTransaction).toString()}",
+                        "Date of transaction: ${DateFormat.yMEd().add_jms().format(withdrawal.dateOfTransaction).toString()}",
                     message:
-                        "Amount to be reconciled: Kshs ${deposit.amountTransacted}",
+                        "Amount to be reconciled: Kshs ${withdrawal.amountTransacted}",
                     context: context,
                   ),
                   Container(
@@ -136,36 +133,26 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                     height: MediaQuery.of(context).size.height * 0.64,
                     child: ListView.builder(
                       itemBuilder: (_, index) {
-                        var entity =
-                            depositReconciliation.reconciledDeposits[index];
+                        var entity = reconcile.reconciledWithdrawals[index];
 
                         return ListTile(
                           title: entity.memberId != null
                               ? Text(
-                                  "${depositReconciliation.getDepositType(entity.depositTypeId)} - ${depositReconciliation.getMember(entity.memberId)}")
-                              : entity.depositorId != null
-                                  ? Text(
-                                      "${depositReconciliation.getDepositType(entity.depositTypeId)} - ${depositReconciliation.getMember(entity.depositorId)}")
-                                  : entity.borrowerId != null
-                                      ? Text(
-                                          "${depositReconciliation.getDepositType(entity.depositTypeId)} - ${depositReconciliation.getMember(entity.borrowerId)}")
-                                      : Text(
-                                          "${depositReconciliation.getDepositType(entity.depositTypeId)}"),
+                                  "${defaults.getWithdrawalType(entity.withdrawalTypeId)} - ${defaults.getMember(entity.memberId)}")
+                              : Text(
+                                  "${defaults.getWithdrawalType(entity.withdrawalTypeId)}"),
                           subtitle: entity.amount != null
                               ? Text("Kshs ${entity.amount}")
-                              : entity.amountDisbursed != null
-                                  ? Text("Kshs ${entity.amountDisbursed}")
-                                  : Text("Kshs ${entity.transferredAmount}"),
+                              : null,
                           trailing: IconButton(
-                            onPressed: () => depositReconciliation
-                                .removeReconciledDeposit(index),
+                            onPressed: () =>
+                                reconcile.removeReconciledWithdrawal(index),
                             icon: Icon(Icons.delete),
                             color: Theme.of(context).errorColor,
                           ),
                         );
                       },
-                      itemCount:
-                          depositReconciliation.reconciledDeposits.length,
+                      itemCount: reconcile.reconciledWithdrawals.length,
                     ),
                   ),
                   Container(
@@ -175,8 +162,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                           'Total amount reconciled',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(
-                            "Kshs ${depositReconciliation.totalReconciled}"),
+                        subtitle: Text("Kshs ${reconcile.totalReconciled}"),
                       ))
                 ],
               ),

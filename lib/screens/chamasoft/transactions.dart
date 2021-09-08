@@ -1,11 +1,13 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/deposits.dart';
+import 'package:chamasoft/providers/withdrawals.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposits.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawals.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-bank-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
@@ -70,6 +72,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     final deposits = Provider.of<Deposits>(context, listen: true).deposits;
+    final withdrawals =
+        Provider.of<Withdrawals>(context, listen: true).withdrawals;
+
     final List<RecentTransactionSummary> recentTransactions =
         Provider.of<Dashboard>(context, listen: false).recentMemberTransactions;
     if (recentTransactions.length > 10) {
@@ -191,6 +196,23 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               margin: 0,
               imageHeight: 100.0,
               notifications: deposits.length)),
+      SizedBox(
+        width: 16.0,
+      ),
+      Container(
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['card-payment'],
+              title: 'RECONCILE',
+              subtitle: 'WITHDRAWALS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext ctx) => ReconcileWithdrawals())),
+              margin: 0,
+              imageHeight: 100.0,
+              notifications: withdrawals.length)),
       SizedBox(
         width: 16.0,
       ),

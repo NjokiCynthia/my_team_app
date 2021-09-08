@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Deposit {
   final String id;
-  final String dateOfTransaction;
+  final DateTime dateOfTransaction;
   final double amountTransacted;
   final String transactionDets;
   final String account;
@@ -24,7 +24,7 @@ class Deposits with ChangeNotifier {
   final List<Deposit> _deposits = [
     Deposit(
         id: "1",
-        dateOfTransaction: "1630500791797",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630500791797),
         amountTransacted: 5000.00,
         account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
         transactionDets:
@@ -32,7 +32,7 @@ class Deposits with ChangeNotifier {
         isReconciled: false),
     Deposit(
         id: "2",
-        dateOfTransaction: "1630501108932",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630501108932),
         amountTransacted: 3000.00,
         account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
         transactionDets:
@@ -40,7 +40,7 @@ class Deposits with ChangeNotifier {
         isReconciled: false),
     Deposit(
         id: "3",
-        dateOfTransaction: "1630501218663",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630501218663),
         amountTransacted: 4000.00,
         account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
         transactionDets:
@@ -48,7 +48,7 @@ class Deposits with ChangeNotifier {
         isReconciled: false),
     Deposit(
         id: "4",
-        dateOfTransaction: "1630501315757",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630501315757),
         amountTransacted: 1000.00,
         account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
         transactionDets:
@@ -56,7 +56,7 @@ class Deposits with ChangeNotifier {
         isReconciled: false),
     Deposit(
         id: "4",
-        dateOfTransaction: "1630588856773",
+        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630588856773),
         amountTransacted: 1000.00,
         account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
         transactionDets:
