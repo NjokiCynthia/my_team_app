@@ -247,8 +247,4 @@ class ApplyLoanState extends State<ApplyLoan> {
       ),
     );
   }
-
-  loanSwitches(bool isShow) {
-    return Container();
-  }
 }
