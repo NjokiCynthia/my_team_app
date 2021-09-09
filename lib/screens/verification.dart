@@ -143,6 +143,7 @@ class _VerificationState extends State<Verification> with CodeAutoFill {
         });
       }
     } on CustomException catch (error) {
+      print("new error $error");
       _countDownTimer();
       StatusHandler().handleStatus(
           context: context,

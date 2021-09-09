@@ -251,8 +251,9 @@ class Auth with ChangeNotifier {
         String userUserEmail = response['user']["email"]..toString();
         String userUserPhone = response['user']["phone"]..toString();
         String userUserAvatar = response['user']["avatar"]..toString();
-        String userMobileToken = response['user']["mobile_token"]..toString();
-        setUserObject(json.encode({
+        String userMobileToken = response['user']["mobile_token"].toString()??"";
+        print(response["user"]);
+        var userObject = json.encode({
           userId: userUserId,
           firstName: userFirstName,
           lastName: userLastName,
@@ -260,7 +261,9 @@ class Auth with ChangeNotifier {
           phone: userUserPhone,
           userAvatar: userUserAvatar,
           mobileToken: userMobileToken,
-        }));
+        });
+        setUserObject(userObject);
+        print("user object $userObject");
         _firstName = userFirstName;
         _lastName = userLastName;
         _userId = userUserId;
@@ -282,8 +285,10 @@ class Auth with ChangeNotifier {
       notifyListeners();
       return userResponse;
     } on CustomException catch (error) {
+      print("error here $error");
       throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
+      print("error here2 $error");
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
