@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -284,7 +285,14 @@ class ApplyLoanState extends State<ApplyLoan> {
                                     title: Text("Education Loan"),
                                     subtitle: Text("Limited to KES 8,000 PM"),
                                     trailing: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChamaSoftLoanDetail()),
+                                        );
+                                      },
                                       icon:
                                           Icon(Icons.arrow_forward_ios_rounded),
                                       color: Theme.of(context).accentColor,
@@ -309,7 +317,14 @@ class ApplyLoanState extends State<ApplyLoan> {
                                     subtitle: Text(
                                         "Available to a Makimum of 3 times"),
                                     trailing: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChamaSoftLoanDetail()),
+                                        );
+                                      },
                                       icon:
                                           Icon(Icons.arrow_forward_ios_rounded),
                                       color: Theme.of(context).accentColor,
@@ -334,7 +349,14 @@ class ApplyLoanState extends State<ApplyLoan> {
                                     subtitle: Text(
                                         "payable with interest, Limit to KES 1,000,000"),
                                     trailing: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChamaSoftLoanDetail()),
+                                        );
+                                      },
                                       icon:
                                           Icon(Icons.arrow_forward_ios_rounded),
                                       color: Theme.of(context).accentColor,
@@ -359,7 +381,14 @@ class ApplyLoanState extends State<ApplyLoan> {
                                     subtitle:
                                         Text("Due in 24 Hrs, Limit KES 25,000"),
                                     trailing: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChamaSoftLoanDetail()),
+                                        );
+                                      },
                                       icon:
                                           Icon(Icons.arrow_forward_ios_rounded),
                                       color: Theme.of(context).accentColor,
@@ -384,7 +413,14 @@ class ApplyLoanState extends State<ApplyLoan> {
                                     subtitle: Text(
                                         "ShortTerm Loan for upto a month, for employees only"),
                                     trailing: IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChamaSoftLoanDetail()),
+                                        );
+                                      },
                                       icon:
                                           Icon(Icons.arrow_forward_ios_rounded),
                                       color: Theme.of(context).accentColor,
