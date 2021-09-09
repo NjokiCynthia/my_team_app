@@ -617,9 +617,10 @@ class _AppSwitcherState extends State<AppSwitcher> {
     if (_currentGroup.isGroupAdmin) {
       await group.fetchMembers();
       await group.fetchContributions();
+      await group.fetchPayContributions();
       await group.fetchLoanTypes();
       await group.fetchAccounts();
-      await group.fetchFineCategories();
+      await group.fetchFineTypes();
     }
   }
 
