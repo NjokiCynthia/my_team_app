@@ -140,7 +140,42 @@ class ApplyLoanState extends State<ApplyLoan> {
             //  color: Theme.of(context).backgroundColor,
             child: Column(
               children: <Widget>[
-                loanSwitches(isShow),
+                // loanSwitches(isShow),
+                Column(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                      child: FlutterToggleTab(
+                        width: 55.0,
+                        height: 30.0,
+                        borderRadius: 10.0,
+                        labels: ['From Group', 'From ChamaSoft'],
+                        initialIndex: 0,
+                        selectedLabelIndex: (index) {
+                          setState(() {
+                            if (index == 0) {
+                              isShow = true;
+                            }
+                            if (index == 1) {
+                              isShow = false;
+                            }
+                          });
+                        },
+                        selectedBackgroundColors: [Colors.grey],
+                        unSelectedBackgroundColors: [Colors.white70],
+                        selectedTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600),
+                        unSelectedTextStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 10.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    )
+                  ],
+                ),
+
                 toolTip(
                     context: context,
                     title: "Note that...",
@@ -214,41 +249,6 @@ class ApplyLoanState extends State<ApplyLoan> {
   }
 
   loanSwitches(bool isShow) {
-    return Container(
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-            child: FlutterToggleTab(
-              width: 55.0,
-              height: 30.0,
-              borderRadius: 10.0,
-              labels: ["From Group", "From ChamaSoft"],
-              initialIndex: 1,
-              selectedLabelIndex: (index) {
-                setState(() {
-                  if (index == 0) {
-                    isShow = true;
-                  }
-                  if (index == 1) {
-                    isShow = false;
-                  }
-                });
-              },
-              selectedBackgroundColors: [Colors.grey],
-              unSelectedBackgroundColors: [Colors.white70],
-              selectedTextStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.w600),
-              unSelectedTextStyle: TextStyle(
-                  color: Colors.black,
-                  fontSize: 10.0,
-                  fontWeight: FontWeight.w400),
-            ),
-          )
-        ],
-      ),
-    );
+    return Container();
   }
 }
