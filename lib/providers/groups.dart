@@ -420,7 +420,6 @@ class Groups with ChangeNotifier {
     this._userId = _userId;
     this._identity = _identity;
     this._currentGroupId = _currentGroupId;
-    // print(" currentGroupId $currentGroupId and length ${_groups.length} userid: $_userId and identity $_identity");
   }
 
   List<Group> get item {
@@ -614,7 +613,6 @@ class Groups with ChangeNotifier {
     await preferences.remove(selectedGroupId);
   }
 
-
   Group getCurrentGroup() {
     Group group;
     bool groupFound = false;
@@ -790,7 +788,6 @@ class Groups with ChangeNotifier {
     if (groupContributions.length > 0) {
       if (isLocal) {
         for (var groupContributionJSON in groupContributions) {
-          // print(groupContributionJSON);
           final newContribution = Contribution(
             id: groupContributionJSON['id'].toString(),
             name: groupContributionJSON['name'].toString(),
@@ -860,7 +857,6 @@ class Groups with ChangeNotifier {
     if (groupFineTypes.length > 0) {
       if (isLocal) {
         for (var groupFineTypesJSON in groupFineTypes) {
-          // print(groupContributionJSON);
           final newFineType = FineType(
             id: groupFineTypesJSON['id'].toString(),
             name: groupFineTypesJSON['name'].toString(),
@@ -969,16 +965,28 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addMembers(List<dynamic> groupMembers) {
+  void addMembers({List<dynamic> groupMembers, isLocal = false}) {
     if (groupMembers.length > 0) {
-      for (var groupMembersJSON in groupMembers) {
-        final newMember = Member(
-            id: groupMembersJSON['id'].toString(),
-            name: groupMembersJSON['name'].toString(),
-            userId: groupMembersJSON['user_id'].toString(),
-            identity: groupMembersJSON['identity'].toString(),
-            avatar: groupMembersJSON['avatar'].toString());
-        _members.add(newMember);
+      if(isLocal){
+        for (var groupMembersJSON in groupMembers) {
+          final newMember = Member(
+              id: groupMembersJSON['id'].toString(),
+              name: groupMembersJSON['name'].toString(),
+              userId: groupMembersJSON['user_id'].toString(),
+              identity: groupMembersJSON['identity'].toString(),
+              avatar: groupMembersJSON['avatar'].toString());
+          _members.add(newMember);
+        }
+      }else{
+        for (var groupMembersJSON in groupMembers) {
+          final newMember = Member(
+              id: groupMembersJSON['id'].toString(),
+              name: groupMembersJSON['name'].toString(),
+              userId: groupMembersJSON['user_id'].toString(),
+              identity: groupMembersJSON['identity'].toString(),
+              avatar: groupMembersJSON['avatar'].toString());
+          _members.add(newMember);
+        }
       }
     }
     notifyListeners();
@@ -1322,7 +1330,7 @@ class Groups with ChangeNotifier {
         _loanPulled = true;
         try {
           await dbHelper.deleteMultiple(
-          [int.parse(_currentGroupId)], DatabaseHelper.memberLoanOptions);
+              [int.parse(_currentGroupId)], DatabaseHelper.memberLoanOptions);
           await dbHelper.batchInsert(
               _ongoingMemberLoanList, DatabaseHelper.memberLoanOptions);
         } catch (e) {
@@ -1450,7 +1458,6 @@ class Groups with ChangeNotifier {
       try {
         meeting['user_id'] = _userId;
         final postRequest = json.encode(meeting);
-        print("request: $postRequest");
         var response = await PostToServer.post(postRequest, url);
         return response;
       } on CustomException catch (error) {
@@ -1475,9 +1482,6 @@ class Groups with ChangeNotifier {
       order: 'DESC',
       isMeeting: true,
     );
-    // if (_localData.isEmpty) _localData = [];
-    // print("_localData >>>>>>>>>>>>>> ");
-    // print(_localData);
     addMeetings(_localData);
   }
 
@@ -2183,7 +2187,7 @@ class Groups with ChangeNotifier {
         });
       });
       _members = []; //clear
-      addMembers(rows);
+      addMembers(groupMembers: rows);
     }
     //=== END: OFFLINE PLUG
   }
@@ -2196,33 +2200,40 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
       });
       try {
-        final response = await PostToServer.post(postRequest, url);
-        //=== BEGIN: OFFLINE PLUG
-        //=== Delete all current group members...
-        await dbHelper.deleteGroupMembers(int.parse(_currentGroupId));
-
-        //=== ...if it doesn't exist, insert it.
-        List<dynamic> rows = [];
-        final _tempMembers = response['members'] as List<dynamic>;
-        _tempMembers.forEach((m) {
-          rows.add({
-            "group_id": int.parse(_currentGroupId),
-            "id": int.parse(m['id']),
-            "user_id": int.parse(m['user_id']),
-            "name": m['name'],
-            "avatar": (m['avatar'] != null) ? m['avatar'] : '',
-            "identity": m['identity'],
-            "modified_on": DateTime.now().millisecondsSinceEpoch,
-          });
-        });
-        await insertManyToLocalDb(
-          DatabaseHelper.membersTable,
-          rows,
+        _members = [];
+        List<dynamic> _localData = [];
+        _localData = await dbHelper.queryWhere(
+          table: DatabaseHelper.membersTable,
+          column: "group_id",
+          whereArguments: [_currentGroupId],
+          orderBy: 'name',
+          order: 'ASC',
         );
-        //=== END: OFFLINE PLUG
-
-        _members = []; //clear
-        addMembers(_tempMembers);
+        if (_localData.length > 0) {
+          addMembers(groupMembers: _localData, isLocal: true);
+        } else {
+          final response = await PostToServer.post(postRequest, url);
+          final _tempMembers = response['members'] as List<dynamic>;
+          List<dynamic> rows = [];
+          _tempMembers.forEach((m) {
+            rows.add({
+              "group_id": int.parse(_currentGroupId),
+              "id": int.parse(m['id']),
+              "user_id": int.parse(m['user_id']),
+              "name": m['name'],
+              "avatar": (m['avatar'] != null) ? m['avatar'] : '',
+              "identity": m['identity'],
+              "modified_on": DateTime.now().millisecondsSinceEpoch,
+            });
+          });
+          addMembers(groupMembers: _tempMembers);
+          await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.membersTable);
+          await insertManyToLocalDb(
+            DatabaseHelper.membersTable,
+            rows,
+          );
+        }
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           _fetchOfflineMembers();
@@ -2739,7 +2750,6 @@ class Groups with ChangeNotifier {
     String disableMemberEditProfile,
     String enableAbsoluteLoanRecalculation,
   }) async {
-    // print("orderMembersBy $orderMembersBy");
     const url = EndpointUrl.UPDATE_GROUP_SETTINGS;
 
     try {
@@ -2880,7 +2890,6 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
         "sacco_id": saccoId,
       });
-      // print(postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
         _saccoBranchOptions = []; //clear
@@ -2916,8 +2925,6 @@ class Groups with ChangeNotifier {
         "bank_id": bankId,
         "initial_balance": initialBalance
       });
-
-      // print(postRequest);
       try {
         await PostToServer.post(postRequest, url);
         await fetchAccounts();
@@ -3681,7 +3688,6 @@ class Groups with ChangeNotifier {
         orderBy: 'id',
         order: 'DESC',
       );
-      print("local loans $_localData");
       if (_localData.length > 0) {
         addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
       } else {
@@ -3902,7 +3908,6 @@ class Groups with ChangeNotifier {
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });
-      // print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
@@ -3933,7 +3938,6 @@ class Groups with ChangeNotifier {
         "lower_limit": lowerLimit,
         "upper_limit": lowerLimit + 20
       });
-      // print("Request: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['withdrawals'] as List<dynamic>;
@@ -3963,7 +3967,6 @@ class Groups with ChangeNotifier {
         //"upper_limit": lowerLimit + 20,
         //"lower_limit": 0
       });
-      // print("Post: $postRequest");
       try {
         final response = await PostToServer.post(postRequest, url);
         // log(response.toString());
@@ -4012,8 +4015,7 @@ class Groups with ChangeNotifier {
       formData["group_id"] = _currentGroupId;
       final postRequest = json.encode(formData);
       try {
-        final response = await PostToServer.post(postRequest, url);
-        print(response);
+        await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -4034,8 +4036,7 @@ class Groups with ChangeNotifier {
       formData["group_id"] = _currentGroupId;
       final postRequest = json.encode(formData);
       try {
-        final response = await PostToServer.post(postRequest, url);
-        print(response);
+        await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -4120,7 +4121,6 @@ class Groups with ChangeNotifier {
       if (_members.length == 0) {
         await fetchMembers();
       }
-
       _members
           .map((member) => memberOptions.add(NamesListItem(
               id: int.tryParse(member.id),
@@ -4196,7 +4196,6 @@ class Groups with ChangeNotifier {
       }
 
       for (var loan in _ongoingMemberLoans) {
-        print("is selected ${loan.isSelected}");
         if (loan.isSelected) {
           memberOngoingLoanOptions.add(NamesListItem(
               id: int.tryParse(loan.id),
@@ -4487,7 +4486,6 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        // print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -4516,7 +4514,6 @@ class Groups with ChangeNotifier {
 
       try {
         final postRequest = json.encode(formData);
-        // print(postRequest);
         await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
@@ -4537,9 +4534,7 @@ class Groups with ChangeNotifier {
       formData['group_id'] = currentGroupId;
       try {
         final postRequest = json.encode(formData);
-        // print("request: $postRequest");
-        var response = await PostToServer.post(postRequest, url);
-        print(response);
+        await PostToServer.post(postRequest, url);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {

@@ -23,7 +23,7 @@ class CustomHelper {
       return false;
   }
 
-  static String getInitials(String name) => name.isNotEmpty ? name.trim().split(' ').map((l) => l.length>1?l[0]:"M").take(2).join(): '';
+  static String getInitials(String name) => name.isNotEmpty ? name.trim().split(' ').map((l) => l.length>1?l[0]:" - ").take(2).join(): '';
 
   static bool validEmail(String email) {
     Pattern pattern =
