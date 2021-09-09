@@ -286,7 +286,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                           title:
                                               "${groups.item[index].groupName}",
                                           subtitle:
-                                              "${groups.item[index].groupSize} Members",
+                                              "${((groups.item[index].groupSize) == null ? 1 : groups.item[index].groupSize)} Members",
                                           description: groups
                                                   .item[index].isGroupAdmin
                                               ? "Group Admin | ${groups.item[index].groupRole}"
