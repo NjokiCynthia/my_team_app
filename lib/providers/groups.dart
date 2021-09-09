@@ -758,8 +758,10 @@ class Groups with ChangeNotifier {
     }
   }
 
-  void addContributions(List<dynamic> groupContributions) {
+  Future<void> addContributions(
+      {List<dynamic> groupContributions, isLocal = false}) async {
     if (groupContributions.length > 0) {
+      List<Map> _contributionsList = [];
       for (var groupContributionJSON in groupContributions) {
         final newContribution = Contribution(
           id: groupContributionJSON['id'].toString(),
@@ -778,6 +780,34 @@ class Groups with ChangeNotifier {
           active: groupContributionJSON['active'].toString(),
         );
         _contributions.add(newContribution);
+        if (!isLocal) {
+          var contributionMap = {
+            "id": int.parse(groupContributionJSON['id'].toString()),
+            "group_id": int.parse(_currentGroupId),
+            "name": groupContributionJSON['name'].toString(),
+            "amount": groupContributionJSON['amount'].toString(),
+            "type": groupContributionJSON['type'].toString(),
+            "contribution_type":
+                groupContributionJSON['contribution_type'].toString(),
+            "frequency": groupContributionJSON['frequency'].toString(),
+            "invoice_date": groupContributionJSON['invoice_date'].toString(),
+            "contribution_date":
+                groupContributionJSON['contribution_date'].toString(),
+            " one_time_contribution_setting":
+                groupContributionJSON['one_time_contribution_setting']
+                    .toString(),
+            "is_hidden": groupContributionJSON['is_hidden'].toString(),
+            "active": groupContributionJSON['active'].toString(),
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
+          };
+          _contributionsList.add(contributionMap);
+        }
+      }
+      if (!isLocal) {
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.contributionsTable);
+        await dbHelper.batchInsert(
+            _contributionsList, DatabaseHelper.contributionsTable);
       }
     }
     notifyListeners();
@@ -967,7 +997,7 @@ class Groups with ChangeNotifier {
 
   void addMembers({List<dynamic> groupMembers, isLocal = false}) {
     if (groupMembers.length > 0) {
-      if(isLocal){
+      if (isLocal) {
         for (var groupMembersJSON in groupMembers) {
           final newMember = Member(
               id: groupMembersJSON['id'].toString(),
@@ -977,7 +1007,7 @@ class Groups with ChangeNotifier {
               avatar: groupMembersJSON['avatar'].toString());
           _members.add(newMember);
         }
-      }else{
+      } else {
         for (var groupMembersJSON in groupMembers) {
           final newMember = Member(
               id: groupMembersJSON['id'].toString(),
@@ -1821,44 +1851,29 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
       });
       try {
-        final response = await PostToServer.post(postRequest, url);
-        _contributions = []; //clear
-        final groupContributions = response['contributions'] as List<dynamic>;
-
-        //=== BEGIN: OFFLINE PLUG
-        //=== Check if record exists...
-        bool _exists = await entryExistsInDb(
-          DatabaseHelper.dataTable,
-          "section",
-          "contributions",
+        List<dynamic> _localData = [];
+        _localData = await dbHelper.queryWhere(
+          table: DatabaseHelper.contributionsTable,
+          column: "group_id",
+          whereArguments: [_currentGroupId],
+          orderBy: 'name',
+          order: 'DESC',
         );
-        //=== ...if it doesn't exist, insert it.
-        if (!_exists) {
-          await insertToLocalDb(
-            DatabaseHelper.dataTable,
-            {
-              "section": "contributions",
-              "value": jsonEncode(groupContributions),
-              "modified_on": DateTime.now().millisecondsSinceEpoch,
-            },
-          );
+        if (_localData.length > 0) {
+          addContributions(groupContributions: _localData, isLocal: true);
+        } else {
+          try {
+            final response = await PostToServer.post(postRequest, url);
+            _contributions = []; //clear
+            final groupContributions =
+                response['contributions'] as List<dynamic>;
+            addContributions(groupContributions: groupContributions);
+          } on CustomException catch (error) {
+            throw CustomException(message: error.message, status: error.status);
+          } catch (error) {
+            throw CustomException(message: ERROR_MESSAGE);
+          }
         }
-        //=== If it does exist, update it.
-        else {
-          dynamic _contributions = await getLocalData('contributions');
-          await updateInLocalDb(
-            DatabaseHelper.dataTable,
-            {
-              "id": _contributions['id'],
-              "section": "contributions",
-              "value": jsonEncode(response['contributions']),
-              "modified_on": DateTime.now().millisecondsSinceEpoch,
-            },
-          );
-        }
-        //=== END: OFFLINE PLUG
-
-        addContributions(groupContributions);
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           //=== BEGIN: OFFLINE PLUG
@@ -1866,7 +1881,7 @@ class Groups with ChangeNotifier {
           if (_localData['value'] != null) {
             List<dynamic> _contributionsData = jsonDecode(_localData['value']);
             _contributions = [];
-            addContributions(_contributionsData);
+            addContributions(groupContributions: _contributionsData);
           }
           //=== END: OFFLINE PLUG
         } else {
@@ -1882,7 +1897,7 @@ class Groups with ChangeNotifier {
         if (_localData['value'] != null) {
           List<dynamic> _contributionsData = jsonDecode(_localData['value']);
           _contributions = [];
-          addContributions(_contributionsData);
+          addContributions(groupContributions: _contributionsData);
         }
         //=== END: OFFLINE PLUG
       } else {
@@ -2228,7 +2243,7 @@ class Groups with ChangeNotifier {
           });
           addMembers(groupMembers: _tempMembers);
           await dbHelper.deleteMultiple(
-            [int.parse(_currentGroupId)], DatabaseHelper.membersTable);
+              [int.parse(_currentGroupId)], DatabaseHelper.membersTable);
           await insertManyToLocalDb(
             DatabaseHelper.membersTable,
             rows,

@@ -9,10 +9,11 @@ class DatabaseHelper {
   static final membersTable = 'members';
   static final meetingsTable = 'meetings';
   static final payContributionsTable = 'payContributions';
+  static final contributionsTable = 'contributions';
 
   // create databases for the following tables:
 
-  static final contributionsTable = 'contributions';
+  
   static final fineCategories = 'fineCategories';
   static final memberLoanOptions = 'memberLoanOptions';
   static final loanTypes = 'loanTypes';
@@ -137,6 +138,26 @@ class DatabaseHelper {
               loanType TEXT NOT NULL DEFAULT '',
               amount DOUBLE NOT NULL DEFAULT 0,
               balance DOUBLE NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+
+        // Group contributions table
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $contributionsTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              id INTEGER NOT NULL,
+              group_id INTEGER NOT NULL,
+              amount DOUBLE NOT NULL DEFAULT 0,
+              name TEXT NOT NULL DEFAULT '',
+              type TEXT NOT NULL DEFAULT '',
+              contribution_type TEXT NOT NULL DEFAULT '',
+              frequency TEXT NOT NULL DEFAULT '',
+              invoice_date TEXT NOT NULL DEFAULT '',
+              contribution_date TEXT NOT NULL DEFAULT '',
+              one_time_contribution_setting TEXT NOT NULL DEFAULT '',
+              is_hidden INTERGER NOT NULL DEFAULT 0,
+              active INTERGER NOT NULL DEFAULT 0,
               modified_on INTEGER NOT NULL
             )
             ''');
