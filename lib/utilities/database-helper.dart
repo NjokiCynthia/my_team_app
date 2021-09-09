@@ -3,19 +3,19 @@ import 'package:path/path.dart' as p;
 
 class DatabaseHelper {
   static final _databaseName = "chamasoft-app.db";
-  static final _databaseVersion = 2;
+  static final _databaseVersion = 5;
 
   static final dataTable = 'data';
   static final membersTable = 'members';
   static final meetingsTable = 'meetings';
   static final payContributionsTable = 'payContributions';
+  static final contributionsTable = 'contributions';
+  static final groupAccountsTable = 'groupAccounts';
 
   // create databases for the following tables:
-
-  static final contributionsTable = 'contributions';
   static final fineCategories = 'fineCategories';
   static final memberLoanOptions = 'memberLoanOptions';
-  static final loanTypes = 'loanTypes';
+  static final loanTypesTable = 'loanTypes';
 
   // make this a singleton class
   DatabaseHelper._privateConstructor();
@@ -40,6 +40,7 @@ class DatabaseHelper {
 
   // SQL code to create the database tables
   Future _onCreate(Database db, int version) async {
+    print("oncreate Create");
     try {
       Batch batch = db.batch();
       // Settings table
@@ -93,7 +94,8 @@ class DatabaseHelper {
   //upgrade tables after a database is created
   void _onUpgrade(Database db, int oldVersion, int newVersion) async {
     // In this case, oldVersion is 1, newVersion is 2
-    if (oldVersion == 1) {
+    print("oldVersion $oldVersion and new version $newVersion");
+    if (oldVersion < newVersion) {
       try {
         Batch batch = db.batch();
         // Sample table to be used on upgrade
@@ -137,6 +139,46 @@ class DatabaseHelper {
               loanType TEXT NOT NULL DEFAULT '',
               amount DOUBLE NOT NULL DEFAULT 0,
               balance DOUBLE NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+
+        // Group contributions table
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $contributionsTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              id INTEGER NOT NULL,
+              group_id INTEGER NOT NULL,
+              amount DOUBLE NOT NULL DEFAULT 0,
+              name TEXT NOT NULL DEFAULT '',
+              type TEXT NOT NULL DEFAULT '',
+              contribution_type TEXT NOT NULL DEFAULT '',
+              frequency TEXT NOT NULL DEFAULT '',
+              invoice_date TEXT NOT NULL DEFAULT '',
+              contribution_date TEXT NOT NULL DEFAULT '',
+              one_time_contribution_setting TEXT NOT NULL DEFAULT '',
+              is_hidden INTERGER NOT NULL DEFAULT 0,
+              active INTERGER NOT NULL DEFAULT 0,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+
+        // Group Accounts (banks/saccos/mobilemoney/pettycash)
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $groupAccountsTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              value TEXT NOT NULL,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+
+        // Group Accounts (banks/saccos/mobilemoney/pettycash)
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $loanTypesTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              value TEXT NOT NULL,
               modified_on INTEGER NOT NULL
             )
             ''');
@@ -192,7 +234,8 @@ class DatabaseHelper {
     if (isMeeting)
       q += ' ORDER BY synced ASC, $orderBy $order';
     else
-      q += ' ORDER BY $orderBy $order';
+      if(orderBy !='')
+        q += ' ORDER BY $orderBy $order';
     return await db.rawQuery(
       q,
       whereArguments,
