@@ -137,11 +137,13 @@ class ApplyLoanState extends State<ApplyLoan> {
             color: Theme.of(context).backgroundColor,
             padding: EdgeInsets.all(0.0),
             height: MediaQuery.of(context).size.height,
+            width: MediaQuery.of(context).size.width,
             //  color: Theme.of(context).backgroundColor,
             child: Column(
               children: <Widget>[
                 // loanSwitches(isShow),
                 Column(
+                  mainAxisSize: MainAxisSize.max,
                   children: <Widget>[
                     Padding(
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
@@ -176,11 +178,6 @@ class ApplyLoanState extends State<ApplyLoan> {
                   ],
                 ),
 
-                toolTip(
-                    context: context,
-                    title: "Note that...",
-                    message:
-                        "Loan application process is totally depended on your group's constitution and your group\'s management."),
                 Container(
                   child: Visibility(
                     visible: isShow,
@@ -192,6 +189,11 @@ class ApplyLoanState extends State<ApplyLoan> {
                           color: Theme.of(context).backgroundColor,
                           child: Column(
                             children: <Widget>[
+                              toolTip(
+                                  context: context,
+                                  title: "Note that...",
+                                  message:
+                                      "Loan application process is totally depended on your group's constitution and your group\'s management."),
                               buildDropDown(),
                               amountTextInputField(
                                   context: context,
