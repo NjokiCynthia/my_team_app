@@ -31,7 +31,7 @@ class IntroScreenState extends State<IntroScreen> {
     groups.fetchMembers();
     groups.fetchContributions();
     groups.fetchPayContributions();
-    // await groups.fetchLoanTypes();
+    groups.fetchLoanTypes();
     groups.fetchAccounts();
     groups.fetchFineTypes();
     Navigator.of(context)

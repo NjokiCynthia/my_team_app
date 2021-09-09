@@ -3,7 +3,7 @@ import 'package:path/path.dart' as p;
 
 class DatabaseHelper {
   static final _databaseName = "chamasoft-app.db";
-  static final _databaseVersion = 4;
+  static final _databaseVersion = 5;
 
   static final dataTable = 'data';
   static final membersTable = 'members';
@@ -13,11 +13,9 @@ class DatabaseHelper {
   static final groupAccountsTable = 'groupAccounts';
 
   // create databases for the following tables:
-
-  
   static final fineCategories = 'fineCategories';
   static final memberLoanOptions = 'memberLoanOptions';
-  static final loanTypes = 'loanTypes';
+  static final loanTypesTable = 'loanTypes';
 
   // make this a singleton class
   DatabaseHelper._privateConstructor();
@@ -168,6 +166,16 @@ class DatabaseHelper {
         // Group Accounts (banks/saccos/mobilemoney/pettycash)
         batch.execute('''
             CREATE TABLE IF NOT EXISTS $groupAccountsTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              value TEXT NOT NULL,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
+
+        // Group Accounts (banks/saccos/mobilemoney/pettycash)
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $loanTypesTable (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
               value TEXT NOT NULL,
