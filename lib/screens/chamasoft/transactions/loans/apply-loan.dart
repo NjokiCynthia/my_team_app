@@ -131,63 +131,63 @@ class ApplyLoanState extends State<ApplyLoan> {
         },
         child: SingleChildScrollView(
           controller: _scrollController,
-          child: Column(
-            children: <Widget>[
-              toolTip(
-                  context: context,
-                  title: "Note that...",
-                  message:
-                      "Loan application process is totally depended on your group's constitution and your group\'s management."),
-              Container(
-                padding: EdgeInsets.all(16.0),
-                height: MediaQuery.of(context).size.height,
-                color: Theme.of(context).backgroundColor,
-                child: Column(
-                  children: <Widget>[
-                    loanSwitches(),
-                    SizedBox(
-                      height: 30.0,
-                    ),
-                    buildDropDown(),
-                    amountTextInputField(
-                        context: context,
-                        labelText: "Amount applying for",
-                        onChanged: (value) {
-                          setState(() {
-                            amountInputValue = double.parse(value);
-                          });
-                        }),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                      child: textWithExternalLinks(
-                          color: Colors.blueGrey,
-                          size: 12.0,
-                          textData: {
-                            'By applying for this loan you agree to the ': {},
-                            'terms and conditions': {
-                              "url": () => Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          LoanAmortization(),
-                                    ),
-                                  ),
-                              "color": primaryColor,
-                              "weight": FontWeight.w500
-                            },
+          child: Container(
+            color: Theme.of(context).backgroundColor,
+            child: Column(
+              children: <Widget>[
+                loanSwitches(),
+                toolTip(
+                    context: context,
+                    title: "Note that...",
+                    message:
+                        "Loan application process is totally depended on your group's constitution and your group\'s management."),
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  height: MediaQuery.of(context).size.height,
+                  color: Theme.of(context).backgroundColor,
+                  child: Column(
+                    children: <Widget>[
+                      buildDropDown(),
+                      amountTextInputField(
+                          context: context,
+                          labelText: "Amount applying for",
+                          onChanged: (value) {
+                            setState(() {
+                              amountInputValue = double.parse(value);
+                            });
                           }),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    defaultButton(
-                        context: context, text: "Apply Now", onPressed: () {})
-                  ],
-                ),
-              )
-            ],
+                      SizedBox(
+                        height: 24,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                        child: textWithExternalLinks(
+                            color: Colors.blueGrey,
+                            size: 12.0,
+                            textData: {
+                              'By applying for this loan you agree to the ': {},
+                              'terms and conditions': {
+                                "url": () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            LoanAmortization(),
+                                      ),
+                                    ),
+                                "color": primaryColor,
+                                "weight": FontWeight.w500
+                              },
+                            }),
+                      ),
+                      SizedBox(
+                        height: 24,
+                      ),
+                      defaultButton(
+                          context: context, text: "Apply Now", onPressed: () {})
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -195,32 +195,37 @@ class ApplyLoanState extends State<ApplyLoan> {
   }
 
   loanSwitches() {
-    return Column(
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(top: 20),
-          child: FlutterToggleTab(
-            width: 60.0,
-            height: 60.0,
-            borderRadius: 20.0,
-            labels: ["From Group", "From ChamaSoft"],
-            initialIndex: 0,
-            selectedLabelIndex: (index) {
-              setState(() {});
-            },
-            selectedBackgroundColors: [Colors.grey],
-            unSelectedBackgroundColors: [Colors.white70],
-            selectedTextStyle: TextStyle(
-                color: Colors.white,
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600),
-            unSelectedTextStyle: TextStyle(
-                color: Colors.black,
-                fontSize: 14.0,
-                fontWeight: FontWeight.w400),
-          ),
-        )
-      ],
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+            child: FlutterToggleTab(
+              width: 55.0,
+              height: 30.0,
+              borderRadius: 10.0,
+              labels: ["From Group", "From ChamaSoft"],
+              initialIndex: 0,
+              selectedLabelIndex: (index) {
+                setState(() {
+                  if (index == 0) {
+                  } else {}
+                });
+              },
+              selectedBackgroundColors: [Colors.grey],
+              unSelectedBackgroundColors: [Colors.white70],
+              selectedTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w600),
+              unSelectedTextStyle: TextStyle(
+                  color: Colors.black,
+                  fontSize: 10.0,
+                  fontWeight: FontWeight.w400),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
