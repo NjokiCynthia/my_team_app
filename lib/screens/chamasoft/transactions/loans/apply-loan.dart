@@ -1,4 +1,3 @@
-import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -431,35 +430,6 @@ class ApplyLoanState extends State<ApplyLoan> {
                               SizedBox(
                                 height: 15.0,
                               ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 30.0, right: 30.0),
-                                child: textWithExternalLinks(
-                                    color: Colors.blueGrey,
-                                    size: 12.0,
-                                    textData: {
-                                      'By applying for this loan you agree to the ':
-                                          {},
-                                      'terms and conditions': {
-                                        "url": () => Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        LoanAmortization(),
-                                              ),
-                                            ),
-                                        "color": primaryColor,
-                                        "weight": FontWeight.w500
-                                      },
-                                    }),
-                              ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              defaultButton(
-                                  context: context,
-                                  text: "Apply Now",
-                                  onPressed: () {})
                             ],
                           ),
                         )
