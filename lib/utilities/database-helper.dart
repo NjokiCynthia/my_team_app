@@ -3,13 +3,14 @@ import 'package:path/path.dart' as p;
 
 class DatabaseHelper {
   static final _databaseName = "chamasoft-app.db";
-  static final _databaseVersion = 2;
+  static final _databaseVersion = 4;
 
   static final dataTable = 'data';
   static final membersTable = 'members';
   static final meetingsTable = 'meetings';
   static final payContributionsTable = 'payContributions';
   static final contributionsTable = 'contributions';
+  static final groupAccountsTable = 'groupAccounts';
 
   // create databases for the following tables:
 
@@ -41,6 +42,7 @@ class DatabaseHelper {
 
   // SQL code to create the database tables
   Future _onCreate(Database db, int version) async {
+    print("oncreate Create");
     try {
       Batch batch = db.batch();
       // Settings table
@@ -94,7 +96,8 @@ class DatabaseHelper {
   //upgrade tables after a database is created
   void _onUpgrade(Database db, int oldVersion, int newVersion) async {
     // In this case, oldVersion is 1, newVersion is 2
-    if (oldVersion == 1) {
+    print("oldVersion $oldVersion and new version $newVersion");
+    if (oldVersion < newVersion) {
       try {
         Batch batch = db.batch();
         // Sample table to be used on upgrade
@@ -161,6 +164,16 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
+
+        // Group Accounts (banks/saccos/mobilemoney/pettycash)
+        batch.execute('''
+            CREATE TABLE IF NOT EXISTS $groupAccountsTable (
+              _id INTEGER PRIMARY KEY AUTOINCREMENT,
+              group_id INTEGER NOT NULL,
+              value TEXT NOT NULL,
+              modified_on INTEGER NOT NULL
+            )
+            ''');
         await batch.commit();
       } catch (error) {
         print("error2 $error");
@@ -213,7 +226,8 @@ class DatabaseHelper {
     if (isMeeting)
       q += ' ORDER BY synced ASC, $orderBy $order';
     else
-      q += ' ORDER BY $orderBy $order';
+      if(orderBy !='')
+        q += ' ORDER BY $orderBy $order';
     return await db.rawQuery(
       q,
       whereArguments,

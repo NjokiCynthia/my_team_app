@@ -28,11 +28,12 @@ class IntroScreenState extends State<IntroScreen> {
     dynamic groups = Provider.of<Groups>(context, listen: false);
     await groups.fetchAndSetUserGroups();
     await groups.setSelectedGroupId(currentGroupId);
-    await groups.fetchMembers();
-    await groups.fetchContributions();
+    groups.fetchMembers();
+    groups.fetchContributions();
+    groups.fetchPayContributions();
     // await groups.fetchLoanTypes();
-    // await groups.fetchAccounts();
-    // await groups.fetchFineCategories();
+    groups.fetchAccounts();
+    groups.fetchFineTypes();
     Navigator.of(context)
         .pushReplacement(
       MaterialPageRoute(
