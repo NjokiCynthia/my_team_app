@@ -43,6 +43,8 @@ class ChamasoftTransactions extends StatefulWidget {
 
 class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   ScrollController _scrollController;
+  List<Map> deposits = [];
+  List<Map> withdrawals = [];
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -52,6 +54,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+
     super.initState();
   }
 
@@ -62,18 +65,32 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    _fetchUnreconciledDeposits(context);
+    super.didChangeDependencies();
+  }
+
   Future<bool> _onWillPop() async {
     await Navigator.of(context)
         .pushReplacementNamed(ChamasoftDashboard.namedRoute);
     return null;
   }
 
+  Future<void> _fetchUnreconciledDeposits(BuildContext context) async {
+    List _deposits = await Provider.of<Groups>(context, listen: false)
+        .fetchGroupUnreconciledDeposits();
+    List _withdrawals = await Provider.of<Groups>(context, listen: false)
+        .fetchGroupUnreconciledWithdrawals();
+    setState(() {
+      deposits = _deposits;
+      withdrawals = _withdrawals;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    final deposits = Provider.of<Deposits>(context, listen: true).deposits;
-    final withdrawals =
-        Provider.of<Withdrawals>(context, listen: true).withdrawals;
 
     final List<RecentTransactionSummary> recentTransactions =
         Provider.of<Dashboard>(context, listen: false).recentMemberTransactions;

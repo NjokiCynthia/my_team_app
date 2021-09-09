@@ -4592,6 +4592,58 @@ class Groups with ChangeNotifier {
     }
   }
 
+  // get unreconciled deposits
+
+  Future<List> fetchGroupUnreconciledDeposits() async {
+    try {
+      const url = EndpointUrl.GET_GROUP_UNRECONCILED_DEPOSITS;
+      Map<String, String> formData = {
+        "user_id": _userId,
+        "group_id": currentGroupId
+      };
+
+      try {
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        return response['unreconciled_deposits'];
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  // get unreconciled withdrawals
+
+  Future<List> fetchGroupUnreconciledWithdrawals() async {
+    try {
+      const url = EndpointUrl.GET_GROUP_UNRECONCILED_WITHDRAWALS;
+      Map<String, String> formData = {
+        "user_id": _userId,
+        "group_id": currentGroupId
+      };
+
+      try {
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        return response['unreconciled_withdrawals'];
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   void switchGroupValuesToDefault({bool removeGroups = false}) {
     if (removeGroups) {
       _groups = [];
