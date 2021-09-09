@@ -6,6 +6,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import '../../dashboard.dart';
@@ -143,6 +144,10 @@ class ApplyLoanState extends State<ApplyLoan> {
                 color: Theme.of(context).backgroundColor,
                 child: Column(
                   children: <Widget>[
+                    loanSwitches(),
+                    SizedBox(
+                      height: 30.0,
+                    ),
                     buildDropDown(),
                     amountTextInputField(
                         context: context,
@@ -186,6 +191,36 @@ class ApplyLoanState extends State<ApplyLoan> {
           ),
         ),
       ),
+    );
+  }
+
+  loanSwitches() {
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(top: 20),
+          child: FlutterToggleTab(
+            width: 60.0,
+            height: 60.0,
+            borderRadius: 20.0,
+            labels: ["From Group", "From ChamaSoft"],
+            initialIndex: 0,
+            selectedLabelIndex: (index) {
+              setState(() {});
+            },
+            selectedBackgroundColors: [Colors.grey],
+            unSelectedBackgroundColors: [Colors.white70],
+            selectedTextStyle: TextStyle(
+                color: Colors.white,
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600),
+            unSelectedTextStyle: TextStyle(
+                color: Colors.black,
+                fontSize: 14.0,
+                fontWeight: FontWeight.w400),
+          ),
+        )
+      ],
     );
   }
 }
