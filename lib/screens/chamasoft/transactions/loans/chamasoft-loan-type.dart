@@ -13,6 +13,18 @@ class ChamaSoftLoanDetail extends StatefulWidget {
 class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
   double _appBarElevation = 0;
 
+  var items = <String>[
+    'Select Guarantor',
+    'John Kim',
+    'Sam Doe',
+    'James Mandison',
+    'Kim Liyan',
+    'Victor Moses',
+    'Peter Mayron'
+  ];
+
+  String dropdownvalue = 'Select Guarantor';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,76 +92,97 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text("Guarantors:"),
-                  )
+                  ),
+                  Row(
+                    children: <Widget>[
+                      DropdownButton<String>(
+                        items: items.map((itemsname) {
+                          return DropdownMenuItem(
+                              value: itemsname, child: Text(itemsname));
+                        }).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownvalue = newValue;
+                          });
+                        },
+                        value: dropdownvalue,
+                      ),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Enter Amount",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                          ),
+                        ),
+                      ))
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      DropdownButton<String>(
+                        items: items.map((itemsname) {
+                          return DropdownMenuItem(
+                              value: itemsname, child: Text(itemsname));
+                        }).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownvalue = newValue;
+                          });
+                        },
+                        value: dropdownvalue,
+                      ),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Enter Amount",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 10.0, horizontal: 10.0),
+                          ),
+                        ),
+                      ))
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      DropdownButton<String>(
+                        items: items.map((itemsname) {
+                          return DropdownMenuItem(
+                              value: itemsname, child: Text(itemsname));
+                        }).toList(),
+                        onChanged: (String newValue) {
+                          setState(() {
+                            dropdownvalue = newValue;
+                          });
+                        },
+                        value: dropdownvalue,
+                      ),
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextFormField(
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Enter Amount",
+                            contentPadding: new EdgeInsets.symmetric(
+                                vertical: 7.0, horizontal: 10.0),
+                          ),
+                        ),
+                      ))
+                    ],
+                  ),
                 ],
               )
-
-              //SizedBox(height: 10.0),
             ],
           ),
         ),
-
-        // child: Container(
-        //   color: Theme.of(context).backgroundColor,
-        //   // padding: EdgeInsets.all(0.0),
-        //   height: MediaQuery.of(context).size.height,
-        //   // width: MediaQuery.of(context).size.width,
-        //   child: Column(
-        //     children: [
-        //       Padding(
-        //         padding: const EdgeInsets.all(16.0),
-        //         child: Column(
-        //           children: [
-        //             Center(
-        //               child: const Text.rich(TextSpan(
-        //                   text: "From chamaSoft:" + " ",
-        //                   style: TextStyle(
-        //                       color: (Colors.blueGrey),
-        //                       fontFamily: 'SegoeUI',
-        //                       fontSize: 18.0,
-        //                       fontWeight: FontWeight.w700),
-        //                   children: <TextSpan>[
-        //                     TextSpan(
-        //                         text: 'Business Loan',
-        //                         style: TextStyle(fontSize: 16.0))
-        //                   ])),
-        //             ),
-        //           ],
-        //         ),
-        //       ),
-        //       Row(
-        //         children: [
-        //           // const Text.rich(TextSpan(
-        //           //   text: "Amount, KES:" + " ",
-        //           //   style: TextStyle(
-        //           //       color: (Colors.blueGrey),
-        //           //       fontFamily: 'SegoeUI',
-        //           //       fontSize: 18.0,
-        //           //       fontWeight: FontWeight.w700),
-        //           // )),
-        //           // SizedBox(
-        //           //   width: 20.0,
-        //           // ),
-        //           TextField(
-        //             decoration: InputDecoration(
-        //               floatingLabelBehavior: FloatingLabelBehavior.auto,
-        //               border: OutlineInputBorder(),
-        //               hintText: 'Amount!',
-        //             ),
-        //             // validator: (value) {
-        //             //   if (value == null || value.isEmpty) {
-        //             //     return 'Amount is required.';
-        //             //   }
-        //             //   return null;
-        //             // },
-        //           )
-        //         ],
-        //       )
-        //     ],
-        //   ),
-        // ),
       ),
-      // ),
     );
   }
 }
