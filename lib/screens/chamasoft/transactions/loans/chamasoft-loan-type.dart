@@ -21,6 +21,7 @@ class ChamaSoftLoanDetail extends StatefulWidget {
 class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
   double _appBarElevation = 0;
   final _formKey = GlobalKey<FormState>();
+  final myController = TextEditingController();
 
   var items = <String>[
     'Select Guarantor',
@@ -108,6 +109,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                             child: Column(
                               children: [
                                 TextFormField(
+                                  controller: myController,
                                   decoration: InputDecoration(
                                       floatingLabelBehavior:
                                           FloatingLabelBehavior.auto,
@@ -275,10 +277,22 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                       context: context,
                                       builder: (_) => AlertDialog(
                                             title: Text("Confirm Application"),
-                                            content: Text(' Loan Type: \n'
-                                                ' Amount: \n'
-                                                ' Refund: \n'
-                                                ' Due Date: '),
+                                            content: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(' Loan Type: ' +
+                                                    widget.loanName),
+                                                Text(' Amount: KES ' +
+                                                    myController.text),
+                                                Text(' Refund: KES ' +
+                                                    (myController.text)),
+                                                Text(' Due Date: '),
+                                              ],
+                                            ),
                                             // content: RichText(
                                             //   text: TextSpan(
                                             //       text: 'Summary',
