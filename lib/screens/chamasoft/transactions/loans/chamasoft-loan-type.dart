@@ -361,19 +361,93 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                                     CrossAxisAlignment.start,
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Text(' Loan Type: \t' +
-                                                      widget.loanName),
-                                                  Text(' Amount: KES \t' +
-                                                      myController.text),
-                                                  Text(' Refund: KES \t' +
-                                                      (int.parse(myController
-                                                                  .text) +
-                                                              1000)
-                                                          .toString()),
-                                                  Text(' Due Date: \t' +
-                                                      widget.dateTime),
+                                                  Row(
+                                                    children: [
+                                                      Column(
+                                                        // mainAxisAlignment:
+                                                        //     MainAxisAlignment
+                                                        //         .start,
+                                                        children: [
+                                                          Text("Loan Type :",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start),
+                                                          SizedBox(
+                                                            height: 15.0,
+                                                          ),
+                                                          Text(
+                                                            "Amount KES:",
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15.0,
+                                                          ),
+                                                          Text("Refund KES:",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start),
+                                                          SizedBox(
+                                                            height: 15.0,
+                                                          ),
+                                                          Text("Due Date:",
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start)
+                                                        ],
+                                                      ),
+                                                      SizedBox(
+                                                        width: 10.0,
+                                                      ),
+                                                      Column(
+                                                        children: [
+                                                          Text(widget.loanName,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .end),
+                                                          SizedBox(
+                                                            height: 15.0,
+                                                          ),
+                                                          Text(
+                                                            myController.text,
+                                                            textAlign:
+                                                                TextAlign.start,
+                                                          ),
+                                                          SizedBox(
+                                                            height: 15.0,
+                                                          ),
+                                                          Text(
+                                                              (int.parse(myController
+                                                                          .text) +
+                                                                      1000)
+                                                                  .toString(),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start),
+                                                          SizedBox(
+                                                            height: 15.0,
+                                                          ),
+                                                          Text(widget.dateTime,
+                                                              textAlign:
+                                                                  TextAlign.end)
+                                                        ],
+                                                      )
+                                                    ],
+                                                  )
                                                 ],
                                               ),
+//  Text(' Loan Type: \t' +
+//                                                       widget.loanName),
+//                                                   Text(' Amount: KES \t' +
+//                                                       myController.text),
+//                                                   Text(' Refund: KES \t' +
+//                                                       (int.parse(myController
+//                                                                   .text) +
+//                                                               1000)
+//                                                           .toString()),
+//                                                   Text(' Due Date: \t' +
+//                                                       widget.dateTime),
+
                                               // content: RichText(
                                               //   text: TextSpan(
                                               //       text: 'Summary',
