@@ -38,5 +38,17 @@ List<LoanType> loantype = [
   LoanType(
       id: '8',
       details: 'Available From August to Dec and Limited to 125M',
-      loanName: 'Holiday')
+      loanName: 'Holiday'),
+  LoanType(
+      id: '9',
+      details: 'Available From August to Dec and Limited to 125M',
+      loanName: 'ScrollView TestLoan Holiday'),
+  LoanType(
+      id: '10',
+      details: 'Available From August to Dec and Limited to 125M',
+      loanName: 'ScrollView TestLoan Holiday'),
+  LoanType(
+      id: '11',
+      details: 'Available From August to Dec and Limited to 125M',
+      loanName: 'ScrollView TestLoan Holiday')
 ];
