@@ -34,6 +34,7 @@ class IntroScreenState extends State<IntroScreen> {
     groups.fetchLoanTypes();
     groups.fetchAccounts();
     groups.fetchFineTypes();
+    groups.fetchGroupMembersOngoingLoans();
     Navigator.of(context)
         .pushReplacement(
       MaterialPageRoute(
