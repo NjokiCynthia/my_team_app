@@ -2,21 +2,30 @@ import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:flutter/material.dart';
 
 class Deposit {
-  final String id;
-  final DateTime dateOfTransaction;
-  final double amountTransacted;
-  final String transactionDets;
-  final String account;
-  bool isReconciled;
+  final int type;
+  final String transactionType;
+  final String transactionDate;
+  final String amount;
+  final String description;
+  final String transactionAlertId;
+  int isReconciled;
+  final String particulars;
+  final String accountNumber;
+  final String transactionId;
+  final String accountDetails;
 
-  Deposit({
-    @required this.id,
-    @required this.dateOfTransaction,
-    @required this.amountTransacted,
-    @required this.transactionDets,
-    @required this.account,
-    @required this.isReconciled,
-  });
+  Deposit(
+      {@required this.type,
+      @required this.transactionType,
+      @required this.transactionDate,
+      @required this.amount,
+      @required this.description,
+      @required this.transactionAlertId,
+      @required this.isReconciled,
+      @required this.particulars,
+      @required this.accountNumber,
+      @required this.transactionId,
+      @required this.accountDetails});
 }
 
 class DepositDefaults {
@@ -154,66 +163,54 @@ class Deposits with ChangeNotifier {
   // Dummy deposits.
   final List<Deposit> _deposits = [
     Deposit(
-        id: "1",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630500791797),
-        amountTransacted: 5000.00,
-        account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
-        transactionDets:
-            "MPESA Transaction by MARTHA ADHIAMBO ADHIAMBO (254707158577) via paybill number 546448",
-        isReconciled: false),
+      type: 1,
+      transactionType: null,
+      description: "",
+      amount: "1000",
+      transactionAlertId: "361810",
+      isReconciled: 0,
+      particulars:
+          "MPESA Transaction  by MARTHA ADHIAMBO ADHIAMBO (254707158577) via paybill number 546448",
+      accountNumber: "10022748",
+      transactionId: "PB42BY1WSG",
+      accountDetails: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
+      transactionDate: "Tue, 19th Jan 2038",
+    ),
     Deposit(
-        id: "2",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630501108932),
-        amountTransacted: 3000.00,
-        account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
-        transactionDets:
-            "MPESA Transaction by AGGREY KIPROTICH KOROS (254703656970) via paybill number 546448",
-        isReconciled: false),
-    Deposit(
-        id: "3",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630501218663),
-        amountTransacted: 4000.00,
-        account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
-        transactionDets:
-            "MPESA Transaction by GEOFFREY ISAAC GITHAIGA (254728747061) via paybill number 546448",
-        isReconciled: false),
-    Deposit(
-        id: "4",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630501315757),
-        amountTransacted: 1000.00,
-        account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
-        transactionDets:
-            "MPESA Transaction by BRIAN MWANGI KABIRU (254716592266) via paybill number 546448",
-        isReconciled: false),
-    Deposit(
-        id: "4",
-        dateOfTransaction: DateTime.fromMillisecondsSinceEpoch(1630588856773),
-        amountTransacted: 1000.00,
-        account: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
-        transactionDets:
-            "MPESA Transaction by MARTIN MUTUA NZUKI (254728908916) via paybill number 546448",
-        isReconciled: false)
+        type: 1,
+        transactionType: null,
+        description: "",
+        amount: "700",
+        transactionAlertId: "361808",
+        isReconciled: 0,
+        particulars:
+            "MPESA Transaction  by AGGREY KIPROTICH KOROS (254703656970) via paybill number 546448",
+        accountNumber: "10022748",
+        transactionId: "PB40BXJF16",
+        accountDetails: "Chamasoft E-Wallet - DVEA WELFARE C.E.W (10022748)",
+        transactionDate: "Tue, 19th Jan 2038"),
   ];
 
   // get the deposits
   List<Deposit> get deposits {
     // only get deposits that are not reconciled.
-    return _deposits.where((deposit) => deposit.isReconciled == false).toList();
+    return _deposits.where((deposit) => deposit.isReconciled == 0).toList();
 
     // Will continue from here
   }
 
   // get a single deposit
   Deposit deposit(String id) {
-    return _deposits.firstWhere((deposit) => deposit.id == id);
+    return _deposits.firstWhere((deposit) => deposit.transactionAlertId == id);
   }
 
   // reconcile a deposit.
   void reconcileDeposit(String id) {
     // get the deposit.
-    var deposit = _deposits.firstWhere((deposit) => deposit.id == id);
+    var deposit =
+        _deposits.firstWhere((deposit) => deposit.transactionAlertId == id);
     // update the deposit
-    deposit.isReconciled = true;
+    deposit.isReconciled = 1;
     // update the listeners
     notifyListeners();
   }

@@ -121,11 +121,9 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
               child: Column(
                 children: [
                   transactionToolTip(
-                    title: deposit.transactionDets,
-                    date:
-                        "Date of transaction: ${DateFormat.yMEd().add_jms().format(deposit.dateOfTransaction).toString()}",
-                    message:
-                        "Amount to be reconciled: Kshs ${deposit.amountTransacted}",
+                    title: deposit.particulars,
+                    date: "Date of transaction: ${deposit.transactionDate}",
+                    message: "Amount to be reconciled: Kshs ${deposit.amount}",
                     context: context,
                   ),
                   Container(

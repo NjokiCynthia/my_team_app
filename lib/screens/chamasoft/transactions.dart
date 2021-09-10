@@ -67,7 +67,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
 
   @override
   void didChangeDependencies() {
-    _fetchUnreconciledDeposits(context);
     super.didChangeDependencies();
   }
 
@@ -77,16 +76,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     return null;
   }
 
-  Future<void> _fetchUnreconciledDeposits(BuildContext context) async {
-    List _deposits = await Provider.of<Groups>(context, listen: false)
-        .fetchGroupUnreconciledDeposits();
-    List _withdrawals = await Provider.of<Groups>(context, listen: false)
-        .fetchGroupUnreconciledWithdrawals();
-    setState(() {
-      deposits = _deposits;
-      withdrawals = _withdrawals;
-    });
-  }
+  
 
   @override
   Widget build(BuildContext context) {
@@ -211,8 +201,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext ctx) => ReconcileDeposits())),
               margin: 0,
-              imageHeight: 100.0,
-              notifications: deposits.length)),
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
@@ -228,8 +217,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext ctx) => ReconcileWithdrawals())),
               margin: 0,
-              imageHeight: 100.0,
-              notifications: withdrawals.length)),
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),

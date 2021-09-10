@@ -4525,7 +4525,7 @@ class Groups with ChangeNotifier {
 
   // get unreconciled deposits
 
-  Future<List> fetchGroupUnreconciledDeposits() async {
+  Future<List<Map<dynamic, dynamic>>> fetchGroupUnreconciledDeposits() async {
     try {
       const url = EndpointUrl.GET_GROUP_UNRECONCILED_DEPOSITS;
       Map<String, String> formData = {
@@ -4551,7 +4551,8 @@ class Groups with ChangeNotifier {
 
   // get unreconciled withdrawals
 
-  Future<List> fetchGroupUnreconciledWithdrawals() async {
+  Future<List<Map<dynamic, dynamic>>>
+      fetchGroupUnreconciledWithdrawals() async {
     try {
       const url = EndpointUrl.GET_GROUP_UNRECONCILED_WITHDRAWALS;
       Map<String, String> formData = {
