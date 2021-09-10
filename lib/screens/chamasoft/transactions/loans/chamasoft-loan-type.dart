@@ -4,13 +4,15 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 import 'loan-amortization.dart';
 
 class ChamaSoftLoanDetail extends StatefulWidget {
   final String loanName;
-  const ChamaSoftLoanDetail(this.loanName);
+  final String dateTime;
+  const ChamaSoftLoanDetail(this.loanName, this.dateTime);
 
   // const ChamaSoftLoanDetail({ Key? key }) : super(key: key);
 
@@ -21,7 +23,22 @@ class ChamaSoftLoanDetail extends StatefulWidget {
 class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
   double _appBarElevation = 0;
   final _formKey = GlobalKey<FormState>();
-  final myController = TextEditingController();
+  TextEditingController myController = TextEditingController();
+  TextEditingController guarantor1Controller = TextEditingController();
+  TextEditingController guarantor2Controller = TextEditingController();
+  TextEditingController guarantor3Controller = TextEditingController();
+
+  int result = 0, guarantor1 = 0, guarantor2 = 0, guarantor3 = 0;
+  //int loanRepaymentAmount = result + 1000;
+
+  sum() {
+    setState(() {
+      guarantor1 = int.parse(guarantor1Controller.text);
+      guarantor2 = int.parse(guarantor2Controller.text);
+      guarantor3 = int.parse(guarantor3Controller.text);
+      result = guarantor1 + guarantor2 + guarantor3;
+    });
+  }
 
   var items = <String>[
     'Select Guarantor',
@@ -96,8 +113,22 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
-                                Text("From Chama Soft:  "),
-                                Text(widget.loanName),
+                                Text(
+                                  "From ChamaSoft:  ",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontFamily: 'SegoeUI',
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15.0,
+                                  ),
+                                ),
+                                Text(
+                                  widget.loanName,
+                                  // style: TextStyle(
+                                  //   fontFamily: 'SegoeUI',
+                                  //   fontSize: 12.0,
+                                  // ),
+                                ),
                               ],
                             ),
                           ),
@@ -154,6 +185,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                   child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
+                                  controller: guarantor1Controller,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: "Enter Amount",
@@ -189,6 +221,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                   child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
+                                  controller: guarantor2Controller,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: "Enter Amount",
@@ -224,6 +257,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                   child: Padding(
                                 padding: const EdgeInsets.all(8.0),
                                 child: TextFormField(
+                                  controller: guarantor3Controller,
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: "Enter Amount",
@@ -272,63 +306,134 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                               context: context,
                               text: "Apply Now",
                               onPressed: () {
+                                //sum();
                                 if (_formKey.currentState.validate()) {
-                                  showDialog(
-                                      context: context,
-                                      builder: (_) => AlertDialog(
-                                            title: Text("Confirm Application"),
-                                            content: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              mainAxisSize: MainAxisSize.min,
-                                              children: [
-                                                Text(' Loan Type: ' +
-                                                    widget.loanName),
-                                                Text(' Amount: KES ' +
-                                                    myController.text),
-                                                Text(' Refund: KES ' +
-                                                    (myController.text)),
-                                                Text(' Due Date: '),
+                                  sum();
+                                  if (result < int.parse(myController.text)) {
+                                    guarantor3Controller.clear();
+                                    guarantor2Controller.clear();
+                                    guarantor1Controller.clear();
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Guarantors amount is less than the amount borrwed, Please Set new Amounts",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else if (result >
+                                      int.parse(myController.text)) {
+                                    guarantor3Controller.clear();
+                                    guarantor2Controller.clear();
+                                    guarantor1Controller.clear();
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "Guarantors amount is Exceeds the amount borrwed",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  } else if (result ==
+                                      int.parse(myController.text)) {
+                                    print(
+                                        result + int.parse(myController.text));
+                                    Fluttertoast.showToast(
+                                        msg:
+                                            "OK to Proceed with the Application",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.greenAccent,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                    showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialog(
+                                              title:
+                                                  Text("Confirm Application"),
+                                              content: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(' Loan Type: \t' +
+                                                      widget.loanName),
+                                                  Text(' Amount: KES \t' +
+                                                      myController.text),
+                                                  Text(' Refund: KES \t' +
+                                                      (int.parse(myController
+                                                                  .text) +
+                                                              1000)
+                                                          .toString()),
+                                                  Text(' Due Date: \t' +
+                                                      widget.dateTime),
+                                                ],
+                                              ),
+                                              // content: RichText(
+                                              //   text: TextSpan(
+                                              //       text: 'Summary',
+                                              //       children: const <TextSpan>[
+                                              //         TextSpan(text: ' Loan Type: '),
+                                              //         TextSpan(text: ' Amount: '),
+                                              //         TextSpan(text: ' Refund: '),
+                                              //         TextSpan(text: ' Due Date: '),
+                                              //       ]),
+                                              // ),
+                                              actions: [
+                                                // ignore: deprecated_member_use
+                                                FlatButton(
+                                                  // FlatButton widget is used to make a text to work like a button
+                                                  textColor: Colors.black,
+                                                  onPressed: () => Navigator.pop(
+                                                      context,
+                                                      false), // function used to perform after pressing the button
+                                                  child: Text('CANCEL'),
+                                                ),
+                                                // ignore: deprecated_member_use
+                                                FlatButton(
+                                                  textColor: Colors.black,
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              ApplyLoan()),
+                                                    );
+                                                  },
+                                                  child: Text('PROCEED'),
+                                                ),
                                               ],
-                                            ),
-                                            // content: RichText(
-                                            //   text: TextSpan(
-                                            //       text: 'Summary',
-                                            //       children: const <TextSpan>[
-                                            //         TextSpan(text: ' Loan Type: '),
-                                            //         TextSpan(text: ' Amount: '),
-                                            //         TextSpan(text: ' Refund: '),
-                                            //         TextSpan(text: ' Due Date: '),
-                                            //       ]),
-                                            // ),
-                                            actions: [
-                                              // ignore: deprecated_member_use
-                                              FlatButton(
-                                                // FlatButton widget is used to make a text to work like a button
-                                                textColor: Colors.black,
-                                                onPressed: () => Navigator.pop(
-                                                    context,
-                                                    false), // function used to perform after pressing the button
-                                                child: Text('CANCEL'),
-                                              ),
-                                              // ignore: deprecated_member_use
-                                              FlatButton(
-                                                textColor: Colors.black,
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            ApplyLoan()),
-                                                  );
-                                                },
-                                                child: Text('PROCEED'),
-                                              ),
-                                            ],
-                                          ));
+                                            ));
+                                  } else {
+                                    guarantor3Controller.clear();
+                                    guarantor2Controller.clear();
+                                    guarantor1Controller.clear();
+                                    Fluttertoast.showToast(
+                                        msg: "Something went wrong, Try again",
+                                        toastLength: Toast.LENGTH_LONG,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.red,
+                                        textColor: Colors.white,
+                                        fontSize: 16.0);
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Something went wrong, Try again",
+                                      toastLength: Toast.LENGTH_LONG,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
                                 }
+                                print(result);
+                                print(int.parse(myController.text));
                               },
                             ),
                           )

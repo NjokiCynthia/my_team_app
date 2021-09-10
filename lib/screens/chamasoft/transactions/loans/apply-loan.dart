@@ -261,39 +261,39 @@ class ApplyLoanState extends State<ApplyLoan> {
                             title: "Note that...",
                             message:
                                 "Apply quick loan from Chamasoft guaranteed by your savings and fellow group members."),
-                        SingleChildScrollView(
-                          child: ListView.builder(
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: loantype.length,
-                            itemBuilder: (context, index) {
-                              LoanType typeLoan = loantype[index];
-                              return Card(
-                                  elevation: 0.0,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(16.0)),
-                                  borderOnForeground: false,
-                                  child: Container(
-                                    decoration: cardDecoration(
-                                        gradient: plainCardGradient(context),
-                                        context: context),
-                                    child: ListTile(
-                                      title: Text(typeLoan.loanName),
-                                      subtitle: Text(typeLoan.details),
-                                      trailing: Icon(Icons.arrow_forward_ios),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    ChamaSoftLoanDetail(
-                                                        typeLoan.loanName)));
-                                      },
-                                    ),
-                                  ));
-                            },
-                          ),
+                        ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          primary: true,
+                          itemCount: loantype.length,
+                          itemBuilder: (context, index) {
+                            LoanType typeLoan = loantype[index];
+                            return Card(
+                                elevation: 0.0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0)),
+                                borderOnForeground: false,
+                                child: Container(
+                                  decoration: cardDecoration(
+                                      gradient: plainCardGradient(context),
+                                      context: context),
+                                  child: ListTile(
+                                    title: Text(typeLoan.loanName),
+                                    subtitle: Text(typeLoan.details),
+                                    trailing: Icon(Icons.arrow_forward_ios),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ChamaSoftLoanDetail(
+                                                      typeLoan.loanName,
+                                                      typeLoan.dateTime
+                                                          .toString())));
+                                    },
+                                  ),
+                                ));
+                          },
                         )
                       ],
                     ),
