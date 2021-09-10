@@ -1,4 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -249,182 +250,49 @@ class ApplyLoanState extends State<ApplyLoan> {
                     ),
                   ),
                 ),
-
-//Conteiner Widget for Chamasoft Loans
-
+//ListView Test
                 Container(
                   child: Visibility(
                     visible: isHiden,
                     child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(16.0),
-                          //height: MediaQuery.of(context).size.height,
-                          color: Theme.of(context).backgroundColor,
-                          child: Column(
-                            children: <Widget>[
-                              toolTip(
-                                  context: context,
-                                  title: "Note that...",
-                                  message:
-                                      "Apply quick loan from Chamasoft guaranteed by your savings and fellow group members."),
-                              SizedBox(
-                                height: 12.0,
-                              ),
-                              Card(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                borderOnForeground: false,
-                                child: Container(
-                                  decoration: cardDecoration(
-                                      gradient: plainCardGradient(context),
-                                      context: context),
-                                  child: ListTile(
-                                    title: Text("Education Loan"),
-                                    subtitle: Text("Limited to KES 8,000 PM"),
-                                    trailing: IconButton(
-                                      onPressed: () {},
-                                      icon:
-                                          Icon(Icons.arrow_forward_ios_rounded),
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Card(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                borderOnForeground: false,
-                                child: Container(
-                                  decoration: cardDecoration(
-                                      gradient: plainCardGradient(context),
-                                      context: context),
-                                  child: ListTile(
-                                    title: Text("Normal Loan"),
-                                    subtitle: Text(
-                                        "Available to a Makimum of 3 times"),
-                                    trailing: IconButton(
-                                      onPressed: () {},
-                                      icon:
-                                          Icon(Icons.arrow_forward_ios_rounded),
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Card(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                borderOnForeground: false,
-                                child: Container(
-                                  decoration: cardDecoration(
-                                      gradient: plainCardGradient(context),
-                                      context: context),
-                                  child: ListTile(
-                                    title: Text("Business Loan"),
-                                    subtitle: Text(
-                                        "payable with interest, Limit to KES 1,000,000"),
-                                    trailing: IconButton(
-                                      onPressed: () {},
-                                      icon:
-                                          Icon(Icons.arrow_forward_ios_rounded),
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Card(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                borderOnForeground: false,
-                                child: Container(
-                                  decoration: cardDecoration(
-                                      gradient: plainCardGradient(context),
-                                      context: context),
-                                  child: ListTile(
-                                    title: Text("Payday Loans"),
-                                    subtitle:
-                                        Text("Due in 24 Hrs, Limit KES 25,000"),
-                                    trailing: IconButton(
-                                      onPressed: () {},
-                                      icon:
-                                          Icon(Icons.arrow_forward_ios_rounded),
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10.0,
-                              ),
-                              Card(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                borderOnForeground: false,
-                                child: Container(
-                                  decoration: cardDecoration(
-                                      gradient: plainCardGradient(context),
-                                      context: context),
-                                  child: ListTile(
-                                    title: Text("Credit Card Cash Advances"),
-                                    subtitle: Text(
-                                        "ShortTerm Loan for upto a month, for employees only"),
-                                    trailing: IconButton(
-                                      onPressed: () {},
-                                      icon:
-                                          Icon(Icons.arrow_forward_ios_rounded),
-                                      color: Theme.of(context).accentColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                height: 15.0,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 30.0, right: 30.0),
-                                child: textWithExternalLinks(
-                                    color: Colors.blueGrey,
-                                    size: 12.0,
-                                    textData: {
-                                      'By applying for this loan you agree to the ':
-                                          {},
-                                      'terms and conditions': {
-                                        "url": () => Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        LoanAmortization(),
-                                              ),
-                                            ),
-                                        "color": primaryColor,
-                                        "weight": FontWeight.w500
+                      children: <Widget>[
+                        toolTip(
+                            context: context,
+                            title: "Note that...",
+                            message:
+                                "Apply quick loan from Chamasoft guaranteed by your savings and fellow group members."),
+                        SingleChildScrollView(
+                          child: ListView.builder(
+                            scrollDirection: Axis.vertical,
+                            shrinkWrap: true,
+                            itemCount: loantype.length,
+                            itemBuilder: (context, index) {
+                              LoanType typeLoan = loantype[index];
+                              return Card(
+                                  elevation: 0.0,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(16.0)),
+                                  borderOnForeground: false,
+                                  child: Container(
+                                    decoration: cardDecoration(
+                                        gradient: plainCardGradient(context),
+                                        context: context),
+                                    child: ListTile(
+                                      title: Text(typeLoan.loanName),
+                                      subtitle: Text(typeLoan.details),
+                                      trailing: Icon(Icons.arrow_forward_ios),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ChamaSoftLoanDetail(
+                                                        typeLoan.loanName)));
                                       },
-                                    }),
-                              ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              defaultButton(
-                                  context: context,
-                                  text: "Apply Now",
-                                  onPressed: () {})
-                            ],
+                                    ),
+                                  ));
+                            },
                           ),
                         )
                       ],

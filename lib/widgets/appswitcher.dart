@@ -621,6 +621,7 @@ class _AppSwitcherState extends State<AppSwitcher> {
       await group.fetchLoanTypes();
       await group.fetchAccounts();
       await group.fetchFineTypes();
+      await group.fetchGroupMembersOngoingLoans();
     }
   }
 

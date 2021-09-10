@@ -346,7 +346,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               ),
               // ignore: deprecated_member_use
               title: Text(
-                "My Group",
+                toBeginningOfSentenceCase(getUserName( (_group.groupName).replaceAll(" ", "-") )),
                 style: TextStyle(
                     color: _currentPage == 1
                         ? primaryColor

@@ -7,16 +7,48 @@ class LoanType {
 }
 
 List<LoanType> loantype = [
-  LoanType(id: '1', details: 'Available only Once', loanName: 'Education'),
-  LoanType(id: '2', details: 'Up to KES 10,000', loanName: 'Emmergency'),
-  LoanType(id: '3', details: 'Avilable only 3 times', loanName: 'Normal Loan'),
-  LoanType(id: '4', details: 'Upto  KES1,000,000', loanName: 'Business Loan'),
   LoanType(
-      id: '5', details: 'Available From August to Dec', loanName: 'Holiday'),
+      id: '1',
+      details: 'Limited to KES 8,000 per Semester',
+      loanName: 'Education Loan'),
   LoanType(
-      id: '6', details: 'Available From August to Dec', loanName: 'Holiday'),
+      id: '2',
+      details: 'Avalable Up to KES 10,000',
+      loanName: 'Emmergency Loan'),
   LoanType(
-      id: '7', details: 'Available From August to Dec', loanName: 'Holiday'),
+      id: '3',
+      details: 'Avilable only 3 times, to Employees and Busines Person(s))',
+      loanName: 'Normal Loan'),
   LoanType(
-      id: '8', details: 'Available From August to Dec', loanName: 'Holiday')
+      id: '4',
+      details: 'payable with interest, Limit to KES 1,000,000',
+      loanName: 'Business Loan'),
+  LoanType(
+      id: '5',
+      details: 'Available From August to Dec',
+      loanName: 'Holiday Loan'),
+  LoanType(
+      id: '6',
+      details: 'Due in 24 Hrs, Limit KES 25,000',
+      loanName: 'Payday Loans'),
+  LoanType(
+      id: '7',
+      details: 'ShortTerm Loan for upto a month, for employees only',
+      loanName: 'Credit Card Advance Loan'),
+  LoanType(
+      id: '8',
+      details: 'Available From August to Dec and Limited to 125M',
+      loanName: 'Holiday'),
+  LoanType(
+      id: '9',
+      details: 'Available From August to Dec and Limited to 125M',
+      loanName: 'ScrollView TestLoan Holiday'),
+  LoanType(
+      id: '10',
+      details: 'Available From August to Dec and Limited to 125M',
+      loanName: 'ScrollView TestLoan Holiday'),
+  LoanType(
+      id: '11',
+      details: 'Available From August to Dec and Limited to 125M',
+      loanName: 'ScrollView TestLoan Holiday')
 ];
