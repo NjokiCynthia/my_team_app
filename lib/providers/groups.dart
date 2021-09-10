@@ -1624,13 +1624,13 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchAccounts() async {
     const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
+    List<dynamic> _localData = [];
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
       try {
-        List<dynamic> _localData = [];
         _localData = await dbHelper.queryWhere(
           table: DatabaseHelper.groupAccountsTable,
           column: "group_id",
@@ -1659,14 +1659,30 @@ class Groups with ChangeNotifier {
           await dbHelper.insert(accounts, DatabaseHelper.groupAccountsTable);
         }
       } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          _stripAndAddAccounts({});
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
       } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          _stripAndAddAccounts({});
+        } else {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        _stripAndAddAccounts({});
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
-      throw CustomException(message: ERROR_MESSAGE);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        _stripAndAddAccounts({});
+      } else {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
     }
   }
 
@@ -1790,13 +1806,13 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchContributions() async {
     const url = EndpointUrl.GET_GROUP_CONTRIBUTIONS;
+    List<dynamic> _localData = [];
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
       try {
-        List<dynamic> _localData = [];
         _localData = await dbHelper.queryWhere(
           table: DatabaseHelper.contributionsTable,
           column: "group_id",
@@ -1814,37 +1830,36 @@ class Groups with ChangeNotifier {
                 response['contributions'] as List<dynamic>;
             addContributions(groupContributions: groupContributions);
           } on CustomException catch (error) {
-            throw CustomException(message: error.message, status: error.status);
+            if (error.status == ErrorStatusCode.statusNoInternet) {
+              addContributions(groupContributions: _localData, isLocal: true);
+            } else {
+              throw CustomException(
+                  message: error.message, status: error.status);
+            }
           } catch (error) {
-            throw CustomException(message: ERROR_MESSAGE);
+            if (error.status == ErrorStatusCode.statusNoInternet) {
+              addContributions(groupContributions: _localData, isLocal: true);
+            } else {
+              throw CustomException(message: ERROR_MESSAGE);
+            }
           }
         }
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
-          //=== BEGIN: OFFLINE PLUG
-          dynamic _localData = await getLocalData('contributions');
-          if (_localData['value'] != null) {
-            List<dynamic> _contributionsData = jsonDecode(_localData['value']);
-            _contributions = [];
-            addContributions(groupContributions: _contributionsData);
-          }
-          //=== END: OFFLINE PLUG
+          addContributions(groupContributions: _localData, isLocal: true);
         } else {
           throw CustomException(message: error.message, status: error.status);
         }
       } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          addContributions(groupContributions: _localData, isLocal: true);
+        } else {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
       }
     } on CustomException catch (error) {
       if (error.status == ErrorStatusCode.statusNoInternet) {
-        //=== BEGIN: OFFLINE PLUG
-        dynamic _localData = await getLocalData('contributions');
-        if (_localData['value'] != null) {
-          List<dynamic> _contributionsData = jsonDecode(_localData['value']);
-          _contributions = [];
-          addContributions(groupContributions: _contributionsData);
-        }
-        //=== END: OFFLINE PLUG
+        addContributions(groupContributions: _localData, isLocal: true);
       } else {
         throw CustomException(message: error.message, status: error.status);
       }
@@ -3621,12 +3636,12 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchGroupMembersOngoingLoans() async {
     const url = EndpointUrl.GET_MEMBERs_LOAN_TYPE_OPTIONS;
+    List<dynamic> _localData = [];
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
-      List<dynamic> _localData = [];
       _localData = await dbHelper.queryMultipleWhere(
         table: DatabaseHelper.memberLoanOptions,
         columns: ["group_id", "user_id"],
@@ -3642,15 +3657,31 @@ class Groups with ChangeNotifier {
           final data = response['loans'] as List<dynamic>;
           addOngoingMemberLoans(memberLoansList: data);
         } on CustomException catch (error) {
-          throw CustomException(message: error.message, status: error.status);
+          if (error.status == ErrorStatusCode.statusNoInternet) {
+            addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
+          } else {
+            throw CustomException(message: error.message, status: error.status);
+          }
         } catch (error) {
-          throw CustomException(message: ERROR_MESSAGE);
+          if (error.status == ErrorStatusCode.statusNoInternet) {
+            addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
+          } else {
+            throw CustomException(message: ERROR_MESSAGE);
+          }
         }
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
-      throw CustomException(message: ERROR_MESSAGE);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
+      } else {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
     }
   }
 
