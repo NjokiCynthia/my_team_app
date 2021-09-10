@@ -9,6 +9,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'loan-amortization.dart';
 
 class ChamaSoftLoanDetail extends StatefulWidget {
+  final String loanName;
+  const ChamaSoftLoanDetail(this.loanName);
+
   // const ChamaSoftLoanDetail({ Key? key }) : super(key: key);
 
   @override
@@ -93,7 +96,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: <Widget>[
                                 Text("From Chama Soft:  "),
-                                Text("Business Loan"),
+                                Text(widget.loanName),
                               ],
                             ),
                           ),
