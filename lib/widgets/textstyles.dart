@@ -84,7 +84,8 @@ Widget customTitleWithWrap(
     double fontSize = 16.0,
     FontWeight fontWeight = FontWeight.w400,
     int maxLines = 2,
-    String fontFamily = 'SegoeUI'}) {
+    String fontFamily = 'SegoeUI',
+    Text child}) {
   return Text(
     text,
     style: TextStyle(
