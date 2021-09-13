@@ -371,11 +371,17 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                                       MainAxisSize.min,
                                                   children: [
                                                     Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceEvenly,
                                                       children: [
                                                         Column(
                                                           // mainAxisAlignment:
                                                           //     MainAxisAlignment
                                                           //         .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
                                                           children: [
                                                             customTitleWithWrap(
                                                                 text:
