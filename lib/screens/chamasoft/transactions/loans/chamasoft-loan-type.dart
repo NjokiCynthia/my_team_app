@@ -146,24 +146,6 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                       onChanged: (value) {
                                         setState(() {});
                                       }),
-                                  // TextFormField(
-                                  //   controller: myController,
-                                  //   decoration: InputDecoration(
-                                  //       floatingLabelBehavior:
-                                  //           FloatingLabelBehavior.auto,
-                                  //       border: OutlineInputBorder(),
-                                  //       contentPadding: new EdgeInsets.symmetric(
-                                  //           vertical: 10.0, horizontal: 10.0),
-                                  //       labelText: 'Enter The Loan Amount',
-                                  //       hintText: 'eg KES 5,000'),
-                                  //   keyboardType: TextInputType.number,
-                                  //   validator: (amount) {
-                                  //     if (amount.isEmpty) {
-                                  //       return 'Loan Amount is Required to Procees';
-                                  //     }
-                                  //     return null;
-                                  //   },
-                                  // ),
                                 ],
                               ),
                             ),
@@ -172,9 +154,10 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text("Guarantors:"),
+                              child: heading2(text: "Guarantors:"),
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 DropdownButton<String>(
                                   items: items.map((itemsname) {
@@ -191,7 +174,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                 ),
                                 Expanded(
                                     child: Padding(
-                                  padding: const EdgeInsets.only(left: 20.0),
+                                  padding: const EdgeInsets.only(left: 0),
                                   child: amountTextInputField(
                                       controller: guarantor1Controller,
                                       context: context,
@@ -206,26 +189,11 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                       onChanged: (value) {
                                         setState(() {});
                                       }),
-                                  // child: TextFormField(
-                                  //   controller: guarantor1Controller,
-                                  //   decoration: InputDecoration(
-                                  //     border: OutlineInputBorder(),
-                                  //     labelText: "Enter Amount",
-                                  //     contentPadding: new EdgeInsets.symmetric(
-                                  //         vertical: 10.0, horizontal: 10.0),
-                                  //   ),
-                                  //   keyboardType: TextInputType.number,
-                                  //   validator: (amount) {
-                                  //     if (amount.isEmpty) {
-                                  //       return 'Amount is Required';
-                                  //     }
-                                  //     return null;
-                                  //   },
-                                  // ),
                                 ))
                               ],
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 DropdownButton<String>(
                                   items: items1.map((itemsname) {
@@ -242,7 +210,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                 ),
                                 Expanded(
                                     child: Padding(
-                                  padding: const EdgeInsets.only(left: 18.0),
+                                  padding: const EdgeInsets.only(left: 0),
                                   child: amountTextInputField(
                                       controller: guarantor2Controller,
                                       context: context,
@@ -257,26 +225,11 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                       onChanged: (value) {
                                         setState(() {});
                                       }),
-                                  // child: TextFormField(
-                                  //   controller: guarantor2Controller,
-                                  //   decoration: InputDecoration(
-                                  //     border: OutlineInputBorder(),
-                                  //     labelText: "Enter Amount",
-                                  //     contentPadding: new EdgeInsets.symmetric(
-                                  //         vertical: 10.0, horizontal: 10.0),
-                                  //   ),
-                                  //   keyboardType: TextInputType.number,
-                                  //   validator: (amount) {
-                                  //     if (amount.isEmpty) {
-                                  //       return 'Amount is Required';
-                                  //     }
-                                  //     return null;
-                                  //   },
-                                  // ),
                                 ))
                               ],
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 DropdownButton<String>(
                                   items: items2.map((itemsname) {
@@ -293,7 +246,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                 ),
                                 Expanded(
                                     child: Padding(
-                                  padding: const EdgeInsets.only(left: 18.0),
+                                  padding: const EdgeInsets.only(left: 0),
                                   child: amountTextInputField(
                                       controller: guarantor3Controller,
                                       context: context,
@@ -308,22 +261,6 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                       onChanged: (value) {
                                         setState(() {});
                                       }),
-                                  // child: TextFormField(
-                                  //   controller: guarantor3Controller,
-                                  //   decoration: InputDecoration(
-                                  //     border: OutlineInputBorder(),
-                                  //     labelText: "Enter Amount",
-                                  //     contentPadding: new EdgeInsets.symmetric(
-                                  //         vertical: 7.0, horizontal: 10.0),
-                                  //   ),
-                                  //   keyboardType: TextInputType.number,
-                                  //   validator: (amount) {
-                                  //     if (amount.isEmpty) {
-                                  //       return 'Amount is Required';
-                                  //     }
-                                  //     return null;
-                                  //   },
-                                  // ),
                                 ))
                               ],
                             ),
