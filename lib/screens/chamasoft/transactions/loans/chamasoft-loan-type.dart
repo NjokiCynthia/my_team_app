@@ -160,6 +160,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 DropdownButton<String>(
+                                  itemHeight: 78,
                                   items: items.map((itemsname) {
                                     return DropdownMenuItem(
                                         value: itemsname,
@@ -171,6 +172,9 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                     });
                                   },
                                   value: dropdownvalue,
+                                ),
+                                SizedBox(
+                                  width: 25.0,
                                 ),
                                 Expanded(
                                     child: Padding(
@@ -184,7 +188,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                         }
                                         return null;
                                       },
-                                      labelText: "Enter Amont",
+                                      labelText: "Enter Amount",
                                       enabled: true,
                                       onChanged: (value) {
                                         setState(() {});
@@ -196,6 +200,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 DropdownButton<String>(
+                                  itemHeight: 78,
                                   items: items1.map((itemsname) {
                                     return DropdownMenuItem(
                                         value: itemsname,
@@ -207,6 +212,9 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                     });
                                   },
                                   value: dropdownvalue1,
+                                ),
+                                SizedBox(
+                                  width: 20.0,
                                 ),
                                 Expanded(
                                     child: Padding(
@@ -220,7 +228,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                         }
                                         return null;
                                       },
-                                      labelText: "Enter Amont",
+                                      labelText: "Enter Amount",
                                       enabled: true,
                                       onChanged: (value) {
                                         setState(() {});
@@ -232,6 +240,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
                                 DropdownButton<String>(
+                                  itemHeight: 78,
                                   items: items2.map((itemsname) {
                                     return DropdownMenuItem(
                                         value: itemsname,
@@ -243,6 +252,9 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                     });
                                   },
                                   value: dropdownvalue2,
+                                ),
+                                SizedBox(
+                                  width: 20.0,
                                 ),
                                 Expanded(
                                     child: Padding(
@@ -256,7 +268,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                         }
                                         return null;
                                       },
-                                      labelText: "Enter Amont",
+                                      labelText: "Enter Amount",
                                       enabled: true,
                                       onChanged: (value) {
                                         setState(() {});
