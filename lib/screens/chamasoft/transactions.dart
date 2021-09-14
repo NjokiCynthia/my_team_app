@@ -4,8 +4,8 @@ import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposits.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawals.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-list.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawal-list.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-bank-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
@@ -73,8 +73,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         .pushReplacementNamed(ChamasoftDashboard.namedRoute);
     return null;
   }
-
-  
 
   @override
   Widget build(BuildContext context) {

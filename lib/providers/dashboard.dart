@@ -242,8 +242,8 @@ class Dashboard with ChangeNotifier {
   void _updateMemberDashboardData(String groupId) async {
     if (_memberDashboardData[groupId].containsKey("member_details")) {
       var groupMemberObject = _memberDashboardData[groupId];
-      var memberDetails = groupMemberObject["member_details"]
-          as Map<String, dynamic>;
+      var memberDetails =
+          groupMemberObject["member_details"] as Map<String, dynamic>;
       _notificationCount =
           double.tryParse(groupMemberObject["notification_count"].toString()) ??
               0.0;

@@ -1,4 +1,5 @@
-import 'package:chamasoft/providers/withdrawals.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -8,7 +9,9 @@ import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 
 class ReconcileWithdrawalForm extends StatefulWidget {
-  const ReconcileWithdrawalForm({Key key}) : super(key: key);
+  final Function addReconciledWithdrawal;
+  const ReconcileWithdrawalForm(this.addReconciledWithdrawal, {Key key})
+      : super(key: key);
 
   @override
   _ReconcileWithdrawalFormState createState() =>
@@ -17,6 +20,9 @@ class ReconcileWithdrawalForm extends StatefulWidget {
 
 class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   final _formKey = new GlobalKey<FormState>();
+  bool _isInit = true;
+  Map<String, dynamic> formLoadData = {};
+  //bool _isFormInputEnabled = true;
 
   // form values
   String expenseDesc,
@@ -43,20 +49,74 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       recipientAccountId,
       borrowerId;
 
-  void addReconciledWithdrawal(formData, addData) {
+  Future<void> _fetchDefaultValues(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(
+            contr: true,
+            acc: true,
+            exp: true,
+            member: true,
+            loanTypes: true,
+            bankLoans: true);
+    setState(() {
+      _isInit = false;
+    });
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  void addReconciledWithdrawal(BuildContext context) {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    // send data to provider.
-    addData(formData);
+
+    widget.addReconciledWithdrawal({
+      "expenseDesc": expenseDesc,
+      "assetPurchasePaymentDesc": assetPurchasePaymentDesc,
+      "stockName": stockName,
+      "moneyMktInvstName": moneyMktInvstName,
+      "moneyMktInvstDesc": moneyMktInvstDesc,
+      "moneyMktTopupDesc": moneyMktTopupDesc,
+      "bankLoanRepaymentDesc": bankLoanRepaymentDesc,
+      "fundsTransferDesc": fundsTransferDesc,
+      "dividendDesc": dividendDesc,
+      "amount": amount,
+      "pricePerShare": pricePerShare,
+      "withdrawalTypeId": withdrawalTypeId,
+      "expenseCategoryId": expenseCategoryId,
+      "assetId": assetId,
+      "memberId": memberId,
+      "loanId": loanId,
+      "numberOfShares": numberOfShares,
+      "moneyMktInvstId": moneyMktInvstId,
+      "contribId": contribId,
+      "bankLoanId": bankLoanId,
+      "recipientAccountId": recipientAccountId,
+      "borrowerId": borrowerId
+    });
     // pop out the dialog
     Navigator.of(context).pop();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final withdrawalProv = Provider.of<Withdrawals>(context, listen: false);
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchDefaultValues(context);
+    }
+    super.didChangeDependencies();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
@@ -76,7 +136,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                   CustomDropDownButton(
                     enabled: true,
                     labelText: "Select withdrawal for",
-                    listItems: withdrawalProv.withdrawalOptions,
+                    listItems: withdrawalTypeOptions,
                     selectedItem: withdrawalTypeId,
                     onChanged: (value) {
                       setState(() {
@@ -101,7 +161,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select expense category",
-                            listItems: withdrawalProv.expenseCategoryOptions,
+                            listItems:
+                                formLoadData.containsKey("expenseCategories")
+                                    ? formLoadData['expenseCategories']
+                                    : [],
                             selectedItem: expenseCategoryId,
                             onChanged: (value) {
                               setState(() {
@@ -148,7 +211,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select asset",
-                            listItems: withdrawalProv.assetOptions,
+                            listItems: [],
                             selectedItem: assetId,
                             onChanged: (value) {
                               setState(() {
@@ -192,7 +255,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: withdrawalProv.memberOptions,
+                            listItems: formLoadData.containsKey("memberOptions")
+                                ? formLoadData['memberOptions']
+                                : [],
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
@@ -210,7 +275,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select loan",
-                            listItems: withdrawalProv.loanOptions,
+                            listItems:
+                                formLoadData.containsKey("loanTypeOptions")
+                                    ? formLoadData['loanTypeOptions']
+                                    : [],
                             selectedItem: loanId,
                             onChanged: (value) {
                               setState(() {
@@ -342,8 +410,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select money market investment",
-                            listItems:
-                                withdrawalProv.moneyMarketInvestmentOptions,
+                            listItems: [],
                             selectedItem: moneyMktInvstId,
                             onChanged: (value) {
                               setState(() {
@@ -386,7 +453,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: withdrawalProv.memberOptions,
+                            listItems: formLoadData.containsKey("memberOptions")
+                                ? formLoadData['memberOptions']
+                                : [],
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
@@ -403,7 +472,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select contribution",
-                            listItems: withdrawalProv.contributionOptions,
+                            listItems: formLoadData.containsKey("contrOptions")
+                                ? formLoadData['contrOptions']
+                                : [],
                             selectedItem: contribId,
                             onChanged: (value) {
                               setState(() {
@@ -429,7 +500,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select bank loan",
-                            listItems: withdrawalProv.bankLoanOptions,
+                            listItems:
+                                formLoadData.containsKey("bankLoansOptions")
+                                    ? formLoadData['bankLoansOptions']
+                                    : [],
                             selectedItem: bankLoanId,
                             onChanged: (value) {
                               setState(() {
@@ -471,7 +545,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select recipient account",
-                            listItems: withdrawalProv.accountOptions,
+                            listItems:
+                                formLoadData.containsKey("accountOptions")
+                                    ? formLoadData['accountOptions']
+                                    : [],
                             selectedItem: recipientAccountId,
                             onChanged: (value) {
                               setState(() {
@@ -515,7 +592,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select borrower",
-                            listItems: withdrawalProv.borrowerOptions,
+                            listItems: [],
                             selectedItem: borrowerId,
                             onChanged: (value) {
                               setState(() {
@@ -532,7 +609,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select loan",
-                            listItems: withdrawalProv.loanOptions,
+                            listItems:
+                                formLoadData.containsKey("loanTypeOptions")
+                                    ? formLoadData['loanTypeOptions']
+                                    : [],
                             selectedItem: loanId,
                             onChanged: (value) {
                               setState(() {
@@ -559,7 +639,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: withdrawalProv.memberOptions,
+                            listItems: formLoadData.containsKey("memberOptions")
+                                ? formLoadData['memberOptions']
+                                : [],
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
@@ -613,31 +695,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
               text: "Save changes",
               color: primaryColor,
               fontWeight: FontWeight.w600),
-          onPressed: () => addReconciledWithdrawal(
-              ReconciledWithdrawal(
-                  amount: amount,
-                  assetId: assetId,
-                  assetPurchasePaymentDesc: assetPurchasePaymentDesc,
-                  bankLoanId: bankLoanId,
-                  bankLoanRepaymentDesc: bankLoanRepaymentDesc,
-                  borrowerId: borrowerId,
-                  contribId: contribId,
-                  dividendDesc: dividendDesc,
-                  expenseCategoryId: expenseCategoryId,
-                  expenseDesc: expenseDesc,
-                  fundsTransferDesc: fundsTransferDesc,
-                  loanId: loanId,
-                  memberId: memberId,
-                  moneyMktInvstDesc: moneyMktInvstDesc,
-                  moneyMktInvstId: moneyMktInvstId,
-                  moneyMktInvstName: moneyMktInvstName,
-                  moneyMktTopupDesc: moneyMktInvstDesc,
-                  numberOfShares: numberOfShares,
-                  pricePerShare: pricePerShare,
-                  recipientAccountId: recipientAccountId,
-                  stockName: stockName,
-                  withdrawalTypeId: withdrawalTypeId),
-              withdrawalProv.addReconciledWithdrawal),
+          onPressed: () => addReconciledWithdrawal(context),
         )
       ],
     );
