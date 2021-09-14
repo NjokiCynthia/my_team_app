@@ -98,3 +98,50 @@ void twoButtonAlertDialog(
             ],
           ));
 }
+
+void twoButtonAlertDialogwithConteiner(
+    {BuildContext context,
+    Container message,
+    String title,
+    Function action,
+    String yesText = "Continue",
+    String noText = "Cancel"}) {
+  showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+            content: Container(),
+            title: heading2(
+                text: title,
+                textAlign: TextAlign.start,
+                // ignore: deprecated_member_use
+                color: Theme.of(context).textSelectionHandleColor),
+            actions: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  negativeActionDialogButton(
+                    text: noText,
+                    // ignore: deprecated_member_use
+                    color: Theme.of(context).textSelectionHandleColor,
+                    action: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  SizedBox(
+                    width: 20.0,
+                  ),
+                  positiveActionDialogButton(
+                    text: yesText,
+                    color: primaryColor,
+                    action: action,
+                  ),
+                  SizedBox(
+                    width: 6.0,
+                  ),
+                ],
+              ),
+            ],
+          ));
+}
