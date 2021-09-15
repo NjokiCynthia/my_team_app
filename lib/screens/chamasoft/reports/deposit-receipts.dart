@@ -8,6 +8,7 @@ import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -409,30 +410,52 @@ class DepositCard extends StatelessWidget {
                       children: <Widget>[
                         Column(
                           children: <Widget>[
-                            Icon(
-                              LineAwesomeIcons.bookmark,
-                              size: 24.0,
-                              semanticLabel: 'Void',
+                            IconButton(
+                              icon: Icon(
+                                Icons.delete_forever,
+                              ),
+                              iconSize: 20.0,
+                              color: Colors.redAccent,
+                              onPressed: () {
+                                twoButtonAlertDialog(
+                                    context: context,
+                                    message:
+                                        'Are You sure you want to delete this reciept ?\nAction is irreversable.',
+                                    title: 'Confirm Reciept Void',
+                                    action: () async {});
+                              },
                             ),
-                            customTitleWithWrap(text: 'Void', fontSize: 12.0)
+                            customTitleWithWrap(
+                                text: 'Void',
+                                fontSize: 12.0,
+                                color: Colors.redAccent)
                           ],
                         ),
                         Column(
                           children: <Widget>[
-                            Icon(
-                              LineAwesomeIcons.share,
-                              size: 24.0,
-                              semanticLabel: 'Share',
+                            IconButton(
+                              icon: Icon(
+                                LineAwesomeIcons.share,
+                              ),
+                              iconSize: 20.0,
+                              onPressed: () {},
                             ),
+                            // Icon(
+                            //   LineAwesomeIcons.share,
+                            //   size: 20.0,
+                            //   semanticLabel: 'Share',
+                            // ),
                             customTitleWithWrap(text: 'Share', fontSize: 12.0)
                           ],
                         ),
                         Column(
                           children: <Widget>[
-                            Icon(
-                              LineAwesomeIcons.eye,
-                              size: 24.0,
-                              semanticLabel: 'View',
+                            IconButton(
+                              icon: Icon(
+                                LineAwesomeIcons.eye,
+                              ),
+                              iconSize: 20.0,
+                              onPressed: () {},
                             ),
                             customTitleWithWrap(text: 'View', fontSize: 12.0)
                           ],
