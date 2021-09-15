@@ -439,7 +439,9 @@ class DepositCard extends StatelessWidget {
                                 LineAwesomeIcons.share,
                               ),
                               iconSize: 20.0,
-                              onPressed: () {},
+                              onPressed: () {
+                                Share.share('Share to: ');
+                              },
                             ),
                             customTitleWithWrap(text: 'Share', fontSize: 12.0)
                           ],
