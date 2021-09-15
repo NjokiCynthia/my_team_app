@@ -14,6 +14,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 
 class DepositReceipts extends StatefulWidget {
   @override
@@ -420,8 +421,8 @@ class DepositCard extends StatelessWidget {
                                 twoButtonAlertDialog(
                                     context: context,
                                     message:
-                                        'Are You sure you want to delete this reciept ?\nAction is irreversable.',
-                                    title: 'Confirm Reciept Void',
+                                        'Are you sure you want to delete this Transaction?',
+                                    title: 'Confirm Action',
                                     action: () async {});
                               },
                             ),
@@ -440,11 +441,6 @@ class DepositCard extends StatelessWidget {
                               iconSize: 20.0,
                               onPressed: () {},
                             ),
-                            // Icon(
-                            //   LineAwesomeIcons.share,
-                            //   size: 20.0,
-                            //   semanticLabel: 'Share',
-                            // ),
                             customTitleWithWrap(text: 'Share', fontSize: 12.0)
                           ],
                         ),
