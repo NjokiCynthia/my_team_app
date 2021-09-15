@@ -402,7 +402,7 @@ class DepositCard extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                  child: Column(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       Icon(
