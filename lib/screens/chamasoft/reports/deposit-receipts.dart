@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:typed_data';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
@@ -12,9 +15,12 @@ import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
+import 'dart:ui' as ui;
 
 class DepositReceipts extends StatefulWidget {
   @override
@@ -280,247 +286,288 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 }
 
 class DepositCard extends StatelessWidget {
-  const DepositCard(
-      {Key key, @required this.deposit, this.details, this.voidItem})
+  DepositCard({Key key, @required this.deposit, this.details, this.voidItem})
       : super(key: key);
 
   final Deposit deposit;
   final Function details, voidItem;
 
+  GlobalKey _containerKey = GlobalKey();
+
+  void convertWidgetToImage() async {
+    try {
+      RenderRepaintBoundary renderRepaintBoundary =
+          _containerKey.currentContext.findRenderObject();
+
+      if (renderRepaintBoundary.debugNeedsPaint) {
+        Timer(Duration(seconds: 1), () => convertWidgetToImage());
+        return null;
+      }
+
+      ui.Image boxImage = await renderRepaintBoundary.toImage(pixelRatio: 1);
+      ByteData byteData =
+          await boxImage.toByteData(format: ui.ImageByteFormat.png);
+      Uint8List uInt8List = byteData.buffer.asUint8List();
+      if (byteData != null) {
+        final result = await ImageGallerySaver.saveImage(
+            Uint8List.fromList(uInt8List),
+            quality: 90,
+            name: 'screenshot-${DateTime.now()}');
+        print(result);
+        print('Screenshot Saved' + result);
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
-      child: Card(
-        elevation: 0.0,
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-        borderOnForeground: false,
-        child: Container(
-            decoration: cardDecoration(
-                gradient: plainCardGradient(context), context: context),
-            child: Column(
-              children: <Widget>[
-                Container(
-                  padding: EdgeInsets.only(left: 12.0, top: 12.0, right: 12.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                        flex: 1,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            customTitle(
-                              text: deposit.type,
-                              fontSize: 16.0,
-                              // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
-                              textAlign: TextAlign.start,
-                            ),
-                            subtitle2(
-                              text: deposit.name,
-                              textAlign: TextAlign.start,
-                              // ignore: deprecated_member_use
-                              color: Theme.of(context).textSelectionHandleColor,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          customTitle(
-                            text: "${groupObject.groupCurrency} ",
-                            fontSize: 18.0,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          heading2(
-                            text: currencyFormat.format(deposit.amount),
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
-                            textAlign: TextAlign.end,
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 12.0, right: 12.0),
-                  child: Row(
+      child: RepaintBoundary(
+        key: _containerKey,
+        child: Card(
+          elevation: 0.0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          borderOnForeground: false,
+          child: Container(
+              decoration: cardDecoration(
+                  gradient: plainCardGradient(context), context: context),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding:
+                        EdgeInsets.only(left: 12.0, top: 12.0, right: 12.0),
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            subtitle2(
-                                text: "Paid By",
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              customTitle(
+                                text: deposit.type,
+                                fontSize: 16.0,
+                                // ignore: deprecated_member_use
                                 color:
-                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.start),
-                            subtitle1(
-                                text: deposit.depositor,
+                                textAlign: TextAlign.start,
+                              ),
+                              subtitle2(
+                                text: deposit.name,
+                                textAlign: TextAlign.start,
+                                // ignore: deprecated_member_use
                                 color:
-                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.start)
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                        Column(
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            subtitle2(
-                                text: "Paid On",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.end),
-                            subtitle1(
-                                text: deposit.date,
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.end)
-                          ],
-                        ),
-                      ]),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 12.0, right: 12.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Column(
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(
-                                Icons.delete_forever,
-                              ),
-                              iconSize: 20.0,
-                              color: Colors.redAccent,
-                              onPressed: () {
-                                twoButtonAlertDialog(
-                                    context: context,
-                                    message:
-                                        'Are you sure you want to delete this Transaction?',
-                                    title: 'Confirm Action',
-                                    action: () async {});
-                              },
+                            customTitle(
+                              text: "${groupObject.groupCurrency} ",
+                              fontSize: 18.0,
+                              // ignore: deprecated_member_use
+                              color: Theme.of(context).textSelectionHandleColor,
+                              fontWeight: FontWeight.w400,
                             ),
-                            customTitleWithWrap(
-                                text: 'Void',
-                                fontSize: 12.0,
-                                color: Colors.redAccent)
-                          ],
-                        ),
-                        Column(
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(
-                                LineAwesomeIcons.share,
-                              ),
-                              iconSize: 20.0,
-                              onPressed: () {
-                                Share.share('Share to: ');
-                              },
+                            heading2(
+                              text: currencyFormat.format(deposit.amount),
+                              // ignore: deprecated_member_use
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.end,
                             ),
-                            customTitleWithWrap(text: 'Share', fontSize: 12.0)
                           ],
                         ),
-                        Column(
-                          children: <Widget>[
-                            IconButton(
-                              icon: Icon(
-                                LineAwesomeIcons.eye,
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              subtitle2(
+                                  text: "Paid By",
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          .textSelectionHandleColor,
+                                  textAlign: TextAlign.start),
+                              subtitle1(
+                                  text: deposit.depositor,
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          .textSelectionHandleColor,
+                                  textAlign: TextAlign.start)
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              subtitle2(
+                                  text: "Paid On",
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          .textSelectionHandleColor,
+                                  textAlign: TextAlign.end),
+                              subtitle1(
+                                  text: deposit.date,
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          .textSelectionHandleColor,
+                                  textAlign: TextAlign.end)
+                            ],
+                          ),
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.delete_forever,
+                                ),
+                                iconSize: 20.0,
+                                color: Colors.redAccent,
+                                onPressed: () {
+                                  twoButtonAlertDialog(
+                                      context: context,
+                                      message:
+                                          'Are you sure you want to delete this Transaction?',
+                                      title: 'Confirm Action',
+                                      action: () async {});
+                                },
                               ),
-                              iconSize: 20.0,
-                              onPressed: () {},
-                            ),
-                            customTitleWithWrap(text: 'View', fontSize: 12.0)
-                          ],
-                        ),
-                      ]),
-                ),
-                SizedBox(
-                  height: 10,
-                )
+                              customTitleWithWrap(
+                                  text: 'Void',
+                                  fontSize: 12.0,
+                                  color: Colors.redAccent)
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  LineAwesomeIcons.share,
+                                ),
+                                iconSize: 20.0,
+                                onPressed: () {
+                                  convertWidgetToImage();
+                                  //Share.shareFiles([convertWidgetToImage().path]);
+                                },
+                              ),
+                              customTitleWithWrap(text: 'Share', fontSize: 12.0)
+                            ],
+                          ),
+                          Column(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  LineAwesomeIcons.eye,
+                                ),
+                                iconSize: 20.0,
+                                onPressed: () {},
+                              ),
+                              customTitleWithWrap(text: 'View', fontSize: 12.0)
+                            ],
+                          ),
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  )
 
-                // Container(
-                //   child: Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                //     // children: [
-                //     //   Icon(
-                //     //     Icons.book_sharp,
-                //     //     size: 24.0,
-                //     //     semanticLabel: 'Void',
-                //     //   ),
-                //     //   Icon(
-                //     //     Icons.ios_share,
-                //     //     size: 24.0,
-                //     //     semanticLabel: 'Share',
-                //     //   ),
-                //     //   Icon(
-                //     //     Icons.download,
-                //     //     size: 24.0,
-                //     //     semanticLabel: 'View',
-                //     //   )
-                //     // ],
-                //   ),
-                // )
+                  // Container(
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //     // children: [
+                  //     //   Icon(
+                  //     //     Icons.book_sharp,
+                  //     //     size: 24.0,
+                  //     //     semanticLabel: 'Void',
+                  //     //   ),
+                  //     //   Icon(
+                  //     //     Icons.ios_share,
+                  //     //     size: 24.0,
+                  //     //     semanticLabel: 'Share',
+                  //     //   ),
+                  //     //   Icon(
+                  //     //     Icons.download,
+                  //     //     size: 24.0,
+                  //     //     semanticLabel: 'View',
+                  //     //   )
+                  //     // ],
+                  //   ),
+                  // )
 
-//                Row(
-//                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//                  crossAxisAlignment: CrossAxisAlignment.center,
-//                  children: <Widget>[
-//                    Expanded(
-//                      flex: 1,
-//                      child: Container(
-//                          decoration: BoxDecoration(
-//                              border: Border(
-//                                  top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
-//                                  right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-//                          child: plainButton(
-//                              text: "SHOW DETAILS",
-//                              size: 16.0,
-//                              spacing: 2.0,
-//                              color: Theme.of(context).primaryColor.withOpacity(0.5),
-//                              // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
-//                              action: details) //loan.status == 2 ? null : repay),
-//                          ),
-//                    ),
-//                    Expanded(
-//                      flex: 1,
-//                      child: Container(
-//                        decoration: BoxDecoration(
-//                            border: Border(
-//                                top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
-//                                left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-//                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: voidItem),
-//                      ),
-//                    ),
-//                  ],
-//                )
-              ],
-            )),
+                  //                Row(
+                  //                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //                  crossAxisAlignment: CrossAxisAlignment.center,
+                  //                  children: <Widget>[
+                  //                    Expanded(
+                  //                      flex: 1,
+                  //                      child: Container(
+                  //                          decoration: BoxDecoration(
+                  //                              border: Border(
+                  //                                  top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
+                  //                                  right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
+                  //                          child: plainButton(
+                  //                              text: "SHOW DETAILS",
+                  //                              size: 16.0,
+                  //                              spacing: 2.0,
+                  //                              color: Theme.of(context).primaryColor.withOpacity(0.5),
+                  //                              // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
+                  //                              action: details) //loan.status == 2 ? null : repay),
+                  //                          ),
+                  //                    ),
+                  //                    Expanded(
+                  //                      flex: 1,
+                  //                      child: Container(
+                  //                        decoration: BoxDecoration(
+                  //                            border: Border(
+                  //                                top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
+                  //                                left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
+                  //                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: voidItem),
+                  //                      ),
+                  //                    ),
+                  //                  ],
+                  //                )
+                ],
+              )),
+        ),
       ),
     );
   }

@@ -45,6 +45,8 @@ dependencies:
   lite_rolling_switch: ^0.1.1
   flutter_toggle_tab: "^0.0.1+2"
   share: ^2.0.4
+  image_gallery_saver: '^1.6.9'
+
   
 
 
