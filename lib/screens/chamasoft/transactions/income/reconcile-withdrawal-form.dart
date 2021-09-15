@@ -260,7 +260,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                                   "${getWithdrawalType(_withdrawalTypes[index])}"),
                           subtitle: _amounts[index] != null
                               ? Text(
-                                  "${groupObject.groupCurrency} ${_amounts[index]}")
+                                  "${groupObject.groupCurrency} ${currencyFormat.format(_amounts[index])}")
                               : null,
                           trailing: IconButton(
                             onPressed: () => removeReconciledWithdrawal(index),
@@ -280,7 +280,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                            "${groupObject.groupCurrency} $totalReconciled "),
+                            "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)} "),
                       ))
                 ],
               ),

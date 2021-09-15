@@ -311,7 +311,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                         subtitle: Text(
-                            "${groupObject.groupCurrency} $totalReconciled"),
+                            "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)}"),
                       ))
                 ],
               ),

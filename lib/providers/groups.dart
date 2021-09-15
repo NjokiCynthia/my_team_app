@@ -2108,7 +2108,7 @@ class Groups with ChangeNotifier {
         table: DatabaseHelper.expenseCategoriesTable,
         column: "group_id",
         whereArguments: [_currentGroupId],
-        orderBy: 'id',
+        orderBy: 'modified_on',
         order: 'ASC',
       );
       _expenseCategories = [];
