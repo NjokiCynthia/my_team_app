@@ -25,7 +25,22 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   List<Member> _members = [];
   bool _isInit = true;
   bool _isLoading = true;
-  List _reconciledWithdrawals = [];
+  List _withdrawalTypes = [];
+  List _descriptions = [];
+  List _stockNames = [];
+  List _moneyMktInvstNames = [];
+  List _amounts = [];
+  List _pricesPerShare = [];
+  List _expenseCategoryIds = [];
+  List _assetIds = [];
+  List _memberIds = [];
+  List _loanIds = [];
+  List _numberOfShares = [];
+  List _moneyMktInvstIds = [];
+  List _contributionIds = [];
+  List _bankLoanIds = [];
+  List _recipientAccountIds = [];
+  List _borrowerIds = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
@@ -38,9 +53,23 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   }
 
   void addReconciledWithdrawal(formData) {
-    print("form data $formData");
     setState(() {
-      _reconciledWithdrawals.add(formData);
+      _withdrawalTypes.add(formData['withdrawalTypeId']);
+      _descriptions.add(formData['description']);
+      _stockNames.add(formData['stockName']);
+      _moneyMktInvstNames.add(formData['moneyMktInvstName']);
+      _amounts.add(formData['amount']);
+      _pricesPerShare.add(formData['pricePerShare']);
+      _expenseCategoryIds.add(formData['expenseCategoryId']);
+      _assetIds.add(formData['assetId']);
+      _memberIds.add(formData['memberId']);
+      _loanIds.add(formData['loanId']);
+      _numberOfShares.add(formData['numberOfShares']);
+      _moneyMktInvstIds.add(formData['moneyMktInvstId']);
+      _contributionIds.add(formData['contributionId']);
+      _bankLoanIds.add(formData['bankLoanId']);
+      _recipientAccountIds.add(formData['recipientAccountId']);
+      _borrowerIds.add(formData['borrowerId']);
     });
   }
 
@@ -57,7 +86,11 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     if (withdrawal.amount == total) {
-      // Submit data.
+      // Structure payload
+
+      // Send request to server
+
+      print("To be done");
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${withdrawal.amount} transacted.");
@@ -66,16 +99,31 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
 
   void removeReconciledWithdrawal(index) {
     setState(() {
-      _reconciledWithdrawals.removeAt(index);
+      _withdrawalTypes.removeAt(index);
+      _descriptions.removeAt(index);
+      _stockNames.removeAt(index);
+      _moneyMktInvstNames.removeAt(index);
+      _amounts.removeAt(index);
+      _pricesPerShare.removeAt(index);
+      _expenseCategoryIds.removeAt(index);
+      _assetIds.removeAt(index);
+      _memberIds.removeAt(index);
+      _loanIds.removeAt(index);
+      _numberOfShares.removeAt(index);
+      _moneyMktInvstIds.removeAt(index);
+      _contributionIds.removeAt(index);
+      _bankLoanIds.removeAt(index);
+      _recipientAccountIds.removeAt(index);
+      _borrowerIds.removeAt(index);
     });
   }
 
   double get totalReconciled {
     double total = 0.0;
-    if (_reconciledWithdrawals.length > 0) {
-      for (var reconciledWithdrawal in _reconciledWithdrawals) {
-        if (reconciledWithdrawal['amount']) {
-          total += reconciledWithdrawal['amount'];
+    if (_amounts.length > 0) {
+      for (var amount in _amounts) {
+        if (amount != null) {
+          total += amount;
         }
       }
     }
@@ -204,17 +252,15 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                     height: MediaQuery.of(context).size.height * 0.64,
                     child: ListView.builder(
                       itemBuilder: (_, index) {
-                        var entity = _reconciledWithdrawals[index];
-
                         return ListTile(
-                          title: entity.memberId != null
+                          title: _memberIds[index] != null
                               ? Text(
-                                  "${getWithdrawalType(entity.withdrawalTypeId)} - ${getMember(entity.memberId)}")
+                                  "${getWithdrawalType(_withdrawalTypes[index])} - ${getMember(_memberIds[index])}")
                               : Text(
-                                  "${getWithdrawalType(entity.withdrawalTypeId)}"),
-                          subtitle: entity.amount != null
+                                  "${getWithdrawalType(_withdrawalTypes[index])}"),
+                          subtitle: _amounts[index] != null
                               ? Text(
-                                  "${groupObject.groupCurrency} ${entity.amount}")
+                                  "${groupObject.groupCurrency} ${_amounts[index]}")
                               : null,
                           trailing: IconButton(
                             onPressed: () => removeReconciledWithdrawal(index),
@@ -223,7 +269,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                           ),
                         );
                       },
-                      itemCount: _reconciledWithdrawals.length,
+                      itemCount: _withdrawalTypes.length,
                     ),
                   ),
                   Container(

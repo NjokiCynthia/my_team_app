@@ -2151,7 +2151,7 @@ class Groups with ChangeNotifier {
         throw CustomException(message: error.message, status: error.status);
       }
     } catch (error) {
-      if (error.status == ErrorStatusCode.statusNoInternet) {
+      if (error.status && error.status == ErrorStatusCode.statusNoInternet) {
         addExpenseCategories(expenseCategories: _localData);
       } else {
         throw CustomException(message: ERROR_MESSAGE);

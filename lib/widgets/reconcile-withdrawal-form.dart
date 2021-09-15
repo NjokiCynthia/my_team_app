@@ -25,15 +25,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   //bool _isFormInputEnabled = true;
 
   // form values
-  String expenseDesc,
-      assetPurchasePaymentDesc,
-      stockName,
-      moneyMktInvstName,
-      moneyMktInvstDesc,
-      moneyMktTopupDesc,
-      bankLoanRepaymentDesc,
-      fundsTransferDesc,
-      dividendDesc;
+  String stockName, description, moneyMktInvstName;
 
   double amount, pricePerShare;
 
@@ -80,15 +72,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
     }
 
     widget.addReconciledWithdrawal({
-      "expenseDesc": expenseDesc,
-      "assetPurchasePaymentDesc": assetPurchasePaymentDesc,
       "stockName": stockName,
       "moneyMktInvstName": moneyMktInvstName,
-      "moneyMktInvstDesc": moneyMktInvstDesc,
-      "moneyMktTopupDesc": moneyMktTopupDesc,
-      "bankLoanRepaymentDesc": bankLoanRepaymentDesc,
-      "fundsTransferDesc": fundsTransferDesc,
-      "dividendDesc": dividendDesc,
+      "description": description,
       "amount": amount,
       "pricePerShare": pricePerShare,
       "withdrawalTypeId": withdrawalTypeId,
@@ -98,7 +84,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       "loanId": loanId,
       "numberOfShares": numberOfShares,
       "moneyMktInvstId": moneyMktInvstId,
-      "contribId": contribId,
+      "contributionId": contribId,
       "bankLoanId": bankLoanId,
       "recipientAccountId": recipientAccountId,
       "borrowerId": borrowerId
@@ -179,22 +165,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             }),
                         SizedBox(height: 10),
                         // enter desciption
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Expense description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              expenseDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(context, "Expense description"),
                         SizedBox(height: 10),
                         // Amount
                         enterAmount(context, "Amount"),
@@ -226,22 +197,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             }),
                         SizedBox(height: 10),
                         // enter asset purchase payment description
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Asset purchase payment description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              assetPurchasePaymentDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(
+                            context, "Asset purchase payment description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount")
                       ],
@@ -380,22 +337,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                           },
                         ),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Money market investment description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              moneyMktInvstDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(
+                            context, "Money market investment description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                         SizedBox(height: 10),
@@ -424,22 +367,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                               return null;
                             }),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Money market top up description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              moneyMktTopupDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(
+                            context, "Money market top up description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                         SizedBox(height: 10),
@@ -517,22 +446,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                               return null;
                             }),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Bank loan repayment description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              bankLoanRepaymentDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(
+                            context, "Bank loan repayment description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                       ],
@@ -562,22 +477,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                               return null;
                             }),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Funds transfer description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              fundsTransferDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(context, "Funds transfer description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                         SizedBox(height: 10)
@@ -655,22 +555,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                               return null;
                             }),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Dividend description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              dividendDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(context, "Dividend description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                         SizedBox(height: 10)
@@ -698,6 +583,25 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
           onPressed: () => addReconciledWithdrawal(context),
         )
       ],
+    );
+  }
+
+  Widget enterDescription(BuildContext context, String label) {
+    return simpleTextInputField(
+      context: context,
+      validator: (value) {
+        if (value == null || value == "") {
+          return "Field is required";
+        }
+        return null;
+      },
+      labelText: label,
+      enabled: true,
+      onChanged: (value) {
+        setState(() {
+          description = value;
+        });
+      },
     );
   }
 
