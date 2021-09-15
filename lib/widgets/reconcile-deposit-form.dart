@@ -1,5 +1,7 @@
-import 'package:chamasoft/providers/deposits.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -8,8 +10,11 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 
+// ignore: must_be_immutable
 class ReconcileDepositForm extends StatefulWidget {
-  ReconcileDepositForm({Key key}) : super(key: key);
+  Function _addReconciledDeposit;
+
+  ReconcileDepositForm(this._addReconciledDeposit, {Key key}) : super(key: key);
 
   @override
   _ReconcileDepositFormState createState() => _ReconcileDepositFormState();
@@ -17,15 +22,14 @@ class ReconcileDepositForm extends StatefulWidget {
 
 class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
   final _formKey = new GlobalKey<FormState>();
+  bool _isInit = true;
+  Map<String, dynamic> formLoadData = {};
+  bool _isFormInputEnabled = true;
 
   // form values
-  String paymentDescription, bankLoanDescription, transferDescription;
+  String description;
 
-  double amount,
-      amountPayable,
-      amountDisbursed,
-      transferredAmount,
-      pricePerShare;
+  double amount, amountPayable, amountDisbursed, pricePerShare;
 
   int depositTypeId,
       memberId,
@@ -41,20 +45,82 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       borrowerId,
       numberOfSharesSold;
 
-  void addReconciledDeposit(formData, addData) {
+  void addReconciledDeposit(BuildContext context) {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    // send data to provider.
-    addData(formData);
+
+    widget._addReconciledDeposit({
+      "description": description,
+      "amount": amount,
+      "amountPayable": amountPayable,
+      "amountDisbursed": amountDisbursed,
+      "depositTypeId": depositTypeId,
+      "memberId": memberId,
+      "contributionId": contributionId,
+      "fineCategoryId": fineCategoryId,
+      "depositorId": depositorId,
+      "incomeCategoryId": incomeCategoryId,
+      "loanId": loanId,
+      "accountId": accountId,
+      "stockId": stockId,
+      "assetId": assetId,
+      "moneyMarketInvstId": moneyMarketInvstId,
+      "borrowerId": borrowerId,
+      "numberOfSharesSold": numberOfSharesSold
+    });
+
     // pop out the dialog
     Navigator.of(context).pop();
   }
 
+  Future<void> _fetchDefaultValues() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+    try {
+      formLoadData =
+          await Provider.of<Groups>(context, listen: false).loadInitialFormData(
+        contr: true,
+        acc: true,
+        member: true,
+        fineOptions: true,
+        depositor: true,
+        incomeCats: true,
+        loanTypes: true,
+      );
+    } catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchDefaultValues();
+          });
+    } finally {
+      setState(() {
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchDefaultValues();
+    }
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final depositProv = Provider.of<Deposits>(context, listen: false);
-
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
@@ -72,17 +138,17 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CustomDropDownButton(
-                  enabled: true,
-                  labelText: "Select deposit for",
-                  listItems: depositProv.depositOptions,
+                  labelText: 'Select deposit for',
+                  enabled: _isFormInputEnabled,
+                  listItems: depositTypeOptions,
                   selectedItem: depositTypeId,
-                  onChanged: (value) {
+                  onChanged: (selected) {
                     setState(() {
-                      depositTypeId = value;
+                      depositTypeId = selected;
                     });
                   },
                   validator: (value) {
-                    if (value == "" || value == null) {
+                    if (value == null) {
                       return "This field is required";
                     }
                     return null;
@@ -95,13 +161,20 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // Selecting member
-                      selectMember(depositProv.memberOptions, "Select Member"),
+                      selectMember(
+                          formLoadData.containsKey("memberOptions")
+                              ? formLoadData['memberOptions']
+                              : [],
+                          "Select Member"),
                       SizedBox(height: 10),
                       // Selecting contribution
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select contribution",
-                          listItems: depositProv.contributionOptions,
+                          listItems:
+                              formLoadData.containsKey("contributionOptions")
+                                  ? formLoadData['contributionOptions']
+                                  : [],
                           selectedItem: contributionId,
                           onChanged: (value) {
                             setState(() {
@@ -126,13 +199,19 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // Selecting member
-                      selectMember(depositProv.memberOptions, "Select Member"),
+                      selectMember(
+                          formLoadData.containsKey("memberOptions")
+                              ? formLoadData['memberOptions']
+                              : [],
+                          "Select Member"),
                       SizedBox(height: 10),
                       // Selecting fine category
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select fine category",
-                          listItems: depositProv.fineCategoryOptions,
+                          listItems: formLoadData.containsKey("finesOptions")
+                              ? formLoadData['finesOptions']
+                              : [],
                           selectedItem: fineCategoryId,
                           onChanged: (value) {
                             setState(() {
@@ -156,25 +235,14 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // Selecting member
-                      selectMember(depositProv.memberOptions, "Select Member"),
+                      selectMember(
+                          formLoadData.containsKey("memberOptions")
+                              ? formLoadData['memberOptions']
+                              : [],
+                          "Select Member"),
                       SizedBox(height: 10),
                       // Entering payment description
-                      simpleTextInputField(
-                        context: context,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        labelText: "Payment description",
-                        enabled: true,
-                        onChanged: (value) {
-                          setState(() {
-                            paymentDescription = value;
-                          });
-                        },
-                      ),
+                      enterDescription(context, "Payment description"),
                       SizedBox(height: 10),
                       // Enter amount
                       enterAmount(context, "Amount"),
@@ -189,7 +257,10 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select depositor",
-                          listItems: depositProv.depositorOptions,
+                          listItems:
+                              formLoadData.containsKey("depositorOptions")
+                                  ? formLoadData['depositorOptions']
+                                  : [],
                           selectedItem: depositorId,
                           onChanged: (value) {
                             setState(() {
@@ -206,7 +277,10 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select income category",
-                          listItems: depositProv.incomeCategoryOptions,
+                          listItems:
+                              formLoadData.containsKey("incomeCategoryOptions")
+                                  ? formLoadData['incomeCategoryOptions']
+                                  : [],
                           selectedItem: incomeCategoryId,
                           onChanged: (value) {
                             setState(() {
@@ -231,13 +305,19 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // select member
-                      selectMember(depositProv.memberOptions, "Select member"),
+                      selectMember(
+                          formLoadData.containsKey("memberOptions")
+                              ? formLoadData['memberOptions']
+                              : [],
+                          "Select member"),
                       SizedBox(height: 10),
                       // select loan
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select Loan",
-                          listItems: depositProv.loanOptions,
+                          listItems: formLoadData.containsKey("loanTypeOptions")
+                              ? formLoadData['loanTypeOptions']
+                              : [],
                           selectedItem: loanId,
                           onChanged: (value) {
                             setState(() {
@@ -262,22 +342,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // Bank loan description
-                      simpleTextInputField(
-                        context: context,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        labelText: "Bank loan description",
-                        enabled: true,
-                        onChanged: (value) {
-                          setState(() {
-                            bankLoanDescription = value;
-                          });
-                        },
-                      ),
+                      enterDescription(context, "Bank loan description"),
                       SizedBox(height: 10),
                       // enter amount payable
                       amountTextInputField(
@@ -326,7 +391,9 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select from account",
-                          listItems: depositProv.accountOptions,
+                          listItems: formLoadData.containsKey("accountOptions")
+                              ? formLoadData['accountOptions']
+                              : [],
                           selectedItem: accountId,
                           onChanged: (value) {
                             setState(() {
@@ -341,41 +408,10 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                           }),
                       SizedBox(height: 10),
                       // enter money transfer description
-                      simpleTextInputField(
-                        context: context,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "Field is required";
-                          }
-                          return null;
-                        },
-                        labelText: "Money transfer description",
-                        enabled: true,
-                        onChanged: (value) {
-                          setState(() {
-                            transferDescription = value;
-                          });
-                        },
-                      ),
+                      enterDescription(context, "Money transfer description"),
                       SizedBox(height: 10),
                       // enter amount transferred
-                      amountTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "The field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Amount transferred",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              transferredAmount = value != null
-                                  ? double.parse(value)
-                                  : amount = 0;
-                            });
-                          }),
+                      enterAmount(context, "Amount transferred"),
                       SizedBox(height: 10)
                     ],
                   ),
@@ -384,11 +420,12 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                 if (depositTypeId == 8)
                   Column(
                       // Select stock
+                      // Todo:
                       children: [
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select stock",
-                            listItems: depositProv.stockOptions,
+                            listItems: [],
                             selectedItem: stockId,
                             onChanged: (value) {
                               setState(() {
@@ -435,7 +472,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select asset",
-                          listItems: depositProv.assetOptions,
+                          listItems: [],
                           selectedItem: assetId,
                           onChanged: (value) {
                             setState(() {
@@ -464,7 +501,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select money market investment",
-                            listItems: depositProv.moneyMarketInvestments,
+                            listItems: [],
                             selectedItem: moneyMarketInvstId,
                             onChanged: (value) {
                               setState(() {
@@ -488,13 +525,19 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // select member
-                      selectMember(depositProv.memberOptions, "Select member"),
+                      selectMember(
+                          formLoadData.containsKey("memberOptions")
+                              ? formLoadData['memberOptions']
+                              : [],
+                          "Select member"),
                       SizedBox(height: 10),
                       // select loan
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select loan",
-                          listItems: depositProv.loanOptions,
+                          listItems: formLoadData.containsKey("loanTypeOptions")
+                              ? formLoadData['loanTypeOptions']
+                              : [],
                           selectedItem: loanId,
                           onChanged: (value) {
                             setState(() {
@@ -522,7 +565,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select borrower",
-                          listItems: depositProv.borrowerOptions,
+                          listItems: [],
                           selectedItem: borrowerId,
                           onChanged: (value) {
                             setState(() {
@@ -540,7 +583,9 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select loans",
-                          listItems: depositProv.loanOptions,
+                          listItems: formLoadData.containsKey("loanTypeOptions")
+                              ? formLoadData['loanTypeOptions']
+                              : [],
                           selectedItem: loanId,
                           onChanged: (value) {
                             setState(() {
@@ -574,35 +619,13 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
             }),
         // ignore: deprecated_member_use
         FlatButton(
-            padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-            child: customTitle(
-                text: "Save Changes",
-                color: primaryColor,
-                fontWeight: FontWeight.w600),
-            onPressed: () => addReconciledDeposit(
-                ReconciledDeposit(
-                    paymentDescription: paymentDescription,
-                    bankLoanDescription: bankLoanDescription,
-                    transferDescription: transferDescription,
-                    amount: amount,
-                    amountPayable: amountPayable,
-                    amountDisbursed: amountDisbursed,
-                    transferredAmount: transferredAmount,
-                    pricePerShare: pricePerShare,
-                    depositTypeId: depositTypeId,
-                    memberId: memberId,
-                    contributionId: contributionId,
-                    fineCategoryId: fineCategoryId,
-                    depositorId: depositorId,
-                    incomeCategoryId: incomeCategoryId,
-                    loanId: loanId,
-                    accountId: accountId,
-                    stockId: stockId,
-                    assetId: assetId,
-                    moneyMarketInvstId: moneyMarketInvstId,
-                    borrowerId: borrowerId,
-                    numberOfSharesSold: numberOfSharesSold),
-                depositProv.addReconciledDeposit))
+          padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+          child: customTitle(
+              text: "Save Changes",
+              color: primaryColor,
+              fontWeight: FontWeight.w600),
+          onPressed: () => addReconciledDeposit(context),
+        )
       ],
     );
   }
@@ -624,6 +647,25 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
           return "This field is required";
         }
         return null;
+      },
+    );
+  }
+
+  Widget enterDescription(BuildContext context, String label) {
+    return simpleTextInputField(
+      context: context,
+      validator: (value) {
+        if (value == null || value == "") {
+          return "Field is required";
+        }
+        return null;
+      },
+      labelText: label,
+      enabled: true,
+      onChanged: (value) {
+        setState(() {
+          description = value;
+        });
       },
     );
   }

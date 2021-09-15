@@ -1,4 +1,5 @@
-import 'package:chamasoft/providers/withdrawals.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -8,7 +9,9 @@ import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 
 class ReconcileWithdrawalForm extends StatefulWidget {
-  const ReconcileWithdrawalForm({Key key}) : super(key: key);
+  final Function addReconciledWithdrawal;
+  const ReconcileWithdrawalForm(this.addReconciledWithdrawal, {Key key})
+      : super(key: key);
 
   @override
   _ReconcileWithdrawalFormState createState() =>
@@ -17,17 +20,12 @@ class ReconcileWithdrawalForm extends StatefulWidget {
 
 class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   final _formKey = new GlobalKey<FormState>();
+  bool _isInit = true;
+  Map<String, dynamic> formLoadData = {};
+  //bool _isFormInputEnabled = true;
 
   // form values
-  String expenseDesc,
-      assetPurchasePaymentDesc,
-      stockName,
-      moneyMktInvstName,
-      moneyMktInvstDesc,
-      moneyMktTopupDesc,
-      bankLoanRepaymentDesc,
-      fundsTransferDesc,
-      dividendDesc;
+  String stockName, description, moneyMktInvstName;
 
   double amount, pricePerShare;
 
@@ -43,20 +41,68 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       recipientAccountId,
       borrowerId;
 
-  void addReconciledWithdrawal(formData, addData) {
+  Future<void> _fetchDefaultValues(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+    formLoadData = await Provider.of<Groups>(context, listen: false)
+        .loadInitialFormData(
+            contr: true,
+            acc: true,
+            exp: true,
+            member: true,
+            loanTypes: true,
+            bankLoans: true);
+    setState(() {
+      _isInit = false;
+    });
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  void addReconciledWithdrawal(BuildContext context) {
     if (!_formKey.currentState.validate()) {
       return;
     }
-    // send data to provider.
-    addData(formData);
+
+    widget.addReconciledWithdrawal({
+      "stockName": stockName,
+      "moneyMktInvstName": moneyMktInvstName,
+      "description": description,
+      "amount": amount,
+      "pricePerShare": pricePerShare,
+      "withdrawalTypeId": withdrawalTypeId,
+      "expenseCategoryId": expenseCategoryId,
+      "assetId": assetId,
+      "memberId": memberId,
+      "loanId": loanId,
+      "numberOfShares": numberOfShares,
+      "moneyMktInvstId": moneyMktInvstId,
+      "contributionId": contribId,
+      "bankLoanId": bankLoanId,
+      "recipientAccountId": recipientAccountId,
+      "borrowerId": borrowerId
+    });
     // pop out the dialog
     Navigator.of(context).pop();
   }
 
   @override
-  Widget build(BuildContext context) {
-    final withdrawalProv = Provider.of<Withdrawals>(context, listen: false);
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchDefaultValues(context);
+    }
+    super.didChangeDependencies();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
@@ -76,7 +122,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                   CustomDropDownButton(
                     enabled: true,
                     labelText: "Select withdrawal for",
-                    listItems: withdrawalProv.withdrawalOptions,
+                    listItems: withdrawalTypeOptions,
                     selectedItem: withdrawalTypeId,
                     onChanged: (value) {
                       setState(() {
@@ -101,7 +147,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select expense category",
-                            listItems: withdrawalProv.expenseCategoryOptions,
+                            listItems:
+                                formLoadData.containsKey("expenseCategories")
+                                    ? formLoadData['expenseCategories']
+                                    : [],
                             selectedItem: expenseCategoryId,
                             onChanged: (value) {
                               setState(() {
@@ -116,22 +165,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             }),
                         SizedBox(height: 10),
                         // enter desciption
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Expense description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              expenseDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(context, "Expense description"),
                         SizedBox(height: 10),
                         // Amount
                         enterAmount(context, "Amount"),
@@ -148,7 +182,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select asset",
-                            listItems: withdrawalProv.assetOptions,
+                            listItems: [],
                             selectedItem: assetId,
                             onChanged: (value) {
                               setState(() {
@@ -163,22 +197,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             }),
                         SizedBox(height: 10),
                         // enter asset purchase payment description
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Asset purchase payment description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              assetPurchasePaymentDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(
+                            context, "Asset purchase payment description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount")
                       ],
@@ -192,7 +212,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: withdrawalProv.memberOptions,
+                            listItems: formLoadData.containsKey("memberOptions")
+                                ? formLoadData['memberOptions']
+                                : [],
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
@@ -210,7 +232,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select loan",
-                            listItems: withdrawalProv.loanOptions,
+                            listItems:
+                                formLoadData.containsKey("loanTypeOptions")
+                                    ? formLoadData['loanTypeOptions']
+                                    : [],
                             selectedItem: loanId,
                             onChanged: (value) {
                               setState(() {
@@ -312,22 +337,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                           },
                         ),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Money market investment description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              moneyMktInvstDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(
+                            context, "Money market investment description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                         SizedBox(height: 10),
@@ -342,8 +353,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select money market investment",
-                            listItems:
-                                withdrawalProv.moneyMarketInvestmentOptions,
+                            listItems: [],
                             selectedItem: moneyMktInvstId,
                             onChanged: (value) {
                               setState(() {
@@ -357,22 +367,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                               return null;
                             }),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Money market top up description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              moneyMktTopupDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(
+                            context, "Money market top up description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                         SizedBox(height: 10),
@@ -386,7 +382,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: withdrawalProv.memberOptions,
+                            listItems: formLoadData.containsKey("memberOptions")
+                                ? formLoadData['memberOptions']
+                                : [],
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
@@ -403,7 +401,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select contribution",
-                            listItems: withdrawalProv.contributionOptions,
+                            listItems: formLoadData.containsKey("contrOptions")
+                                ? formLoadData['contrOptions']
+                                : [],
                             selectedItem: contribId,
                             onChanged: (value) {
                               setState(() {
@@ -429,7 +429,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select bank loan",
-                            listItems: withdrawalProv.bankLoanOptions,
+                            listItems:
+                                formLoadData.containsKey("bankLoansOptions")
+                                    ? formLoadData['bankLoansOptions']
+                                    : [],
                             selectedItem: bankLoanId,
                             onChanged: (value) {
                               setState(() {
@@ -443,22 +446,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                               return null;
                             }),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Bank loan repayment description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              bankLoanRepaymentDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(
+                            context, "Bank loan repayment description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                       ],
@@ -471,7 +460,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select recipient account",
-                            listItems: withdrawalProv.accountOptions,
+                            listItems:
+                                formLoadData.containsKey("accountOptions")
+                                    ? formLoadData['accountOptions']
+                                    : [],
                             selectedItem: recipientAccountId,
                             onChanged: (value) {
                               setState(() {
@@ -485,22 +477,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                               return null;
                             }),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Funds transfer description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              fundsTransferDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(context, "Funds transfer description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                         SizedBox(height: 10)
@@ -515,7 +492,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select borrower",
-                            listItems: withdrawalProv.borrowerOptions,
+                            listItems: [],
                             selectedItem: borrowerId,
                             onChanged: (value) {
                               setState(() {
@@ -532,7 +509,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select loan",
-                            listItems: withdrawalProv.loanOptions,
+                            listItems:
+                                formLoadData.containsKey("loanTypeOptions")
+                                    ? formLoadData['loanTypeOptions']
+                                    : [],
                             selectedItem: loanId,
                             onChanged: (value) {
                               setState(() {
@@ -559,7 +539,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: withdrawalProv.memberOptions,
+                            listItems: formLoadData.containsKey("memberOptions")
+                                ? formLoadData['memberOptions']
+                                : [],
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
@@ -573,22 +555,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                               return null;
                             }),
                         SizedBox(height: 10),
-                        simpleTextInputField(
-                          context: context,
-                          validator: (value) {
-                            if (value == null || value == "") {
-                              return "Field is required";
-                            }
-                            return null;
-                          },
-                          labelText: "Dividend description",
-                          enabled: true,
-                          onChanged: (value) {
-                            setState(() {
-                              dividendDesc = value;
-                            });
-                          },
-                        ),
+                        enterDescription(context, "Dividend description"),
                         SizedBox(height: 10),
                         enterAmount(context, "Amount"),
                         SizedBox(height: 10)
@@ -613,33 +580,28 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
               text: "Save changes",
               color: primaryColor,
               fontWeight: FontWeight.w600),
-          onPressed: () => addReconciledWithdrawal(
-              ReconciledWithdrawal(
-                  amount: amount,
-                  assetId: assetId,
-                  assetPurchasePaymentDesc: assetPurchasePaymentDesc,
-                  bankLoanId: bankLoanId,
-                  bankLoanRepaymentDesc: bankLoanRepaymentDesc,
-                  borrowerId: borrowerId,
-                  contribId: contribId,
-                  dividendDesc: dividendDesc,
-                  expenseCategoryId: expenseCategoryId,
-                  expenseDesc: expenseDesc,
-                  fundsTransferDesc: fundsTransferDesc,
-                  loanId: loanId,
-                  memberId: memberId,
-                  moneyMktInvstDesc: moneyMktInvstDesc,
-                  moneyMktInvstId: moneyMktInvstId,
-                  moneyMktInvstName: moneyMktInvstName,
-                  moneyMktTopupDesc: moneyMktInvstDesc,
-                  numberOfShares: numberOfShares,
-                  pricePerShare: pricePerShare,
-                  recipientAccountId: recipientAccountId,
-                  stockName: stockName,
-                  withdrawalTypeId: withdrawalTypeId),
-              withdrawalProv.addReconciledWithdrawal),
+          onPressed: () => addReconciledWithdrawal(context),
         )
       ],
+    );
+  }
+
+  Widget enterDescription(BuildContext context, String label) {
+    return simpleTextInputField(
+      context: context,
+      validator: (value) {
+        if (value == null || value == "") {
+          return "Field is required";
+        }
+        return null;
+      },
+      labelText: label,
+      enabled: true,
+      onChanged: (value) {
+        setState(() {
+          description = value;
+        });
+      },
     );
   }
 

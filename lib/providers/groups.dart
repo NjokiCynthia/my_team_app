@@ -358,6 +358,60 @@ class OngoingMemberLoanOptions {
       this.loanType});
 }
 
+class UnreconciledDeposit {
+  final int type;
+  final String transactionType;
+  final String transactionDate;
+  final double amount;
+  final String description;
+  final String transactionAlertId;
+  bool isReconciled;
+  final String particulars;
+  final String accountNumber;
+  final String transactionId;
+  final String accountDetails;
+
+  UnreconciledDeposit(
+      {@required this.type,
+      @required this.transactionType,
+      @required this.transactionDate,
+      @required this.amount,
+      @required this.description,
+      @required this.transactionAlertId,
+      @required this.isReconciled,
+      @required this.particulars,
+      @required this.accountNumber,
+      @required this.transactionId,
+      @required this.accountDetails});
+}
+
+class UnreconciledWithdrawal {
+  final int type;
+  final String transactionType;
+  final String transactionDate;
+  final double amount;
+  final String description;
+  final String transactionAlertId;
+  bool isReconciled;
+  final String particulars;
+  final String accountNumber;
+  final String transactionId;
+  final String accountDetails;
+
+  UnreconciledWithdrawal(
+      {@required this.type,
+      @required this.transactionType,
+      @required this.transactionDate,
+      @required this.amount,
+      @required this.description,
+      @required this.transactionAlertId,
+      @required this.isReconciled,
+      @required this.particulars,
+      @required this.accountNumber,
+      @required this.transactionId,
+      @required this.accountDetails});
+}
+
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
 
@@ -395,6 +449,8 @@ class Groups with ChangeNotifier {
   List<Deposit> _depositList = [];
   List<Withdrawal> _withdrawalList = [];
   List<WithdrawalRequest> _withdrawalRequests = [];
+  List<UnreconciledDeposit> _unreconciledDeposits = [];
+  List<UnreconciledWithdrawal> _unreconciledWithdrawals = [];
   WithdrawalRequestDetails _withdrawalRequestDetails;
   List<ActiveLoan> _memberLoanList = [];
   double _totalGroupContributionSummary = 0, _totalGroupFinesSummary = 0;
@@ -560,6 +616,14 @@ class Groups with ChangeNotifier {
 
   List<Withdrawal> get getWithdrawals {
     return [..._withdrawalList];
+  }
+
+  List<UnreconciledDeposit> get getUnreconciledDeposits {
+    return [..._unreconciledDeposits];
+  }
+
+  List<UnreconciledWithdrawal> get getUnreconciledWithdrawals {
+    return [..._unreconciledWithdrawals];
   }
 
   List<WithdrawalRequest> get getWithdrawalRequestList {
@@ -975,7 +1039,7 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
-  void addExpenseCategories(List<dynamic> expenseCategories) {
+  void addExpenseCategories({List<dynamic> expenseCategories}) {
     if (expenseCategories.length > 0) {
       for (var expenseCategoryJson in expenseCategories) {
         final expense = ExpenseCategories(
@@ -1072,6 +1136,73 @@ class Groups with ChangeNotifier {
       }
     }
     notifyListeners();
+  }
+
+  void addUnreconciledDeposit({List<dynamic> unreconciledDeposits}) {
+    if (unreconciledDeposits.length > 0) {
+      for (var unreconciledDeposit in unreconciledDeposits) {
+        final newUnreconciledDeposit = UnreconciledDeposit(
+            type: int.tryParse(unreconciledDeposit['type'].toString()),
+            transactionType: unreconciledDeposit['transaction_type']
+              ..toString(),
+            transactionDate: unreconciledDeposit['transactionDate']..toString(),
+            amount: double.tryParse(unreconciledDeposit['amount'].toString()) ??
+                0.0,
+            description: unreconciledDeposit['description']..toString(),
+            transactionAlertId: unreconciledDeposit['transactionAlertId']
+              ..toString(),
+            isReconciled:
+                (unreconciledDeposit['isReconciled']..toString()) == "1"
+                    ? true
+                    : false,
+            particulars: unreconciledDeposit['particulars']..toString(),
+            accountNumber: unreconciledDeposit['accountNUmber']..toString(),
+            transactionId: unreconciledDeposit['transaction_id']..toString(),
+            accountDetails: unreconciledDeposit['account_details']..toString());
+
+        _unreconciledDeposits.add(newUnreconciledDeposit);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addUnreconciledWithdrawal({List<dynamic> unreconciledWithdrawals}) {
+    if (unreconciledWithdrawals.length > 0) {
+      for (var unreconciledWithdrawal in unreconciledWithdrawals) {
+        final newUnreconciledWithdrawal = UnreconciledWithdrawal(
+            type: int.tryParse(unreconciledWithdrawal['type'].toString()),
+            transactionType: unreconciledWithdrawal['transaction_type']
+              ..toString(),
+            transactionDate: unreconciledWithdrawal['transactionDate']
+              ..toString(),
+            amount:
+                double.tryParse(unreconciledWithdrawal['amount'].toString()) ??
+                    0.0,
+            description: unreconciledWithdrawal['description']..toString(),
+            transactionAlertId: unreconciledWithdrawal['transactionAlertId']
+              ..toString(),
+            isReconciled:
+                (unreconciledWithdrawal['isReconciled']..toString()) == "1"
+                    ? true
+                    : false,
+            particulars: unreconciledWithdrawal['particulars']..toString(),
+            accountNumber: unreconciledWithdrawal['accountNUmber']..toString(),
+            transactionId: unreconciledWithdrawal['transaction_id']..toString(),
+            accountDetails: unreconciledWithdrawal['account_details']
+              ..toString());
+
+        _unreconciledWithdrawals.add(newUnreconciledWithdrawal);
+      }
+    }
+    notifyListeners();
+  }
+
+  void reconcileDeposit(formData) {
+    // Will handle the request here.
+  }
+
+  void reconcileWithdrawal(formData) {
+    // Will handle the request here.
   }
 
   void addDepositors(List<dynamic> groupDepositors) {
@@ -1967,26 +2098,64 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchExpenseCategories() async {
     const url = EndpointUrl.GET_GROUP_EXPENSE_CATEGORIES;
+    List<Map<String, dynamic>> _localData = [];
     try {
       final postRequest = json.encode({
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
-      try {
-        final response = await PostToServer.post(postRequest, url);
-        _expenseCategories = [];
-        final expenseCategoriesTypes =
-            response['expense_categories'] as List<dynamic>;
-        addExpenseCategories(expenseCategoriesTypes);
-      } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
-      } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
+      _localData = await dbHelper.queryWhere(
+        table: DatabaseHelper.expenseCategoriesTable,
+        column: "group_id",
+        whereArguments: [_currentGroupId],
+        orderBy: 'modified_on',
+        order: 'ASC',
+      );
+      _expenseCategories = [];
+      if (_localData.length > 0) {
+        addExpenseCategories(
+            expenseCategories: jsonDecode(_localData[0]['value']));
+      } else {
+        try {
+          final response = await PostToServer.post(postRequest, url);
+          final expenseCategoriesTypes =
+              response['expense_categories'] as List<dynamic>;
+          Map<String, dynamic> expenseCategoriesMap = {
+            "group_id": currentGroupId,
+            "value": jsonEncode(expenseCategoriesTypes),
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
+          };
+          await dbHelper.deleteMultiple([int.parse(_currentGroupId)],
+              DatabaseHelper.expenseCategoriesTable);
+          await dbHelper.insert(
+              expenseCategoriesMap, DatabaseHelper.expenseCategoriesTable);
+          addExpenseCategories(expenseCategories: expenseCategoriesTypes);
+        } on CustomException catch (error) {
+          if (error.status == ErrorStatusCode.statusNoInternet) {
+            addExpenseCategories(expenseCategories: _localData);
+          } else {
+            throw CustomException(message: error.message, status: error.status);
+          }
+        } catch (error) {
+          if (error.status == ErrorStatusCode.statusNoInternet) {
+            addExpenseCategories(expenseCategories: _localData);
+          } else {
+            throw CustomException(message: ERROR_MESSAGE);
+          }
+        }
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        addExpenseCategories(expenseCategories: _localData);
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
-      throw CustomException(message: ERROR_MESSAGE);
+      if (error.status && error.status == ErrorStatusCode.statusNoInternet) {
+        addExpenseCategories(expenseCategories: _localData);
+      } else {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
     }
   }
 
@@ -2009,7 +2178,7 @@ class Groups with ChangeNotifier {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
@@ -2233,7 +2402,11 @@ class Groups with ChangeNotifier {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      throw CustomException(message: error.message, status: error.status);
+      if (error.status == ErrorStatusCode.statusNoInternet) {
+        throw CustomException(message: ERROR_MESSAGE);
+      } else {
+        throw CustomException(message: error.message, status: error.status);
+      }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
@@ -4556,18 +4729,20 @@ class Groups with ChangeNotifier {
 
   // get unreconciled deposits
 
-  Future<List> fetchGroupUnreconciledDeposits() async {
+  Future<void> fetchGroupUnreconciledDeposits() async {
     try {
       const url = EndpointUrl.GET_GROUP_UNRECONCILED_DEPOSITS;
       Map<String, String> formData = {
         "user_id": _userId,
         "group_id": currentGroupId
       };
-
       try {
         final postRequest = json.encode(formData);
         final response = await PostToServer.post(postRequest, url);
-        return response['unreconciled_deposits'];
+        // Reset the unreconciled deposits to empty
+        _unreconciledDeposits = [];
+        addUnreconciledDeposit(
+            unreconciledDeposits: response['unreconciled_deposits']);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -4582,7 +4757,7 @@ class Groups with ChangeNotifier {
 
   // get unreconciled withdrawals
 
-  Future<List> fetchGroupUnreconciledWithdrawals() async {
+  Future<void> fetchGroupUnreconciledWithdrawals() async {
     try {
       const url = EndpointUrl.GET_GROUP_UNRECONCILED_WITHDRAWALS;
       Map<String, String> formData = {
@@ -4593,7 +4768,10 @@ class Groups with ChangeNotifier {
       try {
         final postRequest = json.encode(formData);
         final response = await PostToServer.post(postRequest, url);
-        return response['unreconciled_withdrawals'];
+        // Reset the unreconciled withdrawals to empty.
+        _unreconciledWithdrawals = [];
+        addUnreconciledWithdrawal(
+            unreconciledWithdrawals: response['unreconciled_withdrawals']);
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
@@ -4650,5 +4828,6 @@ class Groups with ChangeNotifier {
     _withdrawalRequests = [];
     _withdrawalRequestDetails = null;
     _loanPulled = false;
+    _unreconciledDeposits = [];
   }
 }

@@ -11,29 +11,35 @@ List<CategorisedAccount> getCategorisedAccounts(dynamic response) {
 
   final groupBankAccounts = response['bank_accounts'] as List<dynamic>;
   final groupSaccoAccounts = response['sacco_accounts'] as List<dynamic>;
-  final groupMobileMoneyAccounts = response['mobile_money_accounts'] as List<dynamic>;
-  final groupPettyCashAccountsAccounts = response['petty_cash_accounts'] as List<dynamic>;
+  final groupMobileMoneyAccounts =
+      response['mobile_money_accounts'] as List<dynamic>;
+  final groupPettyCashAccountsAccounts =
+      response['petty_cash_accounts'] as List<dynamic>;
 
   if (groupBankAccounts.length > 0) {
-    final bankAccountHeader = CategorisedAccount.header(isHeader: true, title: "Bank Accounts");
+    final bankAccountHeader =
+        CategorisedAccount.header(isHeader: true, title: "Bank Accounts");
     accounts.add(bankAccountHeader);
     accounts.addAll(parseAccountsJson(groupBankAccounts, 1));
   }
 
   if (groupSaccoAccounts.length > 0) {
-    final saccoAccountHeader = CategorisedAccount.header(isHeader: true, title: "Sacco Accounts");
+    final saccoAccountHeader =
+        CategorisedAccount.header(isHeader: true, title: "Sacco Accounts");
     accounts.add(saccoAccountHeader);
     accounts.addAll(parseAccountsJson(groupSaccoAccounts, 2));
   }
 
   if (groupMobileMoneyAccounts.length > 0) {
-    final mobileMoneyAccountHeader = CategorisedAccount.header(isHeader: true, title: "Mobile Money Accounts");
+    final mobileMoneyAccountHeader = CategorisedAccount.header(
+        isHeader: true, title: "Mobile Money Accounts");
     accounts.add(mobileMoneyAccountHeader);
     accounts.addAll(parseAccountsJson(groupMobileMoneyAccounts, 3));
   }
 
   if (groupPettyCashAccountsAccounts.length > 0) {
-    final pettyCashAccountHeader = CategorisedAccount.header(isHeader: true, title: "Petty Cash Accounts");
+    final pettyCashAccountHeader =
+        CategorisedAccount.header(isHeader: true, title: "Petty Cash Accounts");
     accounts.add(pettyCashAccountHeader);
     accounts.addAll(parseAccountsJson(groupPettyCashAccountsAccounts, 4));
   }
@@ -57,20 +63,35 @@ Group parseSingleGroup(dynamic groupJSON) {
     groupCountryId: groupJSON['country_id'].toString(),
     smsBalance: groupJSON["sms_balance"].toString(),
     accountNumber: groupJSON["account_number"].toString(),
-    enableMemberInformationPrivacy: groupJSON["enable_member_information_privacy"].toString() == "1" ? true : false,
+    enableMemberInformationPrivacy:
+        groupJSON["enable_member_information_privacy"].toString() == "1"
+            ? true
+            : false,
     enableSendMonthlyEmailStatements:
-        groupJSON["enable_send_monthly_email_statements"].toString() == "1" ? true : false,
+        groupJSON["enable_send_monthly_email_statements"].toString() == "1"
+            ? true
+            : false,
     groupRoles: groupRoleObject,
     memberListingOrderBy: groupJSON["member_listing_order_by"]..toString(),
     orderMembersBy: groupJSON["order_members_by"]..toString(),
-    onlineBankingEnabled: groupJSON["online_banking_enabled"].toString() == "1" ? true : false,
+    onlineBankingEnabled:
+        groupJSON["online_banking_enabled"].toString() == "1" ? true : false,
     groupRoleId: groupJSON['group_role_id']..toString(),
     groupRole: groupJSON['role']..toString(),
-    disableArrears: groupJSON['disable_arrears'].toString() == "1" ? true : false,
-    enableAbsoluteLoanRecalculation: groupJSON['enable_absolute_loan_recalculation'].toString() == "1" ? true : false,
+    disableArrears:
+        groupJSON['disable_arrears'].toString() == "1" ? true : false,
+    enableAbsoluteLoanRecalculation:
+        groupJSON['enable_absolute_loan_recalculation'].toString() == "1"
+            ? true
+            : false,
     disableIgnoreContributionTransfers:
-        groupJSON['disable_ignore_contribution_transfers'].toString() == "1" ? true : false,
-    disableMemberEditProfile: groupJSON['disable_member_edit_profile'].toString() == "1" ? true : false,
+        groupJSON['disable_ignore_contribution_transfers'].toString() == "1"
+            ? true
+            : false,
+    disableMemberEditProfile:
+        groupJSON['disable_member_edit_profile'].toString() == "1"
+            ? true
+            : false,
     isGroupAdmin: groupJSON['is_admin'].toString() == "1" ? true : false,
     groupCurrency: groupJSON['group_currency'].toString(),
     groupCurrencyId: groupJSON['country_id'].toString(),
@@ -83,7 +104,8 @@ Group parseSingleGroup(dynamic groupJSON) {
   return newGroup;
 }
 
-List<CategorisedAccount> parseAccountsJson(List<dynamic> accountsJson, int typeId) {
+List<CategorisedAccount> parseAccountsJson(
+    List<dynamic> accountsJson, int typeId) {
   List<CategorisedAccount> accounts = [];
   int position = 0;
   for (var account in accountsJson) {
@@ -126,8 +148,12 @@ List<LoanType> parseLoanTypes(List<dynamic> groupLoanTypes) {
         disbursementDate: groupLoanTypesJSON['disbursement_date'].toString(),
         guarantors: groupLoanTypesJSON['guarantors'].toString(),
         latePaymentFines: groupLoanTypesJSON['late_payment_fines'].toString(),
-        outstandingPaymentFines: groupLoanTypesJSON['outstanding_payment_fines'].toString(),
-        isHidden: ParseHelper.getIntFromJson(groupLoanTypesJSON, "is_hidden") == 0 ? false : true,
+        outstandingPaymentFines:
+            groupLoanTypesJSON['outstanding_payment_fines'].toString(),
+        isHidden:
+            ParseHelper.getIntFromJson(groupLoanTypesJSON, "is_hidden") == 0
+                ? false
+                : true,
       );
       loanTypes.add(newLoanType);
     }
@@ -151,3 +177,50 @@ List<NamesListItem> withdrawalMethods = [
   NamesListItem(id: 4, name: "Account to Account Transfer"),
   NamesListItem(id: 5, name: "Equitel"),
 ];
+
+List<Map> depositTypes = [
+  {"id": 1, "name": "Contribution payment"},
+  {"id": 2, "name": "Fine payment"},
+  {"id": 3, "name": "Miscellaneous payment"},
+  {"id": 4, "name": "Income"},
+  {"id": 5, "name": "Loan repayment"},
+  {"id": 6, "name": "Bank loan disbursement"},
+  {"id": 7, "name": "Funds transfer"},
+  {"id": 8, "name": "Stock sale"},
+  {"id": 9, "name": "Asset sale"},
+  {"id": 10, "name": "Money market cash in"},
+  {"id": 11, "name": "Loan processing income"},
+  {"id": 12, "name": "External loan repayment"},
+];
+
+List<Map> withdrawalTypes = [
+  {"id": 1, "name": "Expense"},
+  {"id": 2, "name": "Asset Purchase Payment"},
+  {"id": 3, "name": "Loan Disbursement"},
+  {"id": 4, "name": "Stock Purchase"},
+  {"id": 5, "name": "Money Market Investment"},
+  {"id": 6, "name": "Money Market Investment Top Up"},
+  {"id": 7, "name": "Contribution Refund"},
+  {"id": 8, "name": "Bank Loan Repayment"},
+  {"id": 9, "name": "Funds Transfer"},
+  {"id": 10, "name": "External Lending"},
+  {"id": 11, "name": "Dividend"},
+];
+
+List<NamesListItem> depositTypeOptions = depositTypes
+    .map((type) => NamesListItem(id: type['id'], name: type['name']))
+    .toList();
+
+List<NamesListItem> withdrawalTypeOptions = withdrawalTypes
+    .map((type) => NamesListItem(id: type['id'], name: type['name']))
+    .toList();
+
+String getDepositType(depositId) {
+  return depositTypes
+      .firstWhere((deposit) => deposit['id'] == depositId)['name'];
+}
+
+String getWithdrawalType(withdrawalId) {
+  return withdrawalTypes
+      .firstWhere((withdrawal) => withdrawal['id'] == withdrawalId)['name'];
+}

@@ -4,8 +4,8 @@ import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposits.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawals.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-list.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawal-list.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-bank-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';
@@ -65,7 +65,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
 
   @override
   void didChangeDependencies() {
-    _fetchUnreconciledDeposits(context);
     super.didChangeDependencies();
   }
 
@@ -73,17 +72,6 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     await Navigator.of(context)
         .pushReplacementNamed(ChamasoftDashboard.namedRoute);
     return null;
-  }
-
-  Future<void> _fetchUnreconciledDeposits(BuildContext context) async {
-    List _deposits = await Provider.of<Groups>(context, listen: false)
-        .fetchGroupUnreconciledDeposits();
-    List _withdrawals = await Provider.of<Groups>(context, listen: false)
-        .fetchGroupUnreconciledWithdrawals();
-    setState(() {
-      deposits = _deposits;
-      withdrawals = _withdrawals;
-    });
   }
 
   @override
@@ -209,8 +197,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext ctx) => ReconcileDeposits())),
               margin: 0,
-              imageHeight: 100.0,
-              notifications: deposits.length)),
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
@@ -226,8 +213,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext ctx) => ReconcileWithdrawals())),
               margin: 0,
-              imageHeight: 100.0,
-              notifications: withdrawals.length)),
+              imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
