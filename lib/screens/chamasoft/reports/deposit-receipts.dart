@@ -402,27 +402,69 @@ class DepositCard extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
+                  padding: EdgeInsets.only(left: 12.0, right: 12.0),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.book_sharp,
-                        size: 24.0,
-                        semanticLabel: 'Void',
-                      ),
-                      Icon(
-                        Icons.ios_share,
-                        size: 24.0,
-                        semanticLabel: 'Share',
-                      ),
-                      Icon(
-                        Icons.download,
-                        size: 24.0,
-                        semanticLabel: 'View',
-                      )
-                    ],
-                  ),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        Column(
+                          children: <Widget>[
+                            Icon(
+                              LineAwesomeIcons.bookmark,
+                              size: 24.0,
+                              semanticLabel: 'Void',
+                            ),
+                            customTitleWithWrap(text: 'Void', fontSize: 12.0)
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Icon(
+                              LineAwesomeIcons.share,
+                              size: 24.0,
+                              semanticLabel: 'Share',
+                            ),
+                            customTitleWithWrap(text: 'Share', fontSize: 12.0)
+                          ],
+                        ),
+                        Column(
+                          children: <Widget>[
+                            Icon(
+                              LineAwesomeIcons.eye,
+                              size: 24.0,
+                              semanticLabel: 'View',
+                            ),
+                            customTitleWithWrap(text: 'View', fontSize: 12.0)
+                          ],
+                        ),
+                      ]),
+                ),
+                SizedBox(
+                  height: 10,
                 )
+
+                // Container(
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                //     // children: [
+                //     //   Icon(
+                //     //     Icons.book_sharp,
+                //     //     size: 24.0,
+                //     //     semanticLabel: 'Void',
+                //     //   ),
+                //     //   Icon(
+                //     //     Icons.ios_share,
+                //     //     size: 24.0,
+                //     //     semanticLabel: 'Share',
+                //     //   ),
+                //     //   Icon(
+                //     //     Icons.download,
+                //     //     size: 24.0,
+                //     //     semanticLabel: 'View',
+                //     //   )
+                //     // ],
+                //   ),
+                // )
 
 //                Row(
 //                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
