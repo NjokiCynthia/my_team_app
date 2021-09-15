@@ -285,6 +285,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   }
 }
 
+// ignore: must_be_immutable
 class DepositCard extends StatelessWidget {
   DepositCard({Key key, @required this.deposit, this.details, this.voidItem})
       : super(key: key);
@@ -315,6 +316,8 @@ class DepositCard extends StatelessWidget {
             name: 'screenshot-${DateTime.now()}');
         print(result);
         print('Screenshot Saved' + result);
+
+        Share.shareFiles([result.path]);
       }
     } catch (e) {
       print(e);
@@ -358,6 +361,7 @@ class DepositCard extends StatelessWidget {
                                 fontSize: 16.0,
                                 // ignore: deprecated_member_use
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
@@ -366,6 +370,7 @@ class DepositCard extends StatelessWidget {
                                 textAlign: TextAlign.start,
                                 // ignore: deprecated_member_use
                                 color:
+                                    // ignore: deprecated_member_use
                                     Theme.of(context).textSelectionHandleColor,
                               )
                             ],
@@ -413,6 +418,7 @@ class DepositCard extends StatelessWidget {
                                   color:
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
                               subtitle1(
@@ -420,6 +426,7 @@ class DepositCard extends StatelessWidget {
                                   color:
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                   textAlign: TextAlign.start)
                             ],
@@ -432,6 +439,7 @@ class DepositCard extends StatelessWidget {
                                   color:
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                   textAlign: TextAlign.end),
                               subtitle1(
@@ -439,6 +447,7 @@ class DepositCard extends StatelessWidget {
                                   color:
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                   textAlign: TextAlign.end)
                             ],
