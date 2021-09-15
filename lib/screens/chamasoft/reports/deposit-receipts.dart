@@ -401,6 +401,29 @@ class DepositCard extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
+                Container(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Icon(
+                        Icons.book_sharp,
+                        size: 24.0,
+                        semanticLabel: 'Void',
+                      ),
+                      Icon(
+                        Icons.ios_share,
+                        size: 24.0,
+                        semanticLabel: 'Share',
+                      ),
+                      Icon(
+                        Icons.download,
+                        size: 24.0,
+                        semanticLabel: 'View',
+                      )
+                    ],
+                  ),
+                )
+
 //                Row(
 //                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                  crossAxisAlignment: CrossAxisAlignment.center,
