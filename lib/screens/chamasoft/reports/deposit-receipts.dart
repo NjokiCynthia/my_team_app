@@ -14,7 +14,6 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
-import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -495,6 +494,7 @@ class DepositCard extends StatelessWidget {
                                             textAlign: TextAlign.start,
                                             // ignore: deprecated_member_use
                                             color: Theme.of(context)
+                                                // ignore: deprecated_member_use
                                                 .textSelectionHandleColor),
                                         content: customTitleWithWrap(
                                             text:
