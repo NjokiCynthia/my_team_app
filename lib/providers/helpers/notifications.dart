@@ -111,9 +111,9 @@ class NotificationManager {
       //           channel.id,
       //           channel.name,
       //           channel.description,
-      //           // ignore: todo
-      //           // TODO add a proper drawable resource to android, for now using
-      //           //      one that already exists in example app.
+                // ignore: todo
+                // TODO add a proper drawable resource to android, for now using
+                //      one that already exists in example app.
       //           icon: 'launch_background',
       //         ),
       //       ));
