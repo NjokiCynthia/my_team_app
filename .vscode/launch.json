@@ -1,46 +1,49 @@
 {
-    "version": "0.2.1",
-    "configurations": [
-    
-      {
-        "name": "Chamasoft DEV",
-        "request": "launch",
-        "type": "dart",
-        "args": [
-          "--flavor",
-          "chamasoftDev",
-          "--dart-define=flavor=chamasoftDev",
-        ]
-      },
-      {
-        "name": "Chamasoft PROD",
-        "request": "launch",
-        "type": "dart",
-        "args": [
-          "--flavor",
-          "chamasoftProd",
-          "--dart-define=flavor=chamasoftProd",
-        ]
-      },
-      {
-        "name": "Eazzyclub DEV",
-        "request": "launch",
-        "type": "dart",
-        "args": [
-          "--flavor",
-          "eazzyclubDev",
-          "--dart-define=flavor=eazzyclubDev",
-        ]
-      },
-      {
-        "name": "Eazzyclub PROD",
-        "request": "launch",
-        "type": "dart",
-        "args": [
-          "--flavor",
-          "eazzyclubProd",
-          "--dart-define=flavor=eazzyclubProd",
-        ]
-      },
-    ]
-  }
+  "version": "0.2.1",
+  "configurations": [
+    {
+      "name": "Chamasoft DEV",
+      "request": "launch",
+      "type": "dart",
+      "outputCapture": "std",
+      "args": [
+        "--flavor",
+        "chamasoftDev",
+        "--dart-define=flavor=chamasoftDev",
+      ]
+    },
+    {
+      "name": "Chamasoft PROD",
+      "request": "launch",
+      "outputCapture": "std",
+      "type": "dart",
+      "args": [
+        "--flavor",
+        "chamasoftProd",
+        "--dart-define=flavor=chamasoftProd",
+      ]
+    },
+    {
+      "name": "Eazzyclub DEV",
+      "request": "launch",
+      "type": "dart",
+      "outputCapture": "std",
+      "args": [
+        "--flavor",
+        "eazzyclubDev",
+        "--dart-define=flavor=eazzyclubDev",
+      ]
+    },
+    {
+      "name": "Eazzyclub PROD",
+      "request": "launch",
+      "type": "dart",
+      "outputCapture": "std",
+      "args": [
+        "--flavor",
+        "eazzyclubProd",
+        "--dart-define=flavor=eazzyclubProd",
+      ]
+    },
+  ]
+}

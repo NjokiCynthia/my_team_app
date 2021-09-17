@@ -335,28 +335,28 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    // ignore: deprecated_member_use
-                    child: RaisedButton(
-                      onPressed: () => {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => DetailReciept()),
-                        // )
+                  // Align(
+                  //   alignment: Alignment.bottomRight,
+                  //   // ignore: deprecated_member_use
+                  //   child: RaisedButton(
+                  //     onPressed: () => {
+                  //       // Navigator.push(
+                  //       //   context,
+                  //       //   MaterialPageRoute(
+                  //       //       builder: (context) => DetailReciept()),
+                  //       // )
 
-                        Navigator.of(context).pushNamed(PinLogin.namedRoute)
-                      },
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.add_alarm), // icon
-                          Text("Test Pin"), // text
-                        ],
-                      ),
-                    ),
-                  ),
+                  //       Navigator.of(context).pushNamed(PinLogin.namedRoute)
+                  //     },
+                  //     child: Column(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: <Widget>[
+                  //         Icon(Icons.add_alarm), // icon
+                  //         Text("Test Pin"), // text
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                 ],
               ),
             ),

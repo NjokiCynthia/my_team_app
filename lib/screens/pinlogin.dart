@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/screens/secrity_question.dart';
+import 'package:chamasoft/screens/security_question.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';

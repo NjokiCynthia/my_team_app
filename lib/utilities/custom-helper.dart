@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:country_code_picker/country_code.dart';
 import 'package:image/image.dart';
@@ -10,9 +11,34 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomHelper {
-  static const String baseUrl ="https://uat.chamasoft.com";
-  static const String prodBaseUrl = "https://app.chamasoft.com";
-  static const String imageUrl = baseUrl + "/uploads/groups/";
+  static final String _flavor =  Config.APP_FLAVOR.toLowerCase();
+  
+  static final String baseUrl =  _getBaseUrl();
+  static const String chamasoftProdUrl = "https://app.chamasoft.com";
+  static const String chamasoftUatUrl = "https://uat.chamasoft.com";
+  static const String EazzychamaUatUrl = "https://app.eazzychamademo.com";
+  static const String EazzychamaProdUrl = "https://app.eazzychama.co.ke";
+  static const String EazzykikundiProdUrl = "https://app.eazzykikundi.com";
+  static const String EazzyclubProdUrl = "https://app.eazzyclub.co.ug";
+  static final String imageUrl = baseUrl + "/uploads/groups/";
+
+  static  String _getBaseUrl() {
+    String _url = chamasoftUatUrl;
+    print("the flavor $_flavor");
+    if(_flavor.contains("eazzyclub"))
+      _url = EazzyclubProdUrl;
+    else if(_flavor.contains("eazzychamadev"))
+      _url = EazzychamaProdUrl;
+    else if(_flavor.contains("eazzykikundi"))
+      _url = EazzykikundiProdUrl;
+    else if(_flavor.contains("eazzychama"))
+     _url = EazzychamaUatUrl;   
+    else if(_flavor.contains("chamasoftdev"))
+      _url = chamasoftUatUrl;
+    else if(_flavor.contains("chamasoft"))
+      _url = chamasoftProdUrl;
+    return _url;
+  }
 
   static bool validPhone(String phone) {
     Pattern pattern = r'(^(?:[+0]9)?[0-9]{9,12}$)';

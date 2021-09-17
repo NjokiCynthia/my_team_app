@@ -206,7 +206,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> generatePin(String identity,String appSignature) async {
-    const url = EndpointUrl.GENERATE_OTP;
+    final url = EndpointUrl.GENERATE_OTP;
     final postRequest = json.encode({
       "identity": identity,
       "appSignature": appSignature,
@@ -222,7 +222,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> resendPin(String identity,String appSignature) async {
-    const url = EndpointUrl.RESEND_OTP;
+    final url = EndpointUrl.RESEND_OTP;
     final postRequest = json.encode({
       "identity": identity,
       "appSignature": appSignature,
@@ -238,7 +238,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<dynamic> verifyPin(Map<String, String> object) async {
-    const url = EndpointUrl.VERIFY_OTP;
+    final url = EndpointUrl.VERIFY_OTP;
     final postRequest = json.encode(object);
 
     try {
@@ -294,7 +294,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<bool> updateUserToken(Map<String, String> object) async {
-    const url = EndpointUrl.UPDATE_USER_MOBILE_TOKEN;
+    final url = EndpointUrl.UPDATE_USER_MOBILE_TOKEN;
     final postRequest = json.encode(object);
     try {
       await PostToServer.post(postRequest, url);
@@ -313,7 +313,7 @@ class Auth with ChangeNotifier {
       if (userObject['avatar'] != null) {
         newAvatar = base64Encode(userObject['avatar'].readAsBytesSync());
       }
-      const url = EndpointUrl.SIGNUP;
+      final url = EndpointUrl.SIGNUP;
       final postRequest = json.encode({
         "identity": userObject['identity'],
         "first_name": userObject['firstName'],
@@ -364,7 +364,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> updateUserName(String name) async {
-    const url = EndpointUrl.UPDATE_USER_NAME;
+    final url = EndpointUrl.UPDATE_USER_NAME;
     final postRequest = json.encode({
       "name": name.trim(),
       "user_id": _userId,
@@ -386,7 +386,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> updatePhoneNumber(String name) async {
-    const url = EndpointUrl.UPDATE_USER_NAME;
+    final url = EndpointUrl.UPDATE_USER_NAME;
     final postRequest = json.encode({
       "name": name.trim(),
       "user_id": _userId,
@@ -408,7 +408,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> updateUserEmailAddress(String emailAddress) async {
-    const url = EndpointUrl.UPDATE_USER_EMAIL_ADDRESS;
+    final url = EndpointUrl.UPDATE_USER_EMAIL_ADDRESS;
     final postRequest = json.encode({
       "email": emailAddress.trim(),
       "user_id": _userId,
@@ -426,7 +426,7 @@ class Auth with ChangeNotifier {
   }
 
   Future<void> updateUserAvatar(io.File avatar) async {
-    const url = EndpointUrl.EDIT_NEW_USER_PHOTO;
+    final url = EndpointUrl.EDIT_NEW_USER_PHOTO;
     try {
       final resizedImage = await CustomHelper.resizeFileImage(avatar, 300);
       print("resizedImage : $resizedImage");
