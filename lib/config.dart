@@ -11,7 +11,6 @@ class Config {
     String _name = 'Chamasoft';
     String _flavor =
         APP_FLAVOR.substring(0, APP_FLAVOR.length - 3).toLowerCase();
-    print("_flavor");
     switch (_flavor) {
       case 'eazzyclub':
         _name = "EazzyClub";

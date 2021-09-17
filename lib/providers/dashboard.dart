@@ -396,7 +396,7 @@ class Dashboard with ChangeNotifier {
 
   Future<void> getMemberDashboardData(String groupId) async {
     try {
-      const url = EndpointUrl.GET_MEMBER_DASHBOARD_DATA;
+      final url = EndpointUrl.GET_MEMBER_DASHBOARD_DATA;
       try {
         if (!memberGroupDataExists(groupId)) {
           final postRequest = json.encode({
@@ -421,7 +421,7 @@ class Dashboard with ChangeNotifier {
 
   Future<void> getGroupDashboardData(String groupId) async {
     try {
-      const url = EndpointUrl.GET_GROUP_DASHBOARD_DATA;
+      final url = EndpointUrl.GET_GROUP_DASHBOARD_DATA;
       try {
         if (!groupDataExists(groupId)) {
           final postRequest = json.encode({
@@ -451,7 +451,7 @@ class Dashboard with ChangeNotifier {
   Future<void> getGroupDepositVWithdrawals(String groupId) async {
     print("called");
     try {
-      const url = EndpointUrl.GET_GROUP_CHART_DATA;
+      final url = EndpointUrl.GET_GROUP_CHART_DATA;
       try {
         if (groupDataExists(groupId)) {
           final postRequest = json.encode({

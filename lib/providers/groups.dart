@@ -732,7 +732,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> updateGroupAvatar(io.File avatar) async {
-    const url = EndpointUrl.EDIT_NEW_GROUP_PHOTO;
+    final url = EndpointUrl.EDIT_NEW_GROUP_PHOTO;
     try {
       try {
         final newAvatar = base64Encode(avatar.readAsBytesSync());
@@ -752,7 +752,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> updateGroupProfile() async {
-    const url = EndpointUrl.GET_GROUP_DATA;
+    final url = EndpointUrl.GET_GROUP_DATA;
     final postRequest = json.encode({
       "user_id": _userId,
       "group_id": _currentGroupId,
@@ -1503,7 +1503,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchAndSetUserGroups() async {
-    const url = EndpointUrl.GET_GROUPS;
+    final url = EndpointUrl.GET_GROUPS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -1583,7 +1583,7 @@ class Groups with ChangeNotifier {
     int countryId,
     File avatar,
   }) async {
-    const url = EndpointUrl.CREATE_GROUP;
+    final url = EndpointUrl.CREATE_GROUP;
 
     try {
       String newAvatar;
@@ -1615,7 +1615,7 @@ class Groups with ChangeNotifier {
 
   Future<dynamic> syncMeeting(Map<String, dynamic> meeting) async {
     try {
-      const url = EndpointUrl.CREATE_MEETING;
+      final url = EndpointUrl.CREATE_MEETING;
       try {
         meeting['user_id'] = _userId;
         final postRequest = json.encode(meeting);
@@ -1647,7 +1647,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> fetchMeetings() async {
-    const url = EndpointUrl.GET_MEETINGS;
+    final url = EndpointUrl.GET_MEETINGS;
     try {
       final postRequest = json.encode({
         "group_id": _currentGroupId,
@@ -1754,7 +1754,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchAccounts() async {
-    const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
+    final url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
     List<dynamic> _localData = [];
     try {
       final postRequest = json.encode({
@@ -1818,7 +1818,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> fetchBankAccount(int bankAccountId) async {
-    const url = EndpointUrl.GET_BANK_ACCOUNTS;
+    final url = EndpointUrl.GET_BANK_ACCOUNTS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -1847,7 +1847,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> fetchSaccoAccount(int saccoAccountId) async {
-    const url = EndpointUrl.GET_SACCO_ACCOUNTS;
+    final url = EndpointUrl.GET_SACCO_ACCOUNTS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -1876,7 +1876,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> fetchMobileMoneyAccount(int mobileMoneyAccountId) async {
-    const url = EndpointUrl.GET_MOBILE_MONEY_ACCOUNTS;
+    final url = EndpointUrl.GET_MOBILE_MONEY_ACCOUNTS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -1906,7 +1906,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> fetchPettyCashAccount(int pettyCashAccountId) async {
-    const url = EndpointUrl.GET_PETTY_CASH_ACCOUNTS;
+    final url = EndpointUrl.GET_PETTY_CASH_ACCOUNTS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -1936,7 +1936,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchContributions() async {
-    const url = EndpointUrl.GET_GROUP_CONTRIBUTIONS;
+    final url = EndpointUrl.GET_GROUP_CONTRIBUTIONS;
     List<dynamic> _localData = [];
     try {
       final postRequest = json.encode({
@@ -2000,7 +2000,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchPayContributions() async {
-    const url = EndpointUrl.GET_GROUP_PAY_CONTRIBUTIONS;
+    final url = EndpointUrl.GET_GROUP_PAY_CONTRIBUTIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2036,7 +2036,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchExpenses() async {
-    const url = EndpointUrl.GET_EXPENSES_SUMMARY;
+    final url = EndpointUrl.GET_EXPENSES_SUMMARY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2060,7 +2060,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchFineTypes() async {
-    const url = EndpointUrl.GET_GROUP_FINE_OPTIONS;
+    final url = EndpointUrl.GET_GROUP_FINE_OPTIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2097,7 +2097,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchExpenseCategories() async {
-    const url = EndpointUrl.GET_GROUP_EXPENSE_CATEGORIES;
+    final url = EndpointUrl.GET_GROUP_EXPENSE_CATEGORIES;
     List<Map<String, dynamic>> _localData = [];
     try {
       final postRequest = json.encode({
@@ -2160,7 +2160,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchIncomeCategories() async {
-    const url = EndpointUrl.GET_GROUP_INCOME_CATEGORIES;
+    final url = EndpointUrl.GET_GROUP_INCOME_CATEGORIES;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2185,7 +2185,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchDetailedIncomeCategories() async {
-    const url = EndpointUrl.GET_GROUP_INCOME_CATEGORIES_LIST;
+    final url = EndpointUrl.GET_GROUP_INCOME_CATEGORIES_LIST;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2210,7 +2210,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchAssetCategories() async {
-    const url = EndpointUrl.GET_GROUP_ASSET_CATEGORIES;
+    final url = EndpointUrl.GET_GROUP_ASSET_CATEGORIES;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2235,7 +2235,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchLoanTypes() async {
-    const url = EndpointUrl.GET_GROUP_LOAN_TYPES;
+    final url = EndpointUrl.GET_GROUP_LOAN_TYPES;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2323,7 +2323,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchMembers() async {
-    const url = EndpointUrl.GET_GROUP_MEMBERS;
+    final url = EndpointUrl.GET_GROUP_MEMBERS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2385,7 +2385,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchGroupDepositors() async {
-    const url = EndpointUrl.GET_GROUP_DEPOSITOR_OPTIONS;
+    final url = EndpointUrl.GET_GROUP_DEPOSITOR_OPTIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2413,7 +2413,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchUnAssignedGroupRoles() async {
-    const url = EndpointUrl.GET_GROUP_UNASSIGNED_ROLES;
+    final url = EndpointUrl.GET_GROUP_UNASSIGNED_ROLES;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2435,7 +2435,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> addGroupMembers(List<Map<String, String>> members) async {
-    const url = EndpointUrl.ADD_MEMBERS;
+    final url = EndpointUrl.ADD_MEMBERS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2457,7 +2457,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> getContributionDetails(String id) async {
-    const url = EndpointUrl.GET_CONTRIBUTION_DETAILS;
+    final url = EndpointUrl.GET_CONTRIBUTION_DETAILS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2505,7 +2505,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> addContributionStepTwo(Map<String, dynamic> formData) async {
-    const url = EndpointUrl.ADD_MEMBERS_CONTRIBUTION_SETTING;
+    final url = EndpointUrl.ADD_MEMBERS_CONTRIBUTION_SETTING;
     try {
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
@@ -2528,7 +2528,7 @@ class Groups with ChangeNotifier {
 
   Future<dynamic> addContributionStepThree(
       Map<String, dynamic> formData) async {
-    const url = EndpointUrl.FINE_CONTRIBUTION_SETTING;
+    final url = EndpointUrl.FINE_CONTRIBUTION_SETTING;
     try {
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
@@ -2550,7 +2550,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> getLoanDetails(String id) async {
-    const url = EndpointUrl.GET_LOAN_TYPE_DETAILS;
+    final url = EndpointUrl.GET_LOAN_TYPE_DETAILS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2572,7 +2572,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<bool> completeGroupSetup(String referralCode) async {
-    const url = EndpointUrl.COMPLETE_GROUP_SETUP;
+    final url = EndpointUrl.COMPLETE_GROUP_SETUP;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2695,7 +2695,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchCountryOptions() async {
-    const url = EndpointUrl.GET_COUNTRY_LIST;
+    final url = EndpointUrl.GET_COUNTRY_LIST;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2719,7 +2719,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchCurrencyOptions() async {
-    const url = EndpointUrl.GET_CURRENCY_LIST;
+    final url = EndpointUrl.GET_CURRENCY_LIST;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2743,7 +2743,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> updateGroupName(String name) async {
-    const url = EndpointUrl.UPDATE_GROUP_NAME;
+    final url = EndpointUrl.UPDATE_GROUP_NAME;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2769,7 +2769,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> updateGroupEmail(String email) async {
-    const url = EndpointUrl.UPDATE_GROUP_EMAIL;
+    final url = EndpointUrl.UPDATE_GROUP_EMAIL;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2795,7 +2795,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> updateGroupPhoneNumber(String phone) async {
-    const url = EndpointUrl.UPDATE_GROUP_PHONE_NUMBER;
+    final url = EndpointUrl.UPDATE_GROUP_PHONE_NUMBER;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2821,7 +2821,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> updateGroupCountry(int countryId) async {
-    const url = EndpointUrl.UPDATE_GROUP_COUNTRY;
+    final url = EndpointUrl.UPDATE_GROUP_COUNTRY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2847,7 +2847,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> updateGroupCurrency(int currencyId) async {
-    const url = EndpointUrl.UPDATE_GROUP_CURRENCY;
+    final url = EndpointUrl.UPDATE_GROUP_CURRENCY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2884,7 +2884,7 @@ class Groups with ChangeNotifier {
     String disableMemberEditProfile,
     String enableAbsoluteLoanRecalculation,
   }) async {
-    const url = EndpointUrl.UPDATE_GROUP_SETTINGS;
+    final url = EndpointUrl.UPDATE_GROUP_SETTINGS;
 
     try {
       final postRequest = json.encode({
@@ -2919,7 +2919,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchBankOptions() async {
-    const url = EndpointUrl.GET_BANKS;
+    final url = EndpointUrl.GET_BANKS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2943,7 +2943,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchBankBranchOptions(String bankId) async {
-    const url = EndpointUrl.GET_BANK_BRANCHES;
+    final url = EndpointUrl.GET_BANK_BRANCHES;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2968,7 +2968,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchMobileMoneyProviderOptions() async {
-    const url = EndpointUrl.GE_MOBILE_PROVIDERS;
+    final url = EndpointUrl.GE_MOBILE_PROVIDERS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -2993,7 +2993,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchSaccoOptions() async {
-    const url = EndpointUrl.GET_SACCOS;
+    final url = EndpointUrl.GET_SACCOS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3017,7 +3017,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchSaccoBranchOptions(String saccoId) async {
-    const url = EndpointUrl.GET_SACCO_BRANCHES;
+    final url = EndpointUrl.GET_SACCO_BRANCHES;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3048,7 +3048,7 @@ class Groups with ChangeNotifier {
     String bankId,
     String initialBalance,
   }) async {
-    const url = EndpointUrl.ADD_BANK_ACCOUNT;
+    final url = EndpointUrl.ADD_BANK_ACCOUNT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3082,7 +3082,7 @@ class Groups with ChangeNotifier {
     String bankId,
     String initialBalance,
   }) async {
-    const url = EndpointUrl.EDIT_BANK_ACCOUNT;
+    final url = EndpointUrl.EDIT_BANK_ACCOUNT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3118,7 +3118,7 @@ class Groups with ChangeNotifier {
     String saccoId,
     String initialBalance,
   }) async {
-    const url = EndpointUrl.ADD_SACCO_ACCOUNT;
+    final url = EndpointUrl.ADD_SACCO_ACCOUNT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3155,7 +3155,7 @@ class Groups with ChangeNotifier {
     String saccoId,
     String initialBalance,
   }) async {
-    const url = EndpointUrl.EDIT_SACCO_ACCOUNT;
+    final url = EndpointUrl.EDIT_SACCO_ACCOUNT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3192,7 +3192,7 @@ class Groups with ChangeNotifier {
     String initialBalance,
     String mobileMoneyProviderId,
   }) async {
-    const url = EndpointUrl.ADD_MOBILE_MONEY_ACCOUNT;
+    final url = EndpointUrl.ADD_MOBILE_MONEY_ACCOUNT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3228,7 +3228,7 @@ class Groups with ChangeNotifier {
     String initialBalance,
     String mobileMoneyProviderId,
   }) async {
-    const url = EndpointUrl.EDIT_MOBILE_MONEY_ACCOUNT;
+    final url = EndpointUrl.EDIT_MOBILE_MONEY_ACCOUNT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3258,7 +3258,7 @@ class Groups with ChangeNotifier {
   Future<void> createPettyCashAccount({
     String accountName,
   }) async {
-    const url = EndpointUrl.ADD_PETTY_CASH_ACCOUNT;
+    final url = EndpointUrl.ADD_PETTY_CASH_ACCOUNT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3286,7 +3286,7 @@ class Groups with ChangeNotifier {
     String id,
     String accountName,
   }) async {
-    const url = EndpointUrl.EDIT_PETTY_CASH_ACCOUNT;
+    final url = EndpointUrl.EDIT_PETTY_CASH_ACCOUNT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3314,7 +3314,7 @@ class Groups with ChangeNotifier {
     String name,
     String amount,
   }) async {
-    const url = EndpointUrl.CREATE_FINE_CATEGORY;
+    final url = EndpointUrl.CREATE_FINE_CATEGORY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3344,7 +3344,7 @@ class Groups with ChangeNotifier {
     String name,
     String amount,
   }) async {
-    const url = EndpointUrl.EDIT_FINE_CATEGORY;
+    final url = EndpointUrl.EDIT_FINE_CATEGORY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3446,7 +3446,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> fetchFineCategory(int fineCategoryId) async {
-    const url = EndpointUrl.GET_GROUP_FINE_CATEGORIES_LIST;
+    final url = EndpointUrl.GET_GROUP_FINE_CATEGORIES_LIST;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3476,7 +3476,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> fetchFineCategories() async {
-    const url = EndpointUrl.GET_GROUP_FINE_CATEGORIES_LIST;
+    final url = EndpointUrl.GET_GROUP_FINE_CATEGORIES_LIST;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3553,7 +3553,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> fetchExpenseCategory(int categoryId) async {
-    const url = EndpointUrl.GET_GROUP_EXPENSE_CATEGORIES;
+    final url = EndpointUrl.GET_GROUP_EXPENSE_CATEGORIES;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3586,7 +3586,7 @@ class Groups with ChangeNotifier {
     String name,
     String description,
   }) async {
-    const url = EndpointUrl.CREATE_EXPENSE_CATEGORY;
+    final url = EndpointUrl.CREATE_EXPENSE_CATEGORY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3616,7 +3616,7 @@ class Groups with ChangeNotifier {
     String name,
     String description,
   }) async {
-    const url = EndpointUrl.EDIT_EXPENSE_CATEGORY;
+    final url = EndpointUrl.EDIT_EXPENSE_CATEGORY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3642,7 +3642,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchGroupNotifications() async {
-    const url = EndpointUrl.GET_GROUP_NOTIFICATIONS;
+    final url = EndpointUrl.GET_GROUP_NOTIFICATIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3668,7 +3668,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<String> fetchNotificationCount(String bankId) async {
-    const url = EndpointUrl.GET_GROUP_NOTIFICATIONS;
+    final url = EndpointUrl.GET_GROUP_NOTIFICATIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3690,7 +3690,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> markNotificationAsRead(String notificationId) async {
-    const url = EndpointUrl.MARK_AS_READ_NOTIFICATION;
+    final url = EndpointUrl.MARK_AS_READ_NOTIFICATION;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3712,7 +3712,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> markAllNotificationsAsRead() async {
-    const url = EndpointUrl.MARK_ALL_AS_READ_NOTIFICATION;
+    final url = EndpointUrl.MARK_ALL_AS_READ_NOTIFICATION;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3734,7 +3734,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchReportAccountBalances() async {
-    const url = EndpointUrl.GET_ACCOUNT_BALANCES;
+    final url = EndpointUrl.GET_ACCOUNT_BALANCES;
 
     try {
       final postRequest = json.encode({
@@ -3760,7 +3760,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchTransactionStatement() async {
-    const url = EndpointUrl.GET_TRANSACTION_STATEMENT;
+    final url = EndpointUrl.GET_TRANSACTION_STATEMENT;
 
     try {
       final postRequest = json.encode({
@@ -3785,7 +3785,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchGroupBankLoans() async {
     //addBankLoans
-    const url = EndpointUrl.GET_GROUP_BANK_LOAN_OPTIONS;
+    final url = EndpointUrl.GET_GROUP_BANK_LOAN_OPTIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3808,7 +3808,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchGroupMembersOngoingLoans() async {
-    const url = EndpointUrl.GET_MEMBERs_LOAN_TYPE_OPTIONS;
+    final url = EndpointUrl.GET_MEMBERs_LOAN_TYPE_OPTIONS;
     List<dynamic> _localData = [];
     try {
       final postRequest = json.encode({
@@ -3861,7 +3861,7 @@ class Groups with ChangeNotifier {
   ///*************************Contributions Summary and Fines Summary*****************************/
 
   Future<dynamic> getGroupContributionSummary() async {
-    const url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
+    final url = EndpointUrl.GET_CONTRIBUTION_SUMMARY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3892,7 +3892,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<dynamic> getGroupFinesSummary() async {
-    const url = EndpointUrl.GET_FINE_SUMMARY;
+    final url = EndpointUrl.GET_FINE_SUMMARY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3920,7 +3920,7 @@ class Groups with ChangeNotifier {
 
   /// ***********************Expense Summary*****************************
   Future<void> fetchExpenseSummary() async {
-    const url = EndpointUrl.GET_EXPENSES_SUMMARY;
+    final url = EndpointUrl.GET_EXPENSES_SUMMARY;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -3945,7 +3945,7 @@ class Groups with ChangeNotifier {
 
   /// ***********************Loans Summary*****************************
   Future<void> fetchLoansSummary() async {
-    const url = EndpointUrl.GET_LOANS_SUMMARY;
+    final url = EndpointUrl.GET_LOANS_SUMMARY;
 
     try {
       final postRequest = json.encode({
@@ -3997,7 +3997,7 @@ class Groups with ChangeNotifier {
 
   /// ***********************Member Loans*****************************
   Future<void> fetchMemberLoans() async {
-    const url = EndpointUrl.GET_GROUP_LOAN_LIST;
+    final url = EndpointUrl.GET_GROUP_LOAN_LIST;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -4022,7 +4022,7 @@ class Groups with ChangeNotifier {
 
   /// ***********************Member Loan Statement*****************************/
   Future<void> fetchLoanStatement(int loanId) async {
-    const url = EndpointUrl.GET_LOAN_STATEMENT;
+    final url = EndpointUrl.GET_LOAN_STATEMENT;
 
     try {
       final postRequest = json.encode(
@@ -4046,7 +4046,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchDeposits(String sortOption, List<int> filterList,
       List<String> memberList, int lowerLimit) async {
-    const url = EndpointUrl.GET_DEPOSITS_LIST;
+    final url = EndpointUrl.GET_DEPOSITS_LIST;
 
     try {
       final postRequest = json.encode({
@@ -4076,7 +4076,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchWithdrawals(String sortOption, List<int> filterList,
       List<String> memberList, int lowerLimit) async {
-    const url = EndpointUrl.GET_GROUP_WITHDRAWAL_LIST;
+    final url = EndpointUrl.GET_GROUP_WITHDRAWAL_LIST;
 
     try {
       final postRequest = json.encode({
@@ -4106,7 +4106,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchWithdrawalRequests(String sortOption, List<int> filterList,
       List<String> memberList, int lowerLimit) async {
-    const url = EndpointUrl.GET_GROUP_WITHDRAWAL_REQUESTS;
+    final url = EndpointUrl.GET_GROUP_WITHDRAWAL_REQUESTS;
 
     try {
       final postRequest = json.encode({
@@ -4135,7 +4135,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> fetchWithdrawalRequestDetails(int id) async {
-    const url = EndpointUrl.VIEW_WITHDRAWAL_REQUEST;
+    final url = EndpointUrl.VIEW_WITHDRAWAL_REQUEST;
 
     try {
       final postRequest = json
@@ -4158,7 +4158,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> respondToWithdrawalRequest(Map<String, String> formData) async {
-    const url = EndpointUrl.RESPOND_TO_WITHDRAWAL_REQUEST;
+    final url = EndpointUrl.RESPOND_TO_WITHDRAWAL_REQUEST;
 
     try {
       formData["user_id"] = _userId;
@@ -4179,7 +4179,7 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> cancelWithdrawalRequest(Map<String, String> formData) async {
-    const url = EndpointUrl.CANCEL_WITHDRAWAL_REQUEST;
+    final url = EndpointUrl.CANCEL_WITHDRAWAL_REQUEST;
 
     try {
       formData["user_id"] = _userId;
@@ -4202,7 +4202,7 @@ class Groups with ChangeNotifier {
   // ignore: todo
   /// ********************TODO: consolidate with fetchAccounts()********************/
   Future<void> temporaryFetchAccounts() async {
-    const url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
+    final url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -4374,7 +4374,7 @@ class Groups with ChangeNotifier {
   Future<String> recordContributionPayments(
       Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
+      final url = EndpointUrl.NEW_RECORD_CONTRIBUTION_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4400,7 +4400,7 @@ class Groups with ChangeNotifier {
 
   Future<String> recordMemberLoan(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.RECORD_MEMBER_LOAN;
+      final url = EndpointUrl.RECORD_MEMBER_LOAN;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4425,7 +4425,7 @@ class Groups with ChangeNotifier {
 
   Future<String> recordLoanRepayment(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.RECORD_LOAN_REPAYMENTS;
+      final url = EndpointUrl.RECORD_LOAN_REPAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['request_id'] =
@@ -4449,7 +4449,7 @@ class Groups with ChangeNotifier {
 
   Future<String> recordFinePayments(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.NEW_RECORD_FINE_PAYMENTS;
+      final url = EndpointUrl.NEW_RECORD_FINE_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4475,7 +4475,7 @@ class Groups with ChangeNotifier {
 
   Future<String> recordIncomePayment(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.NEW_RECORD_INCOME;
+      final url = EndpointUrl.NEW_RECORD_INCOME;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4501,7 +4501,7 @@ class Groups with ChangeNotifier {
   Future<String> recordMiscellaneousPayments(
       Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.NEW_RECORD_MISCELLANEOUS_PAYMENTS;
+      final url = EndpointUrl.NEW_RECORD_MISCELLANEOUS_PAYMENTS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4526,7 +4526,7 @@ class Groups with ChangeNotifier {
 
   Future<String> recordBankLoanIncome(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.RECORD_BANK_LOAN;
+      final url = EndpointUrl.RECORD_BANK_LOAN;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4552,7 +4552,7 @@ class Groups with ChangeNotifier {
 
   Future<String> recordExpensePayment(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.NEW_RECORD_EXPENSES;
+      final url = EndpointUrl.NEW_RECORD_EXPENSES;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4576,7 +4576,7 @@ class Groups with ChangeNotifier {
 
   Future<String> recordBankLoanRepayment(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.RECORD_BANK_LOAN_REPAYMENT;
+      final url = EndpointUrl.RECORD_BANK_LOAN_REPAYMENT;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4602,7 +4602,7 @@ class Groups with ChangeNotifier {
 
   Future<String> recordContributionRefund(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.RECORD_CONTRIBUTION_REFUND;
+      final url = EndpointUrl.RECORD_CONTRIBUTION_REFUND;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['account_id'] = getAccountFormId(formData['account_id']);
@@ -4627,7 +4627,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fineMembers(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.NEW_FINE_MEMBERS;
+      final url = EndpointUrl.NEW_FINE_MEMBERS;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
 
@@ -4652,7 +4652,7 @@ class Groups with ChangeNotifier {
   Future<void> recordAccountToAccountTransfer(
       Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.RECORD_FUNDS_TRANSFER;
+      final url = EndpointUrl.RECORD_FUNDS_TRANSFER;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['from_account_id'] =
@@ -4679,7 +4679,7 @@ class Groups with ChangeNotifier {
 
   Future<void> makeGroupPayment(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.MAKE_NEW_PAYMENT;
+      final url = EndpointUrl.MAKE_NEW_PAYMENT;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       try {
@@ -4699,7 +4699,7 @@ class Groups with ChangeNotifier {
 
   Future<String> createWithdrawalRequest(Map<String, dynamic> formData) async {
     try {
-      const url = EndpointUrl.WITHDRAWALS_FUNDS_TRANSFER;
+      final url = EndpointUrl.WITHDRAWALS_FUNDS_TRANSFER;
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
       formData['request_id'] =
@@ -4731,7 +4731,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchGroupUnreconciledDeposits() async {
     try {
-      const url = EndpointUrl.GET_GROUP_UNRECONCILED_DEPOSITS;
+      final url = EndpointUrl.GET_GROUP_UNRECONCILED_DEPOSITS;
       Map<String, String> formData = {
         "user_id": _userId,
         "group_id": currentGroupId
@@ -4759,7 +4759,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchGroupUnreconciledWithdrawals() async {
     try {
-      const url = EndpointUrl.GET_GROUP_UNRECONCILED_WITHDRAWALS;
+      final url = EndpointUrl.GET_GROUP_UNRECONCILED_WITHDRAWALS;
       Map<String, String> formData = {
         "user_id": _userId,
         "group_id": currentGroupId
