@@ -4,7 +4,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
+// import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -25,6 +25,8 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../config.dart';
 
 class ChamasoftHome extends StatefulWidget {
   ChamasoftHome({this.appBarElevation, this.notificationCount});
@@ -426,8 +428,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
                                             children: [
-                                              Text(
-                                                "Chamasoft Meetings",
+                                              Text( "${Config.appName} Meetings",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontFamily: 'SegoeUI',

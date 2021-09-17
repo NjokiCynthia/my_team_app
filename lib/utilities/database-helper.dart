@@ -44,6 +44,34 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     print("oncreate Create");
     try {
+      await _tablesToCreate();
+    } catch (error) {
+      print("error1 $error");
+    }
+  }
+
+  //upgrade tables after a database is created
+  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    // In this case, oldVersion is 1, newVersion is 2
+    print("oldVersion $oldVersion and new version $newVersion");
+    if (oldVersion < newVersion) {
+      try {
+        // Batch batch = db.batch();
+        // Sample table to be used on upgrade
+        // Contributions table
+        await _tablesToCreate();
+        // await batch.commit();
+      } catch (error) {
+        print("error2 $error");
+      }
+    }
+  }
+
+  Future<void> _tablesToCreate() async {
+    // SQL code to create the database tables
+    print("oncreate Create");
+    try {
+      Database db = await instance.database;
       Batch batch = db.batch();
       // Settings table
       batch.execute('''
@@ -87,22 +115,7 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
-      await batch.commit();
-    } catch (error) {
-      print("error1 $error");
-    }
-  }
-
-  //upgrade tables after a database is created
-  void _onUpgrade(Database db, int oldVersion, int newVersion) async {
-    // In this case, oldVersion is 1, newVersion is 2
-    print("oldVersion $oldVersion and new version $newVersion");
-    if (oldVersion < newVersion) {
-      try {
-        Batch batch = db.batch();
-        // Sample table to be used on upgrade
-        // Contributions table
-        batch.execute('''
+      batch.execute('''
             CREATE TABLE IF NOT EXISTS $payContributionsTable (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
@@ -115,8 +128,8 @@ class DatabaseHelper {
             )
             ''');
 
-        // Fines Category table
-        batch.execute('''
+      // Fines Category table
+      batch.execute('''
             CREATE TABLE IF NOT EXISTS $fineCategories (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
@@ -128,8 +141,8 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
-        // Member loans options table
-        batch.execute('''
+      // Member loans options table
+      batch.execute('''
             CREATE TABLE IF NOT EXISTS $memberLoanOptions (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
               id INTEGER NOT NULL,
@@ -145,8 +158,8 @@ class DatabaseHelper {
             )
             ''');
 
-        // Group contributions table
-        batch.execute('''
+      // Group contributions table
+      batch.execute('''
             CREATE TABLE IF NOT EXISTS $contributionsTable (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
               id INTEGER NOT NULL,
@@ -165,8 +178,8 @@ class DatabaseHelper {
             )
             ''');
 
-        // Group Accounts (banks/saccos/mobilemoney/pettycash)
-        batch.execute('''
+      // Group Accounts (banks/saccos/mobilemoney/pettycash)
+      batch.execute('''
             CREATE TABLE IF NOT EXISTS $groupAccountsTable (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
@@ -175,8 +188,8 @@ class DatabaseHelper {
             )
             ''');
 
-        // Group Accounts (banks/saccos/mobilemoney/pettycash)
-        batch.execute('''
+      // Group Accounts (banks/saccos/mobilemoney/pettycash)
+      batch.execute('''
             CREATE TABLE IF NOT EXISTS $loanTypesTable (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
@@ -185,8 +198,8 @@ class DatabaseHelper {
             )
             ''');
 
-        //  Expense categories table
-        batch.execute('''
+      //  Expense categories table
+      batch.execute('''
             CREATE TABLE IF NOT EXISTS $expenseCategoriesTable (
               _id INTEGER PRIMARY KEY AUTOINCREMENT,
               group_id INTEGER NOT NULL,
@@ -194,10 +207,10 @@ class DatabaseHelper {
               modified_on INTEGER NOT NULL
             )
             ''');
-        await batch.commit();
-      } catch (error) {
-        print("error2 $error");
-      }
+      await batch.commit();
+      await batch.commit();
+    } catch (error) {
+      print("error2 $error");
     }
   }
 

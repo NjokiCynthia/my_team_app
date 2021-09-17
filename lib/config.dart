@@ -1,6 +1,6 @@
 class Config {
   static const APP_FLAVOR = String.fromEnvironment('flavor');
-
+  
   static bool get isProd {
     String _s = 'Dev';
     if (APP_FLAVOR != "") _s = APP_FLAVOR.substring(APP_FLAVOR.length - 3);

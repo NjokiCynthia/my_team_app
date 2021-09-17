@@ -35,7 +35,7 @@ class NotificationManager {
                   }
               });
     } catch (e) {
-      throw (e);
+      print("some error here $e");
     }
   }
 
