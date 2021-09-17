@@ -24,15 +24,19 @@ class NotificationManager {
       'mobile_token': token,
     };
     print("refresh toke stream");
-    await Provider.of<Auth>(context, listen: false)
-        .updateUserToken(notificationData)
-        .then((response) => {
-              if (response)
-                {
-                  Provider.of<Auth>(context, listen: false)
-                      .setUserMobileToken(token)
-                }
-            });
+    try {
+      await Provider.of<Auth>(context, listen: false)
+          .updateUserToken(notificationData)
+          .then((response) => {
+                if (response)
+                  {
+                    Provider.of<Auth>(context, listen: false)
+                        .setUserMobileToken(token)
+                  }
+              });
+    } catch (e) {
+      throw (e);
+    }
   }
 
   /// Create a [AndroidNotificationChannel] for heads up notifications
@@ -111,9 +115,9 @@ class NotificationManager {
       //           channel.id,
       //           channel.name,
       //           channel.description,
-                // ignore: todo
-                // TODO add a proper drawable resource to android, for now using
-                //      one that already exists in example app.
+      // ignore: todo
+      // TODO add a proper drawable resource to android, for now using
+      //      one that already exists in example app.
       //           icon: 'launch_background',
       //         ),
       //       ));
