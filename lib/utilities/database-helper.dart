@@ -4,7 +4,7 @@ import 'package:path/path.dart' as p;
 class DatabaseHelper {
   static final _databaseName = "chamasoft-app.db";
   static final _databaseVersion =
-      6; // currently on playstore we are using database version 1
+      2; // currently on playstore we are using database version 1
 
   static final dataTable = 'data';
   static final membersTable = 'members';

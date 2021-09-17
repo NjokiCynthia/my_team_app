@@ -1043,27 +1043,27 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                     ),
                                   ),
                                 ),
-                                Expanded(
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 16.0,
-                                    ),
-                                    child: paymentActionButton(
-                                      color: primaryColor,
-                                      textColor: Colors.white,
-                                      icon: FontAwesome.chevron_right,
-                                      isFlat: true,
-                                      text: "APPLY LOAN",
-                                      iconSize: 12.0,
-                                      action: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ApplyLoan(),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                // Expanded(
+                                //   child: Padding(
+                                //     padding: EdgeInsets.symmetric(
+                                //       horizontal: 16.0,
+                                //     ),
+                                //     child: paymentActionButton(
+                                //       color: primaryColor,
+                                //       textColor: Colors.white,
+                                //       icon: FontAwesome.chevron_right,
+                                //       isFlat: true,
+                                //       text: "APPLY LOAN",
+                                //       iconSize: 12.0,
+                                //       action: () => Navigator.of(context).push(
+                                //         MaterialPageRoute(
+                                //           builder: (BuildContext context) =>
+                                //               ApplyLoan(),
+                                //         ),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),
