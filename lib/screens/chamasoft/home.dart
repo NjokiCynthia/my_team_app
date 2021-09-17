@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
@@ -161,16 +163,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             });
           }
         }
-        await Provider.of<Dashboard>(context,listen: false)
-            .getMemberDashboardData(_currentGroup.groupId).then((_) => {
-              setState((){
-                dashboardData = Provider.of<Dashboard>(context,listen: false);
-                // WidgetsBinding.instance.addPostFrameCallback((_) => () {
-                  print("inside here ${dashboardData.notificationCount}");
-                  widget.notificationCount(dashboardData.notificationCount);
-                // });
-              })
-            });
+        await Provider.of<Dashboard>(context, listen: false)
+            .getMemberDashboardData(_currentGroup.groupId)
+            .then((_) => {
+                  setState(() {
+                    dashboardData =
+                        Provider.of<Dashboard>(context, listen: false);
+                    // WidgetsBinding.instance.addPostFrameCallback((_) => () {
+                    print("inside here ${dashboardData.notificationCount}");
+                    widget.notificationCount(dashboardData.notificationCount);
+                    // });
+                  })
+                });
       }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -538,23 +542,29 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   SizedBox(
                                     height: 22,
                                     child: cardAmountButton(
-                                        currency: _groupCurrency,
-                                        amount: _currentGroup.disableArrears
-                                            ? currencyFormat.format(
-                                                dashboardData
-                                                    .memberContributionAmount)
-                                            : currencyFormat.format(
-                                                dashboardData
-                                                    .memberContributionArrears),
-                                        size: 16.0,
-                                        color: (dashboardData
-                                                    .memberContributionArrears) >
-                                                0
-                                            ? Colors.red[400]
-                                            : Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
-                                        action: () {}),
+                                      currency: _groupCurrency,
+                                      amount: _currentGroup.disableArrears
+                                          ? currencyFormat.format(dashboardData
+                                              .memberContributionAmount)
+                                          : currencyFormat.format(dashboardData
+                                              .memberContributionArrears),
+                                      size: 16.0,
+                                      color: (dashboardData
+                                                  .memberContributionArrears) >
+                                              0
+                                          ? Colors.red[400]
+                                          : Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                      action: () => Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  ContributionStatement(
+                                                      statementFlag:
+                                                          CONTRIBUTION_STATEMENT),
+                                              settings:
+                                                  RouteSettings(arguments: 0))),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -591,7 +601,15 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             : Theme.of(context)
                                                 // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
-                                        action: () {}),
+                                        action: () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ContributionStatement(
+                                                            statementFlag:
+                                                                FINE_STATEMENT),
+                                                settings: RouteSettings(
+                                                    arguments: 0)))),
                                   ),
                                 ],
                               ),
@@ -625,7 +643,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             : Theme.of(context)
                                                 // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
-                                        action: () {}),
+                                        action: () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        LoanSummary(),
+                                                settings: RouteSettings(
+                                                    arguments: 0)))),
                                   ),
                                 ],
                               ),
@@ -658,7 +682,15 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             : Theme.of(context)
                                                 // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
-                                        action: () {}),
+                                        action: () => Navigator.of(
+                                                context)
+                                            .push(
+                                                MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        LoanSummary(),
+                                                    settings: RouteSettings(
+                                                        arguments: 0)))),
                                   ),
                                 ],
                               ),

@@ -2,6 +2,10 @@ import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/deposits-v-withdrawals.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
@@ -229,15 +233,23 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                     SizedBox(
                                       height: 22,
                                       child: cardAmountButton(
-                                          currency: _groupCurrency,
-                                          amount: currencyFormat.format(
-                                              dashboardData
-                                                  .groupContributionAmount),
-                                          size: 16.0,
-                                          color: Theme.of(context)
-                                              // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
-                                          action: () {}),
+                                        currency: _groupCurrency,
+                                        amount: currencyFormat.format(
+                                            dashboardData
+                                                .groupContributionAmount),
+                                        size: 16.0,
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                        action: () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ContributionSummary(),
+                                                settings: RouteSettings(
+                                                    arguments:
+                                                        CONTRIBUTION_STATEMENT))),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -268,7 +280,14 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
-                                          action: () {}),
+                                          action: () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          ContributionSummary(),
+                                                  settings: RouteSettings(
+                                                      arguments:
+                                                          FINE_STATEMENT)))),
                                     ),
                                   ],
                                 ),
@@ -290,13 +309,17 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                     SizedBox(
                                       height: 22,
                                       child: cardAmountButton(
-                                          currency: _groupCurrency,
-                                          amount: currencyFormat.format(
-                                              dashboardData
-                                                  .groupExpensesAmount),
-                                          size: 14.0,
-                                          color: Colors.red[400],
-                                          action: () {}),
+                                        currency: _groupCurrency,
+                                        amount: currencyFormat.format(
+                                            dashboardData.groupExpensesAmount),
+                                        size: 14.0,
+                                        color: Colors.red[400],
+                                        action: () => Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        ExpenseSummary())),
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -323,7 +346,12 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                     Feather.more_horizontal,
                                     color: Colors.blueGrey,
                                   ),
-                                  onPressed: () {})
+                                  onPressed: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              AccountBalances(),
+                                          settings:
+                                              RouteSettings(arguments: 0))))
                             ],
                           ),
                         ),
@@ -456,7 +484,11 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
-                                          action: () {}),
+                                          action: () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      GroupLoansSummary()))),
                                     ),
                                   ],
                                 ),
@@ -485,7 +517,11 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
-                                          action: () {}),
+                                          action: () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      GroupLoansSummary()))),
                                     ),
                                   ],
                                 ),
@@ -515,7 +551,11 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                           color: Theme.of(context)
                                               // ignore: deprecated_member_use
                                               .textSelectionHandleColor,
-                                          action: () {}),
+                                          action: () => Navigator.of(context)
+                                              .push(MaterialPageRoute(
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      GroupLoansSummary()))),
                                     ),
                                   ],
                                 ),
