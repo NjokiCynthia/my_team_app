@@ -46,6 +46,8 @@ dependencies:
   flutter_toggle_tab: "^0.0.1+2"
   share: ^2.0.4
   image_gallery_saver: '^1.6.9'
+  number_to_words: ^1.0.0
+
 
   
 
@@ -71,6 +73,7 @@ flutter:
     - assets/certificates/mpesachama.crt
     - assets/certificates/mobile.key
     - assets/certificates/pubkey.pem
+    - assets/icon/main.png
   fonts:
     - family: SegoeUI
       fonts:

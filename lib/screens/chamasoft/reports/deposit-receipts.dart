@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'dart:typed_data';
 
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
+import 'package:chamasoft/screens/chamasoft/reports/deposit-reciepts-detail.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
 import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -297,6 +299,8 @@ class DepositCard extends StatelessWidget {
 
   void convertWidgetToImage() async {
     try {
+      //PermissionStatus permissionStatus = SimplePermissions
+
       RenderRepaintBoundary renderRepaintBoundary =
           _containerKey.currentContext.findRenderObject();
 
@@ -488,17 +492,25 @@ class DepositCard extends StatelessWidget {
                           ),
                           Column(
                             children: <Widget>[
-                              IconButton(
-                                icon: Icon(
-                                  LineAwesomeIcons.share,
+                              Visibility(
+                                child: Column(
+                                  children: [
+                                    IconButton(
+                                      icon: Icon(
+                                        LineAwesomeIcons.share,
+                                      ),
+                                      iconSize: 20.0,
+                                      onPressed: () {
+                                        convertWidgetToImage();
+                                        //Share.shareFiles([convertWidgetToImage().path]);
+                                      },
+                                    ),
+                                    customTitleWithWrap(
+                                        text: 'Share', fontSize: 12.0)
+                                  ],
                                 ),
-                                iconSize: 20.0,
-                                onPressed: () {
-                                  convertWidgetToImage();
-                                  //Share.shareFiles([convertWidgetToImage().path]);
-                                },
-                              ),
-                              customTitleWithWrap(text: 'Share', fontSize: 12.0)
+                                visible: false,
+                              )
                             ],
                           ),
                           Column(
@@ -508,7 +520,20 @@ class DepositCard extends StatelessWidget {
                                   LineAwesomeIcons.eye,
                                 ),
                                 iconSize: 20.0,
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              new DetailReciept(
+                                                  deposit.date,
+                                                  deposit.name,
+                                                  deposit.amount.toString(),
+                                                  deposit.depositor,
+                                                  deposit.narration,
+                                                  deposit.type,
+                                                  deposit.reconciliation)));
+                                },
                               ),
                               customTitleWithWrap(text: 'View', fontSize: 12.0)
                             ],

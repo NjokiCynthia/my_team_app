@@ -340,6 +340,12 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                     // ignore: deprecated_member_use
                     child: RaisedButton(
                       onPressed: () => {
+                        // Navigator.push(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //       builder: (context) => DetailReciept()),
+                        // )
+
                         Navigator.of(context).pushNamed(PinLogin.namedRoute)
                       },
                       child: Column(
