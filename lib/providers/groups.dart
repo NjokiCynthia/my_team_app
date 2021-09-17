@@ -4247,6 +4247,7 @@ class Groups with ChangeNotifier {
         bankLoansOptions = [],
         loanTypeOptions = [],
         memberOngoingLoanOptions = [];
+        try{
     if (contr) {
       if (_payContributions.length == 0) {
         await fetchPayContributions();
@@ -4354,6 +4355,9 @@ class Groups with ChangeNotifier {
         }
       }
     }
+        } catch (error) {
+          throw(error);
+        }
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
