@@ -12,6 +12,7 @@ import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -476,12 +477,66 @@ class DepositCard extends StatelessWidget {
                                 iconSize: 20.0,
                                 color: Colors.redAccent,
                                 onPressed: () {
-                                  twoButtonAlertDialog(
-                                      context: context,
-                                      message:
-                                          'Are you sure you want to delete this Transaction?',
-                                      title: 'Confirm Action',
-                                      action: () async {});
+                                  // twoButtonAlertDialog(
+                                  //     context: context,
+                                  //     message:
+                                  //         'Are you sure you want to delete this Transaction?',
+                                  //     title: 'Confirm Action',
+                                  //     action: () async {});
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor:
+                                            Theme.of(context).backgroundColor,
+                                        title: heading2(
+                                            text: "Confirm Action",
+                                            textAlign: TextAlign.start,
+                                            // ignore: deprecated_member_use
+                                            color: Theme.of(context)
+                                                .textSelectionHandleColor),
+                                        content: customTitleWithWrap(
+                                            text:
+                                                "Are you sure you want to delete this Transaction?",
+                                            textAlign: TextAlign.start,
+                                            // ignore: deprecated_member_use
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
+                                            maxLines: null),
+                                        actions: <Widget>[
+                                          negativeActionDialogButton(
+                                            text: "Cancel",
+                                            // ignore: deprecated_member_use
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
+                                            action: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          // ignore: deprecated_member_use
+                                          FlatButton(
+                                            padding: EdgeInsets.fromLTRB(
+                                                22.0, 0.0, 22.0, 0.0),
+                                            child: customTitle(
+                                              text: "Continue",
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            onPressed: () {},
+                                            shape: new RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        4.0)),
+                                            textColor: Colors.red,
+                                            color: Colors.red.withOpacity(0.2),
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
                                 },
                               ),
                               customTitleWithWrap(

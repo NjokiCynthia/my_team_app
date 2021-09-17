@@ -1,3 +1,4 @@
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/theme.dart';
@@ -6,6 +7,7 @@ import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class DetailReciept extends StatefulWidget {
   final String date, name, depositor, narration, type, reconciliation, amount;
@@ -21,10 +23,11 @@ class DetailReciept extends StatefulWidget {
 }
 
 class _DetailRecieptState extends State<DetailReciept> {
-  Group _currentGroup;
   //String name = NumberToWord().convert('en-in', int.parse(widget.name));
   @override
   Widget build(BuildContext context) {
+    final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
@@ -66,7 +69,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                             children: [
                               customTitle(
                                 //text: _currentGroup.groupName,
-                                text: 'Group Name',
+                                text: group.groupName,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context)
@@ -74,7 +77,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                                     .textSelectionHandleColor,
                               ),
                               customTitle(
-                                text: "telephone:",
+                                text: group.groupPhone,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context)
@@ -82,7 +85,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                                     .textSelectionHandleColor,
                               ),
                               customTitle(
-                                text: "Email Address:",
+                                text: group.groupEmail,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context)
@@ -136,7 +139,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                             height: 10.0,
                           ),
                           customTitle(
-                            text: "Amount Paid: " + widget.depositor,
+                            text: "Amount Paid: " + widget.depositor + ' /-',
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context)
@@ -163,7 +166,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                             height: 10.0,
                           ),
                           customTitle(
-                            text: "Amount : " + widget.depositor,
+                            text: "Amount : " + widget.depositor + ' /-',
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
                             color: Theme.of(context)
