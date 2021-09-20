@@ -1,8 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
-<<<<<<< HEAD
-=======
 // import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
->>>>>>> a4a1c019e2e27d3e6ff05bdc31a45e43b71281b1
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
