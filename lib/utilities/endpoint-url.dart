@@ -334,6 +334,13 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_GROUP_ASSET_OPTIONS =
       CustomHelper.baseUrl + "/mobile/assets/get_group_asset_options";
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_STOCK_OPTIONS =
+      CustomHelper.baseUrl + "/mobile/stocks/get_group_stocks_list";
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_MONEY_MARKET_INVESTMENT_OPTIONS =
+      CustomHelper.baseUrl +
+          "/mobile/money_market_investments/get_money_market_investment_list";
 
   //Contribution
   // ignore: non_constant_identifier_names

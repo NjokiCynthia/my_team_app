@@ -70,7 +70,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
             member: true,
             loanTypes: true,
             bankLoans: true,
-            groupAssets: true);
+            groupAssets: true,
+            moneyMarketInvestments: true);
     setState(() {
       _isInit = false;
       groupMembers = formLoadData.containsKey("memberOptions")
