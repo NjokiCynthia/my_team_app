@@ -41,7 +41,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       accountId,
       stockId,
       assetId,
-      moneyMarketInvstId,
+      moneyMarketInvestmentId,
       borrowerId,
       numberOfSharesSold;
 
@@ -65,7 +65,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       "accountId": accountId,
       "stockId": stockId,
       "assetId": assetId,
-      "moneyMarketInvstId": moneyMarketInvstId,
+      "moneyMarketInvestmentId": moneyMarketInvestmentId,
       "borrowerId": borrowerId,
       "numberOfSharesSold": numberOfSharesSold
     });
@@ -502,10 +502,10 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                             enabled: true,
                             labelText: "Select money market investment",
                             listItems: [],
-                            selectedItem: moneyMarketInvstId,
+                            selectedItem: moneyMarketInvestmentId,
                             onChanged: (value) {
                               setState(() {
-                                moneyMarketInvstId = value;
+                                moneyMarketInvestmentId = value;
                               });
                             },
                             validator: (value) {

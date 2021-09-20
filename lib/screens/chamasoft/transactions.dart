@@ -197,7 +197,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext ctx) => ReconcileDeposits())),
               margin: 0,
-              imageHeight: 100.0)),
+              imageHeight: 100.0,
+              notifications: 2)),
       SizedBox(
         width: 16.0,
       ),
@@ -213,7 +214,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext ctx) => ReconcileWithdrawals())),
               margin: 0,
-              imageHeight: 100.0)),
+              imageHeight: 100.0,
+              notifications: 2)),
       SizedBox(
         width: 16.0,
       ),
