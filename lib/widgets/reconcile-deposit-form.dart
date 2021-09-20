@@ -45,6 +45,11 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       borrowerId,
       numberOfSharesSold;
 
+  List<NamesListItem> groupMembers;
+  List<NamesListItem> groupContributions;
+  List<NamesListItem> groupFines;
+  List<NamesListItem> groupDepositors;
+
   void addReconciledDeposit(BuildContext context) {
     if (!_formKey.currentState.validate()) {
       return;
@@ -109,6 +114,28 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       });
       Navigator.of(context, rootNavigator: true).pop();
     }
+  }
+
+  String getAlertText() {
+    // String _resp = "";
+    // if (groupMembers.length == 0) _resp = "There are no group members found";
+    // if (withdrawalTypeId == 1 && groupExpenseCategories.length == 0)
+    //   _resp = "There are no expense categories found";
+    // if (withdrawalTypeId == 2 && groupAssets.length == 0)
+    //   _resp = "There are no assets found";
+    // if (withdrawalTypeId == 3 && groupLoans.length == 0)
+    //   _resp = "There are no loans to repay";
+    // if (withdrawalTypeId == 6 && groupMoneyMarketInvestments.length == 0)
+    //   _resp = "There are no money market investments found";
+    // if (withdrawalTypeId == 7 && groupContributions.length == 0)
+    //   _resp = "There are no contributions found";
+    // if (withdrawalTypeId == 8 && groupBankLoans.length == 0)
+    //   _resp = "There are no bank loans found";
+    // if (withdrawalTypeId == 9 && groupAccounts.length == 0)
+    //   _resp = "There are no accounts found";
+    // if (withdrawalTypeId == 10 && groupLoans.length == 0)
+    //   _resp = "There are no loans to repay";
+    // return _resp != "" ? _resp + ", you cannot continue." : "";
   }
 
   @override

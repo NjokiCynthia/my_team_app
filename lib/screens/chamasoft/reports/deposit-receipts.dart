@@ -258,6 +258,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                     scrollInfo.metrics.pixels ==
                                         scrollInfo.metrics.maxScrollExtent &&
                                     _hasMoreData) {
+                                  // ignore: todo
                                   //TODO check if has more data before fetching again
                                   _fetchData();
                                 }
@@ -284,6 +285,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   }
 }
 
+// ignore: must_be_immutable
 class DepositCard extends StatelessWidget {
   DepositCard({Key key, @required this.deposit, this.details, this.voidItem})
       : super(key: key);
