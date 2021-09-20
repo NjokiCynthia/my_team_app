@@ -25,7 +25,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   //bool _isFormInputEnabled = true;
 
   // form values
-  String stockName, description, moneyMktInvstName;
+  String stockName, description, moneyMarketInvestmentName;
 
   double amount, pricePerShare;
 
@@ -35,7 +35,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       memberId,
       loanId,
       numberOfShares,
-      moneyMktInvstId,
+      moneyMarketInvestmentId,
       contribId,
       bankLoanId,
       recipientAccountId,
@@ -73,7 +73,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
 
     widget.addReconciledWithdrawal({
       "stockName": stockName,
-      "moneyMktInvstName": moneyMktInvstName,
+      "moneyMarketInvestmentName": moneyMarketInvestmentName,
       "description": description,
       "amount": amount,
       "pricePerShare": pricePerShare,
@@ -83,7 +83,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       "memberId": memberId,
       "loanId": loanId,
       "numberOfShares": numberOfShares,
-      "moneyMktInvstId": moneyMktInvstId,
+      "moneyMarketInvestmentId": moneyMarketInvestmentId,
       "contributionId": contribId,
       "bankLoanId": bankLoanId,
       "recipientAccountId": recipientAccountId,
@@ -332,7 +332,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                           enabled: true,
                           onChanged: (value) {
                             setState(() {
-                              moneyMktInvstName = value;
+                              moneyMarketInvestmentName = value;
                             });
                           },
                         ),
@@ -354,10 +354,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             enabled: true,
                             labelText: "Select money market investment",
                             listItems: [],
-                            selectedItem: moneyMktInvstId,
+                            selectedItem: moneyMarketInvestmentId,
                             onChanged: (value) {
                               setState(() {
-                                moneyMktInvstId = value;
+                                moneyMarketInvestmentId = value;
                               });
                             },
                             validator: (value) {

@@ -11,6 +11,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'dart:convert';
 
 class ReconcileWithdrawal extends StatefulWidget {
   const ReconcileWithdrawal({Key key}) : super(key: key);
@@ -28,7 +29,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   List _withdrawalTypes = [];
   List _descriptions = [];
   List _stockNames = [];
-  List _moneyMktInvstNames = [];
+  List _moneyMarketInvestmentNames = [];
   List _amounts = [];
   List _pricesPerShare = [];
   List _expenseCategoryIds = [];
@@ -36,7 +37,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   List _memberIds = [];
   List _loanIds = [];
   List _numberOfShares = [];
-  List _moneyMktInvstIds = [];
+  List _moneyMarketInvestmentIds = [];
   List _contributionIds = [];
   List _bankLoanIds = [];
   List _recipientAccountIds = [];
@@ -57,7 +58,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
       _withdrawalTypes.add(formData['withdrawalTypeId']);
       _descriptions.add(formData['description']);
       _stockNames.add(formData['stockName']);
-      _moneyMktInvstNames.add(formData['moneyMktInvstName']);
+      _moneyMarketInvestmentNames.add(formData['moneyMarketInvestmentName']);
       _amounts.add(formData['amount']);
       _pricesPerShare.add(formData['pricePerShare']);
       _expenseCategoryIds.add(formData['expenseCategoryId']);
@@ -65,7 +66,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
       _memberIds.add(formData['memberId']);
       _loanIds.add(formData['loanId']);
       _numberOfShares.add(formData['numberOfShares']);
-      _moneyMktInvstIds.add(formData['moneyMktInvstId']);
+      _moneyMarketInvestmentIds.add(formData['moneyMarketInvestmentId']);
       _contributionIds.add(formData['contributionId']);
       _bankLoanIds.add(formData['bankLoanId']);
       _recipientAccountIds.add(formData['recipientAccountId']);
@@ -87,7 +88,26 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
 
     if (withdrawal.amount == total) {
       // Structure payload
+      var payload = json.encode({
+        "withdrawalTypes": _withdrawalTypes,
+        "descriptions": _descriptions,
+        "stockNames": _stockNames,
+        "moneyMarketInvestmentNames": _moneyMarketInvestmentNames,
+        "amounts": _amounts,
+        "pricesPerShare": _pricesPerShare,
+        "expenseCategoryIds": _expenseCategoryIds,
+        "assetIds": _assetIds,
+        "memberIds": _memberIds,
+        "loanIds": _loanIds,
+        "numberOfShares": _numberOfShares,
+        "moneyMarketInvestmentIds": _moneyMarketInvestmentIds,
+        "contributionIds": _contributionIds,
+        "bankLoanIds": _bankLoanIds,
+        "recipientAccountIds": _recipientAccountIds,
+        "borrowerIds": _borrowerIds
+      });
 
+      print(payload);
       // Send request to server
 
       print("To be done");
@@ -102,7 +122,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
       _withdrawalTypes.removeAt(index);
       _descriptions.removeAt(index);
       _stockNames.removeAt(index);
-      _moneyMktInvstNames.removeAt(index);
+      _moneyMarketInvestmentNames.removeAt(index);
       _amounts.removeAt(index);
       _pricesPerShare.removeAt(index);
       _expenseCategoryIds.removeAt(index);
@@ -110,7 +130,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
       _memberIds.removeAt(index);
       _loanIds.removeAt(index);
       _numberOfShares.removeAt(index);
-      _moneyMktInvstIds.removeAt(index);
+      _moneyMarketInvestmentIds.removeAt(index);
       _contributionIds.removeAt(index);
       _bankLoanIds.removeAt(index);
       _recipientAccountIds.removeAt(index);

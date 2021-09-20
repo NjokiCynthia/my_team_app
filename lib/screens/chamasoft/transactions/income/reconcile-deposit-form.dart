@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/utilities/common.dart';
@@ -39,7 +41,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
   List _loanIds = [];
   List _accountIds = [];
   List _stockIds = [];
-  List _moneyMktInvstIds = [];
+  List _moneyMarketInvestmentIds = [];
   List _borrowerIds = [];
   List _numberOfSharesSold = [];
 
@@ -69,7 +71,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
       _loanIds.add(formData['loanId']);
       _accountIds.add(formData['accountId']);
       _stockIds.add(formData['stockId']);
-      _moneyMktInvstIds.add(formData['moneyMarketInvstId']);
+      _moneyMarketInvestmentIds.add(formData['moneyMarketInvestmentId']);
       _borrowerIds.add(formData['borrowerId']);
       _numberOfSharesSold.add(formData['numberOfSharesSold']);
     });
@@ -89,6 +91,26 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     if (total == deposit.amount) {
       // Setting up the payload
+      var payload = json.encode({
+        "depositTypes": _depositTypes,
+        "descriptions": _descriptions,
+        "amounts": _amounts,
+        "amountPayables": _amountPayables,
+        "amountDisbursed": _amountDisbursed,
+        "memberIds": _memberIds,
+        "contributionIds": _contributionIds,
+        "fineCategoryIds": _fineCategoryIds,
+        "depositorIds": _depositorIds,
+        "incomeCategoryIds": _incomeCategoryIds,
+        "loanIds": _loanIds,
+        "accountIds": _accountIds,
+        "stockIds": _stockIds,
+        "moneyMarketInvestmentIds": _moneyMarketInvestmentIds,
+        "borrowerIds": _borrowerIds,
+        "numberOfSharesSold": _numberOfSharesSold
+      });
+
+      print(payload);
 
       // Sending request to server.
 
@@ -118,7 +140,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
       _loanIds.removeAt(index);
       _accountIds.removeAt(index);
       _stockIds.removeAt(index);
-      _moneyMktInvstIds.removeAt(index);
+      _moneyMarketInvestmentIds.removeAt(index);
       _borrowerIds.removeAt(index);
       _numberOfSharesSold.removeAt(index);
     });
