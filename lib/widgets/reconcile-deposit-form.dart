@@ -116,6 +116,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
     }
   }
 
+  // ignore: missing_return
   String getAlertText() {
     // String _resp = "";
     // if (groupMembers.length == 0) _resp = "There are no group members found";
