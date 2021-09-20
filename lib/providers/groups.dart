@@ -22,7 +22,7 @@ import 'package:chamasoft/utilities/post-to-server.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'helpers/report_helper.dart';
-import 'package:chamasoft/utilities/database-helper.dart';
+import 'package:chamasoft/providers/helpers/database-helper.dart';
 
 class Account {
   final String id;
@@ -422,7 +422,7 @@ class Groups with ChangeNotifier {
   List<FineType> _fineTypes = [];
   List<IncomeCategories> _incomeCategories = [];
   List<IncomeCategories> _detailedIncomeCategories = [];
-  List<IncomeCategories> _assetCategories = [];
+  List<IncomeCategories> _assetCategories = [], _groupAssetOptions = [];
   List<ExpenseCategories> _expenseCategories = [];
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
@@ -524,6 +524,10 @@ class Groups with ChangeNotifier {
 
   List<IncomeCategories> get assetCategories {
     return [..._assetCategories];
+  }
+
+  List<IncomeCategories> get groupAssetOptions {
+    return [..._groupAssetOptions];
   }
 
   List<LoanType> get loanTypes {
@@ -1034,6 +1038,21 @@ class Groups with ChangeNotifier {
           active: ParseHelper.getIntFromJson(incomeCategoryJson, "active") != 0,
         );
         _assetCategories.add(income);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addGroupAssetOptions(List<dynamic> assetOptions) {
+    if (assetOptions.length > 0) {
+      for (var assetOptionJson in assetOptions) {
+        var description = assetOptionJson["description"];
+        final income = IncomeCategories(
+          id: assetOptionJson['id'].toString(),
+          name: assetOptionJson['name'].toString(),
+          description: description != null ? description.toString() : "",
+        );
+        _groupAssetOptions.add(income);
       }
     }
     notifyListeners();
@@ -2222,6 +2241,32 @@ class Groups with ChangeNotifier {
         final incomeCategoriesTypes =
             response['asset_categories'] as List<dynamic>;
         addAssetCategories(incomeCategoriesTypes);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchGroupAssetOptions() async {
+    final url = EndpointUrl.GET_GROUP_ASSET_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        _groupAssetOptions = []; //clear accounts
+        final groupAssetOptionsData =
+            response['group_asset_options'] as List<dynamic>;
+        addGroupAssetOptions(groupAssetOptionsData);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -4236,7 +4281,8 @@ class Groups with ChangeNotifier {
       bool exp = false,
       bool bankLoans = false,
       bool loanTypes = false,
-      bool memberOngoingLoans = false}) async {
+      bool memberOngoingLoans = false,
+      bool groupAssets = false}) async {
     List<NamesListItem> contributionOptions = [],
         accountOptions = [],
         memberOptions = [],
@@ -4246,7 +4292,8 @@ class Groups with ChangeNotifier {
         expenseCategories = [],
         bankLoansOptions = [],
         loanTypeOptions = [],
-        memberOngoingLoanOptions = [];
+        memberOngoingLoanOptions = [],
+        groupAssetOptions = [];
     if (contr) {
       if (_payContributions.length == 0) {
         await fetchPayContributions();
@@ -4354,6 +4401,17 @@ class Groups with ChangeNotifier {
         }
       }
     }
+    if (groupAssets) {
+      if (_groupAssetOptions.length == 0) {
+        await fetchGroupAssetOptions();
+      }
+      _groupAssetOptions
+          .map((groupAssetOption) => groupAssetOptions.add(NamesListItem(
+              id: int.tryParse(groupAssetOption.id),
+              name: groupAssetOption.name)))
+          .toList();
+    }
+
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
@@ -4365,6 +4423,7 @@ class Groups with ChangeNotifier {
       'bankLoansOptions': bankLoansOptions,
       'loanTypeOptions': loanTypeOptions,
       'memberOngoingLoanOptions': memberOngoingLoanOptions,
+      'groupAssetOptions': groupAssetOptions
     };
     return result;
   }
@@ -4809,6 +4868,7 @@ class Groups with ChangeNotifier {
     _incomeCategories = [];
     _detailedIncomeCategories = [];
     _assetCategories = [];
+    _groupAssetOptions = [];
     _expenseCategories = [];
     _loanTypes = [];
     _depositors = [];

@@ -331,6 +331,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_GROUP_ROLE_LIST =
       CustomHelper.baseUrl + "/mobile/group_roles/group_roles_list";
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_ASSET_OPTIONS =
+      CustomHelper.baseUrl + "/mobile/assets/get_group_asset_options";
 
   //Contribution
   // ignore: non_constant_identifier_names

@@ -69,7 +69,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
             exp: true,
             member: true,
             loanTypes: true,
-            bankLoans: true);
+            bankLoans: true,
+            groupAssets: true);
     setState(() {
       _isInit = false;
       groupMembers = formLoadData.containsKey("memberOptions")
@@ -90,8 +91,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       groupBankLoans = formLoadData.containsKey("bankLoansOptions")
           ? formLoadData['bankLoansOptions']
           : [];
-      groupAssets = formLoadData.containsKey("assetOptions")
-          ? formLoadData['assetOptions']
+      groupAssets = formLoadData.containsKey("groupAssetOptions")
+          ? formLoadData['groupAssetOptions']
           : [];
       groupMoneyMarketInvestments =
           formLoadData.containsKey("moneyMarketInvestmentOptions")
