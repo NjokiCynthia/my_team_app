@@ -2,7 +2,7 @@ import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/settings/contribution/contribution-fines.dart';
 import 'package:chamasoft/screens/chamasoft/settings/contribution/contribution-members.dart';
 import 'package:chamasoft/screens/chamasoft/settings/contribution/contribution-settings.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

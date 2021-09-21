@@ -1,5 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';

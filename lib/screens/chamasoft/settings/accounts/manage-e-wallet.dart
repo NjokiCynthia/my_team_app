@@ -1,6 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/svg-icons.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';

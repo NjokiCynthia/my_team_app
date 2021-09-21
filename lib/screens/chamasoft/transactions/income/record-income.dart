@@ -1,9 +1,9 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/date-picker.dart';
-import 'package:chamasoft/utilities/setting_helper.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/date-picker.dart';
+import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -12,8 +12,8 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 
 List<NamesListItem> depositors = [
   NamesListItem(id: 1, name: "Peter Parker"),

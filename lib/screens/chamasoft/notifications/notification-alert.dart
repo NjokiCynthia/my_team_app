@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';

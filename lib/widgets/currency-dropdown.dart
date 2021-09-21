@@ -1,5 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/helpers/common.dart';
 import 'package:flutter/material.dart';
 
 class CurrencyDropdown extends StatelessWidget {

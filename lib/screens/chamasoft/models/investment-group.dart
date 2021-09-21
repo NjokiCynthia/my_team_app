@@ -1,4 +1,4 @@
-import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
 
 import 'named-list-item.dart';
 

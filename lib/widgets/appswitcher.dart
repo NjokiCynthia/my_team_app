@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';

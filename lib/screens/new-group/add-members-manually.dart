@@ -1,8 +1,8 @@
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/set-member-roles.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';

@@ -17,8 +17,8 @@ import 'package:chamasoft/screens/chamasoft/transactions/loans/create-loan.dart'
 import 'package:chamasoft/screens/chamasoft/transactions/loans/record-loan-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/review-withdrawal-requests.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/withdrawal-purpose.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/svg-icons.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';

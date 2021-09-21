@@ -1,5 +1,5 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
-import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';

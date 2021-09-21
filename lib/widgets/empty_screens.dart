@@ -1,4 +1,4 @@
-import 'package:chamasoft/utilities/svg-icons.dart';
+import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
