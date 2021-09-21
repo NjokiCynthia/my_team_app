@@ -84,6 +84,13 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
       recentTransactions.length = 10;
     }
 
+    final int unreconciledDepositCount =
+        Provider.of<Dashboard>(context, listen: false).unreconciledDepositCount;
+
+    final int unreconciledWithdrawalCount =
+        Provider.of<Dashboard>(context, listen: false)
+            .unreconciledWithdrawalCount;
+
     List<Widget> eWalletOptions = [
       SizedBox(
         width: 16.0,
@@ -182,40 +189,30 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     ];
 
     List<Widget> paymentsOptions = [
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-          width: 132.0,
-          child: svgGridButton(
-              context: context,
-              icon: customIcons['money-bag'],
-              title: 'RECONCILE',
-              subtitle: 'DEPOSITS',
-              color: Colors.blue[400],
-              isHighlighted: false,
-              action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext ctx) => ReconcileDeposits())),
-              margin: 0,
-              imageHeight: 100.0,
-              notifications: 2)),
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-          width: 132.0,
-          child: svgGridButton(
-              context: context,
-              icon: customIcons['card-payment'],
-              title: 'RECONCILE',
-              subtitle: 'WITHDRAWALS',
-              color: Colors.blue[400],
-              isHighlighted: false,
-              action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext ctx) => ReconcileWithdrawals())),
-              margin: 0,
-              imageHeight: 100.0,
-              notifications: 2)),
+      if (unreconciledDepositCount > 0)
+        Row(
+          children: [
+            SizedBox(
+              width: 16.0,
+            ),
+            Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['money-bag'],
+                    title: 'RECONCILE',
+                    subtitle: 'DEPOSITS',
+                    color: Colors.blue[400],
+                    isHighlighted: false,
+                    action: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext ctx) => ReconcileDeposits())),
+                    margin: 0,
+                    imageHeight: 100.0,
+                    notifications:
+                        Provider.of<Dashboard>(context, listen: false)
+                            .unreconciledDepositCount)),
+          ],
+        ),
       SizedBox(
         width: 16.0,
       ),
@@ -306,6 +303,30 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     ];
 
     List<Widget> expenditureOptions = [
+      if (unreconciledWithdrawalCount > 0)
+        Row(
+          children: [
+            SizedBox(
+              width: 16.0,
+            ),
+            Container(
+                width: 132.0,
+                child: svgGridButton(
+                    context: context,
+                    icon: customIcons['card-payment'],
+                    title: 'RECONCILE',
+                    subtitle: 'WITHDRAWALS',
+                    color: Colors.blue[400],
+                    isHighlighted: false,
+                    action: () => Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext ctx) => ReconcileWithdrawals())),
+                    margin: 0,
+                    imageHeight: 100.0,
+                    notifications:
+                        Provider.of<Dashboard>(context, listen: false)
+                            .unreconciledWithdrawalCount))
+          ],
+        ),
       SizedBox(
         width: 16.0,
       ),

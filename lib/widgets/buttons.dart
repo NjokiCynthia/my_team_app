@@ -497,7 +497,7 @@ Widget svgGridButton(
       child:
           Stack(fit: StackFit.expand, alignment: Alignment.center, children: [
         // Show the icon based on available notifications
-        if (notifications > 0)
+        if (notifications != null && notifications > 0)
           Positioned(
             top: 0.0,
             right: 2.0,
