@@ -295,6 +295,22 @@ class MoneyMarketInvestment {
   });
 }
 
+class Borrower {
+  @required
+  final String id;
+  @required
+  final String name;
+  final String description;
+  final bool ishidden;
+
+  Borrower({
+    this.id,
+    this.name,
+    this.description,
+    this.ishidden,
+  });
+}
+
 class LoanType {
   final String id;
   final String name;
@@ -457,6 +473,7 @@ class Groups with ChangeNotifier {
   List<IncomeCategories> _assetCategories = [], _groupAssetOptions = [];
   List<Stock> _groupStockOptions = [];
   List<MoneyMarketInvestment> _groupMoneyMarketInvestmentOptions = [];
+  List<Borrower> _groupBorrowerOptions = [];
   List<ExpenseCategories> _expenseCategories = [];
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
@@ -570,6 +587,10 @@ class Groups with ChangeNotifier {
 
   List<MoneyMarketInvestment> get groupMoneyMarketInvestmentOptions {
     return [..._groupMoneyMarketInvestmentOptions];
+  }
+
+  List<Borrower> get groupBorrowerOptions {
+    return [..._groupBorrowerOptions];
   }
 
   List<LoanType> get loanTypes {
@@ -1128,6 +1149,21 @@ class Groups with ChangeNotifier {
           description: description != null ? description.toString() : "",
         );
         _groupMoneyMarketInvestmentOptions.add(moneyMarketInvestment);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addGroupBorrowerOptions(List<dynamic> borrowerOptions) {
+    if (borrowerOptions.length > 0) {
+      for (var borrowerOptionJson in borrowerOptions) {
+        var description = borrowerOptionJson["description"];
+        final borrower = Borrower(
+          id: borrowerOptionJson['id'].toString(),
+          name: borrowerOptionJson['name'].toString(),
+          description: description != null ? description.toString() : "",
+        );
+        _groupBorrowerOptions.add(borrower);
       }
     }
     notifyListeners();
@@ -2394,6 +2430,31 @@ class Groups with ChangeNotifier {
             response['investments'] as List<dynamic>;
         addGroupMoneyMarketInvestmentOptions(
             groupMoneyMarketInvestmentOptionsData);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchBorrowerOptions() async {
+    final url = EndpointUrl.GET_GROUP_BORROWER_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        _groupBorrowerOptions = []; //clear accounts
+        final groupBorrowerOptionsData = response['debtors'] as List<dynamic>;
+        addGroupBorrowerOptions(groupBorrowerOptionsData);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -4411,7 +4472,8 @@ class Groups with ChangeNotifier {
       bool memberOngoingLoans = false,
       bool groupAssets = false,
       bool groupStocks = false,
-      bool moneyMarketInvestments = false}) async {
+      bool moneyMarketInvestments = false,
+      bool borrowers = false}) async {
     List<NamesListItem> contributionOptions = [],
         accountOptions = [],
         memberOptions = [],
@@ -4424,7 +4486,8 @@ class Groups with ChangeNotifier {
         memberOngoingLoanOptions = [],
         groupAssetOptions = [],
         groupStockOptions = [],
-        moneyMarketInvestmentOptions = [];
+        moneyMarketInvestmentOptions = [],
+        borrowerOptions = [];
     if (contr) {
       if (_payContributions.length == 0) {
         await fetchPayContributions();
@@ -4567,6 +4630,17 @@ class Groups with ChangeNotifier {
           .toList();
     }
 
+    if (borrowers) {
+      if (_groupBorrowerOptions.length == 0) {
+        await fetchBorrowerOptions();
+      }
+
+      _groupBorrowerOptions
+          .map((borrowerOption) => borrowerOptions.add(NamesListItem(
+              id: int.tryParse(borrowerOption.id), name: borrowerOption.name)))
+          .toList();
+    }
+
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
@@ -4581,6 +4655,7 @@ class Groups with ChangeNotifier {
       'groupAssetOptions': groupAssetOptions,
       'groupStockOptions': groupStockOptions,
       'moneyMarketInvestmentOptions': moneyMarketInvestmentOptions,
+      'borrowerOptions': borrowerOptions
     };
     return result;
   }

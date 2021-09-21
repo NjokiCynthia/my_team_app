@@ -98,21 +98,19 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
           });
     });
     try {
-      formLoadData =
-          await Provider.of<Groups>(context, listen: false).loadInitialFormData(
-        contr: true,
-        acc: true,
-        member: true,
-        fineOptions: true,
-        depositor: true,
-        incomeCats: true,
-        loanTypes: true,
-        groupStocks: true,
-        groupAssets: true,
-        moneyMarketInvestments: true,
-        // ignore: todo
-        // TODO: add groupBorrowers
-      );
+      formLoadData = await Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(
+              contr: true,
+              acc: true,
+              member: true,
+              fineOptions: true,
+              depositor: true,
+              incomeCats: true,
+              loanTypes: true,
+              groupStocks: true,
+              groupAssets: true,
+              moneyMarketInvestments: true,
+              borrowers: true);
     } catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -155,10 +153,8 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
         groupAssets = formLoadData.containsKey("groupAssetOptions")
             ? formLoadData['groupAssetOptions']
             : [];
-        // ignore: todo
-        // TODO: ADD BORROWER OPTIONS
-        groupBorrowers = formLoadData.containsKey("groupBorrowerOptions")
-            ? formLoadData['groupBorrowerOptions']
+        groupBorrowers = formLoadData.containsKey("borrowerOptions")
+            ? formLoadData['borrowerOptions']
             : [];
       });
       Navigator.of(context, rootNavigator: true).pop();
