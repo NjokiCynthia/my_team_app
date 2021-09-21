@@ -83,8 +83,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       groupAccounts = formLoadData.containsKey("accountOptions")
           ? formLoadData['accountOptions']
           : [];
-      groupContributions = formLoadData.containsKey("contrOptions")
-          ? formLoadData['contrOptions']
+      groupContributions = formLoadData.containsKey("contributionOptions")
+          ? formLoadData['contributionOptions']
           : [];
       groupLoans = formLoadData.containsKey("loanTypeOptions")
           ? formLoadData['loanTypeOptions']
