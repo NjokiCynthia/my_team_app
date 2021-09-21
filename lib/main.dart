@@ -1,6 +1,5 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/dashboard.dart';
-import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/list-institutions.dart';
@@ -15,6 +14,7 @@ import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/pinlogin.dart';
 import 'package:chamasoft/screens/signup.dart';
 import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/utilities/notifications.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

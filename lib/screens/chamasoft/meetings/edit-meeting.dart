@@ -7,7 +7,7 @@ import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/select-member.dart';
 import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/providers/helpers/database-helper.dart';
+import 'package:chamasoft/utilities/database-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';

@@ -1,7 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/utilities/common.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/setting_helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
