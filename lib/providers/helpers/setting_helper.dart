@@ -165,9 +165,10 @@ List<LoanType> parseLoanTypes(List<dynamic> groupLoanTypes) {
 List<NamesListItem> depositMethods = [
   NamesListItem(id: 1, name: "MPesa"),
   NamesListItem(id: 2, name: "Cash"),
-  NamesListItem(id: 3, name: "FundsTransfer"),
-  NamesListItem(id: 4, name: "Equitel"),
-  NamesListItem(id: 5, name: "Standing Order"),
+  NamesListItem(id: 3, name: "Cheque"),
+  NamesListItem(id: 4, name: "FundsTransfer"),
+  NamesListItem(id: 5, name: "Equitel"),
+  NamesListItem(id: 6, name: "Standing Order"),
 ];
 
 List<NamesListItem> withdrawalMethods = [

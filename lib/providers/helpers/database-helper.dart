@@ -44,7 +44,7 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     print("oncreate Create");
     try {
-      await _tablesToCreate();
+      await _tablesToCreate(db);
     } catch (error) {
       print("error1 $error");
     }
@@ -59,7 +59,7 @@ class DatabaseHelper {
         // Batch batch = db.batch();
         // Sample table to be used on upgrade
         // Contributions table
-        await _tablesToCreate();
+        await _tablesToCreate(db);
         // await batch.commit();
       } catch (error) {
         print("error2 $error");
@@ -67,11 +67,10 @@ class DatabaseHelper {
     }
   }
 
-  Future<void> _tablesToCreate() async {
+  Future<void> _tablesToCreate(Database db) async {
     // SQL code to create the database tables
     print("oncreate Create");
     try {
-      Database db = await instance.database;
       Batch batch = db.batch();
       // Settings table
       batch.execute('''
