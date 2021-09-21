@@ -163,152 +163,156 @@ class _UnreconciledWithdrawalCardState
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 0.0,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
-      borderOnForeground: false,
-      child: Container(
-        decoration: cardDecoration(
-            gradient: plainCardGradient(context), context: context),
-        child: Column(
-          children: [
-            ListTile(
-              title: Padding(
-                padding: EdgeInsets.all(4.0),
-                child: subtitle1(
-                    text: widget.withdrawal.transactionDate,
-                    textAlign: TextAlign.start),
-              ),
-              subtitle: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      width: double.infinity,
-                      child: subtitle1(
-                          text: widget.withdrawal.accountDetails,
-                          textAlign: TextAlign.start),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      width: double.infinity,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          customTitle(
-                            text: "${widget.groupObject.groupCurrency} ",
-                            fontSize: 18.0,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w400,
-                          ),
-                          heading2(
-                            text:
-                                currencyFormat.format(widget.withdrawal.amount),
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
-                            textAlign: TextAlign.end,
-                          ),
-                        ],
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+      child: Card(
+        elevation: 0.0,
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+        borderOnForeground: false,
+        child: Container(
+          decoration: cardDecoration(
+              gradient: plainCardGradient(context), context: context),
+          child: Column(
+            children: [
+              ListTile(
+                title: Padding(
+                  padding: EdgeInsets.all(4.0),
+                  child: subtitle1(
+                      text: widget.withdrawal.transactionDate,
+                      textAlign: TextAlign.start),
+                ),
+                subtitle: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        width: double.infinity,
+                        child: subtitle1(
+                            text: widget.withdrawal.accountDetails,
+                            textAlign: TextAlign.start),
                       ),
-
-                      // subtitle2(
-                      //     text: " ${widget.groupObject.groupCurrency} " +
-                      //         " ${currencyFormat.format(widget.withdrawal.amount)}",
-                      //     textAlign: TextAlign.start),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Container(
-                      width: double.infinity,
-                      child: subtitle2(
-                          text: widget.withdrawal.particulars,
-                          textAlign: TextAlign.start),
-                    ),
-                  ),
-                  _isExpanded
-                      ? Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Container(
-                                width: double.infinity,
-                                child: subtitle2(
-                                    text:
-                                        "Account number: ${widget.withdrawal.accountNumber}",
-                                    textAlign: TextAlign.start),
-                              ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        width: double.infinity,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            customTitle(
+                              text: "${widget.groupObject.groupCurrency} ",
+                              fontSize: 18.0,
+                              // ignore: deprecated_member_use
+                              color: Theme.of(context).textSelectionHandleColor,
+                              fontWeight: FontWeight.w400,
                             ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Container(
-                                width: double.infinity,
-                                child: subtitle2(
-                                    text:
-                                        "TransactionId: ${widget.withdrawal.transactionId}",
-                                    textAlign: TextAlign.start),
-                              ),
+                            heading2(
+                              text: currencyFormat
+                                  .format(widget.withdrawal.amount),
+                              // ignore: deprecated_member_use
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.end,
                             ),
                           ],
-                        )
-                      : Container()
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Row(
-                children: [
-                  // ignore: deprecated_member_use
-                  FlatButton(
-                    onPressed: () {
-                      setState(() {
-                        _isExpanded = !_isExpanded;
-                      });
-                    },
-                    child: Row(
-                      children: [
-                        Text(_isExpanded ? "View less" : "View more",
-                            style: TextStyle(
-                                color: Theme.of(context).accentColor)),
-                        Icon(
-                          _isExpanded ? Icons.expand_less : Icons.expand_more,
-                          color: Theme.of(context).accentColor,
-                        )
-                      ],
-                    ),
-                  ),
-                  Spacer(),
-                  // ignore: deprecated_member_use
-                  FlatButton(
-                    onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (BuildContext ctx) =>
-                                ReconcileWithdrawal(),
-                            settings:
-                                RouteSettings(arguments: widget.withdrawal))),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Reconcile",
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
                         ),
-                        Icon(
-                          Icons.arrow_right_rounded,
-                          color: Theme.of(context).accentColor,
-                        )
-                      ],
+
+                        // subtitle2(
+                        //     text: " ${widget.groupObject.groupCurrency} " +
+                        //         " ${currencyFormat.format(widget.withdrawal.amount)}",
+                        //     textAlign: TextAlign.start),
+                      ),
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Container(
+                        width: double.infinity,
+                        child: subtitle2(
+                            text: widget.withdrawal.particulars,
+                            textAlign: TextAlign.start),
+                      ),
+                    ),
+                    _isExpanded
+                        ? Column(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  child: subtitle2(
+                                      text:
+                                          "Account number: ${widget.withdrawal.accountNumber}",
+                                      textAlign: TextAlign.start),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  child: subtitle2(
+                                      text:
+                                          "TransactionId: ${widget.withdrawal.transactionId}",
+                                      textAlign: TextAlign.start),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Container()
+                  ],
+                ),
               ),
-            )
-          ],
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: Row(
+                  children: [
+                    // ignore: deprecated_member_use
+                    FlatButton(
+                      onPressed: () {
+                        setState(() {
+                          _isExpanded = !_isExpanded;
+                        });
+                      },
+                      child: Row(
+                        children: [
+                          Text(_isExpanded ? "View less" : "View more",
+                              style: TextStyle(
+                                  color: Theme.of(context).accentColor)),
+                          Icon(
+                            _isExpanded ? Icons.expand_less : Icons.expand_more,
+                            color: Theme.of(context).accentColor,
+                          )
+                        ],
+                      ),
+                    ),
+                    Spacer(),
+                    // ignore: deprecated_member_use
+                    FlatButton(
+                      onPressed: () => Navigator.of(context).push(
+                          MaterialPageRoute(
+                              builder: (BuildContext ctx) =>
+                                  ReconcileWithdrawal(),
+                              settings:
+                                  RouteSettings(arguments: widget.withdrawal))),
+                      child: Row(
+                        children: [
+                          Text(
+                            "Reconcile",
+                            style:
+                                TextStyle(color: Theme.of(context).accentColor),
+                          ),
+                          Icon(
+                            Icons.arrow_right_rounded,
+                            color: Theme.of(context).accentColor,
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
