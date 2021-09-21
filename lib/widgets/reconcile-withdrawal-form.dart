@@ -50,6 +50,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   List<NamesListItem> groupBankLoans = [];
   List<NamesListItem> groupAssets = [];
   List<NamesListItem> groupMoneyMarketInvestments = [];
+  List<NamesListItem> groupBorrowers = [];
 
   Future<void> _fetchDefaultValues(BuildContext context) async {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -71,7 +72,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
             loanTypes: true,
             bankLoans: true,
             groupAssets: true,
-            moneyMarketInvestments: true);
+            moneyMarketInvestments: true,
+            borrowers: true);
     setState(() {
       _isInit = false;
       groupMembers = formLoadData.containsKey("memberOptions")
@@ -99,6 +101,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
           formLoadData.containsKey("moneyMarketInvestmentOptions")
               ? formLoadData['moneyMarketInvestmentOptions']
               : [];
+      groupBorrowers = formLoadData.containsKey("borrowerOptions")
+          ? formLoadData['borrowerOptions']
+          : [];
     });
     Navigator.of(context, rootNavigator: true).pop();
   }
@@ -558,7 +563,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select borrower",
-                            listItems: [],
+                            listItems: groupBorrowers,
                             selectedItem: borrowerId,
                             onChanged: (value) {
                               setState(() {

@@ -341,6 +341,9 @@ class EndpointUrl {
   static final String GET_GROUP_MONEY_MARKET_INVESTMENT_OPTIONS =
       CustomHelper.baseUrl +
           "/mobile/money_market_investments/get_money_market_investment_list";
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_BORROWER_OPTIONS =
+      CustomHelper.baseUrl + "/mobile/debtors/get_debtors_list";
 
   //Contribution
   // ignore: non_constant_identifier_names
