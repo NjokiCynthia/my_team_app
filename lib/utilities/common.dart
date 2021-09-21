@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:chamasoft/providers/helpers/database-helper.dart';
+import 'package:chamasoft/utilities/helpers/database-helper.dart';
 import 'package:chamasoft/utilities/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

@@ -1,8 +1,8 @@
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/screens/chamasoft/settings/contribution/validate-settings.dart';
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/fine-setup-list.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/report_helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown-strings-only.dart';

@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/report_helper.dart';
 import 'package:chamasoft/screens/chamasoft/settings/contribution/validate-settings.dart';
 import 'package:chamasoft/screens/chamasoft/settings/setup-lists/contribution-setup-list.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
 import 'package:chamasoft/utilities/date-picker.dart';
+import 'package:chamasoft/utilities/report_helper.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';

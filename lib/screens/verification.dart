@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/utilities/notifications.dart';
 import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
