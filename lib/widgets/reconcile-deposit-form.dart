@@ -167,31 +167,31 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
 
   String getAlertText() {
     String _resp = "";
-    if (groupMembers.length == 0) _resp = "There are no group members found";
+    if (groupMembers.length == 0) _resp = "The group does not have any member";
     if (depositTypeId == 1 && groupContributions.length == 0)
-      _resp = "There are no group contributions found";
+      _resp = "The group does not have any contribution";
     if (depositTypeId == 2 && groupFines.length == 0)
-      _resp = "There are no group fines found";
+      _resp = "The group does not have any fine";
     if (depositTypeId == 4 && groupDepositors.length == 0)
-      _resp = "There are no group depositors found";
+      _resp = "The group does not have any depositor";
     if (depositTypeId == 4 && groupIncomeCategories.length == 0)
-      _resp = "There are no group income categories found";
+      _resp = "The group does not have any income category";
     if (depositTypeId == 5 && groupLoanTypes.length == 0)
-      _resp = "There are no group loans found";
+      _resp = "The group does not have any loan type";
     if (depositTypeId == 7 && groupAccounts.length == 0)
-      _resp = "There are no group accounts found";
+      _resp = "The group does not have any account";
     if (depositTypeId == 8 && groupStocks.length == 0)
-      _resp = "There are no group stocks found";
+      _resp = "The group does not have any stock";
     if (depositTypeId == 9 && groupAssets.length == 0)
-      _resp = "There are no group assets found";
+      _resp = "The group does not have any asset";
     if (depositTypeId == 10 && groupMoneyMarketInvestments.length == 0)
-      _resp = "There are no group money market investments found";
+      _resp = "The group does not have any money market investment";
     if (depositTypeId == 11 && groupLoanTypes.length == 0)
-      _resp = "There are no group loans found";
+      _resp = "The group does not have any loan type";
     if (depositTypeId == 12 && groupBorrowers.length == 0)
-      _resp = "There are no group borrowers found";
+      _resp = "The group does not have any borrower";
     if (depositTypeId == 12 && groupLoanTypes.length == 0)
-      _resp = "There are no group loans found";
+      _resp = "The group does not have any loan type";
     return _resp != "" ? _resp + ", you cannot continue." : "";
   }
 

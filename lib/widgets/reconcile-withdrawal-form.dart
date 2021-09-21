@@ -107,21 +107,21 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
     String _resp = "";
     if (groupMembers.length == 0) _resp = "There are no group members found";
     if (withdrawalTypeId == 1 && groupExpenseCategories.length == 0)
-      _resp = "There are no expense categories found";
+      _resp = "The group does not have any expense categories";
     if (withdrawalTypeId == 2 && groupAssets.length == 0)
-      _resp = "There are no assets found";
+      _resp = "The group does not have any assets";
     if (withdrawalTypeId == 3 && groupLoans.length == 0)
-      _resp = "There are no loans to repay";
+      _resp = "The group does not have any loan type";
     if (withdrawalTypeId == 6 && groupMoneyMarketInvestments.length == 0)
-      _resp = "There are no money market investments found";
+      _resp = "The group does not have any money market investment";
     if (withdrawalTypeId == 7 && groupContributions.length == 0)
-      _resp = "There are no contributions found";
+      _resp = "The group does not have any contribution";
     if (withdrawalTypeId == 8 && groupBankLoans.length == 0)
-      _resp = "There are no bank loans found";
+      _resp = "The group does not have any bank loan";
     if (withdrawalTypeId == 9 && groupAccounts.length == 0)
-      _resp = "There are no accounts found";
+      _resp = "The group does not have any account";
     if (withdrawalTypeId == 10 && groupLoans.length == 0)
-      _resp = "There are no loans to repay";
+      _resp = "The group does not have any loan type";
     return _resp != "" ? _resp + ", you cannot continue." : "";
   }
 
@@ -307,7 +307,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         // select loan
                         CustomDropDownButton(
                             enabled: true,
-                            labelText: "Select loan",
+                            labelText: "Select loan type",
                             listItems: groupLoans,
                             selectedItem: loanId,
                             onChanged: (value) {
