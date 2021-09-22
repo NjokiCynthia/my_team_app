@@ -45,6 +45,14 @@ class StatusHandler {
     alertDialog(context, message);
   }
 
+  void showDialogWithAction(
+      {BuildContext context,
+      String message,
+      Function function,
+      bool dismissible = false}) {
+    alertDialogWithAction(context, message, function, dismissible);
+  }
+
   void showErrorDialogWithTitle(
       BuildContext context, String message, String title) {
     alertDialog(context, message, title);

@@ -1,10 +1,10 @@
-import 'dart:convert';
-
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-list.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -87,11 +87,16 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
   void _submit(BuildContext context, UnreconciledDeposit deposit) async {
     // get the amount entered.
     double total = totalReconciled;
-    final groupObject =
+    final Group groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     if (total == deposit.amount) {
-      // Setting up the payload
-      var payload = json.encode({
+      // Initiate loading
+      setState(() {
+        _isLoading = true;
+      });
+
+      // Payload
+      final Map<String, dynamic> _formData = {
         "depositTypes": _depositTypes,
         "descriptions": _descriptions,
         "amounts": _amounts,
@@ -108,13 +113,29 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         "moneyMarketInvestmentIds": _moneyMarketInvestmentIds,
         "borrowerIds": _borrowerIds,
         "numberOfSharesSold": _numberOfSharesSold
-      });
+      };
 
-      print(payload);
+      try {
+        await Provider.of<Groups>(context, listen: false)
+            .reconcileDepositTransactionAlert(_formData);
+        StatusHandler().showSuccessSnackBar(context, "Some message here");
 
-      // Sending request to server.
-
-      print("To be worked on!!");
+        Future.delayed(const Duration(milliseconds: 2500), () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => ReconcileDepositList()));
+        });
+      } on CustomException catch (error) {
+        StatusHandler().handleStatus(
+            context: context,
+            error: error,
+            callback: () {
+              _submit(context, deposit);
+            });
+      } finally {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${deposit.amount} transacted.");

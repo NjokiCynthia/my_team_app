@@ -85,10 +85,10 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     }
 
     final int unreconciledDepositCount =
-        Provider.of<Dashboard>(context, listen: false).unreconciledDepositCount;
+        Provider.of<Dashboard>(context, listen: true).unreconciledDepositCount;
 
     final int unreconciledWithdrawalCount =
-        Provider.of<Dashboard>(context, listen: false)
+        Provider.of<Dashboard>(context, listen: true)
             .unreconciledWithdrawalCount;
 
     List<Widget> eWalletOptions = [
@@ -205,7 +205,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     color: Colors.blue[400],
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext ctx) => ReconcileDeposits())),
+                        builder: (BuildContext ctx) => ReconcileDepositList())),
                     margin: 0,
                     imageHeight: 100.0,
                     notifications:
@@ -319,7 +319,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     color: Colors.blue[400],
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext ctx) => ReconcileWithdrawals())),
+                        builder: (BuildContext ctx) =>
+                            ReconcileWithdrawalList())),
                     margin: 0,
                     imageHeight: 100.0,
                     notifications:

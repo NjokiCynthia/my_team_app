@@ -149,7 +149,7 @@ class _MyAppState extends State<MyApp> {
             AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
             ListInstitutions.namedRoute: (ctx) => ListInstitutions(),
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
-            PinLogin.namedRoute: (ctx) => PinLogin(),
+            PinLogin.namedRoute: (ctx) => PinLogin()
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => IntroScreen());
