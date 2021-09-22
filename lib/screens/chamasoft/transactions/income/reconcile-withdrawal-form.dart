@@ -1,3 +1,4 @@
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -158,8 +159,11 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
           onPressed: () {
             _submit(withdrawal);
           },
-          child: Icon(Icons.check),
-          backgroundColor: Theme.of(context).accentColor,
+          child: Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          backgroundColor: primaryColor,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(builder: (BuildContext context) {
@@ -207,13 +211,19 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                   Container(
                       padding: inputPagePadding,
                       child: ListTile(
-                        title: Text(
-                          'Total amount reconciled',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                            "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)} "),
-                      ))
+                          title: subtitle1(
+                              text: "Total amount reconciled",
+                              textAlign: TextAlign.start,
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor),
+                          subtitle: subtitle2(
+                              text:
+                                  "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)}",
+                              textAlign: TextAlign.start,
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor)))
                 ],
               ),
             ),
