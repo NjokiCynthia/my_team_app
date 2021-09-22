@@ -1,6 +1,6 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawal-form.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-form.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
