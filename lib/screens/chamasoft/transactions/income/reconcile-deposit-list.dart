@@ -99,9 +99,11 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     List<UnreconciledDeposit> unreconciledDeposits =
         widget.reconciledDepositTransactionAlertId != null
-            ? _deposits.where((deposit) =>
-                deposit.transactionAlertId !=
-                widget.reconciledDepositTransactionAlertId)
+            ? _deposits
+                .where((deposit) =>
+                    deposit.transactionAlertId !=
+                    widget.reconciledDepositTransactionAlertId)
+                .toList()
             : _deposits;
     return Scaffold(
         key: _scaffoldKey,

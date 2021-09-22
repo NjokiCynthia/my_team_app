@@ -100,9 +100,11 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     List<UnreconciledWithdrawal> unreconciledWithdrawals =
         widget.reconciledWithdrawalTransactionAlertId != null
-            ? _withdrawals.where((withdrawal) =>
-                withdrawal.transactionAlertId !=
-                widget.reconciledWithdrawalTransactionAlertId)
+            ? _withdrawals
+                .where((withdrawal) =>
+                    withdrawal.transactionAlertId !=
+                    widget.reconciledWithdrawalTransactionAlertId)
+                .toList()
             : _withdrawals;
 
     return Scaffold(

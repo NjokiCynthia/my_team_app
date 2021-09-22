@@ -72,14 +72,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
 
         StatusHandler()
             .showSuccessSnackBar(_bodyContext, "Successfully reconciled");
-      } on CustomException catch (error) {
-        StatusHandler().showDialogWithAction(
-            context: _bodyContext,
-            message: error.toString(),
-            function: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => ReconcileWithdrawalList())),
-            dismissible: true);
-      } finally {
+
         Future.delayed(const Duration(milliseconds: 2500), () {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
               builder: (BuildContext context) => ReconcileWithdrawalList(
@@ -87,7 +80,14 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                         withdrawal.transactionAlertId,
                   )));
         });
-      }
+      } on CustomException catch (error) {
+        StatusHandler().showDialogWithAction(
+            context: _bodyContext,
+            message: error.toString(),
+            function: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => ReconcileWithdrawalList())),
+            dismissible: true);
+      } finally {}
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${withdrawal.amount} transacted.");

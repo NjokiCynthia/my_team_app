@@ -72,16 +72,10 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         await Provider.of<Groups>(_bodyContext, listen: false)
             .reconcileDepositTransactionAlert(
                 _reconciledDeposits, deposit.transactionAlertId);
+
         StatusHandler()
             .showSuccessSnackBar(_bodyContext, "Successfully reconciled");
-      } on CustomException catch (error) {
-        StatusHandler().showDialogWithAction(
-            context: _bodyContext,
-            message: error.toString(),
-            function: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => ReconcileDepositList())),
-            dismissible: true);
-      } finally {
+
         Future.delayed(const Duration(milliseconds: 2500), () {
           Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
               builder: (_) => ReconcileDepositList(
@@ -89,7 +83,14 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                         deposit.transactionAlertId,
                   )));
         });
-      }
+      } on CustomException catch (error) {
+        StatusHandler().showDialogWithAction(
+            context: _bodyContext,
+            message: error.toString(),
+            function: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => ReconcileDepositList())),
+            dismissible: true);
+      } finally {}
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${deposit.amount} transacted.");

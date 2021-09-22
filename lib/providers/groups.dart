@@ -5059,15 +5059,13 @@ class Groups with ChangeNotifier {
       formData['reconcile_deposits_break_down'] = formDataPayload;
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
-        // final response = await PostToServer.post(postRequest, url);
-
-        // int status = ParseHelper.getIntFromJson(response, "status");
-        // if (status == 12) {
-        //   return "-1";
-        // } else {
-        //   return response["request_id"].toString();
-        // }
+        final response = await PostToServer.post(postRequest, url);
+        int status = ParseHelper.getIntFromJson(response, "status");
+        if (status == 12) {
+          return "-1";
+        } else {
+          return response["message"].toString();
+        }
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
