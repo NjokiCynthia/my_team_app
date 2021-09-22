@@ -4294,6 +4294,8 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
+        if(lowerLimit == 0)
+          _depositList = [];
         addDepositList(data);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);

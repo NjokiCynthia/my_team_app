@@ -39,20 +39,24 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   List<int> _filterList = [];
   List<String> _memberList = [];
   bool _hasMoreData = false;
+  bool _forceFetch = false;
 
-  void _scrollListener() {
-    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
-    if (_appBarElevation != newElevation) {
-      setState(() {
-        _appBarElevation = newElevation;
-      });
-    }
-  }
+  // void _scrollListener() {
+  //   double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
+  //   if (_appBarElevation != newElevation) {
+  //     setState(() {
+  //       _appBarElevation = newElevation;
+  //     });
+  //   }
+  // }
 
   Future<void> _getDeposits(BuildContext context) async {
     try {
+      int _length = _deposits.length;
+      if(_forceFetch)
+        _length = 0;
       await Provider.of<Groups>(context, listen: false).fetchDeposits(
-          _sortOption, _filterList, _memberList, _deposits.length);
+          _sortOption, _filterList, _memberList, _length);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -96,20 +100,21 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   @override
   void initState() {
-    _scrollController = ScrollController();
-    _scrollController.addListener(_scrollListener);
+    // _scrollController = ScrollController();
+    // _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   @override
   void dispose() {
-    _scrollController?.removeListener(_scrollListener);
-    _scrollController?.dispose();
+    // _scrollController?.removeListener(_scrollListener);
+    // _scrollController?.dispose();
     super.dispose();
   }
 
   void applySort(String sort) {
     _sortOption = sort;
+    _forceFetch = true;
     _fetchData();
   }
 
