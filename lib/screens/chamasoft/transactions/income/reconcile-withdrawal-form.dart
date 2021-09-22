@@ -28,6 +28,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   bool _isInit = true;
   bool _isLoading = true;
   List _reconciledWithdrawals = [];
+  BuildContext _bodyContext;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
@@ -52,54 +53,41 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
             ReconcileWithdrawalForm(addReconciledWithdrawal));
   }
 
-  void _submit(BuildContext context, UnreconciledWithdrawal withdrawal) async {
+  void _submit(UnreconciledWithdrawal withdrawal) async {
     double total = totalReconciled;
     final Group groupObject =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+        Provider.of<Groups>(_bodyContext, listen: false).getCurrentGroup();
     if (withdrawal.amount == total) {
-      // Initiate loading
-      setState(() {
-        _isLoading = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        showDialog<String>(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            });
       });
 
       try {
-        await Provider.of<Groups>(context, listen: false)
+        await Provider.of<Groups>(_bodyContext, listen: false)
             .reconcileWithdrawalTransactionAlert(
                 _reconciledWithdrawals, withdrawal.transactionAlertId);
 
-        // StatusHandler().showSuccessSnackBar(context, response);
-
-        // print("As a good response");
-
-        // Future.delayed(const Duration(milliseconds: 2500), () {
-        //   Navigator.of(context).pushReplacement(MaterialPageRoute(
-        //       builder: (BuildContext context) => ReconcileWithdrawalList()));
-        // });
+        StatusHandler()
+            .showSuccessSnackBar(_bodyContext, "Successfully reconciled");
       } on CustomException catch (error) {
         StatusHandler().showDialogWithAction(
-            context: context,
+            context: _bodyContext,
             message: error.toString(),
             function: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                    builder: (BuildContext context) =>
-                        ReconcileWithdrawalList())),
+                MaterialPageRoute(builder: (_) => ReconcileWithdrawalList())),
             dismissible: true);
       } finally {
-        // alertDialogWithAction(
-        //     context,
-        //     'Successfully reconciled',
-        //     () => Navigator.of(context).push(MaterialPageRoute(
-        //         builder: (BuildContext context) => ReconcileWithdrawalList())),
-        //     true);
-        // bool response = showAlertDialog(
-        //     context, "Successfully reconciled", "Reconciliation");
-
-        // print("response $response");
-
-        // if (response) {
-        //   Navigator.of(context).pop();
-        // }
-        StatusHandler().showSuccessSnackBar(context, "Successfull reconciled");
+        Future.delayed(const Duration(milliseconds: 2500), () {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => ReconcileWithdrawalList()));
+        });
       }
     } else {
       alertDialog(context,
@@ -217,13 +205,14 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _submit(context, withdrawal);
+            _submit(withdrawal);
           },
           child: Icon(Icons.check),
           backgroundColor: Theme.of(context).accentColor,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(builder: (BuildContext context) {
+          _bodyContext = context;
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SingleChildScrollView(
