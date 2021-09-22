@@ -14,6 +14,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ReconcileWithdrawalList extends StatefulWidget {
+  final String reconciledWithdrawalTransactionAlertId;
+
+  ReconcileWithdrawalList({this.reconciledWithdrawalTransactionAlertId});
   @override
   _ReconcileWithdrawalListState createState() =>
       _ReconcileWithdrawalListState();
@@ -95,6 +98,13 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    List<UnreconciledWithdrawal> unreconciledWithdrawals =
+        widget.reconciledWithdrawalTransactionAlertId != null
+            ? _withdrawals.where((withdrawal) =>
+                withdrawal.transactionAlertId !=
+                widget.reconciledWithdrawalTransactionAlertId)
+            : _withdrawals;
+
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
@@ -122,15 +132,15 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
                         height: 0.0,
                       ),
                 Expanded(
-                  child: _withdrawals.length > 0
+                  child: unreconciledWithdrawals.length > 0
                       ? ListView.builder(
                           itemBuilder: (context, index) {
                             UnreconciledWithdrawal withdrawal =
-                                _withdrawals[index];
+                                unreconciledWithdrawals[index];
                             return UnreconciledWithdrawalCard(
                                 withdrawal, groupObject);
                           },
-                          itemCount: _withdrawals.length,
+                          itemCount: unreconciledWithdrawals.length,
                         )
                       : emptyList(
                           color: Colors.blue[400],

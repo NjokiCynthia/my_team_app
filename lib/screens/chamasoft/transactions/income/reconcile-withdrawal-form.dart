@@ -82,7 +82,10 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
       } finally {
         Future.delayed(const Duration(milliseconds: 2500), () {
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => ReconcileWithdrawalList()));
+              builder: (BuildContext context) => ReconcileWithdrawalList(
+                    reconciledWithdrawalTransactionAlertId:
+                        withdrawal.transactionAlertId,
+                  )));
         });
       }
     } else {

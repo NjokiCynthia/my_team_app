@@ -72,18 +72,22 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         await Provider.of<Groups>(_bodyContext, listen: false)
             .reconcileDepositTransactionAlert(
                 _reconciledDeposits, deposit.transactionAlertId);
-        StatusHandler().showSuccessSnackBar(_bodyContext, "Some message here");
+        StatusHandler()
+            .showSuccessSnackBar(_bodyContext, "Successfully reconciled");
       } on CustomException catch (error) {
-        StatusHandler().handleStatus(
-            context: context,
-            error: error,
-            callback: () {
-              _submit(deposit);
-            });
+        StatusHandler().showDialogWithAction(
+            context: _bodyContext,
+            message: error.toString(),
+            function: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (_) => ReconcileDepositList())),
+            dismissible: true);
       } finally {
         Future.delayed(const Duration(milliseconds: 2500), () {
-          Navigator.of(_bodyContext).pushReplacement(
-              MaterialPageRoute(builder: (_) => ReconcileDepositList()));
+          Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
+              builder: (_) => ReconcileDepositList(
+                    reconciledDepositTransactionAlertId:
+                        deposit.transactionAlertId,
+                  )));
         });
       }
     } else {
