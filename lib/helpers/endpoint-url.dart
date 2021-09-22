@@ -308,6 +308,12 @@ class EndpointUrl {
   static final String GET_GROUP_UNRECONCILED_WITHDRAWALS =
       CustomHelper.baseUrl +
           "/mobile/transaction_alerts/get_group_unreconcilled_withdrawals";
+  // ignore: non_constant_identifier_names
+  static final String RECONCILE_WITHDRAWAL_TRANSACTION_ALERT =
+      CustomHelper.baseUrl + "/mobile/transaction_alerts/reconcile_withdrawals";
+  // ignore: non_constant_identifier_names
+  static final String RECONCILE_DEPOSIT_TRANSACTION_ALERT =
+      CustomHelper.baseUrl + "/mobile/transaction_alerts/reconcile_deposits";
 
   //Selected Setting Apis
   // ignore: non_constant_identifier_names

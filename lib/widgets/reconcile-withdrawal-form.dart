@@ -136,22 +136,22 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
     }
 
     widget.addReconciledWithdrawal({
-      "stockName": stockName,
-      "moneyMarketInvestmentName": moneyMarketInvestmentName,
+      "stock_name": stockName,
+      "money_market_investment_name": moneyMarketInvestmentName,
       "description": description,
       "amount": amount,
-      "pricePerShare": pricePerShare,
-      "withdrawalTypeId": withdrawalTypeId,
-      "expenseCategoryId": expenseCategoryId,
-      "assetId": assetId,
-      "memberId": memberId,
-      "loanId": loanId,
-      "numberOfShares": numberOfShares,
-      "moneyMarketInvestmentId": moneyMarketInvestmentId,
-      "contributionId": contribId,
-      "bankLoanId": bankLoanId,
-      "recipientAccountId": recipientAccountId,
-      "borrowerId": borrowerId
+      "price_per_share": pricePerShare,
+      "withdrawal_for_type": withdrawalTypeId,
+      "expense_category_id": expenseCategoryId,
+      "asset_id": assetId,
+      "member_id": memberId,
+      "loan_id": loanId,
+      "number_of_shares": numberOfShares,
+      "money_market_investment_id": moneyMarketInvestmentId,
+      "contribution_id": contribId,
+      "bank_loan_id": bankLoanId,
+      "account_id": recipientAccountId,
+      "debtor_id": borrowerId
     });
     // pop out the dialog
     Navigator.of(context).pop();

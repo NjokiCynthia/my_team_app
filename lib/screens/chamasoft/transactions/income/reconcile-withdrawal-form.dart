@@ -3,6 +3,8 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawal-list.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -11,7 +13,6 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
-import 'dart:convert';
 
 class ReconcileWithdrawal extends StatefulWidget {
   const ReconcileWithdrawal({Key key}) : super(key: key);
@@ -26,22 +27,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   List<Member> _members = [];
   bool _isInit = true;
   bool _isLoading = true;
-  List _withdrawalTypes = [];
-  List _descriptions = [];
-  List _stockNames = [];
-  List _moneyMarketInvestmentNames = [];
-  List _amounts = [];
-  List _pricesPerShare = [];
-  List _expenseCategoryIds = [];
-  List _assetIds = [];
-  List _memberIds = [];
-  List _loanIds = [];
-  List _numberOfShares = [];
-  List _moneyMarketInvestmentIds = [];
-  List _contributionIds = [];
-  List _bankLoanIds = [];
-  List _recipientAccountIds = [];
-  List _borrowerIds = [];
+  List _reconciledWithdrawals = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
@@ -55,22 +41,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
 
   void addReconciledWithdrawal(formData) {
     setState(() {
-      _withdrawalTypes.add(formData['withdrawalTypeId']);
-      _descriptions.add(formData['description']);
-      _stockNames.add(formData['stockName']);
-      _moneyMarketInvestmentNames.add(formData['moneyMarketInvestmentName']);
-      _amounts.add(formData['amount']);
-      _pricesPerShare.add(formData['pricePerShare']);
-      _expenseCategoryIds.add(formData['expenseCategoryId']);
-      _assetIds.add(formData['assetId']);
-      _memberIds.add(formData['memberId']);
-      _loanIds.add(formData['loanId']);
-      _numberOfShares.add(formData['numberOfShares']);
-      _moneyMarketInvestmentIds.add(formData['moneyMarketInvestmentId']);
-      _contributionIds.add(formData['contributionId']);
-      _bankLoanIds.add(formData['bankLoanId']);
-      _recipientAccountIds.add(formData['recipientAccountId']);
-      _borrowerIds.add(formData['borrowerId']);
+      _reconciledWithdrawals.add(formData);
     });
   }
 
@@ -83,34 +54,53 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
 
   void _submit(BuildContext context, UnreconciledWithdrawal withdrawal) async {
     double total = totalReconciled;
-    final groupObject =
+    final Group groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-
     if (withdrawal.amount == total) {
-      // Structure payload
-      var payload = json.encode({
-        "withdrawalTypes": _withdrawalTypes,
-        "descriptions": _descriptions,
-        "stockNames": _stockNames,
-        "moneyMarketInvestmentNames": _moneyMarketInvestmentNames,
-        "amounts": _amounts,
-        "pricesPerShare": _pricesPerShare,
-        "expenseCategoryIds": _expenseCategoryIds,
-        "assetIds": _assetIds,
-        "memberIds": _memberIds,
-        "loanIds": _loanIds,
-        "numberOfShares": _numberOfShares,
-        "moneyMarketInvestmentIds": _moneyMarketInvestmentIds,
-        "contributionIds": _contributionIds,
-        "bankLoanIds": _bankLoanIds,
-        "recipientAccountIds": _recipientAccountIds,
-        "borrowerIds": _borrowerIds
+      // Initiate loading
+      setState(() {
+        _isLoading = true;
       });
 
-      print(payload);
-      // Send request to server
+      try {
+        await Provider.of<Groups>(context, listen: false)
+            .reconcileWithdrawalTransactionAlert(
+                _reconciledWithdrawals, withdrawal.transactionAlertId);
 
-      print("To be done");
+        // StatusHandler().showSuccessSnackBar(context, response);
+
+        // print("As a good response");
+
+        // Future.delayed(const Duration(milliseconds: 2500), () {
+        //   Navigator.of(context).pushReplacement(MaterialPageRoute(
+        //       builder: (BuildContext context) => ReconcileWithdrawalList()));
+        // });
+      } on CustomException catch (error) {
+        StatusHandler().showDialogWithAction(
+            context: context,
+            message: error.toString(),
+            function: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (BuildContext context) =>
+                        ReconcileWithdrawalList())),
+            dismissible: true);
+      } finally {
+        // alertDialogWithAction(
+        //     context,
+        //     'Successfully reconciled',
+        //     () => Navigator.of(context).push(MaterialPageRoute(
+        //         builder: (BuildContext context) => ReconcileWithdrawalList())),
+        //     true);
+        // bool response = showAlertDialog(
+        //     context, "Successfully reconciled", "Reconciliation");
+
+        // print("response $response");
+
+        // if (response) {
+        //   Navigator.of(context).pop();
+        // }
+        StatusHandler().showSuccessSnackBar(context, "Successfull reconciled");
+      }
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${withdrawal.amount} transacted.");
@@ -119,31 +109,16 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
 
   void removeReconciledWithdrawal(index) {
     setState(() {
-      _withdrawalTypes.removeAt(index);
-      _descriptions.removeAt(index);
-      _stockNames.removeAt(index);
-      _moneyMarketInvestmentNames.removeAt(index);
-      _amounts.removeAt(index);
-      _pricesPerShare.removeAt(index);
-      _expenseCategoryIds.removeAt(index);
-      _assetIds.removeAt(index);
-      _memberIds.removeAt(index);
-      _loanIds.removeAt(index);
-      _numberOfShares.removeAt(index);
-      _moneyMarketInvestmentIds.removeAt(index);
-      _contributionIds.removeAt(index);
-      _bankLoanIds.removeAt(index);
-      _recipientAccountIds.removeAt(index);
-      _borrowerIds.removeAt(index);
+      _reconciledWithdrawals.removeAt(index);
     });
   }
 
   double get totalReconciled {
     double total = 0.0;
-    if (_amounts.length > 0) {
-      for (var amount in _amounts) {
-        if (amount != null) {
-          total += amount;
+    if (_reconciledWithdrawals.length > 0) {
+      for (var reconciledWithdrawal in _reconciledWithdrawals) {
+        if (reconciledWithdrawal['amount'] != null) {
+          total += reconciledWithdrawal['amount'];
         }
       }
     }
@@ -273,14 +248,16 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                     child: ListView.builder(
                       itemBuilder: (_, index) {
                         return ListTile(
-                          title: _memberIds[index] != null
+                          title: _reconciledWithdrawals[index]['member_id'] !=
+                                  null
                               ? Text(
-                                  "${getWithdrawalType(_withdrawalTypes[index])} - ${getMember(_memberIds[index])}")
+                                  "${getWithdrawalType(_reconciledWithdrawals[index]['withdrawal_for_type'])} - ${getMember(_reconciledWithdrawals[index]['member_id'])}")
                               : Text(
-                                  "${getWithdrawalType(_withdrawalTypes[index])}"),
-                          subtitle: _amounts[index] != null
+                                  "${getWithdrawalType(_reconciledWithdrawals[index]['withdrawal_for_type'])}"),
+                          subtitle: _reconciledWithdrawals[index]['amount'] !=
+                                  null
                               ? Text(
-                                  "${groupObject.groupCurrency} ${currencyFormat.format(_amounts[index])}")
+                                  "${groupObject.groupCurrency} ${currencyFormat.format(_reconciledWithdrawals[index]['amount'])}")
                               : null,
                           trailing: IconButton(
                             onPressed: () => removeReconciledWithdrawal(index),
@@ -289,7 +266,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                           ),
                         );
                       },
-                      itemCount: _withdrawalTypes.length,
+                      itemCount: _reconciledWithdrawals.length,
                     ),
                   ),
                   Container(

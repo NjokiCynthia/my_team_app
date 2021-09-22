@@ -13,12 +13,12 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class ReconcileDeposits extends StatefulWidget {
+class ReconcileDepositList extends StatefulWidget {
   @override
-  _ReconcileDepositsState createState() => _ReconcileDepositsState();
+  _ReconcileDepositListState createState() => _ReconcileDepositListState();
 }
 
-class _ReconcileDepositsState extends State<ReconcileDeposits> {
+class _ReconcileDepositListState extends State<ReconcileDepositList> {
   double _appBarElevation = 0;
   bool _isLoading = true;
   bool _isInit = true;
