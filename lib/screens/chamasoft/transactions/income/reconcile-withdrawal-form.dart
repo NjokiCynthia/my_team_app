@@ -6,7 +6,6 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawal-list.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/reconcile-withdrawal-form.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -24,12 +23,8 @@ class ReconcileWithdrawal extends StatefulWidget {
 class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   double _appBBarElevation = 0;
   ScrollController _scrollController;
-  List<Member> _members = [];
-  bool _isInit = true;
-  bool _isLoading = true;
   List _reconciledWithdrawals = [];
   BuildContext _bodyContext;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBBarElevation : 0;
@@ -128,50 +123,6 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   }
 
   @override
-  void didChangeDependencies() {
-    // get the unreconciled deposits
-    if (_isInit)
-      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
-    super.didChangeDependencies();
-  }
-
-  Future<void> _fetchMembers(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchMembers();
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchMembers(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
-    }
-  }
-
-  Future<bool> _fetchData() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    _members = Provider.of<Groups>(context, listen: false).members;
-    _fetchMembers(context).then((_) {
-      _members = Provider.of<Groups>(context, listen: false).members;
-      setState(() {
-        _isLoading = false;
-      });
-    });
-    _isInit = false;
-    return true;
-  }
-
-  String getMember(memberId) {
-    return _members
-        .firstWhere((member) => member.id == "$memberId", orElse: null)
-        .name;
-  }
-
-  @override
   Widget build(BuildContext context) {
     final UnreconciledWithdrawal withdrawal =
         ModalRoute.of(context).settings.arguments;
@@ -219,11 +170,6 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
               controller: _scrollController,
               child: Column(
                 children: [
-                  _isLoading
-                      ? showLinearProgressIndicator()
-                      : SizedBox(
-                          height: 0.0,
-                        ),
                   transactionToolTip(
                     title: withdrawal.particulars,
                     date: "Date of transaction: ${withdrawal.transactionDate}",
@@ -240,7 +186,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                           title: _reconciledWithdrawals[index]['member_id'] !=
                                   null
                               ? Text(
-                                  "${getWithdrawalType(_reconciledWithdrawals[index]['withdrawal_for_type'])} - ${getMember(_reconciledWithdrawals[index]['member_id'])}")
+                                  "${getWithdrawalType(_reconciledWithdrawals[index]['withdrawal_for_type'])} - ${_reconciledWithdrawals[index]['member_name']}")
                               : Text(
                                   "${getWithdrawalType(_reconciledWithdrawals[index]['withdrawal_for_type'])}"),
                           subtitle: _reconciledWithdrawals[index]['amount'] !=
@@ -250,7 +196,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                               : null,
                           trailing: IconButton(
                             onPressed: () => removeReconciledWithdrawal(index),
-                            icon: Icon(Icons.delete),
+                            icon: Icon(Icons.close),
                             color: Theme.of(context).errorColor,
                           ),
                         );

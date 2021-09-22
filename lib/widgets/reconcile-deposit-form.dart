@@ -27,7 +27,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
   bool _isFormInputEnabled = true;
 
   // form values
-  String description;
+  String description, memberName;
 
   double amount, amountPayable, amountDisbursed, pricePerShare;
 
@@ -65,21 +65,22 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
     widget._addReconciledDeposit({
       "description": description,
       "amount": amount,
-      "amountPayable": amountPayable,
-      "amountDisbursed": amountDisbursed,
-      "depositTypeId": depositTypeId,
-      "memberId": memberId,
-      "contributionId": contributionId,
-      "fineCategoryId": fineCategoryId,
-      "depositorId": depositorId,
-      "incomeCategoryId": incomeCategoryId,
-      "loanId": loanId,
-      "accountId": accountId,
-      "stockId": stockId,
-      "assetId": assetId,
-      "moneyMarketInvestmentId": moneyMarketInvestmentId,
-      "borrowerId": borrowerId,
-      "numberOfSharesSold": numberOfSharesSold
+      "amount_payable": amountPayable,
+      "amount_disbursed": amountDisbursed,
+      "deposit_for_type": depositTypeId,
+      "member_id": memberId,
+      "member_name": memberName,
+      "contribution_id": contributionId,
+      "fine_category_id": fineCategoryId,
+      "depositor_id": depositorId,
+      "income_category_id": incomeCategoryId,
+      "loan_id": loanId,
+      "account_id": accountId,
+      "stock_id": stockId,
+      "asset_id": assetId,
+      "money_market_investment_cash_in_id": moneyMarketInvestmentId,
+      "debtor_id": borrowerId,
+      "number_of_share_sold": numberOfSharesSold
     });
 
     // pop out the dialog
@@ -705,6 +706,8 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       onChanged: (value) {
         setState(() {
           memberId = value;
+          memberName =
+              listItems.firstWhere((member) => member.id == value).name;
         });
       },
       validator: (value) {
