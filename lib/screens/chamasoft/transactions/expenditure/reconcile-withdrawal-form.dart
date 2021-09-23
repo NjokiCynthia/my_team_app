@@ -15,8 +15,8 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ReconcileWithdrawal extends StatefulWidget {
-  final Map<String,dynamic> formLoadData;
-  const ReconcileWithdrawal(this.formLoadData,{Key key}) : super(key: key);
+  final Map<String, dynamic> formLoadData;
+  const ReconcileWithdrawal(this.formLoadData, {Key key}) : super(key: key);
 
   @override
   _ReconcileWithdrawalState createState() => _ReconcileWithdrawalState();
@@ -46,11 +46,11 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   void _newReconcileWithdrawalDialog() {
     showDialog(
         context: context,
-        builder: (BuildContext context) =>
-            ReconcileWithdrawalForm(addReconciledWithdrawal,widget.formLoadData));
+        builder: (BuildContext context) => ReconcileWithdrawalForm(
+            addReconciledWithdrawal, widget.formLoadData));
   }
 
-  void _submit(UnreconciledWithdrawal withdrawal,int position) async {
+  void _submit(UnreconciledWithdrawal withdrawal, int position) async {
     double total = totalReconciled;
     final Group groupObject =
         Provider.of<Groups>(_bodyContext, listen: false).getCurrentGroup();
@@ -67,19 +67,30 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
       });
       try {
         String response = await Provider.of<Groups>(_bodyContext, listen: false)
-            .reconcileWithdrawalTransactionAlert(
-                _reconciledWithdrawals, withdrawal.transactionAlertId,position);
-        StatusHandler().showSuccessSnackBar(_bodyContext, "Good news: $response");
+            .reconcileWithdrawalTransactionAlert(_reconciledWithdrawals,
+                withdrawal.transactionAlertId, position);
+        StatusHandler()
+            .showSuccessSnackBar(_bodyContext, "Good news: $response");
         Future.delayed(const Duration(milliseconds: 2500), () {
-          Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => ReconcileWithdrawalList(isInit: false,formData:widget.formLoadData)));
+          //   Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
+          //       builder: (BuildContext context) => ReconcileWithdrawalList(isInit: false,formData:widget.formLoadData)));
+
+          Navigator.of(_bodyContext).pushAndRemoveUntil(
+              MaterialPageRoute(
+                  builder: (BuildContext context) => ReconcileWithdrawalList(
+                        isInit: false,
+                        formData: widget.formLoadData,
+                      )),
+              (Route<dynamic> route) => false);
         });
       } on CustomException catch (error) {
         StatusHandler().showDialogWithAction(
             context: _bodyContext,
             message: error.toString(),
             function: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => ReconcileWithdrawalList(isInit: false,formData:widget.formLoadData))),
+                MaterialPageRoute(
+                    builder: (_) => ReconcileWithdrawalList(
+                        isInit: false, formData: widget.formLoadData))),
             dismissible: true);
       }
     } else {
@@ -122,7 +133,8 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
 
   @override
   Widget build(BuildContext context) {
-    final arguments =  ModalRoute.of(context).settings.arguments as Map<String,dynamic>;
+    final arguments =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     final UnreconciledWithdrawal withdrawal = arguments['withdrawal'];
     final int position = arguments['position'];
     final groupObject =
@@ -154,7 +166,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _submit(withdrawal,position);
+            _submit(withdrawal, position);
           },
           child: Icon(
             Icons.check,
