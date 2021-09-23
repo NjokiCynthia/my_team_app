@@ -268,6 +268,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                                     scrollInfo.metrics.pixels ==
                                         scrollInfo.metrics.maxScrollExtent &&
                                     _hasMoreData) {
+                                  // ignore: todo
                                   //TODO check if has more data before fetching again
                                   _fetchData();
                                 }

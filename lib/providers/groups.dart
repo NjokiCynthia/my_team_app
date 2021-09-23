@@ -4286,8 +4286,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
-        if(lowerLimit == 0)
-          _depositList = [];
+        if (lowerLimit == 0) _depositList = [];
         addDepositList(data);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -5015,7 +5014,7 @@ class Groups with ChangeNotifier {
   // reconcile withdrawal transaction alert
 
   Future<String> reconcileWithdrawalTransactionAlert(
-      List formDataPayload, String transactionAlertId,int position) async {
+      List formDataPayload, String transactionAlertId, int position) async {
     try {
       // ignore: unused_local_variable
       final url = EndpointUrl.RECONCILE_WITHDRAWAL_TRANSACTION_ALERT;
@@ -5025,21 +5024,16 @@ class Groups with ChangeNotifier {
       formData['transaction_alert_id'] = transactionAlertId;
       formData['reconcile_withdrawal_break_down'] = formDataPayload;
       try {
-        print("the length ${_unreconciledWithdrawals.length}");
-        _unreconciledWithdrawals.removeAt(position);
-        print("the length ${_unreconciledWithdrawals.length}");
-        notifyListeners();
-        // final postRequest = json.encode(formData);
-
-        // final response = await PostToServer.post(postRequest, url);
-
-        // int status = ParseHelper.getIntFromJson(response, "status");
-        // if (status == 12) {
-        //   return "-1";
-        // } else {
-        //   return response["message"].toString();
-        // }
-        return "";
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        int status = ParseHelper.getIntFromJson(response, "status");
+        if (status == 12) {
+          return "-1";
+        } else {
+          _unreconciledWithdrawals.removeAt(position);
+          notifyListeners();
+          return response["message"].toString();
+        }
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
