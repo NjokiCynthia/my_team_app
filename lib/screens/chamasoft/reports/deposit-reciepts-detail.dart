@@ -4,6 +4,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,22 @@ class _DetailRecieptState extends State<DetailReciept> {
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
+    // groupPhone() {
+    //   if (group.groupPhone == null) {
+    //     return '--';
+    //   } else {
+    //     group.groupPhone;
+    //   }
+    // }
+
+    // groupEmail() {
+    //   if (group.groupEmail == null) {
+    //     return '--';
+    //   } else {
+    //     group.groupEmail;
+    //   }
+    // }
+
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
@@ -48,7 +65,7 @@ class _DetailRecieptState extends State<DetailReciept> {
               Center(
                 child: Container(
                   width: 300.0,
-                  height: 300.0,
+                  height: 400.0,
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
@@ -75,6 +92,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                             width: 80.0,
                             height: 90.0,
                           ),
+
                           customTitleWithWrap(
                             text: widget.narration,
                             fontSize: 22,
@@ -86,23 +104,66 @@ class _DetailRecieptState extends State<DetailReciept> {
                           SizedBox(
                             height: 15.0,
                           ),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.black45,
+                            dashRadius: 0.0,
+                            dashGapLength: 4.0,
+                            dashGapColor: Colors.transparent,
+                            dashGapRadius: 0.0,
+                          ),
                           Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               customTitleWithWrap(
-                                text: 'Paid KES. ' + widget.depositor,
+                                text: group.groupName,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
                                     .textSelectionHandleColor,
                               ),
-                              SizedBox(
-                                height: 5.0,
+                              customTitleWithWrap(
+                                text: '--',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
                               ),
                               customTitleWithWrap(
-                                text: 'To: ' + group.groupName,
+                                text: '--',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
+                            ],
+                          ),
+                          DottedLine(
+                            direction: Axis.horizontal,
+                            lineLength: double.infinity,
+                            lineThickness: 1.0,
+                            dashLength: 4.0,
+                            dashColor: Colors.black45,
+                            dashRadius: 0.0,
+                            dashGapLength: 4.0,
+                            dashGapColor: Colors.transparent,
+                            dashGapRadius: 0.0,
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              customTitleWithWrap(
+                                text: 'Paid KES. ' + widget.depositor,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
@@ -147,7 +208,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Column(
+                      Row(
                         children: [
                           IconButton(
                             icon: Icon(
@@ -155,7 +216,6 @@ class _DetailRecieptState extends State<DetailReciept> {
                             ),
                             iconSize: 20.0,
                             onPressed: () {
-                              convertWidgetToImage();
                               //Share.shareFiles([convertWidgetToImage().path]);
                             },
                           ),
@@ -165,7 +225,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                       SizedBox(
                         width: 20.0,
                       ),
-                      Column(
+                      Row(
                         children: [
                           IconButton(
                             icon: Icon(
