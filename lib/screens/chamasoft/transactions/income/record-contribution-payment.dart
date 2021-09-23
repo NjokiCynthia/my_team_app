@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';

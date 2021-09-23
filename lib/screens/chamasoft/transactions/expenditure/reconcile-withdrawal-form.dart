@@ -15,7 +15,8 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ReconcileWithdrawal extends StatefulWidget {
-  const ReconcileWithdrawal({Key key}) : super(key: key);
+  final Map<String,dynamic> formLoadData;
+  const ReconcileWithdrawal(this.formLoadData,{Key key}) : super(key: key);
 
   @override
   _ReconcileWithdrawalState createState() => _ReconcileWithdrawalState();
@@ -46,10 +47,10 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
     showDialog(
         context: context,
         builder: (BuildContext context) =>
-            ReconcileWithdrawalForm(addReconciledWithdrawal));
+            ReconcileWithdrawalForm(addReconciledWithdrawal,widget.formLoadData));
   }
 
-  void _submit(UnreconciledWithdrawal withdrawal) async {
+  void _submit(UnreconciledWithdrawal withdrawal,int position) async {
     double total = totalReconciled;
     final Group groupObject =
         Provider.of<Groups>(_bodyContext, listen: false).getCurrentGroup();
@@ -64,30 +65,23 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
               );
             });
       });
-
       try {
-        await Provider.of<Groups>(_bodyContext, listen: false)
+        String response = await Provider.of<Groups>(_bodyContext, listen: false)
             .reconcileWithdrawalTransactionAlert(
-                _reconciledWithdrawals, withdrawal.transactionAlertId);
-
-        StatusHandler()
-            .showSuccessSnackBar(_bodyContext, "Successfully reconciled");
-
+                _reconciledWithdrawals, withdrawal.transactionAlertId,position);
+        StatusHandler().showSuccessSnackBar(_bodyContext, "Good news: $response");
         Future.delayed(const Duration(milliseconds: 2500), () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => ReconcileWithdrawalList(
-                    reconciledWithdrawalTransactionAlertId:
-                        withdrawal.transactionAlertId,
-                  )));
+          Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => ReconcileWithdrawalList(isInit: false,formData:widget.formLoadData)));
         });
       } on CustomException catch (error) {
         StatusHandler().showDialogWithAction(
             context: _bodyContext,
             message: error.toString(),
             function: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => ReconcileWithdrawalList())),
+                MaterialPageRoute(builder: (_) => ReconcileWithdrawalList(isInit: false,formData:widget.formLoadData))),
             dismissible: true);
-      } finally {}
+      }
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${withdrawal.amount} transacted.");
@@ -128,9 +122,9 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
 
   @override
   Widget build(BuildContext context) {
-    final UnreconciledWithdrawal withdrawal =
-        ModalRoute.of(context).settings.arguments;
-
+    final arguments =  ModalRoute.of(context).settings.arguments as Map<String,dynamic>;
+    final UnreconciledWithdrawal withdrawal = arguments['withdrawal'];
+    final int position = arguments['position'];
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
@@ -160,7 +154,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _submit(withdrawal);
+            _submit(withdrawal,position);
           },
           child: Icon(
             Icons.check,

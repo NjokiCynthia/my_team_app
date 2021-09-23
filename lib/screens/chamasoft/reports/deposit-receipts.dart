@@ -41,14 +41,14 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   bool _hasMoreData = false;
   bool _forceFetch = false;
 
-  // void _scrollListener() {
-  //   double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
-  //   if (_appBarElevation != newElevation) {
-  //     setState(() {
-  //       _appBarElevation = newElevation;
-  //     });
-  //   }
-  // }
+  void _scrollListener() {
+    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
+  }
 
   Future<void> _getDeposits(BuildContext context) async {
     try {
@@ -100,15 +100,15 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   @override
   void initState() {
-    // _scrollController = ScrollController();
-    // _scrollController.addListener(_scrollListener);
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   @override
   void dispose() {
-    // _scrollController?.removeListener(_scrollListener);
-    // _scrollController?.dispose();
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
     super.dispose();
   }
 
