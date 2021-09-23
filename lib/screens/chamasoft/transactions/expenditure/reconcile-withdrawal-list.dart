@@ -81,8 +81,6 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
       _isLoading = true;
     });
 
-    _withdrawals =
-        Provider.of<Groups>(context, listen: false).getUnreconciledWithdrawals;
     _fetchUnreconciledWithdrawals(context).then((_) {
       _withdrawals = Provider.of<Groups>(context, listen: false)
           .getUnreconciledWithdrawals;
