@@ -26,7 +26,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   //bool _isFormInputEnabled = true;
 
   // form values
-  String stockName, description, moneyMarketInvestmentName;
+  String stockName, description, moneyMarketInvestmentName, memberName;
 
   double amount, pricePerShare;
 
@@ -145,6 +145,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       "expense_category_id": expenseCategoryId,
       "asset_id": assetId,
       "member_id": memberId,
+      'member_name': memberName,
       "loan_id": loanId,
       "number_of_shares": numberOfShares,
       "money_market_investment_id": moneyMarketInvestmentId,
@@ -300,6 +301,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             onChanged: (value) {
                               setState(() {
                                 memberId = value;
+                                memberName = groupMembers
+                                    .firstWhere((member) => member.id == value)
+                                    .name;
                               });
                             },
                             validator: (value) {
@@ -465,6 +469,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             onChanged: (value) {
                               setState(() {
                                 memberId = value;
+                                memberName = groupMembers
+                                    .firstWhere((member) => member.id == value)
+                                    .name;
                               });
                             },
                             validator: (value) {
@@ -612,6 +619,9 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             onChanged: (value) {
                               setState(() {
                                 memberId = value;
+                                memberName = groupMembers
+                                    .firstWhere((member) => member.id == value)
+                                    .name;
                               });
                             },
                             validator: (value) {

@@ -5051,25 +5051,24 @@ class Groups with ChangeNotifier {
   // reconcile deposit transaction alert
 
   Future<void> reconcileDepositTransactionAlert(
-      Map<String, dynamic> formDataPayload) async {
+      List formDataPayload, String transactionAlertId) async {
     try {
       // ignore: unused_local_variable
       final url = EndpointUrl.RECONCILE_DEPOSIT_TRANSACTION_ALERT;
       final Map<String, dynamic> formData = {};
       formData['user_id'] = _userId;
       formData['group_id'] = currentGroupId;
+      formData['transaction_alert_id'] = transactionAlertId;
       formData['reconcile_deposits_break_down'] = formDataPayload;
       try {
         final postRequest = json.encode(formData);
-        print(postRequest);
-        // final response = await PostToServer.post(postRequest, url);
-
-        // int status = ParseHelper.getIntFromJson(response, "status");
-        // if (status == 12) {
-        //   return "-1";
-        // } else {
-        //   return response["request_id"].toString();
-        // }
+        final response = await PostToServer.post(postRequest, url);
+        int status = ParseHelper.getIntFromJson(response, "status");
+        if (status == 12) {
+          return "-1";
+        } else {
+          return response["message"].toString();
+        }
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {

@@ -1,3 +1,4 @@
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -6,7 +7,6 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-list.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/reconcile-withdrawal-form.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -24,12 +24,8 @@ class ReconcileWithdrawal extends StatefulWidget {
 class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   double _appBBarElevation = 0;
   ScrollController _scrollController;
-  List<Member> _members = [];
-  bool _isInit = true;
-  bool _isLoading = true;
   List _reconciledWithdrawals = [];
   BuildContext _bodyContext;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBBarElevation : 0;
@@ -57,9 +53,6 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
     double total = totalReconciled;
     final Group groupObject =
         Provider.of<Groups>(_bodyContext, listen: false).getCurrentGroup();
-    setState(() {
-      _isLoading = true;
-    });
     if (withdrawal.amount == total) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         showDialog<String>(
@@ -71,17 +64,21 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
               );
             });
       });
+
       try {
-        await Provider.of<Groups>(context, listen: false)
+        await Provider.of<Groups>(_bodyContext, listen: false)
             .reconcileWithdrawalTransactionAlert(
                 _reconciledWithdrawals, withdrawal.transactionAlertId);
+
         StatusHandler()
             .showSuccessSnackBar(_bodyContext, "Successfully reconciled");
 
         Future.delayed(const Duration(milliseconds: 2500), () {
-          Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext _bodyContext) =>
-                  ReconcileWithdrawalList()));
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => ReconcileWithdrawalList(
+                    reconciledWithdrawalTransactionAlertId:
+                        withdrawal.transactionAlertId,
+                  )));
         });
       } on CustomException catch (error) {
         StatusHandler().showDialogWithAction(
@@ -90,11 +87,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
             function: () => Navigator.of(context).pushReplacement(
                 MaterialPageRoute(builder: (_) => ReconcileWithdrawalList())),
             dismissible: true);
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-      }
+      } finally {}
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${withdrawal.amount} transacted.");
@@ -134,50 +127,6 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
   }
 
   @override
-  void didChangeDependencies() {
-    // get the unreconciled deposits
-    if (_isInit)
-      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
-    super.didChangeDependencies();
-  }
-
-  Future<void> _fetchMembers(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchMembers();
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchMembers(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
-    }
-  }
-
-  Future<bool> _fetchData() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    _members = Provider.of<Groups>(context, listen: false).members;
-    _fetchMembers(context).then((_) {
-      _members = Provider.of<Groups>(context, listen: false).members;
-      setState(() {
-        _isLoading = false;
-      });
-    });
-    _isInit = false;
-    return true;
-  }
-
-  String getMember(memberId) {
-    return _members
-        .firstWhere((member) => member.id == "$memberId", orElse: null)
-        .name;
-  }
-
-  @override
   Widget build(BuildContext context) {
     final UnreconciledWithdrawal withdrawal =
         ModalRoute.of(context).settings.arguments;
@@ -213,8 +162,11 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
           onPressed: () {
             _submit(withdrawal);
           },
-          child: Icon(Icons.check),
-          backgroundColor: Theme.of(context).accentColor,
+          child: Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          backgroundColor: primaryColor,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(builder: (BuildContext context) {
@@ -225,11 +177,6 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
               controller: _scrollController,
               child: Column(
                 children: [
-                  _isLoading
-                      ? showLinearProgressIndicator()
-                      : SizedBox(
-                          height: 0.0,
-                        ),
                   transactionToolTip(
                     title: withdrawal.particulars,
                     date: "Date of transaction: ${withdrawal.transactionDate}",
@@ -246,7 +193,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                           title: _reconciledWithdrawals[index]['member_id'] !=
                                   null
                               ? Text(
-                                  "${getWithdrawalType(_reconciledWithdrawals[index]['withdrawal_for_type'])} - ${getMember(_reconciledWithdrawals[index]['member_id'])}")
+                                  "${getWithdrawalType(_reconciledWithdrawals[index]['withdrawal_for_type'])} - ${_reconciledWithdrawals[index]['member_name']}")
                               : Text(
                                   "${getWithdrawalType(_reconciledWithdrawals[index]['withdrawal_for_type'])}"),
                           subtitle: _reconciledWithdrawals[index]['amount'] !=
@@ -256,7 +203,7 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                               : null,
                           trailing: IconButton(
                             onPressed: () => removeReconciledWithdrawal(index),
-                            icon: Icon(Icons.delete),
+                            icon: Icon(Icons.close),
                             color: Theme.of(context).errorColor,
                           ),
                         );
@@ -267,13 +214,19 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                   Container(
                       padding: inputPagePadding,
                       child: ListTile(
-                        title: Text(
-                          'Total amount reconciled',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                            "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)} "),
-                      ))
+                          title: subtitle1(
+                              text: "Total amount reconciled",
+                              textAlign: TextAlign.start,
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor),
+                          subtitle: subtitle2(
+                              text:
+                                  "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)}",
+                              textAlign: TextAlign.start,
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor)))
                 ],
               ),
             ),

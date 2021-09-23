@@ -14,6 +14,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ReconcileDepositList extends StatefulWidget {
+  final String reconciledDepositTransactionAlertId;
+
+  ReconcileDepositList({this.reconciledDepositTransactionAlertId});
   @override
   _ReconcileDepositListState createState() => _ReconcileDepositListState();
 }
@@ -94,6 +97,14 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    List<UnreconciledDeposit> unreconciledDeposits =
+        widget.reconciledDepositTransactionAlertId != null
+            ? _deposits
+                .where((deposit) =>
+                    deposit.transactionAlertId !=
+                    widget.reconciledDepositTransactionAlertId)
+                .toList()
+            : _deposits;
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
@@ -121,14 +132,15 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
                         height: 0.0,
                       ),
                 Expanded(
-                  child: _deposits.length > 0
+                  child: unreconciledDeposits.length > 0
                       ? ListView.builder(
                           itemBuilder: (context, index) {
-                            UnreconciledDeposit deposit = _deposits[index];
+                            UnreconciledDeposit deposit =
+                                unreconciledDeposits[index];
                             return UnreconciledDepositCard(
                                 deposit, groupObject);
                           },
-                          itemCount: _deposits.length,
+                          itemCount: unreconciledDeposits.length,
                         )
                       : emptyList(
                           color: Colors.blue[400],
