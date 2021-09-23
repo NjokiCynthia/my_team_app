@@ -96,7 +96,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['amount'] = contributionAmount;
     _formData['member_type_id'] = memberTypeId;
     _formData['individual_payments'] = _individualMemberContributions;
-    log(_formData.toString());
+    // log(_formData.toString());
     try {
       String message = await Provider.of<Groups>(context, listen: false)
           .recordContributionPayments(_formData);

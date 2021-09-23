@@ -4,7 +4,7 @@ import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawal-list.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-list.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -57,6 +57,9 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
     double total = totalReconciled;
     final Group groupObject =
         Provider.of<Groups>(_bodyContext, listen: false).getCurrentGroup();
+    setState(() {
+      _isLoading = true;
+    });
     if (withdrawal.amount == total) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         showDialog<String>(
@@ -68,14 +71,18 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
               );
             });
       });
-
       try {
-        await Provider.of<Groups>(_bodyContext, listen: false)
+        await Provider.of<Groups>(context, listen: false)
             .reconcileWithdrawalTransactionAlert(
                 _reconciledWithdrawals, withdrawal.transactionAlertId);
-
         StatusHandler()
             .showSuccessSnackBar(_bodyContext, "Successfully reconciled");
+
+        Future.delayed(const Duration(milliseconds: 2500), () {
+          Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext _bodyContext) =>
+                  ReconcileWithdrawalList()));
+        });
       } on CustomException catch (error) {
         StatusHandler().showDialogWithAction(
             context: _bodyContext,
@@ -84,9 +91,8 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
                 MaterialPageRoute(builder: (_) => ReconcileWithdrawalList())),
             dismissible: true);
       } finally {
-        Future.delayed(const Duration(milliseconds: 2500), () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (BuildContext context) => ReconcileWithdrawalList()));
+        setState(() {
+          _isLoading = false;
         });
       }
     } else {

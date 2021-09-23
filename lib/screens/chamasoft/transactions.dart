@@ -5,7 +5,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-r
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-expense.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-list.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-withdrawal-list.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-list.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-bank-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-contribution-payment.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/record-fine-payment.dart';

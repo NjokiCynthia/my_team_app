@@ -5025,16 +5025,17 @@ class Groups with ChangeNotifier {
       formData['transaction_alert_id'] = transactionAlertId;
       formData['reconcile_withdrawal_break_down'] = formDataPayload;
       try {
-        final postRequest = json.encode(formData);
+        // final postRequest = json.encode(formData);
 
-        final response = await PostToServer.post(postRequest, url);
+        // final response = await PostToServer.post(postRequest, url);
 
-        int status = ParseHelper.getIntFromJson(response, "status");
-        if (status == 12) {
-          return "-1";
-        } else {
-          return response["message"].toString();
-        }
+        // int status = ParseHelper.getIntFromJson(response, "status");
+        // if (status == 12) {
+        //   return "-1";
+        // } else {
+        //   return response["message"].toString();
+        // }
+        return "";
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
