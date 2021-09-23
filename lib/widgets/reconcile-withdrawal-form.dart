@@ -1,4 +1,4 @@
-import 'package:chamasoft/providers/groups.dart';
+
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -7,11 +7,11 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
-import 'package:provider/provider.dart';
 
 class ReconcileWithdrawalForm extends StatefulWidget {
   final Function addReconciledWithdrawal;
-  const ReconcileWithdrawalForm(this.addReconciledWithdrawal, {Key key})
+  final Map<String,dynamic> formLoadData;
+  const ReconcileWithdrawalForm(this.addReconciledWithdrawal, this.formLoadData, {Key key})
       : super(key: key);
 
   @override
@@ -21,8 +21,7 @@ class ReconcileWithdrawalForm extends StatefulWidget {
 
 class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   final _formKey = new GlobalKey<FormState>();
-  bool _isInit = true;
-  Map<String, dynamic> formLoadData = {};
+  // bool _isInit = true;
   //bool _isFormInputEnabled = true;
 
   // form values
@@ -53,59 +52,47 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   List<NamesListItem> groupBorrowers = [];
 
   Future<void> _fetchDefaultValues(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      showDialog<String>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          });
-    });
-    formLoadData = await Provider.of<Groups>(context, listen: false)
-        .loadInitialFormData(
-            contr: true,
-            acc: true,
-            exp: true,
-            member: true,
-            loanTypes: true,
-            bankLoans: true,
-            groupAssets: true,
-            moneyMarketInvestments: true,
-            borrowers: true);
-    setState(() {
-      _isInit = false;
-      groupMembers = formLoadData.containsKey("memberOptions")
-          ? formLoadData['memberOptions']
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   showDialog<String>(
+    //       context: context,
+    //       barrierDismissible: false,
+    //       builder: (BuildContext context) {
+    //         return Center(
+    //           child: CircularProgressIndicator(),
+    //         );
+    //       });
+    // });
+    // setState(() {
+      groupMembers = widget.formLoadData.containsKey("memberOptions")
+          ? widget.formLoadData['memberOptions']
           : [];
-      groupExpenseCategories = formLoadData.containsKey("expenseCategories")
-          ? formLoadData['expenseCategories']
+      groupExpenseCategories = widget.formLoadData.containsKey("expenseCategories")
+          ? widget.formLoadData['expenseCategories']
           : [];
-      groupAccounts = formLoadData.containsKey("accountOptions")
-          ? formLoadData['accountOptions']
+      groupAccounts = widget.formLoadData.containsKey("accountOptions")
+          ? widget.formLoadData['accountOptions']
           : [];
-      groupContributions = formLoadData.containsKey("contributionOptions")
-          ? formLoadData['contributionOptions']
+      groupContributions = widget.formLoadData.containsKey("contributionOptions")
+          ? widget.formLoadData['contributionOptions']
           : [];
-      groupLoans = formLoadData.containsKey("loanTypeOptions")
-          ? formLoadData['loanTypeOptions']
+      groupLoans = widget.formLoadData.containsKey("loanTypeOptions")
+          ? widget.formLoadData['loanTypeOptions']
           : [];
-      groupBankLoans = formLoadData.containsKey("bankLoansOptions")
-          ? formLoadData['bankLoansOptions']
+      groupBankLoans = widget.formLoadData.containsKey("bankLoansOptions")
+          ? widget.formLoadData['bankLoansOptions']
           : [];
-      groupAssets = formLoadData.containsKey("groupAssetOptions")
-          ? formLoadData['groupAssetOptions']
+      groupAssets = widget.formLoadData.containsKey("groupAssetOptions")
+          ? widget.formLoadData['groupAssetOptions']
           : [];
       groupMoneyMarketInvestments =
-          formLoadData.containsKey("moneyMarketInvestmentOptions")
-              ? formLoadData['moneyMarketInvestmentOptions']
+          widget.formLoadData.containsKey("moneyMarketInvestmentOptions")
+              ? widget.formLoadData['moneyMarketInvestmentOptions']
               : [];
-      groupBorrowers = formLoadData.containsKey("borrowerOptions")
-          ? formLoadData['borrowerOptions']
+      groupBorrowers = widget.formLoadData.containsKey("borrowerOptions")
+          ? widget.formLoadData['borrowerOptions']
           : [];
-    });
-    Navigator.of(context, rootNavigator: true).pop();
+    // });
+    // Navigator.of(context, rootNavigator: true).pop();
   }
 
   String getAlertText() {
@@ -160,9 +147,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
       _fetchDefaultValues(context);
-    }
     super.didChangeDependencies();
   }
 
@@ -539,8 +524,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             enabled: true,
                             labelText: "Select recipient account",
                             listItems:
-                                formLoadData.containsKey("accountOptions")
-                                    ? formLoadData['accountOptions']
+                                widget.formLoadData.containsKey("accountOptions")
+                                    ? widget.formLoadData['accountOptions']
                                     : [],
                             selectedItem: recipientAccountId,
                             onChanged: (value) {

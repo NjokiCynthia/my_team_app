@@ -1,19 +1,24 @@
 import 'dart:async';
 import 'dart:typed_data';
 
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-reciepts-detail.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
 import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
-import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
+// import 'package:chamasoft/utilities/common.dart';
+// import 'package:chamasoft/utilities/custom-helper.dart';
+// import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
@@ -39,6 +44,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   List<int> _filterList = [];
   List<String> _memberList = [];
   bool _hasMoreData = false;
+  bool _forceFetch = false;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -51,8 +57,11 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   Future<void> _getDeposits(BuildContext context) async {
     try {
+      int _length = _deposits.length;
+      if(_forceFetch)
+        _length = 0;
       await Provider.of<Groups>(context, listen: false).fetchDeposits(
-          _sortOption, _filterList, _memberList, _deposits.length);
+          _sortOption, _filterList, _memberList, _length);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -110,6 +119,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   void applySort(String sort) {
     _sortOption = sort;
+    _forceFetch = true;
     _fetchData();
   }
 
@@ -267,7 +277,9 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                               child: ListView.builder(
                                   itemBuilder: (context, index) {
                                     Deposit deposit = _deposits[index];
+                                    // final indexValue = index;
                                     return DepositCard(
+                                      // indexValue,
                                       deposit: deposit,
                                       details: () {},
                                       voidItem: () {},
@@ -292,6 +304,7 @@ class DepositCard extends StatelessWidget {
 
   final Deposit deposit;
   final Function details, voidItem;
+
   GlobalKey _containerKey = GlobalKey();
 
   void convertWidgetToImage() async {
@@ -356,9 +369,9 @@ class DepositCard extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              customTitle(
+                              customTitle1(
                                 text: deposit.type,
-                                fontSize: 16.0,
+                                // fontSize: 16.0,
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
@@ -421,7 +434,7 @@ class DepositCard extends StatelessWidget {
                                           // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                   textAlign: TextAlign.start),
-                              subtitle1(
+                              customTitle1(
                                   text: deposit.depositor,
                                   color:
                                       // ignore: deprecated_member_use
@@ -442,7 +455,7 @@ class DepositCard extends StatelessWidget {
                                           // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                   textAlign: TextAlign.end),
-                              subtitle1(
+                              customTitle1(
                                   text: deposit.date,
                                   color:
                                       // ignore: deprecated_member_use
@@ -455,10 +468,18 @@ class DepositCard extends StatelessWidget {
                         ]),
                   ),
                   SizedBox(
-                    height: 10,
+                    height: 25,
                   ),
-                  SizedBox(
-                    height: 10,
+                  DottedLine(
+                    direction: Axis.horizontal,
+                    lineLength: double.infinity,
+                    lineThickness: 1.0,
+                    dashLength: 4.0,
+                    dashColor: Colors.black45,
+                    dashRadius: 0.0,
+                    dashGapLength: 4.0,
+                    dashGapColor: Colors.transparent,
+                    dashGapRadius: 0.0,
                   ),
                   Container(
                     padding: EdgeInsets.only(left: 12.0, right: 12.0),
@@ -466,12 +487,12 @@ class DepositCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Column(
+                          Row(
                             children: <Widget>[
                               IconButton(
-                                icon: Icon(
-                                  Icons.delete_forever,
-                                ),
+                                icon: Icon(LineAwesomeIcons.trash
+                                    // Icons.delete_forever,
+                                    ),
                                 iconSize: 20.0,
                                 color: Colors.redAccent,
                                 onPressed: () {
@@ -480,62 +501,114 @@ class DepositCard extends StatelessWidget {
                                   //     message:
                                   //         'Are you sure you want to delete this Transaction?',
                                   //     title: 'Confirm Action',
+
                                   //     action: () async {});
 
                                   showDialog(
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                          backgroundColor:
-                                              Theme.of(context).backgroundColor,
-                                          title: heading2(
-                                              text: "Confirm Action",
-                                              textAlign: TextAlign.start,
+                                        backgroundColor:
+                                            Theme.of(context).backgroundColor,
+                                        title: heading2(
+                                          text: "Confirm Action",
+                                          textAlign: TextAlign.start,
+                                          // ignore: deprecated_member_use
+                                          color: Theme.of(context)
                                               // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                        ),
+                                        content: customTitleWithWrap(
+                                          text:
+                                              "Are you sure you want to delete this Transaction?",
+                                          textAlign: TextAlign.start,
+                                          // ignore: deprecated_member_use
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                          maxLines: null,
+                                        ),
+                                        actions: <Widget>[
+                                          negativeActionDialogButton(
+                                            text: "Cancel",
+                                            // ignore: deprecated_member_use
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
+                                            action: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          // ignore: deprecated_member_use
+                                          FlatButton(
+                                            padding: EdgeInsets.fromLTRB(
+                                                22.0, 0.0, 22.0, 0.0),
+                                            child: customTitle(
+                                              text: "Continue",
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
 
-                                              color: Theme.of(context)
-                                                  // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor));
+                                              //   deposit.removeAt(index);
+                                            },
+                                            shape: new RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        4.0)),
+                                            textColor: Colors.red,
+                                            color: Colors.red.withOpacity(0.2),
+                                          )
+                                        ],
+                                      );
                                     },
                                   );
                                 },
                               ),
-                              customTitleWithWrap(
+                              customTitle(
                                   text: 'Void',
-                                  fontSize: 12.0,
-                                  color: Colors.redAccent)
+                                  fontSize: 14.0,
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  textAlign: TextAlign.end)
                             ],
                           ),
-                          Column(
-                            children: <Widget>[
-                              Visibility(
-                                child: Column(
-                                  children: [
-                                    IconButton(
-                                      icon: Icon(
-                                        LineAwesomeIcons.share,
-                                      ),
-                                      iconSize: 20.0,
-                                      onPressed: () {
-                                        convertWidgetToImage();
-                                        //Share.shareFiles([convertWidgetToImage().path]);
-                                      },
-                                    ),
-                                    customTitleWithWrap(
-                                        text: 'Share', fontSize: 12.0)
-                                  ],
+                          Container(
+                            child: Column(
+                              children: <Widget>[
+                                DottedLine(
+                                  direction: Axis.vertical,
+                                  lineLength: 58.0,
+                                  lineThickness: 1.0,
+                                  dashLength: 4.0,
+                                  dashColor: Colors.black45,
+                                  dashRadius: 0.0,
+                                  dashGapLength: 4.0,
+                                  dashGapColor: Colors.transparent,
+                                  dashGapRadius: 0.0,
                                 ),
-                                visible: false,
-                              )
-                            ],
+                              ],
+                            ),
                           ),
-                          Column(
+                          Row(
                             children: <Widget>[
+                              customTitleWithWrap(
+                                  text: 'VIEW',
+                                  fontSize: 14.0,
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  textAlign: TextAlign.end),
+                              SizedBox(
+                                width: 1.0,
+                              ),
                               IconButton(
                                 icon: Icon(
-                                  LineAwesomeIcons.eye,
+                                  LineAwesomeIcons.angle_right,
                                 ),
-                                iconSize: 20.0,
+                                iconSize: 12.0,
                                 onPressed: () {
                                   Navigator.push(
                                       context,
@@ -551,14 +624,14 @@ class DepositCard extends StatelessWidget {
                                                   deposit.reconciliation)));
                                 },
                               ),
-                              customTitleWithWrap(text: 'View', fontSize: 12.0)
                             ],
                           ),
                         ]),
                   ),
                   SizedBox(
                     height: 10,
-                  )
+                  ),
+
                   //                Row(
                   //                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   //                  crossAxisAlignment: CrossAxisAlignment.center,

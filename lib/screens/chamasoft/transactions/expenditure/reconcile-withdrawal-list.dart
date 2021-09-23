@@ -1,49 +1,61 @@
+import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-form.dart';
-import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:chamasoft/widgets/appbars.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ReconcileWithdrawalList extends StatefulWidget {
   final String reconciledWithdrawalTransactionAlertId;
+  final bool isInit;
+  final Map<String, dynamic> formData;
 
-  ReconcileWithdrawalList({this.reconciledWithdrawalTransactionAlertId});
+  ReconcileWithdrawalList(
+      {this.reconciledWithdrawalTransactionAlertId,
+      this.isInit = true,
+      this.formData});
   @override
   _ReconcileWithdrawalListState createState() =>
       _ReconcileWithdrawalListState();
 }
 
 class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
-  double _appBarElevation = 0;
-  bool _isLoading = true;
-  bool _isInit = true;
-  List<UnreconciledWithdrawal> _withdrawals = [];
-  ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  void _scrollListener() {
-    double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
-    if (_appBarElevation != newElevation) {
-      setState(() {
-        _appBarElevation = newElevation;
-      });
-    }
-  }
+  double _appBarElevation = 0;
+  Group groupObject;
+  List<UnreconciledWithdrawal> _unreconciledWithdrawal;
+  ScrollController _scrollController;
+  bool _isInit = true;
+  bool _isLoading = true;
+  Map<String, dynamic> _formLoadData = {};
 
   @override
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    setState(() {
+      _isInit = widget.isInit;
+      if (!_isInit) {
+        _formLoadData = widget.formData;
+        _isLoading = false;
+      }
+    });
     super.initState();
+  }
+
+  void _scrollListener() {
+    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
   }
 
   @override
@@ -55,111 +67,128 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
 
   @override
   void didChangeDependencies() {
-    // get the unreconciled deposits
-    if (_isInit)
+    if (_isInit) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
-    super.didChangeDependencies();
-  }
-
-  Future<void> _fetchUnreconciledWithdrawals(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false)
-          .fetchGroupUnreconciledWithdrawals();
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchUnreconciledWithdrawals(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
+    } else {
+      setState(() {
+        // _isLoading = false;
+        // _formLoadData = widget.formData;
+      });
     }
+    super.didChangeDependencies();
   }
 
   Future<bool> _fetchData() async {
     setState(() {
       _isLoading = true;
     });
-
-    _fetchUnreconciledWithdrawals(context).then((_) {
-      _withdrawals = Provider.of<Groups>(context, listen: false)
-          .getUnreconciledWithdrawals;
-      setState(() {
-        _isLoading = false;
-      });
-    });
-    _isInit = false;
-    return true;
+    return _fetchUnreconcilledWithdrawals(context).then((value) => true);
   }
 
+  Future<void> _fetchUnreconcilledWithdrawals(BuildContext context) async {
+    try {
+      setState(() {
+        _isInit = false;
+      });
+      Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(
+        acc: true,
+        bankLoans: true,
+        borrowers: true,
+        contr: true,
+        depositor: true,
+        exp: true,
+        groupAssets: true,
+        groupStocks: true,
+        member: true,
+        loanTypes: true,
+      )
+          .then((value) {
+        Provider.of<Groups>(context, listen: false)
+            .fetchGroupUnreconciledWithdrawals()
+            .then((_) {
+          setState(() {
+            _isLoading = false;
+            _formLoadData = value;
+          });
+        });
+      });
+    } catch (error) {
+      print(error);
+    } finally {
+      // if (this.mounted) {
+      //   if (_isInit == false) {
+      //     setState(() {
+      //       _isInit = true;
+      //     });
+      //   }
+      // }
+    }
+  }
+
+  // Provider.of<Groups>(context, listen: false).getCurrentGroup();
   @override
   Widget build(BuildContext context) {
-    final groupObject =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    List<UnreconciledWithdrawal> unreconciledWithdrawals =
-        widget.reconciledWithdrawalTransactionAlertId != null
-            ? _withdrawals
-                .where((withdrawal) =>
-                    withdrawal.transactionAlertId !=
-                    widget.reconciledWithdrawalTransactionAlertId)
-                .toList()
-            : _withdrawals;
+    groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    _unreconciledWithdrawal =
+        Provider.of<Groups>(context, listen: true).getUnreconciledWithdrawals;
 
+    print(_unreconciledWithdrawal.length);
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
           action: () => Navigator.of(context).pop(),
-          elevation: 1,
+          elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Reconcile withdrawals",
+          title: "Reconcile Withdrawals",
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
-          backgroundColor: (themeChangeProvider.darkTheme)
-              ? Colors.blueGrey[800]
-              : Colors.white,
-          onRefresh: () => _fetchData(),
-          child: Container(
-            decoration: primaryGradient(context),
-            width: double.infinity,
-            height: double.infinity,
-            child: Column(
-              children: [
-                _isLoading
-                    ? showLinearProgressIndicator()
-                    : SizedBox(
-                        height: 0.0,
-                      ),
-                Expanded(
-                  child: unreconciledWithdrawals.length > 0
-                      ? ListView.builder(
-                          itemBuilder: (context, index) {
-                            UnreconciledWithdrawal withdrawal =
-                                unreconciledWithdrawals[index];
-                            return UnreconciledWithdrawalCard(
-                                withdrawal, groupObject);
-                          },
-                          itemCount: unreconciledWithdrawals.length,
-                        )
-                      : emptyList(
-                          color: Colors.blue[400],
-                          iconData: LineAwesomeIcons.angle_double_down,
-                          text:
-                              "There are no unreconciled withdrawals to display"),
-                ),
-              ],
-            ),
-          ),
-        ));
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
+            onRefresh: () => _fetchData(),
+            child: Container(
+                decoration: primaryGradient(context),
+                width: double.infinity,
+                height: double.infinity,
+                child: Column(children: <Widget>[
+                  _isLoading
+                      ? showLinearProgressIndicator()
+                      : SizedBox(
+                          height: 0.0,
+                        ),
+                  Expanded(
+                    child: _unreconciledWithdrawal.length > 0
+                        ? ListView.builder(
+                            itemBuilder: (context, index) {
+                              UnreconciledWithdrawal withdrawal =
+                                  _unreconciledWithdrawal[index];
+                              return UnreconciledWithdrawalCard(withdrawal,
+                                  groupObject, _formLoadData, index);
+                            },
+                            itemCount: _unreconciledWithdrawal.length,
+                          )
+                        : emptyList(
+                            color: Colors.blue[400],
+                            iconData: LineAwesomeIcons.angle_double_down,
+                            text:
+                                "There are no unreconciled withdrawals to display"),
+                  ),
+                ]))));
   }
 }
 
 class UnreconciledWithdrawalCard extends StatefulWidget {
   final UnreconciledWithdrawal withdrawal;
   final Group groupObject;
+  final Map<String, dynamic> formLoadData;
+  final int cardPosition;
 
-  UnreconciledWithdrawalCard(this.withdrawal, this.groupObject, {Key key})
+  UnreconciledWithdrawalCard(
+      this.withdrawal, this.groupObject, this.formLoadData, this.cardPosition,
+      {Key key})
       : super(key: key);
 
   @override
@@ -301,10 +330,13 @@ class _UnreconciledWithdrawalCardState
                     FlatButton(
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (BuildContext ctx) =>
-                                  ReconcileWithdrawal(),
-                              settings:
-                                  RouteSettings(arguments: widget.withdrawal))),
+                              builder:
+                                  (BuildContext ctx) =>
+                                      ReconcileWithdrawal(widget.formLoadData),
+                              settings: RouteSettings(arguments: {
+                                "withdrawal": widget.withdrawal,
+                                "position": widget.cardPosition
+                              }))),
                       child: Row(
                         children: [
                           Text(

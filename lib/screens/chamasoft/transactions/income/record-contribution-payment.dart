@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
@@ -96,7 +94,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['amount'] = contributionAmount;
     _formData['member_type_id'] = memberTypeId;
     _formData['individual_payments'] = _individualMemberContributions;
-    log(_formData.toString());
+    // log(_formData.toString());
     try {
       String message = await Provider.of<Groups>(context, listen: false)
           .recordContributionPayments(_formData);
