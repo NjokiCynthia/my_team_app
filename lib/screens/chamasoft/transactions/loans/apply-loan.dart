@@ -1,3 +1,6 @@
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/providers/chamasoft-loans.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
@@ -11,6 +14,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 import '../../dashboard.dart';
 
@@ -27,6 +31,7 @@ class ApplyLoanState extends State<ApplyLoan> {
 
   bool isShow = true;
   bool isHiden = false;
+  bool _isInit = true;
 
   double amountInputValue;
 
@@ -51,6 +56,33 @@ class ApplyLoanState extends State<ApplyLoan> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    // get the unreconciled deposits
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
+
+  Future<void> _fetchLoanProducts(BuildContext context) async {
+    setState(() {
+      _isInit = false;
+    });
+
+    try {
+      // Load formdata values
+      Provider.of<ChamasoftLoans>(context, listen: false)
+          .fetchLoanProducts()
+          .then((value) {});
+    } on CustomException catch (error) {
+      print("error $error");
+    }
+  }
+
+  Future<bool> _fetchData() async {
+    return _fetchLoanProducts(context).then((value) => true);
   }
 
   static final List<String> _dropdownItems = <String>[
@@ -118,7 +150,7 @@ class ApplyLoanState extends State<ApplyLoan> {
 
   @override
   Widget build(BuildContext context) {
-    LoanType typeLoan;
+    // LoanType typeLoan;
 
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -216,29 +248,29 @@ class ApplyLoanState extends State<ApplyLoan> {
                               SizedBox(
                                 height: 24,
                               ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 30.0, right: 30.0),
-                                child: textWithExternalLinks(
-                                    color: Colors.blueGrey,
-                                    size: 12.0,
-                                    textData: {
-                                      'By applying for this loan you agree to the ':
-                                          {},
-                                      'terms and conditions': {
-                                        "url": () => Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        LoanAmortization(
-                                                            typeLoan: typeLoan),
-                                              ),
-                                            ),
-                                        "color": primaryColor,
-                                        "weight": FontWeight.w500
-                                      },
-                                    }),
-                              ),
+                              // Padding(
+                              //   padding:
+                              //       EdgeInsets.only(left: 30.0, right: 30.0),
+                              //   child: textWithExternalLinks(
+                              //       color: Colors.blueGrey,
+                              //       size: 12.0,
+                              //       textData: {
+                              //         'By applying for this loan you agree to the ':
+                              //             {},
+                              //         'terms and conditions': {
+                              //           "url": () => Navigator.of(context).push(
+                              //                 MaterialPageRoute(
+                              //                   builder:
+                              //                       (BuildContext context) =>
+                              //                           LoanAmortization(
+                              //                               typeLoan: typeLoan),
+                              //                 ),
+                              //               ),
+                              //           "color": primaryColor,
+                              //           "weight": FontWeight.w500
+                              //         },
+                              //       }),
+                              // ),
                               SizedBox(
                                 height: 24,
                               ),
@@ -264,40 +296,40 @@ class ApplyLoanState extends State<ApplyLoan> {
                             title: "Note that...",
                             message:
                                 "Apply quick loan from Chamasoft guaranteed by your savings and fellow group members."),
-                        ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          primary: true,
-                          itemCount: loantype.length,
-                          itemBuilder: (context, index) {
-                            LoanType typeLoan = loantype[index];
-                            return Card(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                borderOnForeground: false,
-                                child: Container(
-                                  decoration: cardDecoration(
-                                      gradient: plainCardGradient(context),
-                                      context: context),
-                                  child: ListTile(
-                                    title: Text(typeLoan.loanName),
-                                    subtitle: Text(typeLoan.details),
-                                    trailing: Icon(Icons.arrow_forward_ios),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ChamaSoftLoanDetail(
-                                                      typeLoan.loanName,
-                                                      typeLoan.dateTime
-                                                          .toString())));
-                                    },
-                                  ),
-                                ));
-                          },
-                        )
+                        // ListView.builder(
+                        //   scrollDirection: Axis.vertical,
+                        //   shrinkWrap: true,
+                        //   primary: true,
+                        //   itemCount: loantype.length,
+                        //   itemBuilder: (context, index) {
+                        //     LoanType typeLoan = loantype[index];
+                        //     return Card(
+                        //         elevation: 0.0,
+                        //         shape: RoundedRectangleBorder(
+                        //             borderRadius: BorderRadius.circular(16.0)),
+                        //         borderOnForeground: false,
+                        //         child: Container(
+                        //           decoration: cardDecoration(
+                        //               gradient: plainCardGradient(context),
+                        //               context: context),
+                        //           child: ListTile(
+                        //             title: Text(typeLoan.loanName),
+                        //             subtitle: Text(typeLoan.details),
+                        //             trailing: Icon(Icons.arrow_forward_ios),
+                        //             onTap: () {
+                        //               Navigator.push(
+                        //                   context,
+                        //                   MaterialPageRoute(
+                        //                       builder: (context) =>
+                        //                           ChamaSoftLoanDetail(
+                        //                               typeLoan.loanName,
+                        //                               typeLoan.dateTime
+                        //                                   .toString())));
+                        //             },
+                        //           ),
+                        //         ));
+                        //   },
+                        // )
                       ],
                     ),
                   ),

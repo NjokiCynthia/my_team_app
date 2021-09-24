@@ -1,4 +1,5 @@
 import 'package:chamasoft/config.dart';
+import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -101,6 +102,15 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProxyProvider<Auth, Groups>(
           update: (ctx, auth, previousGroups) => Groups(
             previousGroups == null ? [] : previousGroups.item,
+            auth.id,
+            auth.userIdentity,
+            previousGroups == null ? '' : previousGroups.currentGroupId,
+          ),
+          // ignore: missing_return
+          create: (BuildContext context) {},
+        ),
+        ChangeNotifierProxyProvider<Auth, ChamasoftLoans>(
+          update: (ctx, auth, previousGroups) => ChamasoftLoans(
             auth.id,
             auth.userIdentity,
             previousGroups == null ? '' : previousGroups.currentGroupId,

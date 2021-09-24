@@ -701,4 +701,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String COMPLETE_GROUP_SETUP =
       CustomHelper.baseUrl + "/mobile/complete_group_setup";
+
+  //Chamasoft loans
+  // ignore: non_constant_identifier_names
+  static final String GET_CHAMASOFT_LOAN_PRODUCTS =
+      CustomHelper.baseUrl + "/mobile/chamasoft_loans/loan_products_list";
 }
