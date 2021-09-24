@@ -1,20 +1,19 @@
-import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ReconcileDepositForm extends StatefulWidget {
   Function _addReconciledDeposit;
+  Map<String, dynamic> formLoadData;
 
-  ReconcileDepositForm(this._addReconciledDeposit, {Key key}) : super(key: key);
+  ReconcileDepositForm(this._addReconciledDeposit, this.formLoadData, {Key key})
+      : super(key: key);
 
   @override
   _ReconcileDepositFormState createState() => _ReconcileDepositFormState();
@@ -88,78 +87,41 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
   }
 
   Future<void> _fetchDefaultValues() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      showDialog<String>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          });
-    });
-    try {
-      formLoadData = await Provider.of<Groups>(context, listen: false)
-          .loadInitialFormData(
-              contr: true,
-              acc: true,
-              member: true,
-              fineOptions: true,
-              depositor: true,
-              incomeCats: true,
-              loanTypes: true,
-              groupStocks: true,
-              groupAssets: true,
-              moneyMarketInvestments: true,
-              borrowers: true);
-    } catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchDefaultValues();
-          });
-    } finally {
-      setState(() {
-        _isInit = false;
-        groupMembers = formLoadData.containsKey("memberOptions")
-            ? formLoadData['memberOptions']
+    groupMembers = widget.formLoadData.containsKey("memberOptions")
+        ? widget.formLoadData['memberOptions']
+        : [];
+    groupContributions = widget.formLoadData.containsKey("contributionOptions")
+        ? widget.formLoadData['contributionOptions']
+        : [];
+    groupFines = widget.formLoadData.containsKey("finesOptions")
+        ? widget.formLoadData['finesOptions']
+        : [];
+    groupDepositors = widget.formLoadData.containsKey("depositorOptions")
+        ? widget.formLoadData['depositorOptions']
+        : [];
+    groupIncomeCategories =
+        widget.formLoadData.containsKey("incomeCategoryOptions")
+            ? widget.formLoadData['incomeCategoryOptions']
             : [];
-        groupContributions = formLoadData.containsKey("contributionOptions")
-            ? formLoadData['contributionOptions']
+    groupLoanTypes = widget.formLoadData.containsKey("loanTypeOptions")
+        ? widget.formLoadData['loanTypeOptions']
+        : [];
+    groupAccounts = widget.formLoadData.containsKey("accountOptions")
+        ? widget.formLoadData['accountOptions']
+        : [];
+    groupMoneyMarketInvestments =
+        widget.formLoadData.containsKey("moneyMarketInvestmentOptions")
+            ? widget.formLoadData['moneyMarketInvestmentOptions']
             : [];
-        groupFines = formLoadData.containsKey("finesOptions")
-            ? formLoadData['finesOptions']
-            : [];
-        groupDepositors = formLoadData.containsKey("depositorOptions")
-            ? formLoadData['depositorOptions']
-            : [];
-        groupIncomeCategories =
-            formLoadData.containsKey("incomeCategoryOptions")
-                ? formLoadData['incomeCategoryOptions']
-                : [];
-        groupLoanTypes = formLoadData.containsKey("loanTypeOptions")
-            ? formLoadData['loanTypeOptions']
-            : [];
-        groupAccounts = formLoadData.containsKey("accountOptions")
-            ? formLoadData['accountOptions']
-            : [];
-        groupMoneyMarketInvestments =
-            formLoadData.containsKey("moneyMarketInvestmentOptions")
-                ? formLoadData['moneyMarketInvestmentOptions']
-                : [];
-        groupStocks = formLoadData.containsKey("groupStockOptions")
-            ? formLoadData['groupStockOptions']
-            : [];
-        groupAssets = formLoadData.containsKey("groupAssetOptions")
-            ? formLoadData['groupAssetOptions']
-            : [];
-        groupBorrowers = formLoadData.containsKey("borrowerOptions")
-            ? formLoadData['borrowerOptions']
-            : [];
-      });
-      Navigator.of(context, rootNavigator: true).pop();
-    }
+    groupStocks = widget.formLoadData.containsKey("groupStockOptions")
+        ? widget.formLoadData['groupStockOptions']
+        : [];
+    groupAssets = widget.formLoadData.containsKey("groupAssetOptions")
+        ? widget.formLoadData['groupAssetOptions']
+        : [];
+    groupBorrowers = widget.formLoadData.containsKey("borrowerOptions")
+        ? widget.formLoadData['borrowerOptions']
+        : [];
   }
 
   String getAlertText() {

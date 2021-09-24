@@ -15,7 +15,8 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:chamasoft/widgets/reconcile-deposit-form.dart';
 
 class ReconcileDeposit extends StatefulWidget {
-  const ReconcileDeposit({Key key}) : super(key: key);
+  final Map<String, dynamic> formLoadData;
+  const ReconcileDeposit(this.formLoadData, {Key key}) : super(key: key);
 
   @override
   _ReconcileDepositState createState() => _ReconcileDepositState();
@@ -47,10 +48,10 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
     showDialog(
         context: context,
         builder: (BuildContext context) =>
-            ReconcileDepositForm(addReconciledDeposit));
+            ReconcileDepositForm(addReconciledDeposit, widget.formLoadData));
   }
 
-  void _submit(UnreconciledDeposit deposit) async {
+  void _submit(UnreconciledDeposit deposit, int position) async {
     // get the amount entered.
     double total = totalReconciled;
     final Group groupObject =
@@ -69,26 +70,26 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
       });
 
       try {
-        await Provider.of<Groups>(_bodyContext, listen: false)
+        String response = await Provider.of<Groups>(_bodyContext, listen: false)
             .reconcileDepositTransactionAlert(
-                _reconciledDeposits, deposit.transactionAlertId);
+                _reconciledDeposits, deposit.transactionAlertId, position);
 
         StatusHandler()
-            .showSuccessSnackBar(_bodyContext, "Successfully reconciled");
+            .showSuccessSnackBar(_bodyContext, "Good news: $response");
 
         Future.delayed(const Duration(milliseconds: 2500), () {
           Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
               builder: (_) => ReconcileDepositList(
-                    reconciledDepositTransactionAlertId:
-                        deposit.transactionAlertId,
-                  )));
+                  isInit: false, formLoadData: widget.formLoadData)));
         });
       } on CustomException catch (error) {
         StatusHandler().showDialogWithAction(
             context: _bodyContext,
             message: error.toString(),
             function: () => Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (_) => ReconcileDepositList())),
+                MaterialPageRoute(
+                    builder: (_) => ReconcileDepositList(
+                        isInit: false, formLoadData: widget.formLoadData))),
             dismissible: true);
       } finally {}
     } else {
@@ -143,8 +144,10 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
 
   @override
   Widget build(BuildContext context) {
-    final UnreconciledDeposit deposit =
-        ModalRoute.of(context).settings.arguments;
+    final arguments =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final UnreconciledDeposit deposit = arguments['deposit'];
+    final int position = arguments['position'];
 
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
@@ -172,7 +175,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _submit(deposit);
+            _submit(deposit, position);
           },
           child: Icon(
             Icons.check,

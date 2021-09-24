@@ -14,9 +14,10 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ReconcileDepositList extends StatefulWidget {
-  final String reconciledDepositTransactionAlertId;
+  final bool isInit;
+  final Map<String, dynamic> formLoadData;
 
-  ReconcileDepositList({this.reconciledDepositTransactionAlertId});
+  ReconcileDepositList({this.isInit = true, this.formLoadData});
   @override
   _ReconcileDepositListState createState() => _ReconcileDepositListState();
 }
@@ -25,7 +26,9 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
   double _appBarElevation = 0;
   bool _isLoading = true;
   bool _isInit = true;
-  List<UnreconciledDeposit> _deposits = [];
+  Group _groupObject;
+  List<UnreconciledDeposit> _unreconciledDeposits;
+  Map<String, dynamic> _formLoadData;
   ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -42,6 +45,13 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    setState(() {
+      _isInit = widget.isInit;
+      if (_isInit == false) {
+        _formLoadData = widget.formLoadData;
+        _isLoading = false;
+      }
+    });
     super.initState();
   }
 
@@ -61,9 +71,33 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
   }
 
   Future<void> _fetchUnreconciledDeposits(BuildContext context) async {
+    setState(() {
+      _isInit = false;
+    });
+
     try {
-      await Provider.of<Groups>(context, listen: false)
-          .fetchGroupUnreconciledDeposits();
+      // Load formdata values
+      Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(
+        contr: true,
+        acc: true,
+        member: true,
+        fineOptions: true,
+        depositor: true,
+        incomeCats: true,
+        loanTypes: true,
+      )
+          .then((value) {
+        // Load unreconciled deposits
+        Provider.of<Groups>(context, listen: false)
+            .fetchGroupUnreconciledDeposits()
+            .then((_) {
+          setState(() {
+            _isLoading = false;
+            _formLoadData = value;
+          });
+        });
+      });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -79,37 +113,22 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
     setState(() {
       _isLoading = true;
     });
-
-    _deposits =
-        Provider.of<Groups>(context, listen: false).getUnreconciledDeposits;
-    _fetchUnreconciledDeposits(context).then((_) {
-      _deposits =
-          Provider.of<Groups>(context, listen: false).getUnreconciledDeposits;
-      setState(() {
-        _isLoading = false;
-      });
-    });
-    _isInit = false;
-    return true;
+    return _fetchUnreconciledDeposits(context).then((value) => true);
   }
 
   @override
   Widget build(BuildContext context) {
-    final groupObject =
+    _groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    List<UnreconciledDeposit> unreconciledDeposits =
-        widget.reconciledDepositTransactionAlertId != null
-            ? _deposits
-                .where((deposit) =>
-                    deposit.transactionAlertId !=
-                    widget.reconciledDepositTransactionAlertId)
-                .toList()
-            : _deposits;
+    _unreconciledDeposits =
+        Provider.of<Groups>(context, listen: true).getUnreconciledDeposits;
+
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
-          action: () => Navigator.of(context).pop(),
+          action: () => Navigator.popUntil(
+              context, (Route<dynamic> route) => route.isFirst),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: "Reconcile deposits",
@@ -132,15 +151,15 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
                         height: 0.0,
                       ),
                 Expanded(
-                  child: unreconciledDeposits.length > 0
+                  child: _unreconciledDeposits.length > 0
                       ? ListView.builder(
                           itemBuilder: (context, index) {
                             UnreconciledDeposit deposit =
-                                unreconciledDeposits[index];
+                                _unreconciledDeposits[index];
                             return UnreconciledDepositCard(
-                                deposit, groupObject);
+                                deposit, _groupObject, _formLoadData, index);
                           },
-                          itemCount: unreconciledDeposits.length,
+                          itemCount: _unreconciledDeposits.length,
                         )
                       : emptyList(
                           color: Colors.blue[400],
@@ -158,8 +177,12 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
 class UnreconciledDepositCard extends StatefulWidget {
   final UnreconciledDeposit deposit;
   final Group groupObject;
+  final Map<String, dynamic> formLoadData;
+  final int index;
 
-  UnreconciledDepositCard(this.deposit, this.groupObject, {Key key})
+  UnreconciledDepositCard(
+      this.deposit, this.groupObject, this.formLoadData, this.index,
+      {Key key})
       : super(key: key);
 
   @override
@@ -295,9 +318,13 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                     FlatButton(
                       onPressed: () => Navigator.of(context).push(
                           MaterialPageRoute(
-                              builder: (BuildContext ctx) => ReconcileDeposit(),
-                              settings:
-                                  RouteSettings(arguments: widget.deposit))),
+                              builder:
+                                  (BuildContext ctx) =>
+                                      ReconcileDeposit(widget.formLoadData),
+                              settings: RouteSettings(arguments: {
+                                'deposit': widget.deposit,
+                                'position': widget.index
+                              }))),
                       child: Row(
                         children: [
                           Text(

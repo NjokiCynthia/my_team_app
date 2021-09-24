@@ -6,6 +6,7 @@ import 'package:chamasoft/screens/chamasoft/settings/accounts/list-institutions.
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contribution-dialog.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
+import 'package:chamasoft/screens/chamasoft/transactions.dart';
 import 'package:chamasoft/screens/configure-group.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/intro.dart';
@@ -149,6 +150,7 @@ class _MyAppState extends State<MyApp> {
             AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
             ListInstitutions.namedRoute: (ctx) => ListInstitutions(),
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
+            ChamasoftTransactions.namedRoute: (ctx) => ChamasoftTransactions(),
             PinLogin.namedRoute: (ctx) => PinLogin()
           },
           onGenerateRoute: (settings) {

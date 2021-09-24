@@ -29,6 +29,8 @@ import 'package:provider/provider.dart';
 import 'reports/member/contribution-statement.dart';
 
 class ChamasoftTransactions extends StatefulWidget {
+  static String namedRoute = "/transactions";
+
   ChamasoftTransactions({
     this.appBarElevation,
   });

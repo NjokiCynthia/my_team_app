@@ -5048,8 +5048,8 @@ class Groups with ChangeNotifier {
 
   // reconcile deposit transaction alert
 
-  Future<void> reconcileDepositTransactionAlert(
-      List formDataPayload, String transactionAlertId) async {
+  Future<String> reconcileDepositTransactionAlert(
+      List formDataPayload, String transactionAlertId, int position) async {
     try {
       // ignore: unused_local_variable
       final url = EndpointUrl.RECONCILE_DEPOSIT_TRANSACTION_ALERT;
@@ -5065,6 +5065,8 @@ class Groups with ChangeNotifier {
         if (status == 12) {
           return "-1";
         } else {
+          _unreconciledDeposits.removeAt(position);
+          notifyListeners();
           return response["message"].toString();
         }
       } on CustomException catch (error) {
