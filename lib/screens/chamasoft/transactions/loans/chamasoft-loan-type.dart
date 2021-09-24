@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -76,6 +77,8 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
 
   @override
   Widget build(BuildContext context) {
+    LoanType typeLoan;
+
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
@@ -291,7 +294,7 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
                                       "url": () => Navigator.of(context).push(
                                             MaterialPageRoute(
                                               builder: (BuildContext context) =>
-                                                  LoanAmortization(),
+                                                  LoanAmortization(typeLoan: typeLoan),
                                             ),
                                           ),
                                       "color": primaryColor,

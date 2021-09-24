@@ -118,6 +118,8 @@ class ApplyLoanState extends State<ApplyLoan> {
 
   @override
   Widget build(BuildContext context) {
+    LoanType typeLoan;
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -228,7 +230,8 @@ class ApplyLoanState extends State<ApplyLoan> {
                                               MaterialPageRoute(
                                                 builder:
                                                     (BuildContext context) =>
-                                                        LoanAmortization(),
+                                                        LoanAmortization(
+                                                            typeLoan: typeLoan),
                                               ),
                                             ),
                                         "color": primaryColor,

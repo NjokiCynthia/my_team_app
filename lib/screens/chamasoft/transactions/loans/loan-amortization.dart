@@ -1,5 +1,6 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/listviews.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -7,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class LoanAmortization extends StatefulWidget {
+  final LoanType typeLoan;
+  LoanAmortization({this.typeLoan});
+
   @override
   _LoanAmortizationState createState() => _LoanAmortizationState();
 }
@@ -85,7 +89,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   children: <Widget>[
                     Expanded(
                       child: heading2(
-                          text: "Emergency Loan for Corona Virus",
+                          text: 'Loan Name' /*widget.typeLoan.loanName*/,
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.start),
