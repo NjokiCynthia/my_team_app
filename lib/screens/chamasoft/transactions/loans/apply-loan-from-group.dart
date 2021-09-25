@@ -80,10 +80,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
     return Column(
       children: [
         Container(
-          // color: Theme.of(context).backgroundColor,
-          // color: (themeChangeProvider.darkTheme)
-          //     ? Colors.blueGrey[800]
-          //     : Colors.white,
+    
           child: Column(
             children: <Widget>[
               toolTip(
@@ -109,29 +106,29 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
               SizedBox(
                 height: 24,
               ),
-              // Padding(
-              //   padding:
-              //       EdgeInsets.only(left: 30.0, right: 30.0),
-              //   child: textWithExternalLinks(
-              //       color: Colors.blueGrey,
-              //       size: 12.0,
-              //       textData: {
-              //         'By applying for this loan you agree to the ':
-              //             {},
-              //         'terms and conditions': {
-              //           "url": () => Navigator.of(context).push(
-              //                 MaterialPageRoute(
-              //                   builder:
-              //                       (BuildContext context) =>
-              //                           LoanAmortization(
-              //                               typeLoan: typeLoan),
-              //                 ),
-              //               ),
-              //           "color": primaryColor,
-              //           "weight": FontWeight.w500
-              //         },
-              //       }),
-              // ),
+              Padding(
+                padding:
+                    EdgeInsets.only(left: 30.0, right: 30.0),
+                child: textWithExternalLinks(
+                    color: Colors.blueGrey,
+                    size: 12.0,
+                    textData: {
+                      'By applying for this loan you agree to the ':
+                          {},
+                      'terms and conditions': {
+                        "url": () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder:
+                                    (BuildContext context) =>
+                                        LoanAmortization(
+                                            ),
+                              ),
+                            ),
+                        "color": primaryColor,
+                        "weight": FontWeight.w500
+                      },
+                    }),
+              ),
               SizedBox(
                 height: 24,
               ),
