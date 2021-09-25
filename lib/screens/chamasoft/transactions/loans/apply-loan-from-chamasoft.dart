@@ -136,7 +136,6 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
             : Colors.white,
         onRefresh: () => _fetchData(),
         child: Container(
-          decoration: primaryGradient(context),
           width: double.infinity,
           child: Column(
             children: <Widget>[

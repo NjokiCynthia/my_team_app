@@ -80,7 +80,10 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
     return Column(
       children: [
         Container(
-          color: Theme.of(context).backgroundColor,
+          // color: Theme.of(context).backgroundColor,
+          // color: (themeChangeProvider.darkTheme)
+          //     ? Colors.blueGrey[800]
+          //     : Colors.white,
           child: Column(
             children: <Widget>[
               toolTip(

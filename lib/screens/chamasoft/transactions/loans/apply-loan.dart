@@ -7,6 +7,7 @@ import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-c
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-group.dart';
 // import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
 // import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
@@ -71,70 +72,74 @@ class ApplyLoanState extends State<ApplyLoan> {
         title: "Apply Loan",
       ),
       backgroundColor: Colors.transparent,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Container(
-          color: Theme.of(context).backgroundColor,
-          padding: EdgeInsets.all(0.0),
-          width: MediaQuery.of(context).size.width,
-          //  color: Theme.of(context).backgroundColor,
+      body: Container(
+        color: (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Colors.white,
+        child: GestureDetector(
+          onTap: () {
+            FocusScope.of(context).unfocus();
+          },
+          child: Container(
+            padding: EdgeInsets.all(0.0),
+            width: MediaQuery.of(context).size.width,
+            decoration: primaryGradient(context),
 
 //Control Switches Wigets
-          child: Column(
-            children: <Widget>[
-              // loanSwitches(isShow),
-              Column(
-                mainAxisSize: MainAxisSize.max,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                    child: FlutterToggleTab(
-                      width: 55.0,
-                      height: MediaQuery.of(context).size.height * 0.04,
-                      borderRadius: 10.0,
-                      labels: ['From Group', 'From ChamaSoft'],
-                      initialIndex: 0,
-                      selectedLabelIndex: (index) {
-                        setState(() {
-                          if (index == 0) {
-                            isShow = true;
-                            isHiden = false;
-                          }
-                          if (index == 1) {
-                            isShow = false;
-                            isHiden = true;
-                          }
-                        });
-                      },
-                      selectedBackgroundColors: [Colors.grey],
-                      unSelectedBackgroundColors: [Colors.white70],
-                      selectedTextStyle: TextStyle(
-                          color: Colors.white,
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.w600),
-                      unSelectedTextStyle: TextStyle(
-                          color: Colors.black,
-                          fontSize: 10.0,
-                          fontWeight: FontWeight.w400),
-                    ),
-                  )
-                ],
-              ),
-//Coteiner for Group Loans
-              Container(
-                child: Visibility(
-                  visible: isShow,
-                  child: ApplyLoanFromGroup(),
+            child: Column(
+              children: <Widget>[
+                // loanSwitches(isShow),
+                Column(
+                  mainAxisSize: MainAxisSize.max,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                      child: FlutterToggleTab(
+                        width: 55.0,
+                        height: MediaQuery.of(context).size.height * 0.04,
+                        borderRadius: 10.0,
+                        labels: ['From Group', 'From ChamaSoft'],
+                        initialIndex: 0,
+                        selectedLabelIndex: (index) {
+                          setState(() {
+                            if (index == 0) {
+                              isShow = true;
+                              isHiden = false;
+                            }
+                            if (index == 1) {
+                              isShow = false;
+                              isHiden = true;
+                            }
+                          });
+                        },
+                        selectedBackgroundColors: [Colors.grey],
+                        unSelectedBackgroundColors: [Colors.white70],
+                        selectedTextStyle: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12.0,
+                            fontWeight: FontWeight.w600),
+                        unSelectedTextStyle: TextStyle(
+                            color: Colors.black,
+                            fontSize: 10.0,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    )
+                  ],
                 ),
-              ),
+//Coteiner for Group Loans
+                Container(
+                  child: Visibility(
+                    visible: isShow,
+                    child: ApplyLoanFromGroup(),
+                  ),
+                ),
 //ListView Test
-              Container(
-                child: Visibility(
-                    visible: isHiden, child: ApplyLoanFromChamasoft()),
-              )
-            ],
+                Container(
+                  child: Visibility(
+                      visible: isHiden, child: ApplyLoanFromChamasoft()),
+                )
+              ],
+            ),
           ),
         ),
       ),
