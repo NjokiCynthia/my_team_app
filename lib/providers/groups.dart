@@ -4476,16 +4476,11 @@ class Groups with ChangeNotifier {
         expenseCategories = [],
         bankLoansOptions = [],
         loanTypeOptions = [],
-<<<<<<< HEAD
-        memberOngoingLoanOptions = [];
-        try{
-=======
         memberOngoingLoanOptions = [],
         groupAssetOptions = [],
         groupStockOptions = [],
         moneyMarketInvestmentOptions = [],
         borrowerOptions = [];
->>>>>>> develop
     if (contr) {
       if (_payContributions.length == 0) {
         await fetchPayContributions();
@@ -4593,11 +4588,6 @@ class Groups with ChangeNotifier {
         }
       }
     }
-<<<<<<< HEAD
-        } catch (error) {
-          throw(error);
-        }
-=======
     if (groupAssets) {
       if (_groupAssetOptions.length == 0) {
         await fetchGroupAssetOptions();
@@ -4644,7 +4634,6 @@ class Groups with ChangeNotifier {
           .toList();
     }
 
->>>>>>> develop
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
