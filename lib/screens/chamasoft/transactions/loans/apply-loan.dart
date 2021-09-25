@@ -1,8 +1,8 @@
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';

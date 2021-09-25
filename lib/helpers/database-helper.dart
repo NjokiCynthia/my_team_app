@@ -44,7 +44,11 @@ class DatabaseHelper {
   Future _onCreate(Database db, int version) async {
     print("oncreate Create");
     try {
+<<<<<<< HEAD:lib/utilities/database-helper.dart
       await _tablesToCreate();
+=======
+      await _tablesToCreate(db);
+>>>>>>> develop:lib/helpers/database-helper.dart
     } catch (error) {
       print("error1 $error");
     }
@@ -59,7 +63,11 @@ class DatabaseHelper {
         // Batch batch = db.batch();
         // Sample table to be used on upgrade
         // Contributions table
+<<<<<<< HEAD:lib/utilities/database-helper.dart
         await _tablesToCreate();
+=======
+        await _tablesToCreate(db);
+>>>>>>> develop:lib/helpers/database-helper.dart
         // await batch.commit();
       } catch (error) {
         print("error2 $error");
@@ -67,11 +75,18 @@ class DatabaseHelper {
     }
   }
 
+<<<<<<< HEAD:lib/utilities/database-helper.dart
   Future<void> _tablesToCreate() async {
     // SQL code to create the database tables
     print("oncreate Create");
     try {
       Database db = await instance.database;
+=======
+  Future<void> _tablesToCreate(Database db) async {
+    // SQL code to create the database tables
+    print("oncreate Create");
+    try {
+>>>>>>> develop:lib/helpers/database-helper.dart
       Batch batch = db.batch();
       // Settings table
       batch.execute('''

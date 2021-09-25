@@ -1,82 +1,9 @@
-import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
-import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
-import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
-import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
-import 'package:chamasoft/widgets/data-loading-effects.dart';
-import 'package:chamasoft/widgets/empty_screens.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/material.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:provider/provider.dart';
-
-class DepositReceipts extends StatefulWidget {
-  @override
-  _DepositReceiptsState createState() => _DepositReceiptsState();
-}
-
-class _DepositReceiptsState extends State<DepositReceipts> {
-  double _appBarElevation = 0;
-  ScrollController _scrollController;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<Deposit> _deposits = [];
-  bool _isLoading = true;
-  bool _isInit = true;
-  String _sortOption = "date_desc";
-  int selectedRadioTile;
-  List<int> _filterList = [];
-  List<String> _memberList = [];
-  bool _hasMoreData = false;
-
-  void _scrollListener() {
-    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
-    if (_appBarElevation != newElevation) {
-      setState(() {
-        _appBarElevation = newElevation;
-      });
-    }
-  }
-
-  Future<void> _getDeposits(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchDeposits(
-          _sortOption, _filterList, _memberList, _deposits.length);
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _getDeposits(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
-    }
-  }
-
-  Future<bool> _fetchData() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
-    _getDeposits(context).then((_) {
-      if (context != null) {
-        _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
-        setState(() {
-          if (_deposits.length < 20) {
-            _hasMoreData = false;
           } else
             _hasMoreData = true;
-          _isLoading = false;
         });
       }
-    });
 
     _isInit = false;
-    return true;
   }
 
   @override
@@ -102,6 +29,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   void applySort(String sort) {
     _sortOption = sort;
+    _forceFetch = true;
     _fetchData();
   }
 
@@ -258,7 +186,9 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                               child: ListView.builder(
                                   itemBuilder: (context, index) {
                                     Deposit deposit = _deposits[index];
+                                    // final indexValue = index;
                                     return DepositCard(
+                                      // indexValue,
                                       deposit: deposit,
                                       details: () {},
                                       voidItem: () {},
@@ -290,6 +220,7 @@ class DepositCard extends StatelessWidget {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Padding(
       padding: const EdgeInsets.fromLTRB(16.0, 8.0, 16.0, 8.0),
+<<<<<<< HEAD
       child: Card(
         elevation: 0.0,
         shape:
@@ -310,6 +241,58 @@ class DepositCard extends StatelessWidget {
                         flex: 1,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+=======
+      child: RepaintBoundary(
+        key: _containerKey,
+        child: Card(
+          elevation: 0.0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          borderOnForeground: false,
+          child: Container(
+              decoration: cardDecoration(
+                  gradient: plainCardGradient(context), context: context),
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    padding:
+                        EdgeInsets.only(left: 12.0, top: 12.0, right: 12.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          flex: 1,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              customTitle1(
+                                text: deposit.type,
+                                // fontSize: 16.0,
+                                // ignore: deprecated_member_use
+                                color:
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context).textSelectionHandleColor,
+                                textAlign: TextAlign.start,
+                              ),
+                              subtitle2(
+                                text: deposit.name,
+                                textAlign: TextAlign.start,
+                                // ignore: deprecated_member_use
+                                color:
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context).textSelectionHandleColor,
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.end,
+>>>>>>> develop
                           children: <Widget>[
                             customTitle(
                               text: deposit.type,
@@ -326,6 +309,7 @@ class DepositCard extends StatelessWidget {
                             )
                           ],
                         ),
+<<<<<<< HEAD
                       ),
                       SizedBox(
                         width: 10,
@@ -434,6 +418,264 @@ class DepositCard extends StatelessWidget {
 //                )
               ],
             )),
+=======
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              subtitle2(
+                                  text: "Paid By",
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                  textAlign: TextAlign.start),
+                              customTitle1(
+                                  text: deposit.depositor,
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                  textAlign: TextAlign.start)
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              subtitle2(
+                                  text: "Paid On",
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                  textAlign: TextAlign.end),
+                              customTitle1(
+                                  text: deposit.date,
+                                  color:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                  textAlign: TextAlign.end)
+                            ],
+                          ),
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  DottedLine(
+                    direction: Axis.horizontal,
+                    lineLength: double.infinity,
+                    lineThickness: 1.0,
+                    dashLength: 4.0,
+                    dashColor: Colors.black45,
+                    dashRadius: 0.0,
+                    dashGapLength: 4.0,
+                    dashGapColor: Colors.transparent,
+                    dashGapRadius: 0.0,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(LineAwesomeIcons.trash
+                                    // Icons.delete_forever,
+                                    ),
+                                iconSize: 20.0,
+                                color: Colors.redAccent,
+                                onPressed: () {
+                                  // twoButtonAlertDialog(
+                                  //     context: context,
+                                  //     message:
+                                  //         'Are you sure you want to delete this Transaction?',
+                                  //     title: 'Confirm Action',
+
+                                  //     action: () async {});
+
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        backgroundColor:
+                                            Theme.of(context).backgroundColor,
+                                        title: heading2(
+                                          text: "Confirm Action",
+                                          textAlign: TextAlign.start,
+                                          // ignore: deprecated_member_use
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                        ),
+                                        content: customTitleWithWrap(
+                                          text:
+                                              "Are you sure you want to delete this Transaction?",
+                                          textAlign: TextAlign.start,
+                                          // ignore: deprecated_member_use
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                          maxLines: null,
+                                        ),
+                                        actions: <Widget>[
+                                          negativeActionDialogButton(
+                                            text: "Cancel",
+                                            // ignore: deprecated_member_use
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
+                                            action: () {
+                                              Navigator.of(context).pop();
+                                            },
+                                          ),
+                                          // ignore: deprecated_member_use
+                                          FlatButton(
+                                            padding: EdgeInsets.fromLTRB(
+                                                22.0, 0.0, 22.0, 0.0),
+                                            child: customTitle(
+                                              text: "Continue",
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                            onPressed: () {
+                                              Navigator.of(context).pop();
+
+                                              //   deposit.removeAt(index);
+                                            },
+                                            shape: new RoundedRectangleBorder(
+                                                borderRadius:
+                                                    new BorderRadius.circular(
+                                                        4.0)),
+                                            textColor: Colors.red,
+                                            color: Colors.red.withOpacity(0.2),
+                                          )
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              customTitle(
+                                  text: 'Void',
+                                  fontSize: 14.0,
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  textAlign: TextAlign.end)
+                            ],
+                          ),
+                          Container(
+                            child: Column(
+                              children: <Widget>[
+                                DottedLine(
+                                  direction: Axis.vertical,
+                                  lineLength: 58.0,
+                                  lineThickness: 1.0,
+                                  dashLength: 4.0,
+                                  dashColor: Colors.black45,
+                                  dashRadius: 0.0,
+                                  dashGapLength: 4.0,
+                                  dashGapColor: Colors.transparent,
+                                  dashGapRadius: 0.0,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              customTitleWithWrap(
+                                  text: 'VIEW',
+                                  fontSize: 14.0,
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  textAlign: TextAlign.end),
+                              SizedBox(
+                                width: 1.0,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  LineAwesomeIcons.angle_right,
+                                ),
+                                iconSize: 12.0,
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              new DetailReciept(
+                                                  deposit.date,
+                                                  deposit.name,
+                                                  deposit.amount.toString(),
+                                                  deposit.depositor,
+                                                  deposit.narration,
+                                                  deposit.type,
+                                                  deposit.reconciliation)));
+                                },
+                              ),
+                            ],
+                          ),
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+
+                  //                Row(
+                  //                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //                  crossAxisAlignment: CrossAxisAlignment.center,
+                  //                  children: <Widget>[
+                  //                    Expanded(
+                  //                      flex: 1,
+                  //                      child: Container(
+                  //                          decoration: BoxDecoration(
+                  //                              border: Border(
+                  //                                  top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
+                  //                                  right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
+                  //                          child: plainButton(
+                  //                              text: "SHOW DETAILS",
+                  //                              size: 16.0,
+                  //                              spacing: 2.0,
+                  //                              color: Theme.of(context).primaryColor.withOpacity(0.5),
+                  //                              // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
+                  //                              action: details) //loan.status == 2 ? null : repay),
+                  //                          ),
+                  //                    ),
+                  //                    Expanded(
+                  //                      flex: 1,
+                  //                      child: Container(
+                  //                        decoration: BoxDecoration(
+                  //                            border: Border(
+                  //                                top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
+                  //                                left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
+                  //                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: voidItem),
+                  //                      ),
+                  //                    ),
+                  //                  ],
+                  //                )
+                ],
+              )),
+        ),
+>>>>>>> develop
       ),
     );
   }

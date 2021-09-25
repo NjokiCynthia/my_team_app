@@ -5,9 +5,9 @@ import 'package:chamasoft/screens/chamasoft/settings/list-asset-categories.dart'
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-income-categories.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-loan-types.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dashed-divider.dart';

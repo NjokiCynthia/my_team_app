@@ -1,8 +1,8 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/new-group/add-members-from-contacts.dart';
 import 'package:chamasoft/screens/new-group/add-members-manually.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';

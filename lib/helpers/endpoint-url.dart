@@ -308,6 +308,12 @@ class EndpointUrl {
   static final String GET_GROUP_UNRECONCILED_WITHDRAWALS =
       CustomHelper.baseUrl +
           "/mobile/transaction_alerts/get_group_unreconcilled_withdrawals";
+  // ignore: non_constant_identifier_names
+  static final String RECONCILE_WITHDRAWAL_TRANSACTION_ALERT =
+      CustomHelper.baseUrl + "/mobile/transaction_alerts/reconcile_withdrawals";
+  // ignore: non_constant_identifier_names
+  static final String RECONCILE_DEPOSIT_TRANSACTION_ALERT =
+      CustomHelper.baseUrl + "/mobile/transaction_alerts/reconcile_deposits";
 
   //Selected Setting Apis
   // ignore: non_constant_identifier_names
@@ -331,6 +337,19 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_GROUP_ROLE_LIST =
       CustomHelper.baseUrl + "/mobile/group_roles/group_roles_list";
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_ASSET_OPTIONS =
+      CustomHelper.baseUrl + "/mobile/assets/get_group_asset_options";
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_STOCK_OPTIONS =
+      CustomHelper.baseUrl + "/mobile/stocks/get_group_stocks_list";
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_MONEY_MARKET_INVESTMENT_OPTIONS =
+      CustomHelper.baseUrl +
+          "/mobile/money_market_investments/get_money_market_investment_list";
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_BORROWER_OPTIONS =
+      CustomHelper.baseUrl + "/mobile/debtors/get_debtors_list";
 
   //Contribution
   // ignore: non_constant_identifier_names

@@ -1,10 +1,12 @@
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/setting_helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-list.dart';
 import 'package:chamasoft/widgets/appbars.dart';
-import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
@@ -13,7 +15,8 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:chamasoft/widgets/reconcile-deposit-form.dart';
 
 class ReconcileDeposit extends StatefulWidget {
-  const ReconcileDeposit({Key key}) : super(key: key);
+  final Map<String, dynamic> formLoadData;
+  const ReconcileDeposit(this.formLoadData, {Key key}) : super(key: key);
 
   @override
   _ReconcileDepositState createState() => _ReconcileDepositState();
@@ -23,27 +26,8 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
     with ChangeNotifier {
   double _appBBarElevation = 0;
   ScrollController _scrollController;
-  List<Member> _members = [];
-  bool _isInit = true;
-  bool _isLoading = true;
-  List _depositTypes = [];
-  List _descriptions = [];
-  List _amounts = [];
-  List _amountPayables = [];
-  List _amountDisbursed = [];
-  List _memberIds = [];
-  List _contributionIds = [];
-  List _fineCategoryIds = [];
-  List _depositorIds = [];
-  List _incomeCategoryIds = [];
-  List _loanIds = [];
-  List _accountIds = [];
-  List _stockIds = [];
-  List _moneyMktInvstIds = [];
-  List _borrowerIds = [];
-  List _numberOfSharesSold = [];
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  List _reconciledDeposits = [];
+  BuildContext _bodyContext;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBBarElevation : 0;
@@ -56,22 +40,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
 
   void addReconciledDeposit(formData) {
     setState(() {
-      _depositTypes.add(formData['depositTypeId']);
-      _descriptions.add(formData['description']);
-      _amounts.add(formData['amount']);
-      _amountPayables.add(formData['amountPayable']);
-      _amountDisbursed.add(formData['amountDisbursed']);
-      _memberIds.add(formData['memberId']);
-      _contributionIds.add(formData['contributionId']);
-      _fineCategoryIds.add(formData['fineCategoryId']);
-      _depositorIds.add(formData['depositorId']);
-      _incomeCategoryIds.add(formData['incomeCategoryId']);
-      _loanIds.add(formData['loanId']);
-      _accountIds.add(formData['accountId']);
-      _stockIds.add(formData['stockId']);
-      _moneyMktInvstIds.add(formData['moneyMarketInvstId']);
-      _borrowerIds.add(formData['borrowerId']);
-      _numberOfSharesSold.add(formData['numberOfSharesSold']);
+      _reconciledDeposits.add(formData);
     });
   }
 
@@ -79,20 +48,50 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
     showDialog(
         context: context,
         builder: (BuildContext context) =>
-            ReconcileDepositForm(addReconciledDeposit));
+            ReconcileDepositForm(addReconciledDeposit, widget.formLoadData));
   }
 
-  void _submit(BuildContext context, UnreconciledDeposit deposit) async {
+  void _submit(UnreconciledDeposit deposit, int position) async {
     // get the amount entered.
     double total = totalReconciled;
-    final groupObject =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final Group groupObject =
+        Provider.of<Groups>(_bodyContext, listen: false).getCurrentGroup();
     if (total == deposit.amount) {
-      // Setting up the payload
+      // Show the loader
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        showDialog<String>(
+            context: context,
+            barrierDismissible: false,
+            builder: (_) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            });
+      });
 
-      // Sending request to server.
+      try {
+        String response = await Provider.of<Groups>(_bodyContext, listen: false)
+            .reconcileDepositTransactionAlert(
+                _reconciledDeposits, deposit.transactionAlertId, position);
 
-      print("To be worked on!!");
+        StatusHandler()
+            .showSuccessSnackBar(_bodyContext, "Good news: $response");
+
+        Future.delayed(const Duration(milliseconds: 2500), () {
+          Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
+              builder: (_) => ReconcileDepositList(
+                  isInit: false, formLoadData: widget.formLoadData)));
+        });
+      } on CustomException catch (error) {
+        StatusHandler().showDialogWithAction(
+            context: _bodyContext,
+            message: error.toString(),
+            function: () => Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                    builder: (_) => ReconcileDepositList(
+                        isInit: false, formLoadData: widget.formLoadData))),
+            dismissible: true);
+      } finally {}
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${deposit.amount} transacted.");
@@ -105,48 +104,23 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
 
   void removeReconciledDeposit(index) {
     setState(() {
-      _depositTypes.removeAt(index);
-      _descriptions.removeAt(index);
-      _amounts.removeAt(index);
-      _amountPayables.removeAt(index);
-      _amountDisbursed.removeAt(index);
-      _memberIds.removeAt(index);
-      _contributionIds.removeAt(index);
-      _fineCategoryIds.removeAt(index);
-      _depositorIds.removeAt(index);
-      _incomeCategoryIds.removeAt(index);
-      _loanIds.removeAt(index);
-      _accountIds.removeAt(index);
-      _stockIds.removeAt(index);
-      _moneyMktInvstIds.removeAt(index);
-      _borrowerIds.removeAt(index);
-      _numberOfSharesSold.removeAt(index);
+      _reconciledDeposits.removeAt(index);
     });
   }
 
   double get totalReconciled {
     double total = 0.0;
 
-    if (_amounts.length > 0) {
-      for (var amount in _amounts) {
-        if (amount != null) {
-          total += amount;
+    if (_reconciledDeposits.length > 0) {
+      for (var reconciledDeposit in _reconciledDeposits) {
+        // Amount
+        if (reconciledDeposit['amount'] != null) {
+          total += reconciledDeposit['amount'];
         }
-      }
-    }
 
-    if (_amountPayables.length > 0) {
-      for (var amountPayable in _amountPayables) {
-        if (amountPayable != null) {
-          total += amountPayable;
-        }
-      }
-    }
-
-    if (_amountDisbursed.length > 0) {
-      for (var amountDisbursed in _amountDisbursed) {
-        if (amountDisbursed != null) {
-          total += amountDisbursed;
+        // For amount payable
+        if (reconciledDeposit['amount_payable'] != null) {
+          total += reconciledDeposit['amount_payable'];
         }
       }
     }
@@ -169,52 +143,11 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
   }
 
   @override
-  void didChangeDependencies() {
-    // get the unreconciled deposits
-    if (_isInit)
-      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
-    super.didChangeDependencies();
-  }
-
-  Future<void> _fetchMembers(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchMembers();
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchMembers(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
-    }
-  }
-
-  Future<bool> _fetchData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    _members = Provider.of<Groups>(context, listen: false).members;
-    _fetchMembers(context).then((_) {
-      _members = Provider.of<Groups>(context, listen: false).members;
-      setState(() {
-        _isLoading = false;
-      });
-    });
-    _isInit = false;
-    return true;
-  }
-
-  String getMember(memberId) {
-    return _members
-        .firstWhere((member) => member.id == "$memberId", orElse: null)
-        .name;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final UnreconciledDeposit deposit =
-        ModalRoute.of(context).settings.arguments;
+    final arguments =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    final UnreconciledDeposit deposit = arguments['deposit'];
+    final int position = arguments['position'];
 
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
@@ -242,24 +175,23 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            _submit(context, deposit);
+            _submit(deposit, position);
           },
-          child: Icon(Icons.check),
-          backgroundColor: Theme.of(context).accentColor,
+          child: Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          backgroundColor: primaryColor,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(builder: (BuildContext context) {
+          _bodyContext = context;
           return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: SingleChildScrollView(
               controller: _scrollController,
               child: Column(
                 children: [
-                  _isLoading
-                      ? showLinearProgressIndicator()
-                      : SizedBox(
-                          height: 0.0,
-                        ),
                   transactionToolTip(
                     title: deposit.particulars,
                     date: "Date of transaction: ${deposit.transactionDate}",
@@ -275,23 +207,26 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                         // Will continue from here
 
                         return ListTile(
-                          title: _memberIds[index] != null
+                          title: _reconciledDeposits[index]['member_id'] != null
                               ? Text(
-                                  "${getDepositType(_depositTypes[index])} - ${getMember(_memberIds[index])}")
-                              : _depositorIds[index] != null
+                                  "${getDepositType(_reconciledDeposits[index]['deposit_for_type'])} - ${_reconciledDeposits[index]['member_name']}")
+                              : _reconciledDeposits[index]['depositor_id'] !=
+                                      null
                                   ? Text(
-                                      "${getDepositType(_depositTypes[index])} - ${_depositorIds[index]}")
-                                  : _borrowerIds[index] != null
+                                      "${getDepositType(_reconciledDeposits[index]['deposit_for_type'])} - ${_reconciledDeposits[index]['depositor_id']}")
+                                  : _reconciledDeposits[index]['borrower_id'] !=
+                                          null
                                       ? Text(
-                                          "${getDepositType(_depositTypes[index])} - ${_borrowerIds[index]}")
+                                          "${getDepositType(_reconciledDeposits[index]['deposit_for_type'])} - ${_reconciledDeposits[index]['borrower_id']}")
                                       : Text(
-                                          "${getDepositType(_depositTypes[index])}"),
-                          subtitle: _amounts[index] != null
+                                          "${getDepositType(_reconciledDeposits[index]['deposit_for_type'])}"),
+                          subtitle: _reconciledDeposits[index]['amount'] != null
                               ? Text(
-                                  "${groupObject.groupCurrency} ${currencyFormat.format(_amounts[index])}")
-                              : _amountDisbursed[index] != null
+                                  "${groupObject.groupCurrency} ${currencyFormat.format(_reconciledDeposits[index]['amount'])}")
+                              : _reconciledDeposits[index]['amount_payable'] !=
+                                      null
                                   ? Text(
-                                      "${groupObject.groupCurrency} ${currencyFormat.format(_amountDisbursed[index])}")
+                                      "${groupObject.groupCurrency} ${currencyFormat.format(_reconciledDeposits[index]['amount_payable'])}")
                                   : null,
                           trailing: IconButton(
                             onPressed: () => removeReconciledDeposit(index),
@@ -300,18 +235,24 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
                           ),
                         );
                       },
-                      itemCount: _depositTypes.length,
+                      itemCount: _reconciledDeposits.length,
                     ),
                   ),
                   Container(
                       padding: inputPagePadding,
                       child: ListTile(
-                        title: Text(
-                          'Total amount reconciled',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(
-                            "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)}"),
+                        title: subtitle1(
+                            text: "Total amount reconciled",
+                            textAlign: TextAlign.start,
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor),
+                        subtitle: subtitle2(
+                            text:
+                                "${groupObject.groupCurrency} ${currencyFormat.format(totalReconciled)}",
+                            textAlign: TextAlign.start,
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor),
                       ))
                 ],
               ),

@@ -1,4 +1,4 @@
-import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/helpers/common.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -54,6 +54,26 @@ Widget subtitle2(
         color: color,
         fontFamily: 'SegoeUI'),
     textAlign: textAlign,
+  );
+}
+
+Widget customTitle1(
+    {String text,
+    Color color,
+    TextAlign textAlign = TextAlign.center,
+    double fontSize = 20.0,
+    FontWeight fontWeight = FontWeight.w400,
+    String fontFamily = 'SegoeUI'}) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontWeight: fontWeight,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      color: color,
+    ),
+    textAlign: textAlign,
+    overflow: TextOverflow.ellipsis,
   );
 }
 

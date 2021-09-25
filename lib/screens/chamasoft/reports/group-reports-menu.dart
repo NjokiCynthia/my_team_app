@@ -3,8 +3,8 @@ import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.d
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/svg-icons.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';

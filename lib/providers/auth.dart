@@ -1,13 +1,13 @@
 import 'dart:convert';
 import 'dart:io' as io;
 
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/endpoint-url.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../utilities/custom-helper.dart';
-import '../utilities/post-to-server.dart';
+import '../helpers/custom-helper.dart';
+import '../helpers/post-to-server.dart';
 
 class User {
   final String userId;

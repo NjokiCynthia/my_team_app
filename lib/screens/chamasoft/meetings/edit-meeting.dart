@@ -6,9 +6,9 @@ import 'package:chamasoft/screens/chamasoft/meetings/edit-collections.dart';
 // import 'package:chamasoft/screens/chamasoft/meetings/select-members.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/select-member.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/database-helper.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/database-helper.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -568,9 +568,11 @@ class _EditMeetingState extends State<EditMeeting> {
                     .push(
                       MaterialPageRoute(
                         builder: (BuildContext context) => SelectMember(
-                          initialMembersList: _setSelectedMembers("withApology"),
+                          initialMembersList:
+                              _setSelectedMembers("withApology"),
                           pageTitle: "Members Late With Apology",
-                          hideFromList: _setSelectedMembers("present")+_setSelectedMembers("late"),
+                          hideFromList: _setSelectedMembers("present") +
+                              _setSelectedMembers("late"),
                         ),
                       ),
                     )
@@ -591,9 +593,12 @@ class _EditMeetingState extends State<EditMeeting> {
                     .push(
                       MaterialPageRoute(
                         builder: (BuildContext context) => SelectMember(
-                          initialMembersList: _setSelectedMembers("withoutApology"),
+                          initialMembersList:
+                              _setSelectedMembers("withoutApology"),
                           pageTitle: "Members Absent Without Apology",
-                          hideFromList: _setSelectedMembers("present")+_setSelectedMembers("late")+_setSelectedMembers("withApology"),
+                          hideFromList: _setSelectedMembers("present") +
+                              _setSelectedMembers("late") +
+                              _setSelectedMembers("withApology"),
                         ),
                       ),
                     )
@@ -879,7 +884,7 @@ class _EditMeetingState extends State<EditMeeting> {
               Text(
                 "1. Group contributions: ${_getTotals('contributions')}\n" +
                     "2. Loan repayments: ${_getTotals('repayments')}\n" +
-                    "3. Fine payments: ${_getTotals('fines')}\n"+
+                    "3. Fine payments: ${_getTotals('fines')}\n" +
                     "4. Loan disbursements: ${_getTotals('disbursements')}\n",
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,

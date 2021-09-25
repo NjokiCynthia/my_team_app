@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/endpoint-url.dart';
-import 'package:chamasoft/utilities/post-to-server.dart';
+// import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/endpoint-url.dart';
+import 'package:chamasoft/helpers/post-to-server.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +91,8 @@ class Dashboard with ChangeNotifier {
   double _memberFineArrears = 0.0;
   double _memberLoanArrears = 0.0;
   double _memberTotalLoanBalance = 0.0;
+  int _unreconciledDepositsCount = 0;
+  int _unreconciledWithdrawalsCount = 0;
 
   //***************Group****************/
 
@@ -136,6 +139,14 @@ class Dashboard with ChangeNotifier {
 
   double get memberContributionArrears {
     return _memberContributionArrears;
+  }
+
+  int get unreconciledDepositCount {
+    return _unreconciledDepositsCount;
+  }
+
+  int get unreconciledWithdrawalCount {
+    return _unreconciledWithdrawalsCount;
   }
 
   //********Group********/
@@ -247,7 +258,14 @@ class Dashboard with ChangeNotifier {
       _notificationCount =
           double.tryParse(groupMemberObject["notification_count"].toString()) ??
               0.0;
-      print("notifications count in function: $_notificationCount");
+      _unreconciledDepositsCount = int.tryParse(
+              groupMemberObject["unreconciled_deposits_count"].toString()) ??
+          0.0;
+      _unreconciledWithdrawalsCount = int.tryParse(
+              groupMemberObject["unreconciled_withdrawals_count"].toString()) ??
+          0.0;
+
+      print("count $_unreconciledWithdrawalsCount");
       _memberContributionAmount =
           double.tryParse(memberDetails["total_contributions"].toString()) ??
               0.0;

@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:chamasoft/config.dart';
-import 'package:chamasoft/utilities/common.dart';
+import 'package:chamasoft/helpers/common.dart';
 import 'package:country_code_picker/country_code.dart';
 import 'package:image/image.dart';
 import 'package:libphonenumber/libphonenumber.dart';

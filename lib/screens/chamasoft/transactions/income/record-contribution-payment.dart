@@ -1,14 +1,12 @@
-import 'dart:developer';
-
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/members-filter-entry.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/invoicing-and-transfer/fine-member.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/date-picker.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/date-picker.dart';
+import 'package:chamasoft/helpers/setting_helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -96,7 +94,7 @@ class _RecordContributionPaymentState extends State<RecordContributionPayment> {
     _formData['amount'] = contributionAmount;
     _formData['member_type_id'] = memberTypeId;
     _formData['individual_payments'] = _individualMemberContributions;
-    log(_formData.toString());
+    // log(_formData.toString());
     try {
       String message = await Provider.of<Groups>(context, listen: false)
           .recordContributionPayments(_formData);

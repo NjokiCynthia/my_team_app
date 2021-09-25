@@ -1,12 +1,12 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/dashboard.dart';
-import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/list-institutions.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contribution-dialog.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-members-manually.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
+import 'package:chamasoft/screens/chamasoft/transactions.dart';
 import 'package:chamasoft/screens/configure-group.dart';
 import 'package:chamasoft/screens/create-group.dart';
 import 'package:chamasoft/screens/intro.dart';
@@ -14,8 +14,9 @@ import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/screens/pinlogin.dart';
 import 'package:chamasoft/screens/signup.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/notifications.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -149,7 +150,8 @@ class _MyAppState extends State<MyApp> {
             AddMembersManually.namedRoute: (ctx) => AddMembersManually(),
             ListInstitutions.namedRoute: (ctx) => ListInstitutions(),
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
-            PinLogin.namedRoute: (ctx) => PinLogin(),
+            ChamasoftTransactions.namedRoute: (ctx) => ChamasoftTransactions(),
+            PinLogin.namedRoute: (ctx) => PinLogin()
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => IntroScreen());

@@ -4,7 +4,7 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:http/http.dart' as http;
 
-import '../utilities/custom-helper.dart';
+import '../helpers/custom-helper.dart';
 import 'common.dart';
 
 class PostToServer {

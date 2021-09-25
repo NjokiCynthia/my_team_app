@@ -1,16 +1,17 @@
-import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
-import 'package:chamasoft/utilities/theme.dart';
+
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/helpers/setting_helper.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
-import 'package:provider/provider.dart';
 
 class ReconcileWithdrawalForm extends StatefulWidget {
   final Function addReconciledWithdrawal;
-  const ReconcileWithdrawalForm(this.addReconciledWithdrawal, {Key key})
+  final Map<String,dynamic> formLoadData;
+  const ReconcileWithdrawalForm(this.addReconciledWithdrawal, this.formLoadData, {Key key})
       : super(key: key);
 
   @override
@@ -20,12 +21,11 @@ class ReconcileWithdrawalForm extends StatefulWidget {
 
 class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
   final _formKey = new GlobalKey<FormState>();
-  bool _isInit = true;
-  Map<String, dynamic> formLoadData = {};
+  // bool _isInit = true;
   //bool _isFormInputEnabled = true;
 
   // form values
-  String stockName, description, moneyMktInvstName;
+  String stockName, description, moneyMarketInvestmentName, memberName;
 
   double amount, pricePerShare;
 
@@ -35,35 +35,86 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
       memberId,
       loanId,
       numberOfShares,
-      moneyMktInvstId,
+      moneyMarketInvestmentId,
       contribId,
       bankLoanId,
       recipientAccountId,
       borrowerId;
 
+  List<NamesListItem> groupMembers = [];
+  List<NamesListItem> groupExpenseCategories = [];
+  List<NamesListItem> groupContributions = [];
+  List<NamesListItem> groupAccounts = [];
+  List<NamesListItem> groupLoans = [];
+  List<NamesListItem> groupBankLoans = [];
+  List<NamesListItem> groupAssets = [];
+  List<NamesListItem> groupMoneyMarketInvestments = [];
+  List<NamesListItem> groupBorrowers = [];
+
   Future<void> _fetchDefaultValues(BuildContext context) async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      showDialog<String>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          });
-    });
-    formLoadData = await Provider.of<Groups>(context, listen: false)
-        .loadInitialFormData(
-            contr: true,
-            acc: true,
-            exp: true,
-            member: true,
-            loanTypes: true,
-            bankLoans: true);
-    setState(() {
-      _isInit = false;
-    });
-    Navigator.of(context, rootNavigator: true).pop();
+    // WidgetsBinding.instance.addPostFrameCallback((_) async {
+    //   showDialog<String>(
+    //       context: context,
+    //       barrierDismissible: false,
+    //       builder: (BuildContext context) {
+    //         return Center(
+    //           child: CircularProgressIndicator(),
+    //         );
+    //       });
+    // });
+    // setState(() {
+      groupMembers = widget.formLoadData.containsKey("memberOptions")
+          ? widget.formLoadData['memberOptions']
+          : [];
+      groupExpenseCategories = widget.formLoadData.containsKey("expenseCategories")
+          ? widget.formLoadData['expenseCategories']
+          : [];
+      groupAccounts = widget.formLoadData.containsKey("accountOptions")
+          ? widget.formLoadData['accountOptions']
+          : [];
+      groupContributions = widget.formLoadData.containsKey("contributionOptions")
+          ? widget.formLoadData['contributionOptions']
+          : [];
+      groupLoans = widget.formLoadData.containsKey("loanTypeOptions")
+          ? widget.formLoadData['loanTypeOptions']
+          : [];
+      groupBankLoans = widget.formLoadData.containsKey("bankLoansOptions")
+          ? widget.formLoadData['bankLoansOptions']
+          : [];
+      groupAssets = widget.formLoadData.containsKey("groupAssetOptions")
+          ? widget.formLoadData['groupAssetOptions']
+          : [];
+      groupMoneyMarketInvestments =
+          widget.formLoadData.containsKey("moneyMarketInvestmentOptions")
+              ? widget.formLoadData['moneyMarketInvestmentOptions']
+              : [];
+      groupBorrowers = widget.formLoadData.containsKey("borrowerOptions")
+          ? widget.formLoadData['borrowerOptions']
+          : [];
+    // });
+    // Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  String getAlertText() {
+    String _resp = "";
+    if (groupMembers.length == 0) _resp = "There are no group members found";
+    if (withdrawalTypeId == 1 && groupExpenseCategories.length == 0)
+      _resp = "The group does not have any expense categories";
+    if (withdrawalTypeId == 2 && groupAssets.length == 0)
+      _resp = "The group does not have any assets";
+    if (withdrawalTypeId == 3 && groupLoans.length == 0)
+      _resp = "The group does not have any loan type";
+    if (withdrawalTypeId == 6 && groupMoneyMarketInvestments.length == 0)
+      _resp = "The group does not have any money market investment";
+    if (withdrawalTypeId == 7 && groupContributions.length == 0)
+      _resp = "The group does not have any contribution";
+    if (withdrawalTypeId == 8 && groupBankLoans.length == 0)
+      _resp = "The group does not have any bank loan";
+    if (withdrawalTypeId == 9 && groupAccounts.length == 0)
+      _resp = "The group does not have any account";
+    if (withdrawalTypeId == 10 && groupLoans.length == 0)
+      _resp = "The group does not have any loan type";
+    return _resp != "" ? _resp + ", you cannot continue." : "";
   }
 
   void addReconciledWithdrawal(BuildContext context) {
@@ -72,22 +123,23 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
     }
 
     widget.addReconciledWithdrawal({
-      "stockName": stockName,
-      "moneyMktInvstName": moneyMktInvstName,
+      "stock_name": stockName,
+      "money_market_investment_name": moneyMarketInvestmentName,
       "description": description,
       "amount": amount,
-      "pricePerShare": pricePerShare,
-      "withdrawalTypeId": withdrawalTypeId,
-      "expenseCategoryId": expenseCategoryId,
-      "assetId": assetId,
-      "memberId": memberId,
-      "loanId": loanId,
-      "numberOfShares": numberOfShares,
-      "moneyMktInvstId": moneyMktInvstId,
-      "contributionId": contribId,
-      "bankLoanId": bankLoanId,
-      "recipientAccountId": recipientAccountId,
-      "borrowerId": borrowerId
+      "price_per_share": pricePerShare,
+      "withdrawal_for_type": withdrawalTypeId,
+      "expense_category_id": expenseCategoryId,
+      "asset_id": assetId,
+      "member_id": memberId,
+      'member_name': memberName,
+      "loan_id": loanId,
+      "number_of_shares": numberOfShares,
+      "money_market_investment_id": moneyMarketInvestmentId,
+      "contribution_id": contribId,
+      "bank_loan_id": bankLoanId,
+      "account_id": recipientAccountId,
+      "debtor_id": borrowerId
     });
     // pop out the dialog
     Navigator.of(context).pop();
@@ -95,9 +147,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
 
   @override
   void didChangeDependencies() {
-    if (_isInit) {
       _fetchDefaultValues(context);
-    }
     super.didChangeDependencies();
   }
 
@@ -119,6 +169,30 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  withdrawalTypeId != null && getAlertText() != ""
+                      ? Container(
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(2),
+                            ),
+                            color: Colors.red.withOpacity(0.15),
+                          ),
+                          padding: EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
+                          margin: EdgeInsets.only(bottom: 20.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                getAlertText(),
+                                style: TextStyle(
+                                  color: Colors.red[700],
+                                  fontSize: 12.0,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      : SizedBox(),
                   CustomDropDownButton(
                     enabled: true,
                     labelText: "Select withdrawal for",
@@ -137,9 +211,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                     },
                   ),
                   SizedBox(height: 10),
-
                   // For expense
-
                   if (withdrawalTypeId == 1)
                     Column(
                       children: [
@@ -147,10 +219,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select expense category",
-                            listItems:
-                                formLoadData.containsKey("expenseCategories")
-                                    ? formLoadData['expenseCategories']
-                                    : [],
+                            listItems: groupExpenseCategories,
                             selectedItem: expenseCategoryId,
                             onChanged: (value) {
                               setState(() {
@@ -182,7 +251,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select asset",
-                            listItems: [],
+                            listItems: groupAssets,
                             selectedItem: assetId,
                             onChanged: (value) {
                               setState(() {
@@ -212,13 +281,14 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: formLoadData.containsKey("memberOptions")
-                                ? formLoadData['memberOptions']
-                                : [],
+                            listItems: groupMembers,
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
                                 memberId = value;
+                                memberName = groupMembers
+                                    .firstWhere((member) => member.id == value)
+                                    .name;
                               });
                             },
                             validator: (value) {
@@ -231,11 +301,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         // select loan
                         CustomDropDownButton(
                             enabled: true,
-                            labelText: "Select loan",
-                            listItems:
-                                formLoadData.containsKey("loanTypeOptions")
-                                    ? formLoadData['loanTypeOptions']
-                                    : [],
+                            labelText: "Select loan type",
+                            listItems: groupLoans,
                             selectedItem: loanId,
                             onChanged: (value) {
                               setState(() {
@@ -332,7 +399,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                           enabled: true,
                           onChanged: (value) {
                             setState(() {
-                              moneyMktInvstName = value;
+                              moneyMarketInvestmentName = value;
                             });
                           },
                         ),
@@ -353,11 +420,11 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select money market investment",
-                            listItems: [],
-                            selectedItem: moneyMktInvstId,
+                            listItems: groupMoneyMarketInvestments,
+                            selectedItem: moneyMarketInvestmentId,
                             onChanged: (value) {
                               setState(() {
-                                moneyMktInvstId = value;
+                                moneyMarketInvestmentId = value;
                               });
                             },
                             validator: (value) {
@@ -382,13 +449,14 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: formLoadData.containsKey("memberOptions")
-                                ? formLoadData['memberOptions']
-                                : [],
+                            listItems: groupMembers,
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
                                 memberId = value;
+                                memberName = groupMembers
+                                    .firstWhere((member) => member.id == value)
+                                    .name;
                               });
                             },
                             validator: (value) {
@@ -401,9 +469,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select contribution",
-                            listItems: formLoadData.containsKey("contrOptions")
-                                ? formLoadData['contrOptions']
-                                : [],
+                            listItems: groupContributions,
                             selectedItem: contribId,
                             onChanged: (value) {
                               setState(() {
@@ -429,10 +495,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select bank loan",
-                            listItems:
-                                formLoadData.containsKey("bankLoansOptions")
-                                    ? formLoadData['bankLoansOptions']
-                                    : [],
+                            listItems: groupBankLoans,
                             selectedItem: bankLoanId,
                             onChanged: (value) {
                               setState(() {
@@ -461,8 +524,8 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             enabled: true,
                             labelText: "Select recipient account",
                             listItems:
-                                formLoadData.containsKey("accountOptions")
-                                    ? formLoadData['accountOptions']
+                                widget.formLoadData.containsKey("accountOptions")
+                                    ? widget.formLoadData['accountOptions']
                                     : [],
                             selectedItem: recipientAccountId,
                             onChanged: (value) {
@@ -492,7 +555,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select borrower",
-                            listItems: [],
+                            listItems: groupBorrowers,
                             selectedItem: borrowerId,
                             onChanged: (value) {
                               setState(() {
@@ -509,10 +572,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select loan",
-                            listItems:
-                                formLoadData.containsKey("loanTypeOptions")
-                                    ? formLoadData['loanTypeOptions']
-                                    : [],
+                            listItems: groupLoans,
                             selectedItem: loanId,
                             onChanged: (value) {
                               setState(() {
@@ -539,13 +599,14 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select member",
-                            listItems: formLoadData.containsKey("memberOptions")
-                                ? formLoadData['memberOptions']
-                                : [],
+                            listItems: groupMembers,
                             selectedItem: memberId,
                             onChanged: (value) {
                               setState(() {
                                 memberId = value;
+                                memberName = groupMembers
+                                    .firstWhere((member) => member.id == value)
+                                    .name;
                               });
                             },
                             validator: (value) {

@@ -1,9 +1,9 @@
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/screens/verification.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -14,7 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 
-import '../utilities/custom-helper.dart';
+import '../helpers/custom-helper.dart';
 
 class Login extends StatefulWidget {
   static const namedRoute = "/login-screen";

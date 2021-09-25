@@ -1,45 +1,39 @@
+import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-form.dart';
-import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-form.dart';
+import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:chamasoft/widgets/appbars.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class ReconcileDepositList extends StatefulWidget {
+class ReconcileWithdrawalList extends StatefulWidget {
+  final String reconciledWithdrawalTransactionAlertId;
   final bool isInit;
-  final Map<String, dynamic> formLoadData;
+  final Map<String, dynamic> formData;
 
-  ReconcileDepositList({this.isInit = true, this.formLoadData});
+  ReconcileWithdrawalList(
+      {this.reconciledWithdrawalTransactionAlertId,
+      this.isInit = true,
+      this.formData});
   @override
-  _ReconcileDepositListState createState() => _ReconcileDepositListState();
+  _ReconcileWithdrawalListState createState() =>
+      _ReconcileWithdrawalListState();
 }
 
-class _ReconcileDepositListState extends State<ReconcileDepositList> {
-  double _appBarElevation = 0;
-  bool _isLoading = true;
-  bool _isInit = true;
-  Group _groupObject;
-  List<UnreconciledDeposit> _unreconciledDeposits;
-  Map<String, dynamic> _formLoadData;
-  ScrollController _scrollController;
+class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  void _scrollListener() {
-    double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
-    if (_appBarElevation != newElevation) {
-      setState(() {
-        _appBarElevation = newElevation;
-      });
-    }
-  }
+  double _appBarElevation = 0;
+  Group groupObject;
+  List<UnreconciledWithdrawal> _unreconciledWithdrawal;
+  ScrollController _scrollController;
+  bool _isInit = true;
+  bool _isLoading = true;
+  Map<String, dynamic> _formLoadData = {};
 
   @override
   void initState() {
@@ -47,12 +41,21 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
     _scrollController.addListener(_scrollListener);
     setState(() {
       _isInit = widget.isInit;
-      if (_isInit == false) {
-        _formLoadData = widget.formLoadData;
+      if (!_isInit) {
+        _formLoadData = widget.formData;
         _isLoading = false;
       }
     });
     super.initState();
+  }
+
+  void _scrollListener() {
+    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
   }
 
   @override
@@ -64,33 +67,45 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
 
   @override
   void didChangeDependencies() {
-    // get the unreconciled deposits
-    if (_isInit)
+    if (_isInit) {
       WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    } else {
+      setState(() {
+        // _isLoading = false;
+        // _formLoadData = widget.formData;
+      });
+    }
     super.didChangeDependencies();
   }
 
-  Future<void> _fetchUnreconciledDeposits(BuildContext context) async {
+  Future<bool> _fetchData() async {
     setState(() {
-      _isInit = false;
+      _isLoading = true;
     });
+    return _fetchUnreconcilledWithdrawals(context).then((value) => true);
+  }
 
+  Future<void> _fetchUnreconcilledWithdrawals(BuildContext context) async {
     try {
-      // Load formdata values
+      setState(() {
+        _isInit = false;
+      });
       Provider.of<Groups>(context, listen: false)
           .loadInitialFormData(
-        contr: true,
         acc: true,
-        member: true,
-        fineOptions: true,
+        bankLoans: true,
+        borrowers: true,
+        contr: true,
         depositor: true,
-        incomeCats: true,
+        exp: true,
+        groupAssets: true,
+        groupStocks: true,
+        member: true,
         loanTypes: true,
       )
           .then((value) {
-        // Load unreconciled deposits
         Provider.of<Groups>(context, listen: false)
-            .fetchGroupUnreconciledDeposits()
+            .fetchGroupUnreconciledWithdrawals()
             .then((_) {
           setState(() {
             _isLoading = false;
@@ -98,99 +113,92 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
           });
         });
       });
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchUnreconciledDeposits(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
+    } catch (error) {
+      print(error);
+    } finally {
+      // if (this.mounted) {
+      //   if (_isInit == false) {
+      //     setState(() {
+      //       _isInit = true;
+      //     });
+      //   }
+      // }
     }
   }
 
-  Future<bool> _fetchData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    return _fetchUnreconciledDeposits(context).then((value) => true);
-  }
-
+  // Provider.of<Groups>(context, listen: false).getCurrentGroup();
   @override
   Widget build(BuildContext context) {
-    _groupObject =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    _unreconciledDeposits =
-        Provider.of<Groups>(context, listen: true).getUnreconciledDeposits;
+    groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    _unreconciledWithdrawal =
+        Provider.of<Groups>(context, listen: true).getUnreconciledWithdrawals;
 
+    print(_unreconciledWithdrawal.length);
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
           action: () => Navigator.popUntil(
               context, (Route<dynamic> route) => route.isFirst),
-          elevation: 1,
+          elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Reconcile deposits",
+          title: "Reconcile Withdrawals",
         ),
-        backgroundColor: Colors.transparent,
+        backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
-          backgroundColor: (themeChangeProvider.darkTheme)
-              ? Colors.blueGrey[800]
-              : Colors.white,
-          onRefresh: () => _fetchData(),
-          child: Container(
-            decoration: primaryGradient(context),
-            width: double.infinity,
-            height: double.infinity,
-            child: Column(
-              children: [
-                _isLoading
-                    ? showLinearProgressIndicator()
-                    : SizedBox(
-                        height: 0.0,
-                      ),
-                Expanded(
-                  child: _unreconciledDeposits.length > 0
-                      ? ListView.builder(
-                          itemBuilder: (context, index) {
-                            UnreconciledDeposit deposit =
-                                _unreconciledDeposits[index];
-                            return UnreconciledDepositCard(
-                                deposit, _groupObject, _formLoadData, index);
-                          },
-                          itemCount: _unreconciledDeposits.length,
-                        )
-                      : emptyList(
-                          color: Colors.blue[400],
-                          iconData: LineAwesomeIcons.angle_double_down,
-                          text:
-                              "There are no unreconciled deposits to display"),
-                ),
-              ],
-            ),
-          ),
-        ));
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
+            onRefresh: () => _fetchData(),
+            child: Container(
+                decoration: primaryGradient(context),
+                width: double.infinity,
+                height: double.infinity,
+                child: Column(children: <Widget>[
+                  _isLoading
+                      ? showLinearProgressIndicator()
+                      : SizedBox(
+                          height: 0.0,
+                        ),
+                  Expanded(
+                    child: _unreconciledWithdrawal.length > 0
+                        ? ListView.builder(
+                            itemBuilder: (context, index) {
+                              UnreconciledWithdrawal withdrawal =
+                                  _unreconciledWithdrawal[index];
+                              return UnreconciledWithdrawalCard(withdrawal,
+                                  groupObject, _formLoadData, index);
+                            },
+                            itemCount: _unreconciledWithdrawal.length,
+                          )
+                        : emptyList(
+                            color: Colors.blue[400],
+                            iconData: LineAwesomeIcons.angle_double_down,
+                            text:
+                                "There are no unreconciled withdrawals to display"),
+                  ),
+                ]))));
   }
 }
 
-class UnreconciledDepositCard extends StatefulWidget {
-  final UnreconciledDeposit deposit;
+class UnreconciledWithdrawalCard extends StatefulWidget {
+  final UnreconciledWithdrawal withdrawal;
   final Group groupObject;
   final Map<String, dynamic> formLoadData;
-  final int index;
+  final int cardPosition;
 
-  UnreconciledDepositCard(
-      this.deposit, this.groupObject, this.formLoadData, this.index,
+  UnreconciledWithdrawalCard(
+      this.withdrawal, this.groupObject, this.formLoadData, this.cardPosition,
       {Key key})
       : super(key: key);
 
   @override
-  _UnreconciledDepositCardState createState() =>
-      _UnreconciledDepositCardState();
+  _UnreconciledWithdrawalCardState createState() =>
+      _UnreconciledWithdrawalCardState();
 }
 
-class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
+class _UnreconciledWithdrawalCardState
+    extends State<UnreconciledWithdrawalCard> {
   Key key;
   bool _isExpanded = false;
 
@@ -212,7 +220,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                 title: Padding(
                   padding: EdgeInsets.all(4.0),
                   child: subtitle1(
-                      text: widget.deposit.transactionDate,
+                      text: widget.withdrawal.transactionDate,
                       textAlign: TextAlign.start),
                 ),
                 subtitle: Column(
@@ -222,7 +230,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                       child: Container(
                         width: double.infinity,
                         child: subtitle1(
-                            text: widget.deposit.accountDetails,
+                            text: widget.withdrawal.accountDetails,
                             textAlign: TextAlign.start),
                       ),
                     ),
@@ -242,14 +250,19 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                               fontWeight: FontWeight.w400,
                             ),
                             heading2(
-                              text:
-                                  currencyFormat.format(widget.deposit.amount),
+                              text: currencyFormat
+                                  .format(widget.withdrawal.amount),
                               // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
                               textAlign: TextAlign.end,
                             ),
                           ],
                         ),
+
+                        // subtitle2(
+                        //     text: " ${widget.groupObject.groupCurrency} " +
+                        //         " ${currencyFormat.format(widget.withdrawal.amount)}",
+                        //     textAlign: TextAlign.start),
                       ),
                     ),
                     Padding(
@@ -257,7 +270,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                       child: Container(
                         width: double.infinity,
                         child: subtitle2(
-                            text: widget.deposit.particulars,
+                            text: widget.withdrawal.particulars,
                             textAlign: TextAlign.start),
                       ),
                     ),
@@ -270,7 +283,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                                   width: double.infinity,
                                   child: subtitle2(
                                       text:
-                                          "Account number: ${widget.deposit.accountNumber}",
+                                          "Account number: ${widget.withdrawal.accountNumber}",
                                       textAlign: TextAlign.start),
                                 ),
                               ),
@@ -280,7 +293,7 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                                   width: double.infinity,
                                   child: subtitle2(
                                       text:
-                                          "TransactionId: ${widget.deposit.transactionId}",
+                                          "TransactionId: ${widget.withdrawal.transactionId}",
                                       textAlign: TextAlign.start),
                                 ),
                               ),
@@ -320,10 +333,10 @@ class _UnreconciledDepositCardState extends State<UnreconciledDepositCard> {
                           MaterialPageRoute(
                               builder:
                                   (BuildContext ctx) =>
-                                      ReconcileDeposit(widget.formLoadData),
+                                      ReconcileWithdrawal(widget.formLoadData),
                               settings: RouteSettings(arguments: {
-                                'deposit': widget.deposit,
-                                'position': widget.index
+                                "withdrawal": widget.withdrawal,
+                                "position": widget.cardPosition
                               }))),
                       child: Row(
                         children: [

@@ -2,7 +2,6 @@ import 'dart:convert';
 // import 'dart:developer';
 import 'dart:io' as io;
 import 'dart:io';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
@@ -15,14 +14,15 @@ import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal-request.dart';
 import 'package:chamasoft/screens/chamasoft/models/withdrawal.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/endpoint-url.dart';
-import 'package:chamasoft/utilities/post-to-server.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/database-helper.dart';
+import 'package:chamasoft/helpers/endpoint-url.dart';
+import 'package:chamasoft/helpers/post-to-server.dart';
+import 'package:chamasoft/helpers/report_helper.dart';
+import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'helpers/report_helper.dart';
-import 'package:chamasoft/utilities/database-helper.dart';
 
 class Account {
   final String id;
@@ -263,6 +263,54 @@ class ExpenseCategories {
   });
 }
 
+class Stock {
+  @required
+  final String id;
+  @required
+  final String name;
+  final String description;
+  final bool ishidden;
+
+  Stock({
+    this.id,
+    this.name,
+    this.description,
+    this.ishidden,
+  });
+}
+
+class MoneyMarketInvestment {
+  @required
+  final String id;
+  @required
+  final String name;
+  final String description;
+  final bool ishidden;
+
+  MoneyMarketInvestment({
+    this.id,
+    this.name,
+    this.description,
+    this.ishidden,
+  });
+}
+
+class Borrower {
+  @required
+  final String id;
+  @required
+  final String name;
+  final String description;
+  final bool ishidden;
+
+  Borrower({
+    this.id,
+    this.name,
+    this.description,
+    this.ishidden,
+  });
+}
+
 class LoanType {
   final String id;
   final String name;
@@ -422,7 +470,10 @@ class Groups with ChangeNotifier {
   List<FineType> _fineTypes = [];
   List<IncomeCategories> _incomeCategories = [];
   List<IncomeCategories> _detailedIncomeCategories = [];
-  List<IncomeCategories> _assetCategories = [];
+  List<IncomeCategories> _assetCategories = [], _groupAssetOptions = [];
+  List<Stock> _groupStockOptions = [];
+  List<MoneyMarketInvestment> _groupMoneyMarketInvestmentOptions = [];
+  List<Borrower> _groupBorrowerOptions = [];
   List<ExpenseCategories> _expenseCategories = [];
   List<LoanType> _loanTypes = [];
   List<Member> _members = [];
@@ -524,6 +575,22 @@ class Groups with ChangeNotifier {
 
   List<IncomeCategories> get assetCategories {
     return [..._assetCategories];
+  }
+
+  List<IncomeCategories> get groupAssetOptions {
+    return [..._groupAssetOptions];
+  }
+
+  List<Stock> get groupStockOptions {
+    return [..._groupStockOptions];
+  }
+
+  List<MoneyMarketInvestment> get groupMoneyMarketInvestmentOptions {
+    return [..._groupMoneyMarketInvestmentOptions];
+  }
+
+  List<Borrower> get groupBorrowerOptions {
+    return [..._groupBorrowerOptions];
   }
 
   List<LoanType> get loanTypes {
@@ -1039,6 +1106,69 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
+  void addGroupAssetOptions(List<dynamic> assetOptions) {
+    if (assetOptions.length > 0) {
+      for (var assetOptionJson in assetOptions) {
+        var description = assetOptionJson["description"];
+        final income = IncomeCategories(
+          id: assetOptionJson['id'].toString(),
+          name: assetOptionJson['name'].toString(),
+          description: description != null ? description.toString() : "",
+        );
+        _groupAssetOptions.add(income);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addGroupStockOptions(List<dynamic> stockOptions) {
+    if (stockOptions.length > 0) {
+      for (var stockOptionJson in stockOptions) {
+        var description = stockOptionJson["description"];
+        final stock = Stock(
+          id: stockOptionJson['id'].toString(),
+          name: stockOptionJson['name'].toString(),
+          description: description != null ? description.toString() : "",
+        );
+        _groupStockOptions.add(stock);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addGroupMoneyMarketInvestmentOptions(
+      List<dynamic> moneyMarketInvestmentOptions) {
+    if (moneyMarketInvestmentOptions.length > 0) {
+      for (var moneyMarketInvestmentOptionJson
+          in moneyMarketInvestmentOptions) {
+        var description = moneyMarketInvestmentOptionJson["description"];
+        final moneyMarketInvestment = MoneyMarketInvestment(
+          id: moneyMarketInvestmentOptionJson['id'].toString(),
+          name: moneyMarketInvestmentOptionJson['investment_institution_name']
+              .toString(),
+          description: description != null ? description.toString() : "",
+        );
+        _groupMoneyMarketInvestmentOptions.add(moneyMarketInvestment);
+      }
+    }
+    notifyListeners();
+  }
+
+  void addGroupBorrowerOptions(List<dynamic> borrowerOptions) {
+    if (borrowerOptions.length > 0) {
+      for (var borrowerOptionJson in borrowerOptions) {
+        var description = borrowerOptionJson["description"];
+        final borrower = Borrower(
+          id: borrowerOptionJson['id'].toString(),
+          name: borrowerOptionJson['name'].toString(),
+          description: description != null ? description.toString() : "",
+        );
+        _groupBorrowerOptions.add(borrower);
+      }
+    }
+    notifyListeners();
+  }
+
   void addExpenseCategories({List<dynamic> expenseCategories}) {
     if (expenseCategories.length > 0) {
       for (var expenseCategoryJson in expenseCategories) {
@@ -1195,14 +1325,6 @@ class Groups with ChangeNotifier {
       }
     }
     notifyListeners();
-  }
-
-  void reconcileDeposit(formData) {
-    // Will handle the request here.
-  }
-
-  void reconcileWithdrawal(formData) {
-    // Will handle the request here.
   }
 
   void addDepositors(List<dynamic> groupDepositors) {
@@ -2222,6 +2344,109 @@ class Groups with ChangeNotifier {
         final incomeCategoriesTypes =
             response['asset_categories'] as List<dynamic>;
         addAssetCategories(incomeCategoriesTypes);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchGroupAssetOptions() async {
+    final url = EndpointUrl.GET_GROUP_ASSET_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        _groupAssetOptions = []; //clear accounts
+        final groupAssetOptionsData =
+            response['group_asset_options'] as List<dynamic>;
+        addGroupAssetOptions(groupAssetOptionsData);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchGroupStockOptions() async {
+    final url = EndpointUrl.GET_GROUP_STOCK_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        _groupStockOptions = []; //clear accounts
+        final groupStockOptionsData = response['group_stocks'] as List<dynamic>;
+        addGroupStockOptions(groupStockOptionsData);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchMoneyMarketInvestmentOptions() async {
+    final url = EndpointUrl.GET_GROUP_MONEY_MARKET_INVESTMENT_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        _groupMoneyMarketInvestmentOptions = []; //clear accounts
+        final groupMoneyMarketInvestmentOptionsData =
+            response['investments'] as List<dynamic>;
+        addGroupMoneyMarketInvestmentOptions(
+            groupMoneyMarketInvestmentOptionsData);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> fetchBorrowerOptions() async {
+    final url = EndpointUrl.GET_GROUP_BORROWER_OPTIONS;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print(response);
+        _groupBorrowerOptions = []; //clear accounts
+        final groupBorrowerOptionsData = response['debtors'] as List<dynamic>;
+        addGroupBorrowerOptions(groupBorrowerOptionsData);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
@@ -4061,6 +4286,7 @@ class Groups with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         final data = response['deposits'] as List<dynamic>;
+        if (lowerLimit == 0) _depositList = [];
         addDepositList(data);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
@@ -4236,7 +4462,11 @@ class Groups with ChangeNotifier {
       bool exp = false,
       bool bankLoans = false,
       bool loanTypes = false,
-      bool memberOngoingLoans = false}) async {
+      bool memberOngoingLoans = false,
+      bool groupAssets = false,
+      bool groupStocks = false,
+      bool moneyMarketInvestments = false,
+      bool borrowers = false}) async {
     List<NamesListItem> contributionOptions = [],
         accountOptions = [],
         memberOptions = [],
@@ -4246,8 +4476,16 @@ class Groups with ChangeNotifier {
         expenseCategories = [],
         bankLoansOptions = [],
         loanTypeOptions = [],
+<<<<<<< HEAD
         memberOngoingLoanOptions = [];
         try{
+=======
+        memberOngoingLoanOptions = [],
+        groupAssetOptions = [],
+        groupStockOptions = [],
+        moneyMarketInvestmentOptions = [],
+        borrowerOptions = [];
+>>>>>>> develop
     if (contr) {
       if (_payContributions.length == 0) {
         await fetchPayContributions();
@@ -4355,9 +4593,58 @@ class Groups with ChangeNotifier {
         }
       }
     }
+<<<<<<< HEAD
         } catch (error) {
           throw(error);
         }
+=======
+    if (groupAssets) {
+      if (_groupAssetOptions.length == 0) {
+        await fetchGroupAssetOptions();
+      }
+      _groupAssetOptions
+          .map((groupAssetOption) => groupAssetOptions.add(NamesListItem(
+              id: int.tryParse(groupAssetOption.id),
+              name: groupAssetOption.name)))
+          .toList();
+    }
+
+    if (groupStocks) {
+      if (_groupStockOptions.length == 0) {
+        await fetchGroupStockOptions();
+      }
+      _groupStockOptions
+          .map((groupStockOption) => groupStockOptions.add(NamesListItem(
+              id: int.tryParse(groupStockOption.id),
+              name: groupStockOption.name)))
+          .toList();
+    }
+
+    if (moneyMarketInvestments) {
+      if (_groupMoneyMarketInvestmentOptions.length == 0) {
+        await fetchMoneyMarketInvestmentOptions();
+      }
+
+      _groupMoneyMarketInvestmentOptions
+          .map((groupMoneyMarketOption) => moneyMarketInvestmentOptions.add(
+              NamesListItem(
+                  id: int.tryParse(groupMoneyMarketOption.id),
+                  name: groupMoneyMarketOption.name)))
+          .toList();
+    }
+
+    if (borrowers) {
+      if (_groupBorrowerOptions.length == 0) {
+        await fetchBorrowerOptions();
+      }
+
+      _groupBorrowerOptions
+          .map((borrowerOption) => borrowerOptions.add(NamesListItem(
+              id: int.tryParse(borrowerOption.id), name: borrowerOption.name)))
+          .toList();
+    }
+
+>>>>>>> develop
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
@@ -4369,6 +4656,10 @@ class Groups with ChangeNotifier {
       'bankLoansOptions': bankLoansOptions,
       'loanTypeOptions': loanTypeOptions,
       'memberOngoingLoanOptions': memberOngoingLoanOptions,
+      'groupAssetOptions': groupAssetOptions,
+      'groupStockOptions': groupStockOptions,
+      'moneyMarketInvestmentOptions': moneyMarketInvestmentOptions,
+      'borrowerOptions': borrowerOptions
     };
     return result;
   }
@@ -4731,6 +5022,76 @@ class Groups with ChangeNotifier {
     }
   }
 
+  // reconcile withdrawal transaction alert
+
+  Future<String> reconcileWithdrawalTransactionAlert(
+      List formDataPayload, String transactionAlertId, int position) async {
+    try {
+      // ignore: unused_local_variable
+      final url = EndpointUrl.RECONCILE_WITHDRAWAL_TRANSACTION_ALERT;
+      final Map<String, dynamic> formData = {};
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['transaction_alert_id'] = transactionAlertId;
+      formData['reconcile_withdrawal_break_down'] = formDataPayload;
+      try {
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        int status = ParseHelper.getIntFromJson(response, "status");
+        if (status == 12) {
+          return "-1";
+        } else {
+          _unreconciledWithdrawals.removeAt(position);
+          notifyListeners();
+          return response["message"].toString();
+        }
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  // reconcile deposit transaction alert
+
+  Future<String> reconcileDepositTransactionAlert(
+      List formDataPayload, String transactionAlertId, int position) async {
+    try {
+      // ignore: unused_local_variable
+      final url = EndpointUrl.RECONCILE_DEPOSIT_TRANSACTION_ALERT;
+      final Map<String, dynamic> formData = {};
+      formData['user_id'] = _userId;
+      formData['group_id'] = currentGroupId;
+      formData['transaction_alert_id'] = transactionAlertId;
+      formData['reconcile_deposits_break_down'] = formDataPayload;
+      try {
+        final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        int status = ParseHelper.getIntFromJson(response, "status");
+        if (status == 12) {
+          return "-1";
+        } else {
+          _unreconciledDeposits.removeAt(position);
+          notifyListeners();
+          return response["message"].toString();
+        }
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   // get unreconciled deposits
 
   Future<void> fetchGroupUnreconciledDeposits() async {
@@ -4813,6 +5174,9 @@ class Groups with ChangeNotifier {
     _incomeCategories = [];
     _detailedIncomeCategories = [];
     _assetCategories = [];
+    _groupAssetOptions = [];
+    _groupStockOptions = [];
+    _groupMoneyMarketInvestmentOptions = [];
     _expenseCategories = [];
     _loanTypes = [];
     _depositors = [];

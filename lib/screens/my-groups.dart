@@ -3,45 +3,11 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/new-group/new-group.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
-import 'package:chamasoft/utilities/theme.dart';
-import 'package:chamasoft/widgets/backgrounds.dart';
-import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/data-loading-effects.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:provider/provider.dart';
-
-class MyGroups extends StatefulWidget {
-  static const namedRoute = '/my-groups-screen';
-
-  @override
-  _MyGroupsState createState() => _MyGroupsState();
-}
-
-class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
-  Future<void> _future;
-  AnimationController _controller;
-  DateTime currentBackPressTime;
-
-  Future<void> _getUserCheckInData(BuildContext context,
-      [bool refresh = false]) async {
-    try {
-      if (Provider.of<Groups>(context, listen: false).item.length > 0) {
-      } else {
-        refresh = true;
-      }
-      if (refresh) {
         await Provider.of<Groups>(context, listen: false)
             .fetchAndSetUserGroups();
       }
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
-          context: context,
           error: error,
           callback: () {
             _getUserCheckInData(context);

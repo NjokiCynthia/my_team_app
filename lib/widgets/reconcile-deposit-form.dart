@@ -1,20 +1,19 @@
-import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/helpers/setting_helper.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
-import 'package:chamasoft/utilities/status-handler.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/setting_helper.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ReconcileDepositForm extends StatefulWidget {
   Function _addReconciledDeposit;
+  Map<String, dynamic> formLoadData;
 
-  ReconcileDepositForm(this._addReconciledDeposit, {Key key}) : super(key: key);
+  ReconcileDepositForm(this._addReconciledDeposit, this.formLoadData, {Key key})
+      : super(key: key);
 
   @override
   _ReconcileDepositFormState createState() => _ReconcileDepositFormState();
@@ -27,7 +26,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
   bool _isFormInputEnabled = true;
 
   // form values
-  String description;
+  String description, memberName;
 
   double amount, amountPayable, amountDisbursed, pricePerShare;
 
@@ -41,9 +40,21 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       accountId,
       stockId,
       assetId,
-      moneyMarketInvstId,
+      moneyMarketInvestmentId,
       borrowerId,
       numberOfSharesSold;
+
+  List<NamesListItem> groupMembers;
+  List<NamesListItem> groupContributions;
+  List<NamesListItem> groupFines;
+  List<NamesListItem> groupDepositors;
+  List<NamesListItem> groupIncomeCategories;
+  List<NamesListItem> groupLoanTypes;
+  List<NamesListItem> groupAccounts;
+  List<NamesListItem> groupMoneyMarketInvestments;
+  List<NamesListItem> groupStocks;
+  List<NamesListItem> groupAssets;
+  List<NamesListItem> groupBorrowers;
 
   void addReconciledDeposit(BuildContext context) {
     if (!_formKey.currentState.validate()) {
@@ -53,21 +64,22 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
     widget._addReconciledDeposit({
       "description": description,
       "amount": amount,
-      "amountPayable": amountPayable,
-      "amountDisbursed": amountDisbursed,
-      "depositTypeId": depositTypeId,
-      "memberId": memberId,
-      "contributionId": contributionId,
-      "fineCategoryId": fineCategoryId,
-      "depositorId": depositorId,
-      "incomeCategoryId": incomeCategoryId,
-      "loanId": loanId,
-      "accountId": accountId,
-      "stockId": stockId,
-      "assetId": assetId,
-      "moneyMarketInvstId": moneyMarketInvstId,
-      "borrowerId": borrowerId,
-      "numberOfSharesSold": numberOfSharesSold
+      "amount_payable": amountPayable,
+      "amount_disbursed": amountDisbursed,
+      "deposit_for_type": depositTypeId,
+      "member_id": memberId,
+      "member_name": memberName,
+      "contribution_id": contributionId,
+      "fine_category_id": fineCategoryId,
+      "depositor_id": depositorId,
+      "income_category_id": incomeCategoryId,
+      "loan_id": loanId,
+      "account_id": accountId,
+      "stock_id": stockId,
+      "asset_id": assetId,
+      "money_market_investment_cash_in_id": moneyMarketInvestmentId,
+      "debtor_id": borrowerId,
+      "number_of_share_sold": numberOfSharesSold
     });
 
     // pop out the dialog
@@ -75,40 +87,71 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
   }
 
   Future<void> _fetchDefaultValues() async {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      showDialog<String>(
-          context: context,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          });
-    });
-    try {
-      formLoadData =
-          await Provider.of<Groups>(context, listen: false).loadInitialFormData(
-        contr: true,
-        acc: true,
-        member: true,
-        fineOptions: true,
-        depositor: true,
-        incomeCats: true,
-        loanTypes: true,
-      );
-    } catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchDefaultValues();
-          });
-    } finally {
-      setState(() {
-        _isInit = false;
-      });
-      Navigator.of(context, rootNavigator: true).pop();
-    }
+    groupMembers = widget.formLoadData.containsKey("memberOptions")
+        ? widget.formLoadData['memberOptions']
+        : [];
+    groupContributions = widget.formLoadData.containsKey("contributionOptions")
+        ? widget.formLoadData['contributionOptions']
+        : [];
+    groupFines = widget.formLoadData.containsKey("finesOptions")
+        ? widget.formLoadData['finesOptions']
+        : [];
+    groupDepositors = widget.formLoadData.containsKey("depositorOptions")
+        ? widget.formLoadData['depositorOptions']
+        : [];
+    groupIncomeCategories =
+        widget.formLoadData.containsKey("incomeCategoryOptions")
+            ? widget.formLoadData['incomeCategoryOptions']
+            : [];
+    groupLoanTypes = widget.formLoadData.containsKey("loanTypeOptions")
+        ? widget.formLoadData['loanTypeOptions']
+        : [];
+    groupAccounts = widget.formLoadData.containsKey("accountOptions")
+        ? widget.formLoadData['accountOptions']
+        : [];
+    groupMoneyMarketInvestments =
+        widget.formLoadData.containsKey("moneyMarketInvestmentOptions")
+            ? widget.formLoadData['moneyMarketInvestmentOptions']
+            : [];
+    groupStocks = widget.formLoadData.containsKey("groupStockOptions")
+        ? widget.formLoadData['groupStockOptions']
+        : [];
+    groupAssets = widget.formLoadData.containsKey("groupAssetOptions")
+        ? widget.formLoadData['groupAssetOptions']
+        : [];
+    groupBorrowers = widget.formLoadData.containsKey("borrowerOptions")
+        ? widget.formLoadData['borrowerOptions']
+        : [];
+  }
+
+  String getAlertText() {
+    String _resp = "";
+    if (groupMembers.length == 0) _resp = "The group does not have any member";
+    if (depositTypeId == 1 && groupContributions.length == 0)
+      _resp = "The group does not have any contribution";
+    if (depositTypeId == 2 && groupFines.length == 0)
+      _resp = "The group does not have any fine";
+    if (depositTypeId == 4 && groupDepositors.length == 0)
+      _resp = "The group does not have any depositor";
+    if (depositTypeId == 4 && groupIncomeCategories.length == 0)
+      _resp = "The group does not have any income category";
+    if (depositTypeId == 5 && groupLoanTypes.length == 0)
+      _resp = "The group does not have any loan type";
+    if (depositTypeId == 7 && groupAccounts.length == 0)
+      _resp = "The group does not have any account";
+    if (depositTypeId == 8 && groupStocks.length == 0)
+      _resp = "The group does not have any stock";
+    if (depositTypeId == 9 && groupAssets.length == 0)
+      _resp = "The group does not have any asset";
+    if (depositTypeId == 10 && groupMoneyMarketInvestments.length == 0)
+      _resp = "The group does not have any money market investment";
+    if (depositTypeId == 11 && groupLoanTypes.length == 0)
+      _resp = "The group does not have any loan type";
+    if (depositTypeId == 12 && groupBorrowers.length == 0)
+      _resp = "The group does not have any borrower";
+    if (depositTypeId == 12 && groupLoanTypes.length == 0)
+      _resp = "The group does not have any loan type";
+    return _resp != "" ? _resp + ", you cannot continue." : "";
   }
 
   @override
@@ -137,6 +180,30 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                depositTypeId != null && getAlertText() != ""
+                    ? Container(
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(2),
+                          ),
+                          color: Colors.red.withOpacity(0.15),
+                        ),
+                        padding: EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
+                        margin: EdgeInsets.only(bottom: 20.0),
+                        child: Column(
+                          children: [
+                            Text(
+                              getAlertText(),
+                              style: TextStyle(
+                                color: Colors.red[700],
+                                fontSize: 12.0,
+                              ),
+                            ),
+                          ],
+                        ),
+                      )
+                    : SizedBox(),
                 CustomDropDownButton(
                   labelText: 'Select deposit for',
                   enabled: _isFormInputEnabled,
@@ -161,20 +228,13 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // Selecting member
-                      selectMember(
-                          formLoadData.containsKey("memberOptions")
-                              ? formLoadData['memberOptions']
-                              : [],
-                          "Select Member"),
+                      selectMember(groupMembers, "Select Member"),
                       SizedBox(height: 10),
                       // Selecting contribution
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select contribution",
-                          listItems:
-                              formLoadData.containsKey("contributionOptions")
-                                  ? formLoadData['contributionOptions']
-                                  : [],
+                          listItems: groupContributions,
                           selectedItem: contributionId,
                           onChanged: (value) {
                             setState(() {
@@ -199,19 +259,13 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // Selecting member
-                      selectMember(
-                          formLoadData.containsKey("memberOptions")
-                              ? formLoadData['memberOptions']
-                              : [],
-                          "Select Member"),
+                      selectMember(groupMembers, "Select Member"),
                       SizedBox(height: 10),
                       // Selecting fine category
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select fine category",
-                          listItems: formLoadData.containsKey("finesOptions")
-                              ? formLoadData['finesOptions']
-                              : [],
+                          listItems: groupFines,
                           selectedItem: fineCategoryId,
                           onChanged: (value) {
                             setState(() {
@@ -235,11 +289,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // Selecting member
-                      selectMember(
-                          formLoadData.containsKey("memberOptions")
-                              ? formLoadData['memberOptions']
-                              : [],
-                          "Select Member"),
+                      selectMember(groupMembers, "Select Member"),
                       SizedBox(height: 10),
                       // Entering payment description
                       enterDescription(context, "Payment description"),
@@ -257,10 +307,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select depositor",
-                          listItems:
-                              formLoadData.containsKey("depositorOptions")
-                                  ? formLoadData['depositorOptions']
-                                  : [],
+                          listItems: groupDepositors,
                           selectedItem: depositorId,
                           onChanged: (value) {
                             setState(() {
@@ -277,10 +324,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select income category",
-                          listItems:
-                              formLoadData.containsKey("incomeCategoryOptions")
-                                  ? formLoadData['incomeCategoryOptions']
-                                  : [],
+                          listItems: groupIncomeCategories,
                           selectedItem: incomeCategoryId,
                           onChanged: (value) {
                             setState(() {
@@ -305,19 +349,13 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // select member
-                      selectMember(
-                          formLoadData.containsKey("memberOptions")
-                              ? formLoadData['memberOptions']
-                              : [],
-                          "Select member"),
+                      selectMember(groupMembers, "Select member"),
                       SizedBox(height: 10),
                       // select loan
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select Loan",
-                          listItems: formLoadData.containsKey("loanTypeOptions")
-                              ? formLoadData['loanTypeOptions']
-                              : [],
+                          listItems: groupLoanTypes,
                           selectedItem: loanId,
                           onChanged: (value) {
                             setState(() {
@@ -391,9 +429,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select from account",
-                          listItems: formLoadData.containsKey("accountOptions")
-                              ? formLoadData['accountOptions']
-                              : [],
+                          listItems: groupAccounts,
                           selectedItem: accountId,
                           onChanged: (value) {
                             setState(() {
@@ -425,7 +461,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select stock",
-                            listItems: [],
+                            listItems: groupStocks,
                             selectedItem: stockId,
                             onChanged: (value) {
                               setState(() {
@@ -472,7 +508,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select asset",
-                          listItems: [],
+                          listItems: groupAssets,
                           selectedItem: assetId,
                           onChanged: (value) {
                             setState(() {
@@ -501,11 +537,11 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select money market investment",
-                            listItems: [],
-                            selectedItem: moneyMarketInvstId,
+                            listItems: groupMoneyMarketInvestments,
+                            selectedItem: moneyMarketInvestmentId,
                             onChanged: (value) {
                               setState(() {
-                                moneyMarketInvstId = value;
+                                moneyMarketInvestmentId = value;
                               });
                             },
                             validator: (value) {
@@ -525,19 +561,13 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                   Column(
                     children: [
                       // select member
-                      selectMember(
-                          formLoadData.containsKey("memberOptions")
-                              ? formLoadData['memberOptions']
-                              : [],
-                          "Select member"),
+                      selectMember(groupMembers, "Select member"),
                       SizedBox(height: 10),
                       // select loan
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select loan",
-                          listItems: formLoadData.containsKey("loanTypeOptions")
-                              ? formLoadData['loanTypeOptions']
-                              : [],
+                          listItems: groupLoanTypes,
                           selectedItem: loanId,
                           onChanged: (value) {
                             setState(() {
@@ -565,7 +595,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select borrower",
-                          listItems: [],
+                          listItems: groupBorrowers,
                           selectedItem: borrowerId,
                           onChanged: (value) {
                             setState(() {
@@ -583,9 +613,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                       CustomDropDownButton(
                           enabled: true,
                           labelText: "Select loans",
-                          listItems: formLoadData.containsKey("loanTypeOptions")
-                              ? formLoadData['loanTypeOptions']
-                              : [],
+                          listItems: groupLoanTypes,
                           selectedItem: loanId,
                           onChanged: (value) {
                             setState(() {
@@ -640,6 +668,8 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       onChanged: (value) {
         setState(() {
           memberId = value;
+          memberName =
+              listItems.firstWhere((member) => member.id == value).name;
         });
       },
       validator: (value) {

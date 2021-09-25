@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:chamasoft/utilities/database-helper.dart';
-import 'package:chamasoft/utilities/theme.dart';
+import 'package:chamasoft/helpers/database-helper.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';

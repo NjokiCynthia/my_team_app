@@ -2,8 +2,8 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/intro.dart';
 import 'package:chamasoft/screens/login.dart';
-import 'package:chamasoft/utilities/common.dart';
-import 'package:chamasoft/utilities/custom-helper.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -43,6 +43,14 @@ class StatusHandler {
 
   void showErrorDialog(BuildContext context, String message) {
     alertDialog(context, message);
+  }
+
+  void showDialogWithAction(
+      {BuildContext context,
+      String message,
+      Function function,
+      bool dismissible = false}) {
+    alertDialogWithAction(context, message, function, dismissible);
   }
 
   void showErrorDialogWithTitle(
