@@ -5,6 +5,7 @@ import 'package:chamasoft/providers/chamasoft-loans.dart';
 // import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
 // import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft.dart';
 // import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 // import 'package:chamasoft/widgets/backgrounds.dart';
@@ -56,33 +57,6 @@ class ApplyLoanState extends State<ApplyLoan> {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    // get the unreconciled deposits
-    if (_isInit)
-      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
-    super.didChangeDependencies();
-  }
-
-  Future<void> _fetchLoanProducts(BuildContext context) async {
-    setState(() {
-      _isInit = false;
-    });
-
-    try {
-      // Load formdata values
-      Provider.of<ChamasoftLoans>(context, listen: false)
-          .fetchLoanProducts()
-          .then((value) {});
-    } on CustomException catch (error) {
-      print("error $error");
-    }
-  }
-
-  Future<bool> _fetchData() async {
-    return _fetchLoanProducts(context).then((value) => true);
   }
 
   static final List<String> _dropdownItems = <String>[
@@ -174,7 +148,7 @@ class ApplyLoanState extends State<ApplyLoan> {
           child: Container(
             color: Theme.of(context).backgroundColor,
             padding: EdgeInsets.all(0.0),
-            height: MediaQuery.of(context).size.height,
+            // height: double.infinity,
             width: MediaQuery.of(context).size.width,
             //  color: Theme.of(context).backgroundColor,
 
@@ -189,7 +163,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                       child: FlutterToggleTab(
                         width: 55.0,
-                        height: 30.0,
+                        height: MediaQuery.of(context).size.height * 0.04,
                         borderRadius: 10.0,
                         labels: ['From Group', 'From ChamaSoft'],
                         initialIndex: 0,
@@ -288,51 +262,7 @@ class ApplyLoanState extends State<ApplyLoan> {
 //ListView Test
                 Container(
                   child: Visibility(
-                    visible: isHiden,
-                    child: Column(
-                      children: <Widget>[
-                        toolTip(
-                            context: context,
-                            title: "Note that...",
-                            message:
-                                "Apply quick loan from Chamasoft guaranteed by your savings and fellow group members."),
-                        // ListView.builder(
-                        //   scrollDirection: Axis.vertical,
-                        //   shrinkWrap: true,
-                        //   primary: true,
-                        //   itemCount: loantype.length,
-                        //   itemBuilder: (context, index) {
-                        //     LoanType typeLoan = loantype[index];
-                        //     return Card(
-                        //         elevation: 0.0,
-                        //         shape: RoundedRectangleBorder(
-                        //             borderRadius: BorderRadius.circular(16.0)),
-                        //         borderOnForeground: false,
-                        //         child: Container(
-                        //           decoration: cardDecoration(
-                        //               gradient: plainCardGradient(context),
-                        //               context: context),
-                        //           child: ListTile(
-                        //             title: Text(typeLoan.loanName),
-                        //             subtitle: Text(typeLoan.details),
-                        //             trailing: Icon(Icons.arrow_forward_ios),
-                        //             onTap: () {
-                        //               Navigator.push(
-                        //                   context,
-                        //                   MaterialPageRoute(
-                        //                       builder: (context) =>
-                        //                           ChamaSoftLoanDetail(
-                        //                               typeLoan.loanName,
-                        //                               typeLoan.dateTime
-                        //                                   .toString())));
-                        //             },
-                        //           ),
-                        //         ));
-                        //   },
-                        // )
-                      ],
-                    ),
-                  ),
+                      visible: isHiden, child: ApplyLoanFromChamasoft()),
                 )
               ],
             ),

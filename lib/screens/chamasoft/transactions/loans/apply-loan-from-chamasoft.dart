@@ -1,28 +1,33 @@
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft-form.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'loan-amortization.dart';
 
-class ChamaSoftLoanDetail extends StatefulWidget {
-  final String loanName;
-  final String dateTime;
-  const ChamaSoftLoanDetail(this.loanName, this.dateTime);
-
+class ApplyLoanFromChamasoft extends StatefulWidget {
   // const ChamaSoftLoanDetail({ Key? key }) : super(key: key);
 
   @override
-  _ChamaSoftLoanDetailState createState() => _ChamaSoftLoanDetailState();
+  _ApplyLoanFromChamasoftState createState() => _ApplyLoanFromChamasoftState();
 }
 
-class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
+class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
   double _appBarElevation = 0;
   final _formKey = GlobalKey<FormState>();
   TextEditingController myController = TextEditingController();
@@ -75,456 +80,120 @@ class _ChamaSoftLoanDetailState extends State<ChamaSoftLoanDetail> {
   ];
   String dropdownvalue2 = 'Select Guarantor 2';
 
+  bool _isInit = true;
+  bool _isLoading = true;
+  List<LoanProduct> _loanProducts = [];
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void didChangeDependencies() {
+    // get the unreconciled deposits
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
+
+  Future<void> _fetchLoanProducts(BuildContext context) async {
+    setState(() {
+      _isInit = false;
+    });
+
+    try {
+      // Load formdata values
+      Provider.of<ChamasoftLoans>(context, listen: false)
+          .fetchLoanProducts()
+          .then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchLoanProducts(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  Future<bool> _fetchData() async {
+    return _fetchLoanProducts(context).then((value) => true);
+  }
+
   @override
   Widget build(BuildContext context) {
-    LoanType typeLoan;
+    //LoanType typeLoan;
 
-    return Scaffold(
-        appBar: secondaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (BuildContext context) => ApplyLoan(),
-            ),
-          ),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Apply Loan",
-        ),
-        backgroundColor: Colors.transparent,
-        body: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: SingleChildScrollView(
-            child: Container(
-              color: Theme.of(context).backgroundColor,
-              //   // padding: EdgeInsets.all(0.0),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  heading2(
-                                    text: "From ChamaSoft:  ",
-                                  ),
-                                  heading2(
-                                    text: widget.loanName,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Column(
-                                children: [
-                                  amountTextInputField(
-                                      context: context,
-                                      controller: myController,
-                                      validator: (value) {
-                                        if (value == null || value == "") {
-                                          return "The field is required";
-                                        }
-                                        return null;
-                                      },
-                                      labelText: "Enter The Loan Amount",
-                                      enabled: true,
-                                      onChanged: (value) {
-                                        setState(() {});
-                                      }),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25.0,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: heading2(text: "Guarantors:"),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                DropdownButton<String>(
-                                  itemHeight: 78,
-                                  items: items.map((itemsname) {
-                                    return DropdownMenuItem(
-                                        value: itemsname,
-                                        child: Text(itemsname));
-                                  }).toList(),
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      dropdownvalue = newValue;
-                                    });
-                                  },
-                                  value: dropdownvalue,
-                                ),
-                                SizedBox(
-                                  width: 25.0,
-                                ),
-                                Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(left: 0),
-                                  child: amountTextInputField(
-                                      controller: guarantor1Controller,
-                                      context: context,
-                                      validator: (value) {
-                                        if (value == null || value == "") {
-                                          return "The field is required";
-                                        }
-                                        return null;
-                                      },
-                                      labelText: "Enter Amount",
-                                      enabled: true,
-                                      onChanged: (value) {
-                                        setState(() {});
-                                      }),
-                                ))
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                DropdownButton<String>(
-                                  itemHeight: 78,
-                                  items: items1.map((itemsname) {
-                                    return DropdownMenuItem(
-                                        value: itemsname,
-                                        child: Text(itemsname));
-                                  }).toList(),
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      dropdownvalue1 = newValue;
-                                    });
-                                  },
-                                  value: dropdownvalue1,
-                                ),
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(left: 0),
-                                  child: amountTextInputField(
-                                      controller: guarantor2Controller,
-                                      context: context,
-                                      validator: (value) {
-                                        if (value == null || value == "") {
-                                          return "The field is required";
-                                        }
-                                        return null;
-                                      },
-                                      labelText: "Enter Amount",
-                                      enabled: true,
-                                      onChanged: (value) {
-                                        setState(() {});
-                                      }),
-                                ))
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                DropdownButton<String>(
-                                  itemHeight: 78,
-                                  items: items2.map((itemsname) {
-                                    return DropdownMenuItem(
-                                        value: itemsname,
-                                        child: Text(itemsname));
-                                  }).toList(),
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      dropdownvalue2 = newValue;
-                                    });
-                                  },
-                                  value: dropdownvalue2,
-                                ),
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(left: 0),
-                                  child: amountTextInputField(
-                                      controller: guarantor3Controller,
-                                      context: context,
-                                      validator: (value) {
-                                        if (value == null || value == "") {
-                                          return "The field is required";
-                                        }
-                                        return null;
-                                      },
-                                      labelText: "Enter Amount",
-                                      enabled: true,
-                                      onChanged: (value) {
-                                        setState(() {});
-                                      }),
-                                ))
-                              ],
-                            ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                              child: textWithExternalLinks(
-                                  color: Colors.blueGrey,
-                                  size: 12.0,
-                                  textData: {
-                                    'By applying for this loan you agree to the ':
-                                        {},
-                                    'terms and conditions': {
-                                      "url": () => Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  LoanAmortization(typeLoan: typeLoan),
-                                            ),
-                                          ),
-                                      "color": primaryColor,
-                                      "weight": FontWeight.w500
-                                    },
-                                  }),
-                            ),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            Center(
-                              child: defaultButton(
-                                context: context,
-                                text: "Apply Now",
-                                onPressed: () {
-                                  //sum();
-                                  if (_formKey.currentState.validate()) {
-                                    sum();
-                                    if (result < int.parse(myController.text)) {
-                                      guarantor3Controller.clear();
-                                      guarantor2Controller.clear();
-                                      guarantor1Controller.clear();
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "Guarantors amount is less than the amount borrwed, Please Set new Amounts",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    } else if (result >
-                                        int.parse(myController.text)) {
-                                      guarantor3Controller.clear();
-                                      guarantor2Controller.clear();
-                                      guarantor1Controller.clear();
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "Guarantors amount is Exceeds the amount borrwed",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    } else if (result ==
-                                        int.parse(myController.text)) {
-                                      print(result +
-                                          int.parse(myController.text));
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "OK to Proceed with the Application",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.greenAccent,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
+    _loanProducts =
+        Provider.of<ChamasoftLoans>(context, listen: false).getLoanProducts;
 
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) => AlertDialog(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                10.0))),
-                                                title: heading2(
-                                                    text:
-                                                        "Confirm Application"),
-                                                content: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        Column(
-                                                          // mainAxisAlignment:
-                                                          //     MainAxisAlignment
-                                                          //         .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            customTitleWithWrap(
-                                                                text:
-                                                                    "Loan Type :",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                              text:
-                                                                  "Amount KES:",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                                text:
-                                                                    "Refund KES:",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                                text:
-                                                                    "Due Date:",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start)
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10.0,
-                                                        ),
-                                                        Column(
-                                                          children: [
-                                                            customTitleWithWrap(
-                                                                text: widget
-                                                                    .loanName,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                              text: myController
-                                                                  .text,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                                text: (int.parse(myController
-                                                                            .text) +
-                                                                        1000)
-                                                                    .toString(),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                                text: widget
-                                                                    .dateTime,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end)
-                                                          ],
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                                actions: [
-                                                  // ignore: deprecated_member_use
-                                                  negativeActionDialogButton(
-                                                    text: ('CANCEL'),
-                                                    color: Theme.of(context)
-                                                        // ignore: deprecated_member_use
-                                                        .textSelectionHandleColor,
-                                                    action: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                  // ignore: deprecated_member_use
-                                                  positiveActionDialogButton(
-                                                      text: ('PROCEED'),
-                                                      color: primaryColor,
-                                                      action: () {}),
-                                                ],
-                                              ));
-                                    } else {
-                                      guarantor3Controller.clear();
-                                      guarantor2Controller.clear();
-                                      guarantor1Controller.clear();
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "Something went wrong, Try again",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    }
-                                  } else {
-                                    Fluttertoast.showToast(
-                                        msg: "Something went wrong, Try again",
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0);
-                                  }
-                                  print(result);
-                                  print(int.parse(myController.text));
-                                },
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
+    return RefreshIndicator(
+        backgroundColor: (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Colors.white,
+        onRefresh: () => _fetchData(),
+        child: Container(
+          decoration: primaryGradient(context),
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: Column(
+            children: <Widget>[
+              toolTip(
+                  context: context,
+                  title: "Note that...",
+                  message:
+                      "Apply quick loan from Chamasoft guaranteed by your savings and fellow group members."),
+              _isLoading
+                  ? showLinearProgressIndicator()
+                  : SizedBox(
+                      height: 0.0,
+                    ),
+              Expanded(
+                child: _loanProducts.length > 0
+                    ? ListView.builder(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        primary: true,
+                        itemCount: _loanProducts.length,
+                        itemBuilder: (context, index) {
+                          LoanProduct loanProduct = _loanProducts[index];
+                          return Card(
+                              elevation: 0.0,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.0)),
+                              borderOnForeground: false,
+                              child: Container(
+                                decoration: cardDecoration(
+                                    gradient: plainCardGradient(context),
+                                    context: context),
+                                child: ListTile(
+                                  title: Text(loanProduct.name),
+                                  subtitle: Text(
+                                      "${loanProduct.interestRate} % ${loanProduct.loanInterestRatePer} on ${loanProduct.interestType}"),
+                                  trailing: Icon(Icons.arrow_forward_ios),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                ApplyLoanFromChamasoftForm(),
+                                            settings: RouteSettings(arguments: {
+                                              'loanProduct': loanProduct,
+                                            })));
+                                  },
+                                ),
+                              ));
+                        },
+                      )
+                    : emptyList(
+                        color: Colors.blue[400],
+                        iconData: LineAwesomeIcons.angle_double_down,
+                        text: "There are no loan types to display"),
               ),
-            ),
+            ],
           ),
         ));
   }

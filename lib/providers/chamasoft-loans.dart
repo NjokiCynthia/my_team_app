@@ -24,7 +24,7 @@ class LoanProduct {
 class ChamasoftLoans with ChangeNotifier {
   List<LoanProduct> _loanProducts = [];
 
-  List<LoanProduct> get loanProducts {
+  List<LoanProduct> get getLoanProducts {
     return [..._loanProducts];
   }
 
