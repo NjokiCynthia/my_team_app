@@ -15,10 +15,12 @@ class ApplyLoanFromChamasoftForm extends StatefulWidget {
   // const ChamaSoftLoanDetail({ Key? key }) : super(key: key);
 
   @override
-  _ApplyLoanFromChamasoftFormState createState() => _ApplyLoanFromChamasoftFormState();
+  _ApplyLoanFromChamasoftFormState createState() =>
+      _ApplyLoanFromChamasoftFormState();
 }
 
-class _ApplyLoanFromChamasoftFormState extends State<ApplyLoanFromChamasoftForm> {
+class _ApplyLoanFromChamasoftFormState
+    extends State<ApplyLoanFromChamasoftForm> {
   double _appBarElevation = 0;
   final _formKey = GlobalKey<FormState>();
   TextEditingController myController = TextEditingController();
@@ -76,7 +78,7 @@ class _ApplyLoanFromChamasoftFormState extends State<ApplyLoanFromChamasoftForm>
     final arguments =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
-    final LoanProduct _loanProduct = arguments['loanProducts'];
+    final LoanProduct _loanProduct = arguments['loanProduct'];
 
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -427,7 +429,9 @@ class _ApplyLoanFromChamasoftFormState extends State<ApplyLoanFromChamasoftForm>
                                                         Column(
                                                           children: [
                                                             customTitleWithWrap(
-                                                                text: _loanProduct.name,
+                                                                text:
+                                                                    _loanProduct
+                                                                        .name,
                                                                 textAlign:
                                                                     TextAlign
                                                                         .end),
@@ -456,7 +460,9 @@ class _ApplyLoanFromChamasoftFormState extends State<ApplyLoanFromChamasoftForm>
                                                               height: 15.0,
                                                             ),
                                                             customTitleWithWrap(
-                                                                text: DateTime.now().toString(),
+                                                                text: DateTime
+                                                                        .now()
+                                                                    .toString(),
                                                                 textAlign:
                                                                     TextAlign
                                                                         .end)
