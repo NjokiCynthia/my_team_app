@@ -9,16 +9,9 @@ import 'package:flutter/cupertino.dart';
 class LoanProduct {
   String id;
   String name;
-  String interestRate;
-  String loanInterestRatePer;
-  String interestType;
+  String description;
 
-  LoanProduct(
-      {this.id,
-      this.name,
-      this.interestRate,
-      this.loanInterestRatePer,
-      this.interestType});
+  LoanProduct({this.id, this.name, this.description});
 }
 
 class ChamasoftLoans with ChangeNotifier {
@@ -50,9 +43,7 @@ class ChamasoftLoans with ChangeNotifier {
         final _loanProduct = LoanProduct(
             id: loanProduct['id'],
             name: loanProduct['name'],
-            interestRate: loanProduct['interest_rate'],
-            loanInterestRatePer: loanProduct['loan_interest_rate_per'],
-            interestType: loanProduct['interest_type']);
+            description: loanProduct['description']);
 
         _loanProducts.add(_loanProduct);
       }

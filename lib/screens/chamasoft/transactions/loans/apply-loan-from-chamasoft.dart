@@ -161,33 +161,8 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
                           itemCount: _loanProducts.length,
                           itemBuilder: (context, index) {
                             LoanProduct loanProduct = _loanProducts[index];
-                            return Card(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                borderOnForeground: false,
-                                child: Container(
-                                  decoration: cardDecoration(
-                                      gradient: plainCardGradient(context),
-                                      context: context),
-                                  child: ListTile(
-                                    title: Text(loanProduct.name),
-                                    subtitle: Text(
-                                        "${loanProduct.interestRate} % ${loanProduct.loanInterestRatePer} on ${loanProduct.interestType}"),
-                                    trailing: Icon(Icons.arrow_forward_ios),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ApplyLoanFromChamasoftForm(),
-                                              settings:
-                                                  RouteSettings(arguments: {
-                                                'loanProduct': loanProduct,
-                                              })));
-                                    },
-                                  ),
-                                ));
+                            return ChamasoftLoanProductCard(
+                                loanProduct: loanProduct);
                           },
                         )
                       : emptyList(
@@ -199,5 +174,54 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
             ],
           ),
         ));
+  }
+}
+
+class ChamasoftLoanProductCard extends StatelessWidget {
+  const ChamasoftLoanProductCard({
+    Key key,
+    @required this.loanProduct,
+  }) : super(key: key);
+
+  final LoanProduct loanProduct;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: Card(
+          elevation: 0.0,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          borderOnForeground: false,
+          child: Container(
+            decoration: cardDecoration(
+                gradient: plainCardGradient(context), context: context),
+            child: ListTile(
+              title: subtitle1(
+                  color: Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  text: loanProduct.name,
+                  textAlign: TextAlign.start),
+              subtitle: subtitle2(
+                  color: Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  text: loanProduct.description,
+                  textAlign: TextAlign.start),
+              trailing: Icon(Icons.arrow_forward_ios),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ApplyLoanFromChamasoftForm(),
+                        settings: RouteSettings(arguments: {
+                          'loanProduct': loanProduct,
+                        })));
+              },
+            ),
+          )),
+    );
   }
 }
