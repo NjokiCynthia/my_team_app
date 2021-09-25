@@ -2,34 +2,43 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
+// ignore: unused_import
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft-form.dart';
+// ignore: unused_import
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
+// ignore: unused_import
 import 'package:chamasoft/helpers/theme.dart';
+// ignore: unused_import
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+// ignore: unused_import
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
+// ignore: unused_import
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+// ignore: unused_import
 import 'loan-amortization.dart';
 
 class ApplyLoanFromChamasoft extends StatefulWidget {
-  // const ChamaSoftLoanDetail({ Key? key }) : super(key: key);
+  final bool isInit;
+  final Function updateIsInit;
+
+  ApplyLoanFromChamasoft({this.isInit, this.updateIsInit});
 
   @override
   _ApplyLoanFromChamasoftState createState() => _ApplyLoanFromChamasoftState();
 }
 
 class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
-  double _appBarElevation = 0;
-  final _formKey = GlobalKey<FormState>();
   TextEditingController myController = TextEditingController();
   TextEditingController guarantor1Controller = TextEditingController();
   TextEditingController guarantor2Controller = TextEditingController();
@@ -87,6 +96,17 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
+  void initState() {
+    setState(() {
+      _isInit = widget.isInit;
+      if (!_isInit) {
+        _isLoading = false;
+      }
+    });
+    super.initState();
+  }
+
+  @override
   void didChangeDependencies() {
     // get the unreconciled deposits
     if (_isInit)
@@ -104,9 +124,13 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
       Provider.of<ChamasoftLoans>(context, listen: false)
           .fetchLoanProducts()
           .then((value) {
+        // set  loading
         setState(() {
           _isLoading = false;
         });
+
+        // reset parent isInit
+        widget.updateIsInit();
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(

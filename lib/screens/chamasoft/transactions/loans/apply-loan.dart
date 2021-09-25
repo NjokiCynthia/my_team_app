@@ -25,8 +25,9 @@ class ApplyLoanState extends State<ApplyLoan> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  bool isShow = true;
-  bool isHiden = false;
+  bool _isShow = true;
+  bool _isHiden = false;
+  bool _isInit = true;
 
   double amountInputValue;
 
@@ -37,6 +38,12 @@ class ApplyLoanState extends State<ApplyLoan> {
         _appBarElevation = newElevation;
       });
     }
+  }
+
+  void _updateIsInit() {
+    setState(() {
+      _isInit = false;
+    });
   }
 
   @override
@@ -81,10 +88,9 @@ class ApplyLoanState extends State<ApplyLoan> {
           width: MediaQuery.of(context).size.width,
           //  color: Theme.of(context).backgroundColor,
 
-//Control Switches Wigets
+          //Switches
           child: Column(
             children: <Widget>[
-              // loanSwitches(isShow),
               Column(
                 mainAxisSize: MainAxisSize.max,
                 children: <Widget>[
@@ -99,12 +105,12 @@ class ApplyLoanState extends State<ApplyLoan> {
                       selectedLabelIndex: (index) {
                         setState(() {
                           if (index == 0) {
-                            isShow = true;
-                            isHiden = false;
+                            _isShow = true;
+                            _isHiden = false;
                           }
                           if (index == 1) {
-                            isShow = false;
-                            isHiden = true;
+                            _isShow = false;
+                            _isHiden = true;
                           }
                         });
                       },
@@ -122,17 +128,21 @@ class ApplyLoanState extends State<ApplyLoan> {
                   )
                 ],
               ),
-//Coteiner for Group Loans
+              //Group loans
               Container(
                 child: Visibility(
-                  visible: isShow,
+                  visible: _isShow,
                   child: ApplyLoanFromGroup(),
                 ),
               ),
-//ListView Test
+              //Chamasoft loans
               Container(
                 child: Visibility(
-                    visible: isHiden, child: ApplyLoanFromChamasoft()),
+                    visible: _isHiden,
+                    child: ApplyLoanFromChamasoft(
+                      isInit: _isInit,
+                      updateIsInit: _updateIsInit,
+                    )),
               )
             ],
           ),
