@@ -29,12 +29,10 @@ class ChamasoftLoans with ChangeNotifier {
   }
 
   String _userId;
-  String _identity;
   String _currentGroupId;
 
   ChamasoftLoans(String _userId, String _identity, String _currentGroupId) {
     this._userId = _userId;
-    this._identity = _identity;
     this._currentGroupId = _currentGroupId;
   }
 
@@ -44,6 +42,21 @@ class ChamasoftLoans with ChangeNotifier {
 
   String get userId {
     return _userId;
+  }
+
+  void addLoanProducts({List<dynamic> loanProducts}) {
+    if (loanProducts.length > 0) {
+      for (var loanProduct in loanProducts) {
+        final _loanProduct = LoanProduct(
+            id: loanProduct['id'],
+            name: loanProduct['name'],
+            interestRate: loanProduct['interest_rate'],
+            loanInterestRatePer: loanProduct['loan_interest_rate_per'],
+            interestType: loanProduct['interest_type']);
+
+        _loanProducts.add(_loanProduct);
+      }
+    }
   }
 
   Future<void> fetchLoanProducts() async {
@@ -57,7 +70,7 @@ class ChamasoftLoans with ChangeNotifier {
 
         final response = await PostToServer.post(postRequest, url);
 
-        print("Loan products $response");
+        addLoanProducts(loanProducts: response['loan_products']);
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
