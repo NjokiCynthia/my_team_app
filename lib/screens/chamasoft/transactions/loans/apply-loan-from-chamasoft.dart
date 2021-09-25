@@ -138,7 +138,6 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
         child: Container(
           decoration: primaryGradient(context),
           width: double.infinity,
-          height: MediaQuery.of(context).size.height * 0.9,
           child: Column(
             children: <Widget>[
               toolTip(
@@ -151,47 +150,51 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
                   : SizedBox(
                       height: 0.0,
                     ),
-              Expanded(
-                child: _loanProducts.length > 0
-                    ? ListView.builder(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        primary: true,
-                        itemCount: _loanProducts.length,
-                        itemBuilder: (context, index) {
-                          LoanProduct loanProduct = _loanProducts[index];
-                          return Card(
-                              elevation: 0.0,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16.0)),
-                              borderOnForeground: false,
-                              child: Container(
-                                decoration: cardDecoration(
-                                    gradient: plainCardGradient(context),
-                                    context: context),
-                                child: ListTile(
-                                  title: Text(loanProduct.name),
-                                  subtitle: Text(
-                                      "${loanProduct.interestRate} % ${loanProduct.loanInterestRatePer} on ${loanProduct.interestType}"),
-                                  trailing: Icon(Icons.arrow_forward_ios),
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                ApplyLoanFromChamasoftForm(),
-                                            settings: RouteSettings(arguments: {
-                                              'loanProduct': loanProduct,
-                                            })));
-                                  },
-                                ),
-                              ));
-                        },
-                      )
-                    : emptyList(
-                        color: Colors.blue[400],
-                        iconData: LineAwesomeIcons.angle_double_down,
-                        text: "There are no loan types to display"),
+              SingleChildScrollView(
+                child: Container(
+                  height: MediaQuery.of(context).size.height * 0.749,
+                  child: _loanProducts.length > 0
+                      ? ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          primary: true,
+                          itemCount: _loanProducts.length,
+                          itemBuilder: (context, index) {
+                            LoanProduct loanProduct = _loanProducts[index];
+                            return Card(
+                                elevation: 0.0,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0)),
+                                borderOnForeground: false,
+                                child: Container(
+                                  decoration: cardDecoration(
+                                      gradient: plainCardGradient(context),
+                                      context: context),
+                                  child: ListTile(
+                                    title: Text(loanProduct.name),
+                                    subtitle: Text(
+                                        "${loanProduct.interestRate} % ${loanProduct.loanInterestRatePer} on ${loanProduct.interestType}"),
+                                    trailing: Icon(Icons.arrow_forward_ios),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ApplyLoanFromChamasoftForm(),
+                                              settings:
+                                                  RouteSettings(arguments: {
+                                                'loanProduct': loanProduct,
+                                              })));
+                                    },
+                                  ),
+                                ));
+                          },
+                        )
+                      : emptyList(
+                          color: Colors.blue[400],
+                          iconData: LineAwesomeIcons.angle_double_down,
+                          text: "There are no loan products to display"),
+                ),
               ),
             ],
           ),
