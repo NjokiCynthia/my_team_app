@@ -45,12 +45,12 @@ Widget subtitle1(
 }
 
 Widget subtitle2(
-    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+    {String text, Color color, TextAlign textAlign = TextAlign.center,double fontSize}) {
   return Text(
     text,
     style: TextStyle(
         fontWeight: FontWeight.w300,
-        fontSize: 13.0,
+        fontSize: fontSize??13.0,
         color: color,
         fontFamily: 'SegoeUI'),
     textAlign: textAlign,

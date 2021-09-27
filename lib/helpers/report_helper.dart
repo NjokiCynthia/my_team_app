@@ -245,7 +245,7 @@ List<Deposit> getDepositList(List<dynamic> data) {
       String date = deposit["date"].toString();
       double amount = ParseHelper.getDoubleFromJson(deposit, "amount");
       String reconciliation = deposit["reconciliation"].toString();
-      String narrative = deposit["narrative"].toString();
+      String narrative = deposit["narative"].toString();
       String name = "--";
 
       final parts = depositType.split("made by");
@@ -259,7 +259,6 @@ List<Deposit> getDepositList(List<dynamic> data) {
         type = depositType;
         depositor = "--";
       }
-
       final depositItem = Deposit(
           id: id,
           type: type,

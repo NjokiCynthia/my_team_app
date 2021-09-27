@@ -58,10 +58,9 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   Future<void> _getDeposits(BuildContext context) async {
     try {
       int _length = _deposits.length;
-      if(_forceFetch)
-        _length = 0;
-      await Provider.of<Groups>(context, listen: false).fetchDeposits(
-          _sortOption, _filterList, _memberList, _length);
+      if (_forceFetch) _length = 0;
+      await Provider.of<Groups>(context, listen: false)
+          .fetchDeposits(_sortOption, _filterList, _memberList, _length);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -304,7 +303,6 @@ class DepositCard extends StatelessWidget {
 
   final Deposit deposit;
   final Function details, voidItem;
-
   GlobalKey _containerKey = GlobalKey();
 
   void convertWidgetToImage() async {
@@ -371,7 +369,7 @@ class DepositCard extends StatelessWidget {
                             children: <Widget>[
                               customTitle1(
                                 text: deposit.type,
-                                // fontSize: 16.0,
+                                fontSize: 16.0,
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
@@ -436,12 +434,14 @@ class DepositCard extends StatelessWidget {
                                   textAlign: TextAlign.start),
                               customTitle1(
                                   text: deposit.depositor,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w600,
                                   color:
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
                                           // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
-                                  textAlign: TextAlign.start)
+                                  textAlign: TextAlign.start),
                             ],
                           ),
                           Column(
@@ -457,6 +457,7 @@ class DepositCard extends StatelessWidget {
                                   textAlign: TextAlign.end),
                               customTitle1(
                                   text: deposit.date,
+                                  fontSize: 16,
                                   color:
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
@@ -468,16 +469,45 @@ class DepositCard extends StatelessWidget {
                         ]),
                   ),
                   SizedBox(
-                    height: 25,
+                    height: 5,
+                  ),
+                  Container(
+                    padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        subtitle2(
+                            text: "Narration: ",
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                            textAlign: TextAlign.start),
+                        subtitle2(
+                            text: deposit.narration,
+                            fontSize: 12.0,
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                            textAlign: TextAlign.start),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
                   ),
                   DottedLine(
                     direction: Axis.horizontal,
                     lineLength: double.infinity,
-                    lineThickness: 1.0,
-                    dashLength: 4.0,
+                    lineThickness: 0.5,
+                    dashLength: 2.0,
                     dashColor: Colors.black45,
                     dashRadius: 0.0,
-                    dashGapLength: 4.0,
+                    dashGapLength: 2.0,
                     dashGapColor: Colors.transparent,
                     dashGapRadius: 0.0,
                   ),
@@ -493,7 +523,7 @@ class DepositCard extends StatelessWidget {
                                 icon: Icon(LineAwesomeIcons.trash
                                     // Icons.delete_forever,
                                     ),
-                                iconSize: 20.0,
+                                iconSize: 16.0,
                                 color: Colors.redAccent,
                                 onPressed: () {
                                   // twoButtonAlertDialog(
@@ -580,12 +610,12 @@ class DepositCard extends StatelessWidget {
                               children: <Widget>[
                                 DottedLine(
                                   direction: Axis.vertical,
-                                  lineLength: 58.0,
-                                  lineThickness: 1.0,
-                                  dashLength: 4.0,
+                                  lineLength: 45.0,
+                                  lineThickness: 0.5,
+                                  dashLength: 2.0,
                                   dashColor: Colors.black45,
                                   dashRadius: 0.0,
-                                  dashGapLength: 4.0,
+                                  dashGapLength: 2.0,
                                   dashGapColor: Colors.transparent,
                                   dashGapRadius: 0.0,
                                 ),
