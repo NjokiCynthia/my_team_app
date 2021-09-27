@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
-// import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -10,13 +11,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class DetailReciept extends StatefulWidget {
-  final String date, name, depositor, narration, type, reconciliation, amount;
-  const DetailReciept(this.date, this.amount, this.depositor, this.narration,
-      this.type, this.reconciliation, this.name);
-
-  //String name1 = NumberToWord().convert('en-in', int.parse(name));
-
-  //const DetailReciept({ Key? key }) : super(key: key);
+  final Deposit deposit;
+  final Group group;
+  const DetailReciept({this.deposit, this.group});
 
   @override
   _DetailRecieptState createState() => _DetailRecieptState();
@@ -27,23 +24,6 @@ class _DetailRecieptState extends State<DetailReciept> {
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
-
-    // groupPhone() {
-    //   if (group.groupPhone == null) {
-    //     return '--';
-    //   } else {
-    //     group.groupPhone;
-    //   }
-    // }
-
-    // groupEmail() {
-    //   if (group.groupEmail == null) {
-    //     return '--';
-    //   } else {
-    //     group.groupEmail;
-    //   }
-    // }
-
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
@@ -83,7 +63,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                           ),
                           // ignore: deprecated_member_use
                           heading2(
-                              text: 'Contribution Payment',
+                              text: widget.deposit.type.toUpperCase(),
                               color:
                                   // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
@@ -94,7 +74,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                           ),
 
                           customTitleWithWrap(
-                            text: widget.narration,
+                            text: widget.deposit.depositor,
                             fontSize: 22,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
@@ -107,11 +87,11 @@ class _DetailRecieptState extends State<DetailReciept> {
                           DottedLine(
                             direction: Axis.horizontal,
                             lineLength: double.infinity,
-                            lineThickness: 1.0,
-                            dashLength: 4.0,
+                            lineThickness: 0.5,
+                            dashLength: 2.0,
                             dashColor: Colors.black45,
                             dashRadius: 0.0,
-                            dashGapLength: 4.0,
+                            dashGapLength: 2.0,
                             dashGapColor: Colors.transparent,
                             dashGapRadius: 0.0,
                           ),
@@ -127,7 +107,9 @@ class _DetailRecieptState extends State<DetailReciept> {
                                     .textSelectionHandleColor,
                               ),
                               customTitleWithWrap(
-                                text: '--',
+                                text: group.groupPhone != "null"
+                                    ? group.groupPhone
+                                    : '--',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
@@ -135,7 +117,9 @@ class _DetailRecieptState extends State<DetailReciept> {
                                     .textSelectionHandleColor,
                               ),
                               customTitleWithWrap(
-                                text: '--',
+                                text: group.groupEmail != "null"
+                                    ? group.groupEmail
+                                    : '--',
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
@@ -147,11 +131,11 @@ class _DetailRecieptState extends State<DetailReciept> {
                           DottedLine(
                             direction: Axis.horizontal,
                             lineLength: double.infinity,
-                            lineThickness: 1.0,
-                            dashLength: 4.0,
+                            lineThickness: 0.5,
+                            dashLength: 2.0,
                             dashColor: Colors.black45,
                             dashRadius: 0.0,
-                            dashGapLength: 4.0,
+                            dashGapLength: 2.0,
                             dashGapColor: Colors.transparent,
                             dashGapRadius: 0.0,
                           ),
@@ -163,7 +147,22 @@ class _DetailRecieptState extends State<DetailReciept> {
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
                               customTitleWithWrap(
-                                text: 'Paid KES. ' + widget.depositor,
+                                text: 'Paid: ' +
+                                    widget.group.groupCurrency +
+                                    " " +
+                                    currencyFormat
+                                        .format(widget.deposit.amount),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w600,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
+                              SizedBox(
+                                height: 5.0,
+                              ),
+                              customTitleWithWrap(
+                                text: 'Date: ' + widget.deposit.date,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
@@ -174,76 +173,81 @@ class _DetailRecieptState extends State<DetailReciept> {
                                 height: 5.0,
                               ),
                               customTitleWithWrap(
-                                text: 'On: ' + widget.date,
+                                text:
+                                    'Status: ' + widget.deposit.reconciliation,
                                 fontSize: 18,
-                                fontWeight: FontWeight.w300,
-                                color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
-                              ),
-                              SizedBox(
-                                height: 5.0,
-                              ),
-                              customTitleWithWrap(
-                                text: 'Status: ' + widget.name,
-                                fontSize: 18,
+                                textAlign: TextAlign.center,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
                                     .textSelectionHandleColor,
                               ),
                             ],
-                          )
+                          ),
+
+                          SizedBox(height: 5.0),
+                          Padding(padding: EdgeInsets.all(10.0),
+                          child: subtitle2(
+                              text: "${widget.deposit.narration} ",
+                              fontSize: 14.0,
+                              color:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                              textAlign: TextAlign.center),
+                          
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                mainAxisSize: MainAxisSize.max,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              LineAwesomeIcons.share,
-                            ),
-                            iconSize: 20.0,
-                            onPressed: () {
-                              //Share.shareFiles([convertWidgetToImage().path]);
-                            },
-                          ),
-                          customTitleWithWrap(text: 'Share', fontSize: 12.0)
-                        ],
-                      ),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              LineAwesomeIcons.download,
-                            ),
-                            iconSize: 20.0,
-                            onPressed: () {
-                              convertWidgetToImage();
-                              //Share.shareFiles([convertWidgetToImage().path]);
-                            },
-                          ),
-                          customTitleWithWrap(text: 'Download', fontSize: 12.0)
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              )
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   mainAxisSize: MainAxisSize.max,
+              //   children: [
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       crossAxisAlignment: CrossAxisAlignment.end,
+              //       children: [
+              //         Row(
+              //           children: [
+              //             IconButton(
+              //               icon: Icon(
+              //                 LineAwesomeIcons.share,
+              //               ),
+              //               iconSize: 20.0,
+              //               onPressed: () {
+              //                 //Share.shareFiles([convertWidgetToImage().path]);
+              //               },
+              //             ),
+              //             customTitleWithWrap(text: 'Share', fontSize: 12.0)
+              //           ],
+              //         ),
+              //         SizedBox(
+              //           width: 20.0,
+              //         ),
+              //         Row(
+              //           children: [
+              //             IconButton(
+              //               icon: Icon(
+              //                 LineAwesomeIcons.download,
+              //               ),
+              //               iconSize: 20.0,
+              //               onPressed: () {
+              //                 convertWidgetToImage();
+              //                 //Share.shareFiles([convertWidgetToImage().path]);
+              //               },
+              //             ),
+              //             customTitleWithWrap(text: 'Download', fontSize: 12.0)
+              //           ],
+              //         ),
+              //       ],
+              //     ),
+              //   ],
+              // )
             ],
           )),
     );

@@ -9,9 +9,6 @@ import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-reciepts-detail.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter_container.dart';
 import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
-// import 'package:chamasoft/utilities/common.dart';
-// import 'package:chamasoft/utilities/custom-helper.dart';
-// import 'package:chamasoft/utilities/status-handler.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -298,7 +295,11 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
 // ignore: must_be_immutable
 class DepositCard extends StatelessWidget {
-  DepositCard({Key key, @required this.deposit,@required this.bodyContext,@required this.position})
+  DepositCard(
+      {Key key,
+      @required this.deposit,
+      @required this.bodyContext,
+      @required this.position})
       : super(key: key);
 
   final Deposit deposit;
@@ -315,14 +316,15 @@ class DepositCard extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         });
-    try{
-      await Provider.of<Groups>(bodyContext,listen: false).voidDepositTransaction(id,position,bodyContext);
+    try {
+      await Provider.of<Groups>(bodyContext, listen: false)
+          .voidDepositTransaction(id, position, bodyContext);
       Navigator.of(bodyContext).pop();
-      StatusHandler()
-            .showSuccessSnackBar(bodyContext, "Good news: Deposit successfully voided");
-    }on CustomException catch (error) {
-        StatusHandler().showErrorDialog(bodyContext, error.toString());
-    }finally{
+      StatusHandler().showSuccessSnackBar(
+          bodyContext, "Good news: Deposit successfully voided");
+    } on CustomException catch (error) {
+      StatusHandler().showErrorDialog(bodyContext, error.toString());
+    } finally {
       Navigator.of(bodyContext).pop();
     }
   }
@@ -508,7 +510,8 @@ class DepositCard extends StatelessWidget {
                                     .textSelectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
-                            text: "${deposit.narration} -- ${deposit.reconciliation}",
+                            text:
+                                "${deposit.narration} -- ${deposit.reconciliation}",
                             fontSize: 12.0,
                             color:
                                 // ignore: deprecated_member_use
@@ -557,67 +560,6 @@ class DepositCard extends StatelessWidget {
                                           "Are you sure you want to void ${deposit.type} of ${groupObject.groupCurrency} ${currencyFormat.format(deposit.amount)} by ${deposit.depositor}?",
                                       title: "Confirm Action",
                                     );
-                                    // showDialog(
-                                    //   context: context,
-                                    //   builder: (BuildContext context) {
-                                    //     return AlertDialog(
-                                    //       backgroundColor:
-                                    //           Theme.of(context).backgroundColor,
-                                    //       title: heading2(
-                                    //         text: "Confirm Action",
-                                    //         textAlign: TextAlign.start,
-                                    //         // ignore: deprecated_member_use
-                                    //         color: Theme.of(context)
-                                    //             // ignore: deprecated_member_use
-                                    //             .textSelectionHandleColor,
-                                    //       ),
-                                    //       content: customTitleWithWrap(
-                                    //         text:
-                                    //             "Are you sure you want to delete this Transaction?",
-                                    //         textAlign: TextAlign.start,
-                                    //         // ignore: deprecated_member_use
-                                    //         color: Theme.of(context)
-                                    //             // ignore: deprecated_member_use
-                                    //             .textSelectionHandleColor,
-                                    //         maxLines: null,
-                                    //       ),
-                                    //       actions: <Widget>[
-                                    //         negativeActionDialogButton(
-                                    //           text: "Cancel",
-                                    //           // ignore: deprecated_member_use
-                                    //           color: Theme.of(context)
-                                    //               // ignore: deprecated_member_use
-                                    //               .textSelectionHandleColor,
-                                    //           action: () {
-                                    //             Navigator.of(context).pop();
-                                    //           },
-                                    //         ),
-                                    //         // ignore: deprecated_member_use
-                                    //         FlatButton(
-                                    //           padding: EdgeInsets.fromLTRB(
-                                    //               22.0, 0.0, 22.0, 0.0),
-                                    //           child: customTitle(
-                                    //             text: "Continue",
-                                    //             color: Colors.red,
-                                    //             fontWeight: FontWeight.w600,
-                                    //           ),
-                                    //           onPressed: () {
-                                    //             Navigator.of(context).pop();
-
-                                    //             //   deposit.removeAt(index);
-                                    //           },
-                                    //           shape: new RoundedRectangleBorder(
-                                    //               borderRadius:
-                                    //                   new BorderRadius.circular(
-                                    //                       4.0)),
-                                    //           textColor: Colors.red,
-                                    //           color:
-                                    //               Colors.red.withOpacity(0.2),
-                                    //         )
-                                    //       ],
-                                    //     );
-                                    //   },
-                                    // );
                                   }),
                             ],
                           ),
@@ -640,36 +582,19 @@ class DepositCard extends StatelessWidget {
                           ),
                           Row(
                             children: <Widget>[
-                              customTitleWithWrap(
-                                  text: 'VIEW',
-                                  fontSize: 14.0,
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  textAlign: TextAlign.end),
-                              SizedBox(
-                                width: 1.0,
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  LineAwesomeIcons.angle_right,
-                                ),
-                                iconSize: 12.0,
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              new DetailReciept(
-                                                  deposit.date,
-                                                  deposit.name,
-                                                  deposit.amount.toString(),
-                                                  deposit.depositor,
-                                                  deposit.narration,
-                                                  deposit.type,
-                                                  deposit.reconciliation)));
-                                },
-                              ),
+                              plainButtonWithArrow(
+                                  text: "VIEW",
+                                  size: 14.0,
+                                  spacing: 2.0,
+                                  color: Colors.blue,
+                                  action: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                new DetailReciept(deposit:
+                                                    deposit,group:groupObject)));
+                                  }),
                             ],
                           ),
                         ]),
@@ -677,39 +602,6 @@ class DepositCard extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-
-                  //                Row(
-                  //                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //                  crossAxisAlignment: CrossAxisAlignment.center,
-                  //                  children: <Widget>[
-                  //                    Expanded(
-                  //                      flex: 1,
-                  //                      child: Container(
-                  //                          decoration: BoxDecoration(
-                  //                              border: Border(
-                  //                                  top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
-                  //                                  right: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-                  //                          child: plainButton(
-                  //                              text: "SHOW DETAILS",
-                  //                              size: 16.0,
-                  //                              spacing: 2.0,
-                  //                              color: Theme.of(context).primaryColor.withOpacity(0.5),
-                  //                              // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
-                  //                              action: details) //loan.status == 2 ? null : repay),
-                  //                          ),
-                  //                    ),
-                  //                    Expanded(
-                  //                      flex: 1,
-                  //                      child: Container(
-                  //                        decoration: BoxDecoration(
-                  //                            border: Border(
-                  //                                top: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 1.0),
-                  //                                left: BorderSide(color: Theme.of(context).bottomAppBarColor, width: 0.5))),
-                  //                        child: plainButton(text: "VOID", size: 16.0, spacing: 2.0, color: Colors.blueGrey, action: voidItem),
-                  //                      ),
-                  //                    ),
-                  //                  ],
-                  //                )
                 ],
               )),
         ),
