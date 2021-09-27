@@ -308,9 +308,10 @@ class DepositCard extends StatelessWidget {
   GlobalKey _containerKey = GlobalKey();
 
   void _voidTransaction(String id) async {
+    Navigator.of(bodyContext).pop();
     showDialog<String>(
         context: bodyContext,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (_) {
           return Center(
             child: CircularProgressIndicator(),
@@ -323,10 +324,14 @@ class DepositCard extends StatelessWidget {
       StatusHandler().showSuccessSnackBar(
           bodyContext, "Good news: Deposit successfully voided");
     } on CustomException catch (error) {
-      StatusHandler().showErrorDialog(bodyContext, error.toString());
-    } finally {
       Navigator.of(bodyContext).pop();
-    }
+      StatusHandler().handleStatus(
+          context: bodyContext,
+          error: error,
+          callback: () {
+            _voidTransaction(id);
+          });
+    } finally {}
   }
 
   void convertWidgetToImage() async {
@@ -542,27 +547,29 @@ class DepositCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
-                          Row(
-                            children: <Widget>[
-                              plainButtonWithIcon(
-                                  text: "VOID",
-                                  size: 14.0,
-                                  spacing: 2.0,
-                                  color: Colors.red,
-                                  iconData: Icons.delete,
-                                  action: () {
-                                    twoButtonAlertDialog(
-                                      action: () {
-                                        _voidTransaction(deposit.id);
-                                      },
-                                      context: context,
-                                      message:
-                                          "Are you sure you want to void ${deposit.type} of ${groupObject.groupCurrency} ${currencyFormat.format(deposit.amount)} by ${deposit.depositor}?",
-                                      title: "Confirm Action",
-                                    );
-                                  }),
-                            ],
-                          ),
+                          groupObject.isGroupAdmin
+                              ? Row(
+                                  children: <Widget>[
+                                    plainButtonWithIcon(
+                                        text: "VOID",
+                                        size: 14.0,
+                                        spacing: 2.0,
+                                        color: Colors.red,
+                                        iconData: Icons.delete,
+                                        action: () {
+                                          twoButtonAlertDialog(
+                                            action: () {
+                                              _voidTransaction(deposit.id);
+                                            },
+                                            context: context,
+                                            message:
+                                                "Are you sure you want to void ${deposit.type} of ${groupObject.groupCurrency} ${currencyFormat.format(deposit.amount)} by ${deposit.depositor}?",
+                                            title: "Confirm Action",
+                                          );
+                                        }),
+                                  ],
+                                )
+                              : Container(),
                           Container(
                             child: Column(
                               children: <Widget>[
@@ -592,8 +599,9 @@ class DepositCard extends StatelessWidget {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                new DetailReciept(deposit:
-                                                    deposit,group:groupObject)));
+                                                new DetailReciept(
+                                                    deposit: deposit,
+                                                    group: groupObject)));
                                   }),
                             ],
                           ),
