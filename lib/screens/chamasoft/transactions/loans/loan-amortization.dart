@@ -156,7 +156,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
-                          text: date.toIso8601String(),
+                          text: date.toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -226,7 +226,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   DataRow(
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '10/26/2021',
+                          text: DateTime(now.year, now.month + 1, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -252,7 +253,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     cells: <DataCell>[
                       // ignore: deprecated_member_use
                       DataCell(subtitle1(
-                          text: '11/26/2021',
+                          text: DateTime(now.year, now.month + 2, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -276,7 +278,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   DataRow(
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '12/26/2021',
+                          text: DateTime(now.year, now.month + 3, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -301,7 +304,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     selected: true,
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '01/26/2022',
+                          text: DateTime(now.year, now.month + 4, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -325,7 +329,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   DataRow(
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '02/26/2022',
+                          text: DateTime(now.year, now.month + 5, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -350,7 +355,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     selected: true,
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '03/26/2022',
+                          text: DateTime(now.year, now.month + 6, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -374,7 +380,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   DataRow(
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '04/26/2022',
+                          text: DateTime(now.year, now.month + 7, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -399,7 +406,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     selected: true,
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '05/26/2022',
+                          text: DateTime(now.year, now.month + 8, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -423,7 +431,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   DataRow(
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '06/26/2022',
+                          text: DateTime(now.year, now.month + 9, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -448,7 +457,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     selected: true,
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '07/26/2022',
+                          text: DateTime(now.year, now.month + 10, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -472,7 +482,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   DataRow(
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '08/26/2022',
+                          text: DateTime(now.year, now.month + 11, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -497,7 +508,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     selected: true,
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text: '09/26/2022',
+                          text: DateTime(now.year, now.month + 12, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
