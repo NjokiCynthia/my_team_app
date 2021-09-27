@@ -1,4 +1,5 @@
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-form.dart';
@@ -102,8 +103,7 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         groupStocks: true,
         member: true,
         loanTypes: true,
-      )
-          .then((value) {
+      ).then((value) {
         Provider.of<Groups>(context, listen: false)
             .fetchGroupUnreconciledWithdrawals()
             .then((_) {
@@ -114,7 +114,12 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         });
       });
     } catch (error) {
-      print(error);
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchUnreconcilledWithdrawals(context);
+          });
     } finally {
       // if (this.mounted) {
       //   if (_isInit == false) {

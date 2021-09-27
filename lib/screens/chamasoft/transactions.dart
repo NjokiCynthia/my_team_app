@@ -93,6 +93,9 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         Provider.of<Dashboard>(context, listen: true)
             .unreconciledWithdrawalCount;
 
+    final bool _isPartnerBankAccount= Provider.of<Dashboard>(context, listen: true)
+            .isPartnerBankAccount;
+
     List<Widget> eWalletOptions = [
       SizedBox(
         width: 16.0,
@@ -191,7 +194,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     ];
 
     List<Widget> paymentsOptions = [
-      if (unreconciledDepositCount > 0)
+      if (_isPartnerBankAccount)
         Row(
           children: [
             SizedBox(
@@ -303,7 +306,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     ];
 
     List<Widget> expenditureOptions = [
-      if (unreconciledWithdrawalCount > 0)
+      if (_isPartnerBankAccount)
         Row(
           children: [
             SizedBox(

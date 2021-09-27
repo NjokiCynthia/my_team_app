@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 // import 'dart:developer';
 import 'dart:io' as io;
 import 'dart:io';
@@ -4484,159 +4485,165 @@ class Groups with ChangeNotifier {
         groupStockOptions = [],
         moneyMarketInvestmentOptions = [],
         borrowerOptions = [];
-    if (contr) {
-      if (_payContributions.length == 0) {
-        await fetchPayContributions();
+    try {
+      if (contr) {
+        if (_payContributions.length == 0) {
+          await fetchPayContributions();
+        }
+        _payContributions
+            .map((element) => contributionOptions.add(NamesListItem(
+                id: int.tryParse(element.id), name: element.name)))
+            .toList();
       }
-      _payContributions
-          .map((element) => contributionOptions.add(
-              NamesListItem(id: int.tryParse(element.id), name: element.name)))
-          .toList();
-    }
-    if (acc) {
-      if (_allAccounts.length == 0) {
-        await fetchAccounts();
-      }
-      for (var account in _allAccounts) {
-        for (var typeAccount in account) {
-          accountOptions.add(
-              NamesListItem(id: typeAccount.uniqueId, name: typeAccount.name));
+      if (acc) {
+        if (_allAccounts.length == 0) {
+          await fetchAccounts();
+        }
+        for (var account in _allAccounts) {
+          for (var typeAccount in account) {
+            accountOptions.add(NamesListItem(
+                id: typeAccount.uniqueId, name: typeAccount.name));
+          }
         }
       }
-    }
-    if (member) {
-      if (_members.length == 0) {
-        await fetchMembers();
-      }
-      _members
-          .map((member) => memberOptions.add(NamesListItem(
-              id: int.tryParse(member.id),
-              name: member.name,
-              identity: member.identity)))
-          .toList();
-    }
-
-    if (fineOptions) {
-      if (_fineTypes.length == 0) {
-        await fetchFineTypes();
-      }
-      _fineTypes
-          .map((fine) => finesOptions
-              .add(NamesListItem(id: int.tryParse(fine.id), name: fine.name)))
-          .toList();
-    }
-
-    if (incomeCats) {
-      if (_incomeCategories.length == 0) {
-        await fetchIncomeCategories();
-      }
-      _incomeCategories
-          .map((income) => incomeCategoryOptions.add(
-              NamesListItem(id: int.tryParse(income.id), name: income.name)))
-          .toList();
-    }
-
-    if (depositor) {
-      if (_depositors.length == 0) {
-        await fetchGroupDepositors();
-      }
-      _depositors
-          .map((depositor) => depositorOptions.add(NamesListItem(
-              id: int.tryParse(depositor.id), name: "${depositor.name}")))
-          .toList();
-    }
-
-    if (exp) {
-      if (_expenseCategories.length == 0) {
-        await fetchExpenseCategories();
-      }
-      _expenseCategories
-          .map((expense) => expenseCategories.add(
-              NamesListItem(id: int.tryParse(expense.id), name: expense.name)))
-          .toList();
-    }
-
-    if (loanTypes) {
-      if (_loanTypes.length == 0) {
-        await fetchLoanTypes();
-      }
-      _loanTypes
-          .map((loanType) => loanTypeOptions.add(NamesListItem(
-              id: int.tryParse(loanType.id), name: loanType.name)))
-          .toList();
-    }
-
-    if (bankLoans) {
-      if (_bankLoans.length == 0) {
-        await fetchGroupBankLoans();
-      }
-      _bankLoans
-          .map((bankLoan) => bankLoansOptions.add(NamesListItem(
-              id: int.tryParse(bankLoan.id),
-              name:
-                  "${bankLoan.description} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.balance)}")))
-          .toList();
-    }
-    if (memberOngoingLoans) {
-      if (_ongoingMemberLoans.length == 0 && _loanPulled == false) {
-        await fetchGroupMembersOngoingLoans();
+      if (member) {
+        if (_members.length == 0) {
+          await fetchMembers();
+        }
+        _members
+            .map((member) => memberOptions.add(NamesListItem(
+                id: int.tryParse(member.id),
+                name: member.name,
+                identity: member.identity)))
+            .toList();
       }
 
-      for (var loan in _ongoingMemberLoans) {
-        if (loan.isSelected) {
-          memberOngoingLoanOptions.add(NamesListItem(
-              id: int.tryParse(loan.id),
-              name:
-                  "${loan.loanType} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(loan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(loan.balance)}"));
+      if (fineOptions) {
+        if (_fineTypes.length == 0) {
+          await fetchFineTypes();
+        }
+        _fineTypes
+            .map((fine) => finesOptions
+                .add(NamesListItem(id: int.tryParse(fine.id), name: fine.name)))
+            .toList();
+      }
+
+      if (incomeCats) {
+        if (_incomeCategories.length == 0) {
+          await fetchIncomeCategories();
+        }
+        _incomeCategories
+            .map((income) => incomeCategoryOptions.add(
+                NamesListItem(id: int.tryParse(income.id), name: income.name)))
+            .toList();
+      }
+
+      if (depositor) {
+        if (_depositors.length == 0) {
+          await fetchGroupDepositors();
+        }
+        _depositors
+            .map((depositor) => depositorOptions.add(NamesListItem(
+                id: int.tryParse(depositor.id), name: "${depositor.name}")))
+            .toList();
+      }
+
+      if (exp) {
+        if (_expenseCategories.length == 0) {
+          await fetchExpenseCategories();
+        }
+        _expenseCategories
+            .map((expense) => expenseCategories.add(NamesListItem(
+                id: int.tryParse(expense.id), name: expense.name)))
+            .toList();
+      }
+
+      if (loanTypes) {
+        if (_loanTypes.length == 0) {
+          await fetchLoanTypes();
+        }
+        _loanTypes
+            .map((loanType) => loanTypeOptions.add(NamesListItem(
+                id: int.tryParse(loanType.id), name: loanType.name)))
+            .toList();
+      }
+
+      if (bankLoans) {
+        if (_bankLoans.length == 0) {
+          await fetchGroupBankLoans();
+        }
+        _bankLoans
+            .map((bankLoan) => bankLoansOptions.add(NamesListItem(
+                id: int.tryParse(bankLoan.id),
+                name:
+                    "${bankLoan.description} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(bankLoan.balance)}")))
+            .toList();
+      }
+      if (memberOngoingLoans) {
+        if (_ongoingMemberLoans.length == 0 && _loanPulled == false) {
+          await fetchGroupMembersOngoingLoans();
+        }
+
+        for (var loan in _ongoingMemberLoans) {
+          if (loan.isSelected) {
+            memberOngoingLoanOptions.add(NamesListItem(
+                id: int.tryParse(loan.id),
+                name:
+                    "${loan.loanType} of ${getCurrentGroup().groupCurrency} ${currencyFormat.format(loan.amount)} balance ${getCurrentGroup().groupCurrency} ${currencyFormat.format(loan.balance)}"));
+          }
         }
       }
-    }
-    if (groupAssets) {
-      if (_groupAssetOptions.length == 0) {
-        await fetchGroupAssetOptions();
-      }
-      _groupAssetOptions
-          .map((groupAssetOption) => groupAssetOptions.add(NamesListItem(
-              id: int.tryParse(groupAssetOption.id),
-              name: groupAssetOption.name)))
-          .toList();
-    }
-
-    if (groupStocks) {
-      if (_groupStockOptions.length == 0) {
-        await fetchGroupStockOptions();
-      }
-      _groupStockOptions
-          .map((groupStockOption) => groupStockOptions.add(NamesListItem(
-              id: int.tryParse(groupStockOption.id),
-              name: groupStockOption.name)))
-          .toList();
-    }
-
-    if (moneyMarketInvestments) {
-      if (_groupMoneyMarketInvestmentOptions.length == 0) {
-        await fetchMoneyMarketInvestmentOptions();
+      if (groupAssets) {
+        if (_groupAssetOptions.length == 0) {
+          await fetchGroupAssetOptions();
+        }
+        _groupAssetOptions
+            .map((groupAssetOption) => groupAssetOptions.add(NamesListItem(
+                id: int.tryParse(groupAssetOption.id),
+                name: groupAssetOption.name)))
+            .toList();
       }
 
-      _groupMoneyMarketInvestmentOptions
-          .map((groupMoneyMarketOption) => moneyMarketInvestmentOptions.add(
-              NamesListItem(
-                  id: int.tryParse(groupMoneyMarketOption.id),
-                  name: groupMoneyMarketOption.name)))
-          .toList();
-    }
-
-    if (borrowers) {
-      if (_groupBorrowerOptions.length == 0) {
-        await fetchBorrowerOptions();
+      if (groupStocks) {
+        if (_groupStockOptions.length == 0) {
+          await fetchGroupStockOptions();
+        }
+        _groupStockOptions
+            .map((groupStockOption) => groupStockOptions.add(NamesListItem(
+                id: int.tryParse(groupStockOption.id),
+                name: groupStockOption.name)))
+            .toList();
       }
 
-      _groupBorrowerOptions
-          .map((borrowerOption) => borrowerOptions.add(NamesListItem(
-              id: int.tryParse(borrowerOption.id), name: borrowerOption.name)))
-          .toList();
-    }
+      if (moneyMarketInvestments) {
+        if (_groupMoneyMarketInvestmentOptions.length == 0) {
+          await fetchMoneyMarketInvestmentOptions();
+        }
 
+        _groupMoneyMarketInvestmentOptions
+            .map((groupMoneyMarketOption) => moneyMarketInvestmentOptions.add(
+                NamesListItem(
+                    id: int.tryParse(groupMoneyMarketOption.id),
+                    name: groupMoneyMarketOption.name)))
+            .toList();
+      }
+
+      if (borrowers) {
+        if (_groupBorrowerOptions.length == 0) {
+          await fetchBorrowerOptions();
+        }
+
+        _groupBorrowerOptions
+            .map((borrowerOption) => borrowerOptions.add(NamesListItem(
+                id: int.tryParse(borrowerOption.id),
+                name: borrowerOption.name)))
+            .toList();
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
     Map<String, dynamic> result = {
       "contributionOptions": contributionOptions,
       "accountOptions": accountOptions,
@@ -5051,8 +5058,8 @@ class Groups with ChangeNotifier {
 
   // reconcile deposit transaction alert
 
-  Future<String> reconcileDepositTransactionAlert(
-      List formDataPayload, String transactionAlertId, int position,BuildContext context) async {
+  Future<String> reconcileDepositTransactionAlert(List formDataPayload,
+      String transactionAlertId, int position, BuildContext context) async {
     try {
       // ignore: unused_local_variable
       final url = EndpointUrl.RECONCILE_DEPOSIT_TRANSACTION_ALERT;
@@ -5061,6 +5068,7 @@ class Groups with ChangeNotifier {
       formData['group_id'] = currentGroupId;
       formData['transaction_alert_id'] = transactionAlertId;
       formData['reconcile_deposits_break_down'] = formDataPayload;
+      log(formData.toString());
       try {
         final postRequest = json.encode(formData);
         final response = await PostToServer.post(postRequest, url);
@@ -5069,7 +5077,8 @@ class Groups with ChangeNotifier {
           return "-1";
         } else {
           _unreconciledDeposits.removeAt(position);
-          Provider.of<Dashboard>(context, listen: false).unreconciledDepositCount = 0;
+          Provider.of<Dashboard>(context, listen: false)
+              .unreconciledDepositCount = 0;
           notifyListeners();
           return response["message"].toString();
         }
@@ -5142,19 +5151,21 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> voidDepositTransaction(String id,int position,BuildContext context) async{
+  Future<void> voidDepositTransaction(
+      String id, int position, BuildContext context) async {
     try {
       final url = EndpointUrl.VOID_DEPOSIT;
       Map<String, String> formData = {
         "user_id": _userId,
         "group_id": currentGroupId,
-        "id" : id,
+        "id": id,
       };
 
       try {
         final postRequest = json.encode(formData);
         await PostToServer.post(postRequest, url);
-        Provider.of<Dashboard>(context, listen: false).unreconciledDepositCount = 1;
+        Provider.of<Dashboard>(context, listen: false)
+            .unreconciledDepositCount = 1;
         _depositList.removeAt(position);
         notifyListeners();
       } on CustomException catch (error) {

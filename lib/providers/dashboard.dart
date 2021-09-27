@@ -93,6 +93,7 @@ class Dashboard with ChangeNotifier {
   double _memberTotalLoanBalance = 0.0;
   int _unreconciledDepositsCount = 0;
   int _unreconciledWithdrawalsCount = 0;
+  bool _isPartnerBankAccount = false;
 
   //***************Group****************/
 
@@ -154,6 +155,10 @@ class Dashboard with ChangeNotifier {
 
   int get unreconciledWithdrawalCount {
     return _unreconciledWithdrawalsCount;
+  }
+
+  bool get isPartnerBankAccount{
+    return _isPartnerBankAccount;
   }
 
   //********Group********/
@@ -271,6 +276,8 @@ class Dashboard with ChangeNotifier {
       _unreconciledWithdrawalsCount = int.tryParse(
               groupMemberObject["unreconciled_withdrawals_count"].toString()) ??
           0.0;
+      _isPartnerBankAccount = (int.tryParse(
+              groupMemberObject["partner"].toString()))==1 ?true: false;
 
       print("count $_unreconciledWithdrawalsCount");
       _memberContributionAmount =
