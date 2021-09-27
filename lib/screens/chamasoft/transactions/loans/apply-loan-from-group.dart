@@ -1,6 +1,6 @@
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/theme.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/group-loan-amortizatioin.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -117,7 +117,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                         "url": () => Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    LoanAmortization(),
+                                    GroupLoanAmortization(),
                               ),
                             ),
                         "color": primaryColor,

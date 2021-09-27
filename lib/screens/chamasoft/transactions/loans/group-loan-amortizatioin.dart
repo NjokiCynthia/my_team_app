@@ -1,4 +1,3 @@
-import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -6,15 +5,15 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
-class LoanAmortization extends StatefulWidget {
+class GroupLoanAmortization extends StatefulWidget {
   final LoanType typeLoan;
-  LoanAmortization({this.typeLoan});
+  GroupLoanAmortization({this.typeLoan});
 
   @override
-  _LoanAmortizationState createState() => _LoanAmortizationState();
+  _GroupLoanAmortizationState createState() => _GroupLoanAmortizationState();
 }
 
-class _LoanAmortizationState extends State<LoanAmortization> {
+class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
@@ -43,14 +42,6 @@ class _LoanAmortizationState extends State<LoanAmortization> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = new DateTime.now();
-    DateTime date = new DateTime(now.year, now.month, now.day);
-
-    final arguments =
-        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-
-    final LoanProduct _loanProduct = arguments['loanProduct'];
-
     // final List<LoanInstallment> installments = [
     //   LoanInstallment(
     //       date: DateTime.now(), amount: '30,000', balance: '150,000'),
@@ -78,7 +69,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Chamasoft Loan Terms & Amortization",
+        title: "Group Loan Terms & Amortization",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
 
@@ -94,7 +85,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   children: <Widget>[
                     Expanded(
                       child: heading2(
-                          text: _loanProduct.name /*widget.typeLoan.loanName*/,
+                          text: 'Education Loan' /*widget.typeLoan.loanName*/,
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.start),
@@ -122,7 +113,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
-                          text: _loanProduct.description,
+                          text: "12%",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -156,7 +147,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
-                          text: date.toIso8601String(),
+                          text: "May 12, 2020",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,

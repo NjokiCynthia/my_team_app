@@ -304,9 +304,13 @@ class _ApplyLoanFromChamasoftFormState
                                     'terms and conditions': {
                                       "url": () => Navigator.of(context).push(
                                             MaterialPageRoute(
-                                              builder: (BuildContext context) =>
-                                                  LoanAmortization(),
-                                            ),
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        LoanAmortization(),
+                                                settings:
+                                                    RouteSettings(arguments: {
+                                                  'loanProduct': _loanProduct,
+                                                })),
                                           ),
                                       "color": primaryColor,
                                       "weight": FontWeight.w500
