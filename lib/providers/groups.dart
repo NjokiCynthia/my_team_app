@@ -22,7 +22,10 @@ import 'package:chamasoft/helpers/post-to-server.dart';
 import 'package:chamasoft/helpers/report_helper.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'dashboard.dart';
 
 class Account {
   final String id;
@@ -5049,7 +5052,7 @@ class Groups with ChangeNotifier {
   // reconcile deposit transaction alert
 
   Future<String> reconcileDepositTransactionAlert(
-      List formDataPayload, String transactionAlertId, int position) async {
+      List formDataPayload, String transactionAlertId, int position,BuildContext context) async {
     try {
       // ignore: unused_local_variable
       final url = EndpointUrl.RECONCILE_DEPOSIT_TRANSACTION_ALERT;
@@ -5066,6 +5069,7 @@ class Groups with ChangeNotifier {
           return "-1";
         } else {
           _unreconciledDeposits.removeAt(position);
+          Provider.of<Dashboard>(context, listen: false).unreconciledDepositCount = 0;
           notifyListeners();
           return response["message"].toString();
         }
@@ -5126,6 +5130,33 @@ class Groups with ChangeNotifier {
         _unreconciledWithdrawals = [];
         addUnreconciledWithdrawal(
             unreconciledWithdrawals: response['unreconciled_withdrawals']);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> voidDepositTransaction(String id,int position,BuildContext context) async{
+    try {
+      final url = EndpointUrl.VOID_DEPOSIT;
+      Map<String, String> formData = {
+        "user_id": _userId,
+        "group_id": currentGroupId,
+        "id" : id,
+      };
+
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+        Provider.of<Dashboard>(context, listen: false).unreconciledDepositCount = 1;
+        _depositList.removeAt(position);
+        notifyListeners();
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {

@@ -16,6 +16,7 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'package:chamasoft/widgets/dialogs.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -77,10 +78,10 @@ class _DepositReceiptsState extends State<DepositReceipts> {
       _isLoading = true;
     });
 
-    _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
+    // _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
     _getDeposits(context).then((_) {
       if (context != null) {
-        _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
+        // _deposits = Provider.of<Groups>(context, listen: false).getDeposits;
         setState(() {
           if (_deposits.length < 20) {
             _hasMoreData = false;
@@ -148,6 +149,7 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
   @override
   Widget build(BuildContext context) {
+    _deposits = Provider.of<Groups>(context, listen: true).getDeposits;
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
@@ -276,12 +278,10 @@ class _DepositReceiptsState extends State<DepositReceipts> {
                               child: ListView.builder(
                                   itemBuilder: (context, index) {
                                     Deposit deposit = _deposits[index];
-                                    // final indexValue = index;
                                     return DepositCard(
-                                      // indexValue,
                                       deposit: deposit,
-                                      details: () {},
-                                      voidItem: () {},
+                                      position: index,
+                                      bodyContext: context,
                                     );
                                   },
                                   itemCount: _deposits.length),
@@ -298,12 +298,34 @@ class _DepositReceiptsState extends State<DepositReceipts> {
 
 // ignore: must_be_immutable
 class DepositCard extends StatelessWidget {
-  DepositCard({Key key, @required this.deposit, this.details, this.voidItem})
+  DepositCard({Key key, @required this.deposit,@required this.bodyContext,@required this.position})
       : super(key: key);
 
   final Deposit deposit;
-  final Function details, voidItem;
+  final int position;
+  BuildContext bodyContext;
   GlobalKey _containerKey = GlobalKey();
+
+  void _voidTransaction(String id) async {
+    showDialog<String>(
+        context: bodyContext,
+        barrierDismissible: false,
+        builder: (_) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
+    try{
+      await Provider.of<Groups>(bodyContext,listen: false).voidDepositTransaction(id,position,bodyContext);
+      Navigator.of(bodyContext).pop();
+      StatusHandler()
+            .showSuccessSnackBar(bodyContext, "Good news: Deposit successfully voided");
+    }on CustomException catch (error) {
+        StatusHandler().showErrorDialog(bodyContext, error.toString());
+    }finally{
+      Navigator.of(bodyContext).pop();
+    }
+  }
 
   void convertWidgetToImage() async {
     try {
@@ -486,7 +508,7 @@ class DepositCard extends StatelessWidget {
                                     .textSelectionHandleColor,
                             textAlign: TextAlign.start),
                         subtitle2(
-                            text: deposit.narration,
+                            text: "${deposit.narration} -- ${deposit.reconciliation}",
                             fontSize: 12.0,
                             color:
                                 // ignore: deprecated_member_use
@@ -519,90 +541,84 @@ class DepositCard extends StatelessWidget {
                         children: <Widget>[
                           Row(
                             children: <Widget>[
-                              IconButton(
-                                icon: Icon(LineAwesomeIcons.trash
-                                    // Icons.delete_forever,
-                                    ),
-                                iconSize: 16.0,
-                                color: Colors.redAccent,
-                                onPressed: () {
-                                  // twoButtonAlertDialog(
-                                  //     context: context,
-                                  //     message:
-                                  //         'Are you sure you want to delete this Transaction?',
-                                  //     title: 'Confirm Action',
+                              plainButtonWithIcon(
+                                  text: "VOID",
+                                  size: 14.0,
+                                  spacing: 2.0,
+                                  color: Colors.red,
+                                  iconData: Icons.delete,
+                                  action: () {
+                                    twoButtonAlertDialog(
+                                      action: () {
+                                        _voidTransaction(deposit.id);
+                                      },
+                                      context: context,
+                                      message:
+                                          "Are you sure you want to void ${deposit.type} of ${groupObject.groupCurrency} ${currencyFormat.format(deposit.amount)} by ${deposit.depositor}?",
+                                      title: "Confirm Action",
+                                    );
+                                    // showDialog(
+                                    //   context: context,
+                                    //   builder: (BuildContext context) {
+                                    //     return AlertDialog(
+                                    //       backgroundColor:
+                                    //           Theme.of(context).backgroundColor,
+                                    //       title: heading2(
+                                    //         text: "Confirm Action",
+                                    //         textAlign: TextAlign.start,
+                                    //         // ignore: deprecated_member_use
+                                    //         color: Theme.of(context)
+                                    //             // ignore: deprecated_member_use
+                                    //             .textSelectionHandleColor,
+                                    //       ),
+                                    //       content: customTitleWithWrap(
+                                    //         text:
+                                    //             "Are you sure you want to delete this Transaction?",
+                                    //         textAlign: TextAlign.start,
+                                    //         // ignore: deprecated_member_use
+                                    //         color: Theme.of(context)
+                                    //             // ignore: deprecated_member_use
+                                    //             .textSelectionHandleColor,
+                                    //         maxLines: null,
+                                    //       ),
+                                    //       actions: <Widget>[
+                                    //         negativeActionDialogButton(
+                                    //           text: "Cancel",
+                                    //           // ignore: deprecated_member_use
+                                    //           color: Theme.of(context)
+                                    //               // ignore: deprecated_member_use
+                                    //               .textSelectionHandleColor,
+                                    //           action: () {
+                                    //             Navigator.of(context).pop();
+                                    //           },
+                                    //         ),
+                                    //         // ignore: deprecated_member_use
+                                    //         FlatButton(
+                                    //           padding: EdgeInsets.fromLTRB(
+                                    //               22.0, 0.0, 22.0, 0.0),
+                                    //           child: customTitle(
+                                    //             text: "Continue",
+                                    //             color: Colors.red,
+                                    //             fontWeight: FontWeight.w600,
+                                    //           ),
+                                    //           onPressed: () {
+                                    //             Navigator.of(context).pop();
 
-                                  //     action: () async {});
-
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        backgroundColor:
-                                            Theme.of(context).backgroundColor,
-                                        title: heading2(
-                                          text: "Confirm Action",
-                                          textAlign: TextAlign.start,
-                                          // ignore: deprecated_member_use
-                                          color: Theme.of(context)
-                                              // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
-                                        ),
-                                        content: customTitleWithWrap(
-                                          text:
-                                              "Are you sure you want to delete this Transaction?",
-                                          textAlign: TextAlign.start,
-                                          // ignore: deprecated_member_use
-                                          color: Theme.of(context)
-                                              // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
-                                          maxLines: null,
-                                        ),
-                                        actions: <Widget>[
-                                          negativeActionDialogButton(
-                                            text: "Cancel",
-                                            // ignore: deprecated_member_use
-                                            color: Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
-                                            action: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
-                                          // ignore: deprecated_member_use
-                                          FlatButton(
-                                            padding: EdgeInsets.fromLTRB(
-                                                22.0, 0.0, 22.0, 0.0),
-                                            child: customTitle(
-                                              text: "Continue",
-                                              color: Colors.red,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-
-                                              //   deposit.removeAt(index);
-                                            },
-                                            shape: new RoundedRectangleBorder(
-                                                borderRadius:
-                                                    new BorderRadius.circular(
-                                                        4.0)),
-                                            textColor: Colors.red,
-                                            color: Colors.red.withOpacity(0.2),
-                                          )
-                                        ],
-                                      );
-                                    },
-                                  );
-                                },
-                              ),
-                              customTitle(
-                                  text: 'Void',
-                                  fontSize: 14.0,
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  textAlign: TextAlign.end)
+                                    //             //   deposit.removeAt(index);
+                                    //           },
+                                    //           shape: new RoundedRectangleBorder(
+                                    //               borderRadius:
+                                    //                   new BorderRadius.circular(
+                                    //                       4.0)),
+                                    //           textColor: Colors.red,
+                                    //           color:
+                                    //               Colors.red.withOpacity(0.2),
+                                    //         )
+                                    //       ],
+                                    //     );
+                                    //   },
+                                    // );
+                                  }),
                             ],
                           ),
                           Container(

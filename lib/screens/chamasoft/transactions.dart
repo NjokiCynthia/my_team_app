@@ -210,9 +210,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                         builder: (BuildContext ctx) => ReconcileDepositList())),
                     margin: 0,
                     imageHeight: 100.0,
-                    notifications:
-                        Provider.of<Dashboard>(context, listen: false)
-                            .unreconciledDepositCount)),
+                    notifications:unreconciledDepositCount)),
           ],
         ),
       SizedBox(
@@ -325,9 +323,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                             ReconcileWithdrawalList())),
                     margin: 0,
                     imageHeight: 100.0,
-                    notifications:
-                        Provider.of<Dashboard>(context, listen: false)
-                            .unreconciledWithdrawalCount))
+                    notifications:unreconciledWithdrawalCount))
           ],
         ),
       SizedBox(

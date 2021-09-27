@@ -145,6 +145,13 @@ class Dashboard with ChangeNotifier {
     return _unreconciledDepositsCount;
   }
 
+  set unreconciledDepositCount(int value){
+    if(value>0)
+      ++_unreconciledDepositsCount;
+    else
+      --_unreconciledDepositsCount;
+  }
+
   int get unreconciledWithdrawalCount {
     return _unreconciledWithdrawalsCount;
   }

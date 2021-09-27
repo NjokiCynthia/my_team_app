@@ -280,6 +280,46 @@ Widget plainButtonWithArrow(
   );
 }
 
+Widget plainButtonWithIcon(
+    {String text,
+    Function action,
+    double size,
+    Color color,
+    IconData iconData,
+    double spacing = 4.0}) {
+  // ignore: deprecated_member_use
+  return FlatButton(
+    padding: EdgeInsets.fromLTRB(16.0, 0.0, 6.0, 0.0),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Text(
+          text,
+          style: TextStyle(
+            color: color,
+            fontSize: size,
+            fontFamily: 'SegoeUI',
+            fontWeight: FontWeight.w700,
+          ),
+          textAlign: TextAlign.end,
+        ),
+        SizedBox(
+          width: spacing,
+        ),
+        Icon(
+          // Feather.chevron_right,
+          iconData,
+          size: (size),
+          color: color.withOpacity(0.4),
+        )
+      ],
+    ),
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+    onPressed: action,
+    highlightColor: Colors.blueGrey.withOpacity(0.1),
+  );
+}
+
 Widget plainButton(
     {String text,
     Function action,

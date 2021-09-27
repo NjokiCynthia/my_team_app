@@ -360,47 +360,31 @@ class WithdrawalCard extends StatelessWidget {
                   height: 10,
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 12.0, right: 12.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.end,
+                    padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                    width: MediaQuery.of(context).size.width,
+                    child: new Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            subtitle2(
-                                text: "Recipient",
-                                color:
+                        subtitle2(
+                            text: "Narration: ",
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.start),
-                            subtitle1(
-                                text: withdrawal.recipient,
-                                color:
+                                    .textSelectionHandleColor,
+                            textAlign: TextAlign.start),
+                        subtitle2(
+                            text: withdrawal.type,
+                            fontSize: 12.0,
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context)
                                     // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.start)
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: <Widget>[
-                            subtitle2(
-                                text: "Withdrawal Date",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.end),
-                            subtitle1(
-                                text: withdrawal.withdrawalDate,
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.end)
-                          ],
-                        ),
-                      ]),
-                ),
+                                    .textSelectionHandleColor,
+                            textAlign: TextAlign.start),
+                      ],
+                    ),
+                  ),
                 SizedBox(
                   height: 10,
                 ),

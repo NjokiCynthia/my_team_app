@@ -72,7 +72,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
       try {
         String response = await Provider.of<Groups>(_bodyContext, listen: false)
             .reconcileDepositTransactionAlert(
-                _reconciledDeposits, deposit.transactionAlertId, position);
+                _reconciledDeposits, deposit.transactionAlertId, position,_bodyContext);
 
         StatusHandler()
             .showSuccessSnackBar(_bodyContext, "Good news: $response");
