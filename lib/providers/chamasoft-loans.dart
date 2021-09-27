@@ -21,6 +21,11 @@ class ChamasoftLoans with ChangeNotifier {
     return [..._loanProducts];
   }
 
+  void resetLoanProducts() {
+    _loanProducts = [];
+    notifyListeners();
+  }
+
   String _userId;
   String _currentGroupId;
 

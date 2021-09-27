@@ -1,8 +1,12 @@
+import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -40,38 +44,8 @@ class _ApplyLoanFromChamasoftFormState
     });
   }
 
-  var items = <String>[
-    'Select Guarantor',
-    'John Kim',
-    'Sam Doe',
-    'James Mandison',
-    'Kim Liyan',
-    'Victor Moses',
-    'Peter Mayron'
-  ];
-  String dropdownvalue = 'Select Guarantor';
-
-  var items1 = <String>[
-    'Select Guarantor 1',
-    'John Kim',
-    'Sam Doe',
-    'James Mandison',
-    'Kim Liyan',
-    'Victor Moses',
-    'Peter Mayron'
-  ];
-  String dropdownvalue1 = 'Select Guarantor 1';
-
-  var items2 = <String>[
-    'Select Guarantor 2',
-    'John Kim',
-    'Sam Doe',
-    'James Mandison',
-    'Kim Liyan',
-    'Victor Moses',
-    'Peter Mayron'
-  ];
-  String dropdownvalue2 = 'Select Guarantor 2';
+  int guarantorOneId, guarantorTwoId, guarantorThreeId;
+  String guarantorOneName, guarantorTwoName, guarantorThreeName;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +53,12 @@ class _ApplyLoanFromChamasoftFormState
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     final LoanProduct _loanProduct = arguments['loanProduct'];
+
+    print("form options ${arguments['formLoadData']}");
+    final List<NamesListItem> _memberOptions =
+        arguments['formLoadData'].containsKey("memberOptions")
+            ? arguments['formLoadData']['memberOptions']
+            : [];
 
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -99,11 +79,14 @@ class _ApplyLoanFromChamasoftFormState
           },
           child: SingleChildScrollView(
             child: Container(
-              color: Theme.of(context).backgroundColor,
+              color: (themeChangeProvider.darkTheme)
+                  ? Colors.blueGrey[800]
+                  : Colors.white,
               //   // padding: EdgeInsets.all(0.0),
               height: MediaQuery.of(context).size.height,
               width: MediaQuery.of(context).size.width,
-              child: Padding(
+              child: Container(
+                decoration: primaryGradient(context),
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   children: <Widget>[
@@ -163,19 +146,28 @@ class _ApplyLoanFromChamasoftFormState
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                DropdownButton<String>(
-                                  itemHeight: 78,
-                                  items: items.map((itemsname) {
-                                    return DropdownMenuItem(
-                                        value: itemsname,
-                                        child: Text(itemsname));
-                                  }).toList(),
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      dropdownvalue = newValue;
-                                    });
-                                  },
-                                  value: dropdownvalue,
+                                Expanded(
+                                  child: CustomDropDownButton(
+                                    enabled: true,
+                                    labelText: "Select guarantor one",
+                                    listItems: _memberOptions,
+                                    selectedItem: guarantorOneId,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        guarantorOneId = value;
+                                        guarantorOneName = _memberOptions
+                                            .firstWhere(
+                                                (member) => member.id == value)
+                                            .name;
+                                      });
+                                    },
+                                    validator: (value) {
+                                      if (value == "" || value == null) {
+                                        return "This field is required";
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 25.0,
@@ -203,19 +195,28 @@ class _ApplyLoanFromChamasoftFormState
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                DropdownButton<String>(
-                                  itemHeight: 78,
-                                  items: items1.map((itemsname) {
-                                    return DropdownMenuItem(
-                                        value: itemsname,
-                                        child: Text(itemsname));
-                                  }).toList(),
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      dropdownvalue1 = newValue;
-                                    });
-                                  },
-                                  value: dropdownvalue1,
+                                Expanded(
+                                  child: CustomDropDownButton(
+                                    enabled: true,
+                                    labelText: "Select guarantor two",
+                                    listItems: _memberOptions,
+                                    selectedItem: guarantorTwoId,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        guarantorTwoId = value;
+                                        guarantorTwoName = _memberOptions
+                                            .firstWhere(
+                                                (member) => member.id == value)
+                                            .name;
+                                      });
+                                    },
+                                    validator: (value) {
+                                      if (value == "" || value == null) {
+                                        return "This field is required";
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 20.0,
@@ -243,19 +244,28 @@ class _ApplyLoanFromChamasoftFormState
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: <Widget>[
-                                DropdownButton<String>(
-                                  itemHeight: 78,
-                                  items: items2.map((itemsname) {
-                                    return DropdownMenuItem(
-                                        value: itemsname,
-                                        child: Text(itemsname));
-                                  }).toList(),
-                                  onChanged: (String newValue) {
-                                    setState(() {
-                                      dropdownvalue2 = newValue;
-                                    });
-                                  },
-                                  value: dropdownvalue2,
+                                Expanded(
+                                  child: CustomDropDownButton(
+                                    enabled: true,
+                                    labelText: "Select guarantor three",
+                                    listItems: _memberOptions,
+                                    selectedItem: guarantorThreeId,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        guarantorThreeId = value;
+                                        guarantorThreeName = _memberOptions
+                                            .firstWhere(
+                                                (member) => member.id == value)
+                                            .name;
+                                      });
+                                    },
+                                    validator: (value) {
+                                      if (value == "" || value == null) {
+                                        return "This field is required";
+                                      }
+                                      return null;
+                                    },
+                                  ),
                                 ),
                                 SizedBox(
                                   width: 20.0,

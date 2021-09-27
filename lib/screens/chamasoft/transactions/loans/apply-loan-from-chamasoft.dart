@@ -2,6 +2,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
+import 'package:chamasoft/providers/groups.dart';
 // ignore: unused_import
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft-form.dart';
@@ -92,23 +93,18 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
   bool _isInit = true;
   bool _isLoading = true;
   List<LoanProduct> _loanProducts = [];
+  Map<String, dynamic> _formLoadData;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
-    setState(() {
-      _isInit = widget.isInit;
-      if (!_isInit) {
-        _isLoading = false;
-      }
-    });
     super.initState();
   }
 
   @override
   void didChangeDependencies() {
-    // get the unreconciled deposits
+    // get the loan products
     if (_isInit)
       WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     super.didChangeDependencies();
@@ -121,16 +117,23 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
 
     try {
       // Load formdata values
-      Provider.of<ChamasoftLoans>(context, listen: false)
-          .fetchLoanProducts()
+      Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(
+        member: true,
+      )
           .then((value) {
-        // set  loading
-        setState(() {
-          _isLoading = false;
-        });
+        // get the loan products
+        Provider.of<ChamasoftLoans>(context, listen: false)
+            .fetchLoanProducts()
+            .then((_) {
+          setState(() {
+            _formLoadData = value;
 
-        // reset parent isInit
-        widget.updateIsInit();
+            _isLoading = false;
+          });
+          // reset parent isInit
+          widget.updateIsInit();
+        });
       });
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
@@ -144,13 +147,19 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
   }
 
   Future<bool> _fetchData() async {
+    // reset existing loan products
+    Provider.of<ChamasoftLoans>(context, listen: false).resetLoanProducts();
+    // fetch loan products
     return _fetchLoanProducts(context).then((value) => true);
   }
 
   @override
-  Widget build(BuildContext context) {
-    //LoanType typeLoan;
+  void dispose() {
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     _loanProducts =
         Provider.of<ChamasoftLoans>(context, listen: false).getLoanProducts;
 
@@ -185,7 +194,8 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
                           itemBuilder: (context, index) {
                             LoanProduct loanProduct = _loanProducts[index];
                             return ChamasoftLoanProductCard(
-                                loanProduct: loanProduct);
+                                loanProduct: loanProduct,
+                                formLoadData: _formLoadData);
                           },
                         )
                       : emptyList(
@@ -201,12 +211,12 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
 }
 
 class ChamasoftLoanProductCard extends StatelessWidget {
-  const ChamasoftLoanProductCard({
-    Key key,
-    @required this.loanProduct,
-  }) : super(key: key);
+  const ChamasoftLoanProductCard(
+      {Key key, @required this.loanProduct, @required this.formLoadData})
+      : super(key: key);
 
   final LoanProduct loanProduct;
+  final Map<String, dynamic> formLoadData;
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +251,7 @@ class ChamasoftLoanProductCard extends StatelessWidget {
                         builder: (context) => ApplyLoanFromChamasoftForm(),
                         settings: RouteSettings(arguments: {
                           'loanProduct': loanProduct,
+                          'formLoadData': formLoadData
                         })));
               },
             ),
