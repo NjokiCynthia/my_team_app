@@ -13,7 +13,6 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -33,6 +32,7 @@ class _ApplyLoanFromChamasoftFormState
   final _formKey = GlobalKey<FormState>();
 
   double generalAmount;
+  double amountToRefund;
   double guarantorOneAmount, guarantorTwoAmount;
   int guarantorOneId, guarantorTwoId, guarantorThreeId;
   String guarantorOneName, guarantorTwoName, guarantorThreeName;
@@ -62,7 +62,7 @@ class _ApplyLoanFromChamasoftFormState
   }
 
   void showConfirmationDialog(LoanProduct loanProduct, Group groupObject) {
-    double amountToRefund = generalAmount +
+    amountToRefund = generalAmount +
         (generalAmount * (int.tryParse(loanProduct.interestRate) / 100));
     String dateDue = "date of today";
     showDialog(
@@ -135,6 +135,7 @@ class _ApplyLoanFromChamasoftFormState
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _generalAmount = new TextEditingController();
     final arguments =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
@@ -206,6 +207,7 @@ class _ApplyLoanFromChamasoftFormState
                                 children: [
                                   amountTextInputField(
                                       context: context,
+                                      //controller: _generalAmount,
                                       validator: (value) {
                                         if (value == null || value == "") {
                                           return "The field is required";
@@ -355,6 +357,7 @@ class _ApplyLoanFromChamasoftFormState
                                                 settings:
                                                     RouteSettings(arguments: {
                                                   'loanProduct': _loanProduct,
+                                                  'generalAmount':generalAmount,
                                                 })),
                                           ),
                                       "color": primaryColor,

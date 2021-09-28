@@ -1,14 +1,19 @@
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 class LoanAmortization extends StatefulWidget {
-  final LoanType typeLoan;
-  LoanAmortization({this.typeLoan});
+  // final generalAmount;
+  // LoanAmortization({this.generalAmount});
+
+  // final LoanType amountToRefund;
+  // LoanAmortization({this.amountToRefund});
 
   @override
   _LoanAmortizationState createState() => _LoanAmortizationState();
@@ -52,28 +57,16 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     final LoanProduct _loanProduct = arguments['loanProduct'];
+    final generalAmount = arguments['generalAmount'];
 
-    // final List<LoanInstallment> installments = [
-    //   LoanInstallment(
-    //       date: DateTime.now(), amount: '30,000', balance: '150,000'),
-    //   LoanInstallment(
-    //       date: DateTime.now(), amount: '30,000', balance: '120,000'),
-    //   LoanInstallment(
-    //       date: DateTime.now(), amount: '30,000', balance: '90,000'),
-    //   LoanInstallment(
-    //       date: DateTime.now(), amount: '30,000', balance: '60,000'),
-    //   LoanInstallment(
-    //       date: DateTime.now(), amount: '30,000', balance: '30,000'),
-    //   LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '0'),
-    //   LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '0'),
-    //   LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '0'),
-    //   LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '0'),
-    //   LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '0'),
-    //   LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '0'),
-    //   LoanInstallment(date: DateTime.now(), amount: '30,000', balance: '0'),
-    //   LoanInstallment(
-    //       date: DateTime.now(), amount: '30,000', balance: '30,000'),
-    // ];
+    final Group groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
+    final amountToRefund = generalAmount +
+        (generalAmount * (int.tryParse(_loanProduct.interestRate) / 100));
+
+    final c = generalAmount * (int.tryParse(_loanProduct.interestRate) / 100);
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -102,7 +95,9 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           textAlign: TextAlign.start),
                     ),
                     heading2(
-                        text: "Ksh 180,000",
+                        text:
+                            "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}",
+                        //generalAmount.toString(),
                         // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.start)
@@ -141,7 +136,8 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
-                          text: _loanProduct.fixedRepaymentPeriod,
+                          text: _loanProduct.loanRepaymentPeriodType +
+                              " Month(s)",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -233,17 +229,16 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(c)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '1000',
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '900',
                           // ignore: deprecated_member_use
@@ -267,10 +262,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '900',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '800',
                           // ignore: deprecated_member_use
@@ -292,10 +284,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '800',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '700',
                           // ignore: deprecated_member_use
@@ -318,10 +307,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '700',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '600',
                           // ignore: deprecated_member_use
@@ -343,10 +329,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '600',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '500',
                           // ignore: deprecated_member_use
@@ -369,10 +352,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '500',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '400',
                           // ignore: deprecated_member_use
@@ -394,10 +374,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '400',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '300',
                           // ignore: deprecated_member_use
@@ -420,10 +397,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '300',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '200',
                           // ignore: deprecated_member_use
@@ -445,10 +419,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '200',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '100',
                           // ignore: deprecated_member_use
@@ -471,10 +442,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '100',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '0',
                           // ignore: deprecated_member_use
@@ -496,10 +464,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '0',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '0',
                           // ignore: deprecated_member_use
@@ -522,10 +487,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           text: '0',
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: _loanProduct.interestRate,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
+                      interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
                           text: '0',
                           // ignore: deprecated_member_use
@@ -646,5 +608,12 @@ class _LoanAmortizationState extends State<LoanAmortization> {
       //   ],
       // ),
     );
+  }
+
+  DataCell interestRateRow(LoanProduct _loanProduct, BuildContext context) {
+    return DataCell(subtitle1(
+        text: _loanProduct.interestRate + "%",
+        // ignore: deprecated_member_use
+        color: Theme.of(context).textSelectionHandleColor));
   }
 }
