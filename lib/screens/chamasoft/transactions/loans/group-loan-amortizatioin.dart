@@ -427,8 +427,8 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                   DataRow(
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text:
-                              DateTime(now.year, now.month + 9, now.day).toString(),
+                          text: DateTime(now.year, now.month + 9, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -453,8 +453,8 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                     selected: true,
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text:
-                              DateTime(now.year, now.month + 10, now.day).toString(),
+                          text: DateTime(now.year, now.month + 10, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -478,8 +478,8 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                   DataRow(
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text:
-                              DateTime(now.year, now.month + 11, now.day).toString(),
+                          text: DateTime(now.year, now.month + 11, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
@@ -504,8 +504,8 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                     selected: true,
                     cells: <DataCell>[
                       DataCell(subtitle1(
-                          text:
-                              DateTime(now.year, now.month + 12, now.day).toString(),
+                          text: DateTime(now.year, now.month + 12, now.day)
+                              .toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
