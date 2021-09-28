@@ -66,17 +66,17 @@ class ChamasoftLoans with ChangeNotifier {
             id: loanProduct['id']..toString(),
             name: loanProduct['name']..toString(),
             description: loanProduct['description']..toString(),
-            loanRepaymentPeriodType: loanProduct['loanRepaymentPeriodType']
+            loanRepaymentPeriodType: loanProduct['loan_repayment_period_type']
               ..toString(),
-            fixedRepaymentPeriod: loanProduct['fixedRepaymentPeriod']
+            fixedRepaymentPeriod: loanProduct['fixed_repayment_period']
               ..toString(),
-            minimumRepaymentPeriod: loanProduct['minimumRepaymentPeriod']
+            minimumRepaymentPeriod: loanProduct['minimum_repayment_period']
               ..toString(),
-            maximumRepaymentPeriod: loanProduct['maximumRepaymentPeriod']
+            maximumRepaymentPeriod: loanProduct['maximum_repayment_period']
               ..toString(),
-            interestRate: loanProduct['interestRate']..toString(),
-            interestRatePer: loanProduct['interestRatePer']..toString(),
-            interestType: loanProduct['interestType']..toString());
+            interestRate: loanProduct['interest_rate']..toString(),
+            interestRatePer: loanProduct['interest_rate_per']..toString(),
+            interestType: loanProduct['interest_type']..toString());
 
         _loanProducts.add(_loanProduct);
       }
@@ -93,7 +93,6 @@ class ChamasoftLoans with ChangeNotifier {
         });
 
         final response = await PostToServer.post(postRequest, url);
-
         addLoanProducts(loanProducts: response['loan_products']);
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
