@@ -61,7 +61,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       return;
     }
 
-    widget._addReconciledDeposit({
+      var object = {
       "description": description,
       "amount": amount,
       "amount_payable": amountPayable,
@@ -70,7 +70,6 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       "member_id": memberId,
       "member_name": memberName,
       "contribution_id": contributionId,
-      "fine_category_id": fineCategoryId,
       "depositor_id": depositorId,
       "income_category_id": incomeCategoryId,
       "loan_id": loanId,
@@ -80,7 +79,14 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       "money_market_investment_cash_in_id": moneyMarketInvestmentId,
       "debtor_id": borrowerId,
       "number_of_share_sold": numberOfSharesSold
-    });
+    };
+
+    if(depositTypeId==2){
+      object.addAll({
+      "fine_category_id": "fine_category-"+(fineCategoryId.toString())});
+    }
+
+    widget._addReconciledDeposit(object);
 
     // pop out the dialog
     Navigator.of(context).pop();
