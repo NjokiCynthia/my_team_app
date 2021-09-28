@@ -14,6 +14,7 @@ import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +65,16 @@ class _ApplyLoanFromChamasoftFormState
   void showConfirmationDialog(LoanProduct loanProduct, Group groupObject) {
     double amountToRefund = generalAmount +
         (generalAmount * (int.tryParse(loanProduct.interestRate) / 100));
-    String dateDue = "date of today";
+
+    String monthsOfRepayment = loanProduct.fixedRepaymentPeriod != ""
+        ? loanProduct.fixedRepaymentPeriod
+        : loanProduct.maximumRepaymentPeriod;
+
+    DateTime currentDt = new DateTime.now();
+
+    DateTime repaymentDt = new DateTime(currentDt.year,
+        currentDt.month + int.parse(monthsOfRepayment), currentDt.day);
+
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -98,6 +108,18 @@ class _ApplyLoanFromChamasoftFormState
                   SizedBox(height: 10),
                   Row(
                     children: [
+                      subtitle1(text: "Loan processing fee"),
+                      Spacer(),
+                      subtitle2(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(100)}")
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
                       subtitle1(text: "Refund"),
                       Spacer(),
                       subtitle2(
@@ -110,7 +132,7 @@ class _ApplyLoanFromChamasoftFormState
                     children: [
                       subtitle1(text: "Due date"),
                       Spacer(),
-                      subtitle2(text: dateDue)
+                      subtitle2(text: DateFormat.yMMMEd().format(repaymentDt))
                     ],
                   ),
                 ],

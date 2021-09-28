@@ -17,6 +17,11 @@ class LoanProduct {
   String interestRate;
   String interestRatePer;
   String interestType;
+  String enableLoanProcessingFee;
+  String loanProcessingFeeType;
+  String loanProcessingFeeFixedAmount;
+  String loanProcessingFeePercentageRate;
+  String loanProcessingFeePercentageChargedOn;
 
   LoanProduct(
       {this.id,
@@ -28,7 +33,12 @@ class LoanProduct {
       this.maximumRepaymentPeriod,
       this.interestRate,
       this.interestRatePer,
-      this.interestType});
+      this.interestType,
+      this.enableLoanProcessingFee,
+      this.loanProcessingFeeType,
+      this.loanProcessingFeeFixedAmount,
+      this.loanProcessingFeePercentageRate,
+      this.loanProcessingFeePercentageChargedOn});
 }
 
 class ChamasoftLoans with ChangeNotifier {
@@ -76,7 +86,18 @@ class ChamasoftLoans with ChangeNotifier {
               ..toString(),
             interestRate: loanProduct['interest_rate']..toString(),
             interestRatePer: loanProduct['interest_rate_per']..toString(),
-            interestType: loanProduct['interest_type']..toString());
+            interestType: loanProduct['interest_type']..toString(),
+            enableLoanProcessingFee: loanProduct['enable_loan_processing_fee']
+              ..toString(),
+            loanProcessingFeeType: loanProduct['loan_processing_fee_type']
+              ..toString(),
+            loanProcessingFeeFixedAmount:
+                loanProduct['loan_processing_fee_fixed_amount']..toString(),
+            loanProcessingFeePercentageRate:
+                loanProduct['loan_processing_fee_percentage_rate']..toString(),
+            loanProcessingFeePercentageChargedOn:
+                loanProduct['loan_processing_fee_percentage_charged_on']
+                  ..toString());
 
         _loanProducts.add(_loanProduct);
       }
