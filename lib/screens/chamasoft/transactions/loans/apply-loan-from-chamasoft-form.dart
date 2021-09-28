@@ -53,7 +53,7 @@ class _ApplyLoanFromChamasoftFormState
         StatusHandler().showErrorDialog(context,
             "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}");
       } else if (totalGuaranteed == generalAmount) {
-        showConfirmationDialog(loanProduct);
+        showConfirmationDialog(loanProduct, groupObject);
       } else {
         StatusHandler()
             .showErrorDialog(context, "Something went wrong, please try again");
@@ -61,7 +61,10 @@ class _ApplyLoanFromChamasoftFormState
     }
   }
 
-  void showConfirmationDialog(LoanProduct loanProduct) {
+  void showConfirmationDialog(LoanProduct loanProduct, Group groupObject) {
+    double amountToRefund = generalAmount +
+        (generalAmount * (int.tryParse(loanProduct.interestRate) / 100));
+    String dateDue = "date of today";
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -71,67 +74,45 @@ class _ApplyLoanFromChamasoftFormState
               content: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-
-                // mainAxisSize: MainAxisSize.min,
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Column(
-                        // mainAxisAlignment:
-                        //     MainAxisAlignment
-                        //         .start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          customTitleWithWrap(
-                              text: "Loan Type :", textAlign: TextAlign.start),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          customTitleWithWrap(
-                            text: "Amount KES:",
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          customTitleWithWrap(
-                              text: "Refund KES:", textAlign: TextAlign.start),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          customTitleWithWrap(
-                              text: "Due Date:", textAlign: TextAlign.start)
-                        ],
-                      ),
-                      SizedBox(
-                        width: 10.0,
-                      ),
-                      Column(
-                        children: [
-                          customTitleWithWrap(
-                              text: loanProduct.name, textAlign: TextAlign.end),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          customTitleWithWrap(
-                            text: "some text",
-                            textAlign: TextAlign.start,
-                          ),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          subtitle1(
-                              text: "Some more text".toString(),
-                              textAlign: TextAlign.start),
-                          SizedBox(
-                            height: 15.0,
-                          ),
-                          subtitle2(text: "Date", textAlign: TextAlign.start)
-                        ],
-                      )
+                      subtitle1(text: "Loan Type"),
+                      Spacer(),
+                      subtitle2(text: "${loanProduct.name}")
                     ],
-                  )
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      subtitle1(text: "Amount"),
+                      Spacer(),
+                      subtitle2(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      subtitle1(text: "Refund"),
+                      Spacer(),
+                      subtitle2(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}")
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      subtitle1(text: "Due date"),
+                      Spacer(),
+                      subtitle2(text: dateDue)
+                    ],
+                  ),
                 ],
               ),
               actions: [
