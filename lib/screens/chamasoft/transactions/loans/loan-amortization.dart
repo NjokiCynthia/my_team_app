@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -62,10 +64,18 @@ class _LoanAmortizationState extends State<LoanAmortization> {
     final Group groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
-    final amountToRefund = generalAmount +
-        (generalAmount * (int.tryParse(_loanProduct.interestRate) / 100));
+    final interestRate = int.parse(_loanProduct.interestRate) / 100;
+    final payementPeriod = int.parse(_loanProduct.fixedRepaymentPeriod);
+    final amountToRefund = generalAmount + (generalAmount * interestRate);
 
-    final c = generalAmount * (int.tryParse(_loanProduct.interestRate) / 100);
+    final payementPerMonth = ((generalAmount *
+            interestRate *
+            pow(1 + interestRate, payementPeriod)) /
+        (pow(1 + interestRate, payementPeriod) - 1));
+
+    final balance = (amountToRefund - payementPerMonth);
+
+    final repaymentTime = int.parse(_loanProduct.loanRepaymentPeriodType) * 7;
 
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -136,8 +146,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
-                          text: _loanProduct.loanRepaymentPeriodType +
-                              " Month(s)",
+                          text: payementPeriod.toString() + " Month(s)",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -193,14 +202,14 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   ),
                   DataColumn(
                     label: Text(
-                      'Payement',
+                      'Payement:',
                       style: TextStyle(fontStyle: FontStyle.italic),
                       textAlign: TextAlign.center,
                     ),
                   ),
                   DataColumn(
                     label: Text(
-                      'Principle',
+                      'Principle:',
                       style: TextStyle(fontStyle: FontStyle.italic),
                       textAlign: TextAlign.end,
                     ),
@@ -214,7 +223,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                   ),
                   DataColumn(
                     label: Text(
-                      'Balance',
+                      'Balance:',
                       style: TextStyle(fontStyle: FontStyle.italic),
                       textAlign: TextAlign.end,
                     ),
@@ -229,18 +238,16 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text:
-                              "${groupObject.groupCurrency} ${currencyFormat.format(c)}",
+                          text: "${currencyFormat.format(payementPerMonth)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text:
-                              "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}",
+                          text: " ${currencyFormat.format(amountToRefund)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '900',
+                          text: " ${currencyFormat.format(balance)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -255,16 +262,18 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '900',
+                          text: " ${currencyFormat.format(balance)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '800',
+                          text:
+                              "${currencyFormat.format(balance - (balance * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -277,16 +286,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance - (balance * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '800',
+                          text:
+                              " ${currencyFormat.format((balance - (balance * interestRate)))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '700',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - (balance * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -300,16 +312,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '700',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - (balance * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '600',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -322,16 +337,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '600',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '500',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -345,16 +363,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '500',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '400',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -367,16 +388,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '400',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '300',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -390,16 +414,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '300',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '200',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -412,16 +439,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '200',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -435,16 +465,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '100',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '0',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -457,16 +490,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '0',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '0',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '0',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
@@ -480,16 +516,19 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '0',
+                          text:
+                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       DataCell(subtitle1(
-                          text: '0',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                       interestRateRow(_loanProduct, context),
                       DataCell(subtitle1(
-                          text: '0',
+                          text:
+                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor)),
                     ],
