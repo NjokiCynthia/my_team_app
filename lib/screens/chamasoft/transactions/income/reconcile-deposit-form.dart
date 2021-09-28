@@ -94,7 +94,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
       } finally {}
     } else {
       alertDialog(context,
-          "You have reconciled ${groupObject.groupCurrency} $total out of ${groupObject.groupCurrency} ${deposit.amount} transacted.");
+          "You have reconciled ${groupObject.groupCurrency} ${currencyFormat.format(total)} out of ${groupObject.groupCurrency} ${currencyFormat.format(deposit.amount)} transacted.");
     }
   }
 

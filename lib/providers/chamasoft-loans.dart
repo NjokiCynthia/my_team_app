@@ -10,8 +10,25 @@ class LoanProduct {
   String id;
   String name;
   String description;
+  String loanRepaymentPeriodType;
+  String fixedRepaymentPeriod;
+  String minimumRepaymentPeriod;
+  String maximumRepaymentPeriod;
+  String interestRate;
+  String interestRatePer;
+  String interestType;
 
-  LoanProduct({this.id, this.name, this.description});
+  LoanProduct(
+      {this.id,
+      this.name,
+      this.description,
+      this.loanRepaymentPeriodType,
+      this.fixedRepaymentPeriod,
+      this.minimumRepaymentPeriod,
+      this.maximumRepaymentPeriod,
+      this.interestRate,
+      this.interestRatePer,
+      this.interestType});
 }
 
 class ChamasoftLoans with ChangeNotifier {
@@ -46,9 +63,20 @@ class ChamasoftLoans with ChangeNotifier {
     if (loanProducts.length > 0) {
       for (var loanProduct in loanProducts) {
         final _loanProduct = LoanProduct(
-            id: loanProduct['id'],
-            name: loanProduct['name'],
-            description: loanProduct['description']);
+            id: loanProduct['id']..toString(),
+            name: loanProduct['name']..toString(),
+            description: loanProduct['description']..toString(),
+            loanRepaymentPeriodType: loanProduct['loanRepaymentPeriodType']
+              ..toString(),
+            fixedRepaymentPeriod: loanProduct['fixedRepaymentPeriod']
+              ..toString(),
+            minimumRepaymentPeriod: loanProduct['minimumRepaymentPeriod']
+              ..toString(),
+            maximumRepaymentPeriod: loanProduct['maximumRepaymentPeriod']
+              ..toString(),
+            interestRate: loanProduct['interestRate']..toString(),
+            interestRatePer: loanProduct['interestRatePer']..toString(),
+            interestType: loanProduct['interestType']..toString());
 
         _loanProducts.add(_loanProduct);
       }

@@ -1,4 +1,3 @@
-
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -10,8 +9,9 @@ import "package:flutter/material.dart";
 
 class ReconcileWithdrawalForm extends StatefulWidget {
   final Function addReconciledWithdrawal;
-  final Map<String,dynamic> formLoadData;
-  const ReconcileWithdrawalForm(this.addReconciledWithdrawal, this.formLoadData, {Key key})
+  final Map<String, dynamic> formLoadData;
+  const ReconcileWithdrawalForm(this.addReconciledWithdrawal, this.formLoadData,
+      {Key key})
       : super(key: key);
 
   @override
@@ -63,34 +63,35 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
     //       });
     // });
     // setState(() {
-      groupMembers = widget.formLoadData.containsKey("memberOptions")
-          ? widget.formLoadData['memberOptions']
-          : [];
-      groupExpenseCategories = widget.formLoadData.containsKey("expenseCategories")
-          ? widget.formLoadData['expenseCategories']
-          : [];
-      groupAccounts = widget.formLoadData.containsKey("accountOptions")
-          ? widget.formLoadData['accountOptions']
-          : [];
-      groupContributions = widget.formLoadData.containsKey("contributionOptions")
-          ? widget.formLoadData['contributionOptions']
-          : [];
-      groupLoans = widget.formLoadData.containsKey("loanTypeOptions")
-          ? widget.formLoadData['loanTypeOptions']
-          : [];
-      groupBankLoans = widget.formLoadData.containsKey("bankLoansOptions")
-          ? widget.formLoadData['bankLoansOptions']
-          : [];
-      groupAssets = widget.formLoadData.containsKey("groupAssetOptions")
-          ? widget.formLoadData['groupAssetOptions']
-          : [];
-      groupMoneyMarketInvestments =
-          widget.formLoadData.containsKey("moneyMarketInvestmentOptions")
-              ? widget.formLoadData['moneyMarketInvestmentOptions']
-              : [];
-      groupBorrowers = widget.formLoadData.containsKey("borrowerOptions")
-          ? widget.formLoadData['borrowerOptions']
-          : [];
+    groupMembers = widget.formLoadData.containsKey("memberOptions")
+        ? widget.formLoadData['memberOptions']
+        : [];
+    groupExpenseCategories =
+        widget.formLoadData.containsKey("expenseCategories")
+            ? widget.formLoadData['expenseCategories']
+            : [];
+    groupAccounts = widget.formLoadData.containsKey("accountOptions")
+        ? widget.formLoadData['accountOptions']
+        : [];
+    groupContributions = widget.formLoadData.containsKey("contributionOptions")
+        ? widget.formLoadData['contributionOptions']
+        : [];
+    groupLoans = widget.formLoadData.containsKey("loanTypeOptions")
+        ? widget.formLoadData['loanTypeOptions']
+        : [];
+    groupBankLoans = widget.formLoadData.containsKey("bankLoansOptions")
+        ? widget.formLoadData['bankLoansOptions']
+        : [];
+    groupAssets = widget.formLoadData.containsKey("groupAssetOptions")
+        ? widget.formLoadData['groupAssetOptions']
+        : [];
+    groupMoneyMarketInvestments =
+        widget.formLoadData.containsKey("moneyMarketInvestmentOptions")
+            ? widget.formLoadData['moneyMarketInvestmentOptions']
+            : [];
+    groupBorrowers = widget.formLoadData.containsKey("borrowerOptions")
+        ? widget.formLoadData['borrowerOptions']
+        : [];
     // });
     // Navigator.of(context, rootNavigator: true).pop();
   }
@@ -147,7 +148,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
 
   @override
   void didChangeDependencies() {
-      _fetchDefaultValues(context);
+    _fetchDefaultValues(context);
     super.didChangeDependencies();
   }
 
@@ -523,10 +524,10 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                         CustomDropDownButton(
                             enabled: true,
                             labelText: "Select recipient account",
-                            listItems:
-                                widget.formLoadData.containsKey("accountOptions")
-                                    ? widget.formLoadData['accountOptions']
-                                    : [],
+                            listItems: widget.formLoadData
+                                    .containsKey("accountOptions")
+                                ? widget.formLoadData['accountOptions']
+                                : [],
                             selectedItem: recipientAccountId,
                             onChanged: (value) {
                               setState(() {
@@ -679,7 +680,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
         enabled: true,
         onChanged: (value) {
           setState(() {
-            amount = value != null ? double.parse(value) : amount = 0;
+            amount = value != null ? double.parse(value) : 0;
           });
         });
   }

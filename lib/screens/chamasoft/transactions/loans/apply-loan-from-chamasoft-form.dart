@@ -1,5 +1,8 @@
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -12,6 +15,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:provider/provider.dart';
 
 import 'loan-amortization.dart';
 
@@ -27,25 +31,126 @@ class _ApplyLoanFromChamasoftFormState
     extends State<ApplyLoanFromChamasoftForm> {
   double _appBarElevation = 0;
   final _formKey = GlobalKey<FormState>();
-  TextEditingController myController = TextEditingController();
-  TextEditingController guarantor1Controller = TextEditingController();
-  TextEditingController guarantor2Controller = TextEditingController();
-  TextEditingController guarantor3Controller = TextEditingController();
 
-  int result = 0, guarantor1 = 0, guarantor2 = 0, guarantor3 = 0;
-  //int loanRepaymentAmount = result + 1000;
-
-  sum() {
-    setState(() {
-      guarantor1 = int.parse(guarantor1Controller.text);
-      guarantor2 = int.parse(guarantor2Controller.text);
-      guarantor3 = int.parse(guarantor3Controller.text);
-      result = guarantor1 + guarantor2 + guarantor3;
-    });
-  }
-
+  double generalAmount;
+  double guarantorOneAmount, guarantorTwoAmount;
   int guarantorOneId, guarantorTwoId, guarantorThreeId;
   String guarantorOneName, guarantorTwoName, guarantorThreeName;
+
+  double get totalGuaranteed {
+    return guarantorOneAmount + guarantorTwoAmount;
+  }
+
+  void submit(LoanProduct loanProduct) {
+    final Group groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
+    if (_formKey.currentState.validate()) {
+      if (totalGuaranteed < generalAmount) {
+        StatusHandler().showErrorDialog(context,
+            "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}");
+      } else if (totalGuaranteed > generalAmount) {
+        StatusHandler().showErrorDialog(context,
+            "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}");
+      } else if (totalGuaranteed == generalAmount) {
+        showConfirmationDialog(loanProduct);
+      } else {
+        StatusHandler()
+            .showErrorDialog(context, "Something went wrong, please try again");
+      }
+    }
+  }
+
+  void showConfirmationDialog(LoanProduct loanProduct) {
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              title: heading2(text: "Confirm Application"),
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+
+                // mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Column(
+                        // mainAxisAlignment:
+                        //     MainAxisAlignment
+                        //         .start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          customTitleWithWrap(
+                              text: "Loan Type :", textAlign: TextAlign.start),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          customTitleWithWrap(
+                            text: "Amount KES:",
+                            textAlign: TextAlign.start,
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          customTitleWithWrap(
+                              text: "Refund KES:", textAlign: TextAlign.start),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          customTitleWithWrap(
+                              text: "Due Date:", textAlign: TextAlign.start)
+                        ],
+                      ),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      Column(
+                        children: [
+                          customTitleWithWrap(
+                              text: loanProduct.name, textAlign: TextAlign.end),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          customTitleWithWrap(
+                            text: "some text",
+                            textAlign: TextAlign.start,
+                          ),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          subtitle1(
+                              text: "Some more text".toString(),
+                              textAlign: TextAlign.start),
+                          SizedBox(
+                            height: 15.0,
+                          ),
+                          subtitle2(text: "Date", textAlign: TextAlign.start)
+                        ],
+                      )
+                    ],
+                  )
+                ],
+              ),
+              actions: [
+                // ignore: deprecated_member_use
+                negativeActionDialogButton(
+                  text: ('CANCEL'),
+                  color: Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  action: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+                // ignore: deprecated_member_use
+                positiveActionDialogButton(
+                    text: ('PROCEED'), color: primaryColor, action: () {}),
+              ],
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +159,6 @@ class _ApplyLoanFromChamasoftFormState
 
     final LoanProduct _loanProduct = arguments['loanProduct'];
 
-    print("form options ${arguments['formLoadData']}");
     final List<NamesListItem> _memberOptions =
         arguments['formLoadData'].containsKey("memberOptions")
             ? arguments['formLoadData']['memberOptions']
@@ -121,7 +225,6 @@ class _ApplyLoanFromChamasoftFormState
                                 children: [
                                   amountTextInputField(
                                       context: context,
-                                      controller: myController,
                                       validator: (value) {
                                         if (value == null || value == "") {
                                           return "The field is required";
@@ -131,7 +234,11 @@ class _ApplyLoanFromChamasoftFormState
                                       labelText: "Enter The Loan Amount",
                                       enabled: true,
                                       onChanged: (value) {
-                                        setState(() {});
+                                        setState(() {
+                                          generalAmount = value != null
+                                              ? double.parse(value)
+                                              : 0.0;
+                                        });
                                       }),
                                 ],
                               ),
@@ -176,7 +283,6 @@ class _ApplyLoanFromChamasoftFormState
                                     child: Padding(
                                   padding: const EdgeInsets.only(left: 0),
                                   child: amountTextInputField(
-                                      controller: guarantor1Controller,
                                       context: context,
                                       validator: (value) {
                                         if (value == null || value == "") {
@@ -187,7 +293,11 @@ class _ApplyLoanFromChamasoftFormState
                                       labelText: "Enter Amount",
                                       enabled: true,
                                       onChanged: (value) {
-                                        setState(() {});
+                                        setState(() {
+                                          guarantorOneAmount = value != null
+                                              ? double.parse(value)
+                                              : 0.0;
+                                        });
                                       }),
                                 ))
                               ],
@@ -225,7 +335,6 @@ class _ApplyLoanFromChamasoftFormState
                                     child: Padding(
                                   padding: const EdgeInsets.only(left: 0),
                                   child: amountTextInputField(
-                                      controller: guarantor2Controller,
                                       context: context,
                                       validator: (value) {
                                         if (value == null || value == "") {
@@ -236,56 +345,11 @@ class _ApplyLoanFromChamasoftFormState
                                       labelText: "Enter Amount",
                                       enabled: true,
                                       onChanged: (value) {
-                                        setState(() {});
-                                      }),
-                                ))
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: <Widget>[
-                                Expanded(
-                                  child: CustomDropDownButton(
-                                    enabled: true,
-                                    labelText: "Select guarantor three",
-                                    listItems: _memberOptions,
-                                    selectedItem: guarantorThreeId,
-                                    onChanged: (value) {
-                                      setState(() {
-                                        guarantorThreeId = value;
-                                        guarantorThreeName = _memberOptions
-                                            .firstWhere(
-                                                (member) => member.id == value)
-                                            .name;
-                                      });
-                                    },
-                                    validator: (value) {
-                                      if (value == "" || value == null) {
-                                        return "This field is required";
-                                      }
-                                      return null;
-                                    },
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 20.0,
-                                ),
-                                Expanded(
-                                    child: Padding(
-                                  padding: const EdgeInsets.only(left: 0),
-                                  child: amountTextInputField(
-                                      controller: guarantor3Controller,
-                                      context: context,
-                                      validator: (value) {
-                                        if (value == null || value == "") {
-                                          return "The field is required";
-                                        }
-                                        return null;
-                                      },
-                                      labelText: "Enter Amount",
-                                      enabled: true,
-                                      onChanged: (value) {
-                                        setState(() {});
+                                        setState(() {
+                                          guarantorTwoAmount = value != null
+                                              ? double.parse(value)
+                                              : 0.0;
+                                        });
                                       }),
                                 ))
                               ],
@@ -320,214 +384,7 @@ class _ApplyLoanFromChamasoftFormState
                               child: defaultButton(
                                 context: context,
                                 text: "Apply Now",
-                                onPressed: () {
-                                  //sum();
-                                  if (_formKey.currentState.validate()) {
-                                    sum();
-                                    if (result < int.parse(myController.text)) {
-                                      guarantor3Controller.clear();
-                                      guarantor2Controller.clear();
-                                      guarantor1Controller.clear();
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "Guarantors amount is less than the amount borrwed, Please Set new Amounts",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    } else if (result >
-                                        int.parse(myController.text)) {
-                                      guarantor3Controller.clear();
-                                      guarantor2Controller.clear();
-                                      guarantor1Controller.clear();
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "Guarantors amount is Exceeds the amount borrwed",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    } else if (result ==
-                                        int.parse(myController.text)) {
-                                      print(result +
-                                          int.parse(myController.text));
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "OK to Proceed with the Application",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.greenAccent,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) => AlertDialog(
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                10.0))),
-                                                title: heading2(
-                                                    text:
-                                                        "Confirm Application"),
-                                                content: Column(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.start,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
-                                                      children: [
-                                                        Column(
-                                                          // mainAxisAlignment:
-                                                          //     MainAxisAlignment
-                                                          //         .start,
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          children: [
-                                                            customTitleWithWrap(
-                                                                text:
-                                                                    "Loan Type :",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                              text:
-                                                                  "Amount KES:",
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                                text:
-                                                                    "Refund KES:",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                                text:
-                                                                    "Due Date:",
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start)
-                                                          ],
-                                                        ),
-                                                        SizedBox(
-                                                          width: 10.0,
-                                                        ),
-                                                        Column(
-                                                          children: [
-                                                            customTitleWithWrap(
-                                                                text:
-                                                                    _loanProduct
-                                                                        .name,
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                              text: myController
-                                                                  .text,
-                                                              textAlign:
-                                                                  TextAlign
-                                                                      .start,
-                                                            ),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                                text: (int.parse(myController
-                                                                            .text) +
-                                                                        1000)
-                                                                    .toString(),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .start),
-                                                            SizedBox(
-                                                              height: 15.0,
-                                                            ),
-                                                            customTitleWithWrap(
-                                                                text: DateTime
-                                                                        .now()
-                                                                    .toString(),
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .end)
-                                                          ],
-                                                        )
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                                actions: [
-                                                  // ignore: deprecated_member_use
-                                                  negativeActionDialogButton(
-                                                    text: ('CANCEL'),
-                                                    color: Theme.of(context)
-                                                        // ignore: deprecated_member_use
-                                                        .textSelectionHandleColor,
-                                                    action: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                  // ignore: deprecated_member_use
-                                                  positiveActionDialogButton(
-                                                      text: ('PROCEED'),
-                                                      color: primaryColor,
-                                                      action: () {}),
-                                                ],
-                                              ));
-                                    } else {
-                                      guarantor3Controller.clear();
-                                      guarantor2Controller.clear();
-                                      guarantor1Controller.clear();
-                                      Fluttertoast.showToast(
-                                          msg:
-                                              "Something went wrong, Try again",
-                                          toastLength: Toast.LENGTH_LONG,
-                                          gravity: ToastGravity.BOTTOM,
-                                          timeInSecForIosWeb: 1,
-                                          backgroundColor: Colors.red,
-                                          textColor: Colors.white,
-                                          fontSize: 16.0);
-                                    }
-                                  } else {
-                                    Fluttertoast.showToast(
-                                        msg: "Something went wrong, Try again",
-                                        toastLength: Toast.LENGTH_LONG,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: Colors.red,
-                                        textColor: Colors.white,
-                                        fontSize: 16.0);
-                                  }
-                                  print(result);
-                                  print(int.parse(myController.text));
-                                },
+                                onPressed: () => submit(_loanProduct),
                               ),
                             )
                           ],
