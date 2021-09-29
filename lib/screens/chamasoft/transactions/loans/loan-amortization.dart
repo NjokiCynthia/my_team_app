@@ -5,6 +5,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/appbars.dart';
+import 'package:chamasoft/widgets/dataTable.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -64,18 +65,27 @@ class _LoanAmortizationState extends State<LoanAmortization> {
     final Group groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
-    final interestRate = int.parse(_loanProduct.interestRate) / 100;
-    final payementPeriod = int.parse(_loanProduct.fixedRepaymentPeriod);
-    final amountToRefund = generalAmount + (generalAmount * interestRate);
+    String monthsOfRepayment = _loanProduct.fixedRepaymentPeriod != ""
+        ? _loanProduct.fixedRepaymentPeriod
+        : _loanProduct.maximumRepaymentPeriod;
+
+    final interestRate = int.parse(_loanProduct.interestRate);
+    //  final payementPeriod = int.parse(_loanProduct.fixedRepaymentPeriod) + 5;
 
     final payementPerMonth = ((generalAmount *
             interestRate *
-            pow(1 + interestRate, payementPeriod)) /
-        (pow(1 + interestRate, payementPeriod) - 1));
+            pow(1 + interestRate, int.parse(monthsOfRepayment))) /
+        (pow(1 + interestRate, int.parse(monthsOfRepayment)) - 1));
 
-    final balance = (amountToRefund - payementPerMonth);
+    //final balance = (amountToRefund - payementPerMonth);
 
-    final repaymentTime = int.parse(_loanProduct.loanRepaymentPeriodType) * 7;
+    final interest = interestRate / 100;
+    final result =
+        (1 - pow(1 + interest, int.parse(monthsOfRepayment) * -1)) / interest;
+    final payment = double.parse((generalAmount / result).toStringAsFixed(2));
+
+    final amountToRefund = generalAmount + (generalAmount * interest);
+    final interestAmount = amountToRefund - generalAmount;
 
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -86,7 +96,6 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         title: "Chamasoft Loan Terms & Amortization",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-
       body: Column(
         children: [
           Padding(
@@ -129,7 +138,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
-                          text: _loanProduct.description,
+                          text: _loanProduct.interestRate,
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -146,7 +155,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
-                          text: payementPeriod.toString() + " Month(s)",
+                          text: monthsOfRepayment + " Month(s)",
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -187,465 +196,55 @@ class _LoanAmortizationState extends State<LoanAmortization> {
             padding: const EdgeInsets.all(4.0),
             child: Container(
               width: double.infinity,
-              child: DataTable(
-                dataRowHeight: 25.0,
-                showBottomBorder: true,
-                headingRowColor: MaterialStateColor.resolveWith(
-                    (states) => Colors.cyanAccent),
-                columns: const <DataColumn>[
-                  DataColumn(
-                    label: Text(
-                      'Date',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Payement:',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Principle:',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                      textAlign: TextAlign.end,
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Interest',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                      textAlign: TextAlign.end,
-                    ),
-                  ),
-                  DataColumn(
-                    label: Text(
-                      'Balance:',
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                      textAlign: TextAlign.end,
-                    ),
-                  ),
-                ],
-                rows: <DataRow>[
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 1, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: "${currencyFormat.format(payementPerMonth)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: " ${currencyFormat.format(amountToRefund)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text: " ${currencyFormat.format(balance)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    selected: true,
-                    cells: <DataCell>[
-                      // ignore: deprecated_member_use
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 2, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text: " ${currencyFormat.format(balance)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              "${currencyFormat.format(balance - (balance * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 3, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - (balance * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - (balance * interestRate)))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - (balance * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    selected: true,
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 4, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - (balance * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 5, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    selected: true,
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 6, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 7, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    selected: true,
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 8, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 9, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    selected: true,
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 10, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 11, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                  DataRow(
-                    selected: true,
-                    cells: <DataCell>[
-                      DataCell(subtitle1(
-                          text: DateTime(now.year, now.month + 12, now.day)
-                              .toString(),
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                      interestRateRow(_loanProduct, context),
-                      DataCell(subtitle1(
-                          text:
-                              " ${currencyFormat.format(balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - ((balance - (balance * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate)) * interestRate))}",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor)),
-                    ],
-                  ),
-                ],
+              child: CustomDataTable(
+                rowItems: generateTableRows(
+                    payment, generalAmount, interest, monthsOfRepayment, date),
               ),
             ),
           ),
+          Container(
+            color: Colors.cyanAccent,
+            height: 56.0,
+            child: Padding(
+              padding: const EdgeInsets.all(0.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      subtitle1(text: 'Total'),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      subtitle1(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}"),
+                      SizedBox(
+                        width: 20.0,
+                      ),
+                      subtitle1(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}"),
+                      SizedBox(
+                        width: 20.0,
+                      ),
+                      subtitle1(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(interestAmount)}"),
+                      SizedBox(
+                        width: 15.0,
+                      ),
+                      subtitle1(text: 'Balance'),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          )
         ],
       ),
-      // body: Column(
-      //   children: <Widget>[
-      //     Container(
-      //       padding: EdgeInsets.all(20.0),
-      //       color: (themeChangeProvider.darkTheme)
-      //           ? Colors.blueGrey[800]
-      //           : Color(0xffededfe),
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         children: <Widget>[
-      //           Row(
-      //             crossAxisAlignment: CrossAxisAlignment.start,
-      //             children: <Widget>[
-      //               Expanded(
-      //                 child: heading2(
-      //                     text: 'Loan Name' /*widget.typeLoan.loanName*/,
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                     textAlign: TextAlign.start),
-      //               ),
-      //               heading2(
-      //                   text: "Ksh 180,000",
-      //                   // ignore: deprecated_member_use
-      //                   color: Theme.of(context).textSelectionHandleColor,
-      //                   textAlign: TextAlign.start)
-      //             ],
-      //           ),
-      //           Column(
-      //             crossAxisAlignment: CrossAxisAlignment.start,
-      //             children: <Widget>[
-      //               SizedBox(
-      //                 height: 10,
-      //               ),
-      //               Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 children: <Widget>[
-      //                   subtitle1(
-      //                     text: "Interest Rate: ",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                   ),
-      //                   customTitle(
-      //                     textAlign: TextAlign.start,
-      //                     text: "12%",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                     fontWeight: FontWeight.w600,
-      //                   ),
-      //                 ],
-      //               ),
-      //               Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 children: <Widget>[
-      //                   subtitle1(
-      //                     text: "Repayment Period: ",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                   ),
-      //                   customTitle(
-      //                     textAlign: TextAlign.start,
-      //                     text: "1 Month",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                     fontWeight: FontWeight.w600,
-      //                   ),
-      //                 ],
-      //               ),
-      //               Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 children: <Widget>[
-      //                   subtitle1(
-      //                     text: "Application Date: ",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                   ),
-      //                   customTitle(
-      //                     textAlign: TextAlign.start,
-      //                     text: "May 12, 2020",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                     fontWeight: FontWeight.w600,
-      //                   ),
-      //                 ],
-      //               ),
-      //             ],
-      //           ),
-      //           Column(
-      //             //crossAxisAlignment: CrossAxisAlignment.,
-      //             mainAxisAlignment: MainAxisAlignment.start,
-      //             children: <Widget>[],
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //     Expanded(
-      //       child: ListView.builder(
-      //         controller: _scrollController,
-      //         shrinkWrap: true,
-      //         itemBuilder: (context, index) {
-      //           LoanInstallment installment = installments[index];
-      //           return AmortizationBody(installment: installment);
-      //         },
-      //         itemCount: installments.length,
-      //       ),
-      //     )
-      //   ],
-      // ),
     );
   }
 
@@ -654,5 +253,35 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         text: _loanProduct.interestRate + "%",
         // ignore: deprecated_member_use
         color: Theme.of(context).textSelectionHandleColor));
+  }
+
+  List<DataRow> generateTableRows(double payment, generalAmount,
+      double interest, String monthsOfRepayment, DateTime date) {
+    List<DataRow> rows = <DataRow>[];
+    double newInterest;
+    double newCapital;
+    double newRate = interest / 100 / 12;
+    double newAmount = generalAmount;
+    DateTime date;
+    DateTime now = new DateTime.now();
+
+    for (var i = 0; i < int.parse(monthsOfRepayment); i++) {
+      newInterest = double.parse((newAmount * newRate).toStringAsFixed(2));
+      newCapital = double.parse((payment - newInterest).toStringAsFixed(2));
+      newAmount = double.parse((newAmount - newCapital).toStringAsFixed(2));
+      date = DateTime(now.year, now.month + (i + 1), now.day);
+
+      if (newAmount <= 0) newAmount = 0;
+      rows.add(DataRow(
+        cells: <DataCell>[
+          DataCell(Text((i + 1).toString())),
+          DataCell(Text("$date")),
+          DataCell(Text(newInterest.toString())),
+          DataCell(Text(newCapital.toString())),
+          DataCell(Text(newAmount.toString()))
+        ],
+      ));
+    }
+    return rows;
   }
 }
