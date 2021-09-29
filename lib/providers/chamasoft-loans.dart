@@ -22,6 +22,10 @@ class LoanProduct {
   String loanProcessingFeeFixedAmount;
   String loanProcessingFeePercentageRate;
   String loanProcessingFeePercentageChargedOn;
+  String loanAmountType;
+  String minimumLoanAmount;
+  String maximumLoanAmount;
+  String fixedLoanAmount;
 
   LoanProduct(
       {this.id,
@@ -38,7 +42,11 @@ class LoanProduct {
       this.loanProcessingFeeType,
       this.loanProcessingFeeFixedAmount,
       this.loanProcessingFeePercentageRate,
-      this.loanProcessingFeePercentageChargedOn});
+      this.loanProcessingFeePercentageChargedOn,
+      this.loanAmountType,
+      this.minimumLoanAmount,
+      this.maximumLoanAmount,
+      this.fixedLoanAmount});
 }
 
 class ChamasoftLoans with ChangeNotifier {
@@ -97,8 +105,11 @@ class ChamasoftLoans with ChangeNotifier {
                 loanProduct['loan_processing_fee_percentage_rate']..toString(),
             loanProcessingFeePercentageChargedOn:
                 loanProduct['loan_processing_fee_percentage_charged_on']
-                  ..toString());
-
+                  ..toString(),
+            loanAmountType: loanProduct['loan_amount_type']..toString(),
+            minimumLoanAmount: loanProduct['minimum_loan_amount']..toString(),
+            maximumLoanAmount: loanProduct['maximum_loan_amount']..toString(),
+            fixedLoanAmount: loanProduct['fixed_loan_amount']..toString());
         _loanProducts.add(_loanProduct);
       }
     }
@@ -115,6 +126,25 @@ class ChamasoftLoans with ChangeNotifier {
 
         final response = await PostToServer.post(postRequest, url);
         addLoanProducts(loanProducts: response['loan_products']);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
+    final url = EndpointUrl.CREATE_CHAMASOFT_LOAN_APPLICATION;
+    try {
+      try {
+        formData['user_id'] = _userId;
+
+        final postRequest = json.encode(formData);
+
+        final response = await PostToServer.post(postRequest, url);
+
+        return response['message'];
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }

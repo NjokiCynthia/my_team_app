@@ -396,7 +396,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                           onChanged: (value) {
                             setState(() {
                               amountPayable = value != null
-                                  ? double.parse(value)
+                                  ? double.tryParse(value)
                                   : amount = 0;
                             });
                           }),
@@ -414,7 +414,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                           enabled: true,
                           onChanged: (value) {
                             amountDisbursed = value != null
-                                ? double.parse(value)
+                                ? double.tryParse(value)
                                 : amount = 0;
                           }),
                       SizedBox(height: 10)
@@ -488,7 +488,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
                             onChanged: (value) {
                               setState(() {
                                 pricePerShare = value != null
-                                    ? double.parse(value)
+                                    ? double.tryParse(value)
                                     : amount = 0;
                               });
                             }),
@@ -713,7 +713,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
         enabled: true,
         onChanged: (value) {
           setState(() {
-            amount = value != null ? double.parse(value) : amount = 0;
+            amount = value != null ? double.tryParse(value) : amount = 0;
           });
         });
   }
