@@ -218,21 +218,15 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                       SizedBox(
                         width: 10.0,
                       ),
-                      subtitle1(
-                          text:
-                              "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}"),
+                      subtitle1(text: "--"),
                       SizedBox(
                         width: 20.0,
                       ),
-                      subtitle1(
-                          text:
-                              "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}"),
+                      subtitle1(text: "--"),
                       SizedBox(
                         width: 20.0,
                       ),
-                      subtitle1(
-                          text:
-                              "${groupObject.groupCurrency} ${currencyFormat.format(interestAmount)}"),
+                      subtitle1(text: "--"),
                       SizedBox(
                         width: 15.0,
                       ),
