@@ -376,7 +376,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
                             onChanged: (value) {
                               setState(() {
                                 pricePerShare = value != null
-                                    ? double.parse(value)
+                                    ? double.tryParse(value)
                                     : amount = 0;
                               });
                             }),
@@ -680,7 +680,7 @@ class _ReconcileWithdrawalFormState extends State<ReconcileWithdrawalForm> {
         enabled: true,
         onChanged: (value) {
           setState(() {
-            amount = value != null ? double.parse(value) : 0;
+            amount = value != null ? double.tryParse(value) : 0;
           });
         });
   }

@@ -1,4 +1,5 @@
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -47,25 +48,46 @@ class _ApplyLoanFromChamasoftFormState
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     if (_formKey.currentState.validate()) {
-      if (totalGuaranteed < generalAmount) {
-        StatusHandler().showErrorDialog(context,
-            "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}");
-      } else if (totalGuaranteed > generalAmount) {
-        StatusHandler().showErrorDialog(context,
-            "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}");
-      } else if (totalGuaranteed == generalAmount) {
-        showConfirmationDialog(loanProduct, groupObject);
+      if (totalGuaranteed == generalAmount) {
+        checkLoanQualification(loanProduct, groupObject);
       } else {
-        StatusHandler()
-            .showErrorDialog(context, "Something went wrong, please try again");
+        StatusHandler().showErrorDialog(context,
+            "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}");
       }
     }
   }
 
-  void showConfirmationDialog(LoanProduct loanProduct, Group groupObject) {
-    double amountToRefund = generalAmount +
-        (generalAmount * (int.tryParse(loanProduct.interestRate) / 100));
+  void checkLoanQualification(LoanProduct loanProduct, Group groupObject) {
+    // verify member qualification for the loan
+    if (loanProduct.loanAmountType == "2") {
+      // compare minimum with maximum amount
+      double minimumLoanAmount = double.tryParse(loanProduct.minimumLoanAmount);
+      double maximumLoanAmount = double.tryParse(loanProduct.maximumLoanAmount);
 
+      if (generalAmount < minimumLoanAmount) {
+        StatusHandler().showErrorDialog(context,
+            "${loanProduct.name} has a minimum loan amount of  ${groupObject.groupCurrency} ${currencyFormat.format(minimumLoanAmount)}");
+      } else if (generalAmount > maximumLoanAmount) {
+        StatusHandler().showErrorDialog(context,
+            "${loanProduct.name} has a maximum loan amount of  ${groupObject.groupCurrency} ${currencyFormat.format(maximumLoanAmount)}");
+      } else {
+        showConfirmationDialog(loanProduct, groupObject);
+      }
+    } else if (loanProduct.loanAmountType == "3") {
+      // check the fixed loan amount
+      double fixedLoanAmount = double.tryParse(loanProduct.fixedLoanAmount);
+      if (generalAmount != fixedLoanAmount) {
+        StatusHandler().showErrorDialog(context,
+            "${loanProduct.name} only offers a loan amount of  ${groupObject.groupCurrency} ${currencyFormat.format(fixedLoanAmount)}");
+      } else {
+        showConfirmationDialog(loanProduct, groupObject);
+      }
+    } else {
+      showConfirmationDialog(loanProduct, groupObject);
+    }
+  }
+
+  void showConfirmationDialog(LoanProduct loanProduct, Group groupObject) {
     String monthsOfRepayment = loanProduct.fixedRepaymentPeriod != ""
         ? loanProduct.fixedRepaymentPeriod
         : loanProduct.maximumRepaymentPeriod;
@@ -74,6 +96,13 @@ class _ApplyLoanFromChamasoftFormState
 
     DateTime repaymentDt = new DateTime(currentDt.year,
         currentDt.month + int.parse(monthsOfRepayment), currentDt.day);
+
+    bool isLoanProcessingEnabled =
+        loanProduct.enableLoanProcessingFee == "1" ? true : false;
+
+    double amountToRefund = getLoanAmountWithInterest(loanProduct);
+
+    double loanProcessingAmount = getLoanProcessingAmount(loanProduct);
 
     showDialog(
         context: context,
@@ -105,16 +134,21 @@ class _ApplyLoanFromChamasoftFormState
                               "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")
                     ],
                   ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      subtitle1(text: "Loan processing fee"),
-                      Spacer(),
-                      subtitle2(
-                          text:
-                              "${groupObject.groupCurrency} ${currencyFormat.format(100)}")
-                    ],
-                  ),
+                  if (isLoanProcessingEnabled)
+                    Column(
+                      children: [
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            subtitle1(text: "Loan processing fee"),
+                            Spacer(),
+                            subtitle2(
+                                text:
+                                    "${groupObject.groupCurrency} ${currencyFormat.format(loanProcessingAmount)}")
+                          ],
+                        ),
+                      ],
+                    ),
                   SizedBox(
                     height: 10,
                   ),
@@ -150,9 +184,103 @@ class _ApplyLoanFromChamasoftFormState
                 ),
                 // ignore: deprecated_member_use
                 positiveActionDialogButton(
-                    text: ('PROCEED'), color: primaryColor, action: () {}),
+                    text: ('PROCEED'),
+                    color: primaryColor,
+                    action: () => submitLoanApplication(loanProduct)),
               ],
             ));
+  }
+
+  double getLoanAmountWithInterest(LoanProduct loanProduct) {
+    // get the time and get the interest.
+
+    // get the period of repayment.
+    int periodOfRepayment = loanProduct.fixedRepaymentPeriod != ""
+        ? int.tryParse(loanProduct.fixedRepaymentPeriod)
+        : int.tryParse(loanProduct.maximumRepaymentPeriod);
+
+    int numberOfTimes;
+
+    if (loanProduct.interestRatePer == "1") {
+      // per day
+      numberOfTimes = 30 * periodOfRepayment;
+    } else if (loanProduct.interestRatePer == "2") {
+      // per week
+      numberOfTimes = 4 * periodOfRepayment;
+    } else if (loanProduct.interestRatePer == "3") {
+      // per month
+      numberOfTimes = 1 * periodOfRepayment;
+    } else if (loanProduct.interestRatePer == "4") {
+      // per year
+      numberOfTimes = (periodOfRepayment / 12).ceil();
+    } else if (loanProduct.interestRatePer == "5") {
+      // for the whole repayment period.
+      numberOfTimes = 1;
+    }
+
+    double interest =
+        (generalAmount * (int.tryParse(loanProduct.interestRate) / 100)) *
+            numberOfTimes;
+
+    double result = generalAmount + interest;
+    return result;
+  }
+
+  double getLoanProcessingAmount(LoanProduct loanProduct) {
+    double result = 0.0;
+    String feeType = loanProduct.loanProcessingFeeType;
+    String feePercentageChargedOn =
+        loanProduct.loanProcessingFeePercentageChargedOn;
+
+    if (feeType == "1") {
+      // fixed
+      result = double.tryParse(loanProduct.loanProcessingFeeFixedAmount);
+    } else if (feeType == "2") {
+      // for percentage value
+      if (feePercentageChargedOn == "1") {
+        result =
+            (int.tryParse(loanProduct.loanProcessingFeePercentageRate) / 100) *
+                generalAmount;
+      } else if (feePercentageChargedOn == "2") {
+        result =
+            (int.tryParse(loanProduct.loanProcessingFeePercentageRate) / 100) *
+                getLoanAmountWithInterest(loanProduct);
+      }
+    }
+
+    return result;
+  }
+
+  void submitLoanApplication(LoanProduct loanProduct) async {
+    Map<String, dynamic> formData = {
+      'loan_product_id': loanProduct.id,
+      'amount': generalAmount,
+      'guarantor_one_user_id': guarantorOneId,
+      'guarantor_one_amount': guarantorOneAmount,
+      'guarantor_two_user_id': guarantorTwoId,
+      'guarantor_two_amount': guarantorTwoAmount
+    };
+
+    try {
+      await Provider.of<ChamasoftLoans>(context, listen: false)
+          .submitLoanApplication(formData);
+
+      // StatusHandler()
+      //     .showSuccessSnackBar(_bodyContext, "Good news: $response");
+
+      // Future.delayed(const Duration(milliseconds: 2500), () {
+      //   Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
+      //       builder: (_) => ReconcileDepositList(
+      //           isInit: false, formLoadData: widget.formLoadData)));
+      // });
+    } on CustomException catch (error) {
+      StatusHandler().showDialogWithAction(
+          context: context,
+          message: error.toString(),
+          function: () => Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (_) => ApplyLoan())),
+          dismissible: true);
+    } finally {}
   }
 
   @override
@@ -298,7 +426,7 @@ class _ApplyLoanFromChamasoftFormState
                                       onChanged: (value) {
                                         setState(() {
                                           guarantorOneAmount = value != null
-                                              ? double.parse(value)
+                                              ? double.tryParse(value)
                                               : 0.0;
                                         });
                                       }),
@@ -350,7 +478,7 @@ class _ApplyLoanFromChamasoftFormState
                                       onChanged: (value) {
                                         setState(() {
                                           guarantorTwoAmount = value != null
-                                              ? double.parse(value)
+                                              ? double.tryParse(value)
                                               : 0.0;
                                         });
                                       }),
