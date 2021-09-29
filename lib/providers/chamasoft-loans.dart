@@ -4,7 +4,6 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:chamasoft/helpers/post-to-server.dart';
-import 'package:chamasoft/screens/chamasoft/settings/setup-lists/loan-setup-list.dart';
 import 'package:flutter/cupertino.dart';
 
 class LoanProduct {
@@ -135,18 +134,17 @@ class ChamasoftLoans with ChangeNotifier {
     }
   }
 
-  Future<void> submitLoanApplication(Map<String, dynamic> formData) async {
-    // final url = EndpointUrl.CHAMASOFT_LOAN_APPLICATION;
+  Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
+    final url = EndpointUrl.CREATE_CHAMASOFT_LOAN_APPLICATION;
     try {
       try {
         formData['user_id'] = _userId;
 
         final postRequest = json.encode(formData);
 
-        print("request $postRequest");
+        final response = await PostToServer.post(postRequest, url);
 
-        // final response = await PostToServer.post(postRequest, url);
-
+        return response['message'];
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
