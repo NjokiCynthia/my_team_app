@@ -19,8 +19,6 @@ import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../../dashboard.dart';
-
 class ApplyLoan extends StatefulWidget {
   final bool isInit;
 

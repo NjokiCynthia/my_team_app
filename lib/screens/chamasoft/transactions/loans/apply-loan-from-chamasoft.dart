@@ -1,8 +1,4 @@
-import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
-import 'package:chamasoft/providers/groups.dart';
 // ignore: unused_import
 import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft-form.dart';
@@ -15,7 +11,6 @@ import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 // ignore: unused_import
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 // ignore: unused_import
 import 'package:chamasoft/widgets/textfields.dart';
@@ -29,6 +24,7 @@ import 'package:provider/provider.dart';
 // ignore: unused_import
 import 'loan-amortization.dart';
 
+// ignore: must_be_immutable
 class ApplyLoanFromChamasoft extends StatefulWidget {
   Map<String, dynamic> formLoadData;
 

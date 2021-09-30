@@ -313,7 +313,6 @@ class _ApplyLoanFromChamasoftFormState
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _generalAmount = new TextEditingController();
     final arguments =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 

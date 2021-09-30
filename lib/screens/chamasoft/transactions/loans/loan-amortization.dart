@@ -72,6 +72,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
     final interestRate = int.parse(_loanProduct.interestRate);
     //  final payementPeriod = int.parse(_loanProduct.fixedRepaymentPeriod) + 5;
 
+    // ignore: unused_local_variable
     final payementPerMonth = ((generalAmount *
             interestRate *
             pow(1 + interestRate, int.parse(monthsOfRepayment))) /
@@ -85,6 +86,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
     final payment = double.parse((generalAmount / result).toStringAsFixed(2));
 
     final amountToRefund = generalAmount + (generalAmount * interest);
+    // ignore: unused_local_variable
     final interestAmount = amountToRefund - generalAmount;
 
     return Scaffold(
