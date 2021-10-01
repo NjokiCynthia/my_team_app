@@ -450,6 +450,8 @@ class _ApplyLoanFromChamasoftFormState
                                                           arguments: {
                                                             'loanProduct':
                                                                 _loanProduct,
+                                                            'generalAmount':
+                                                                generalAmount,
                                                           })),
                                                 ),
                                             "color": primaryColor,
