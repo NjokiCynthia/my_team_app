@@ -116,7 +116,7 @@ class _ApplyLoanFromChamasoftFormState
         builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              title: heading2(text: "Confirm Application"),
+              title: heading2(text: "Confirm Chamasoft Loan Application"),
               content: subtitle1(
                   text:
                       'Please confirm loan application of "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}" '),
