@@ -339,125 +339,130 @@ class _ApplyLoanFromChamasoftFormState
             onTap: () {
               FocusScope.of(context).unfocus();
             },
-            child: Container(
-              color: (themeChangeProvider.darkTheme)
-                  ? Colors.blueGrey[800]
-                  : Colors.white,
-              //   // padding: EdgeInsets.all(0.0),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
+            child: SingleChildScrollView(
               child: Container(
-                decoration: primaryGradient(context),
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  subtitle1(
-                                    text:
-                                        "From ChamaSoft:  ${_loanProduct.name}",
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  amountTextInputField(
-                                      context: context,
-                                      validator: (value) {
-                                        if (value == null || value == "") {
-                                          return "The field is required";
-                                        }
-                                        return null;
-                                      },
-                                      labelText: "Enter The Loan Amount",
-                                      enabled: true,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          generalAmount = value != null
-                                              ? double.parse(value)
-                                              : 0.0;
-                                        });
-                                      }),
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: 25.0,
-                            ),
-                            if (_loanProduct.enableLoanGuarantors == "1")
-                              SingleChildScrollView(
-                                child: ListView.builder(
-                                  itemBuilder: (BuildContext context, index) {
-                                    return addGuarantor(
-                                        _memberOptions, context);
-                                  },
-                                  itemCount: int.tryParse(
-                                              _loanProduct.guarantors) !=
-                                          null
-                                      ? int.tryParse(_loanProduct.guarantors)
-                                      : 0,
+                color: (themeChangeProvider.darkTheme)
+                    ? Colors.blueGrey[800]
+                    : Colors.white,
+                //   // padding: EdgeInsets.all(0.0),
+                height: MediaQuery.of(context).size.height * 0.9,
+                child: Container(
+                  decoration: primaryGradient(context),
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    subtitle1(
+                                      text:
+                                          "From ChamaSoft:  ${_loanProduct.name}",
+                                    ),
+                                  ],
                                 ),
                               ),
-                            SizedBox(
-                              height: 15.0,
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                              child: textWithExternalLinks(
-                                  color: Colors.blueGrey,
-                                  size: 12.0,
-                                  textData: {
-                                    'By applying for this loan you agree to the ':
-                                        {},
-                                    'terms and conditions': {
-                                      "url": () => Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        LoanAmortization(),
-                                                settings:
-                                                    RouteSettings(arguments: {
-                                                  'loanProduct': _loanProduct,
-                                                })),
-                                          ),
-                                      "color": primaryColor,
-                                      "weight": FontWeight.w500
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    amountTextInputField(
+                                        context: context,
+                                        validator: (value) {
+                                          if (value == null || value == "") {
+                                            return "The field is required";
+                                          }
+                                          return null;
+                                        },
+                                        labelText: "Enter The Loan Amount",
+                                        enabled: true,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            generalAmount = value != null
+                                                ? double.parse(value)
+                                                : 0.0;
+                                          });
+                                        }),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              if (_loanProduct.enableLoanGuarantors == "1")
+                                Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.5,
+                                  padding: EdgeInsets.all(8.0),
+                                  child: ListView.builder(
+                                    itemBuilder: (BuildContext context, index) {
+                                      return addGuarantor(
+                                          _memberOptions, context);
                                     },
-                                  }),
-                            ),
-                            SizedBox(
-                              height: 24,
-                            ),
-                            Center(
-                              child: defaultButton(
-                                  context: context,
-                                  text: "Apply Now",
-                                  onPressed: () {
-                                    submit(_loanProduct, context);
-                                  }),
-                            )
-                          ],
+                                    itemCount: int.tryParse(
+                                                _loanProduct.guarantors) !=
+                                            null
+                                        ? int.tryParse(_loanProduct.guarantors)
+                                        : 0,
+                                  ),
+                                ),
+                              SizedBox(
+                                height: 15.0,
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: 30.0, right: 30.0),
+                                child: textWithExternalLinks(
+                                    color: Colors.blueGrey,
+                                    size: 12.0,
+                                    textData: {
+                                      'By applying for this loan you agree to the ':
+                                          {},
+                                      'terms and conditions': {
+                                        "url": () => Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          LoanAmortization(),
+                                                  settings:
+                                                      RouteSettings(arguments: {
+                                                    'loanProduct': _loanProduct,
+                                                  })),
+                                            ),
+                                        "color": primaryColor,
+                                        "weight": FontWeight.w500
+                                      },
+                                    }),
+                              ),
+                              SizedBox(
+                                height: 24,
+                              ),
+                              Center(
+                                child: defaultButton(
+                                    context: context,
+                                    text: "Apply Now",
+                                    onPressed: () {
+                                      submit(_loanProduct, context);
+                                    }),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -472,7 +477,7 @@ class _ApplyLoanFromChamasoftFormState
         Expanded(
           child: CustomDropDownButton(
             enabled: true,
-            labelText: "Select guarantor two",
+            labelText: "Select guarantor",
             listItems: _memberOptions,
             selectedItem: guarantorTwoId,
             onChanged: (value) {
