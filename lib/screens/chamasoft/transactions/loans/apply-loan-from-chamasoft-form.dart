@@ -404,7 +404,7 @@ class _ApplyLoanFromChamasoftFormState
                               if (_loanProduct.enableLoanGuarantors == "1")
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.5,
+                                      MediaQuery.of(context).size.height * 0.2,
                                   padding: EdgeInsets.all(8.0),
                                   child: ListView.builder(
                                     itemBuilder: (BuildContext context, index) {
