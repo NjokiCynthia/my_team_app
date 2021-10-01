@@ -317,6 +317,8 @@ class _ApplyLoanFromChamasoftFormState
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     final LoanProduct _loanProduct = arguments['loanProduct'];
+    final Group groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     final List<NamesListItem> _memberOptions =
         arguments['formLoadData'].containsKey("memberOptions")
@@ -395,6 +397,25 @@ class _ApplyLoanFromChamasoftFormState
                                                 : 0.0;
                                           });
                                         }),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        customTitle(
+                                            text: 'Amount: ' +
+                                                (_loanProduct.maximumLoanAmount)
+                                                    .toString() +
+                                                " " +
+                                                'Maximum to ' +
+                                                " " +
+                                                (_loanProduct.minimumLoanAmount)
+                                                    .toString() +
+                                                " " +
+                                                'Minimum.',
+                                            fontSize: 10.0,
+                                            textAlign: TextAlign.start),
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),
