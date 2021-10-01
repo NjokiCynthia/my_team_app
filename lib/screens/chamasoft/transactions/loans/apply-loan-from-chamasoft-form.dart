@@ -424,27 +424,40 @@ class _ApplyLoanFromChamasoftFormState
                               Padding(
                                 padding:
                                     EdgeInsets.only(left: 30.0, right: 30.0),
-                                child: textWithExternalLinks(
-                                    color: Colors.blueGrey,
-                                    size: 12.0,
-                                    textData: {
-                                      'By applying for this loan you agree to the ':
-                                          {},
-                                      'terms and conditions': {
-                                        "url": () => Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
+                                child: Row(
+                                  children: [
+                                    Checkbox(
+                                        value: true,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            value = true;
+                                          });
+                                        }),
+                                    textWithExternalLinks(
+                                        color: Colors.blueGrey,
+                                        size: 12.0,
+                                        textData: {
+                                          'By applying for this loan you agree to the ':
+                                              {},
+                                          'terms and conditions': {
+                                            "url": () =>
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
                                                           LoanAmortization(),
-                                                  settings:
-                                                      RouteSettings(arguments: {
-                                                    'loanProduct': _loanProduct,
-                                                  })),
-                                            ),
-                                        "color": primaryColor,
-                                        "weight": FontWeight.w500
-                                      },
-                                    }),
+                                                      settings: RouteSettings(
+                                                          arguments: {
+                                                            'loanProduct':
+                                                                _loanProduct,
+                                                          })),
+                                                ),
+                                            "color": primaryColor,
+                                            "weight": FontWeight.w500
+                                          },
+                                        }),
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: 24,
