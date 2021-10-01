@@ -26,6 +26,8 @@ class LoanProduct {
   String minimumLoanAmount;
   String maximumLoanAmount;
   String fixedLoanAmount;
+  String guarantors;
+  String enableLoanGuarantors;
 
   LoanProduct(
       {this.id,
@@ -46,7 +48,9 @@ class LoanProduct {
       this.loanAmountType,
       this.minimumLoanAmount,
       this.maximumLoanAmount,
-      this.fixedLoanAmount});
+      this.fixedLoanAmount,
+      this.guarantors,
+      this.enableLoanGuarantors});
 }
 
 class ChamasoftLoans with ChangeNotifier {
@@ -81,35 +85,39 @@ class ChamasoftLoans with ChangeNotifier {
     if (loanProducts.length > 0) {
       for (var loanProduct in loanProducts) {
         final _loanProduct = LoanProduct(
-            id: loanProduct['id']..toString(),
-            name: loanProduct['name']..toString(),
-            description: loanProduct['description']..toString(),
-            loanRepaymentPeriodType: loanProduct['loan_repayment_period_type']
-              ..toString(),
-            fixedRepaymentPeriod: loanProduct['fixed_repayment_period']
-              ..toString(),
-            minimumRepaymentPeriod: loanProduct['minimum_repayment_period']
-              ..toString(),
-            maximumRepaymentPeriod: loanProduct['maximum_repayment_period']
-              ..toString(),
-            interestRate: loanProduct['interest_rate']..toString(),
-            interestRatePer: loanProduct['interest_rate_per']..toString(),
-            interestType: loanProduct['interest_type']..toString(),
-            enableLoanProcessingFee: loanProduct['enable_loan_processing_fee']
-              ..toString(),
-            loanProcessingFeeType: loanProduct['loan_processing_fee_type']
-              ..toString(),
-            loanProcessingFeeFixedAmount:
-                loanProduct['loan_processing_fee_fixed_amount']..toString(),
-            loanProcessingFeePercentageRate:
-                loanProduct['loan_processing_fee_percentage_rate']..toString(),
-            loanProcessingFeePercentageChargedOn:
-                loanProduct['loan_processing_fee_percentage_charged_on']
-                  ..toString(),
-            loanAmountType: loanProduct['loan_amount_type']..toString(),
-            minimumLoanAmount: loanProduct['minimum_loan_amount']..toString(),
-            maximumLoanAmount: loanProduct['maximum_loan_amount']..toString(),
-            fixedLoanAmount: loanProduct['fixed_loan_amount']..toString());
+          id: loanProduct['id']..toString(),
+          name: loanProduct['name']..toString(),
+          description: loanProduct['description']..toString(),
+          loanRepaymentPeriodType: loanProduct['loan_repayment_period_type']
+            ..toString(),
+          fixedRepaymentPeriod: loanProduct['fixed_repayment_period']
+            ..toString(),
+          minimumRepaymentPeriod: loanProduct['minimum_repayment_period']
+            ..toString(),
+          maximumRepaymentPeriod: loanProduct['maximum_repayment_period']
+            ..toString(),
+          interestRate: loanProduct['interest_rate']..toString(),
+          interestRatePer: loanProduct['interest_rate_per']..toString(),
+          interestType: loanProduct['interest_type']..toString(),
+          enableLoanProcessingFee: loanProduct['enable_loan_processing_fee']
+            ..toString(),
+          loanProcessingFeeType: loanProduct['loan_processing_fee_type']
+            ..toString(),
+          loanProcessingFeeFixedAmount:
+              loanProduct['loan_processing_fee_fixed_amount']..toString(),
+          loanProcessingFeePercentageRate:
+              loanProduct['loan_processing_fee_percentage_rate']..toString(),
+          loanProcessingFeePercentageChargedOn:
+              loanProduct['loan_processing_fee_percentage_charged_on']
+                ..toString(),
+          loanAmountType: loanProduct['loan_amount_type']..toString(),
+          minimumLoanAmount: loanProduct['minimum_loan_amount']..toString(),
+          maximumLoanAmount: loanProduct['maximum_loan_amount']..toString(),
+          fixedLoanAmount: loanProduct['fixed_loan_amount']..toString(),
+          guarantors: loanProduct['minimum_guarantors']..toString(),
+          enableLoanGuarantors: loanProduct['enable_loan_guarantors']
+            ..toString(),
+        );
         _loanProducts.add(_loanProduct);
       }
     }
