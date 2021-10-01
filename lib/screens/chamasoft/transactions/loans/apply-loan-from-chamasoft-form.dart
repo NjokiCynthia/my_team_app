@@ -140,6 +140,8 @@ class _ApplyLoanFromChamasoftFormState
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
 
     final LoanProduct _loanProduct = arguments['loanProduct'];
+    final Group groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     final List<NamesListItem> _memberOptions =
         arguments['formLoadData'].containsKey("memberOptions")
@@ -218,6 +220,25 @@ class _ApplyLoanFromChamasoftFormState
                                                 : 0.0;
                                           });
                                         }),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        customTitle(
+                                            text: 'Amount: ' +
+                                                (_loanProduct.maximumLoanAmount)
+                                                    .toString() +
+                                                " " +
+                                                'Maximum to ' +
+                                                " " +
+                                                (_loanProduct.minimumLoanAmount)
+                                                    .toString() +
+                                                " " +
+                                                'Minimum.',
+                                            fontSize: 10.0,
+                                            textAlign: TextAlign.start),
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),
@@ -227,7 +248,7 @@ class _ApplyLoanFromChamasoftFormState
                               if (_loanProduct.enableLoanGuarantors == "1")
                                 Container(
                                   height:
-                                      MediaQuery.of(context).size.height * 0.5,
+                                      MediaQuery.of(context).size.height * 0.2,
                                   padding: EdgeInsets.all(8.0),
                                   child: ListView.builder(
                                     itemBuilder: (BuildContext context, index) {
@@ -247,27 +268,42 @@ class _ApplyLoanFromChamasoftFormState
                               Padding(
                                 padding:
                                     EdgeInsets.only(left: 30.0, right: 30.0),
-                                child: textWithExternalLinks(
-                                    color: Colors.blueGrey,
-                                    size: 12.0,
-                                    textData: {
-                                      'By applying for this loan you agree to the ':
-                                          {},
-                                      'terms and conditions': {
-                                        "url": () => Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
+                                child: Row(
+                                  children: [
+                                    Checkbox(
+                                        value: true,
+                                        onChanged: (bool value) {
+                                          setState(() {
+                                            value = true;
+                                          });
+                                        }),
+                                    textWithExternalLinks(
+                                        color: Colors.blueGrey,
+                                        size: 12.0,
+                                        textData: {
+                                          'By applying for this loan you agree to the ':
+                                              {},
+                                          'terms and conditions': {
+                                            "url": () =>
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
                                                           LoanAmortization(),
-                                                  settings:
-                                                      RouteSettings(arguments: {
-                                                    'loanProduct': _loanProduct,
-                                                  })),
-                                            ),
-                                        "color": primaryColor,
-                                        "weight": FontWeight.w500
-                                      },
-                                    }),
+                                                      settings: RouteSettings(
+                                                          arguments: {
+                                                            'loanProduct':
+                                                                _loanProduct,
+                                                            'generalAmount':
+                                                                generalAmount,
+                                                          })),
+                                                ),
+                                            "color": primaryColor,
+                                            "weight": FontWeight.w500
+                                          },
+                                        }),
+                                  ],
+                                ),
                               ),
                               SizedBox(
                                 height: 24,

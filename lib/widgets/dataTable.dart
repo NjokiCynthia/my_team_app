@@ -11,6 +11,7 @@ class CustomDataTable extends StatelessWidget {
         showBottomBorder: true,
         headingRowColor:
             MaterialStateColor.resolveWith((states) => Colors.cyanAccent),
+        columnSpacing: 30.0,
         columns: [
           DataColumn(label: Text('No.')),
           DataColumn(label: Text('Date')),

@@ -70,13 +70,11 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         : _loanProduct.maximumRepaymentPeriod;
 
     final interestRate = int.parse(_loanProduct.interestRate);
-    //  final payementPeriod = int.parse(_loanProduct.fixedRepaymentPeriod) + 5;
 
-    // ignore: unused_local_variable
-    final payementPerMonth = ((generalAmount *
-            interestRate *
-            pow(1 + interestRate, int.parse(monthsOfRepayment))) /
-        (pow(1 + interestRate, int.parse(monthsOfRepayment)) - 1));
+    // final payementPerMonth = ((generalAmount *
+    //         interestRate *
+    //         pow(1 + interestRate, int.parse(monthsOfRepayment))) /
+    //     (pow(1 + interestRate, int.parse(monthsOfRepayment)) - 1));
 
     //final balance = (amountToRefund - payementPerMonth);
 
@@ -85,7 +83,10 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         (1 - pow(1 + interest, int.parse(monthsOfRepayment) * -1)) / interest;
     final payment = double.parse((generalAmount / result).toStringAsFixed(2));
 
-    final amountToRefund = generalAmount + (generalAmount * interest);
+    final totalInterestAmount =
+        generalAmount * interest * int.parse(monthsOfRepayment);
+
+    final amountToRefund = generalAmount + totalInterestAmount;
     // ignore: unused_local_variable
     final interestAmount = amountToRefund - generalAmount;
 
@@ -95,7 +96,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Chamasoft Loan Terms & Amortization",
+        title: "Loan Terms & Amortization",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
@@ -117,7 +118,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                     ),
                     heading2(
                         text:
-                            "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}",
+                            "${groupObject.groupCurrency}${currencyFormat.format(amountToRefund)}",
                         //generalAmount.toString(),
                         // ignore: deprecated_member_use
                         color: Theme.of(context).textSelectionHandleColor,
@@ -140,7 +141,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
                         ),
                         customTitle(
                           textAlign: TextAlign.start,
-                          text: _loanProduct.interestRate,
+                          text: _loanProduct.description,
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           fontWeight: FontWeight.w600,
@@ -194,14 +195,11 @@ class _LoanAmortizationState extends State<LoanAmortization> {
           SizedBox(
             height: 10.0,
           ),
-          Padding(
-            padding: const EdgeInsets.all(4.0),
-            child: Container(
-              width: double.infinity,
-              child: CustomDataTable(
-                rowItems: generateTableRows(
-                    payment, generalAmount, interest, monthsOfRepayment, date),
-              ),
+          Container(
+            // width: double.infinity,
+            child: CustomDataTable(
+              rowItems: generateTableRows(
+                  payment, generalAmount, interest, monthsOfRepayment, date),
             ),
           ),
           Container(
@@ -244,13 +242,6 @@ class _LoanAmortizationState extends State<LoanAmortization> {
     );
   }
 
-  DataCell interestRateRow(LoanProduct _loanProduct, BuildContext context) {
-    return DataCell(subtitle1(
-        text: _loanProduct.interestRate + "%",
-        // ignore: deprecated_member_use
-        color: Theme.of(context).textSelectionHandleColor));
-  }
-
   List<DataRow> generateTableRows(double payment, generalAmount,
       double interest, String monthsOfRepayment, DateTime date) {
     List<DataRow> rows = <DataRow>[];
@@ -258,20 +249,26 @@ class _LoanAmortizationState extends State<LoanAmortization> {
     double newCapital;
     double newRate = interest / 100 / 12;
     double newAmount = generalAmount;
-    DateTime date;
+    //DateTime date;
     DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    var dateTime = DateTime.parse(date.toIso8601String());
+    //var formate2 = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
 
     for (var i = 0; i < int.parse(monthsOfRepayment); i++) {
       newInterest = double.parse((newAmount * newRate).toStringAsFixed(2));
       newCapital = double.parse((payment - newInterest).toStringAsFixed(2));
       newAmount = double.parse((newAmount - newCapital).toStringAsFixed(2));
-      date = DateTime(now.year, now.month + (i + 1), now.day);
+      DateTime date = new DateTime(now.year, now.month + (i + 1), now.day);
+      var formate2 =
+          "${dateTime.year}-${dateTime.month + (i + 1)}-${dateTime.day}";
+
 
       if (newAmount <= 0) newAmount = 0;
       rows.add(DataRow(
         cells: <DataCell>[
           DataCell(Text((i + 1).toString())),
-          DataCell(Text("$date")),
+          DataCell(Text("$formate2")),
           DataCell(Text(newInterest.toString())),
           DataCell(Text(newCapital.toString())),
           DataCell(Text(newAmount.toString()))
