@@ -32,156 +32,40 @@ class _ApplyLoanFromChamasoftFormState
     extends State<ApplyLoanFromChamasoftForm> {
   double _appBarElevation = 0;
   final _formKey = GlobalKey<FormState>();
+  BuildContext _buildContext;
 
   double generalAmount;
-  double amountToRefund;
-  double guarantorOneAmount, guarantorTwoAmount;
-  int guarantorOneId, guarantorTwoId, guarantorThreeId;
-  String guarantorOneName, guarantorTwoName, guarantorThreeName;
+  List<double> amount = [];
+  List<int> guarantors = [];
 
   double get totalGuaranteed {
-    return guarantorOneAmount + guarantorTwoAmount;
+    return amount.reduce((value, element) => value + element);
   }
 
-  void submit(LoanProduct loanProduct, BuildContext context) {
+  void submit(LoanProduct loanProduct) {
     final Group groupObject =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+        Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
 
     if (_formKey.currentState.validate()) {
       if (totalGuaranteed == generalAmount) {
-        // check if guarantor one is same as guarantor two
-        if (guarantorOneId == guarantorTwoId) {
-          StatusHandler().showErrorDialog(
-              context, "You cannot be guaranteed by same member.");
-        } else {
-          checkLoanQualification(loanProduct, groupObject, context);
-        }
+        showConfirmationDialog(loanProduct, groupObject);
       } else {
-        StatusHandler().showErrorDialog(context,
+        StatusHandler().showErrorDialog(_buildContext,
             "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}.");
       }
     }
   }
 
-  void checkLoanQualification(
-      LoanProduct loanProduct, Group groupObject, BuildContext context) {
-    // verify member qualification for the loan
-    if (loanProduct.loanAmountType == "2") {
-      // compare minimum with maximum amount
-      double minimumLoanAmount = double.tryParse(loanProduct.minimumLoanAmount);
-      double maximumLoanAmount = double.tryParse(loanProduct.maximumLoanAmount);
-
-      if (generalAmount < minimumLoanAmount) {
-        StatusHandler().showErrorDialog(context,
-            "${loanProduct.name} has a minimum loan amount of  ${groupObject.groupCurrency} ${currencyFormat.format(minimumLoanAmount)}.");
-      } else if (generalAmount > maximumLoanAmount) {
-        StatusHandler().showErrorDialog(context,
-            "${loanProduct.name} has a maximum loan amount of  ${groupObject.groupCurrency} ${currencyFormat.format(maximumLoanAmount)}.");
-      } else {
-        showConfirmationDialog(loanProduct, groupObject, context);
-      }
-    } else if (loanProduct.loanAmountType == "3") {
-      // check the fixed loan amount
-      double fixedLoanAmount = double.tryParse(loanProduct.fixedLoanAmount);
-      if (generalAmount != fixedLoanAmount) {
-        StatusHandler().showErrorDialog(context,
-            "${loanProduct.name} only offers a loan amount of  ${groupObject.groupCurrency} ${currencyFormat.format(fixedLoanAmount)}.");
-      } else {
-        showConfirmationDialog(loanProduct, groupObject, context);
-      }
-    } else {
-      showConfirmationDialog(loanProduct, groupObject, context);
-    }
-  }
-
-  void showConfirmationDialog(
-      LoanProduct loanProduct, Group groupObject, BuildContext context) {
-    String monthsOfRepayment = loanProduct.fixedRepaymentPeriod != ""
-        ? loanProduct.fixedRepaymentPeriod
-        : loanProduct.maximumRepaymentPeriod;
-
-    DateTime currentDt = new DateTime.now();
-
-    DateTime repaymentDt = new DateTime(currentDt.year,
-        currentDt.month + int.parse(monthsOfRepayment), currentDt.day);
-
-    bool isLoanProcessingEnabled =
-        loanProduct.enableLoanProcessingFee == "1" ? true : false;
-
-    double amountToRefund = getLoanAmountWithInterest(loanProduct);
-
-    double loanProcessingAmount = getLoanProcessingAmount(loanProduct);
-
+  void showConfirmationDialog(LoanProduct loanProduct, Group groupObject) {
     showDialog(
-        context: context,
+        context: _buildContext,
         builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              title: heading2(text: "Confirm Chamasoft Loan Application"),
-              // content: subtitle1(
-              //     text:
-              //         'Please confirm loan application of "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}" '),
-              content: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    children: [
-                      subtitle1(text: "Loan Type"),
-                      Spacer(),
-                      subtitle2(text: "${loanProduct.name}")
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      subtitle1(text: "Amount"),
-                      Spacer(),
-                      subtitle2(
-                          text:
-                              "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")
-                    ],
-                  ),
-                  if (isLoanProcessingEnabled)
-                    Column(
-                      children: [
-                        SizedBox(height: 10),
-                        Row(
-                          children: [
-                            subtitle1(text: "Loan processing fee"),
-                            Spacer(),
-                            subtitle2(
-                                text:
-                                    "${groupObject.groupCurrency} ${currencyFormat.format(loanProcessingAmount)}")
-                          ],
-                        ),
-                      ],
-                    ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      subtitle1(text: "Refund"),
-                      Spacer(),
-                      subtitle2(
-                          text:
-                              "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}")
-                    ],
-                  ),
-                  SizedBox(height: 10),
-                  Row(
-                    children: [
-                      subtitle1(text: "Due date"),
-                      Spacer(),
-                      subtitle2(text: DateFormat.yMMMEd().format(repaymentDt))
-                    ],
-                  ),
-                ],
-              ),
+              title: subtitle1(text: "Confirmation"),
+              content: subtitle2(
+                  text:
+                      "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}."),
               actions: [
                 // ignore: deprecated_member_use
                 negativeActionDialogButton(
@@ -205,75 +89,12 @@ class _ApplyLoanFromChamasoftFormState
             ));
   }
 
-  double getLoanAmountWithInterest(LoanProduct loanProduct) {
-    // get the time and get the interest.
-
-    // get the period of repayment.
-    int periodOfRepayment = loanProduct.fixedRepaymentPeriod != ""
-        ? int.tryParse(loanProduct.fixedRepaymentPeriod)
-        : int.tryParse(loanProduct.maximumRepaymentPeriod);
-
-    int numberOfTimes;
-
-    if (loanProduct.interestRatePer == "1") {
-      // per day
-      numberOfTimes = 30 * periodOfRepayment;
-    } else if (loanProduct.interestRatePer == "2") {
-      // per week
-      numberOfTimes = 4 * periodOfRepayment;
-    } else if (loanProduct.interestRatePer == "3") {
-      // per month
-      numberOfTimes = 1 * periodOfRepayment;
-    } else if (loanProduct.interestRatePer == "4") {
-      // per year
-      numberOfTimes = (periodOfRepayment / 12).ceil();
-    } else if (loanProduct.interestRatePer == "5") {
-      // for the whole repayment period.
-      numberOfTimes = 1;
-    }
-
-    double interest =
-        (generalAmount * (int.tryParse(loanProduct.interestRate) / 100)) *
-            numberOfTimes;
-
-    double result = generalAmount + interest;
-    return result;
-  }
-
-  double getLoanProcessingAmount(LoanProduct loanProduct) {
-    double result = 0.0;
-    String feeType = loanProduct.loanProcessingFeeType;
-    String feePercentageChargedOn =
-        loanProduct.loanProcessingFeePercentageChargedOn;
-
-    if (feeType == "1") {
-      // fixed
-      result = double.tryParse(loanProduct.loanProcessingFeeFixedAmount);
-    } else if (feeType == "2") {
-      // for percentage value
-      if (feePercentageChargedOn == "1") {
-        result =
-            (int.tryParse(loanProduct.loanProcessingFeePercentageRate) / 100) *
-                generalAmount;
-      } else if (feePercentageChargedOn == "2") {
-        result =
-            (int.tryParse(loanProduct.loanProcessingFeePercentageRate) / 100) *
-                getLoanAmountWithInterest(loanProduct);
-      }
-    }
-
-    return result;
-  }
-
   void submitLoanApplication(
       LoanProduct loanProduct, BuildContext context) async {
     Map<String, dynamic> formData = {
       'loan_product_id': loanProduct.id,
       'amount': generalAmount,
-      'guarantor_one_user_id': guarantorOneId,
-      'guarantor_one_amount': guarantorOneAmount,
-      'guarantor_two_user_id': guarantorTwoId,
-      'guarantor_two_amount': guarantorTwoAmount
+      'guarantors': guarantors
     };
 
     // Show the loader
@@ -328,7 +149,9 @@ class _ApplyLoanFromChamasoftFormState
             ? arguments['formLoadData']['memberOptions']
             : [];
 
-    print("enableLoanGuarantor ${_loanProduct.enableLoanGuarantors}");
+    int numOfGuarantors = int.tryParse(_loanProduct.guarantors) != null
+        ? int.tryParse(_loanProduct.guarantors)
+        : 0;
 
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -339,7 +162,16 @@ class _ApplyLoanFromChamasoftFormState
           title: "Apply Loan",
         ),
         backgroundColor: Colors.transparent,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          onPressed: () => submit(_loanProduct),
+          backgroundColor: primaryColor,
+        ),
         body: Builder(builder: (BuildContext context) {
+          _buildContext = context;
           return GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
@@ -400,55 +232,73 @@ class _ApplyLoanFromChamasoftFormState
                                                 : 0.0;
                                           });
                                         }),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        customTitle(
-                                            text: 'Amount: ' +
-                                                (_loanProduct.maximumLoanAmount)
-                                                    .toString() +
-                                                " " +
-                                                'Maximum to ' +
-                                                " " +
-                                                (_loanProduct.minimumLoanAmount)
-                                                    .toString() +
-                                                " " +
-                                                'Minimum.',
-                                            fontSize: 10.0,
-                                            textAlign: TextAlign.start),
-                                      ],
-                                    )
+                                    if (_loanProduct.loanAmountType == "2")
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          subtitle2(
+                                              text:
+                                                  'Maximum loan amount: ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.maximumLoanAmount))}, Minimum loan amount: ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.minimumLoanAmount))}',
+                                              textAlign: TextAlign.start),
+                                        ],
+                                      ),
+                                    if (_loanProduct.loanAmountType == "3")
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          subtitle2(
+                                              text:
+                                                  'Fixed loan amount: ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.maximumLoanAmount))}',
+                                              textAlign: TextAlign.start),
+                                        ],
+                                      )
                                   ],
                                 ),
                               ),
                               SizedBox(
                                 height: 10.0,
                               ),
-                              if (_loanProduct.enableLoanGuarantors == "1")
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  padding: EdgeInsets.all(8.0),
-                                  child: ListView.builder(
-                                    itemBuilder: (BuildContext context, index) {
-                                      return addGuarantor(
-                                          _memberOptions, context);
-                                    },
-                                    itemCount: int.tryParse(
-                                                _loanProduct.guarantors) !=
-                                            null
-                                        ? int.tryParse(_loanProduct.guarantors)
-                                        : 0,
-                                  ),
-                                ),
-                              SizedBox(
-                                height: 15.0,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 30.0, right: 30.0),
+                              _loanProduct.enableLoanGuarantors == "1" &&
+                                      numOfGuarantors > 0
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: subtitle1(
+                                              text:
+                                                  "Guarantors ($numOfGuarantors minimum)",
+                                              textAlign: TextAlign.start),
+                                        ),
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.5,
+                                          padding: EdgeInsets.all(8.0),
+                                          child: ListView.builder(
+                                            itemBuilder:
+                                                (BuildContext context, index) {
+                                              return addGuarantor(
+                                                  _memberOptions,
+                                                  context,
+                                                  index);
+                                            },
+                                            itemCount: numOfGuarantors,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 15.0,
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(),
+                              Container(
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Checkbox(
                                         value: true,
@@ -457,45 +307,38 @@ class _ApplyLoanFromChamasoftFormState
                                             value = true;
                                           });
                                         }),
-                                    textWithExternalLinks(
-                                        color: Colors.blueGrey,
-                                        size: 12.0,
-                                        textData: {
-                                          'By applying for this loan you agree to the ':
-                                              {},
-                                          'terms and conditions': {
-                                            "url": () =>
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          LoanAmortization(),
-                                                      settings: RouteSettings(
-                                                          arguments: {
-                                                            'loanProduct':
-                                                                _loanProduct,
-                                                            'generalAmount':
-                                                                generalAmount,
-                                                          })),
-                                                ),
-                                            "color": primaryColor,
-                                            "weight": FontWeight.w500
-                                          },
-                                        }),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Flexible(
+                                      child: textWithExternalLinks(
+                                          color: Colors.blueGrey,
+                                          size: 12.0,
+                                          textData: {
+                                            'You agree to the ': {},
+                                            'terms and conditions': {
+                                              "url": () =>
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            LoanAmortization(),
+                                                        settings: RouteSettings(
+                                                            arguments: {
+                                                              'loanProduct':
+                                                                  _loanProduct,
+                                                              'generalAmount':
+                                                                  generalAmount,
+                                                            })),
+                                                  ),
+                                              "color": primaryColor,
+                                              "weight": FontWeight.w500
+                                            },
+                                          }),
+                                    ),
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              Center(
-                                child: defaultButton(
-                                    context: context,
-                                    text: "Apply Now",
-                                    onPressed: () {
-                                      submit(_loanProduct, context);
-                                    }),
-                              )
                             ],
                           ),
                         ),
@@ -509,7 +352,8 @@ class _ApplyLoanFromChamasoftFormState
         }));
   }
 
-  Row addGuarantor(List<NamesListItem> _memberOptions, BuildContext context) {
+  Row addGuarantor(
+      List<NamesListItem> _memberOptions, BuildContext context, int index) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -518,13 +362,13 @@ class _ApplyLoanFromChamasoftFormState
             enabled: true,
             labelText: "Select guarantor",
             listItems: _memberOptions,
-            selectedItem: guarantorTwoId,
             onChanged: (value) {
               setState(() {
-                guarantorTwoId = value;
-                guarantorTwoName = _memberOptions
-                    .firstWhere((member) => member.id == value)
-                    .name;
+                if (guarantors.asMap().containsKey(index)) {
+                  guarantors[index] = value;
+                } else {
+                  guarantors.add(value);
+                }
               });
             },
             validator: (value) {
@@ -552,9 +396,14 @@ class _ApplyLoanFromChamasoftFormState
               labelText: "Enter Amount",
               enabled: true,
               onChanged: (value) {
+                print("index $index");
+
                 setState(() {
-                  guarantorTwoAmount =
-                      value != null ? double.tryParse(value) : 0.0;
+                  if (amount.asMap().containsKey(index)) {
+                    amount[index] = double.tryParse(value);
+                  } else {
+                    amount.add(double.tryParse(value));
+                  }
                 });
               }),
         ))
