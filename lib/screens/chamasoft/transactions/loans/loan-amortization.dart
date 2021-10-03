@@ -259,10 +259,10 @@ class _LoanAmortizationState extends State<LoanAmortization> {
       newInterest = double.parse((newAmount * newRate).toStringAsFixed(2));
       newCapital = double.parse((payment - newInterest).toStringAsFixed(2));
       newAmount = double.parse((newAmount - newCapital).toStringAsFixed(2));
+      // ignore: unused_local_variable
       DateTime date = new DateTime(now.year, now.month + (i + 1), now.day);
       var formate2 =
           "${dateTime.year}-${dateTime.month + (i + 1)}-${dateTime.day}";
-
 
       if (newAmount <= 0) newAmount = 0;
       rows.add(DataRow(

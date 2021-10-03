@@ -121,7 +121,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                         color: Colors.blueGrey,
                         size: 12.0,
                         textData: {
-                          'By applying for this loan you agree to the ': {},
+                          'You agree to the ': {},
                           'terms and conditions': {
                             "url": () => Navigator.of(context).push(
                                   MaterialPageRoute(

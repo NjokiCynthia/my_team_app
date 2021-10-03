@@ -14,7 +14,6 @@ import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
@@ -32,6 +31,7 @@ class _ApplyLoanFromChamasoftFormState
     extends State<ApplyLoanFromChamasoftForm> {
   double _appBarElevation = 0;
   final _formKey = GlobalKey<FormState>();
+  BuildContext _buildContext;
 
   double generalAmount;
   List<double> amount = [];
@@ -41,30 +41,30 @@ class _ApplyLoanFromChamasoftFormState
     return amount.reduce((value, element) => value + element);
   }
 
-  void submit(LoanProduct loanProduct, BuildContext context) {
+  void submit(LoanProduct loanProduct) {
     final Group groupObject =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+        Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
 
     if (_formKey.currentState.validate()) {
       if (totalGuaranteed == generalAmount) {
-        showConfirmationDialog(loanProduct, groupObject, context);
+        showConfirmationDialog(loanProduct, groupObject);
       } else {
-        StatusHandler().showErrorDialog(context,
+        StatusHandler().showErrorDialog(_buildContext,
             "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}.");
       }
     }
   }
 
-  void showConfirmationDialog(
-      LoanProduct loanProduct, Group groupObject, BuildContext context) {
+  void showConfirmationDialog(LoanProduct loanProduct, Group groupObject) {
     showDialog(
-        context: context,
+        context: _buildContext,
         builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
-              title: subtitle1(text: "Confirm Application"),
-              content: Text(
-                  "Confirm loan of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}"),
+              title: subtitle1(text: "Confirmation"),
+              content: subtitle2(
+                  text:
+                      "Confirm loan of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}"),
               actions: [
                 // ignore: deprecated_member_use
                 negativeActionDialogButton(
@@ -148,7 +148,9 @@ class _ApplyLoanFromChamasoftFormState
             ? arguments['formLoadData']['memberOptions']
             : [];
 
-    print("enableLoanGuarantor ${_loanProduct.enableLoanGuarantors}");
+    int numOfGuarantors = int.tryParse(_loanProduct.guarantors) != null
+        ? int.tryParse(_loanProduct.guarantors)
+        : 0;
 
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -159,7 +161,16 @@ class _ApplyLoanFromChamasoftFormState
           title: "Apply Loan",
         ),
         backgroundColor: Colors.transparent,
+        floatingActionButton: FloatingActionButton(
+          child: Icon(
+            Icons.check,
+            color: Colors.white,
+          ),
+          onPressed: () => submit(_loanProduct),
+          backgroundColor: primaryColor,
+        ),
         body: Builder(builder: (BuildContext context) {
+          _buildContext = context;
           return GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
@@ -220,55 +231,73 @@ class _ApplyLoanFromChamasoftFormState
                                                 : 0.0;
                                           });
                                         }),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        customTitle(
-                                            text: 'Amount: ' +
-                                                (_loanProduct.maximumLoanAmount)
-                                                    .toString() +
-                                                " " +
-                                                'Maximum to ' +
-                                                " " +
-                                                (_loanProduct.minimumLoanAmount)
-                                                    .toString() +
-                                                " " +
-                                                'Minimum.',
-                                            fontSize: 10.0,
-                                            textAlign: TextAlign.start),
-                                      ],
-                                    )
+                                    if (_loanProduct.loanAmountType == "2")
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          subtitle2(
+                                              text:
+                                                  'Maximum loan amount: ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.maximumLoanAmount))}, Minimum loan amount: ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.minimumLoanAmount))}',
+                                              textAlign: TextAlign.start),
+                                        ],
+                                      ),
+                                    if (_loanProduct.loanAmountType == "3")
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          subtitle2(
+                                              text:
+                                                  'Fixed loan amount: ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.maximumLoanAmount))}',
+                                              textAlign: TextAlign.start),
+                                        ],
+                                      )
                                   ],
                                 ),
                               ),
                               SizedBox(
                                 height: 10.0,
                               ),
-                              if (_loanProduct.enableLoanGuarantors == "1")
-                                Container(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.2,
-                                  padding: EdgeInsets.all(8.0),
-                                  child: ListView.builder(
-                                    itemBuilder: (BuildContext context, index) {
-                                      return addGuarantor(
-                                          _memberOptions, context, index);
-                                    },
-                                    itemCount: int.tryParse(
-                                                _loanProduct.guarantors) !=
-                                            null
-                                        ? int.tryParse(_loanProduct.guarantors)
-                                        : 0,
-                                  ),
-                                ),
-                              SizedBox(
-                                height: 15.0,
-                              ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 30.0, right: 30.0),
+                              _loanProduct.enableLoanGuarantors == "1" &&
+                                      numOfGuarantors > 0
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: subtitle1(
+                                              text:
+                                                  "Guarantors ($numOfGuarantors minimum)",
+                                              textAlign: TextAlign.start),
+                                        ),
+                                        Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height *
+                                              0.5,
+                                          padding: EdgeInsets.all(8.0),
+                                          child: ListView.builder(
+                                            itemBuilder:
+                                                (BuildContext context, index) {
+                                              return addGuarantor(
+                                                  _memberOptions,
+                                                  context,
+                                                  index);
+                                            },
+                                            itemCount: numOfGuarantors,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 15.0,
+                                        ),
+                                      ],
+                                    )
+                                  : SizedBox(),
+                              Container(
                                 child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Checkbox(
                                         value: true,
@@ -277,45 +306,38 @@ class _ApplyLoanFromChamasoftFormState
                                             value = true;
                                           });
                                         }),
-                                    textWithExternalLinks(
-                                        color: Colors.blueGrey,
-                                        size: 12.0,
-                                        textData: {
-                                          'By applying for this loan you agree to the ':
-                                              {},
-                                          'terms and conditions': {
-                                            "url": () =>
-                                                Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          LoanAmortization(),
-                                                      settings: RouteSettings(
-                                                          arguments: {
-                                                            'loanProduct':
-                                                                _loanProduct,
-                                                            'generalAmount':
-                                                                generalAmount,
-                                                          })),
-                                                ),
-                                            "color": primaryColor,
-                                            "weight": FontWeight.w500
-                                          },
-                                        }),
+                                    SizedBox(
+                                      width: 4,
+                                    ),
+                                    Flexible(
+                                      child: textWithExternalLinks(
+                                          color: Colors.blueGrey,
+                                          size: 12.0,
+                                          textData: {
+                                            'You agree to the ': {},
+                                            'terms and conditions': {
+                                              "url": () =>
+                                                  Navigator.of(context).push(
+                                                    MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            LoanAmortization(),
+                                                        settings: RouteSettings(
+                                                            arguments: {
+                                                              'loanProduct':
+                                                                  _loanProduct,
+                                                              'generalAmount':
+                                                                  generalAmount,
+                                                            })),
+                                                  ),
+                                              "color": primaryColor,
+                                              "weight": FontWeight.w500
+                                            },
+                                          }),
+                                    ),
                                   ],
                                 ),
                               ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              Center(
-                                child: defaultButton(
-                                    context: context,
-                                    text: "Apply Now",
-                                    onPressed: () {
-                                      submit(_loanProduct, context);
-                                    }),
-                              )
                             ],
                           ),
                         ),
@@ -339,10 +361,13 @@ class _ApplyLoanFromChamasoftFormState
             enabled: true,
             labelText: "Select guarantor",
             listItems: _memberOptions,
-            selectedItem: guarantors[index],
             onChanged: (value) {
               setState(() {
-                guarantors[index] = value;
+                if (guarantors.asMap().containsKey(index)) {
+                  guarantors[index] = value;
+                } else {
+                  guarantors.add(value);
+                }
               });
             },
             validator: (value) {
@@ -370,8 +395,14 @@ class _ApplyLoanFromChamasoftFormState
               labelText: "Enter Amount",
               enabled: true,
               onChanged: (value) {
+                print("index $index");
+
                 setState(() {
-                  amount[index] = value != null ? double.tryParse(value) : 0.0;
+                  if (amount.asMap().containsKey(index)) {
+                    amount[index] = double.tryParse(value);
+                  } else {
+                    amount.add(double.tryParse(value));
+                  }
                 });
               }),
         ))
