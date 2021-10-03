@@ -64,7 +64,7 @@ class _ApplyLoanFromChamasoftFormState
               title: subtitle1(text: "Confirmation"),
               content: subtitle2(
                   text:
-                      "Confirm loan of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}"),
+                      "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}."),
               actions: [
                 // ignore: deprecated_member_use
                 negativeActionDialogButton(
