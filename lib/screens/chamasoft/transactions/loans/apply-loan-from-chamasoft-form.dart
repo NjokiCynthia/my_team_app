@@ -13,6 +13,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -117,70 +118,70 @@ class _ApplyLoanFromChamasoftFormState
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               title: heading2(text: "Confirm Chamasoft Loan Application"),
-              content: subtitle1(
-                  text:
-                      'Please confirm loan application of "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}" '),
-              // content: Column(
-              //   mainAxisAlignment: MainAxisAlignment.start,
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   mainAxisSize: MainAxisSize.min,
-              //   children: [
-              //     Row(
-              //       children: [
-              //         subtitle1(text: "Loan Type"),
-              //         Spacer(),
-              //         subtitle2(text: "${loanProduct.name}")
-              //       ],
-              //     ),
-              //     SizedBox(
-              //       height: 10,
-              //     ),
-              //     Row(
-              //       children: [
-              //         subtitle1(text: "Amount"),
-              //         Spacer(),
-              //         subtitle2(
-              //             text:
-              //                 "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")
-              //       ],
-              //     ),
-              //     if (isLoanProcessingEnabled)
-              //       Column(
-              //         children: [
-              //           SizedBox(height: 10),
-              //           Row(
-              //             children: [
-              //               subtitle1(text: "Loan processing fee"),
-              //               Spacer(),
-              //               subtitle2(
-              //                   text:
-              //                       "${groupObject.groupCurrency} ${currencyFormat.format(loanProcessingAmount)}")
-              //             ],
-              //           ),
-              //         ],
-              //       ),
-              //     SizedBox(
-              //       height: 10,
-              //     ),
-              //     Row(
-              //       children: [
-              //         subtitle1(text: "Refund"),
-              //         Spacer(),
-              //         subtitle2(
-              //             text:
-              //                 "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}")
-              //       ],
-              //     ),
-              //     SizedBox(height: 10),
-              //     Row(
-              //       children: [
-              //         subtitle1(text: "Due date"),
-              //         Spacer(),
-              //         subtitle2(text: DateFormat.yMMMEd().format(repaymentDt))
-              //       ],
-              //     ),
-              //   ],
-              // ),
+              // content: subtitle1(
+              //     text:
+              //         'Please confirm loan application of "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}" '),
+              content: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      subtitle1(text: "Loan Type"),
+                      Spacer(),
+                      subtitle2(text: "${loanProduct.name}")
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      subtitle1(text: "Amount"),
+                      Spacer(),
+                      subtitle2(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")
+                    ],
+                  ),
+                  if (isLoanProcessingEnabled)
+                    Column(
+                      children: [
+                        SizedBox(height: 10),
+                        Row(
+                          children: [
+                            subtitle1(text: "Loan processing fee"),
+                            Spacer(),
+                            subtitle2(
+                                text:
+                                    "${groupObject.groupCurrency} ${currencyFormat.format(loanProcessingAmount)}")
+                          ],
+                        ),
+                      ],
+                    ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      subtitle1(text: "Refund"),
+                      Spacer(),
+                      subtitle2(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(amountToRefund)}")
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      subtitle1(text: "Due date"),
+                      Spacer(),
+                      subtitle2(text: DateFormat.yMMMEd().format(repaymentDt))
+                    ],
+                  ),
+                ],
+              ),
               actions: [
                 // ignore: deprecated_member_use
                 negativeActionDialogButton(
