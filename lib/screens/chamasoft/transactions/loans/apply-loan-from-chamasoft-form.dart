@@ -13,7 +13,6 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -37,6 +36,8 @@ class _ApplyLoanFromChamasoftFormState
   double generalAmount;
   List<double> amount = [];
   List<int> guarantors = [];
+
+  var guarantorsMap = Map();
 
   double get totalGuaranteed {
     return amount.reduce((value, element) => value + element);
@@ -274,7 +275,7 @@ class _ApplyLoanFromChamasoftFormState
                                           padding: EdgeInsets.all(8.0),
                                           child: subtitle1(
                                               text:
-                                                  "$numOfGuarantors Guarantors",
+                                                  " Guarantors : $numOfGuarantors",
                                               textAlign: TextAlign.start),
                                         ),
                                         Container(
@@ -361,6 +362,7 @@ class _ApplyLoanFromChamasoftFormState
 
   Row addGuarantor(
       List<NamesListItem> _memberOptions, BuildContext context, int index) {
+    //_memberOptions.map((e) => guarantors);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
@@ -404,7 +406,6 @@ class _ApplyLoanFromChamasoftFormState
               enabled: true,
               onChanged: (value) {
                 print("index $index");
-
                 setState(() {
                   if (amount.asMap().containsKey(index)) {
                     amount[index] = double.tryParse(value);
