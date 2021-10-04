@@ -109,11 +109,10 @@ class _MyAppState extends State<MyApp> {
           // ignore: missing_return
           create: (BuildContext context) {},
         ),
-        ChangeNotifierProxyProvider<Auth, ChamasoftLoans>(
-          update: (ctx, auth, previousGroups) => ChamasoftLoans(
-            auth.id,
-            auth.userIdentity,
-            previousGroups == null ? '' : previousGroups.currentGroupId,
+        ChangeNotifierProxyProvider<Groups, ChamasoftLoans>(
+          update: (ctx, groups, previousGroups) => ChamasoftLoans(
+            groups.userId,
+            groups.currentGroupId,
           ),
           // ignore: missing_return
           create: (BuildContext context) {},
