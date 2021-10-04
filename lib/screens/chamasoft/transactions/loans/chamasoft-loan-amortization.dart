@@ -228,7 +228,9 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                   child: CustomDataTable(rowItems: generateTableRows()),
                 ),
                 Container(
-                  color: primaryColor,
+                  color: (themeChangeProvider.darkTheme)
+                      ? Colors.blueGrey[800]
+                      : Color(0xffededfe),
                   height: 56.0,
                   child: Padding(
                     padding: const EdgeInsets.all(0.0),
@@ -238,24 +240,29 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            SizedBox(
+                              width: 20.0,
+                            ),
                             subtitle1(text: 'Total'),
                             SizedBox(
-                              width: 10.0,
+                              width: 0.0,
                             ),
-                            subtitle1(text: "--"),
+                            subtitle1(
+                                text:
+                                    "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}"),
                             SizedBox(
                               width: 20.0,
                             ),
-                            subtitle1(text: "--"),
+                            // subtitle1(text: "--"),
                             SizedBox(
                               width: 20.0,
                             ),
-                            subtitle1(text: "--"),
+                            // subtitle1(text: "--"),
                             SizedBox(
                               width: 15.0,
                             ),
-                            subtitle1(text: 'Balance'),
                           ],
                         )
                       ],

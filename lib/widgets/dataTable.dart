@@ -1,4 +1,5 @@
-import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 
 class CustomDataTable extends StatelessWidget {
@@ -10,15 +11,18 @@ class CustomDataTable extends StatelessWidget {
     return DataTable(
         dataRowHeight: 50.0,
         showBottomBorder: true,
-        headingRowColor:
-            MaterialStateColor.resolveWith((states) => primaryColor),
-        columnSpacing: 30.0,
+        headingRowColor: MaterialStateColor.resolveWith(
+          (states) => (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Color(0xffededfe),
+        ),
+        columnSpacing: 20.0,
         columns: [
-          DataColumn(label: Text('Date')),
-          DataColumn(label: Text('Payment')),
-          DataColumn(label: Text('Interest')),
-          DataColumn(label: Text('Principal')),
-          DataColumn(label: Text('Balance'))
+          DataColumn(label: subtitle2(text: 'Date')),
+          DataColumn(label: subtitle2(text: 'Payment')),
+          DataColumn(label: subtitle2(text: 'Interest')),
+          DataColumn(label: subtitle2(text: 'Principal')),
+          DataColumn(label: subtitle2(text: 'Balance'))
         ],
         rows: rowItems);
   }
