@@ -270,7 +270,7 @@ class _ApplyLoanFromChamasoftFormState
                                           padding: EdgeInsets.all(8.0),
                                           child: subtitle1(
                                               text:
-                                                  "Guarantors ($numOfGuarantors minimum)",
+                                                  "$numOfGuarantors Guarantors",
                                               textAlign: TextAlign.start),
                                         ),
                                         Container(
