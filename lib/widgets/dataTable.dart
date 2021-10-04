@@ -8,7 +8,7 @@ class CustomDataTable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DataTable(
-        dataRowHeight: 30.0,
+        dataRowHeight: 50.0,
         showBottomBorder: true,
         headingRowColor:
             MaterialStateColor.resolveWith((states) => primaryColor),

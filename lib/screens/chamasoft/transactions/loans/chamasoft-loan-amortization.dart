@@ -122,145 +122,148 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
       backgroundColor: Theme.of(context).backgroundColor,
       body: Column(
         children: [
-          _isLoading
-              ? showLinearProgressIndicator()
-              : SizedBox(
-                  height: 0.0,
-                ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Expanded(
-                      child: heading2(
-                          text: _loanProduct.name /*widget.typeLoan.loanName*/,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
-                          textAlign: TextAlign.start),
-                    ),
-                    heading2(
-                        text:
-                            "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
-                        //generalAmount.toString(),
-                        // ignore: deprecated_member_use
-                        color: Theme.of(context).textSelectionHandleColor,
-                        textAlign: TextAlign.start)
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle1(
-                          text: "Interest Rate: ",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        customTitle(
-                          textAlign: TextAlign.start,
-                          text: _loanProduct.description,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle1(
-                          text: "Repayment Period: ",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        customTitle(
-                          textAlign: TextAlign.start,
-                          text: "${widget.repaymentPeriod} Month(s)",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        subtitle1(
-                          text: "Application Date: ",
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
-                        ),
-                        customTitle(
-                          textAlign: TextAlign.start,
-                          text: formate2,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-                Column(
-                  //crossAxisAlignment: CrossAxisAlignment.,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[],
-                )
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 10.0,
-          ),
-          Container(
-            // width: double.infinity, _loanCalculator['breakdown']
-
-            child: CustomDataTable(rowItems: generateTableRows()),
-          ),
-          Container(
-            color: primaryColor,
-            height: 56.0,
-            child: Padding(
-              padding: const EdgeInsets.all(0.0),
+          _isLoading ? showLinearProgressIndicator() : SizedBox(height: 0.0),
+          if (!_isLoading)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      subtitle1(text: 'Total'),
-                      SizedBox(
-                        width: 10.0,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: heading2(
+                            text:
+                                _loanProduct.name /*widget.typeLoan.loanName*/,
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start),
                       ),
-                      subtitle1(text: "--"),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      subtitle1(text: "--"),
-                      SizedBox(
-                        width: 20.0,
-                      ),
-                      subtitle1(text: "--"),
-                      SizedBox(
-                        width: 15.0,
-                      ),
-                      subtitle1(text: 'Balance'),
+                      heading2(
+                          text:
+                              "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
+                          //generalAmount.toString(),
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                          textAlign: TextAlign.start)
                     ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle1(
+                            text: "Interest Rate: ",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                          customTitle(
+                            textAlign: TextAlign.start,
+                            text: _loanProduct.description,
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle1(
+                            text: "Repayment Period: ",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                          customTitle(
+                            textAlign: TextAlign.start,
+                            text: "${widget.repaymentPeriod} Month(s)",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle1(
+                            text: "Application Date: ",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                          customTitle(
+                            textAlign: TextAlign.start,
+                            text: formate2,
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    //crossAxisAlignment: CrossAxisAlignment.,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[],
                   )
                 ],
               ),
             ),
-          )
+          SizedBox(
+            height: 10.0,
+          ),
+          if (!_isLoading)
+            Column(
+              children: [
+                Container(
+                  // width: double.infinity, _loanCalculator['breakdown']
+
+                  child: CustomDataTable(rowItems: generateTableRows()),
+                ),
+                Container(
+                  color: primaryColor,
+                  height: 56.0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(0.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            subtitle1(text: 'Total'),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            subtitle1(text: "--"),
+                            SizedBox(
+                              width: 20.0,
+                            ),
+                            subtitle1(text: "--"),
+                            SizedBox(
+                              width: 20.0,
+                            ),
+                            subtitle1(text: "--"),
+                            SizedBox(
+                              width: 15.0,
+                            ),
+                            subtitle1(text: 'Balance'),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
         ],
       ),
     );
