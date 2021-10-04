@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -203,7 +204,7 @@ class _LoanAmortizationState extends State<LoanAmortization> {
             ),
           ),
           Container(
-            color: Colors.cyanAccent,
+            color: Color(0xffededfe),
             height: 56.0,
             child: Padding(
               padding: const EdgeInsets.all(0.0),

@@ -10,7 +10,7 @@ class CustomDataTable extends StatelessWidget {
         dataRowHeight: 30.0,
         showBottomBorder: true,
         headingRowColor:
-            MaterialStateColor.resolveWith((states) => Colors.cyanAccent),
+            MaterialStateColor.resolveWith((states) => Color(0xffededfe)),
         columnSpacing: 30.0,
         columns: [
           DataColumn(label: Text('No.')),
