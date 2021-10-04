@@ -332,7 +332,12 @@ class _ApplyLoanFromChamasoftFormState
                                                                 .loanAmountType,
                                                             repaymentPeriod:
                                                                 repaymentPeriod,
-                                                          ))),
+                                                          ),
+                                                      settings: RouteSettings(
+                                                          arguments: {
+                                                            'loanProduct':
+                                                                _loanProduct
+                                                          }))),
                                               "color": primaryColor,
                                               "weight": FontWeight.w500
                                             },

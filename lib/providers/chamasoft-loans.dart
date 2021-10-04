@@ -53,36 +53,11 @@ class LoanProduct {
       this.enableLoanGuarantors});
 }
 
-class AmortizationTools {
-  double totalPayable;
-  double totalPrinciple;
-  double totalInterest;
-
-  AmortizationTools(this.totalPayable, this.totalInterest, this.totalPrinciple);
-}
-
-class Breakdown {
-  String dueDate;
-  double amountPayable;
-  double principlePayable;
-  double interestPayable;
-  double totalInterestPayable;
-  double balance;
-
-  Breakdown(this.dueDate, this.amountPayable, this.principlePayable,
-      this.interestPayable, this.totalInterestPayable, this.balance);
-}
-
 class ChamasoftLoans with ChangeNotifier {
   List<LoanProduct> _loanProducts = [];
-  Map<String, dynamic> _loanCalculator = {};
 
   List<LoanProduct> get getLoanProducts {
     return [..._loanProducts];
-  }
-
-  Map<String, dynamic> get getLoanCalculator {
-    return _loanCalculator;
   }
 
   void resetLoanProducts() {
@@ -148,26 +123,6 @@ class ChamasoftLoans with ChangeNotifier {
     }
   }
 
-  void setLoanCalculator({Map<String, dynamic> loanCalculator}) {
-    print("loan calc data $loanCalculator");
-    _loanCalculator = {
-      "amortizationTotals": AmortizationTools(
-          loanCalculator['amortization_totals']['total_payable'],
-          loanCalculator['amortization_totals']['total_interest'],
-          loanCalculator['amortization_totals']['total_principle']),
-      "breakdown": loanCalculator['breakdown']
-          .map((breakdown) => Breakdown(
-              breakdown['due_date'],
-              breakdown['amount_payable'],
-              breakdown['principle_payable'],
-              breakdown['interest_payable'],
-              breakdown['total_intrest_payable'],
-              breakdown['balance']))
-          .toList(),
-    };
-    notifyListeners();
-  }
-
   Future<void> fetchLoanProducts() async {
     final url = EndpointUrl.GET_CHAMASOFT_LOAN_PRODUCTS;
     try {
@@ -206,7 +161,8 @@ class ChamasoftLoans with ChangeNotifier {
     }
   }
 
-  Future<void> fetchLoanCalculator(Map<String, dynamic> formData) async {
+  Future<Map<String, dynamic>> fetchLoanCalculator(
+      Map<String, dynamic> formData) async {
     final url = EndpointUrl.GET_CHAMASOFT_LOAN_CALCULATOR;
     try {
       formData['user_id'] = _userId;
@@ -214,10 +170,47 @@ class ChamasoftLoans with ChangeNotifier {
       final postRequest = json.encode(formData);
       try {
         final response = await PostToServer.post(postRequest, url);
-        setLoanCalculator(loanCalculator: response['response']);
+        Map<String, dynamic> _loanCalculator = {
+          "amortizationTotals": {
+            "totalPayable": double.tryParse(response['amortization_totals']
+                        ['total_payable']
+                    .toString()) ??
+                0.0,
+            "totalPrinciple": double.tryParse(response['amortization_totals']
+                        ['total_interest']
+                    .toString()) ??
+                0.0,
+            "totalInterest": double.tryParse(response['amortization_totals']
+                        ['total_principle']
+                    .toString()) ??
+                0.0,
+          },
+          "breakdown": response['breakdown']
+              .map((breakdown) => {
+                    "dueDate": breakdown['due_date'],
+                    "amountPayable": double.tryParse(
+                            breakdown['amount_payable'].toString()) ??
+                        0.0,
+                    "principlePayable": double.tryParse(
+                            breakdown['principle_payable'].toString()) ??
+                        0.0,
+                    "interestPayable": double.tryParse(
+                            breakdown['interest_payable'].toString()) ??
+                        0.0,
+                    "totalInterestPayable": double.tryParse(
+                            breakdown['total_intrest_payable'].toString()) ??
+                        0.0,
+                    "balance":
+                        double.tryParse(breakdown['balance'].toString()) ?? 0.0
+                  })
+              .toList(),
+        };
+
+        return _loanCalculator;
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
+        print("error $error");
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {

@@ -4,7 +4,6 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -89,11 +88,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
 
   @override
   Widget build(BuildContext context) {
-    DateTime now = new DateTime.now();
-    DateTime date = new DateTime(now.year, now.month, now.day);
-    var dateTime = DateTime.parse(date.toIso8601String());
-    var formate2 = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
-
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,

@@ -13,8 +13,8 @@ class CustomDataTable extends StatelessWidget {
             MaterialStateColor.resolveWith((states) => Color(0xffededfe)),
         columnSpacing: 30.0,
         columns: [
-          DataColumn(label: Text('No.')),
           DataColumn(label: Text('Date')),
+          DataColumn(label: Text('Payment')),
           DataColumn(label: Text('Interest')),
           DataColumn(label: Text('Principal')),
           DataColumn(label: Text('Balance'))
