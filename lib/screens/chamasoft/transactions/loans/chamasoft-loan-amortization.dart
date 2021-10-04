@@ -9,6 +9,7 @@ import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/dataTable.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -104,6 +105,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
     final arguments =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     LoanProduct _loanProduct = arguments['loanProduct'];
+    final generalAmount = arguments['generalAmount'];
     Group groupObject = Provider.of<Groups>(context).getCurrentGroup();
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
@@ -224,49 +226,83 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                 Container(
                   // width: double.infinity, _loanCalculator['breakdown']
 
-                  child: CustomDataTable(rowItems: generateTableRows()),
+                  child: CustomDataTable(
+                    rowItems: generateTableRows(),
+                  ),
                 ),
                 Container(
-                  color: (themeChangeProvider.darkTheme)
-                      ? Colors.blueGrey[800]
-                      : Color(0xffededfe),
-                  height: 56.0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(0.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 20.0,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Center(
+                
+                        child: DataTable(
+                            headingRowColor: MaterialStateColor.resolveWith(
+                              (states) => (themeChangeProvider.darkTheme)
+                                  ? Colors.blueGrey[800]
+                                  : Color(0xffededfe),
                             ),
-                            subtitle1(text: 'Total'),
-                            SizedBox(
-                              width: 0.0,
-                            ),
-                            subtitle1(
-                                text:
-                                    "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}"),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            // subtitle1(text: "--"),
-                            SizedBox(
-                              width: 20.0,
-                            ),
-                            // subtitle1(text: "--"),
-                            SizedBox(
-                              width: 15.0,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                            columnSpacing: 20.0,
+                            columns: [
+                              DataColumn(label: subtitle2(text: 'Total')),
+                              DataColumn(
+                                  label: subtitle2(
+                                      text:
+                                          "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
+                              DataColumn(
+                                  label: subtitle2(
+                                      text:
+                                          "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")),
+                              DataColumn(
+                                  label: subtitle2(
+                                      text:
+                                          "${groupObject.groupCurrency}${generalAmount.toString()}")),
+                              DataColumn(label: subtitle2(text: '0'))
+                            ],
+                            rows: <DataRow>[]),
+                      ),
+                    ],
                   ),
+                  // color: (themeChangeProvider.darkTheme)
+                  //     ? Colors.blueGrey[800]
+                  //     : Color(0xffededfe),
+                  // height: 56.0,
+                  // child: Padding(
+                  //   padding: const EdgeInsets.all(0.0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.end,
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Row(
+                  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           SizedBox(
+                  //             width: 20.0,
+                  //           ),
+                  //           subtitle1(text: 'Total'),
+                  //           SizedBox(
+                  //             width: 0.0,
+                  //           ),
+                  //           subtitle1(
+                  //               text:
+                  //                   "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}"),
+                  //           SizedBox(
+                  //             width: 20.0,
+                  //           ),
+                  //           // subtitle1(text: "--"),
+                  //           SizedBox(
+                  //             width: 20.0,
+                  //           ),
+                  //           // subtitle1(text: "--"),
+                  //           SizedBox(
+                  //             width: 15.0,
+                  //           ),
+                  //         ],
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                 )
               ],
             ),
