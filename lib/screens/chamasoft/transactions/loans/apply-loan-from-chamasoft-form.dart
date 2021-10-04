@@ -17,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import 'loan-amortization.dart';
+import 'chamasoft-loan-amortization.dart';
 
 class ApplyLoanFromChamasoftForm extends StatefulWidget {
   // const ChamaSoftLoanDetail({ Key? key }) : super(key: key);
@@ -151,6 +151,10 @@ class _ApplyLoanFromChamasoftFormState
     int numOfGuarantors = int.tryParse(_loanProduct.guarantors) != null
         ? int.tryParse(_loanProduct.guarantors)
         : 0;
+
+    String repaymentPeriod = _loanProduct.fixedRepaymentPeriod != ""
+        ? _loanProduct.fixedRepaymentPeriod
+        : _loanProduct.maximumRepaymentPeriod;
 
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -316,20 +320,18 @@ class _ApplyLoanFromChamasoftFormState
                                           textData: {
                                             'You agree to the ': {},
                                             'terms and conditions': {
-                                              "url": () =>
-                                                  Navigator.of(context).push(
-                                                    MaterialPageRoute(
-                                                        builder: (BuildContext
-                                                                context) =>
-                                                            LoanAmortization(),
-                                                        settings: RouteSettings(
-                                                            arguments: {
-                                                              'loanProduct':
-                                                                  _loanProduct,
-                                                              'generalAmount':
-                                                                  generalAmount,
-                                                            })),
-                                                  ),
+                                              "url": () => Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          ChamasoftLoanAmortization(
+                                                            loanAmount:
+                                                                generalAmount,
+                                                            loanTypeId: _loanProduct
+                                                                .loanAmountType,
+                                                            repaymentPeriod:
+                                                                repaymentPeriod,
+                                                          ))),
                                               "color": primaryColor,
                                               "weight": FontWeight.w500
                                             },

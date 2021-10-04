@@ -21,9 +21,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-// ignore: unused_import
-import 'loan-amortization.dart';
-
 // ignore: must_be_immutable
 class ApplyLoanFromChamasoft extends StatefulWidget {
   Map<String, dynamic> formLoadData;
