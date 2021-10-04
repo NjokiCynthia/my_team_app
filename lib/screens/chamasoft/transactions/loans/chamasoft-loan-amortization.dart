@@ -2,6 +2,7 @@
 
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -226,7 +227,7 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
             child: CustomDataTable(rowItems: generateTableRows()),
           ),
           Container(
-            color: Colors.cyanAccent,
+            color: primaryColor,
             height: 56.0,
             child: Padding(
               padding: const EdgeInsets.all(0.0),

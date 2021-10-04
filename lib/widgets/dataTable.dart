@@ -1,3 +1,4 @@
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomDataTable extends StatelessWidget {
@@ -10,7 +11,7 @@ class CustomDataTable extends StatelessWidget {
         dataRowHeight: 30.0,
         showBottomBorder: true,
         headingRowColor:
-            MaterialStateColor.resolveWith((states) => Color(0xffededfe)),
+            MaterialStateColor.resolveWith((states) => primaryColor),
         columnSpacing: 30.0,
         columns: [
           DataColumn(label: Text('Date')),
