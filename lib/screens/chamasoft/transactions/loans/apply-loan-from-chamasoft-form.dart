@@ -34,15 +34,23 @@ class _ApplyLoanFromChamasoftFormState
   BuildContext _buildContext;
 
   double generalAmount;
-  List<double> amount = [];
-  List<int> guarantors = [];
+
+  List<Map> _guarantorsInfo = [];
 
   bool _isChecked = false;
 
   var guarantorsMap = Map();
 
   double get totalGuaranteed {
-    return amount.reduce((value, element) => value + element);
+    double total = 0.0;
+
+    for (var guarantor in _guarantorsInfo) {
+      if (guarantor['amount']) {
+        total += guarantor['amount'];
+      }
+    }
+
+    return total;
   }
 
   void submit(LoanProduct loanProduct) {
@@ -97,7 +105,7 @@ class _ApplyLoanFromChamasoftFormState
     Map<String, dynamic> formData = {
       'loan_product_id': loanProduct.id,
       'amount': generalAmount,
-      'guarantors': guarantors
+      'guarantors': _guarantorsInfo
     };
 
     // Show the loader
@@ -344,7 +352,7 @@ class _ApplyLoanFromChamasoftFormState
                                           color: Colors.blueGrey,
                                           size: 12.0,
                                           textData: {
-                                            'You agree to the ': {},
+                                            'I agree to the ': {},
                                             'terms and conditions': {
                                               "url": () => Navigator.of(context)
                                                   .push(MaterialPageRoute(
@@ -362,7 +370,8 @@ class _ApplyLoanFromChamasoftFormState
                                                           arguments: {
                                                             'loanProduct':
                                                                 _loanProduct,
-                                                                'generalAmount':generalAmount
+                                                            'generalAmount':
+                                                                generalAmount
                                                           }))),
                                               "color": primaryColor,
                                               "weight": FontWeight.w500
@@ -402,10 +411,10 @@ class _ApplyLoanFromChamasoftFormState
             listItems: _memberOptions,
             onChanged: (value) {
               setState(() {
-                if (guarantors.asMap().containsKey(index)) {
-                  guarantors[index] = value;
+                if (_guarantorsInfo.asMap().containsKey(index)) {
+                  _guarantorsInfo[index]['guarantorId'] = value;
                 } else {
-                  guarantors.add(value);
+                  _guarantorsInfo.add({"guarantorId": value});
                 }
               });
             },
@@ -436,10 +445,10 @@ class _ApplyLoanFromChamasoftFormState
               onChanged: (value) {
                 print("index $index");
                 setState(() {
-                  if (amount.asMap().containsKey(index)) {
-                    amount[index] = double.tryParse(value);
+                  if (_guarantorsInfo.asMap().containsKey(index)) {
+                    _guarantorsInfo[index]['amount'] = double.tryParse(value);
                   } else {
-                    amount.add(double.tryParse(value));
+                    _guarantorsInfo.add({"amount": double.tryParse(value)});
                   }
                 });
               }),
