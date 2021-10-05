@@ -100,8 +100,6 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
 
   @override
   Widget build(BuildContext context) {
-    print("loanCalculator $_loanCalculator");
-
     final arguments =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     LoanProduct _loanProduct = arguments['loanProduct'];
@@ -109,8 +107,8 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
     Group groupObject = Provider.of<Groups>(context).getCurrentGroup();
     DateTime now = new DateTime.now();
     DateTime date = new DateTime(now.year, now.month, now.day);
-    var dateTime = DateTime.parse(date.toIso8601String());
-    var formate2 = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
+    DateTime dateTime = DateTime.parse(date.toIso8601String());
+    String formate2 = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
 
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -133,17 +131,15 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Expanded(
-                        child: heading2(
-                            text:
-                                _loanProduct.name /*widget.typeLoan.loanName*/,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
-                            textAlign: TextAlign.start),
-                      ),
-                      heading2(
+                      subtitle1(
+                          text: _loanProduct.name /*widget.typeLoan.loanName*/,
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                          textAlign: TextAlign.start),
+                      Spacer(),
+                      subtitle2(
                           text:
-                              "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
+                              "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
                           //generalAmount.toString(),
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
@@ -164,12 +160,11 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
-                          customTitle(
+                          subtitle2(
                             textAlign: TextAlign.start,
                             text: _loanProduct.description,
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w600,
                           ),
                         ],
                       ),
@@ -181,12 +176,11 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
-                          customTitle(
+                          subtitle2(
                             textAlign: TextAlign.start,
                             text: "${widget.repaymentPeriod} Month(s)",
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w600,
                           ),
                         ],
                       ),
@@ -198,12 +192,11 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
-                          customTitle(
+                          subtitle2(
                             textAlign: TextAlign.start,
                             text: formate2,
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
-                            fontWeight: FontWeight.w600,
                           ),
                         ],
                       ),
