@@ -36,6 +36,7 @@ class _ApplyLoanFromChamasoftFormState
   double generalAmount;
   List<double> amount = [];
   List<int> guarantors = [];
+  bool _isChecked = false;
 
   var guarantorsMap = Map();
 
@@ -157,6 +158,22 @@ class _ApplyLoanFromChamasoftFormState
     String repaymentPeriod = _loanProduct.fixedRepaymentPeriod != ""
         ? _loanProduct.fixedRepaymentPeriod
         : _loanProduct.maximumRepaymentPeriod;
+
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Colors.white;
+      }
+      return (themeChangeProvider.darkTheme)
+          ? Colors.blueGrey[800]
+          : Colors.white;
+    }
 
     return Scaffold(
         appBar: secondaryPageAppbar(
@@ -282,7 +299,9 @@ class _ApplyLoanFromChamasoftFormState
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.5,
+                                              (numOfGuarantors >= 5
+                                                  ? (5 / 10)
+                                                  : (numOfGuarantors / 10)),
                                           padding: EdgeInsets.all(8.0),
                                           child: ListView.builder(
                                             itemBuilder:
@@ -306,10 +325,14 @@ class _ApplyLoanFromChamasoftFormState
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Checkbox(
-                                        value: true,
+                                        checkColor: Colors.white,
+                                        fillColor:
+                                            MaterialStateProperty.resolveWith(
+                                                getColor),
+                                        value: _isChecked,
                                         onChanged: (bool value) {
                                           setState(() {
-                                            value = true;
+                                            _isChecked = value;
                                           });
                                         }),
                                     SizedBox(

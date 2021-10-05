@@ -21,6 +21,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   String _dropdownValue;
   String _errorText;
   double amountInputValue;
+  bool _isChecked = false;
 
   Widget buildDropDown() {
     return FormField(
@@ -79,6 +80,22 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
 
   @override
   Widget build(BuildContext context) {
+    Color getColor(Set<MaterialState> states) {
+      const Set<MaterialState> interactiveStates = <MaterialState>{
+        MaterialState.pressed,
+        MaterialState.hovered,
+        MaterialState.focused,
+      };
+      if (states.any(interactiveStates.contains)) {
+        return (themeChangeProvider.darkTheme)
+            ? Colors.blueGrey[800]
+            : Colors.white;
+      }
+      return (themeChangeProvider.darkTheme)
+          ? Colors.blueGrey[800]
+          : Colors.white;
+    }
+
     return Column(
       children: [
         Container(
@@ -111,10 +128,11 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                 child: Row(
                   children: [
                     Checkbox(
-                        value: true,
+                        fillColor: MaterialStateProperty.resolveWith(getColor),
+                        value: _isChecked,
                         onChanged: (bool value) {
                           setState(() {
-                            value = true;
+                            _isChecked = value;
                           });
                         }),
                     textWithExternalLinks(
