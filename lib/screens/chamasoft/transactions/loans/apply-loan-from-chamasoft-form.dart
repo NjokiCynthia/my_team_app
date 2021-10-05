@@ -35,7 +35,9 @@ class _ApplyLoanFromChamasoftFormState
 
   double generalAmount;
 
-  List<Map> _guarantorsInfo = [];
+  List<int> _guarantors = [];
+
+  List<double> _amounts = [];
 
   bool _isChecked = false;
 
@@ -44,11 +46,7 @@ class _ApplyLoanFromChamasoftFormState
   double get totalGuaranteed {
     double total = 0.0;
 
-    for (var guarantor in _guarantorsInfo) {
-      if (guarantor['amount'] != null) {
-        total += guarantor['amount'];
-      }
-    }
+    total = _amounts.reduce((value, element) => value + element);
 
     return total;
   }
@@ -60,14 +58,11 @@ class _ApplyLoanFromChamasoftFormState
     if (_formKey.currentState.validate()) {
       if (totalGuaranteed == generalAmount) {
         // check guarantor duplicates
-        List guarantorIds = [];
-        _guarantorsInfo.forEach((guarantor) {
-          guarantorIds.add(guarantor['guarantorId']);
-        });
         bool duplicateGuarantor = false;
-        for (var guarantorId in guarantorIds) {
-          int index = guarantorIds.indexOf(guarantorId);
-          if (guarantorIds.sublist(index).contains(guarantorId)) {
+
+        for (var guarantorId in _guarantors) {
+          int index = _guarantors.indexOf(guarantorId);
+          if (_guarantors.sublist(index + 1).contains(guarantorId)) {
             duplicateGuarantor = true;
             break;
           }
@@ -126,7 +121,8 @@ class _ApplyLoanFromChamasoftFormState
     Map<String, dynamic> formData = {
       'loan_product_id': loanProduct.id,
       'amount': generalAmount,
-      'guarantors': _guarantorsInfo
+      'guarantors': _guarantors,
+      'amounts': _amounts
     };
 
     // Show the loader
@@ -432,10 +428,10 @@ class _ApplyLoanFromChamasoftFormState
             listItems: _memberOptions,
             onChanged: (value) {
               setState(() {
-                if (_guarantorsInfo.asMap().containsKey(index)) {
-                  _guarantorsInfo[index]['guarantorId'] = value;
+                if (_guarantors.asMap().containsKey(index)) {
+                  _guarantors[index] = value;
                 } else {
-                  _guarantorsInfo.add({"guarantorId": value});
+                  _guarantors.add(value);
                 }
               });
             },
@@ -464,12 +460,11 @@ class _ApplyLoanFromChamasoftFormState
               labelText: "Enter Amount",
               enabled: true,
               onChanged: (value) {
-                print("index $index");
                 setState(() {
-                  if (_guarantorsInfo.asMap().containsKey(index)) {
-                    _guarantorsInfo[index]['amount'] = double.tryParse(value);
+                  if (_amounts.asMap().containsKey(index)) {
+                    _amounts[index] = double.tryParse(value);
                   } else {
-                    _guarantorsInfo.add({"amount": double.tryParse(value)});
+                    _amounts.add(double.tryParse(value));
                   }
                 });
               }),
