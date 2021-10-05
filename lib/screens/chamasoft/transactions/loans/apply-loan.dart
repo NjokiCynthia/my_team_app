@@ -21,8 +21,13 @@ import 'package:provider/provider.dart';
 
 class ApplyLoan extends StatefulWidget {
   final bool isInit;
+  final bool isFromGroupActive;
+  final bool isFromChamasoftActive;
 
-  ApplyLoan({this.isInit = true});
+  ApplyLoan(
+      {this.isInit = true,
+      this.isFromChamasoftActive = false,
+      this.isFromGroupActive = true});
   @override
   State<StatefulWidget> createState() {
     return ApplyLoanState();
@@ -33,8 +38,8 @@ class ApplyLoanState extends State<ApplyLoan> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  bool _isShow = true;
-  bool _isHiden = false;
+  bool _isFromGroupActive = true;
+  bool _isFromChamasoftActive = false;
   bool _isInit = true;
   bool _isLoading = true;
 
@@ -58,6 +63,8 @@ class ApplyLoanState extends State<ApplyLoan> {
     _scrollController.addListener(_scrollListener);
     setState(() {
       _isInit = widget.isInit;
+      _isFromChamasoftActive = widget.isFromChamasoftActive;
+      _isFromGroupActive = widget.isFromGroupActive;
       if (!_isInit) {
         _isLoading = false;
       }
@@ -172,12 +179,12 @@ class ApplyLoanState extends State<ApplyLoan> {
                             selectedLabelIndex: (index) {
                               setState(() {
                                 if (index == 0) {
-                                  _isShow = true;
-                                  _isHiden = false;
+                                  _isFromGroupActive = true;
+                                  _isFromChamasoftActive = false;
                                 }
                                 if (index == 1) {
-                                  _isShow = false;
-                                  _isHiden = true;
+                                  _isFromChamasoftActive = true;
+                                  _isFromGroupActive = false;
                                 }
                               });
                             },
@@ -198,14 +205,14 @@ class ApplyLoanState extends State<ApplyLoan> {
                     //Group loans
                     Container(
                       child: Visibility(
-                        visible: _isShow,
+                        visible: _isFromGroupActive,
                         child: ApplyLoanFromGroup(),
                       ),
                     ),
                     //Chamasoft loans
                     Container(
                       child: Visibility(
-                          visible: _isHiden,
+                          visible: _isFromChamasoftActive,
                           child: ApplyLoanFromChamasoft(
                               formLoadData: _formLoadData,
                               loanProducts: _loanProducts)),

@@ -33,7 +33,7 @@ class _ApplyLoanFromChamasoftFormState
   final _formKey = GlobalKey<FormState>();
   BuildContext _buildContext;
 
-  double generalAmount;
+  int generalAmount;
 
   List<int> _guarantors = [];
 
@@ -42,10 +42,6 @@ class _ApplyLoanFromChamasoftFormState
   bool _isChecked = false;
 
   var guarantorsMap = Map();
-
-  final snackbar = SnackBar(
-      content: subtitle2(
-          text: "Kindly accept T&C to proceed", textAlign: TextAlign.start));
 
   double get totalGuaranteed {
     double total = 0.0;
@@ -60,33 +56,43 @@ class _ApplyLoanFromChamasoftFormState
         Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
 
     if (_formKey.currentState.validate()) {
-      if (totalGuaranteed == generalAmount) {
-        // check guarantor duplicates
-        bool duplicateGuarantor = false;
+      if (loanProduct.enableLoanGuarantors == "1") {
+        if (totalGuaranteed == generalAmount) {
+          // check guarantor duplicates
+          bool duplicateGuarantor = false;
 
-        for (var guarantorId in _guarantors) {
-          int index = _guarantors.indexOf(guarantorId);
-          if (_guarantors.sublist(index + 1).contains(guarantorId)) {
-            duplicateGuarantor = true;
-            break;
+          for (var guarantorId in _guarantors) {
+            int index = _guarantors.indexOf(guarantorId);
+            if (_guarantors.sublist(index + 1).contains(guarantorId)) {
+              duplicateGuarantor = true;
+              break;
+            }
+            if (duplicateGuarantor == true) {
+              // show error dialog
+              StatusHandler().showErrorDialog(_buildContext,
+                  "You cannot be guaranteed by one member more than once.");
+            }
           }
-          if (duplicateGuarantor == true) {
-            // show error dialog
-            StatusHandler().showErrorDialog(_buildContext,
-                "You cannot be guaranteed by one member more than once.");
+          if (!isChecked) {
+            StatusHandler().showErrorDialog(
+                _buildContext, "You must the accept terms and conditions.");
+          } else {
+            // show confirmation dialog
+            showConfirmationDialog(loanProduct, groupObject);
           }
+        } else {
+          // show error dialog
+          StatusHandler().showErrorDialog(_buildContext,
+              "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}.");
         }
+      } else {
         if (!isChecked) {
           StatusHandler().showErrorDialog(
-              _buildContext, "You should accept terms and conditions");
+              _buildContext, "You must the accept terms and conditions.");
         } else {
           // show confirmation dialog
           showConfirmationDialog(loanProduct, groupObject);
         }
-      } else {
-        // show error dialog
-        StatusHandler().showErrorDialog(_buildContext,
-            "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}.");
       }
     }
   }
@@ -105,11 +111,11 @@ class _ApplyLoanFromChamasoftFormState
                 // ignore: deprecated_member_use
                 negativeActionDialogButton(
                   text: ('CANCEL'),
-                  color: Theme.of(context)
+                  color: Theme.of(_buildContext)
                       // ignore: deprecated_member_use
                       .textSelectionHandleColor,
                   action: () {
-                    Navigator.of(context).pop();
+                    Navigator.of(_buildContext).pop();
                   },
                 ),
                 // ignore: deprecated_member_use
@@ -117,15 +123,14 @@ class _ApplyLoanFromChamasoftFormState
                     text: ('PROCEED'),
                     color: primaryColor,
                     action: () {
-                      Navigator.of(context).pop();
-                      submitLoanApplication(loanProduct, context);
+                      Navigator.of(_buildContext).pop();
+                      submitLoanApplication(loanProduct);
                     }),
               ],
             ));
   }
 
-  void submitLoanApplication(
-      LoanProduct loanProduct, BuildContext context) async {
+  void submitLoanApplication(LoanProduct loanProduct) async {
     Map<String, dynamic> formData = {
       'loan_product_id': loanProduct.id,
       'amount': generalAmount,
@@ -136,7 +141,7 @@ class _ApplyLoanFromChamasoftFormState
     // Show the loader
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(
-          context: context,
+          context: _buildContext,
           barrierDismissible: false,
           builder: (_) {
             return Center(
@@ -147,23 +152,25 @@ class _ApplyLoanFromChamasoftFormState
 
     try {
       String response =
-          await Provider.of<ChamasoftLoans>(context, listen: false)
+          await Provider.of<ChamasoftLoans>(_buildContext, listen: false)
               .submitLoanApplication(formData);
 
-      StatusHandler().showSuccessSnackBar(context, "Good news: $response");
+      StatusHandler()
+          .showSuccessSnackBar(_buildContext, "Good news: $response");
 
       Future.delayed(const Duration(milliseconds: 2500), () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
+        Navigator.of(_buildContext).pushReplacement(MaterialPageRoute(
             builder: (_) => ApplyLoan(
-                  isInit: false,
+                  isFromChamasoftActive: true,
+                  isFromGroupActive: false,
                 )));
       });
     } on CustomException catch (error) {
       StatusHandler().showDialogWithAction(
-          context: context,
+          context: _buildContext,
           message: error.toString(),
           function: () =>
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
+              Navigator.of(_buildContext).pushReplacement(MaterialPageRoute(
                   builder: (_) => ApplyLoan(
                         isInit: false,
                       ))),
@@ -277,6 +284,27 @@ class _ApplyLoanFromChamasoftFormState
                                           if (value == null || value == "") {
                                             return "The field is required";
                                           }
+                                          if (_loanProduct.loanAmountType ==
+                                              "2") {
+                                            if (generalAmount <
+                                                int.tryParse(_loanProduct
+                                                    .minimumLoanAmount)) {
+                                              return "The minimum loan amount is ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.minimumLoanAmount))}";
+                                            }
+                                            if (generalAmount >
+                                                int.tryParse(_loanProduct
+                                                    .maximumLoanAmount)) {
+                                              return "The maximum loan amount is ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.maximumLoanAmount))}";
+                                            }
+                                          }
+                                          if (_loanProduct.loanAmountType ==
+                                              "3") {
+                                            if (generalAmount !=
+                                                int.tryParse(_loanProduct
+                                                    .fixedLoanAmount)) {
+                                              return "The loan amount is fixed to ${groupObject.groupCurrency} ${currencyFormat.format(int.tryParse(_loanProduct.fixedLoanAmount))}";
+                                            }
+                                          }
                                           return null;
                                         },
                                         labelText: "Enter The Loan Amount",
@@ -284,7 +312,7 @@ class _ApplyLoanFromChamasoftFormState
                                         onChanged: (value) {
                                           setState(() {
                                             generalAmount = value != null
-                                                ? double.parse(value)
+                                                ? int.tryParse(value)
                                                 : 0.0;
                                           });
                                         }),

@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class ChamasoftLoanAmortization extends StatefulWidget {
   final String loanTypeId;
-  final double loanAmount;
+  final int loanAmount;
   final String repaymentPeriod;
 
   ChamasoftLoanAmortization(
