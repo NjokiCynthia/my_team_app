@@ -41,17 +41,23 @@ class _ApplyLoanFromChamasoftFormState
 
   var guarantorsMap = Map();
 
+  final snackbar = SnackBar(
+      content: subtitle2(
+          text: "Kindly accept T&C to proceed", textAlign: TextAlign.start));
+
   double get totalGuaranteed {
     return amount.reduce((value, element) => value + element);
   }
 
-  void submit(LoanProduct loanProduct) {
+  void submit(LoanProduct loanProduct, bool isChecked) {
     final Group groupObject =
         Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
 
     if (_formKey.currentState.validate()) {
       if (totalGuaranteed == generalAmount) {
         showConfirmationDialog(loanProduct, groupObject);
+      } else if (isChecked != true) {
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
       } else {
         StatusHandler().showErrorDialog(_buildContext,
             "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}.");
@@ -168,12 +174,12 @@ class _ApplyLoanFromChamasoftFormState
       };
       if (states.any(interactiveStates.contains)) {
         return (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[800]
-            : Colors.white;
+            ? Color(0xff00a9f0)
+            : Color(0xff00a9f0);
       }
       return (themeChangeProvider.darkTheme)
-          ? Colors.blueGrey[800]
-          : Colors.white;
+          ? Color(0xff00a9f0)
+          : Color(0xff00a9f0);
     }
 
     return Scaffold(
@@ -190,7 +196,7 @@ class _ApplyLoanFromChamasoftFormState
             Icons.check,
             color: Colors.white,
           ),
-          onPressed: () => submit(_loanProduct),
+          onPressed: () => submit(_loanProduct, _isChecked),
           backgroundColor: primaryColor,
         ),
         body: Builder(builder: (BuildContext context) {
@@ -362,7 +368,8 @@ class _ApplyLoanFromChamasoftFormState
                                                           arguments: {
                                                             'loanProduct':
                                                                 _loanProduct,
-                                                                'generalAmount':generalAmount
+                                                            'generalAmount':
+                                                                generalAmount
                                                           }))),
                                               "color": primaryColor,
                                               "weight": FontWeight.w500
