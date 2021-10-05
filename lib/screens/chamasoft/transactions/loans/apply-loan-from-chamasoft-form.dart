@@ -74,14 +74,15 @@ class _ApplyLoanFromChamasoftFormState
             // show error dialog
             StatusHandler().showErrorDialog(_buildContext,
                 "You cannot be guaranteed by one member more than once.");
+          }
+          if (!isChecked) {
+            StatusHandler().showErrorDialog(
+                _buildContext, "You should accept terms and conditions");
           } else {
             // show confirmation dialog
             showConfirmationDialog(loanProduct, groupObject);
           }
         }
-      }
-      if (!isChecked) {
-        ScaffoldMessenger.of(context).showSnackBar(snackbar);
       } else {
         // show error dialog
         StatusHandler().showErrorDialog(_buildContext,
