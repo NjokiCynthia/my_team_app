@@ -34,8 +34,8 @@ class _ApplyLoanFromChamasoftFormState
   BuildContext _buildContext;
 
   double generalAmount;
-  List<double> amount = [];
-  List<int> guarantors = [];
+
+  List<Map> _guarantorsInfo = [];
 
   bool _isChecked = false;
 
@@ -46,7 +46,15 @@ class _ApplyLoanFromChamasoftFormState
           text: "Kindly accept T&C to proceed", textAlign: TextAlign.start));
 
   double get totalGuaranteed {
-    return amount.reduce((value, element) => value + element);
+    double total = 0.0;
+
+    for (var guarantor in _guarantorsInfo) {
+      if (guarantor['amount'] != null) {
+        total += guarantor['amount'];
+      }
+    }
+
+    return total;
   }
 
   void submit(LoanProduct loanProduct, bool isChecked) {
@@ -55,10 +63,29 @@ class _ApplyLoanFromChamasoftFormState
 
     if (_formKey.currentState.validate()) {
       if (totalGuaranteed == generalAmount) {
-        showConfirmationDialog(loanProduct, groupObject);
-      } else if (isChecked != true) {
-        ScaffoldMessenger.of(context).showSnackBar(snackbar);
+        // check guarantor duplicates
+        List guarantorIds = [];
+        _guarantorsInfo.forEach((guarantor) {
+          guarantorIds.add(guarantor['guarantorId']);
+        });
+        bool duplicateGuarantor = false;
+        for (var guarantorId in guarantorIds) {
+          int index = guarantorIds.indexOf(guarantorId);
+          if (guarantorIds.sublist(index).contains(guarantorId)) {
+            duplicateGuarantor = true;
+            break;
+          }
+        }
+        if (duplicateGuarantor == true) {
+          // show error dialog
+          StatusHandler().showErrorDialog(_buildContext,
+              "You cannot be guaranteed by one member more than once.");
+        } else {
+          // show confirmation dialog
+          showConfirmationDialog(loanProduct, groupObject);
+        }
       } else {
+        // show error dialog
         StatusHandler().showErrorDialog(_buildContext,
             "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}.");
       }
@@ -103,7 +130,7 @@ class _ApplyLoanFromChamasoftFormState
     Map<String, dynamic> formData = {
       'loan_product_id': loanProduct.id,
       'amount': generalAmount,
-      'guarantors': guarantors
+      'guarantors': _guarantorsInfo
     };
 
     // Show the loader
@@ -350,7 +377,7 @@ class _ApplyLoanFromChamasoftFormState
                                           color: Colors.blueGrey,
                                           size: 12.0,
                                           textData: {
-                                            'You agree to the ': {},
+                                            'I agree to the ': {},
                                             'terms and conditions': {
                                               "url": () => Navigator.of(context)
                                                   .push(MaterialPageRoute(
@@ -409,10 +436,10 @@ class _ApplyLoanFromChamasoftFormState
             listItems: _memberOptions,
             onChanged: (value) {
               setState(() {
-                if (guarantors.asMap().containsKey(index)) {
-                  guarantors[index] = value;
+                if (_guarantorsInfo.asMap().containsKey(index)) {
+                  _guarantorsInfo[index]['guarantorId'] = value;
                 } else {
-                  guarantors.add(value);
+                  _guarantorsInfo.add({"guarantorId": value});
                 }
               });
             },
@@ -443,10 +470,10 @@ class _ApplyLoanFromChamasoftFormState
               onChanged: (value) {
                 print("index $index");
                 setState(() {
-                  if (amount.asMap().containsKey(index)) {
-                    amount[index] = double.tryParse(value);
+                  if (_guarantorsInfo.asMap().containsKey(index)) {
+                    _guarantorsInfo[index]['amount'] = double.tryParse(value);
                   } else {
-                    amount.add(double.tryParse(value));
+                    _guarantorsInfo.add({"amount": double.tryParse(value)});
                   }
                 });
               }),
