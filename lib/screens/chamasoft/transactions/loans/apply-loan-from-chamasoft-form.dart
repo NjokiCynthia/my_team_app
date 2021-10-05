@@ -43,6 +43,10 @@ class _ApplyLoanFromChamasoftFormState
 
   var guarantorsMap = Map();
 
+  final snackbar = SnackBar(
+      content: subtitle2(
+          text: "Kindly accept T&C to proceed", textAlign: TextAlign.start));
+
   double get totalGuaranteed {
     double total = 0.0;
 
@@ -51,7 +55,7 @@ class _ApplyLoanFromChamasoftFormState
     return total;
   }
 
-  void submit(LoanProduct loanProduct) {
+  void submit(LoanProduct loanProduct, bool isChecked) {
     final Group groupObject =
         Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
 
@@ -66,15 +70,18 @@ class _ApplyLoanFromChamasoftFormState
             duplicateGuarantor = true;
             break;
           }
+          if (duplicateGuarantor == true) {
+            // show error dialog
+            StatusHandler().showErrorDialog(_buildContext,
+                "You cannot be guaranteed by one member more than once.");
+          } else {
+            // show confirmation dialog
+            showConfirmationDialog(loanProduct, groupObject);
+          }
         }
-        if (duplicateGuarantor == true) {
-          // show error dialog
-          StatusHandler().showErrorDialog(_buildContext,
-              "You cannot be guaranteed by one member more than once.");
-        } else {
-          // show confirmation dialog
-          showConfirmationDialog(loanProduct, groupObject);
-        }
+      }
+      if (!isChecked) {
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
       } else {
         // show error dialog
         StatusHandler().showErrorDialog(_buildContext,
@@ -193,12 +200,12 @@ class _ApplyLoanFromChamasoftFormState
       };
       if (states.any(interactiveStates.contains)) {
         return (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[800]
-            : Colors.white;
+            ? Color(0xff00a9f0)
+            : Color(0xff00a9f0);
       }
       return (themeChangeProvider.darkTheme)
-          ? Colors.blueGrey[800]
-          : Colors.white;
+          ? Color(0xff00a9f0)
+          : Color(0xff00a9f0);
     }
 
     return Scaffold(
@@ -215,7 +222,7 @@ class _ApplyLoanFromChamasoftFormState
             Icons.check,
             color: Colors.white,
           ),
-          onPressed: () => submit(_loanProduct),
+          onPressed: () => submit(_loanProduct, _isChecked),
           backgroundColor: primaryColor,
         ),
         body: Builder(builder: (BuildContext context) {
