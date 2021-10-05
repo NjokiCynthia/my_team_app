@@ -75,14 +75,14 @@ class _ApplyLoanFromChamasoftFormState
             duplicateGuarantor = true;
             break;
           }
-        }
-        if (duplicateGuarantor == true) {
-          // show error dialog
-          StatusHandler().showErrorDialog(_buildContext,
-              "You cannot be guaranteed by one member more than once.");
-        } else {
-          // show confirmation dialog
-          showConfirmationDialog(loanProduct, groupObject);
+          if (duplicateGuarantor == true) {
+            // show error dialog
+            StatusHandler().showErrorDialog(_buildContext,
+                "You cannot be guaranteed by one member more than once.");
+          } else {
+            // show confirmation dialog
+            showConfirmationDialog(loanProduct, groupObject);
+          }
         }
       }
       if (!isChecked) {
