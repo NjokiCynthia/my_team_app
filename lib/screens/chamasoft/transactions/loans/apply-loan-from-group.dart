@@ -1,10 +1,14 @@
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/group-loan-amortizatioin.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
+import 'package:provider/provider.dart';
 
 class ApplyLoanFromGroup extends StatefulWidget {
   const ApplyLoanFromGroup({Key key}) : super(key: key);
@@ -14,6 +18,7 @@ class ApplyLoanFromGroup extends StatefulWidget {
 }
 
 class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
+  BuildContext _buildContext;
   static final List<String> _dropdownItems = <String>[
     'Emergency Loan',
     'Education Loan'
@@ -22,6 +27,16 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   String _errorText;
   double amountInputValue;
   bool _isChecked = false;
+
+  void submitGroupLoan(bool isChecked) {
+    final Group groupObject =
+        Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
+
+    if (!isChecked) {
+      StatusHandler().showErrorDialog(
+          _buildContext, "You should accept terms and conditions");
+    }
+  }
 
   Widget buildDropDown() {
     return FormField(
@@ -159,7 +174,9 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                 height: 24,
               ),
               defaultButton(
-                  context: context, text: "Apply Now", onPressed: () {})
+                  context: context,
+                  text: "Apply Now",
+                  onPressed: () => submitGroupLoan(_isChecked))
             ],
           ),
         )
