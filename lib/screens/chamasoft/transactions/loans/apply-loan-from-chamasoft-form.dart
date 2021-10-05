@@ -36,6 +36,7 @@ class _ApplyLoanFromChamasoftFormState
   double generalAmount;
   List<double> amount = [];
   List<int> guarantors = [];
+
   bool _isChecked = false;
 
   var guarantorsMap = Map();
@@ -382,6 +383,10 @@ class _ApplyLoanFromChamasoftFormState
           );
         }));
   }
+
+  // STEP 1: if at that index we have a map set, if there is no map, you add else you set.
+
+  // STEP 2: Do step 1 for guaranto and amount.
 
   Row addGuarantor(
       List<NamesListItem> _memberOptions, BuildContext context, int index) {

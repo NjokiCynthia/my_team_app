@@ -123,7 +123,7 @@ class ChamasoftLoans with ChangeNotifier {
     }
   }
 
-  Future<void> fetchLoanProducts() async {
+  Future<List<LoanProduct>> fetchLoanProducts() async {
     final url = EndpointUrl.GET_CHAMASOFT_LOAN_PRODUCTS;
     try {
       try {
@@ -134,6 +134,7 @@ class ChamasoftLoans with ChangeNotifier {
 
         final response = await PostToServer.post(postRequest, url);
         addLoanProducts(loanProducts: response['loan_products']);
+        return getLoanProducts;
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }

@@ -39,7 +39,8 @@ class ApplyLoanState extends State<ApplyLoan> {
   bool _isLoading = true;
 
   double amountInputValue;
-  Map<String, dynamic> _formLoadData;
+  Map<String, dynamic> _formLoadData = {};
+  List<LoanProduct> _loanProducts = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
@@ -79,13 +80,10 @@ class ApplyLoanState extends State<ApplyLoan> {
     super.didChangeDependencies();
   }
 
+  // fetch loan products
   Future<void> _fetchLoanProducts(BuildContext context) async {
-    setState(() {
-      _isInit = false;
-    });
-
     try {
-      // Load formdata values
+      // get the form data
       Provider.of<Groups>(context, listen: false)
           .loadInitialFormData(
         member: true,
@@ -94,10 +92,11 @@ class ApplyLoanState extends State<ApplyLoan> {
         // get the loan products
         Provider.of<ChamasoftLoans>(context, listen: false)
             .fetchLoanProducts()
-            .then((_) {
+            .then((loanProducts) {
           setState(() {
+            _loanProducts = loanProducts;
             _formLoadData = value;
-
+            _isInit = false;
             _isLoading = false;
           });
         });
@@ -114,8 +113,6 @@ class ApplyLoanState extends State<ApplyLoan> {
   }
 
   Future<bool> _fetchData() async {
-    // reset existing loan products
-    Provider.of<ChamasoftLoans>(context, listen: false).resetLoanProducts();
     // fetch loan products
     return _fetchLoanProducts(context).then((value) => true);
   }
@@ -210,8 +207,8 @@ class ApplyLoanState extends State<ApplyLoan> {
                       child: Visibility(
                           visible: _isHiden,
                           child: ApplyLoanFromChamasoft(
-                            formLoadData: _formLoadData,
-                          )),
+                              formLoadData: _formLoadData,
+                              loanProducts: _loanProducts)),
                     )
                   ],
                 ),

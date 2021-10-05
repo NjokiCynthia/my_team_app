@@ -19,13 +19,12 @@ import 'package:flutter/material.dart';
 // ignore: unused_import
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class ApplyLoanFromChamasoft extends StatefulWidget {
   Map<String, dynamic> formLoadData;
-
-  ApplyLoanFromChamasoft({this.formLoadData});
+  List<LoanProduct> loanProducts;
+  ApplyLoanFromChamasoft({this.formLoadData, this.loanProducts});
 
   @override
   _ApplyLoanFromChamasoftState createState() => _ApplyLoanFromChamasoftState();
@@ -44,8 +43,8 @@ class _ApplyLoanFromChamasoftState extends State<ApplyLoanFromChamasoft> {
 
   @override
   Widget build(BuildContext context) {
-    List<LoanProduct> _loanProducts =
-        Provider.of<ChamasoftLoans>(context, listen: false).getLoanProducts;
+    List<LoanProduct> _loanProducts = widget.loanProducts;
+    print('loanProducts $_loanProducts');
 
     return Container(
       width: double.infinity,
