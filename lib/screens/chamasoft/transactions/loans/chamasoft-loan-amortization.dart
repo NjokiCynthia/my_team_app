@@ -228,7 +228,6 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Center(
-                
                         child: DataTable(
                             headingRowColor: MaterialStateColor.resolveWith(
                               (states) => (themeChangeProvider.darkTheme)
@@ -241,61 +240,21 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                               DataColumn(
                                   label: subtitle2(
                                       text:
-                                          "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
+                                          "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
                               DataColumn(
                                   label: subtitle2(
                                       text:
-                                          "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")),
+                                          "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")),
                               DataColumn(
                                   label: subtitle2(
                                       text:
-                                          "${groupObject.groupCurrency}${generalAmount.toString()}")),
+                                          "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")),
                               DataColumn(label: subtitle2(text: '0'))
                             ],
                             rows: <DataRow>[]),
                       ),
                     ],
                   ),
-                  // color: (themeChangeProvider.darkTheme)
-                  //     ? Colors.blueGrey[800]
-                  //     : Color(0xffededfe),
-                  // height: 56.0,
-                  // child: Padding(
-                  //   padding: const EdgeInsets.all(0.0),
-                  //   child: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.end,
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Row(
-                  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  //         crossAxisAlignment: CrossAxisAlignment.start,
-                  //         children: [
-                  //           SizedBox(
-                  //             width: 20.0,
-                  //           ),
-                  //           subtitle1(text: 'Total'),
-                  //           SizedBox(
-                  //             width: 0.0,
-                  //           ),
-                  //           subtitle1(
-                  //               text:
-                  //                   "${groupObject.groupCurrency}${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}"),
-                  //           SizedBox(
-                  //             width: 20.0,
-                  //           ),
-                  //           // subtitle1(text: "--"),
-                  //           SizedBox(
-                  //             width: 20.0,
-                  //           ),
-                  //           // subtitle1(text: "--"),
-                  //           SizedBox(
-                  //             width: 15.0,
-                  //           ),
-                  //         ],
-                  //       )
-                  //     ],
-                  //   ),
-                  // ),
                 )
               ],
             ),
