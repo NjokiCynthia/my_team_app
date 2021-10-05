@@ -128,6 +128,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                 child: Row(
                   children: [
                     Checkbox(
+                        checkColor: Colors.white,
                         fillColor: MaterialStateProperty.resolveWith(getColor),
                         value: _isChecked,
                         onChanged: (bool value) {
