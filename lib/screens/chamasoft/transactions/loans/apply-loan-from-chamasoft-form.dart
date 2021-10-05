@@ -61,10 +61,6 @@ class _ApplyLoanFromChamasoftFormState
     final Group groupObject =
         Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
 
-    if (!isChecked) {
-      ScaffoldMessenger.of(context).showSnackBar(snackbar);
-    }
-
     if (_formKey.currentState.validate()) {
       if (totalGuaranteed == generalAmount) {
         // check guarantor duplicates
@@ -88,6 +84,9 @@ class _ApplyLoanFromChamasoftFormState
           // show confirmation dialog
           showConfirmationDialog(loanProduct, groupObject);
         }
+      }
+      if (!isChecked) {
+        ScaffoldMessenger.of(context).showSnackBar(snackbar);
       } else {
         // show error dialog
         StatusHandler().showErrorDialog(_buildContext,
