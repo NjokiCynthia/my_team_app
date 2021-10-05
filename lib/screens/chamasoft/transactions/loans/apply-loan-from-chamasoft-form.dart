@@ -361,7 +361,8 @@ class _ApplyLoanFromChamasoftFormState
                                                       settings: RouteSettings(
                                                           arguments: {
                                                             'loanProduct':
-                                                                _loanProduct
+                                                                _loanProduct,
+                                                                'generalAmount':generalAmount
                                                           }))),
                                               "color": primaryColor,
                                               "weight": FontWeight.w500
