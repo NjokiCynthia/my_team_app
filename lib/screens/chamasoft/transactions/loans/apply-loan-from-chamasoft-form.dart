@@ -216,6 +216,24 @@ class _ApplyLoanFromChamasoftFormState
           : Color(0xff00a9f0);
     }
 
+    void routeToMonitization() {
+      if (generalAmount == null) {
+        StatusHandler().showErrorDialog(_buildContext,
+            "Loan Amount is required to proceed to Terms and Conditions.");
+      } else {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => ChamasoftLoanAmortization(
+                  loanAmount: generalAmount,
+                  loanTypeId: _loanProduct.loanAmountType,
+                  repaymentPeriod: repaymentPeriod,
+                ),
+            settings: RouteSettings(arguments: {
+              'loanProduct': _loanProduct,
+              'generalAmount': generalAmount
+            })));
+      }
+    }
+
     return Scaffold(
         appBar: secondaryPageAppbar(
           context: context,
@@ -407,25 +425,8 @@ class _ApplyLoanFromChamasoftFormState
                                           textData: {
                                             'I agree to the ': {},
                                             'terms and conditions': {
-                                              "url": () => Navigator.of(context)
-                                                  .push(MaterialPageRoute(
-                                                      builder: (BuildContext
-                                                              context) =>
-                                                          ChamasoftLoanAmortization(
-                                                            loanAmount:
-                                                                generalAmount,
-                                                            loanTypeId: _loanProduct
-                                                                .loanAmountType,
-                                                            repaymentPeriod:
-                                                                repaymentPeriod,
-                                                          ),
-                                                      settings: RouteSettings(
-                                                          arguments: {
-                                                            'loanProduct':
-                                                                _loanProduct,
-                                                            'generalAmount':
-                                                                generalAmount
-                                                          }))),
+                                              "url": () =>
+                                                  routeToMonitization(),
                                               "color": primaryColor,
                                               "weight": FontWeight.w500
                                             },
