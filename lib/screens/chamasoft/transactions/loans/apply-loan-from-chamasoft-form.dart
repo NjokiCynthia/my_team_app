@@ -45,7 +45,7 @@ class _ApplyLoanFromChamasoftFormState
     double total = 0.0;
 
     for (var guarantor in _guarantorsInfo) {
-      if (guarantor['amount']) {
+      if (guarantor['amount'] != null) {
         total += guarantor['amount'];
       }
     }
@@ -59,8 +59,29 @@ class _ApplyLoanFromChamasoftFormState
 
     if (_formKey.currentState.validate()) {
       if (totalGuaranteed == generalAmount) {
-        showConfirmationDialog(loanProduct, groupObject);
+        // check guarantor duplicates
+        List guarantorIds = [];
+        _guarantorsInfo.forEach((guarantor) {
+          guarantorIds.add(guarantor['guarantorId']);
+        });
+        bool duplicateGuarantor = false;
+        for (var guarantorId in guarantorIds) {
+          int index = guarantorIds.indexOf(guarantorId);
+          if (guarantorIds.sublist(index).contains(guarantorId)) {
+            duplicateGuarantor = true;
+            break;
+          }
+        }
+        if (duplicateGuarantor == true) {
+          // show error dialog
+          StatusHandler().showErrorDialog(_buildContext,
+              "You cannot be guaranteed by one member more than once.");
+        } else {
+          // show confirmation dialog
+          showConfirmationDialog(loanProduct, groupObject);
+        }
       } else {
+        // show error dialog
         StatusHandler().showErrorDialog(_buildContext,
             "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}.");
       }
