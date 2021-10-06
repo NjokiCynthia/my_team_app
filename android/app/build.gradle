@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         applicationId "chamasoft.app"
-        minSdkVersion 19
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -91,6 +91,10 @@ android {
             versionNameSuffix "-eazzyclubDev"
             applicationId "eazzyclub.app.dev"
         }
+    }
+
+    lintOptions { 
+    checkReleaseBuilds false
     }
 }
 
