@@ -103,12 +103,12 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
       };
       if (states.any(interactiveStates.contains)) {
         return (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[800]
-            : Colors.white;
+            ? Color(0xff00a9f0)
+            : Color(0xff00a9f0);
       }
       return (themeChangeProvider.darkTheme)
-          ? Colors.blueGrey[800]
-          : Colors.white;
+          ? Color(0xff00a9f0)
+          : Color(0xff00a9f0);
     }
 
     return Column(
