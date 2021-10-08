@@ -18,6 +18,7 @@ class ApplyLoanFromGroup extends StatefulWidget {
 }
 
 class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
+  final _formKey = GlobalKey<FormState>();
   BuildContext _buildContext;
   static final List<String> _dropdownItems = <String>[
     'Emergency Loan',
@@ -25,17 +26,80 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   ];
   String _dropdownValue;
   String _errorText;
-  double amountInputValue;
+  int groupLoanAmount;
   bool _isChecked = false;
 
   void submitGroupLoan(bool isChecked) {
     final Group groupObject =
         Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
 
-    if (!isChecked) {
-      StatusHandler().showErrorDialog(
-          _buildContext, "You should accept terms and conditions");
+    if (_formKey.currentState.validate()) {
+      if (!isChecked) {
+        showDialog(
+            //context: _buildContext,
+            builder: (_) => AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  title: subtitle1(text: "Accept Terms and Conditions"),
+                  content: subtitle2(
+                      text:
+                          "Kindly Accept Terms and Conditions before Proceeding"),
+                  actions: [
+                    // ignore: deprecated_member_use
+                    // negativeActionDialogButton(
+                    //   text: ('CANCEL'),
+                    //   color: Theme.of(_buildContext)
+                    //       // ignore: deprecated_member_use
+                    //       .textSelectionHandleColor,
+                    //   action: () {
+                    //     Navigator.of(_buildContext).pop();
+                    //   },
+                    // ),
+                    // ignore: deprecated_member_use
+                    positiveActionDialogButton(
+                        text: ('OK'),
+                        color: primaryColor,
+                        action: () {
+                          Navigator.of(_buildContext).pop();
+                        }),
+                  ],
+                ));
+      }
+    } else {
+      showConfirmDialog(groupObject);
     }
+  }
+
+  void showConfirmDialog(Group groupObject) {
+    showDialog(
+        //  context: _buildContext,
+        builder: (_) => AlertDialog(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0))),
+              title: subtitle1(text: "Confirmation"),
+              content: subtitle2(
+                  text:
+                      "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(groupLoanAmount)}."),
+              actions: [
+                // ignore: deprecated_member_use
+                negativeActionDialogButton(
+                  text: ('CANCEL'),
+                  color: Theme.of(_buildContext)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  action: () {
+                    Navigator.of(_buildContext).pop();
+                  },
+                ),
+                // ignore: deprecated_member_use
+                positiveActionDialogButton(
+                    text: ('PROCEED'),
+                    color: primaryColor,
+                    action: () {
+                      Navigator.of(_buildContext).pop();
+                    }),
+              ],
+            ));
   }
 
   Widget buildDropDown() {
@@ -111,73 +175,121 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
           : Color(0xff00a9f0);
     }
 
+    void toGroupAmmotization() {
+      if (groupLoanAmount == null) {
+        // StatusHandler().showErrorDialog(_buildContext,
+        //     "Loan Amount is required to proceed to Terms and Conditions.");
+
+        showDialog(
+            //context: _buildContext,
+            builder: (_) => AlertDialog(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                  title: subtitle1(text: "Accept Terms and Conditions"),
+                  content: subtitle2(
+                      text:
+                          "Loan Amount is required to proceed to Terms and Conditions."),
+                  actions: [
+                    // ignore: deprecated_member_use
+                    // negativeActionDialogButton(
+                    //   text: ('CANCEL'),
+                    //   color: Theme.of(_buildContext)
+                    //       // ignore: deprecated_member_use
+                    //       .textSelectionHandleColor,
+                    //   action: () {
+                    //     Navigator.of(_buildContext).pop();
+                    //   },
+                    // ),
+                    // ignore: deprecated_member_use
+                    positiveActionDialogButton(
+                        text: ('OK'),
+                        color: primaryColor,
+                        action: () {
+                          Navigator.of(_buildContext).pop();
+                        }),
+                  ],
+                ));
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => GroupLoanAmortization(),
+          ),
+        );
+      }
+    }
+
     return Column(
       children: [
         Container(
-          child: Column(
-            children: <Widget>[
-              toolTip(
-                  context: context,
-                  title: "Note that...",
-                  message:
-                      "Loan application process is totally depended on your group's constitution and your group\'s management."),
-              Container(
-                padding: EdgeInsets.all(16.0),
-                child: Column(children: [
-                  buildDropDown(),
-                  amountTextInputField(
-                      context: context,
-                      labelText: "Amount applying for",
-                      onChanged: (value) {
-                        setState(() {
-                          amountInputValue = double.parse(value);
-                        });
-                      }),
-                ]),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                child: Row(
-                  children: [
-                    Checkbox(
-                        checkColor: Colors.white,
-                        fillColor: MaterialStateProperty.resolveWith(getColor),
-                        value: _isChecked,
-                        onChanged: (bool value) {
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: <Widget>[
+                toolTip(
+                    context: context,
+                    title: "Note that...",
+                    message:
+                        "Loan application process is totally depended on your group's constitution and your group\'s management."),
+                Container(
+                  padding: EdgeInsets.all(16.0),
+                  child: Column(children: [
+                    buildDropDown(),
+                    amountTextInputField(
+                        context: context,
+                        validator: (value) {
+                          if (value == null || value == "") {
+                            return "The field is required";
+                          }
+                          return null;
+                        },
+                        labelText: "Amount applying for",
+                        onChanged: (value) {
                           setState(() {
-                            _isChecked = value;
+                            groupLoanAmount =
+                                value != null ? int.tryParse(value) : 0.0;
                           });
                         }),
-                    textWithExternalLinks(
-                        color: Colors.blueGrey,
-                        size: 12.0,
-                        textData: {
-                          'I agree to the ': {},
-                          'terms and conditions': {
-                            "url": () => Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        GroupLoanAmortization(),
-                                  ),
-                                ),
-                            "color": primaryColor,
-                            "weight": FontWeight.w500
-                          },
-                        }),
-                  ],
+                  ]),
                 ),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              defaultButton(
-                  context: context,
-                  text: "Apply Now",
-                  onPressed: () => submitGroupLoan(_isChecked))
-            ],
+                SizedBox(
+                  height: 24,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                          checkColor: Colors.white,
+                          fillColor: MaterialStateProperty.resolveWith(getColor),
+                          value: _isChecked,
+                          onChanged: (bool value) {
+                            setState(() {
+                              _isChecked = value;
+                            });
+                          }),
+                      textWithExternalLinks(
+                          color: Colors.blueGrey,
+                          size: 12.0,
+                          textData: {
+                            'I agree to the ': {},
+                            'terms and conditions': {
+                              "url": () => toGroupAmmotization(),
+                              "color": primaryColor,
+                              "weight": FontWeight.w500
+                            },
+                          }),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 24,
+                ),
+                defaultButton(
+                    context: context,
+                    text: "Apply Now",
+                    onPressed: () => submitGroupLoan(_isChecked))
+              ],
+            ),
           ),
         )
       ],
