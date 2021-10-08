@@ -35,38 +35,14 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
 
     if (_formKey.currentState.validate()) {
       if (!isChecked) {
-        showDialog(
-            context: _buildContext,
-            builder: (_) => AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  title: subtitle1(text: "Accept Terms and Conditions"),
-                  content: subtitle2(
-                      text:
-                          "Kindly Accept Terms and Conditions before Proceeding"),
-                  actions: [
-                    // ignore: deprecated_member_use
-                    // negativeActionDialogButton(
-                    //   text: ('CANCEL'),
-                    //   color: Theme.of(_buildContext)
-                    //       // ignore: deprecated_member_use
-                    //       .textSelectionHandleColor,
-                    //   action: () {
-                    //     Navigator.of(_buildContext).pop();
-                    //   },
-                    // ),
-                    // ignore: deprecated_member_use
-                    positiveActionDialogButton(
-                        text: ('OK'),
-                        color: primaryColor,
-                        action: () {
-                          Navigator.of(_buildContext).pop();
-                        }),
-                  ],
-                ));
+        StatusHandler().showErrorDialog(_buildContext,
+            "Kindly Accept Terms and Conditions before Proceeding.");
+      } else if (groupLoanAmount == null) {
+        StatusHandler().showErrorDialog(
+            _buildContext, "Kindly input the Amount you are applying for.");
+      } else {
+        showConfirmDialog(groupObject);
       }
-    } else {
-      showConfirmDialog(groupObject);
     }
   }
 
@@ -78,7 +54,8 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               title: subtitle1(text: "Confirmation"),
               content: subtitle2(
-                  text: "Accept loan application of ${(groupLoanAmount)}."),
+                  text:
+                      "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format((groupLoanAmount))}."),
               actions: [
                 // ignore: deprecated_member_use
                 negativeActionDialogButton(
