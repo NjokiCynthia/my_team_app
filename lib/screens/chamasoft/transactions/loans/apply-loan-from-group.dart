@@ -36,7 +36,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
     if (_formKey.currentState.validate()) {
       if (!isChecked) {
         showDialog(
-            //context: _buildContext,
+            context: _buildContext,
             builder: (_) => AlertDialog(
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0))),
@@ -72,14 +72,13 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
 
   void showConfirmDialog(Group groupObject) {
     showDialog(
-        //  context: _buildContext,
+        context: _buildContext,
         builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               title: subtitle1(text: "Confirmation"),
               content: subtitle2(
-                  text:
-                      "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(groupLoanAmount)}."),
+                  text: "Accept loan application of ${(groupLoanAmount)}."),
               actions: [
                 // ignore: deprecated_member_use
                 negativeActionDialogButton(
@@ -157,8 +156,22 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
     );
   }
 
+  void toGroupAmmotization() {
+    if (groupLoanAmount == null) {
+      StatusHandler().showErrorDialog(_buildContext,
+          "Loan Amount is required to proceed to Terms and Conditions.");
+    } else {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (BuildContext context) => GroupLoanAmortization(),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    _buildContext = context;
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -173,49 +186,6 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
       return (themeChangeProvider.darkTheme)
           ? Color(0xff00a9f0)
           : Color(0xff00a9f0);
-    }
-
-    void toGroupAmmotization() {
-      if (groupLoanAmount == null) {
-        // StatusHandler().showErrorDialog(_buildContext,
-        //     "Loan Amount is required to proceed to Terms and Conditions.");
-
-        showDialog(
-            //context: _buildContext,
-            builder: (_) => AlertDialog(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10.0))),
-                  title: subtitle1(text: "Accept Terms and Conditions"),
-                  content: subtitle2(
-                      text:
-                          "Loan Amount is required to proceed to Terms and Conditions."),
-                  actions: [
-                    // ignore: deprecated_member_use
-                    // negativeActionDialogButton(
-                    //   text: ('CANCEL'),
-                    //   color: Theme.of(_buildContext)
-                    //       // ignore: deprecated_member_use
-                    //       .textSelectionHandleColor,
-                    //   action: () {
-                    //     Navigator.of(_buildContext).pop();
-                    //   },
-                    // ),
-                    // ignore: deprecated_member_use
-                    positiveActionDialogButton(
-                        text: ('OK'),
-                        color: primaryColor,
-                        action: () {
-                          Navigator.of(_buildContext).pop();
-                        }),
-                  ],
-                ));
-      } else {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => GroupLoanAmortization(),
-          ),
-        );
-      }
     }
 
     return Column(
@@ -260,7 +230,8 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                     children: [
                       Checkbox(
                           checkColor: Colors.white,
-                          fillColor: MaterialStateProperty.resolveWith(getColor),
+                          fillColor:
+                              MaterialStateProperty.resolveWith(getColor),
                           value: _isChecked,
                           onChanged: (bool value) {
                             setState(() {
