@@ -2466,6 +2466,7 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
+
       try {
         List<dynamic> _localData = [];
         _localData = await dbHelper.queryWhere(
@@ -2475,7 +2476,7 @@ class Groups with ChangeNotifier {
           orderBy: 'modified_on',
           order: 'DESC',
         );
-        if (_localData.length > 0) {
+        if (_localData.length > 0 && _localData[0]['value'].length > 0) {
           addLoanTypes(jsonDecode(_localData[0]['value']));
         } else {
           final response = await PostToServer.post(postRequest, url);

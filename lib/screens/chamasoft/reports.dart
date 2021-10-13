@@ -49,7 +49,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
   }
 
   Future<bool> _onWillPop() async {
-    await Navigator.of(context).pushReplacementNamed(ChamasoftDashboard.namedRoute);
+    await Navigator.of(context)
+        .pushReplacementNamed(ChamasoftDashboard.namedRoute);
     return null;
   }
 
@@ -71,7 +72,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               //Colors.blue[400],
               isHighlighted: true,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => ContributionStatement(statementFlag: CONTRIBUTION_STATEMENT),
+                  builder: (BuildContext context) => ContributionStatement(
+                      statementFlag: CONTRIBUTION_STATEMENT),
                   settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
@@ -88,7 +90,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => ContributionStatement(statementFlag: FINE_STATEMENT),
+                  builder: (BuildContext context) =>
+                      ContributionStatement(statementFlag: FINE_STATEMENT),
                   settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
@@ -105,7 +108,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => LoanSummary(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => LoanSummary(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -127,7 +131,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => DepositReceipts(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => DepositReceipts(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -143,7 +148,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => WithdrawalReceipts(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => WithdrawalReceipts(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -165,7 +171,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               color: Colors.blue[400],
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => AccountBalances(), settings: RouteSettings(arguments: 0))),
+                  builder: (BuildContext context) => AccountBalances(),
+                  settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
@@ -183,14 +190,15 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 isHighlighted: false,
                 action: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) => ContributionSummary(),
-                    settings: RouteSettings(arguments: CONTRIBUTION_STATEMENT))),
+                    settings:
+                        RouteSettings(arguments: CONTRIBUTION_STATEMENT))),
                 margin: 0,
                 imageHeight: 100.0)),
       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         SizedBox(
           width: 16.0,
         ),
-       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+      if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         Container(
             width: 132.0,
             child: svgGridButton(
@@ -205,11 +213,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                     settings: RouteSettings(arguments: FINE_STATEMENT))),
                 margin: 0,
                 imageHeight: 100.0)),
-       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+      if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         SizedBox(
           width: 16.0,
         ),
-       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+      if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         Container(
             width: 132.0,
             child: svgGridButton(
@@ -219,11 +227,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 subtitle: 'SUMMARY',
                 color: Colors.blue[400],
                 isHighlighted: false,
-                action: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) => GroupLoansSummary())),
+                action: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => GroupLoansSummary())),
                 margin: 0,
                 imageHeight: 100.0)),
-       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+      if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         SizedBox(
           width: 16.0,
         ),
@@ -236,14 +244,14 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               subtitle: 'SUMMARY',
               color: Colors.blue[400],
               isHighlighted: false,
-              action: () =>
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ExpenseSummary())),
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => ExpenseSummary())),
               margin: 0,
               imageHeight: 100.0)),
       SizedBox(
         width: 16.0,
       ),
-       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+      if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         Container(
             width: 132.0,
             child: svgGridButton(
@@ -253,11 +261,11 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 subtitle: 'STATEMENT',
                 color: Colors.blue[400],
                 isHighlighted: false,
-                action: () => Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (BuildContext context) => TransactionStatement())),
+                action: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (BuildContext context) => TransactionStatement())),
                 margin: 0,
                 imageHeight: 100.0)),
-       if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
+      if (!group.enableMemberInformationPrivacy || group.isGroupAdmin)
         SizedBox(
           width: 16.0,
         ),

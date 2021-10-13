@@ -92,10 +92,9 @@ class ApplyLoanState extends State<ApplyLoan> {
     try {
       // get the form data
       Provider.of<Groups>(context, listen: false)
-          .loadInitialFormData(
-        member: true,
-      )
+          .loadInitialFormData(member: true, loanTypes: true)
           .then((value) {
+        print("value $value");
         // get the loan products
         Provider.of<ChamasoftLoans>(context, listen: false)
             .fetchLoanProducts()
@@ -206,7 +205,7 @@ class ApplyLoanState extends State<ApplyLoan> {
                     Container(
                       child: Visibility(
                         visible: _isFromGroupActive,
-                        child: ApplyLoanFromGroup(),
+                        child: ApplyLoanFromGroup(formLoadData: _formLoadData),
                       ),
                     ),
                     //Chamasoft loans

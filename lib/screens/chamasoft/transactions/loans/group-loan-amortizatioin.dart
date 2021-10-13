@@ -9,11 +9,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class GroupLoanAmortization extends StatefulWidget {
-  final String loanTypeId;
-  final double loanAmount;
-  final String repaymentPeriod;
-  GroupLoanAmortization(
-      {this.loanTypeId, this.loanAmount, this.repaymentPeriod});
+  final int loanTypeId;
+  final int loanAmount;
+  GroupLoanAmortization({this.loanTypeId, this.loanAmount});
 
   @override
   _GroupLoanAmortizationState createState() => _GroupLoanAmortizationState();
@@ -63,7 +61,6 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
       Provider.of<ChamasoftLoans>(context, listen: false).fetchLoanCalculator({
         "loan_type_id": widget.loanTypeId,
         "loan_amount": widget.loanAmount,
-        "repayment_period": widget.repaymentPeriod
       }).then((value) {
         setState(() {
           _isInit = false;

@@ -3,15 +3,19 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/group-loan-amortizatioin.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/custom-dropdown.dart';
 import 'package:chamasoft/widgets/textfields.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 
 class ApplyLoanFromGroup extends StatefulWidget {
-  const ApplyLoanFromGroup({Key key}) : super(key: key);
+  final Map<String, dynamic> formLoadData;
+
+  const ApplyLoanFromGroup({this.formLoadData, Key key}) : super(key: key);
 
   @override
   _ApplyLoanFromGroupState createState() => _ApplyLoanFromGroupState();
@@ -19,52 +23,42 @@ class ApplyLoanFromGroup extends StatefulWidget {
 
 class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   final _formKey = GlobalKey<FormState>();
-  BuildContext _buildContext;
-  static final List<String> _dropdownItems = <String>[
-    'Emergency Loan',
-    'Education Loan'
-  ];
-  String _dropdownValue;
-  String _errorText;
-  int groupLoanAmount;
+  int _loanTypeId;
+  int _groupLoanAmount;
   bool _isChecked = false;
 
-  void submitGroupLoan(bool isChecked) {
-    final Group groupObject =
-        Provider.of<Groups>(_buildContext, listen: false).getCurrentGroup();
-
+  void submitGroupLoan(bool isChecked, BuildContext context) {
     if (_formKey.currentState.validate()) {
       if (!isChecked) {
-        StatusHandler().showErrorDialog(_buildContext,
-            "Kindly Accept Terms and Conditions before Proceeding.");
-      } else if (groupLoanAmount == null) {
         StatusHandler().showErrorDialog(
-            _buildContext, "Kindly input the Amount you are applying for.");
+            context, "Kindly accept Terms and Conditions before proceeding.");
       } else {
-        showConfirmDialog(groupObject);
+        showConfirmDialog(context);
       }
     }
   }
 
-  void showConfirmDialog(Group groupObject) {
+  void showConfirmDialog(BuildContext context) {
+    final Group groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
     showDialog(
-        context: _buildContext,
+        context: context,
         builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0))),
               title: subtitle1(text: "Confirmation"),
               content: subtitle2(
                   text:
-                      "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format((groupLoanAmount))}."),
+                      "Accept loan application of ${groupObject.groupCurrency} ${currencyFormat.format(_groupLoanAmount)}."),
               actions: [
                 // ignore: deprecated_member_use
                 negativeActionDialogButton(
                   text: ('CANCEL'),
-                  color: Theme.of(_buildContext)
+                  color: Theme.of(context)
                       // ignore: deprecated_member_use
                       .textSelectionHandleColor,
                   action: () {
-                    Navigator.of(_buildContext).pop();
+                    Navigator.of(context).pop();
                   },
                 ),
                 // ignore: deprecated_member_use
@@ -72,75 +66,24 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                     text: ('PROCEED'),
                     color: primaryColor,
                     action: () {
-                      Navigator.of(_buildContext).pop();
+                      // TODO: SEND TO SERVER FUNCTION
+                      Navigator.of(context).pop();
                     }),
               ],
             ));
   }
 
-  Widget buildDropDown() {
-    return FormField(
-      builder: (FormFieldState state) {
-        return DropdownButtonHideUnderline(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              new InputDecorator(
-                decoration: InputDecoration(
-                    labelStyle: inputTextStyle(),
-                    hintStyle: inputTextStyle(),
-                    errorStyle: inputTextStyle(),
-                    filled: false,
-                    hintText: 'Select Loan Type',
-                    labelText: _dropdownValue == null
-                        ? 'Select Loan Type'
-                        : 'Select Loan Type',
-                    errorText: _errorText,
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).hintColor, width: 1.0))),
-                isEmpty: _dropdownValue == null,
-                child: new Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: (themeChangeProvider.darkTheme)
-                        ? Colors.blueGrey[800]
-                        : Colors.white,
-                  ),
-                  child: new DropdownButton<String>(
-                    value: _dropdownValue,
-                    isDense: true,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        _dropdownValue = newValue;
-                      });
-                    },
-                    items: _dropdownItems.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: inputTextStyle(),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  void toGroupAmmotization() {
-    if (groupLoanAmount == null) {
-      StatusHandler().showErrorDialog(_buildContext,
+  void toGroupAmmotization(BuildContext context) {
+    if (_groupLoanAmount == null) {
+      StatusHandler().showErrorDialog(context,
           "Loan Amount is required to proceed to Terms and Conditions.");
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (BuildContext context) => GroupLoanAmortization(),
+          builder: (BuildContext context) => GroupLoanAmortization(
+            loanAmount: _groupLoanAmount,
+            loanTypeId: _loanTypeId,
+          ),
         ),
       );
     }
@@ -148,7 +91,6 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
 
   @override
   Widget build(BuildContext context) {
-    _buildContext = context;
     Color getColor(Set<MaterialState> states) {
       const Set<MaterialState> interactiveStates = <MaterialState>{
         MaterialState.pressed,
@@ -165,6 +107,11 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
           : Color(0xff00a9f0);
     }
 
+    List<NamesListItem> loanTypeOptions =
+        widget.formLoadData.containsKey('loanTypeOptions')
+            ? widget.formLoadData['loanTypeOptions']
+            : [];
+
     return Column(
       children: [
         Container(
@@ -180,7 +127,22 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                 Container(
                   padding: EdgeInsets.all(16.0),
                   child: Column(children: [
-                    buildDropDown(),
+                    CustomDropDownButton(
+                      enabled: true,
+                      labelText: "Select group loan type",
+                      listItems: loanTypeOptions,
+                      onChanged: (value) {
+                        setState(() {
+                          _loanTypeId = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == "" || value == null) {
+                          return "This field is required";
+                        }
+                        return null;
+                      },
+                    ),
                     amountTextInputField(
                         context: context,
                         validator: (value) {
@@ -192,7 +154,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                         labelText: "Amount applying for",
                         onChanged: (value) {
                           setState(() {
-                            groupLoanAmount =
+                            _groupLoanAmount =
                                 value != null ? int.tryParse(value) : 0.0;
                           });
                         }),
@@ -221,7 +183,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                           textData: {
                             'I agree to the ': {},
                             'terms and conditions': {
-                              "url": () => toGroupAmmotization(),
+                              "url": () => toGroupAmmotization(context),
                               "color": primaryColor,
                               "weight": FontWeight.w500
                             },
@@ -235,7 +197,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                 defaultButton(
                     context: context,
                     text: "Apply Now",
-                    onPressed: () => submitGroupLoan(_isChecked))
+                    onPressed: () => submitGroupLoan(_isChecked, context))
               ],
             ),
           ),
