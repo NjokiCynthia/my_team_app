@@ -14,8 +14,10 @@ import 'package:provider/provider.dart';
 
 class ApplyLoanFromGroup extends StatefulWidget {
   final Map<String, dynamic> formLoadData;
+  final List<LoanType> loanTypes;
 
-  const ApplyLoanFromGroup({this.formLoadData, Key key}) : super(key: key);
+  const ApplyLoanFromGroup({this.formLoadData, this.loanTypes, Key key})
+      : super(key: key);
 
   @override
   _ApplyLoanFromGroupState createState() => _ApplyLoanFromGroupState();
@@ -26,6 +28,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   int _loanTypeId;
   int _groupLoanAmount;
   bool _isChecked = false;
+  LoanType _loanType;
 
   void submitGroupLoan(bool isChecked, BuildContext context) {
     if (_formKey.currentState.validate()) {
@@ -111,7 +114,6 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
         widget.formLoadData.containsKey('loanTypeOptions')
             ? widget.formLoadData['loanTypeOptions']
             : [];
-
     return Column(
       children: [
         Container(
@@ -134,6 +136,10 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                       onChanged: (value) {
                         setState(() {
                           _loanTypeId = value;
+                          _loanType = widget.loanTypes.firstWhere(
+                              (loanType) =>
+                                  loanType.id.toString() == value.toString(),
+                              orElse: () => null);
                         });
                       },
                       validator: (value) {
@@ -158,6 +164,10 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                                 value != null ? int.tryParse(value) : 0.0;
                           });
                         }),
+                    if (_loanType != null && _loanType.guarantors == "1")
+                      Container(
+                        child: Text("The guarantors section will be here"),
+                      )
                   ]),
                 ),
                 SizedBox(

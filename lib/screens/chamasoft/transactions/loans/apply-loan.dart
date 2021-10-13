@@ -46,6 +46,7 @@ class ApplyLoanState extends State<ApplyLoan> {
   double amountInputValue;
   Map<String, dynamic> _formLoadData = {};
   List<LoanProduct> _loanProducts = [];
+  List<LoanType> _loanTypes = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
@@ -94,7 +95,6 @@ class ApplyLoanState extends State<ApplyLoan> {
       Provider.of<Groups>(context, listen: false)
           .loadInitialFormData(member: true, loanTypes: true)
           .then((value) {
-        print("value $value");
         // get the loan products
         Provider.of<ChamasoftLoans>(context, listen: false)
             .fetchLoanProducts()
@@ -104,6 +104,7 @@ class ApplyLoanState extends State<ApplyLoan> {
             _formLoadData = value;
             _isInit = false;
             _isLoading = false;
+            _loanTypes = Provider.of<Groups>(context, listen: false).loanTypes;
           });
         });
       });
@@ -205,7 +206,8 @@ class ApplyLoanState extends State<ApplyLoan> {
                     Container(
                       child: Visibility(
                         visible: _isFromGroupActive,
-                        child: ApplyLoanFromGroup(formLoadData: _formLoadData),
+                        child: ApplyLoanFromGroup(
+                            formLoadData: _formLoadData, loanTypes: _loanTypes),
                       ),
                     ),
                     //Chamasoft loans
