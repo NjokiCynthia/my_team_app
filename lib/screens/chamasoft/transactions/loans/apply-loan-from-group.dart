@@ -28,7 +28,13 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   int _loanTypeId;
   int _groupLoanAmount;
   bool _isChecked = false;
+  int _numOfGuarantors;
+  // ignore: unused_field
+  int _repaymentPeriod;
+  // ignore: unused_field
   LoanType _loanType;
+  List<int> _guarantors = [];
+  List<int> _amounts = [];
 
   void submitGroupLoan(bool isChecked, BuildContext context) {
     if (_formKey.currentState.validate()) {
@@ -115,104 +121,202 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
         widget.formLoadData.containsKey('loanTypeOptions')
             ? widget.formLoadData['loanTypeOptions']
             : [];
-    return Column(
-      children: [
-        Container(
-          child: Form(
-            key: _formKey,
+
+    List<NamesListItem> memberOptions =
+        widget.formLoadData.containsKey('memberOptions')
+            ? widget.formLoadData['memberOptions']
+            : [];
+
+    return Builder(builder: (BuildContext context) {
+      return GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child: SingleChildScrollView(
+          child: Container(
             child: Column(
-              children: <Widget>[
-                toolTip(
-                    context: context,
-                    title: "Note that...",
-                    message:
-                        "Loan application process is totally depended on your group's constitution and your group\'s management."),
+              children: [
                 Container(
-                  padding: EdgeInsets.all(16.0),
-                  child: Column(children: [
-                    CustomDropDownButton(
-                      enabled: true,
-                      labelText: "Select group loan type",
-                      listItems: loanTypeOptions,
-                      onChanged: (value) {
-                        setState(() {
-                          _loanTypeId = value;
-                          _loanType = widget.loanTypes.firstWhere(
-                              (loanType) =>
-                                  loanType.id.toString() == value.toString(),
-                              orElse: () => null);
-                        });
-                      },
-                      validator: (value) {
-                        if (value == "" || value == null) {
-                          return "This field is required";
-                        }
-                        return null;
-                      },
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        toolTip(
+                            context: context,
+                            title: "Note that...",
+                            message:
+                                "Loan application process is totally depended on your group's constitution and your group\'s management."),
+                        Container(
+                          padding: EdgeInsets.all(16.0),
+                          child: Column(children: [
+                            CustomDropDownButton(
+                              enabled: true,
+                              labelText: "Select group loan type",
+                              listItems: loanTypeOptions,
+                              onChanged: (value) {
+                                setState(() {
+                                  _loanTypeId = value;
+                                  _numOfGuarantors = int.tryParse(widget
+                                      .loanTypes
+                                      .firstWhere((loanType) =>
+                                          loanType.id.toString() ==
+                                          value.toString())
+                                      .guarantors
+                                      .replaceAll(new RegExp(r'[^0-9]'), ''));
+                                  _repaymentPeriod = int.tryParse(widget
+                                      .loanTypes
+                                      .firstWhere((loanType) =>
+                                          loanType.id.toString() ==
+                                          value.toString())
+                                      .repaymentPeriod
+                                      .replaceAll(new RegExp(r'[^0-9]'), ''));
+                                });
+                              },
+                              validator: (value) {
+                                if (value == "" || value == null) {
+                                  return "This field is required";
+                                }
+                                return null;
+                              },
+                            ),
+                            amountTextInputField(
+                                context: context,
+                                validator: (value) {
+                                  if (value == null || value == "") {
+                                    return "The field is required";
+                                  }
+                                  return null;
+                                },
+                                labelText: "Amount applying for",
+                                onChanged: (value) {
+                                  setState(() {
+                                    _groupLoanAmount = value != null
+                                        ? int.tryParse(value)
+                                        : 0.0;
+                                  });
+                                }),
+                            if (_numOfGuarantors != null)
+                              Container(
+                                height: MediaQuery.of(context).size.height *
+                                    (_numOfGuarantors >= 5
+                                        ? (5 / 10)
+                                        : (_numOfGuarantors / 10)),
+                                padding: EdgeInsets.all(8.0),
+                                child: ListView.builder(
+                                  itemBuilder: (BuildContext context, index) {
+                                    return addGuarantor(
+                                        memberOptions, context, index);
+                                  },
+                                  itemCount: _numOfGuarantors,
+                                ),
+                              )
+                          ]),
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                  checkColor: Colors.white,
+                                  fillColor: MaterialStateProperty.resolveWith(
+                                      getColor),
+                                  value: _isChecked,
+                                  onChanged: (bool value) {
+                                    setState(() {
+                                      _isChecked = value;
+                                    });
+                                  }),
+                              textWithExternalLinks(
+                                  color: Colors.blueGrey,
+                                  size: 12.0,
+                                  textData: {
+                                    'I agree to the ': {},
+                                    'terms and conditions': {
+                                      "url": () => toGroupAmmotization(context),
+                                      "color": primaryColor,
+                                      "weight": FontWeight.w500
+                                    },
+                                  }),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 24,
+                        ),
+                        defaultButton(
+                            context: context,
+                            text: "Apply Now",
+                            onPressed: () =>
+                                submitGroupLoan(_isChecked, context))
+                      ],
                     ),
-                    amountTextInputField(
-                        context: context,
-                        validator: (value) {
-                          if (value == null || value == "") {
-                            return "The field is required";
-                          }
-                          return null;
-                        },
-                        labelText: "Amount applying for",
-                        onChanged: (value) {
-                          setState(() {
-                            _groupLoanAmount =
-                                value != null ? int.tryParse(value) : 0.0;
-                          });
-                        }),
-                    if (_loanType != null && _loanType.guarantors == "1")
-                      Container(
-                        child: Text("The guarantors section will be here"),
-                      )
-                  ]),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 30.0, right: 30.0),
-                  child: Row(
-                    children: [
-                      Checkbox(
-                          checkColor: Colors.white,
-                          fillColor:
-                              MaterialStateProperty.resolveWith(getColor),
-                          value: _isChecked,
-                          onChanged: (bool value) {
-                            setState(() {
-                              _isChecked = value;
-                            });
-                          }),
-                      textWithExternalLinks(
-                          color: Colors.blueGrey,
-                          size: 12.0,
-                          textData: {
-                            'I agree to the ': {},
-                            'terms and conditions': {
-                              "url": () => toGroupAmmotization(context),
-                              "color": primaryColor,
-                              "weight": FontWeight.w500
-                            },
-                          }),
-                    ],
                   ),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                defaultButton(
-                    context: context,
-                    text: "Apply Now",
-                    onPressed: () => submitGroupLoan(_isChecked, context))
+                )
               ],
             ),
           ),
-        )
+        ),
+      );
+    });
+  }
+
+  Row addGuarantor(
+      List<NamesListItem> _memberOptions, BuildContext context, int index) {
+    //_memberOptions.map((e) => guarantors);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        Expanded(
+          child: CustomDropDownButton(
+            enabled: true,
+            labelText: "Select guarantor",
+            listItems: _memberOptions,
+            onChanged: (value) {
+              setState(() {
+                if (_guarantors.asMap().containsKey(index)) {
+                  _guarantors[index] = value;
+                } else {
+                  _guarantors.add(value);
+                }
+              });
+            },
+            validator: (value) {
+              if (value == "" || value == null) {
+                return "This field is required";
+              }
+              return null;
+            },
+          ),
+        ),
+        SizedBox(
+          width: 20.0,
+        ),
+        Expanded(
+            child: Padding(
+          padding: const EdgeInsets.only(left: 0),
+          child: amountTextInputField(
+              context: context,
+              validator: (value) {
+                if (value == null || value == "") {
+                  return "The field is required";
+                }
+                return null;
+              },
+              labelText: "Enter Amount",
+              enabled: true,
+              onChanged: (value) {
+                setState(() {
+                  if (_amounts.asMap().containsKey(index)) {
+                    _amounts[index] = int.tryParse(value);
+                  } else {
+                    _amounts.add(int.tryParse(value));
+                  }
+                });
+              }),
+        ))
       ],
     );
   }
