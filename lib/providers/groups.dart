@@ -2468,6 +2468,7 @@ class Groups with ChangeNotifier {
       });
 
       try {
+        // ignore: unused_local_variable
         List<dynamic> _localData = [];
         _localData = await dbHelper.queryWhere(
           table: DatabaseHelper.loanTypesTable,
@@ -2476,24 +2477,25 @@ class Groups with ChangeNotifier {
           orderBy: 'modified_on',
           order: 'DESC',
         );
-
-        if (_localData.length > 0 &&
-            jsonDecode(_localData[0]['value']).length > 0) {
-          addLoanTypes(jsonDecode(_localData[0]['value']));
-        } else {
-          final response = await PostToServer.post(postRequest, url);
-          _loanTypes = []; //clear
-          final groupLoanTypes = response['loan_types'] as List<dynamic>;
-          Map<String, dynamic> loanTypesMap = {
-            "group_id": currentGroupId,
-            "value": jsonEncode(groupLoanTypes),
-            "modified_on": DateTime.now().millisecondsSinceEpoch,
-          };
-          await dbHelper.deleteMultiple(
-              [int.parse(_currentGroupId)], DatabaseHelper.loanTypesTable);
-          await dbHelper.insert(loanTypesMap, DatabaseHelper.loanTypesTable);
-          addLoanTypes(groupLoanTypes);
-        }
+        // ignore: todo
+        // TODO: handle reseting of data.
+        // if (_localData.length > 0 &&
+        //     jsonDecode(_localData[0]['value']).length > 0) {
+        //   addLoanTypes(jsonDecode(_localData[0]['value']));
+        // } else {
+        final response = await PostToServer.post(postRequest, url);
+        _loanTypes = []; //clear
+        final groupLoanTypes = response['loan_types'] as List<dynamic>;
+        Map<String, dynamic> loanTypesMap = {
+          "group_id": currentGroupId,
+          "value": jsonEncode(groupLoanTypes),
+          "modified_on": DateTime.now().millisecondsSinceEpoch,
+        };
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.loanTypesTable);
+        await dbHelper.insert(loanTypesMap, DatabaseHelper.loanTypesTable);
+        addLoanTypes(groupLoanTypes);
+        //}
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           //=== BEGIN: OFFLINE PLUG

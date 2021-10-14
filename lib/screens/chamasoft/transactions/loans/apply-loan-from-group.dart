@@ -69,6 +69,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                     text: ('PROCEED'),
                     color: primaryColor,
                     action: () {
+                      // ignore: todo
                       // TODO: SEND TO SERVER FUNCTION
                       Navigator.of(context).pop();
                     }),
