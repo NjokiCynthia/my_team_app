@@ -1,9 +1,12 @@
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
-import 'package:chamasoft/providers/chamasoft-loans.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'package:chamasoft/widgets/dataTable.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -11,7 +14,9 @@ import 'package:provider/provider.dart';
 class GroupLoanAmortization extends StatefulWidget {
   final int loanTypeId;
   final int loanAmount;
-  GroupLoanAmortization({this.loanTypeId, this.loanAmount});
+  final int repayementAmount;
+  GroupLoanAmortization(
+      {this.loanTypeId, this.loanAmount, this.repayementAmount});
 
   @override
   _GroupLoanAmortizationState createState() => _GroupLoanAmortizationState();
@@ -22,6 +27,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
   ScrollController _scrollController;
   bool _isInit = true;
   bool _isLoading = true;
+  Map<String, dynamic> _loanCalculator;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
@@ -58,13 +64,14 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
   Future<void> _fetchLoanCalculator(BuildContext context) async {
     try {
       // get the loan calculator
-      Provider.of<ChamasoftLoans>(context, listen: false).fetchLoanCalculator({
+      Provider.of<Groups>(context, listen: false).fetchGroupLoanCalculator({
         "loan_type_id": widget.loanTypeId,
         "loan_amount": widget.loanAmount,
       }).then((value) {
         setState(() {
           _isInit = false;
           _isLoading = false;
+          _loanCalculator = value;
         });
       });
     } on CustomException catch (error) {
@@ -85,586 +92,184 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
 
   @override
   Widget build(BuildContext context) {
+    final arguments =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    LoanType loanType = arguments['loanType'];
+    final generalAmount = arguments['groupLoanAmount'];
+    Group groupObject = Provider.of<Groups>(context).getCurrentGroup();
+    DateTime now = new DateTime.now();
+    DateTime date = new DateTime(now.year, now.month, now.day);
+    DateTime dateTime = DateTime.parse(date.toIso8601String());
+    String formate2 = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
-        title: "Group Loan Terms & Amortization",
+        title: "Loan Terms & Amortization",
       ),
       backgroundColor: Theme.of(context).backgroundColor,
-
       body: Column(
         children: [
-          _isLoading
-              ? showLinearProgressIndicator()
-              : SizedBox(
-                  height: 0.0,
-                ),
-          // Padding(
-          //   padding: const EdgeInsets.all(16.0),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.start,
-          //     children: <Widget>[
-          //       Row(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: <Widget>[
-          //           Expanded(
-          //             child: heading2(
-          //                 text: 'Education Loan' /*widget.typeLoan.loanName*/,
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor,
-          //                 textAlign: TextAlign.start),
-          //           ),
-          //           heading2(
-          //               text: "Ksh 180,000",
-          //               // ignore: deprecated_member_use
-          //               color: Theme.of(context).textSelectionHandleColor,
-          //               textAlign: TextAlign.start)
-          //         ],
-          //       ),
-          //       Column(
-          //         crossAxisAlignment: CrossAxisAlignment.start,
-          //         children: <Widget>[
-          //           SizedBox(
-          //             height: 10,
-          //           ),
-          //           Row(
-          //             mainAxisAlignment: MainAxisAlignment.start,
-          //             children: <Widget>[
-          //               subtitle1(
-          //                 text: "Interest Rate: ",
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor,
-          //               ),
-          //               customTitle(
-          //                 textAlign: TextAlign.start,
-          //                 text: "12%",
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor,
-          //                 fontWeight: FontWeight.w600,
-          //               ),
-          //             ],
-          //           ),
-          //           Row(
-          //             mainAxisAlignment: MainAxisAlignment.start,
-          //             children: <Widget>[
-          //               subtitle1(
-          //                 text: "Repayment Period: ",
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor,
-          //               ),
-          //               customTitle(
-          //                 textAlign: TextAlign.start,
-          //                 text: "1 Month",
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor,
-          //                 fontWeight: FontWeight.w600,
-          //               ),
-          //             ],
-          //           ),
-          //           Row(
-          //             mainAxisAlignment: MainAxisAlignment.start,
-          //             children: <Widget>[
-          //               subtitle1(
-          //                 text: "Application Date: ",
-          //                 // ignore: depSSXrecated_member_use
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor,
-          //               ),
-          //               customTitle(
-          //                 textAlign: TextAlign.start,
-          //                 text: formate2,
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor,
-          //                 fontWeight: FontWeight.w600,
-          //               ),
-          //             ],
-          //           ),
-          //         ],
-          //       ),
-          //       Column(
-          //         //crossAxisAlignment: CrossAxisAlignment.,
-          //         mainAxisAlignment: MainAxisAlignment.start,
-          //         children: <Widget>[],
-          //       )
-          //     ],
-          //   ),
-          // ),
+          _isLoading ? showLinearProgressIndicator() : SizedBox(height: 0.0),
+          if (!_isLoading)
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      subtitle1(
+                          text: loanType.name /*widget.typeLoan.loanName*/,
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                          textAlign: TextAlign.start),
+                      Spacer(),
+                      subtitle2(
+                          text:
+                              "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}",
+
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                          textAlign: TextAlign.start)
+                    ],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle1(
+                            text: "Interest Rate: ",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                          subtitle2(
+                            textAlign: TextAlign.start,
+                            text: loanType.interestRate + " %",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle1(
+                            text: "Repayment Period: ",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                          subtitle2(
+                            textAlign: TextAlign.start,
+                            text: loanType.repaymentPeriod + " Month(s)",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle1(
+                            text: "Application Date: ",
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                          subtitle2(
+                            textAlign: TextAlign.start,
+                            text: formate2,
+                            // ignore: deprecated_member_use
+                            color: Theme.of(context).textSelectionHandleColor,
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  Column(
+                    //crossAxisAlignment: CrossAxisAlignment.,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[],
+                  )
+                ],
+              ),
+            ),
           SizedBox(
             height: 10.0,
           ),
-          Center(
-            child: Text("Working on it"),
-          )
-          // Padding(
-          //   padding: const EdgeInsets.all(4.0),
-          //   child: Container(
-          //     width: double.infinity,
-          //     child: DataTable(
-          //       dataRowHeight: 25.0,
-          //       showBottomBorder: true,
-          //       headingRowColor: MaterialStateColor.resolveWith(
-          //           (states) => Colors.cyanAccent),
-          //       columns: const <DataColumn>[
-          //         DataColumn(
-          //           label: Text(
-          //             'Date',
-          //             style: TextStyle(fontStyle: FontStyle.italic),
-          //             textAlign: TextAlign.start,
-          //           ),
-          //         ),
-          //         DataColumn(
-          //           label: Text(
-          //             'Payement',
-          //             style: TextStyle(fontStyle: FontStyle.italic),
-          //             textAlign: TextAlign.center,
-          //           ),
-          //         ),
-          //         DataColumn(
-          //           label: Text(
-          //             'Principle',
-          //             style: TextStyle(fontStyle: FontStyle.italic),
-          //             textAlign: TextAlign.end,
-          //           ),
-          //         ),
-          //         DataColumn(
-          //           label: Text(
-          //             'Interest',
-          //             style: TextStyle(fontStyle: FontStyle.italic),
-          //             textAlign: TextAlign.end,
-          //           ),
-          //         ),
-          //         DataColumn(
-          //           label: Text(
-          //             'Balance',
-          //             style: TextStyle(fontStyle: FontStyle.italic),
-          //             textAlign: TextAlign.end,
-          //           ),
-          //         ),
-          //       ],
-          //       rows: <DataRow>[
-          //         DataRow(
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text:
-          //                     "${dateTime.year}-${dateTime.month + 1}-${dateTime.day}",
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '1000',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '900',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           selected: true,
-          //           cells: <DataCell>[
-          //             // ignore: deprecated_member_use
-          //             DataCell(subtitle1(
-          //                 text:
-          //                     "${dateTime.year}-${dateTime.month + 2}-${dateTime.day}",
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '900',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '800',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text:
-          //                     "${dateTime.year}-${dateTime.month + 3}-${dateTime.day}",
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '800',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '700',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           selected: true,
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 4, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '700',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '600',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 5, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '600',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '500',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           selected: true,
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 6, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '500',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '400',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 7, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '400',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '300',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           selected: true,
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 8, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '300',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '200',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 9, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '200',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           selected: true,
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 10, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '100',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '0',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 11, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '0',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '0',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '0',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //         DataRow(
-          //           selected: true,
-          //           cells: <DataCell>[
-          //             DataCell(subtitle1(
-          //                 text: DateTime(now.year, now.month + 12, now.day)
-          //                     .toString(),
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '0',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '0',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '10',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //             DataCell(subtitle1(
-          //                 text: '0',
-          //                 // ignore: deprecated_member_use
-          //                 color: Theme.of(context).textSelectionHandleColor)),
-          //           ],
-          //         ),
-          //       ],
-          //     ),
-          //   ),
-          // ),
+          if (!_isLoading)
+            Column(
+              children: [
+                Container(
+                  // width: double.infinity, _loanCalculator['breakdown']
+
+                  child: CustomDataTable(
+                    rowItems: generateTableRows(),
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Center(
+                        child: DataTable(
+                            headingRowColor: MaterialStateColor.resolveWith(
+                              (states) => (themeChangeProvider.darkTheme)
+                                  ? Colors.blueGrey[800]
+                                  : Color(0xffededfe),
+                            ),
+                            columnSpacing: 20.0,
+                            columns: [
+                              DataColumn(label: subtitle2(text: 'Total')),
+                              DataColumn(
+                                  label: subtitle2(
+                                      text:
+                                          "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
+                              DataColumn(
+                                  label: subtitle2(
+                                      text:
+                                          "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")),
+                              DataColumn(
+                                  label: subtitle2(
+                                      text:
+                                          "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")),
+                              DataColumn(label: subtitle2(text: '0'))
+                            ],
+                            rows: <DataRow>[]),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
         ],
       ),
-      // body: Column(
-      //   children: <Widget>[
-      //     Container(
-      //       padding: EdgeInsets.all(20.0),
-      //       color: (themeChangeProvider.darkTheme)
-      //           ? Colors.blueGrey[800]
-      //           : Color(0xffededfe),
-      //       child: Column(
-      //         crossAxisAlignment: CrossAxisAlignment.start,
-      //         children: <Widget>[
-      //           Row(
-      //             crossAxisAlignment: CrossAxisAlignment.start,
-      //             children: <Widget>[
-      //               Expanded(
-      //                 child: heading2(
-      //                     text: 'Loan Name' /*widget.typeLoan.loanName*/,
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                     textAlign: TextAlign.start),
-      //               ),
-      //               heading2(
-      //                   text: "Ksh 180,000",
-      //                   // ignore: deprecated_member_use
-      //                   color: Theme.of(context).textSelectionHandleColor,
-      //                   textAlign: TextAlign.start)
-      //             ],
-      //           ),
-      //           Column(
-      //             crossAxisAlignment: CrossAxisAlignment.start,
-      //             children: <Widget>[
-      //               SizedBox(
-      //                 height: 10,
-      //               ),
-      //               Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 children: <Widget>[
-      //                   subtitle1(
-      //                     text: "Interest Rate: ",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                   ),
-      //                   customTitle(
-      //                     textAlign: TextAlign.start,
-      //                     text: "12%",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                     fontWeight: FontWeight.w600,
-      //                   ),
-      //                 ],
-      //               ),
-      //               Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 children: <Widget>[
-      //                   subtitle1(
-      //                     text: "Repayment Period: ",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                   ),
-      //                   customTitle(
-      //                     textAlign: TextAlign.start,
-      //                     text: "1 Month",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                     fontWeight: FontWeight.w600,
-      //                   ),
-      //                 ],
-      //               ),
-      //               Row(
-      //                 mainAxisAlignment: MainAxisAlignment.start,
-      //                 children: <Widget>[
-      //                   subtitle1(
-      //                     text: "Application Date: ",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                   ),
-      //                   customTitle(
-      //                     textAlign: TextAlign.start,
-      //                     text: "May 12, 2020",
-      //                     // ignore: deprecated_member_use
-      //                     color: Theme.of(context).textSelectionHandleColor,
-      //                     fontWeight: FontWeight.w600,
-      //                   ),
-      //                 ],
-      //               ),
-      //             ],
-      //           ),
-      //           Column(
-      //             //crossAxisAlignment: CrossAxisAlignment.,
-      //             mainAxisAlignment: MainAxisAlignment.start,
-      //             children: <Widget>[],
-      //           )
-      //         ],
-      //       ),
-      //     ),
-      //     Expanded(
-      //       child: ListView.builder(
-      //         controller: _scrollController,
-      //         shrinkWrap: true,
-      //         itemBuilder: (context, index) {
-      //           LoanInstallment installment = installments[index];
-      //           return AmortizationBody(installment: installment);
-      //         },
-      //         itemCount: installments.length,
-      //       ),
-      //     )
-      //   ],
-      // ),
     );
+  }
+
+  List<DataRow> generateTableRows() {
+    List<DataRow> rows = <DataRow>[];
+
+    _loanCalculator['breakdown']
+        .map((breakdown) => rows.add(DataRow(
+              cells: <DataCell>[
+                DataCell(Text(breakdown['dueDate'])),
+                DataCell(Text(breakdown['amountPayable'].toString())),
+                DataCell(Text(breakdown['principlePayable'].toString())),
+                DataCell(Text(breakdown['interestPayable'].toString())),
+                DataCell(Text(breakdown['balance'].toString()))
+              ],
+            )))
+        .toList();
+
+    return rows;
   }
 }

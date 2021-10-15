@@ -134,11 +134,14 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
     } else {
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (BuildContext context) => GroupLoanAmortization(
-            loanAmount: _groupLoanAmount,
-            loanTypeId: _loanTypeId,
-          ),
-        ),
+            builder: (BuildContext context) => GroupLoanAmortization(
+                loanAmount: _groupLoanAmount,
+                loanTypeId: _loanTypeId,
+                repayementAmount: _repaymentPeriod),
+            settings: RouteSettings(arguments: {
+              'loanType': _loanType,
+              'groupLoanAmount': _groupLoanAmount
+            })),
       );
     }
   }

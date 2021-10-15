@@ -5192,4 +5192,64 @@ class Groups with ChangeNotifier {
     _loanPulled = false;
     _unreconciledDeposits = [];
   }
+
+  //loan calculator
+  Future<Map<String, dynamic>> fetchGroupLoanCalculator(
+      Map<String, dynamic> formData) async {
+    final url = EndpointUrl.GET_CHAMASOFT_LOAN_CALCULATOR;
+    try {
+      formData['user_id'] = _userId;
+      formData['group_id'] = _currentGroupId;
+      final postRequest = json.encode(formData);
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        Map<String, dynamic> _loanCalculator = {
+          "amortizationTotals": {
+            "totalPayable": double.tryParse(response['amortization_totals']
+                        ['total_payable']
+                    .toString()) ??
+                0.0,
+            "totalPrinciple": double.tryParse(response['amortization_totals']
+                        ['total_interest']
+                    .toString()) ??
+                0.0,
+            "totalInterest": double.tryParse(response['amortization_totals']
+                        ['total_principle']
+                    .toString()) ??
+                0.0,
+          },
+          "breakdown": response['breakdown']
+              .map((breakdown) => {
+                    "dueDate": breakdown['due_date'],
+                    "amountPayable": double.tryParse(
+                            breakdown['amount_payable'].toString()) ??
+                        0.0,
+                    "principlePayable": double.tryParse(
+                            breakdown['principle_payable'].toString()) ??
+                        0.0,
+                    "interestPayable": double.tryParse(
+                            breakdown['interest_payable'].toString()) ??
+                        0.0,
+                    "totalInterestPayable": double.tryParse(
+                            breakdown['total_intrest_payable'].toString()) ??
+                        0.0,
+                    "balance":
+                        double.tryParse(breakdown['balance'].toString()) ?? 0.0
+                  })
+              .toList(),
+        };
+
+        return _loanCalculator;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print("error $error");
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
 }
