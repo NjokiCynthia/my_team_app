@@ -5196,13 +5196,15 @@ class Groups with ChangeNotifier {
   //loan calculator
   Future<Map<String, dynamic>> fetchGroupLoanCalculator(
       Map<String, dynamic> formData) async {
-    final url = EndpointUrl.GET_CHAMASOFT_LOAN_CALCULATOR;
+    final url = EndpointUrl.GET_GROUP_LOAN_CALCULATOR;
     try {
       formData['user_id'] = _userId;
       formData['group_id'] = _currentGroupId;
       final postRequest = json.encode(formData);
+      print("post request is: " + postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
+        print("response is" + response);
         Map<String, dynamic> _loanCalculator = {
           "amortizationTotals": {
             "totalPayable": double.tryParse(response['amortization_totals']

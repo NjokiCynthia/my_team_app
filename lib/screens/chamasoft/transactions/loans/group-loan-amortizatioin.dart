@@ -61,7 +61,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
     super.didChangeDependencies();
   }
 
-  Future<void> _fetchLoanCalculator(BuildContext context) async {
+  Future<void> _fetchGroupLoanCalculator(BuildContext context) async {
     try {
       // get the loan calculator
       Provider.of<Groups>(context, listen: false).fetchGroupLoanCalculator({
@@ -79,7 +79,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
           context: context,
           error: error,
           callback: () {
-            _fetchLoanCalculator(context);
+            _fetchGroupLoanCalculator(context);
           },
           scaffoldState: _scaffoldKey.currentState);
     }
@@ -87,7 +87,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
 
   Future<bool> _fetchData() async {
     // get the loan calculator.
-    return _fetchLoanCalculator(context).then((value) => true);
+    return _fetchGroupLoanCalculator(context).then((value) => true);
   }
 
   @override
