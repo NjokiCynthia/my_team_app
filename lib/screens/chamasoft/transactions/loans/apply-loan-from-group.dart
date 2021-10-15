@@ -36,13 +36,57 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   List<int> _guarantors = [];
   List<int> _amounts = [];
 
-  void submitGroupLoan(bool isChecked, BuildContext context) {
+  int get totalGuaranteed {
+    int total = 0;
+
+    total = _amounts.reduce((value, element) => value + element);
+
+    return total;
+  }
+
+  void submitGroupLoan(
+      bool isChecked, BuildContext context, LoanType loanType) {
+    final Group groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
     if (_formKey.currentState.validate()) {
-      if (!isChecked) {
-        StatusHandler().showErrorDialog(
-            context, "Kindly accept Terms and Conditions before proceeding.");
+      if (_numOfGuarantors != null) {
+        if (totalGuaranteed == _groupLoanAmount) {
+          // check guarantor duplicates
+          bool duplicateGuarantor = false;
+
+          for (var guarantorId in _guarantors) {
+            int index = _guarantors.indexOf(guarantorId);
+            if (_guarantors.sublist(index + 1).contains(guarantorId)) {
+              duplicateGuarantor = true;
+              break;
+            }
+            if (duplicateGuarantor == true) {
+              // show error dialog
+              StatusHandler().showErrorDialog(context,
+                  "You cannot be guaranteed by one member more than once.");
+            }
+          }
+          if (!isChecked) {
+            StatusHandler().showErrorDialog(
+                context, "You must the accept terms and conditions.");
+          } else {
+            // show confirmation dialog
+            showConfirmDialog(context);
+          }
+        } else {
+          // show error dialog
+          StatusHandler().showErrorDialog(context,
+              "You have guaranteed ${groupObject.groupCurrency} ${currencyFormat.format(totalGuaranteed)} out of ${groupObject.groupCurrency} ${currencyFormat.format(_groupLoanAmount)}.");
+        }
       } else {
-        showConfirmDialog(context);
+        if (!isChecked) {
+          StatusHandler().showErrorDialog(
+              context, "You must the accept terms and conditions.");
+        } else {
+          // show confirmation dialog
+          showConfirmDialog(context);
+        }
       }
     }
   }
@@ -213,7 +257,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                           ]),
                         ),
                         SizedBox(
-                          height: 2,
+                          height: 20,
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: 30.0, right: 30.0),
@@ -250,7 +294,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                             context: context,
                             text: "Apply Now",
                             onPressed: () =>
-                                submitGroupLoan(_isChecked, context))
+                                submitGroupLoan(_isChecked, context, _loanType))
                       ],
                     ),
                   ),

@@ -1,4 +1,7 @@
+// ignore_for_file: deprecated_member_use, duplicate_ignore
+
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/reconcile-withdrawal-form.dart';
@@ -102,8 +105,7 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         groupStocks: true,
         member: true,
         loanTypes: true,
-      )
-          .then((value) {
+      ).then((value) {
         Provider.of<Groups>(context, listen: false)
             .fetchGroupUnreconciledWithdrawals()
             .then((_) {
@@ -114,7 +116,12 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         });
       });
     } catch (error) {
-      print(error);
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchUnreconcilledWithdrawals(context);
+          });
     } finally {
       // if (this.mounted) {
       //   if (_isInit == false) {
@@ -242,7 +249,7 @@ class _UnreconciledWithdrawalCardState
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            customTitle(
+                            customTitle(  
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
