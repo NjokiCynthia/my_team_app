@@ -5204,7 +5204,7 @@ class Groups with ChangeNotifier {
       print("post request is: " + postRequest);
       try {
         final response = await PostToServer.post(postRequest, url);
-        print("response is" + response);
+        //print("response is" + response);
         Map<String, dynamic> _loanCalculator = {
           "amortizationTotals": {
             "totalPayable": double.tryParse(response['amortization_totals']

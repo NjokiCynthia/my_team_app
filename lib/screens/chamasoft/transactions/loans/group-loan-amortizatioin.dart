@@ -102,6 +102,8 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
     DateTime dateTime = DateTime.parse(date.toIso8601String());
     String formate2 = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
 
+    // print("Loan Name is : " + loanType.name);
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
@@ -124,7 +126,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       subtitle1(
-                          text: loanType.name /*widget.typeLoan.loanName*/,
+                          text: "loanType.name" /*widget.typeLoan.loanName*/,
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.start),
@@ -154,7 +156,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
-                            text: loanType.interestRate + " %",
+                            text: "loanType.interestRate +  %",
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
@@ -170,7 +172,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
-                            text: loanType.repaymentPeriod + " Month(s)",
+                            text: "loanType.repaymentPeriod +  Month(s)",
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
