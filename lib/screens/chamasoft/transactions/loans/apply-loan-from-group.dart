@@ -132,11 +132,12 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
         onTap: () {
           FocusScope.of(context).unfocus();
         },
-        child: SingleChildScrollView(
-          child: Container(
-            child: Column(
-              children: [
-                Container(
+        child: Container(
+          child: Column(
+            children: [
+              Container(
+                height: MediaQuery.of(context).size.height * 0.82,
+                child: SingleChildScrollView(
                   child: Form(
                     key: _formKey,
                     child: Column(
@@ -199,9 +200,8 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                               Container(
                                 height: MediaQuery.of(context).size.height *
                                     (_numOfGuarantors >= 5
-                                        ? (5 / 10)
+                                        ? (4 / 10)
                                         : (_numOfGuarantors / 10)),
-                                padding: EdgeInsets.all(8.0),
                                 child: ListView.builder(
                                   itemBuilder: (BuildContext context, index) {
                                     return addGuarantor(
@@ -213,7 +213,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                           ]),
                         ),
                         SizedBox(
-                          height: 24,
+                          height: 2,
                         ),
                         Padding(
                           padding: EdgeInsets.only(left: 30.0, right: 30.0),
@@ -244,7 +244,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                           ),
                         ),
                         SizedBox(
-                          height: 24,
+                          height: 14,
                         ),
                         defaultButton(
                             context: context,
@@ -254,9 +254,9 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                       ],
                     ),
                   ),
-                )
-              ],
-            ),
+                ),
+              )
+            ],
           ),
         ),
       );
