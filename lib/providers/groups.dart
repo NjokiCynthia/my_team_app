@@ -5193,6 +5193,26 @@ class Groups with ChangeNotifier {
     _unreconciledDeposits = [];
   }
 
+  //SubmitLoan Type
+  Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
+    final url = EndpointUrl.CREATE_CHAMASOFT_LOAN_APPLICATION;
+    try {
+      try {
+        formData['user_id'] = _userId;
+
+        final postRequest = json.encode(formData);
+
+        final response = await PostToServer.post(postRequest, url);
+
+        return response['message'];
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   //loan calculator
   Future<Map<String, dynamic>> fetchGroupLoanCalculator(
       Map<String, dynamic> formData) async {
@@ -5212,11 +5232,11 @@ class Groups with ChangeNotifier {
                     .toString()) ??
                 0.0,
             "totalPrinciple": double.tryParse(response['amortization_totals']
-                        ['total_interest']
+                        ['total_principle'] //total_principle
                     .toString()) ??
                 0.0,
             "totalInterest": double.tryParse(response['amortization_totals']
-                        ['total_principle']
+                        ['total_interest'] //total_interest
                     .toString()) ??
                 0.0,
           },

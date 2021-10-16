@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -14,9 +16,18 @@ import 'package:provider/provider.dart';
 class GroupLoanAmortization extends StatefulWidget {
   final int loanTypeId;
   final int loanAmount;
-  final int repayementAmount;
+  final int repayementPeriod;
+  final int groupLoanType;
+  final int loanInterestRate;
+  final int groupLoanName;
+
   GroupLoanAmortization(
-      {this.loanTypeId, this.loanAmount, this.repayementAmount});
+      {this.loanTypeId,
+      this.loanAmount,
+      this.repayementPeriod,
+      this.groupLoanType,
+      this.loanInterestRate,
+      this.groupLoanName});
 
   @override
   _GroupLoanAmortizationState createState() => _GroupLoanAmortizationState();
@@ -28,6 +39,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
   bool _isInit = true;
   bool _isLoading = true;
   Map<String, dynamic> _loanCalculator;
+
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
@@ -94,15 +106,14 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
   Widget build(BuildContext context) {
     final arguments =
         ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    LoanType loanType = arguments['loanType'];
+    LoanType _loanType = arguments['loanType'];
     final generalAmount = arguments['groupLoanAmount'];
     Group groupObject = Provider.of<Groups>(context).getCurrentGroup();
     DateTime now = new DateTime.now();
+
     DateTime date = new DateTime(now.year, now.month, now.day);
     DateTime dateTime = DateTime.parse(date.toIso8601String());
-    String formate2 = "${dateTime.year}-${dateTime.month}-${dateTime.day}";
-
-    // print("Loan Name is : " + loanType.name);
+    String formate2 = "${dateTime.day}/${dateTime.month}/${dateTime.year}";
 
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -126,7 +137,8 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       subtitle1(
-                          text: "loanType.name" /*widget.typeLoan.loanName*/,
+                          text: widget.groupLoanName.toString(),
+                          /*widget.typeLoan.loanName*/
                           // ignore: deprecated_member_use
                           color: Theme.of(context).textSelectionHandleColor,
                           textAlign: TextAlign.start),
@@ -156,7 +168,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
-                            text: "loanType.interestRate +  %",
+                            text: widget.loanInterestRate.toString() + " %",
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
@@ -172,7 +184,7 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
                           ),
                           subtitle2(
                             textAlign: TextAlign.start,
-                            text: "loanType.repaymentPeriod +  Month(s)",
+                            text: "${widget.repayementPeriod}  Month(s)",
                             // ignore: deprecated_member_use
                             color: Theme.of(context).textSelectionHandleColor,
                           ),
@@ -208,49 +220,51 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
             height: 10.0,
           ),
           if (!_isLoading)
-            Column(
-              children: [
-                Container(
-                  // width: double.infinity, _loanCalculator['breakdown']
+            SingleChildScrollView(
+              //scrollDirection: Axis.horizontal,
+              child: Column(
+                children: [
+                  Container(
+                    // width: double.infinity, _loanCalculator['breakdown']
 
-                  child: CustomDataTable(
-                    rowItems: generateTableRows(),
+                    child: CustomDataTable(
+                      rowItems: generateTableRows(),
+                    ),
                   ),
-                ),
-                Container(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Center(
-                        child: DataTable(
+                  Container(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        DataTable(
                             headingRowColor: MaterialStateColor.resolveWith(
                               (states) => (themeChangeProvider.darkTheme)
                                   ? Colors.blueGrey[800]
                                   : Color(0xffededfe),
                             ),
-                            columnSpacing: 20.0,
+                            columnSpacing: 45.0,
                             columns: [
-                              DataColumn(label: subtitle2(text: 'Total')),
+                              DataColumn(label: subtitle3(text: 'Total:')),
                               DataColumn(
-                                  label: subtitle2(
+                                  label: subtitle3(
                                       text:
-                                          "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
+                                          "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
                               DataColumn(
-                                  label: subtitle2(
+                                  label: subtitle3(
                                       text:
-                                          "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")),
+                                          "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPrinciple'])}")), //totalPrinciple
                               DataColumn(
-                                  label: subtitle2(
+                                  label: subtitle3(
                                       text:
-                                          "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")),
-                              DataColumn(label: subtitle2(text: '0'))
+                                          "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")), //totalInterest
+                              DataColumn(label: subtitle3(text: '0      '))
                             ],
                             rows: <DataRow>[]),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
         ],
       ),
@@ -259,15 +273,25 @@ class _GroupLoanAmortizationState extends State<GroupLoanAmortization> {
 
   List<DataRow> generateTableRows() {
     List<DataRow> rows = <DataRow>[];
-
+//${currencyFormat.format(
     _loanCalculator['breakdown']
         .map((breakdown) => rows.add(DataRow(
               cells: <DataCell>[
-                DataCell(Text(breakdown['dueDate'])),
-                DataCell(Text(breakdown['amountPayable'].toString())),
-                DataCell(Text(breakdown['principlePayable'].toString())),
-                DataCell(Text(breakdown['interestPayable'].toString())),
-                DataCell(Text(breakdown['balance'].toString()))
+                DataCell(subtitle2(
+                  text: breakdown['dueDate'],
+                )),
+                DataCell(subtitle2(
+                    text: currencyFormat.format(breakdown['amountPayable']),
+                    textAlign: TextAlign.center)),
+                DataCell(subtitle2(
+                    text: currencyFormat.format(breakdown['principlePayable']),
+                    textAlign: TextAlign.center)),
+                DataCell(subtitle2(
+                    text: currencyFormat.format(breakdown['interestPayable']),
+                    textAlign: TextAlign.center)),
+                DataCell(subtitle2(
+                    text: currencyFormat.format(breakdown['balance']),
+                    textAlign: TextAlign.center)),
               ],
             )))
         .toList();

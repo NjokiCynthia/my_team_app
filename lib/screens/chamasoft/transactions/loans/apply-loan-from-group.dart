@@ -1,9 +1,11 @@
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/loans/group-loan-amortizatioin.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/custom-dropdown.dart';
@@ -31,6 +33,8 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   int _numOfGuarantors;
   // ignore: unused_field
   int _repaymentPeriod;
+  int _interestRate;
+  int _groupLoanName;
   // ignore: unused_field
   LoanType _loanType;
   List<int> _guarantors = [];
@@ -72,7 +76,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                 context, "You must the accept terms and conditions.");
           } else {
             // show confirmation dialog
-            showConfirmDialog(context);
+            showConfirmDialog(context, loanType);
           }
         } else {
           // show error dialog
@@ -85,13 +89,13 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
               context, "You must the accept terms and conditions.");
         } else {
           // show confirmation dialog
-          showConfirmDialog(context);
+          showConfirmDialog(context, loanType);
         }
       }
     }
   }
 
-  void showConfirmDialog(BuildContext context) {
+  void showConfirmDialog(BuildContext context, LoanType loanType) {
     final Group groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     showDialog(
@@ -122,9 +126,56 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                       // ignore: todo
                       // TODO: SEND TO SERVER FUNCTION
                       Navigator.of(context).pop();
+                      submitGroupLoanApplication(loanType, context);
                     }),
               ],
             ));
+  }
+
+  void submitGroupLoanApplication(
+      LoanType loanType, BuildContext context) async {
+    Map<String, dynamic> formData = {
+      'group_loan_id': _loanTypeId,
+      'amount': _groupLoanAmount,
+      'guarantors': _guarantors,
+      'amounts': _amounts
+    };
+    // Show the loader
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      showDialog<String>(
+          context: context,
+          barrierDismissible: false,
+          builder: (_) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+    });
+
+    try {
+      String response = await Provider.of<Groups>(context, listen: false)
+          .submitLoanApplication(formData);
+
+      StatusHandler().showSuccessSnackBar(context, "Good news: $response");
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (_) => ApplyLoan(
+                  isFromChamasoftActive: false,
+                  isFromGroupActive: true,
+                )));
+      });
+    } on CustomException catch (error) {
+      StatusHandler().showDialogWithAction(
+          context: context,
+          message: error.toString(),
+          function: () =>
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (_) => ApplyLoan(
+                        isInit: false,
+                      ))),
+          dismissible: true);
+    } finally {}
   }
 
   void toGroupAmmotization(BuildContext context) {
@@ -137,7 +188,10 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
             builder: (BuildContext context) => GroupLoanAmortization(
                 loanAmount: _groupLoanAmount,
                 loanTypeId: _loanTypeId,
-                repayementAmount: _repaymentPeriod),
+                repayementPeriod: _repaymentPeriod,
+                loanInterestRate: _interestRate,
+                groupLoanName: _groupLoanName,
+                groupLoanType: _loanTypeId),
             settings: RouteSettings(arguments: {
               'loanType': _loanType,
               'groupLoanAmount': _groupLoanAmount
@@ -180,6 +234,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
           FocusScope.of(context).unfocus();
         },
         child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
           child: Container(
             child: Column(
               children: [
@@ -217,6 +272,17 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                                           value.toString())
                                       .repaymentPeriod
                                       .replaceAll(new RegExp(r'[^0-9]'), ''));
+                                  _interestRate = int.tryParse(widget.loanTypes
+                                      .firstWhere((loanType) =>
+                                          loanType.id.toString() ==
+                                          value.toString())
+                                      .interestRate
+                                      .replaceAll(new RegExp(r'[^0-9]'), ''));
+                                  _groupLoanName = int.tryParse(widget.loanTypes
+                                      .firstWhere((loanType) =>
+                                          loanType.id.toString() ==
+                                          value.toString())
+                                      .name);
                                 });
                               },
                               validator: (value) {
