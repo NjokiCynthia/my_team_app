@@ -18,11 +18,11 @@ class CustomDataTable extends StatelessWidget {
       ),
       columnSpacing: 20.0,
       columns: [
-        DataColumn(label: subtitle2(text: 'Date')),
-        DataColumn(label: subtitle2(text: 'Payment')),
-        DataColumn(label: subtitle2(text: 'Principal')),
-        DataColumn(label: subtitle2(text: 'Interest')),
-        DataColumn(label: subtitle2(text: 'Balance'))
+        DataColumn(label: subtitle3(text: 'Date')),
+        DataColumn(label: subtitle3(text: 'Payment')),
+        DataColumn(label: subtitle3(text: 'Principal')),
+        DataColumn(label: subtitle3(text: 'Interest')),
+        DataColumn(label: subtitle3(text: 'Balance'))
       ],
       rows: rowItems,
     );

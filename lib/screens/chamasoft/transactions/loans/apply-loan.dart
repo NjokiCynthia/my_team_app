@@ -130,24 +130,26 @@ class ApplyLoanState extends State<ApplyLoan> {
     // LoanType typeLoan;
 
     return Scaffold(
-        appBar: secondaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context)
-              .popUntil((Route<dynamic> route) => route.isFirst),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          title: "Apply Loan",
-        ),
-        backgroundColor: Colors.transparent,
-        body: RefreshIndicator(
-          backgroundColor: (themeChangeProvider.darkTheme)
+      appBar: secondaryPageAppbar(
+        context: context,
+        action: () => Navigator.of(context)
+            .popUntil((Route<dynamic> route) => route.isFirst),
+        elevation: _appBarElevation,
+        leadingIcon: LineAwesomeIcons.arrow_left,
+        title: "Apply Loan",
+      ),
+      backgroundColor: Colors.transparent,
+      body: SingleChildScrollView(
+        child: Container(
+          color: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[800]
               : Colors.white,
-          onRefresh: () => _fetchData(),
-          child: Container(
-            color: (themeChangeProvider.darkTheme)
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
                 ? Colors.blueGrey[800]
                 : Colors.white,
+            onRefresh: () => _fetchData(),
             child: GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
@@ -156,7 +158,6 @@ class ApplyLoanState extends State<ApplyLoan> {
                 padding: EdgeInsets.all(0.0),
                 width: MediaQuery.of(context).size.width,
                 decoration: primaryGradient(context),
-
                 //Switches
                 child: Column(
                   children: <Widget>[
@@ -227,6 +228,8 @@ class ApplyLoanState extends State<ApplyLoan> {
               ),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

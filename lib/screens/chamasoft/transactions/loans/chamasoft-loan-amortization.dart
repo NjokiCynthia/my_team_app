@@ -237,20 +237,20 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           ),
                           columnSpacing: 45.0,
                           columns: [
-                            DataColumn(label: subtitle2(text: 'Total:')),
+                            DataColumn(label: subtitle3(text: 'Total:')),
                             DataColumn(
-                                label: subtitle2(
+                                label: subtitle3(
                                     text:
                                         "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
                             DataColumn(
-                                label: subtitle2(
+                                label: subtitle3(
                                     text:
                                         "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPrinciple'])}")), //totalPrinciple
                             DataColumn(
-                                label: subtitle2(
+                                label: subtitle3(
                                     text:
                                         "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")), //totalInterest
-                            DataColumn(label: subtitle2(text: '0      '))
+                            DataColumn(label: subtitle3(text: '0      '))
                           ],
                           rows: <DataRow>[]),
                     ],
@@ -269,17 +269,17 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
     _loanCalculator['breakdown']
         .map((breakdown) => rows.add(DataRow(
               cells: <DataCell>[
-                DataCell(subtitle2(
+                DataCell(subtitle3(
                   text: breakdown['dueDate'],
                 )),
-                DataCell(subtitle2(
+                DataCell(subtitle3(
                     text: currencyFormat.format(breakdown['amountPayable']))),
-                DataCell(subtitle2(
+                DataCell(subtitle3(
                     text:
                         currencyFormat.format(breakdown['principlePayable']))),
-                DataCell(subtitle2(
+                DataCell(subtitle3(
                     text: currencyFormat.format(breakdown['interestPayable']))),
-                DataCell(subtitle2(
+                DataCell(subtitle3(
                     text: currencyFormat.format(breakdown['balance']))),
               ],
             )))
