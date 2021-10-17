@@ -204,10 +204,14 @@ class ApplyLoanState extends State<ApplyLoan> {
                     ),
                     //Group loans
                     Container(
-                      child: Visibility(
-                        visible: _isFromGroupActive,
-                        child: ApplyLoanFromGroup(
-                            formLoadData: _formLoadData, loanTypes: _loanTypes),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Visibility(
+                          visible: _isFromGroupActive,
+                          child: ApplyLoanFromGroup(
+                              formLoadData: _formLoadData,
+                              loanTypes: _loanTypes),
+                        ),
                       ),
                     ),
                     //Chamasoft loans

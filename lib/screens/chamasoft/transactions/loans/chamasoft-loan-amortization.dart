@@ -1,5 +1,7 @@
 // import 'dart:math';
 
+// ignore_for_file: unused_local_variable
+
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
@@ -224,34 +226,33 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                 ),
                 Container(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Center(
-                        child: DataTable(
-                            headingRowColor: MaterialStateColor.resolveWith(
-                              (states) => (themeChangeProvider.darkTheme)
-                                  ? Colors.blueGrey[800]
-                                  : Color(0xffededfe),
-                            ),
-                            columnSpacing: 20.0,
-                            columns: [
-                              DataColumn(label: subtitle2(text: 'Total')),
-                              DataColumn(
-                                  label: subtitle2(
-                                      text:
-                                          "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
-                              DataColumn(
-                                  label: subtitle2(
-                                      text:
-                                          "${groupObject.groupCurrency} ${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")),
-                              DataColumn(
-                                  label: subtitle2(
-                                      text:
-                                          "${groupObject.groupCurrency} ${currencyFormat.format(generalAmount)}")),
-                              DataColumn(label: subtitle2(text: '0'))
-                            ],
-                            rows: <DataRow>[]),
-                      ),
+                      DataTable(
+                          headingRowColor: MaterialStateColor.resolveWith(
+                            (states) => (themeChangeProvider.darkTheme)
+                                ? Colors.blueGrey[800]
+                                : Color(0xffededfe),
+                          ),
+                          columnSpacing: 45.0,
+                          columns: [
+                            DataColumn(label: subtitle3(text: 'Total:')),
+                            DataColumn(
+                                label: subtitle3(
+                                    text:
+                                        "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
+                            DataColumn(
+                                label: subtitle3(
+                                    text:
+                                        "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPrinciple'])}")), //totalPrinciple
+                            DataColumn(
+                                label: subtitle3(
+                                    text:
+                                        "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")), //totalInterest
+                            DataColumn(label: subtitle3(text: '0      '))
+                          ],
+                          rows: <DataRow>[]),
                     ],
                   ),
                 )
@@ -264,15 +265,22 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
 
   List<DataRow> generateTableRows() {
     List<DataRow> rows = <DataRow>[];
-
+//${currencyFormat.format(
     _loanCalculator['breakdown']
         .map((breakdown) => rows.add(DataRow(
               cells: <DataCell>[
-                DataCell(Text(breakdown['dueDate'])),
-                DataCell(Text(breakdown['amountPayable'].toString())),
-                DataCell(Text(breakdown['principlePayable'].toString())),
-                DataCell(Text(breakdown['interestPayable'].toString())),
-                DataCell(Text(breakdown['balance'].toString()))
+                DataCell(subtitle2(
+                  text: breakdown['dueDate'],
+                )),
+                DataCell(subtitle2(
+                    text: currencyFormat.format(breakdown['amountPayable']))),
+                DataCell(subtitle2(
+                    text:
+                        currencyFormat.format(breakdown['principlePayable']))),
+                DataCell(subtitle2(
+                    text: currencyFormat.format(breakdown['interestPayable']))),
+                DataCell(subtitle2(
+                    text: currencyFormat.format(breakdown['balance']))),
               ],
             )))
         .toList();
