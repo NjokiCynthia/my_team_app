@@ -237,20 +237,20 @@ class _ChamasoftLoanAmortizationState extends State<ChamasoftLoanAmortization> {
                           ),
                           columnSpacing: 45.0,
                           columns: [
-                            DataColumn(label: subtitle3(text: 'Total:')),
+                            DataColumn(label: subtitle2(text: 'Total:')),
                             DataColumn(
-                                label: subtitle3(
+                                label: subtitle2(
                                     text:
                                         "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPayable'])}")),
                             DataColumn(
-                                label: subtitle3(
+                                label: subtitle2(
                                     text:
                                         "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalPrinciple'])}")), //totalPrinciple
                             DataColumn(
-                                label: subtitle3(
+                                label: subtitle2(
                                     text:
                                         "${currencyFormat.format(_loanCalculator['amortizationTotals']['totalInterest'])}")), //totalInterest
-                            DataColumn(label: subtitle3(text: '0      '))
+                            DataColumn(label: subtitle2(text: '0      '))
                           ],
                           rows: <DataRow>[]),
                     ],
