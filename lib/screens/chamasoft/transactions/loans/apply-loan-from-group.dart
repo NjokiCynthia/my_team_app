@@ -39,6 +39,7 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   LoanType _loanType;
   List<int> _guarantors = [];
   List<int> _amounts = [];
+  Groups _currentGroup;
 
   int get totalGuaranteed {
     int total = 0;
@@ -128,20 +129,24 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
                       // ignore: todo
                       // TODO: SEND TO SERVER FUNCTION
                       Navigator.of(context).pop();
-                      submitGroupLoanApplication(loanType, context);
+
+                      submitGroupLoanApplication(context, groupObject);
                     }),
               ],
             ));
   }
 
   void submitGroupLoanApplication(
-      LoanType loanType, BuildContext context) async {
+      BuildContext context, Group groupObject) async {
     Map<String, dynamic> formData = {
-      'group_loan_id': _loanTypeId,
+      'loan_product_id': _loanTypeId,
       'amount': _groupLoanAmount,
       'guarantors': _guarantors,
-      'amounts': _amounts
+      'amounts': _amounts,
+      'group_id': groupObject.groupId
     };
+
+    print('form data is: $formData');
     // Show the loader
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       showDialog<String>(

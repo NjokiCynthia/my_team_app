@@ -5195,7 +5195,7 @@ class Groups with ChangeNotifier {
 
   //SubmitLoan Type
   Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
-    final url = EndpointUrl.CREATE_CHAMASOFT_LOAN_APPLICATION;
+    final url = EndpointUrl.CREATE_GROUP_LOAN_APPLICATION;
     try {
       try {
         formData['user_id'] = _userId;
