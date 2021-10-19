@@ -39,7 +39,6 @@ class _ApplyLoanFromGroupState extends State<ApplyLoanFromGroup> {
   LoanType _loanType;
   List<int> _guarantors = [];
   List<int> _amounts = [];
-  Groups _currentGroup;
 
   int get totalGuaranteed {
     int total = 0;
