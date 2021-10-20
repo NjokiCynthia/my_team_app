@@ -2560,7 +2560,7 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
       });
       try {
-        _members = [];
+        
         List<dynamic> _localData = [];
         _localData = await dbHelper.queryWhere(
           table: DatabaseHelper.membersTable,
@@ -2569,11 +2569,13 @@ class Groups with ChangeNotifier {
           orderBy: 'name',
           order: 'ASC',
         );
-        if (_localData.length > 0) {
-          addMembers(groupMembers: _localData, isLocal: true);
-        } else {
+        // if (_localData.length > 0) {
+        //   addMembers(groupMembers: _localData, isLocal: true);
+        // } else {
           final response = await PostToServer.post(postRequest, url);
+          _members = [];
           final _tempMembers = response['members'] as List<dynamic>;
+          
           List<dynamic> rows = [];
           _tempMembers.forEach((m) {
             rows.add({
@@ -2592,8 +2594,8 @@ class Groups with ChangeNotifier {
           await insertManyToLocalDb(
             DatabaseHelper.membersTable,
             rows,
-          );
-        }
+          ); 
+       // }
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           _fetchOfflineMembers();

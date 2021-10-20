@@ -6,6 +6,7 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
@@ -201,7 +202,8 @@ class _ListMembersState extends State<ListMembers> {
                 width: MediaQuery.of(context).size.width,
                 decoration: primaryGradient(context),
                 child: Consumer<Groups>(builder: (context, groupData, child) {
-                  return ListView.separated(
+                  return groupData.members.length > 0  
+                 ? ListView.separated(
                     padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
                     itemCount: groupData.members.length,
                     itemBuilder: (context, index) {
@@ -306,7 +308,8 @@ class _ListMembersState extends State<ListMembers> {
                         height: 6.0,
                       );
                     },
-                  );
+                  ): betterEmptyList(
+                          message: "Sorry, you have not added any members types");
                 })),
           );
         },

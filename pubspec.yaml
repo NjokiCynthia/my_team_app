@@ -45,7 +45,7 @@ dependencies:
   lite_rolling_switch: ^0.1.1
   flutter_toggle_tab: "^0.0.1+2"
   share: ^2.0.4
-  image_gallery_saver: '^1.6.9'
+ # image_gallery_saver: '^1.6.9'
  # pdf: ^3.1.0
  # path_provider: ^2.0.1
  # open_file: ^3.1.0
