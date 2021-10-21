@@ -440,7 +440,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                             borderSide: BorderSide(
                                 color: Theme.of(context).hintColor,
                                 width: 1.0)),
-                        labelText: "Contribution Amount",
+                        labelText: "Minimum Contribution Amount",
                         labelStyle: TextStyle(fontFamily: 'SegoeUI')),
                     onChanged: (value) {
                       _contributionAmount = value;
