@@ -44,6 +44,8 @@ class _EditCollectionsState extends State<EditCollections> {
   Map<String, dynamic> formLoadData = {};
   String _groupCurrency = "KES";
   var formatter = NumberFormat('#,##,##0', "en_US");
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  double _totalAmountDisbursable = 0;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -99,15 +101,21 @@ class _EditCollectionsState extends State<EditCollections> {
     return [];
   }
 
-  void _newCollectionDialog() {
+  void _newCollectionDialog(Group groupObject) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return NewCollectionDialog(
           selected: (val) {
+            // if in Loan disbursements, don't disburse more than we have
+            if (val['type'] == "disbursements" &&
+                int.parse(val['amount']) > _totalAmountDisbursable) {
+              _showSnackbar(
+                  "You can only disburse up to ${groupObject.groupCurrency} ${currencyFormat.format(_totalAmountDisbursable)}",
+                  4);
+              return;
+            }
             setState(() {
-              // print("val >>>> ");
-              // print(val);
               Map<String, dynamic> _member = {};
               Map<String, dynamic> _contribution = {};
               Map<String, dynamic> _loan = {};
@@ -132,8 +140,9 @@ class _EditCollectionsState extends State<EditCollections> {
                 'amount': int.parse(val['amount']),
               });
               widget.collections(_data);
-              print("Collections >>>>>>>>>>");
-              print(_data);
+              // If loan disbursements update the amount available
+              if (val['type'] == "disbursements")
+                _totalAmountDisbursable -= int.parse(val['amount']);
             });
           },
           type: widget.type,
@@ -171,6 +180,10 @@ class _EditCollectionsState extends State<EditCollections> {
     }
 
     setState(() {
+      _totalAmountDisbursable =
+          Provider.of<Dashboard>(context, listen: false).cashBalances +
+              Provider.of<Dashboard>(context, listen: false).bankBalances +
+              contributedAndRepayed;
       _groupFineCategories = _convertToDataSource(
           formLoadData.containsKey("finesOptions")
               ? formLoadData["finesOptions"]
@@ -262,6 +275,17 @@ class _EditCollectionsState extends State<EditCollections> {
     );
   }
 
+  _showSnackbar(String msg, int duration) {
+    // ignore: deprecated_member_use
+    _scaffoldKey.currentState.removeCurrentSnackBar();
+    final snackBar = SnackBar(
+      content: Text(msg),
+      duration: Duration(seconds: duration),
+    );
+    // ignore: deprecated_member_use
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
   int get contributedAndRepayed {
     int result = 0;
     // contributions
@@ -319,14 +343,11 @@ class _EditCollectionsState extends State<EditCollections> {
 
   @override
   Widget build(BuildContext context) {
-    final dashboardData = Provider.of<Dashboard>(context);
     final Group groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    double totalAmountDisbursable = dashboardData.cashBalances +
-        dashboardData.bankBalances +
-        contributedAndRepayed;
 
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
@@ -344,7 +365,21 @@ class _EditCollectionsState extends State<EditCollections> {
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
               ),
-              onPressed: _isLoading ? null : () => _newCollectionDialog(),
+              onPressed: _isLoading
+                  ? null
+                  : () {
+                      if (widget.type == "disbursements") {
+                        if (_totalAmountDisbursable > 0) {
+                          _newCollectionDialog(groupObject);
+                        } else {
+                          _showSnackbar(
+                              "Available amount to disburse is ${groupObject.groupCurrency} 0",
+                              4);
+                        }
+                      } else {
+                        _newCollectionDialog(groupObject);
+                      }
+                    },
             ),
           ),
         ],
@@ -403,7 +438,7 @@ class _EditCollectionsState extends State<EditCollections> {
                                   visible: widget.type == 'disbursements',
                                   child: subtitle2(
                                     text:
-                                        'Maximum Amount to Disburse: ${groupObject.groupCurrency} ${totalAmountDisbursable > 0 ? currencyFormat.format(totalAmountDisbursable) : 0}',
+                                        'Available amount to disburse is ${groupObject.groupCurrency} ${_totalAmountDisbursable > 0 ? currencyFormat.format(_totalAmountDisbursable) : 0}',
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
@@ -672,8 +707,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
     setState(() {
       memberLoans.clear();
       memberLoans = _result;
-
-      print("member loans >>  $memberLoans and result $_result");
     });
   }
 
@@ -721,8 +754,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    print("group accounts ${widget.groupAccounts}");
-
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
@@ -957,7 +988,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   }
                 },
                 decoration: InputDecoration(
-                  labelText: 'Minimum amount',
+                  labelText: 'Set amount',
                   contentPadding: EdgeInsets.only(bottom: 0.0),
                 ),
                 keyboardType: TextInputType.number,
@@ -986,7 +1017,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
           onPressed: () {
             if (_formKey.currentState.validate()) {
               Navigator.of(context).pop();
-              print(">>> $_selected");
               widget.selected(_selected);
             }
           },
