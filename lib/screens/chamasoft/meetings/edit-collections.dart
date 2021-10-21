@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -313,6 +314,8 @@ class _EditCollectionsState extends State<EditCollections> {
             )
           : Builder(
               builder: (BuildContext context) {
+                final Group groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -352,12 +355,23 @@ class _EditCollectionsState extends State<EditCollections> {
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
+                                SizedBox(height: 10,),
+                                Visibility(
+                      visible: widget.type == 'disbursements',
+                      child: subtitle2(text: 'Maximum Amount to Disburse: '+ groupObject.groupCurrency, color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  textAlign: TextAlign.start,),
+                    ),
                               ],
                             ),
                           ),
                         ],
                       ),
+                      
+
                     ),
+                    
                     _data.length > 0
                         ? ListView.separated(
                             controller: _scrollController,
