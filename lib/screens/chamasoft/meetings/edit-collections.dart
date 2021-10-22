@@ -1,5 +1,9 @@
+import 'dart:math';
+
+import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+//import 'package:chamasoft/screens/chamasoft/meetings/edit-loan-type.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -9,6 +13,7 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -101,6 +106,16 @@ class _EditCollectionsState extends State<EditCollections> {
     return [];
   }
 
+  // void _newLoanType() {
+  //   showDialog(
+  //       context: context,
+  //       builder: (BuildContext context) {
+  //         return Container(
+  //           child: Column(),
+  //         );
+  //       });
+  // }
+
   void _newCollectionDialog(Group groupObject) {
     showDialog(
       context: context,
@@ -129,13 +144,14 @@ class _EditCollectionsState extends State<EditCollections> {
                 _loan = getMemberLoan(val['loan_id']);
               else
                 _loan = getLoanTypes(val['loan_type_id']);
-              // print(_member);
+
               _data.add({
                 'member': _member,
                 'contribution': _contribution,
                 'loans': _loan,
                 'type': val['type'],
                 'fines': _fine,
+                'description': val['description'],
                 'account': getGroupAccount(val['account_id']),
                 'amount': int.parse(val['amount']),
               });
@@ -179,15 +195,25 @@ class _EditCollectionsState extends State<EditCollections> {
           .getGroupDashboardData(group.currentGroupId);
     }
 
+    int MAX = 9999;
+//print(new Random().nextInt(MAX));
+
     setState(() {
       _totalAmountDisbursable =
           Provider.of<Dashboard>(context, listen: false).cashBalances +
               Provider.of<Dashboard>(context, listen: false).bankBalances +
               contributedAndRepayed;
-      _groupFineCategories = _convertToDataSource(
-          formLoadData.containsKey("finesOptions")
-              ? formLoadData["finesOptions"]
+      _groupFineCategories =
+          _convertToDataSource(formLoadData.containsKey("finesOptions")
+              ? [
+                  ...formLoadData["finesOptions"],
+                  NamesListItem(
+                      id: 0,
+                      identity: (Random().nextInt(MAX)).toString(),
+                      name: 'Add a New Fine Type')
+                ]
               : []);
+
       _groupCurrency = currentGroup.groupCurrency;
       _groupAccounts = _convertToDataSource(
           formLoadData.containsKey("accountOptions")
@@ -216,6 +242,7 @@ class _EditCollectionsState extends State<EditCollections> {
       _isLoading = false;
       _isInit = false;
     });
+    // print())
     return true;
   }
 
@@ -345,6 +372,8 @@ class _EditCollectionsState extends State<EditCollections> {
   Widget build(BuildContext context) {
     final Group groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
+    TextEditingController mcontroller = new TextEditingController();
 
     return Scaffold(
       key: _scaffoldKey,
@@ -674,9 +703,11 @@ class NewCollectionDialog extends StatefulWidget {
 
 class _NewCollectionDialogState extends State<NewCollectionDialog> {
   final _formKey = GlobalKey<FormState>();
+  int _formModified = 0;
   Map<String, dynamic> _selected = {};
   String title = "";
   List<dynamic> memberLoans = [];
+  bool _showDescription = false;
 
   String getAlertText() {
     String _resp = "You're not allowed to do anything here";
@@ -745,6 +776,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         'member_id': '',
         'fine_id': '',
         'account_id': '',
+        'description': '',
         'amount': '',
         'type': widget.type,
       };
@@ -754,6 +786,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> outputFineResults = (widget.groupAccounts);
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
@@ -936,9 +969,24 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                         });
                       },
                       onChanged: (value) {
+                        // if (value == 0) {
+                        //   return Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => EditFineCollection()),
+                        //   );
+
+                        //   // _showDescription = true;
+                        // } else {
                         setState(() {
+                          if (value == 0) {
+                            _showDescription = true;
+                          } else {
+                            _showDescription = false;
+                          }
                           _selected['fine_id'] = value;
                         });
+                        //  }
                       },
                       validator: (value) {
                         if (value == null)
@@ -948,11 +996,33 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                       },
                     )
                   : SizedBox(),
+              SizedBox(
+                height: 20,
+              ),
+              Visibility(
+                visible: widget.type == 'fines' && _showDescription,
+                child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty)
+                      return "Enter Fine Type Name.";
+                    else {
+                      setState(() {
+                        _selected['description'] = value;
+                      });
+                      return null;
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Fine Type',
+                    contentPadding: EdgeInsets.only(bottom: 0.0),
+                  ),
+                ),
+              ),
               SizedBox(height: 20.0),
               DropDownFormField(
                 titleText: 'Group Account',
                 hintText: 'Select group account',
-                dataSource: widget.groupAccounts,
+                dataSource: outputFineResults,
                 textField: 'name',
                 valueField: 'id',
                 filled: false,
@@ -969,10 +1039,11 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                   });
                 },
                 validator: (value) {
-                  if (value == null)
+                  if (value == null) {
                     return "Account is required";
-                  else
+                  } else {
                     return null;
+                  }
                 },
               ),
               SizedBox(height: 20.0),
@@ -1014,10 +1085,11 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
             color: primaryColor,
             fontWeight: FontWeight.w600,
           ),
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState.validate()) {
               Navigator.of(context).pop();
               widget.selected(_selected);
+              await saveFineType(context);
             }
           },
           shape: new RoundedRectangleBorder(
@@ -1028,5 +1100,38 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         )
       ],
     );
+  }
+
+  Future<void> saveFineType(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).createFineCategory(
+        name: _selected['description'],
+        amount: _selected['amount'].toString(),
+      );
+
+      Navigator.pop(context);
+      // ignore: deprecated_member_use
+      Fluttertoast.showToast(
+          msg: "You have successfully added a fine category.");
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //     content: Text(
+      //   "You have successfully added a fine category",
+      // )));
+
+      _formModified = 1;
+      Future.delayed(const Duration(seconds: 4), () {
+        Navigator.of(context).pop(_formModified);
+      });
+    } on CustomException catch (error) {
+      Navigator.pop(context);
+
+      // ignore: deprecated_member_use
+      Fluttertoast.showToast(
+          msg: "Error Adding the Fine Category. ${error.message} ");
+      // Scaffold.of(context).showSnackBar(SnackBar(
+      //     content: Text(
+      //   "Error Adding the Fine Category. ${error.message} ",
+      // )));
+    }
   }
 }

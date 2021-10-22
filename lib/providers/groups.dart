@@ -2196,21 +2196,21 @@ class Groups with ChangeNotifier {
         orderBy: 'name',
         order: 'DESC',
       );
-      if (_localData.length > 0) {
-        addFineTypes(groupFineTypes: _localData, isLocal: true);
-      } else {
-        try {
-          final response = await PostToServer.post(postRequest, url);
-          _fineTypes = []; //clear accounts
-          final groupFineTypes =
-              response['fine_category_options'] as List<dynamic>;
-          addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
-        } on CustomException catch (error) {
-          throw CustomException(message: error.message, status: error.status);
-        } catch (error) {
-          throw CustomException(message: ERROR_MESSAGE);
-        }
+      // if (_localData.length > 0) {
+      //   addFineTypes(groupFineTypes: _localData, isLocal: true);
+      // } else {
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _fineTypes = []; //clear accounts
+        final groupFineTypes =
+            response['fine_category_options'] as List<dynamic>;
+        addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
       }
+      // }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
@@ -2560,7 +2560,6 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
       });
       try {
-        
         // ignore: unused_local_variable
         List<dynamic> _localData = [];
         _localData = await dbHelper.queryWhere(
@@ -2573,30 +2572,30 @@ class Groups with ChangeNotifier {
         // if (_localData.length > 0) {
         //   addMembers(groupMembers: _localData, isLocal: true);
         // } else {
-          final response = await PostToServer.post(postRequest, url);
-          _members = [];
-          final _tempMembers = response['members'] as List<dynamic>;
-          
-          List<dynamic> rows = [];
-          _tempMembers.forEach((m) {
-            rows.add({
-              "group_id": int.parse(_currentGroupId),
-              "id": int.parse(m['id']),
-              "user_id": int.parse(m['user_id']),
-              "name": m['name'],
-              "avatar": (m['avatar'] != null) ? m['avatar'] : '',
-              "identity": m['identity'],
-              "modified_on": DateTime.now().millisecondsSinceEpoch,
-            });
+        final response = await PostToServer.post(postRequest, url);
+        _members = [];
+        final _tempMembers = response['members'] as List<dynamic>;
+
+        List<dynamic> rows = [];
+        _tempMembers.forEach((m) {
+          rows.add({
+            "group_id": int.parse(_currentGroupId),
+            "id": int.parse(m['id']),
+            "user_id": int.parse(m['user_id']),
+            "name": m['name'],
+            "avatar": (m['avatar'] != null) ? m['avatar'] : '',
+            "identity": m['identity'],
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
           });
-          addMembers(groupMembers: _tempMembers);
-          await dbHelper.deleteMultiple(
-              [int.parse(_currentGroupId)], DatabaseHelper.membersTable);
-          await insertManyToLocalDb(
-            DatabaseHelper.membersTable,
-            rows,
-          ); 
-       // }
+        });
+        addMembers(groupMembers: _tempMembers);
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.membersTable);
+        await insertManyToLocalDb(
+          DatabaseHelper.membersTable,
+          rows,
+        );
+        // }
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           _fetchOfflineMembers();
