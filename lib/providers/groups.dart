@@ -2234,6 +2234,7 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
+      // ignore: unused_local_variable
       List<dynamic> _localData = [];
       _localData = await dbHelper.queryWhere(
         table: DatabaseHelper.fineCategories,
@@ -2242,21 +2243,23 @@ class Groups with ChangeNotifier {
         orderBy: 'name',
         order: 'DESC',
       );
-      if (_localData.length > 0) {
-        addFineTypes(groupFineTypes: _localData, isLocal: true);
-      } else {
-        try {
-          final response = await PostToServer.post(postRequest, url);
-          _fineTypes = []; //clear accounts
-          final groupFineTypes =
-              response['fine_category_options'] as List<dynamic>;
-          addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
-        } on CustomException catch (error) {
-          throw CustomException(message: error.message, status: error.status);
-        } catch (error) {
-          throw CustomException(message: ERROR_MESSAGE);
-        }
+      // ignore: todo
+      // TODO: TO BE LOOKED INTO..
+      // if (_localData.length > 0) {
+      //   addFineTypes(groupFineTypes: _localData, isLocal: true);
+      // } else {
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _fineTypes = []; //clear accounts
+        final groupFineTypes =
+            response['fine_category_options'] as List<dynamic>;
+        addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
       }
+      //}
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {

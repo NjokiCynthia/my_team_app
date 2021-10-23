@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 //import 'package:chamasoft/screens/chamasoft/meetings/edit-loan-type.dart';
@@ -13,7 +12,6 @@ import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
@@ -112,7 +110,7 @@ class _EditCollectionsState extends State<EditCollections> {
       context: context,
       builder: (BuildContext context) {
         return NewCollectionDialog(
-            selected: (val) {
+            selected: (val) async {
               // if in Loan disbursements, don't disburse more than we have
               if (val['type'] == "disbursements" &&
                   int.parse(val['amount']) > _totalAmountDisbursable) {
@@ -121,6 +119,7 @@ class _EditCollectionsState extends State<EditCollections> {
                     4);
                 return;
               }
+
               setState(() {
                 Map<String, dynamic> _member = {};
                 Map<String, dynamic> _contribution = {};
@@ -129,9 +128,9 @@ class _EditCollectionsState extends State<EditCollections> {
                 _member = getMember(val['member_id']);
                 if (val['type'] == "contributions")
                   _contribution = getContribution(val['contribution_id']);
-                else if (val['type'] == "fines")
+                else if (val['type'] == "fines") {
                   _fine = getFine(val['fine_id']);
-                else if (val['type'] == "repayments")
+                } else if (val['type'] == "repayments")
                   _loan = getMemberLoan(val['loan_id']);
                 else
                   _loan = getLoanTypes(val['loan_type_id']);
@@ -151,6 +150,18 @@ class _EditCollectionsState extends State<EditCollections> {
                 if (val['type'] == "disbursements")
                   _totalAmountDisbursable -= int.parse(val['amount']);
               });
+
+              // Check whether we have a new fine type
+              if (val['type'] == "fines" && val['description'] != null) {
+                // save the fine type
+                saveFineType(context, {
+                  "description": val['description'],
+                  "amount": val['amount']
+                }).then((value) {
+                  // Fetch data
+                  fetchData();
+                });
+              }
             },
             type: widget.type,
             groupMembers: _groupMembers,
@@ -164,6 +175,19 @@ class _EditCollectionsState extends State<EditCollections> {
             groupMembersDetails: _groupMembersDetails);
       },
     );
+  }
+
+  Future<void> saveFineType(
+      BuildContext context, Map<String, dynamic> fineData) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).createFineCategory(
+        name: fineData['description'],
+        amount: fineData['amount'].toString(),
+      );
+      _showSnackbar("Fine type successfully added", 4);
+    } catch (error) {
+      _showSnackbar("Error adding the fine type", 4);
+    }
   }
 
   Future<void> fetchData() async {
@@ -531,73 +555,79 @@ class _EditCollectionsState extends State<EditCollections> {
                                                   .textSelectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(20),
-                                                ),
-                                                color: widget.type ==
-                                                        "contributions"
-                                                    ? Colors.green[700]
-                                                        .withOpacity(0.1)
-                                                    : widget.type ==
-                                                            "repayments"
-                                                        ? Colors.cyan[700]
-                                                            .withOpacity(0.1)
-                                                        : widget.type == "fines"
-                                                            ? Colors.red[700]
-                                                                .withOpacity(
-                                                                    0.1)
-                                                            : Colors.brown
-                                                                .withOpacity(
-                                                                    0.1),
-                                              ),
-                                              padding: EdgeInsets.fromLTRB(
-                                                8.0,
-                                                2.0,
-                                                8.0,
-                                                2.0,
-                                              ),
-                                              margin: EdgeInsets.only(
-                                                top: 6.0,
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    widget.type ==
-                                                            "contributions"
-                                                        ? _data[index]
-                                                                ['contribution']
-                                                            ['name']
-                                                        : (widget.type ==
-                                                                    "disbursements" ||
-                                                                widget.type ==
-                                                                    "repayments")
-                                                            ? _data[index]
-                                                                    ["loans"]
-                                                                ['name']
-                                                            : _data[index]
-                                                                    ["fines"]
-                                                                ['name'],
-                                                    style: TextStyle(
-                                                      color: widget.type ==
-                                                              "contributions"
-                                                          ? Colors.green[700]
-                                                          : widget.type ==
-                                                                  "repayments"
-                                                              ? Colors.cyan[700]
-                                                              : widget.type ==
-                                                                      "fines"
-                                                                  ? Colors
-                                                                      .red[700]
-                                                                  : Colors
-                                                                      .brown,
-                                                      fontSize: 12.0,
-                                                    ),
+                                            if (widget.type == "fines" &&
+                                                _data[index]['fines']['id'] !=
+                                                    0)
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(20),
                                                   ),
-                                                ],
+                                                  color: widget.type ==
+                                                          "contributions"
+                                                      ? Colors.green[700]
+                                                          .withOpacity(0.1)
+                                                      : widget.type ==
+                                                              "repayments"
+                                                          ? Colors.cyan[700]
+                                                              .withOpacity(0.1)
+                                                          : widget.type ==
+                                                                  "fines"
+                                                              ? Colors.red[700]
+                                                                  .withOpacity(
+                                                                      0.1)
+                                                              : Colors.brown
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                ),
+                                                padding: EdgeInsets.fromLTRB(
+                                                  8.0,
+                                                  2.0,
+                                                  8.0,
+                                                  2.0,
+                                                ),
+                                                margin: EdgeInsets.only(
+                                                  top: 6.0,
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      widget.type ==
+                                                              "contributions"
+                                                          ? _data[index]
+                                                                  ['contribution']
+                                                              ['name']
+                                                          : (widget.type ==
+                                                                      "disbursements" ||
+                                                                  widget.type ==
+                                                                      "repayments")
+                                                              ? _data[index]
+                                                                      ["loans"]
+                                                                  ['name']
+                                                              : _data[index]
+                                                                      ["fines"]
+                                                                  ['name'],
+                                                      style: TextStyle(
+                                                        color: widget.type ==
+                                                                "contributions"
+                                                            ? Colors.green[700]
+                                                            : widget.type ==
+                                                                    "repayments"
+                                                                ? Colors
+                                                                    .cyan[700]
+                                                                : widget.type ==
+                                                                        "fines"
+                                                                    ? Colors.red[
+                                                                        700]
+                                                                    : Colors
+                                                                        .brown,
+                                                        fontSize: 12.0,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
                                           ],
                                         ),
                                       ],
@@ -708,7 +738,6 @@ class NewCollectionDialog extends StatefulWidget {
 
 class _NewCollectionDialogState extends State<NewCollectionDialog> {
   final _formKey = GlobalKey<FormState>();
-  int _formModified = 0;
   Map<String, dynamic> _selected = {};
   String title = "";
   List<dynamic> memberLoans = [];
@@ -1033,15 +1062,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                         });
                       },
                       onChanged: (value) {
-                        // if (value == 0) {
-                        //   return Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => EditFineCollection()),
-                        //   );
-
-                        //   // _showDescription = true;
-                        // } else {
                         setState(() {
                           if (value == 0) {
                             _showDescription = true;
@@ -1050,7 +1070,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                           }
                           _selected['fine_id'] = value;
                         });
-                        //  }
                       },
                       validator: (value) {
                         if (value == null)
@@ -1111,54 +1130,57 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                 },
               ),
               SizedBox(height: 20.0),
-              widget.type == "disbursements" ?
-              TextFormField(
-                validator: (val) {
-                  if (val.isEmpty)
-                    return "Amount is required";
-                  else if (_loanType['minimum_loan_amount'] != null &&
-                      double.tryParse(val) <
-                          double.tryParse(
-                              _loanType['minimum_loan_amount'].toString())) {
-                    return "Minimum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['minimum_loan_amount'].toString()))}";
-                  } else if (_loanType['maximum_loan_amount'] != null &&
-                      double.tryParse(val) >
-                          double.tryParse(_loanType['maximum_loan_amount'])) {
-                    return "Maximum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['maximum_loan_amount']))}";
-                  } else if (int.tryParse(_loanType['savings_times']) != null &&
-                      double.tryParse(val) >
-                          (_memberData.contributions *
-                              int.tryParse(_loanType['savings_times']))) {
-                    return "Loan amount exceeds savings";
-                  } else {
-                    setState(() {
-                      _selected['amount'] = val;
-                    });
-                    return null;
-                  }
-                },
-                decoration: InputDecoration(
-                  labelText: 'Set amount',
-                  contentPadding: EdgeInsets.only(bottom: 0.0),
-                ),
-                keyboardType: TextInputType.number,
-              ):TextFormField(
-                validator: (val) {
-                  if (val.isEmpty)
-                    return "Amount is required";
-                  else {
-                    setState(() {
-                      _selected['amount'] = val;
-                    });
-                    return null;
-                  }
-                },
-                decoration: InputDecoration(
-                  labelText: 'Set amount',
-                  contentPadding: EdgeInsets.only(bottom: 0.0),
-                ),
-                keyboardType: TextInputType.number,
-              ),
+              widget.type == "disbursements"
+                  ? TextFormField(
+                      validator: (val) {
+                        if (val.isEmpty)
+                          return "Amount is required";
+                        else if (_loanType['minimum_loan_amount'] != null &&
+                            double.tryParse(val) <
+                                double.tryParse(_loanType['minimum_loan_amount']
+                                    .toString())) {
+                          return "Minimum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['minimum_loan_amount'].toString()))}";
+                        } else if (_loanType['maximum_loan_amount'] != null &&
+                            double.tryParse(val) >
+                                double.tryParse(
+                                    _loanType['maximum_loan_amount'])) {
+                          return "Maximum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['maximum_loan_amount']))}";
+                        } else if (int.tryParse(_loanType['savings_times']) !=
+                                null &&
+                            double.tryParse(val) >
+                                (_memberData.contributions *
+                                    int.tryParse(_loanType['savings_times']))) {
+                          return "Loan amount exceeds savings";
+                        } else {
+                          setState(() {
+                            _selected['amount'] = val;
+                          });
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Set amount',
+                        contentPadding: EdgeInsets.only(bottom: 0.0),
+                      ),
+                      keyboardType: TextInputType.number,
+                    )
+                  : TextFormField(
+                      validator: (val) {
+                        if (val.isEmpty)
+                          return "Amount is required";
+                        else {
+                          setState(() {
+                            _selected['amount'] = val;
+                          });
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Set amount',
+                        contentPadding: EdgeInsets.only(bottom: 0.0),
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
             ],
           ),
         ),
@@ -1182,16 +1204,8 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
           ),
           onPressed: () async {
             if (_formKey.currentState.validate()) {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  });
               Navigator.of(context).pop();
               widget.selected(_selected);
-              await saveFineType(context);
             }
           },
           shape: new RoundedRectangleBorder(
@@ -1202,30 +1216,5 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         )
       ],
     );
-  }
-
-  Future<void> saveFineType(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).createFineCategory(
-        name: _selected['description'],
-        amount: _selected['amount'].toString(),
-      );
-
-      Navigator.pop(context);
-      // ignore: deprecated_member_use
-      Fluttertoast.showToast(
-          msg: "You have successfully added a fine category.");
-
-      _formModified = 1;
-      Future.delayed(const Duration(seconds: 4), () {
-        Navigator.of(context).pop(_formModified);
-      });
-    } on CustomException catch (error) {
-      Navigator.pop(context);
-
-      // ignore: deprecated_member_use
-      Fluttertoast.showToast(
-          msg: "Error Adding the Fine Category. ${error.message} ");
-    }
   }
 }
