@@ -460,6 +460,28 @@ class UnreconciledWithdrawal {
       @required this.accountDetails});
 }
 
+class GroupMemberDetail {
+  final String name;
+  final String memberId;
+  final String userId;
+  final double contributions;
+  final double fines;
+  final double loanBalance;
+  final double contributionArrears;
+  final double fineArrears;
+
+  GroupMemberDetail({
+    @required this.name,
+    @required this.memberId,
+    @required this.userId,
+    @required this.contributions,
+    @required this.fines,
+    @required this.loanBalance,
+    @required this.contributionArrears,
+    @required this.fineArrears,
+  });
+}
+
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
 
@@ -520,6 +542,7 @@ class Groups with ChangeNotifier {
   // String _currentMemberId;
 
   List<dynamic> _meetings = [];
+  List<GroupMemberDetail> _groupMembersDetails = [];
 
   Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
@@ -720,6 +743,10 @@ class Groups with ChangeNotifier {
 
   List<Notification> get notifications {
     return _notifications;
+  }
+
+  List<GroupMemberDetail> get groupMembersDetails {
+    return [..._groupMembersDetails];
   }
 
   /// ********************Group Objects************/
@@ -1051,6 +1078,25 @@ class Groups with ChangeNotifier {
         await dbHelper.batchInsert(
             _fineTypesList, DatabaseHelper.fineCategories);
       }
+    }
+    notifyListeners();
+  }
+
+  void addGroupMembersDetails(dynamic response) {
+    for (var member in response) {
+      _groupMembersDetails.add(GroupMemberDetail(
+          name: member['name'],
+          memberId: member['member_id'],
+          userId: member['user_id'],
+          contributions:
+              double.tryParse(member["total_contributions"].toString()) ?? 0.0,
+          fines: double.tryParse(member["total_fines"].toString()) ?? 0.0,
+          loanBalance:
+              double.tryParse(member["total_loan_balances"].toString()) ?? 0.0,
+          contributionArrears:
+              double.tryParse(member["contribution_arrears"].toString()) ?? 0.0,
+          fineArrears:
+              double.tryParse(member["total_fine_arrears"].toString()) ?? 0.0));
     }
     notifyListeners();
   }
@@ -2188,7 +2234,6 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
-      // ignore: unused_local_variable
       List<dynamic> _localData = [];
       _localData = await dbHelper.queryWhere(
         table: DatabaseHelper.fineCategories,
@@ -2197,21 +2242,21 @@ class Groups with ChangeNotifier {
         orderBy: 'name',
         order: 'DESC',
       );
-      // if (_localData.length > 0) {
-      //   addFineTypes(groupFineTypes: _localData, isLocal: true);
-      // } else {
-      try {
-        final response = await PostToServer.post(postRequest, url);
-        _fineTypes = []; //clear accounts
-        final groupFineTypes =
-            response['fine_category_options'] as List<dynamic>;
-        addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
-      } on CustomException catch (error) {
-        throw CustomException(message: error.message, status: error.status);
-      } catch (error) {
-        throw CustomException(message: ERROR_MESSAGE);
+      if (_localData.length > 0) {
+        addFineTypes(groupFineTypes: _localData, isLocal: true);
+      } else {
+        try {
+          final response = await PostToServer.post(postRequest, url);
+          _fineTypes = []; //clear accounts
+          final groupFineTypes =
+              response['fine_category_options'] as List<dynamic>;
+          addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
+        } on CustomException catch (error) {
+          throw CustomException(message: error.message, status: error.status);
+        } catch (error) {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
       }
-      // }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
@@ -2777,6 +2822,30 @@ class Groups with ChangeNotifier {
       }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> getGroupMembersDetails(String groupId) async {
+    try {
+      final url = EndpointUrl.GET_MEMBERS_AND_DETAILS;
+      try {
+        final postRequest = json.encode({
+          "user_id": _userId,
+          "group_id": groupId,
+          "show_full_details": true
+        });
+        final response = await PostToServer.post(postRequest, url);
+
+        addGroupMembersDetails(response['members']);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }

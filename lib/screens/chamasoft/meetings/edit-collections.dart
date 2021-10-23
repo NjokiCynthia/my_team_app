@@ -46,6 +46,7 @@ class _EditCollectionsState extends State<EditCollections> {
   List<dynamic> _groupAccounts = [];
   List<dynamic> _groupFineCategories = [];
   List<dynamic> _data = [];
+  List<GroupMemberDetail> _groupMembersDetails = [];
   Map<String, dynamic> formLoadData = {};
   String _groupCurrency = "KES";
   var formatter = NumberFormat('#,##,##0', "en_US");
@@ -111,55 +112,56 @@ class _EditCollectionsState extends State<EditCollections> {
       context: context,
       builder: (BuildContext context) {
         return NewCollectionDialog(
-          selected: (val) {
-            // if in Loan disbursements, don't disburse more than we have
-            if (val['type'] == "disbursements" &&
-                int.parse(val['amount']) > _totalAmountDisbursable) {
-              _showSnackbar(
-                  "You can only disburse up to ${groupObject.groupCurrency} ${currencyFormat.format(_totalAmountDisbursable)}",
-                  4);
-              return;
-            }
-            setState(() {
-              Map<String, dynamic> _member = {};
-              Map<String, dynamic> _contribution = {};
-              Map<String, dynamic> _loan = {};
-              Map<String, dynamic> _fine = {};
-              _member = getMember(val['member_id']);
-              if (val['type'] == "contributions")
-                _contribution = getContribution(val['contribution_id']);
-              else if (val['type'] == "fines")
-                _fine = getFine(val['fine_id']);
-              else if (val['type'] == "repayments")
-                _loan = getMemberLoan(val['loan_id']);
-              else
-                _loan = getLoanTypes(val['loan_type_id']);
+            selected: (val) {
+              // if in Loan disbursements, don't disburse more than we have
+              if (val['type'] == "disbursements" &&
+                  int.parse(val['amount']) > _totalAmountDisbursable) {
+                _showSnackbar(
+                    "You can only disburse up to ${groupObject.groupCurrency} ${currencyFormat.format(_totalAmountDisbursable)}",
+                    4);
+                return;
+              }
+              setState(() {
+                Map<String, dynamic> _member = {};
+                Map<String, dynamic> _contribution = {};
+                Map<String, dynamic> _loan = {};
+                Map<String, dynamic> _fine = {};
+                _member = getMember(val['member_id']);
+                if (val['type'] == "contributions")
+                  _contribution = getContribution(val['contribution_id']);
+                else if (val['type'] == "fines")
+                  _fine = getFine(val['fine_id']);
+                else if (val['type'] == "repayments")
+                  _loan = getMemberLoan(val['loan_id']);
+                else
+                  _loan = getLoanTypes(val['loan_type_id']);
 
-              _data.add({
-                'member': _member,
-                'contribution': _contribution,
-                'loans': _loan,
-                'type': val['type'],
-                'fines': _fine,
-                'description': val['description'],
-                'account': getGroupAccount(val['account_id']),
-                'amount': int.parse(val['amount']),
+                _data.add({
+                  'member': _member,
+                  'contribution': _contribution,
+                  'loans': _loan,
+                  'type': val['type'],
+                  'fines': _fine,
+                  'description': val['description'],
+                  'account': getGroupAccount(val['account_id']),
+                  'amount': int.parse(val['amount']),
+                });
+                widget.collections(_data);
+                // If loan disbursements update the amount available
+                if (val['type'] == "disbursements")
+                  _totalAmountDisbursable -= int.parse(val['amount']);
               });
-              widget.collections(_data);
-              // If loan disbursements update the amount available
-              if (val['type'] == "disbursements")
-                _totalAmountDisbursable -= int.parse(val['amount']);
-            });
-          },
-          type: widget.type,
-          groupMembers: _groupMembers,
-          groupContributions: _groupContributions,
-          groupLoanTypes: _groupLoanTypes,
-          groupAccounts: _groupAccounts,
-          groupFines: _groupFineCategories,
-          groupMemberLoans: _groupMemberLoanOptions,
-          groupCurrency: _groupCurrency,
-        );
+            },
+            type: widget.type,
+            groupMembers: _groupMembers,
+            groupContributions: _groupContributions,
+            groupLoanTypes: _groupLoanTypes,
+            groupAccounts: _groupAccounts,
+            groupFines: _groupFineCategories,
+            groupMemberLoans: _groupMemberLoanOptions,
+            groupCurrency: _groupCurrency,
+            groupObject: groupObject,
+            groupMembersDetails: _groupMembersDetails);
       },
     );
   }
@@ -169,6 +171,7 @@ class _EditCollectionsState extends State<EditCollections> {
       _isLoading = true;
     });
     final group = Provider.of<Groups>(context, listen: false);
+    final dashboard = Provider.of<Dashboard>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
     // List<dynamic> _fineCats = await group.fetchFineCategories();
     formLoadData = await group.loadInitialFormData(
@@ -178,11 +181,11 @@ class _EditCollectionsState extends State<EditCollections> {
         contr: true,
         loanTypes: true,
         memberOngoingLoans: true);
-    //print(group.members);
-    if (!Provider.of<Dashboard>(context, listen: false)
-        .groupDataExists(group.currentGroupId)) {
-      await Provider.of<Dashboard>(context, listen: false)
-          .getGroupDashboardData(group.currentGroupId);
+
+    dashboard.getGroupDashboardData(group.currentGroupId);
+
+    if (widget.type == "disbursements") {
+      await group.getGroupMembersDetails(group.currentGroupId);
     }
 
     // ignore: non_constant_identifier_names
@@ -190,10 +193,6 @@ class _EditCollectionsState extends State<EditCollections> {
 //print(new Random().nextInt(MAX));
 
     setState(() {
-      _totalAmountDisbursable =
-          Provider.of<Dashboard>(context, listen: false).cashBalances +
-              Provider.of<Dashboard>(context, listen: false).bankBalances +
-              contributedAndRepayed;
       _groupFineCategories =
           _convertToDataSource(formLoadData.containsKey("finesOptions")
               ? [
@@ -228,7 +227,12 @@ class _EditCollectionsState extends State<EditCollections> {
               : []);
       _groupMemberLoanOptions =
           Provider.of<Groups>(context, listen: false).getMemberOngoingLoans;
+      _groupMembersDetails =
+          Provider.of<Groups>(context, listen: false).groupMembersDetails;
       _data = widget.recorded[widget.type];
+      _totalAmountDisbursable = dashboard.cashBalances +
+          dashboard.bankBalances +
+          contributedRepayedAndDisbursed;
       print("data >>>>>>> $_data");
       _isLoading = false;
       _isInit = false;
@@ -304,7 +308,7 @@ class _EditCollectionsState extends State<EditCollections> {
     _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
-  int get contributedAndRepayed {
+  int get contributedRepayedAndDisbursed {
     int result = 0;
     // contributions
     if (widget.recorded['contributions'].length > 0) {
@@ -327,6 +331,14 @@ class _EditCollectionsState extends State<EditCollections> {
       for (var entity in widget.recorded['fines']) {
         if (entity['amount'] != null) {
           result += entity['amount'];
+        }
+      }
+    }
+    // disbursements
+    if (widget.recorded['disbursements'].length > 0) {
+      for (var entity in widget.recorded['disbursements']) {
+        if (entity['amount'] != null) {
+          result -= entity['amount'];
         }
       }
     }
@@ -675,6 +687,8 @@ class NewCollectionDialog extends StatefulWidget {
   final List<dynamic> groupMemberLoans;
   final ValueChanged<dynamic> selected;
   final String groupCurrency;
+  final Group groupObject;
+  final List<GroupMemberDetail> groupMembersDetails;
   NewCollectionDialog({
     @required this.type,
     @required this.groupMembers,
@@ -685,6 +699,8 @@ class NewCollectionDialog extends StatefulWidget {
     @required this.selected,
     @required this.groupMemberLoans,
     @required this.groupCurrency,
+    @required this.groupObject,
+    @required this.groupMembersDetails,
   });
   @override
   _NewCollectionDialogState createState() => new _NewCollectionDialogState();
@@ -697,6 +713,8 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
   String title = "";
   List<dynamic> memberLoans = [];
   bool _showDescription = false;
+  GroupMemberDetail _memberData;
+  Map<String, dynamic> _loanType = {};
 
   String getAlertText() {
     String _resp = "You're not allowed to do anything here";
@@ -727,6 +745,26 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
     setState(() {
       memberLoans.clear();
       memberLoans = _result;
+    });
+  }
+
+  void _getGroupMemberData(String memberId) {
+    setState(() {
+      _memberData = widget.groupMembersDetails
+          .firstWhere((member) => member.memberId == memberId);
+    });
+  }
+
+  void _getGroupLoanTypeData(String loanTypeId) {
+    setState(() {
+      _loanType = {};
+    });
+    Provider.of<Groups>(context, listen: false)
+        .getLoanDetails(loanTypeId)
+        .then((value) {
+      setState(() {
+        _loanType = value['data']['loan_type'];
+      });
     });
   }
 
@@ -820,34 +858,69 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                       ),
                     )
                   : SizedBox(),
-              DropDownFormField(
-                titleText: 'Group Member',
-                hintText: 'Select group member',
-                dataSource: widget.groupMembers,
-                textField: 'name',
-                valueField: 'id',
-                filled: false,
-                contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                value: _selected['member_id'],
-                onSaved: (value) {
-                  setState(() {
-                    _selected['member_id'] = value;
-                    _prepareMemberLoans(widget.groupCurrency, value.toString());
-                  });
-                },
-                onChanged: (value) {
-                  setState(() {
-                    _selected['member_id'] = value;
-                    _prepareMemberLoans(widget.groupCurrency, value.toString());
-                  });
-                },
-                validator: (value) {
-                  if (value == null)
-                    return "Member is required";
-                  else
-                    return null;
-                },
-              ),
+              widget.type == "disbursements"
+                  ? DropDownFormField(
+                      titleText: 'Group Member',
+                      hintText: 'Select group member',
+                      dataSource: widget.groupMembers,
+                      textField: 'name',
+                      valueField: 'id',
+                      filled: false,
+                      contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      value: _selected['member_id'],
+                      onSaved: (value) {
+                        setState(() {
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
+                        _getGroupMemberData(value.toString());
+                      },
+                      onChanged: (value) async {
+                        setState(() {
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
+                        _getGroupMemberData(value.toString());
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Member is required";
+                        else
+                          return null;
+                      },
+                    )
+                  : DropDownFormField(
+                      titleText: 'Group Member',
+                      hintText: 'Select group member',
+                      dataSource: widget.groupMembers,
+                      textField: 'name',
+                      valueField: 'id',
+                      filled: false,
+                      contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      value: _selected['member_id'],
+                      onSaved: (value) {
+                        setState(() {
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Member is required";
+                        else
+                          return null;
+                      },
+                    ),
               widget.type == "contributions"
                   ? SizedBox(height: 20.0)
                   : SizedBox(),
@@ -896,11 +969,13 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                         setState(() {
                           _selected['loan_type_id'] = value;
                         });
+                        _getGroupLoanTypeData(value.toString());
                       },
                       onChanged: (value) {
                         setState(() {
                           _selected['loan_type_id'] = value;
                         });
+                        _getGroupLoanTypeData(value.toString());
                       },
                       validator: (value) {
                         if (value == null)
@@ -1036,7 +1111,38 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                 },
               ),
               SizedBox(height: 20.0),
+              widget.type == "disbursements" ?
               TextFormField(
+                validator: (val) {
+                  if (val.isEmpty)
+                    return "Amount is required";
+                  else if (_loanType['minimum_loan_amount'] != null &&
+                      double.tryParse(val) <
+                          double.tryParse(
+                              _loanType['minimum_loan_amount'].toString())) {
+                    return "Minimum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['minimum_loan_amount'].toString()))}";
+                  } else if (_loanType['maximum_loan_amount'] != null &&
+                      double.tryParse(val) >
+                          double.tryParse(_loanType['maximum_loan_amount'])) {
+                    return "Maximum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['maximum_loan_amount']))}";
+                  } else if (int.tryParse(_loanType['savings_times']) != null &&
+                      double.tryParse(val) >
+                          (_memberData.contributions *
+                              int.tryParse(_loanType['savings_times']))) {
+                    return "Loan amount exceeds savings";
+                  } else {
+                    setState(() {
+                      _selected['amount'] = val;
+                    });
+                    return null;
+                  }
+                },
+                decoration: InputDecoration(
+                  labelText: 'Set amount',
+                  contentPadding: EdgeInsets.only(bottom: 0.0),
+                ),
+                keyboardType: TextInputType.number,
+              ):TextFormField(
                 validator: (val) {
                   if (val.isEmpty)
                     return "Amount is required";
