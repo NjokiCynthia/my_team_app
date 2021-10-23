@@ -106,16 +106,6 @@ class _EditCollectionsState extends State<EditCollections> {
     return [];
   }
 
-  // void _newLoanType() {
-  //   showDialog(
-  //       context: context,
-  //       builder: (BuildContext context) {
-  //         return Container(
-  //           child: Column(),
-  //         );
-  //       });
-  // }
-
   void _newCollectionDialog(Group groupObject) {
     showDialog(
       context: context,
@@ -195,6 +185,7 @@ class _EditCollectionsState extends State<EditCollections> {
           .getGroupDashboardData(group.currentGroupId);
     }
 
+    // ignore: non_constant_identifier_names
     int MAX = 9999;
 //print(new Random().nextInt(MAX));
 
@@ -372,8 +363,6 @@ class _EditCollectionsState extends State<EditCollections> {
   Widget build(BuildContext context) {
     final Group groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-
-    TextEditingController mcontroller = new TextEditingController();
 
     return Scaffold(
       key: _scaffoldKey,
@@ -1087,6 +1076,13 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
           ),
           onPressed: () async {
             if (_formKey.currentState.validate()) {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  });
               Navigator.of(context).pop();
               widget.selected(_selected);
               await saveFineType(context);
@@ -1113,10 +1109,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       // ignore: deprecated_member_use
       Fluttertoast.showToast(
           msg: "You have successfully added a fine category.");
-      // Scaffold.of(context).showSnackBar(SnackBar(
-      //     content: Text(
-      //   "You have successfully added a fine category",
-      // )));
 
       _formModified = 1;
       Future.delayed(const Duration(seconds: 4), () {
@@ -1128,10 +1120,6 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
       // ignore: deprecated_member_use
       Fluttertoast.showToast(
           msg: "Error Adding the Fine Category. ${error.message} ");
-      // Scaffold.of(context).showSnackBar(SnackBar(
-      //     content: Text(
-      //   "Error Adding the Fine Category. ${error.message} ",
-      // )));
     }
   }
 }

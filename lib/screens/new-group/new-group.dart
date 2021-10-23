@@ -477,8 +477,7 @@ class _NewGroupState extends State<NewGroup> {
     final group = Provider.of<Groups>(context, listen: false);
     final auth = Provider.of<Auth>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
-    if(currentGroup != null)
-      _data['group_id'] = currentGroup.groupId;
+    if (currentGroup != null) _data['group_id'] = currentGroup.groupId;
     _data['user_id'] = auth.id;
     // Handle countries
     _countryOptions = Provider.of<Groups>(context).countryOptions;
@@ -734,7 +733,8 @@ class _NewGroupState extends State<NewGroup> {
                 textAlign: TextAlign.start,
               ),
               subtitle2(
-                text: "Use it if referred by a Bank, an NGO, a Partner or anyone",
+                text:
+                    "Use it if referred by a Bank, an NGO, a Partner or anyone",
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start,

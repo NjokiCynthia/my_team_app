@@ -2188,6 +2188,7 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
+      // ignore: unused_local_variable
       List<dynamic> _localData = [];
       _localData = await dbHelper.queryWhere(
         table: DatabaseHelper.fineCategories,
