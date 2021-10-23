@@ -4,6 +4,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-accounts.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
+import 'package:chamasoft/screens/chamasoft/settings/list-loan-types.dart';
 import 'package:chamasoft/screens/new-group/select-group-members.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -38,6 +39,7 @@ class _NewGroupState extends State<NewGroup> {
     "name": '',
     "members": [],
     "contributions": [],
+    "loan_type": [],
     "accounts": [],
     "referral": '',
   };
@@ -123,6 +125,12 @@ class _NewGroupState extends State<NewGroup> {
           _showSnackbar("You need to setup a contribution to continue", 6);
         } else {
           goTo(3);
+        }
+      } else if (currentStep == 3) {
+        if (_data['loan_type'].length < 1) {
+          _showSnackbar("You need to setup a loan type to continue", 6);
+        } else {
+          goTo(4);
         }
       } else {
         goTo(currentStep + 1);
@@ -718,9 +726,34 @@ class _NewGroupState extends State<NewGroup> {
         ),
       ),
       Step(
-        title: formatStep(4, "Finish"),
+        title: formatStep(4, "Loan Types"),
         isActive: currentStep >= 4 ? true : false,
         state: currentStep > 4 ? StepState.complete : StepState.disabled,
+        content: Column(
+          children: <Widget>[
+            Container(
+              color: primaryColor.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ListLoanTypes(),
+                  ),
+                ),
+                title: "Group Loan types",
+                subtitle: "Tap to manage loan types",
+                icon: Icons.edit,
+                color: primaryColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+      Step(
+        title: formatStep(4, "Finish"),
+        isActive: currentStep >= 5 ? true : false,
+        state: currentStep > 5 ? StepState.complete : StepState.disabled,
         content: Container(
           width: double.infinity,
           child: Column(
