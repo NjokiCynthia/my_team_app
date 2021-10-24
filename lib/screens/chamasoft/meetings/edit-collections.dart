@@ -1160,7 +1160,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                         }
 
                         // If loan amount is greater than savings times
-                        else if (_loanType['savings_time'] != null &&
+                        else if (_loanType['savings_times'] != null &&
                             double.tryParse(val) >
                                 (_memberData.contributions *
                                     int.tryParse(_loanType['savings_times']))) {
