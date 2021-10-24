@@ -464,7 +464,7 @@ class GroupMemberDetail {
   final String name;
   final String memberId;
   final String userId;
-  final double contributions;
+  double contributions;
   final double fines;
   final double loanBalance;
   final double contributionArrears;

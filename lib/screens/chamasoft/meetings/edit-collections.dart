@@ -164,7 +164,8 @@ class _EditCollectionsState extends State<EditCollections> {
             groupCurrency: _groupCurrency,
             groupObject: groupObject,
             groupMembersDetails: _groupMembersDetails,
-            totalAmountDisbursable: _totalAmountDisbursable);
+            totalAmountDisbursable: _totalAmountDisbursable,
+            recorded: widget.recorded);
       },
     );
   }
@@ -206,7 +207,6 @@ class _EditCollectionsState extends State<EditCollections> {
 
     // ignore: non_constant_identifier_names
     int MAX = 9999;
-//print(new Random().nextInt(MAX));
 
     setState(() {
       _groupFineCategories =
@@ -249,11 +249,9 @@ class _EditCollectionsState extends State<EditCollections> {
       _totalAmountDisbursable = dashboard.cashBalances +
           dashboard.bankBalances +
           contributedRepayedAndDisbursed;
-      print("data >>>>>>> $_data");
       _isLoading = false;
       _isInit = false;
     });
-    // print())
     return true;
   }
 
@@ -274,7 +272,7 @@ class _EditCollectionsState extends State<EditCollections> {
                 "Are you sure you want to remove this ${_title.toString().toLowerCase()}?",
             textAlign: TextAlign.start,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionColor,
             maxLines: null,
           ),
           actions: <Widget>[
@@ -297,6 +295,7 @@ class _EditCollectionsState extends State<EditCollections> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
+                  _totalAmountDisbursable += _data[index]['amount'];
                   _data.removeAt(index);
                   widget.collections(_data);
                 });
@@ -510,7 +509,6 @@ class _EditCollectionsState extends State<EditCollections> {
                             ),
                             itemCount: _data.length,
                             itemBuilder: (context, index) {
-                              print("data here >>>> $_data");
                               return Container(
                                 padding: EdgeInsets.fromLTRB(
                                   20.0,
@@ -712,6 +710,7 @@ class NewCollectionDialog extends StatefulWidget {
   final Group groupObject;
   final List<GroupMemberDetail> groupMembersDetails;
   final double totalAmountDisbursable;
+  final Map<String, dynamic> recorded;
   NewCollectionDialog({
     @required this.type,
     @required this.groupMembers,
@@ -725,6 +724,7 @@ class NewCollectionDialog extends StatefulWidget {
     @required this.groupObject,
     @required this.groupMembersDetails,
     @required this.totalAmountDisbursable,
+    @required this.recorded,
   });
   @override
   _NewCollectionDialogState createState() => new _NewCollectionDialogState();
@@ -772,9 +772,26 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
   }
 
   void _getGroupMemberData(String memberId) {
+    // get the memberData.
+    GroupMemberDetail memberDetail = widget.groupMembersDetails
+        .firstWhere((member) => member.memberId == memberId);
+
+    // Check if we have recorded contributions
+    if (widget.recorded['contributions'].length > 0) {
+      // loop through the contributions
+      for (var contrib in widget.recorded['contributions']) {
+        // check if member has contributed
+        if (contrib['member']['id'].toString() == memberId) {
+          // Add to the member detail contributions
+          memberDetail.contributions += contrib['amount'];
+        }
+      }
+    }
+
+    // Do a set State.
+
     setState(() {
-      _memberData = widget.groupMembersDetails
-          .firstWhere((member) => member.memberId == memberId);
+      _memberData = memberDetail;
     });
   }
 
