@@ -111,15 +111,6 @@ class _EditCollectionsState extends State<EditCollections> {
       builder: (BuildContext context) {
         return NewCollectionDialog(
             selected: (val) async {
-              // if in Loan disbursements, don't disburse more than we have
-              if (val['type'] == "disbursements" &&
-                  int.parse(val['amount']) > _totalAmountDisbursable) {
-                _showSnackbar(
-                    "You can only disburse up to ${groupObject.groupCurrency} ${currencyFormat.format(_totalAmountDisbursable)}",
-                    4);
-                return;
-              }
-
               setState(() {
                 Map<String, dynamic> _member = {};
                 Map<String, dynamic> _contribution = {};
@@ -172,7 +163,8 @@ class _EditCollectionsState extends State<EditCollections> {
             groupMemberLoans: _groupMemberLoanOptions,
             groupCurrency: _groupCurrency,
             groupObject: groupObject,
-            groupMembersDetails: _groupMembersDetails);
+            groupMembersDetails: _groupMembersDetails,
+            totalAmountDisbursable: _totalAmountDisbursable);
       },
     );
   }
@@ -719,6 +711,7 @@ class NewCollectionDialog extends StatefulWidget {
   final String groupCurrency;
   final Group groupObject;
   final List<GroupMemberDetail> groupMembersDetails;
+  final double totalAmountDisbursable;
   NewCollectionDialog({
     @required this.type,
     @required this.groupMembers,
@@ -731,6 +724,7 @@ class NewCollectionDialog extends StatefulWidget {
     @required this.groupCurrency,
     @required this.groupObject,
     @required this.groupMembersDetails,
+    @required this.totalAmountDisbursable,
   });
   @override
   _NewCollectionDialogState createState() => new _NewCollectionDialogState();
@@ -1132,26 +1126,49 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
               SizedBox(height: 20.0),
               widget.type == "disbursements"
                   ? TextFormField(
+                      enabled: _loanType.isEmpty ? false : true,
                       validator: (val) {
+                        // If empty
                         if (val.isEmpty)
                           return "Amount is required";
-                        else if (_loanType['minimum_loan_amount'] != null &&
+
+                        // If loan amount entered is greater than available amount
+                        else if (double.tryParse(val) >
+                            widget.totalAmountDisbursable) {
+                          return "Only ${widget.groupObject.groupCurrency} ${currencyFormat.format(widget.totalAmountDisbursable)} is available";
+                        }
+
+                        // If loan type is not yet fetched....
+                        else if (_loanType.isEmpty) {
+                          return "Fetching loan type data.....";
+                        }
+
+                        // If loan amount is less than the minimum loan amount
+                        else if (_loanType['minimum_loan_amount'].isNotEmpty &&
                             double.tryParse(val) <
                                 double.tryParse(_loanType['minimum_loan_amount']
                                     .toString())) {
                           return "Minimum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['minimum_loan_amount'].toString()))}";
-                        } else if (_loanType['maximum_loan_amount'] != null &&
+                        }
+
+                        // If loan amount is greater than maximum loan amount
+                        else if (_loanType['maximum_loan_amount'].isNotEmpty &&
                             double.tryParse(val) >
                                 double.tryParse(
                                     _loanType['maximum_loan_amount'])) {
                           return "Maximum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['maximum_loan_amount']))}";
-                        } else if (int.tryParse(_loanType['savings_times']) !=
-                                null &&
+                        }
+
+                        // If loan amount is greater than savings times
+                        else if (_loanType['savings_time'] != null &&
                             double.tryParse(val) >
                                 (_memberData.contributions *
                                     int.tryParse(_loanType['savings_times']))) {
                           return "Loan amount exceeds savings";
-                        } else {
+                        }
+
+                        // Everything is ok
+                        else {
                           setState(() {
                             _selected['amount'] = val;
                           });
