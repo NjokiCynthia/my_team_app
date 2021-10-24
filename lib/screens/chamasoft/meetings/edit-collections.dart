@@ -1181,7 +1181,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
                             double.tryParse(val) >
                                 (_memberData.contributions *
                                     int.tryParse(_loanType['savings_times']))) {
-                          return "Loan amount exceeds savings";
+                          return "Maximum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(_memberData.contributions * int.tryParse(_loanType['savings_times']))}";
                         }
 
                         // Everything is ok
