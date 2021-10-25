@@ -1,20 +1,33 @@
-import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
+// import 'package:chamasoft/providers/groups.dart';
+// import 'package:chamasoft/screens/chamasoft/models/loan-type.dart';
+// import 'package:chamasoft/screens/chamasoft/transactions/loans/chamasoft-loan-type.dart';
+// import 'package:chamasoft/screens/chamasoft/transactions/loans/loan-amortization.dart';
 import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/chamasoft-loans.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-chamasoft.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/loans/apply-loan-from-group.dart';
+// import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
-import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/textfields.dart';
-import 'package:chamasoft/widgets/textstyles.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
+// import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_toggle_tab/flutter_toggle_tab.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
-
-import '../../dashboard.dart';
+import 'package:provider/provider.dart';
 
 class ApplyLoan extends StatefulWidget {
+  final bool isInit;
+  final bool isFromGroupActive;
+  final bool isFromChamasoftActive;
+
+  ApplyLoan(
+      {this.isInit = true,
+      this.isFromChamasoftActive = false,
+      this.isFromGroupActive = true});
   @override
   State<StatefulWidget> createState() {
     return ApplyLoanState();
@@ -25,10 +38,16 @@ class ApplyLoanState extends State<ApplyLoan> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
 
-  bool isShow = true;
-  bool isHiden = false;
+  bool _isFromGroupActive = true;
+  bool _isFromChamasoftActive = false;
+  bool _isInit = true;
+  bool _isLoading = true;
 
   double amountInputValue;
+  Map<String, dynamic> _formLoadData = {};
+  List<LoanProduct> _loanProducts = [];
+  List<LoanType> _loanTypes = [];
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -43,6 +62,14 @@ class ApplyLoanState extends State<ApplyLoan> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    setState(() {
+      _isInit = widget.isInit;
+      _isFromChamasoftActive = widget.isFromChamasoftActive;
+      _isFromGroupActive = widget.isFromGroupActive;
+      if (!_isInit) {
+        _isLoading = false;
+      }
+    });
     super.initState();
   }
 
@@ -53,253 +80,152 @@ class ApplyLoanState extends State<ApplyLoan> {
     super.dispose();
   }
 
-  static final List<String> _dropdownItems = <String>[
-    'Emergency Loan',
-    'Education Loan'
-  ];
-  final formKey = new GlobalKey<FormState>();
-  String _dropdownValue;
-  String _errorText;
-
-  Widget buildDropDown() {
-    return FormField(
-      builder: (FormFieldState state) {
-        return DropdownButtonHideUnderline(
-          child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              new InputDecorator(
-                decoration: InputDecoration(
-                    labelStyle: inputTextStyle(),
-                    hintStyle: inputTextStyle(),
-                    errorStyle: inputTextStyle(),
-                    filled: false,
-                    hintText: 'Select Loan Type',
-                    labelText: _dropdownValue == null
-                        ? 'Select Loan Type'
-                        : 'Select Loan Type',
-                    errorText: _errorText,
-                    enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
-                            color: Theme.of(context).hintColor, width: 1.0))),
-                isEmpty: _dropdownValue == null,
-                child: new Theme(
-                  data: Theme.of(context).copyWith(
-                    canvasColor: (themeChangeProvider.darkTheme)
-                        ? Colors.blueGrey[800]
-                        : Colors.white,
-                  ),
-                  child: new DropdownButton<String>(
-                    value: _dropdownValue,
-                    isDense: true,
-                    onChanged: (String newValue) {
-                      setState(() {
-                        _dropdownValue = newValue;
-                      });
-                    },
-                    items: _dropdownItems.map((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: inputTextStyle(),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
+  @override
+  void didChangeDependencies() {
+    // get the loan products
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
   }
 
+  // fetch loan products
+  Future<void> _fetchLoanProducts(BuildContext context) async {
+    try {
+      // get the form data
+      Provider.of<Groups>(context, listen: false)
+          .loadInitialFormData(member: true, loanTypes: true)
+          .then((value) {
+        // get the loan products
+        Provider.of<ChamasoftLoans>(context, listen: false)
+            .fetchLoanProducts()
+            .then((loanProducts) {
+          setState(() {
+            _loanProducts = loanProducts;
+            _formLoadData = value;
+            _isInit = false;
+            _isLoading = false;
+            _loanTypes = Provider.of<Groups>(context, listen: false).loanTypes;
+          });
+        });
+      });
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchLoanProducts(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }
+
+  Future<bool> _fetchData() async {
+    // fetch loan products
+    return _fetchLoanProducts(context).then((value) => true);
+  }
+
+  final formKey = new GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    // LoanType typeLoan;
+
     return Scaffold(
       appBar: secondaryPageAppbar(
         context: context,
-        action: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (BuildContext context) => ChamasoftDashboard(),
-          ),
-        ),
+        action: () => Navigator.of(context)
+            .popUntil((Route<dynamic> route) => route.isFirst),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
         title: "Apply Loan",
       ),
       backgroundColor: Colors.transparent,
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: SingleChildScrollView(
-          controller: _scrollController,
-          child: Container(
-            color: Theme.of(context).backgroundColor,
-            padding: EdgeInsets.all(0.0),
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            //  color: Theme.of(context).backgroundColor,
-
-//Control Switches Wigets
-            child: Column(
-              children: <Widget>[
-                // loanSwitches(isShow),
-                Column(
-                  mainAxisSize: MainAxisSize.max,
+      body: SingleChildScrollView(
+        child: Container(
+          color: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Colors.white,
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: RefreshIndicator(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[800]
+                : Colors.white,
+            onRefresh: () => _fetchData(),
+            child: GestureDetector(
+              onTap: () {
+                FocusScope.of(context).unfocus();
+              },
+              child: Container(
+                padding: EdgeInsets.all(0.0),
+                width: MediaQuery.of(context).size.width,
+                decoration: primaryGradient(context),
+                //Switches
+                child: Column(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                      child: FlutterToggleTab(
-                        width: 55.0,
-                        height: 30.0,
-                        borderRadius: 10.0,
-                        labels: ['From Group', 'From ChamaSoft'],
-                        initialIndex: 0,
-                        selectedLabelIndex: (index) {
-                          setState(() {
-                            if (index == 0) {
-                              isShow = true;
-                              isHiden = false;
-                            }
-                            if (index == 1) {
-                              isShow = false;
-                              isHiden = true;
-                            }
-                          });
-                        },
-                        selectedBackgroundColors: [Colors.grey],
-                        unSelectedBackgroundColors: [Colors.white70],
-                        selectedTextStyle: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w600),
-                        unSelectedTextStyle: TextStyle(
-                            color: Colors.black,
-                            fontSize: 10.0,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    )
-                  ],
-                ),
-//Coteiner for Group Loans
-                Container(
-                  child: Visibility(
-                    visible: isShow,
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: EdgeInsets.all(16.0),
-                          //height: MediaQuery.of(context).size.height,
-                          color: Theme.of(context).backgroundColor,
-                          child: Column(
-                            children: <Widget>[
-                              toolTip(
-                                  context: context,
-                                  title: "Note that...",
-                                  message:
-                                      "Loan application process is totally depended on your group's constitution and your group\'s management."),
-                              buildDropDown(),
-                              amountTextInputField(
-                                  context: context,
-                                  labelText: "Amount applying for",
-                                  onChanged: (value) {
-                                    setState(() {
-                                      amountInputValue = double.parse(value);
-                                    });
-                                  }),
-                              SizedBox(
-                                height: 24,
+                    Column(
+                      mainAxisSize: MainAxisSize.max,
+                      children: <Widget>[
+                        _isLoading
+                            ? showLinearProgressIndicator()
+                            : SizedBox(
+                                height: 0.0,
                               ),
-                              Padding(
-                                padding:
-                                    EdgeInsets.only(left: 30.0, right: 30.0),
-                                child: textWithExternalLinks(
-                                    color: Colors.blueGrey,
-                                    size: 12.0,
-                                    textData: {
-                                      'By applying for this loan you agree to the ':
-                                          {},
-                                      'terms and conditions': {
-                                        "url": () => Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        LoanAmortization(),
-                                              ),
-                                            ),
-                                        "color": primaryColor,
-                                        "weight": FontWeight.w500
-                                      },
-                                    }),
-                              ),
-                              SizedBox(
-                                height: 24,
-                              ),
-                              defaultButton(
-                                  context: context,
-                                  text: "Apply Now",
-                                  onPressed: () {})
-                            ],
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+                          child: FlutterToggleTab(
+                            width: 55.0,
+                            height: MediaQuery.of(context).size.height * 0.04,
+                            borderRadius: 10.0,
+                            labels: ['From Group', 'From ChamaSoft'],
+                            initialIndex: 0,
+                            selectedLabelIndex: (index) {
+                              setState(() {
+                                if (index == 0) {
+                                  _isFromGroupActive = true;
+                                  _isFromChamasoftActive = false;
+                                }
+                                if (index == 1) {
+                                  _isFromChamasoftActive = true;
+                                  _isFromGroupActive = false;
+                                }
+                              });
+                            },
+                            selectedBackgroundColors: [Colors.grey],
+                            unSelectedBackgroundColors: [Colors.white70],
+                            selectedTextStyle: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12.0,
+                                fontWeight: FontWeight.w600),
+                            unSelectedTextStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: 10.0,
+                                fontWeight: FontWeight.w400),
                           ),
                         )
                       ],
                     ),
-                  ),
-                ),
-//ListView Test
-                Container(
-                  child: Visibility(
-                    visible: isHiden,
-                    child: Column(
-                      children: <Widget>[
-                        toolTip(
-                            context: context,
-                            title: "Note that...",
-                            message:
-                                "Apply quick loan from Chamasoft guaranteed by your savings and fellow group members."),
-                        ListView.builder(
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          primary: true,
-                          itemCount: loantype.length,
-                          itemBuilder: (context, index) {
-                            LoanType typeLoan = loantype[index];
-                            return Card(
-                                elevation: 0.0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0)),
-                                borderOnForeground: false,
-                                child: Container(
-                                  decoration: cardDecoration(
-                                      gradient: plainCardGradient(context),
-                                      context: context),
-                                  child: ListTile(
-                                    title: Text(typeLoan.loanName),
-                                    subtitle: Text(typeLoan.details),
-                                    trailing: Icon(Icons.arrow_forward_ios),
-                                    onTap: () {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  ChamaSoftLoanDetail(
-                                                      typeLoan.loanName,
-                                                      typeLoan.dateTime
-                                                          .toString())));
-                                    },
-                                  ),
-                                ));
-                          },
-                        )
-                      ],
+                    //Group loans
+                    Container(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.vertical,
+                        child: Visibility(
+                          visible: _isFromGroupActive,
+                          child: ApplyLoanFromGroup(
+                              formLoadData: _formLoadData,
+                              loanTypes: _loanTypes),
+                        ),
+                      ),
                     ),
-                  ),
-                )
-              ],
+                    //Chamasoft loans
+                    Container(
+                      child: Visibility(
+                          visible: _isFromChamasoftActive,
+                          child: ApplyLoanFromChamasoft(
+                              formLoadData: _formLoadData,
+                              loanProducts: _loanProducts)),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ),

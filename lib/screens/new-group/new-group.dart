@@ -4,6 +4,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-accounts.dart';
 import 'package:chamasoft/screens/chamasoft/settings/list-contributions.dart';
+import 'package:chamasoft/screens/chamasoft/settings/list-loan-types.dart';
 import 'package:chamasoft/screens/new-group/select-group-members.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
@@ -38,6 +39,7 @@ class _NewGroupState extends State<NewGroup> {
     "name": '',
     "members": [],
     "contributions": [],
+    "loan_types": [],
     "accounts": [],
     "referral": '',
   };
@@ -123,6 +125,18 @@ class _NewGroupState extends State<NewGroup> {
           _showSnackbar("You need to setup a contribution to continue", 6);
         } else {
           goTo(3);
+        }
+      } else if (currentStep == 3) {
+        if (_data['accounts'].length < 1) {
+          _showSnackbar("You need to setup an account to continue", 6);
+        } else {
+          goTo(4);
+        }
+      } else if (currentStep == 4) {
+        if (_data['loan_types'].length < 1) {
+          _showSnackbar("You need to setup a loan type to continue", 6);
+        } else {
+          goTo(5);
         }
       } else {
         goTo(currentStep + 1);
@@ -370,6 +384,7 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   Future<void> _fetchContributions(BuildContext context) async {
+    print("in fetch contributions");
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         showDialog<String>(
@@ -388,22 +403,23 @@ class _NewGroupState extends State<NewGroup> {
     );
     try {
       final group = Provider.of<Groups>(context, listen: false);
-      await group.fetchContributions();
-      setState(() {
-        List<dynamic> _ctrbs = [];
-        group.contributions.forEach((m) {
-          _ctrbs.add({
-            'id': m.id,
-            'name': m.name,
-            'amount': m.amount,
-            'contributionDate': m.contributionDate,
-            'contributionType': m.contributionType,
+      await group.fetchContributions().then((value) {
+        setState(() {
+          List<dynamic> _ctrbs = [];
+          group.contributions.forEach((m) {
+            _ctrbs.add({
+              'id': m.id,
+              'name': m.name,
+              'amount': m.amount,
+              'contributionDate': m.contributionDate,
+              'contributionType': m.contributionType,
+            });
           });
+          _data['contributions'] = _ctrbs;
+          _isInit = false;
         });
-        _data['contributions'] = _ctrbs;
-        _isInit = false;
+        Navigator.of(context).pop();
       });
-      Navigator.of(context, rootNavigator: true).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
         context: context,
@@ -458,6 +474,56 @@ class _NewGroupState extends State<NewGroup> {
     }
   }
 
+  Future<void> _fetchLoanTypes(BuildContext context) async {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) {
+        showDialog<String>(
+          barrierColor: Theme.of(context).backgroundColor.withOpacity(0.7),
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: primaryColor,
+              ),
+            );
+          },
+        );
+      },
+    );
+    try {
+      final group = Provider.of<Groups>(context, listen: false);
+      await group.fetchLoanTypes();
+      setState(() {
+        List<dynamic> _loanTyps = [];
+
+        group.loanTypes.forEach((m) {
+          _loanTyps.add({
+            'id': m.id,
+            'name': m.name,
+            'amount': m.loanAmount,
+            'repaymentPeriod': m.repaymentPeriod,
+            'loanProcessing': m.loanProcessing,
+            'guarantors': m.guarantors,
+            'latePaymentFines': m.latePaymentFines,
+            'outstandingPaymentFines': m.outstandingPaymentFines,
+          });
+        });
+        _data['loan_types'] = _loanTyps;
+        _isInit = false;
+      });
+      Navigator.of(context, rootNavigator: true).pop();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+        context: context,
+        error: error,
+        callback: () {
+          _fetchLoanTypes(context);
+        },
+      );
+    }
+  }
+
   @override
   void initState() {
     _scrollController = ScrollController();
@@ -477,8 +543,7 @@ class _NewGroupState extends State<NewGroup> {
     final group = Provider.of<Groups>(context, listen: false);
     final auth = Provider.of<Auth>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
-    if(currentGroup != null)
-      _data['group_id'] = currentGroup.groupId;
+    if (currentGroup != null) _data['group_id'] = currentGroup.groupId;
     _data['user_id'] = auth.id;
     // Handle countries
     _countryOptions = Provider.of<Groups>(context).countryOptions;
@@ -489,6 +554,7 @@ class _NewGroupState extends State<NewGroup> {
     if (_isInit && currentStep == 1) getGroupMembers(context);
     if (_isInit && currentStep == 2) _fetchContributions(context);
     if (_isInit && currentStep == 3) _fetchAccounts(context);
+    if (_isInit && currentStep == 4) _fetchLoanTypes(context);
 
     final List<Map<String, dynamic>> _radOptions = [
       {
@@ -677,13 +743,15 @@ class _NewGroupState extends State<NewGroup> {
                 context: context,
                 action: () => Navigator.of(context)
                     .push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ListContributions(),
-                      ),
-                    )
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ListContributions(),
+                  ),
+                )
                     .then(
-                      (resp) => _fetchContributions(context),
-                    ),
+                  (resp) {
+                    _fetchContributions(context);
+                  },
+                ),
                 title: "Group Contributions",
                 subtitle: "Tap to manage contributions",
                 icon: Icons.edit,
@@ -704,11 +772,13 @@ class _NewGroupState extends State<NewGroup> {
               width: double.infinity,
               child: meetingMegaButton(
                 context: context,
-                action: () => Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ListAccounts(),
-                  ),
-                ),
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ListAccounts(),
+                      ),
+                    )
+                    .then((resp) => _fetchAccounts(context)),
                 title: "Group Accounts",
                 subtitle: "Tap to manage accounts",
                 icon: Icons.edit,
@@ -719,9 +789,36 @@ class _NewGroupState extends State<NewGroup> {
         ),
       ),
       Step(
-        title: formatStep(4, "Finish"),
+        title: formatStep(4, "Loan Types"),
         isActive: currentStep >= 4 ? true : false,
         state: currentStep > 4 ? StepState.complete : StepState.disabled,
+        content: Column(
+          children: <Widget>[
+            Container(
+              color: primaryColor.withOpacity(0.1),
+              width: double.infinity,
+              child: meetingMegaButton(
+                context: context,
+                action: () => Navigator.of(context)
+                    .push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ListLoanTypes(),
+                      ),
+                    )
+                    .then((value) => _fetchLoanTypes(context)),
+                title: "Group Loan types",
+                subtitle: "Tap to manage loan types",
+                icon: Icons.edit,
+                color: primaryColor,
+              ),
+            ),
+          ],
+        ),
+      ),
+      Step(
+        title: formatStep(5, "Finish"),
+        isActive: currentStep >= 5 ? true : false,
+        state: currentStep > 5 ? StepState.complete : StepState.disabled,
         content: Container(
           width: double.infinity,
           child: Column(
@@ -734,7 +831,8 @@ class _NewGroupState extends State<NewGroup> {
                 textAlign: TextAlign.start,
               ),
               subtitle2(
-                text: "Use it if referred by a Bank, an NGO, a Partner or anyone",
+                text:
+                    "Use it if referred by a Bank, an NGO, a Partner or anyone",
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
                 textAlign: TextAlign.start,

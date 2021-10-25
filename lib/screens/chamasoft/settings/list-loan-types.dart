@@ -37,7 +37,6 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
             CreateLoanType(isEditMode: true, loanDetails: response["data"]),
       ));
 
-      print(result);
       if (result != null) {
         int status = int.tryParse(result.toString()) ?? 0;
         if (status == 1) {
@@ -255,18 +254,20 @@ class _ListLoanTypesState extends State<ListLoanTypes> {
           color: Colors.white,
         ),
         backgroundColor: primaryColor,
-        onPressed: () async {
-          final result =
-              Navigator.of(_scaffoldKey.currentContext).push(MaterialPageRoute(
+        onPressed: () {
+          Navigator.of(_scaffoldKey.currentContext)
+              .push(MaterialPageRoute(
             builder: (_) => CreateLoanType(),
-          ));
-          if (result != null) {
-            int status = int.tryParse(result.toString()) ?? 0;
-            if (status == 1) {
-              _refreshIndicatorKey.currentState.show();
-              _fetchLoanTypes(_scaffoldKey.currentContext);
+          ))
+              .then((value) {
+            if (value != null) {
+              int status = int.tryParse(value.toString()) ?? 0;
+              if (status == 1) {
+                _refreshIndicatorKey.currentState.show();
+                _fetchLoanTypes(context);
+              }
             }
-          }
+          });
         },
       ),
       //backgroundColor: Theme.of(context).backgroundColor,

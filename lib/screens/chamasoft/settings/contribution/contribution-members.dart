@@ -43,7 +43,6 @@ class _ContributionMembersState extends State<ContributionMembers> {
       if (identity.isEmpty) {
         identity = email;
       }
-      print("Member id: ${memberJson['id'].toString()}");
       final member = Member(
           id: memberJson['id'].toString(),
           name: memberJson['first_name'].toString() +
@@ -85,22 +84,18 @@ class _ContributionMembersState extends State<ContributionMembers> {
       formData["all_members"] = 1;
     } else {
       if (_selectedMembers.length < 1) {
-        alertDialogWithAction(context, "Select at least one member", () {
-          Navigator.of(context).pop();
-        });
+        formData["all_members"] = 1;
+      } else {
+        formData["all_members"] = 0;
 
-        return;
+        List<dynamic> theChosen = [];
+        for (var member in _selectedMembers) {
+          Map<String, dynamic> id = {};
+          id['member_id'] = member.id;
+          theChosen.add(id);
+        }
+        formData["contributing_members"] = theChosen;
       }
-
-      formData["all_members"] = 0;
-
-      List<dynamic> theChosen = [];
-      for (var member in _selectedMembers) {
-        Map<String, dynamic> id = {};
-        id['member_id'] = member.id;
-        theChosen.add(id);
-      }
-      formData["contributing_members"] = theChosen;
     }
 
     setState(() {

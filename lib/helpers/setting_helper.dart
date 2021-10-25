@@ -5,7 +5,6 @@ import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/report_helper.dart';
 // import 'package:chamasoft/helpers/common.dart';
 
-
 List<CategorisedAccount> getCategorisedAccounts(dynamic response) {
   List<CategorisedAccount> accounts = [];
 

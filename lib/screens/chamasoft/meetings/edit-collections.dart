@@ -1,4 +1,9 @@
+import 'dart:math';
+
+import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+//import 'package:chamasoft/screens/chamasoft/meetings/edit-loan-type.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -39,9 +44,12 @@ class _EditCollectionsState extends State<EditCollections> {
   List<dynamic> _groupAccounts = [];
   List<dynamic> _groupFineCategories = [];
   List<dynamic> _data = [];
+  List<GroupMemberDetail> _groupMembersDetails = [];
   Map<String, dynamic> formLoadData = {};
   String _groupCurrency = "KES";
   var formatter = NumberFormat('#,##,##0', "en_US");
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  double _totalAmountDisbursable = 0;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -97,54 +105,82 @@ class _EditCollectionsState extends State<EditCollections> {
     return [];
   }
 
-  void _newCollectionDialog() {
+  void _newCollectionDialog(Group groupObject) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return NewCollectionDialog(
-          selected: (val) {
-            setState(() {
-              // print("val >>>> ");
-              // print(val);
-              Map<String, dynamic> _member = {};
-              Map<String, dynamic> _contribution = {};
-              Map<String, dynamic> _loan = {};
-              Map<String, dynamic> _fine = {};
-              _member = getMember(val['member_id']);
-              if (val['type'] == "contributions")
-                _contribution = getContribution(val['contribution_id']);
-              else if (val['type'] == "fines")
-                _fine = getFine(val['fine_id']);
-              else if (val['type'] == "repayments")
-                _loan = getMemberLoan(val['loan_id']);
-              else
-                _loan = getLoanTypes(val['loan_type_id']);
-              // print(_member);
-              _data.add({
-                'member': _member,
-                'contribution': _contribution,
-                'loans': _loan,
-                'type': val['type'],
-                'fines': _fine,
-                'account': getGroupAccount(val['account_id']),
-                'amount': int.parse(val['amount']),
+            selected: (val) async {
+              setState(() {
+                Map<String, dynamic> _member = {};
+                Map<String, dynamic> _contribution = {};
+                Map<String, dynamic> _loan = {};
+                Map<String, dynamic> _fine = {};
+                _member = getMember(val['member_id']);
+                if (val['type'] == "contributions")
+                  _contribution = getContribution(val['contribution_id']);
+                else if (val['type'] == "fines") {
+                  _fine = getFine(val['fine_id']);
+                } else if (val['type'] == "repayments")
+                  _loan = getMemberLoan(val['loan_id']);
+                else
+                  _loan = getLoanTypes(val['loan_type_id']);
+
+                _data.add({
+                  'member': _member,
+                  'contribution': _contribution,
+                  'loans': _loan,
+                  'type': val['type'],
+                  'fines': _fine,
+                  'description': val['description'],
+                  'account': getGroupAccount(val['account_id']),
+                  'amount': int.parse(val['amount']),
+                });
+                widget.collections(_data);
+                // If loan disbursements update the amount available
+                if (val['type'] == "disbursements")
+                  _totalAmountDisbursable -= int.parse(val['amount']);
               });
-              widget.collections(_data);
-              print("Collections >>>>>>>>>>");
-              print(_data);
-            });
-          },
-          type: widget.type,
-          groupMembers: _groupMembers,
-          groupContributions: _groupContributions,
-          groupLoanTypes: _groupLoanTypes,
-          groupAccounts: _groupAccounts,
-          groupFines: _groupFineCategories,
-          groupMemberLoans: _groupMemberLoanOptions,
-          groupCurrency: _groupCurrency,
-        );
+
+              // Check whether we have a new fine type
+              if (val['type'] == "fines" && val['description'] != null) {
+                // save the fine type
+                saveFineType(context, {
+                  "description": val['description'],
+                  "amount": val['amount']
+                }).then((value) {
+                  // Fetch data
+                  fetchData();
+                });
+              }
+            },
+            type: widget.type,
+            groupMembers: _groupMembers,
+            groupContributions: _groupContributions,
+            groupLoanTypes: _groupLoanTypes,
+            groupAccounts: _groupAccounts,
+            groupFines: _groupFineCategories,
+            groupMemberLoans: _groupMemberLoanOptions,
+            groupCurrency: _groupCurrency,
+            groupObject: groupObject,
+            groupMembersDetails: _groupMembersDetails,
+            totalAmountDisbursable: _totalAmountDisbursable,
+            recorded: widget.recorded);
       },
     );
+  }
+
+  Future<void> saveFineType(
+      BuildContext context, Map<String, dynamic> fineData) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).createFineCategory(
+        name: fineData['description'],
+        amount: fineData['amount'].toString(),
+      );
+      _showSnackbar("Fine type successfully added", 4);
+    } catch (error) {
+      _showSnackbar("Error adding the fine type", 4);
+    }
   }
 
   Future<void> fetchData() async {
@@ -152,6 +188,7 @@ class _EditCollectionsState extends State<EditCollections> {
       _isLoading = true;
     });
     final group = Provider.of<Groups>(context, listen: false);
+    final dashboard = Provider.of<Dashboard>(context, listen: false);
     final currentGroup = group.getCurrentGroup();
     // List<dynamic> _fineCats = await group.fetchFineCategories();
     formLoadData = await group.loadInitialFormData(
@@ -161,12 +198,28 @@ class _EditCollectionsState extends State<EditCollections> {
         contr: true,
         loanTypes: true,
         memberOngoingLoans: true);
-    print(group.members);
+
+    dashboard.getGroupDashboardData(group.currentGroupId);
+
+    if (widget.type == "disbursements") {
+      await group.getGroupMembersDetails(group.currentGroupId);
+    }
+
+    // ignore: non_constant_identifier_names
+    int MAX = 9999;
+
     setState(() {
-      _groupFineCategories = _convertToDataSource(
-          formLoadData.containsKey("finesOptions")
-              ? formLoadData["finesOptions"]
+      _groupFineCategories =
+          _convertToDataSource(formLoadData.containsKey("finesOptions")
+              ? [
+                  ...formLoadData["finesOptions"],
+                  NamesListItem(
+                      id: 0,
+                      identity: (Random().nextInt(MAX)).toString(),
+                      name: 'Add a New Fine Type')
+                ]
               : []);
+
       _groupCurrency = currentGroup.groupCurrency;
       _groupAccounts = _convertToDataSource(
           formLoadData.containsKey("accountOptions")
@@ -190,8 +243,12 @@ class _EditCollectionsState extends State<EditCollections> {
               : []);
       _groupMemberLoanOptions =
           Provider.of<Groups>(context, listen: false).getMemberOngoingLoans;
+      _groupMembersDetails =
+          Provider.of<Groups>(context, listen: false).groupMembersDetails;
       _data = widget.recorded[widget.type];
-      print("data >>>>>>> $_data");
+      _totalAmountDisbursable = dashboard.cashBalances +
+          dashboard.bankBalances +
+          contributedRepayedAndDisbursed;
       _isLoading = false;
       _isInit = false;
     });
@@ -215,7 +272,7 @@ class _EditCollectionsState extends State<EditCollections> {
                 "Are you sure you want to remove this ${_title.toString().toLowerCase()}?",
             textAlign: TextAlign.start,
             // ignore: deprecated_member_use
-            color: Theme.of(context).textSelectionHandleColor,
+            color: Theme.of(context).textSelectionColor,
             maxLines: null,
           ),
           actions: <Widget>[
@@ -238,6 +295,7 @@ class _EditCollectionsState extends State<EditCollections> {
               onPressed: () {
                 Navigator.of(context).pop();
                 setState(() {
+                  _totalAmountDisbursable += _data[index]['amount'];
                   _data.removeAt(index);
                   widget.collections(_data);
                 });
@@ -252,6 +310,54 @@ class _EditCollectionsState extends State<EditCollections> {
         );
       },
     );
+  }
+
+  _showSnackbar(String msg, int duration) {
+    // ignore: deprecated_member_use
+    _scaffoldKey.currentState.removeCurrentSnackBar();
+    final snackBar = SnackBar(
+      content: Text(msg),
+      duration: Duration(seconds: duration),
+    );
+    // ignore: deprecated_member_use
+    _scaffoldKey.currentState.showSnackBar(snackBar);
+  }
+
+  int get contributedRepayedAndDisbursed {
+    int result = 0;
+    // contributions
+    if (widget.recorded['contributions'].length > 0) {
+      for (var entity in widget.recorded['contributions']) {
+        if (entity['amount'] != null) {
+          result += entity['amount'];
+        }
+      }
+    }
+    // loan repayments
+    if (widget.recorded['repayments'].length > 0) {
+      for (var entity in widget.recorded['repayments']) {
+        if (entity['amount'] != null) {
+          result += entity['amount'];
+        }
+      }
+    }
+    // fine payments
+    if (widget.recorded['fines'].length > 0) {
+      for (var entity in widget.recorded['fines']) {
+        if (entity['amount'] != null) {
+          result += entity['amount'];
+        }
+      }
+    }
+    // disbursements
+    if (widget.recorded['disbursements'].length > 0) {
+      for (var entity in widget.recorded['disbursements']) {
+        if (entity['amount'] != null) {
+          result -= entity['amount'];
+        }
+      }
+    }
+    return result;
   }
 
   @override
@@ -282,7 +388,11 @@ class _EditCollectionsState extends State<EditCollections> {
 
   @override
   Widget build(BuildContext context) {
+    final Group groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: secondaryPageAppbar(
         context: context,
@@ -300,7 +410,21 @@ class _EditCollectionsState extends State<EditCollections> {
                 // ignore: deprecated_member_use
                 color: Theme.of(context).textSelectionHandleColor,
               ),
-              onPressed: _isLoading ? null : () => _newCollectionDialog(),
+              onPressed: _isLoading
+                  ? null
+                  : () {
+                      if (widget.type == "disbursements") {
+                        if (_totalAmountDisbursable > 0) {
+                          _newCollectionDialog(groupObject);
+                        } else {
+                          _showSnackbar(
+                              "Available amount to disburse is ${groupObject.groupCurrency} 0",
+                              4);
+                        }
+                      } else {
+                        _newCollectionDialog(groupObject);
+                      }
+                    },
             ),
           ),
         ],
@@ -352,6 +476,20 @@ class _EditCollectionsState extends State<EditCollections> {
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.start,
                                 ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Visibility(
+                                  visible: widget.type == 'disbursements',
+                                  child: subtitle2(
+                                    text:
+                                        'Available amount to disburse is ${groupObject.groupCurrency} ${_totalAmountDisbursable > 0 ? currencyFormat.format(_totalAmountDisbursable) : 0}',
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionHandleColor,
+                                    textAlign: TextAlign.start,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -371,7 +509,6 @@ class _EditCollectionsState extends State<EditCollections> {
                             ),
                             itemCount: _data.length,
                             itemBuilder: (context, index) {
-                              print("data here >>>> $_data");
                               return Container(
                                 padding: EdgeInsets.fromLTRB(
                                   20.0,
@@ -408,73 +545,79 @@ class _EditCollectionsState extends State<EditCollections> {
                                                   .textSelectionHandleColor,
                                               textAlign: TextAlign.start,
                                             ),
-                                            Container(
-                                              decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                  Radius.circular(20),
-                                                ),
-                                                color: widget.type ==
-                                                        "contributions"
-                                                    ? Colors.green[700]
-                                                        .withOpacity(0.1)
-                                                    : widget.type ==
-                                                            "repayments"
-                                                        ? Colors.cyan[700]
-                                                            .withOpacity(0.1)
-                                                        : widget.type == "fines"
-                                                            ? Colors.red[700]
-                                                                .withOpacity(
-                                                                    0.1)
-                                                            : Colors.brown
-                                                                .withOpacity(
-                                                                    0.1),
-                                              ),
-                                              padding: EdgeInsets.fromLTRB(
-                                                8.0,
-                                                2.0,
-                                                8.0,
-                                                2.0,
-                                              ),
-                                              margin: EdgeInsets.only(
-                                                top: 6.0,
-                                              ),
-                                              child: Column(
-                                                children: [
-                                                  Text(
-                                                    widget.type ==
-                                                            "contributions"
-                                                        ? _data[index]
-                                                                ['contribution']
-                                                            ['name']
-                                                        : (widget.type ==
-                                                                    "disbursements" ||
-                                                                widget.type ==
-                                                                    "repayments")
-                                                            ? _data[index]
-                                                                    ["loans"]
-                                                                ['name']
-                                                            : _data[index]
-                                                                    ["fines"]
-                                                                ['name'],
-                                                    style: TextStyle(
-                                                      color: widget.type ==
-                                                              "contributions"
-                                                          ? Colors.green[700]
-                                                          : widget.type ==
-                                                                  "repayments"
-                                                              ? Colors.cyan[700]
-                                                              : widget.type ==
-                                                                      "fines"
-                                                                  ? Colors
-                                                                      .red[700]
-                                                                  : Colors
-                                                                      .brown,
-                                                      fontSize: 12.0,
-                                                    ),
+                                            if (widget.type == "fines" &&
+                                                _data[index]['fines']['id'] !=
+                                                    0)
+                                              Container(
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                    Radius.circular(20),
                                                   ),
-                                                ],
+                                                  color: widget.type ==
+                                                          "contributions"
+                                                      ? Colors.green[700]
+                                                          .withOpacity(0.1)
+                                                      : widget.type ==
+                                                              "repayments"
+                                                          ? Colors.cyan[700]
+                                                              .withOpacity(0.1)
+                                                          : widget.type ==
+                                                                  "fines"
+                                                              ? Colors.red[700]
+                                                                  .withOpacity(
+                                                                      0.1)
+                                                              : Colors.brown
+                                                                  .withOpacity(
+                                                                      0.1),
+                                                ),
+                                                padding: EdgeInsets.fromLTRB(
+                                                  8.0,
+                                                  2.0,
+                                                  8.0,
+                                                  2.0,
+                                                ),
+                                                margin: EdgeInsets.only(
+                                                  top: 6.0,
+                                                ),
+                                                child: Column(
+                                                  children: [
+                                                    Text(
+                                                      widget.type ==
+                                                              "contributions"
+                                                          ? _data[index]
+                                                                  ['contribution']
+                                                              ['name']
+                                                          : (widget.type ==
+                                                                      "disbursements" ||
+                                                                  widget.type ==
+                                                                      "repayments")
+                                                              ? _data[index]
+                                                                      ["loans"]
+                                                                  ['name']
+                                                              : _data[index]
+                                                                      ["fines"]
+                                                                  ['name'],
+                                                      style: TextStyle(
+                                                        color: widget.type ==
+                                                                "contributions"
+                                                            ? Colors.green[700]
+                                                            : widget.type ==
+                                                                    "repayments"
+                                                                ? Colors
+                                                                    .cyan[700]
+                                                                : widget.type ==
+                                                                        "fines"
+                                                                    ? Colors.red[
+                                                                        700]
+                                                                    : Colors
+                                                                        .brown,
+                                                        fontSize: 12.0,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
                                               ),
-                                            ),
                                           ],
                                         ),
                                       ],
@@ -564,6 +707,10 @@ class NewCollectionDialog extends StatefulWidget {
   final List<dynamic> groupMemberLoans;
   final ValueChanged<dynamic> selected;
   final String groupCurrency;
+  final Group groupObject;
+  final List<GroupMemberDetail> groupMembersDetails;
+  final double totalAmountDisbursable;
+  final Map<String, dynamic> recorded;
   NewCollectionDialog({
     @required this.type,
     @required this.groupMembers,
@@ -574,6 +721,10 @@ class NewCollectionDialog extends StatefulWidget {
     @required this.selected,
     @required this.groupMemberLoans,
     @required this.groupCurrency,
+    @required this.groupObject,
+    @required this.groupMembersDetails,
+    @required this.totalAmountDisbursable,
+    @required this.recorded,
   });
   @override
   _NewCollectionDialogState createState() => new _NewCollectionDialogState();
@@ -584,6 +735,9 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
   Map<String, dynamic> _selected = {};
   String title = "";
   List<dynamic> memberLoans = [];
+  bool _showDescription = false;
+  GroupMemberDetail _memberData;
+  Map<String, dynamic> _loanType = {};
 
   String getAlertText() {
     String _resp = "You're not allowed to do anything here";
@@ -614,8 +768,43 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
     setState(() {
       memberLoans.clear();
       memberLoans = _result;
+    });
+  }
 
-      print("member loans >>  $memberLoans and result $_result");
+  void _getGroupMemberData(String memberId) {
+    // get the memberData.
+    GroupMemberDetail memberDetail = widget.groupMembersDetails
+        .firstWhere((member) => member.memberId == memberId);
+
+    // Check if we have recorded contributions
+    if (widget.recorded['contributions'].length > 0) {
+      // loop through the contributions
+      for (var contrib in widget.recorded['contributions']) {
+        // check if member has contributed
+        if (contrib['member']['id'].toString() == memberId) {
+          // Add to the member detail contributions
+          memberDetail.contributions += contrib['amount'];
+        }
+      }
+    }
+
+    // Do a set State.
+
+    setState(() {
+      _memberData = memberDetail;
+    });
+  }
+
+  void _getGroupLoanTypeData(String loanTypeId) {
+    setState(() {
+      _loanType = {};
+    });
+    Provider.of<Groups>(context, listen: false)
+        .getLoanDetails(loanTypeId)
+        .then((value) {
+      setState(() {
+        _loanType = value['data']['loan_type'];
+      });
     });
   }
 
@@ -654,6 +843,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         'member_id': '',
         'fine_id': '',
         'account_id': '',
+        'description': '',
         'amount': '',
         'type': widget.type,
       };
@@ -663,6 +853,7 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
 
   @override
   Widget build(BuildContext context) {
+    List<dynamic> outputFineResults = (widget.groupAccounts);
     return AlertDialog(
       backgroundColor: Theme.of(context).backgroundColor,
       title: heading2(
@@ -671,235 +862,361 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
         // ignore: deprecated_member_use
         color: Theme.of(context).textSelectionHandleColor,
       ),
-      content: Form(
-        key: _formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ((widget.groupContributions.length == 0 &&
-                        widget.type == "contributions") ||
-                    (widget.groupMemberLoans.length == 0 &&
-                        widget.type == "repayments") ||
-                    (widget.type == "disbursements" &&
-                        widget.groupLoanTypes.length == 0) ||
-                    widget.groupMembers.length == 0)
-                ? Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(2),
-                      ),
-                      color: Colors.red.withOpacity(0.15),
-                    ),
-                    padding: EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
-                    margin: EdgeInsets.only(bottom: 20.0),
-                    child: Column(
-                      children: [
-                        Text(
-                          getAlertText(),
-                          style: TextStyle(
-                            color: Colors.red[700],
-                            fontSize: 12.0,
-                          ),
+      content: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              ((widget.groupContributions.length == 0 &&
+                          widget.type == "contributions") ||
+                      (widget.groupMemberLoans.length == 0 &&
+                          widget.type == "repayments") ||
+                      (widget.type == "disbursements" &&
+                          widget.groupLoanTypes.length == 0) ||
+                      widget.groupMembers.length == 0)
+                  ? Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(2),
                         ),
-                      ],
+                        color: Colors.red.withOpacity(0.15),
+                      ),
+                      padding: EdgeInsets.fromLTRB(6.0, 6.0, 6.0, 6.0),
+                      margin: EdgeInsets.only(bottom: 20.0),
+                      child: Column(
+                        children: [
+                          Text(
+                            getAlertText(),
+                            style: TextStyle(
+                              color: Colors.red[700],
+                              fontSize: 12.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                  : SizedBox(),
+              widget.type == "disbursements"
+                  ? DropDownFormField(
+                      titleText: 'Group Member',
+                      hintText: 'Select group member',
+                      dataSource: widget.groupMembers,
+                      textField: 'name',
+                      valueField: 'id',
+                      filled: false,
+                      contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      value: _selected['member_id'],
+                      onSaved: (value) {
+                        setState(() {
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
+                        _getGroupMemberData(value.toString());
+                      },
+                      onChanged: (value) async {
+                        setState(() {
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
+                        _getGroupMemberData(value.toString());
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Member is required";
+                        else
+                          return null;
+                      },
+                    )
+                  : DropDownFormField(
+                      titleText: 'Group Member',
+                      hintText: 'Select group member',
+                      dataSource: widget.groupMembers,
+                      textField: 'name',
+                      valueField: 'id',
+                      filled: false,
+                      contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      value: _selected['member_id'],
+                      onSaved: (value) {
+                        setState(() {
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _selected['member_id'] = value;
+                          _prepareMemberLoans(
+                              widget.groupCurrency, value.toString());
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Member is required";
+                        else
+                          return null;
+                      },
                     ),
-                  )
-                : SizedBox(),
-            DropDownFormField(
-              titleText: 'Group Member',
-              hintText: 'Select group member',
-              dataSource: widget.groupMembers,
-              textField: 'name',
-              valueField: 'id',
-              filled: false,
-              contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-              value: _selected['member_id'],
-              onSaved: (value) {
-                setState(() {
-                  _selected['member_id'] = value;
-                  _prepareMemberLoans(widget.groupCurrency, value.toString());
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _selected['member_id'] = value;
-                  _prepareMemberLoans(widget.groupCurrency, value.toString());
-                });
-              },
-              validator: (value) {
-                if (value == null)
-                  return "Member is required";
-                else
-                  return null;
-              },
-            ),
-            widget.type == "contributions"
-                ? SizedBox(height: 20.0)
-                : SizedBox(),
-            widget.type == "contributions"
-                ? DropDownFormField(
-                    titleText: 'Group Contribution',
-                    hintText: 'Select group contribution',
-                    dataSource: widget.groupContributions,
-                    textField: 'name',
-                    valueField: 'id',
-                    filled: false,
-                    contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    value: _selected['contribution_id'],
-                    onSaved: (value) {
-                      setState(() {
-                        _selected['contribution_id'] = value;
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _selected['contribution_id'] = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null)
-                        return "Contribution is required";
-                      else
-                        return null;
-                    },
-                  )
-                : SizedBox(),
-            (widget.type == "disbursements")
-                ? SizedBox(height: 20.0)
-                : SizedBox(),
-            (widget.type == "disbursements")
-                ? DropDownFormField(
-                    titleText: 'Loan Type',
-                    hintText: 'Select group loan type',
-                    dataSource: widget.groupLoanTypes,
-                    textField: 'name',
-                    valueField: 'id',
-                    filled: false,
-                    contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    value: _selected['loan_type_id'],
-                    onSaved: (value) {
-                      setState(() {
-                        _selected['loan_type_id'] = value;
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _selected['loan_type_id'] = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null)
-                        return "Loan type is required";
-                      else
-                        return null;
-                    },
-                  )
-                : SizedBox(),
-            (widget.type == "repayments") ? SizedBox(height: 20.0) : SizedBox(),
-            (widget.type == "repayments")
-                ? DropDownFormField(
-                    titleText: 'Member Loan',
-                    hintText: 'Select member ongoing loan',
-                    dataSource: memberLoans,
-                    textField: 'name',
-                    valueField: 'id',
-                    filled: false,
-                    contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    value: _selected['loan_id'],
-                    onSaved: (value) {
-                      setState(() {
-                        _selected['loan_id'] = value;
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _selected['loan_id'] = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null)
-                        return "Member loan is required";
-                      else
-                        return null;
-                    },
-                  )
-                : SizedBox(),
-            (widget.type == "fines") ? SizedBox(height: 20.0) : SizedBox(),
-            widget.type == "fines"
-                ? DropDownFormField(
-                    titleText: 'Fine Category',
-                    hintText: 'Select group fine category',
-                    dataSource: widget.groupFines,
-                    textField: 'name',
-                    valueField: 'id',
-                    filled: false,
-                    contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                    value: _selected['fine_id'],
-                    onSaved: (value) {
-                      setState(() {
-                        _selected['fine_id'] = value;
-                      });
-                    },
-                    onChanged: (value) {
-                      setState(() {
-                        _selected['fine_id'] = value;
-                      });
-                    },
-                    validator: (value) {
-                      if (value == null)
-                        return "Fine category is required";
-                      else
-                        return null;
-                    },
-                  )
-                : SizedBox(),
-            SizedBox(height: 20.0),
-            DropDownFormField(
-              titleText: 'Group Account',
-              hintText: 'Select group account',
-              dataSource: widget.groupAccounts,
-              textField: 'name',
-              valueField: 'id',
-              filled: false,
-              contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-              value: _selected['account_id'],
-              onSaved: (value) {
-                setState(() {
-                  _selected['account_id'] = value;
-                });
-              },
-              onChanged: (value) {
-                setState(() {
-                  _selected['account_id'] = value;
-                });
-              },
-              validator: (value) {
-                if (value == null)
-                  return "Account is required";
-                else
-                  return null;
-              },
-            ),
-            SizedBox(height: 20.0),
-            TextFormField(
-              validator: (val) {
-                if (val.isEmpty)
-                  return "Amount is required";
-                else {
-                  setState(() {
-                    _selected['amount'] = val;
-                  });
-                  return null;
-                }
-              },
-              decoration: InputDecoration(
-                labelText: 'Set amount',
-                contentPadding: EdgeInsets.only(bottom: 0.0),
+              widget.type == "contributions"
+                  ? SizedBox(height: 20.0)
+                  : SizedBox(),
+              widget.type == "contributions"
+                  ? DropDownFormField(
+                      titleText: 'Group Contribution',
+                      hintText: 'Select group contribution',
+                      dataSource: widget.groupContributions,
+                      textField: 'name',
+                      valueField: 'id',
+                      filled: false,
+                      contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      value: _selected['contribution_id'],
+                      onSaved: (value) {
+                        setState(() {
+                          _selected['contribution_id'] = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _selected['contribution_id'] = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Contribution is required";
+                        else
+                          return null;
+                      },
+                    )
+                  : SizedBox(),
+              (widget.type == "disbursements")
+                  ? SizedBox(height: 20.0)
+                  : SizedBox(),
+              (widget.type == "disbursements")
+                  ? DropDownFormField(
+                      titleText: 'Loan Type',
+                      hintText: 'Select group loan type',
+                      dataSource: widget.groupLoanTypes,
+                      textField: 'name',
+                      valueField: 'id',
+                      filled: false,
+                      contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      value: _selected['loan_type_id'],
+                      onSaved: (value) {
+                        setState(() {
+                          _selected['loan_type_id'] = value;
+                        });
+                        _getGroupLoanTypeData(value.toString());
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _selected['loan_type_id'] = value;
+                        });
+                        _getGroupLoanTypeData(value.toString());
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Loan type is required";
+                        else
+                          return null;
+                      },
+                    )
+                  : SizedBox(),
+              (widget.type == "repayments")
+                  ? SizedBox(height: 20.0)
+                  : SizedBox(),
+              (widget.type == "repayments")
+                  ? DropDownFormField(
+                      titleText: 'Member Loan',
+                      hintText: 'Select member ongoing loan',
+                      dataSource: memberLoans,
+                      textField: 'name',
+                      valueField: 'id',
+                      filled: false,
+                      contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      value: _selected['loan_id'],
+                      onSaved: (value) {
+                        setState(() {
+                          _selected['loan_id'] = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          _selected['loan_id'] = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Member loan is required";
+                        else
+                          return null;
+                      },
+                    )
+                  : SizedBox(),
+              (widget.type == "fines") ? SizedBox(height: 20.0) : SizedBox(),
+              widget.type == "fines"
+                  ? DropDownFormField(
+                      titleText: 'Fine Category',
+                      hintText: 'Select group fine category',
+                      dataSource: widget.groupFines,
+                      textField: 'name',
+                      valueField: 'id',
+                      filled: false,
+                      contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                      value: _selected['fine_id'],
+                      onSaved: (value) {
+                        setState(() {
+                          _selected['fine_id'] = value;
+                        });
+                      },
+                      onChanged: (value) {
+                        setState(() {
+                          if (value == 0) {
+                            _showDescription = true;
+                          } else {
+                            _showDescription = false;
+                          }
+                          _selected['fine_id'] = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null)
+                          return "Fine category is required";
+                        else
+                          return null;
+                      },
+                    )
+                  : SizedBox(),
+              SizedBox(
+                height: 20,
               ),
-              keyboardType: TextInputType.number,
-            ),
-          ],
+              Visibility(
+                visible: widget.type == 'fines' && _showDescription,
+                child: TextFormField(
+                  validator: (value) {
+                    if (value.isEmpty)
+                      return "Enter Fine Type Name.";
+                    else {
+                      setState(() {
+                        _selected['description'] = value;
+                      });
+                      return null;
+                    }
+                  },
+                  decoration: InputDecoration(
+                    labelText: 'Fine Type',
+                    contentPadding: EdgeInsets.only(bottom: 0.0),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.0),
+              DropDownFormField(
+                titleText: 'Group Account',
+                hintText: 'Select group account',
+                dataSource: outputFineResults,
+                textField: 'name',
+                valueField: 'id',
+                filled: false,
+                contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
+                value: _selected['account_id'],
+                onSaved: (value) {
+                  setState(() {
+                    _selected['account_id'] = value;
+                  });
+                },
+                onChanged: (value) {
+                  setState(() {
+                    _selected['account_id'] = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null) {
+                    return "Account is required";
+                  } else {
+                    return null;
+                  }
+                },
+              ),
+              SizedBox(height: 20.0),
+              widget.type == "disbursements"
+                  ? TextFormField(
+                      enabled: _loanType.isEmpty ? false : true,
+                      validator: (val) {
+                        // If empty
+                        if (val.isEmpty)
+                          return "Amount is required";
+
+                        // If loan amount entered is greater than available amount
+                        else if (double.tryParse(val) >
+                            widget.totalAmountDisbursable) {
+                          return "Only ${widget.groupObject.groupCurrency} ${currencyFormat.format(widget.totalAmountDisbursable)} is available";
+                        }
+
+                        // If loan type is not yet fetched....
+                        else if (_loanType.isEmpty) {
+                          return "Fetching loan type data.....";
+                        }
+
+                        // If loan amount is less than the minimum loan amount
+                        else if (_loanType['minimum_loan_amount'].isNotEmpty &&
+                            double.tryParse(val) <
+                                double.tryParse(_loanType['minimum_loan_amount']
+                                    .toString())) {
+                          return "Minimum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['minimum_loan_amount'].toString()))}";
+                        }
+
+                        // If loan amount is greater than maximum loan amount
+                        else if (_loanType['maximum_loan_amount'].isNotEmpty &&
+                            double.tryParse(val) >
+                                double.tryParse(
+                                    _loanType['maximum_loan_amount'])) {
+                          return "Maximum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(double.tryParse(_loanType['maximum_loan_amount']))}";
+                        }
+
+                        // If loan amount is greater than savings times
+                        else if (_loanType['savings_times'] != null &&
+                            double.tryParse(val) >
+                                (_memberData.contributions *
+                                    int.tryParse(_loanType['savings_times']))) {
+                          return "Maximum loan amount is ${widget.groupObject.groupCurrency} ${currencyFormat.format(_memberData.contributions * int.tryParse(_loanType['savings_times']))}";
+                        }
+
+                        // Everything is ok
+                        else {
+                          setState(() {
+                            _selected['amount'] = val;
+                          });
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Set amount',
+                        contentPadding: EdgeInsets.only(bottom: 0.0),
+                      ),
+                      keyboardType: TextInputType.number,
+                    )
+                  : TextFormField(
+                      validator: (val) {
+                        if (val.isEmpty)
+                          return "Amount is required";
+                        else {
+                          setState(() {
+                            _selected['amount'] = val;
+                          });
+                          return null;
+                        }
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Set amount',
+                        contentPadding: EdgeInsets.only(bottom: 0.0),
+                      ),
+                      keyboardType: TextInputType.number,
+                    ),
+            ],
+          ),
         ),
       ),
       actions: <Widget>[
@@ -919,10 +1236,9 @@ class _NewCollectionDialogState extends State<NewCollectionDialog> {
             color: primaryColor,
             fontWeight: FontWeight.w600,
           ),
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState.validate()) {
               Navigator.of(context).pop();
-              print(">>> $_selected");
               widget.selected(_selected);
             }
           },

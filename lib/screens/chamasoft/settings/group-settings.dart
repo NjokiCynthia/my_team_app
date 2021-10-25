@@ -236,28 +236,7 @@ class _GroupSettingsState extends State<GroupSettings> {
     }
   }
 
-  Future<void> fetchLoanTypes(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false).fetchLoanTypes();
-      Navigator.pop(context);
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
-    } on CustomException catch (error) {
-      print(error.message);
-      final snackBar = SnackBar(
-        content: Text('Network Error occurred: could not fetch loan types'),
-        action: SnackBarAction(
-          label: 'Retry',
-          onPressed: () async {
-            fetchLoanTypes(context);
-          },
-        ),
-      );
-      Navigator.pop(context);
-      // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(snackBar);
-    }
-  }
+ 
 
   Future<void> fetchCurrencyOptions(BuildContext context) async {
     try {
@@ -316,6 +295,29 @@ class _GroupSettingsState extends State<GroupSettings> {
           label: 'Retry',
           onPressed: () async {
             fetchMembers(context);
+          },
+        ),
+      );
+      Navigator.pop(context);
+      // ignore: deprecated_member_use
+      Scaffold.of(context).showSnackBar(snackBar);
+    }
+  }
+
+   Future<void> fetchLoanTypes(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false).fetchLoanTypes();
+      Navigator.pop(context);
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => ListLoanTypes()));
+    } on CustomException catch (error) {
+      print(error.message);
+      final snackBar = SnackBar(
+        content: Text('Network Error occurred: could not fetch loan types'),
+        action: SnackBarAction(
+          label: 'Retry',
+          onPressed: () async {
+            fetchLoanTypes(context);
           },
         ),
       );

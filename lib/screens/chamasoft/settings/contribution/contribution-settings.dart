@@ -50,6 +50,7 @@ class _ContributionSettingsState extends State<ContributionSettings> {
   int weekNumberId;
   int twoWeekdayId;
   int contributionFrequencyId;
+  bool displayContributionArrears = false;
 
   void _submit(BuildContext context) async {
     if (!_formKey.currentState.validate()) {
@@ -81,6 +82,8 @@ class _ContributionSettingsState extends State<ContributionSettings> {
     formData['regular_invoicing_active'] = 1;
     formData['one_time_invoicing_active'] = 1;
     formData['invoice_days'] = 1;
+    formData['display_contribution_arrears_cumulatively'] =
+        displayContributionArrears;
     // ignore: todo
     formData["id"] = contributionId; //TODO: Editing
 
@@ -452,6 +455,25 @@ class _ContributionSettingsState extends State<ContributionSettings> {
                       return null;
                     },
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      customTitle(
+                          text: "Disable contribution arrears",
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor,
+                          fontWeight: FontWeight.w500,
+                          textAlign: TextAlign.start),
+                      Switch(
+                        value: displayContributionArrears,
+                        onChanged: (value) {
+                          setState(() {
+                            displayContributionArrears = value;
+                          });
+                        },
+                      )
+                    ],
+                  )
                 ]),
               ),
             ),

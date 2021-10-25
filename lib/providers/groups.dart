@@ -464,6 +464,28 @@ class UnreconciledWithdrawal {
       @required this.accountDetails});
 }
 
+class GroupMemberDetail {
+  final String name;
+  final String memberId;
+  final String userId;
+  double contributions;
+  final double fines;
+  final double loanBalance;
+  final double contributionArrears;
+  final double fineArrears;
+
+  GroupMemberDetail({
+    @required this.name,
+    @required this.memberId,
+    @required this.userId,
+    @required this.contributions,
+    @required this.fines,
+    @required this.loanBalance,
+    @required this.contributionArrears,
+    @required this.fineArrears,
+  });
+}
+
 class Groups with ChangeNotifier {
   static const String selectedGroupId = "selectedGroupId";
 
@@ -524,6 +546,7 @@ class Groups with ChangeNotifier {
   // String _currentMemberId;
 
   List<dynamic> _meetings = [];
+  List<GroupMemberDetail> _groupMembersDetails = [];
 
   Groups(List<Group> _groups, String _userId, String _identity,
       String _currentGroupId) {
@@ -724,6 +747,10 @@ class Groups with ChangeNotifier {
 
   List<Notification> get notifications {
     return _notifications;
+  }
+
+  List<GroupMemberDetail> get groupMembersDetails {
+    return [..._groupMembersDetails];
   }
 
   /// ********************Group Objects************/
@@ -1055,6 +1082,25 @@ class Groups with ChangeNotifier {
         await dbHelper.batchInsert(
             _fineTypesList, DatabaseHelper.fineCategories);
       }
+    }
+    notifyListeners();
+  }
+
+  void addGroupMembersDetails(dynamic response) {
+    for (var member in response) {
+      _groupMembersDetails.add(GroupMemberDetail(
+          name: member['name'],
+          memberId: member['member_id'],
+          userId: member['user_id'],
+          contributions:
+              double.tryParse(member["total_contributions"].toString()) ?? 0.0,
+          fines: double.tryParse(member["total_fines"].toString()) ?? 0.0,
+          loanBalance:
+              double.tryParse(member["total_loan_balances"].toString()) ?? 0.0,
+          contributionArrears:
+              double.tryParse(member["contribution_arrears"].toString()) ?? 0.0,
+          fineArrears:
+              double.tryParse(member["total_fine_arrears"].toString()) ?? 0.0));
     }
     notifyListeners();
   }
@@ -2077,30 +2123,30 @@ class Groups with ChangeNotifier {
           orderBy: 'name',
           order: 'DESC',
         );
-        if (_localData.length > 0) {
-          addContributions(groupContributions: _localData, isLocal: true);
-        } else {
-          try {
-            final response = await PostToServer.post(postRequest, url);
-            _contributions = []; //clear
-            final groupContributions =
-                response['contributions'] as List<dynamic>;
-            addContributions(groupContributions: groupContributions);
-          } on CustomException catch (error) {
-            if (error.status == ErrorStatusCode.statusNoInternet) {
-              addContributions(groupContributions: _localData, isLocal: true);
-            } else {
-              throw CustomException(
-                  message: error.message, status: error.status);
-            }
-          } catch (error) {
-            if (error.status == ErrorStatusCode.statusNoInternet) {
-              addContributions(groupContributions: _localData, isLocal: true);
-            } else {
-              throw CustomException(message: ERROR_MESSAGE);
-            }
+        // ignore: todo
+        // TODO: To be checked upon.
+        // if (_localData.length > 0) {
+        //   addContributions(groupContributions: _localData, isLocal: true);
+        // } else {
+        try {
+          final response = await PostToServer.post(postRequest, url);
+          _contributions = []; //clear
+          final groupContributions = response['contributions'] as List<dynamic>;
+          addContributions(groupContributions: groupContributions);
+        } on CustomException catch (error) {
+          if (error.status == ErrorStatusCode.statusNoInternet) {
+            addContributions(groupContributions: _localData, isLocal: true);
+          } else {
+            throw CustomException(message: error.message, status: error.status);
+          }
+        } catch (error) {
+          if (error.status == ErrorStatusCode.statusNoInternet) {
+            addContributions(groupContributions: _localData, isLocal: true);
+          } else {
+            throw CustomException(message: ERROR_MESSAGE);
           }
         }
+        //}
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           addContributions(groupContributions: _localData, isLocal: true);
@@ -2192,6 +2238,7 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
+      // ignore: unused_local_variable
       List<dynamic> _localData = [];
       _localData = await dbHelper.queryWhere(
         table: DatabaseHelper.fineCategories,
@@ -2200,21 +2247,23 @@ class Groups with ChangeNotifier {
         orderBy: 'name',
         order: 'DESC',
       );
-      if (_localData.length > 0) {
-        addFineTypes(groupFineTypes: _localData, isLocal: true);
-      } else {
-        try {
-          final response = await PostToServer.post(postRequest, url);
-          _fineTypes = []; //clear accounts
-          final groupFineTypes =
-              response['fine_category_options'] as List<dynamic>;
-          addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
-        } on CustomException catch (error) {
-          throw CustomException(message: error.message, status: error.status);
-        } catch (error) {
-          throw CustomException(message: ERROR_MESSAGE);
-        }
+      // ignore: todo
+      // TODO: TO BE LOOKED INTO..
+      // if (_localData.length > 0) {
+      //   addFineTypes(groupFineTypes: _localData, isLocal: true);
+      // } else {
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _fineTypes = []; //clear accounts
+        final groupFineTypes =
+            response['fine_category_options'] as List<dynamic>;
+        addFineTypes(groupFineTypes: groupFineTypes, isLocal: false);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
       }
+      //}
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
@@ -2470,7 +2519,9 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
+
       try {
+        // ignore: unused_local_variable
         List<dynamic> _localData = [];
         _localData = await dbHelper.queryWhere(
           table: DatabaseHelper.loanTypesTable,
@@ -2479,22 +2530,25 @@ class Groups with ChangeNotifier {
           orderBy: 'modified_on',
           order: 'DESC',
         );
-        if (_localData.length > 0) {
-          addLoanTypes(jsonDecode(_localData[0]['value']));
-        } else {
-          final response = await PostToServer.post(postRequest, url);
-          _loanTypes = []; //clear
-          final groupLoanTypes = response['loan_types'] as List<dynamic>;
-          Map<String, dynamic> loanTypesMap = {
-            "group_id": currentGroupId,
-            "value": jsonEncode(groupLoanTypes),
-            "modified_on": DateTime.now().millisecondsSinceEpoch,
-          };
-          await dbHelper.deleteMultiple(
-              [int.parse(_currentGroupId)], DatabaseHelper.loanTypesTable);
-          await dbHelper.insert(loanTypesMap, DatabaseHelper.loanTypesTable);
-          addLoanTypes(groupLoanTypes);
-        }
+        // ignore: todo
+        // TODO: handle reseting of data.
+        // if (_localData.length > 0 &&
+        //     jsonDecode(_localData[0]['value']).length > 0) {
+        //   addLoanTypes(jsonDecode(_localData[0]['value']));
+        // } else {
+        final response = await PostToServer.post(postRequest, url);
+        _loanTypes = []; //clear
+        final groupLoanTypes = response['loan_types'] as List<dynamic>;
+        Map<String, dynamic> loanTypesMap = {
+          "group_id": currentGroupId,
+          "value": jsonEncode(groupLoanTypes),
+          "modified_on": DateTime.now().millisecondsSinceEpoch,
+        };
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.loanTypesTable);
+        await dbHelper.insert(loanTypesMap, DatabaseHelper.loanTypesTable);
+        addLoanTypes(groupLoanTypes);
+        //}
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           //=== BEGIN: OFFLINE PLUG
@@ -2559,7 +2613,7 @@ class Groups with ChangeNotifier {
         "group_id": _currentGroupId,
       });
       try {
-        _members = [];
+        // ignore: unused_local_variable
         List<dynamic> _localData = [];
         _localData = await dbHelper.queryWhere(
           table: DatabaseHelper.membersTable,
@@ -2568,31 +2622,33 @@ class Groups with ChangeNotifier {
           orderBy: 'name',
           order: 'ASC',
         );
-        if (_localData.length > 0) {
-          addMembers(groupMembers: _localData, isLocal: true);
-        } else {
-          final response = await PostToServer.post(postRequest, url);
-          final _tempMembers = response['members'] as List<dynamic>;
-          List<dynamic> rows = [];
-          _tempMembers.forEach((m) {
-            rows.add({
-              "group_id": int.parse(_currentGroupId),
-              "id": int.parse(m['id']),
-              "user_id": int.parse(m['user_id']),
-              "name": m['name'],
-              "avatar": (m['avatar'] != null) ? m['avatar'] : '',
-              "identity": m['identity'],
-              "modified_on": DateTime.now().millisecondsSinceEpoch,
-            });
+        // if (_localData.length > 0) {
+        //   addMembers(groupMembers: _localData, isLocal: true);
+        // } else {
+        final response = await PostToServer.post(postRequest, url);
+        _members = [];
+        final _tempMembers = response['members'] as List<dynamic>;
+
+        List<dynamic> rows = [];
+        _tempMembers.forEach((m) {
+          rows.add({
+            "group_id": int.parse(_currentGroupId),
+            "id": int.parse(m['id']),
+            "user_id": int.parse(m['user_id']),
+            "name": m['name'],
+            "avatar": (m['avatar'] != null) ? m['avatar'] : '',
+            "identity": m['identity'],
+            "modified_on": DateTime.now().millisecondsSinceEpoch,
           });
-          addMembers(groupMembers: _tempMembers);
-          await dbHelper.deleteMultiple(
-              [int.parse(_currentGroupId)], DatabaseHelper.membersTable);
-          await insertManyToLocalDb(
-            DatabaseHelper.membersTable,
-            rows,
-          );
-        }
+        });
+        addMembers(groupMembers: _tempMembers);
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.membersTable);
+        await insertManyToLocalDb(
+          DatabaseHelper.membersTable,
+          rows,
+        );
+        // }
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           _fetchOfflineMembers();
@@ -2773,6 +2829,30 @@ class Groups with ChangeNotifier {
       }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> getGroupMembersDetails(String groupId) async {
+    try {
+      final url = EndpointUrl.GET_MEMBERS_AND_DETAILS;
+      try {
+        final postRequest = json.encode({
+          "user_id": _userId,
+          "group_id": groupId,
+          "show_full_details": true
+        });
+        final response = await PostToServer.post(postRequest, url);
+
+        addGroupMembersDetails(response['members']);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
@@ -5228,5 +5308,87 @@ class Groups with ChangeNotifier {
     _withdrawalRequestDetails = null;
     _loanPulled = false;
     _unreconciledDeposits = [];
+  }
+
+  //SubmitLoan Type
+  Future<String> submitLoanApplication(Map<String, dynamic> formData) async {
+    final url = EndpointUrl.CREATE_GROUP_LOAN_APPLICATION;
+    try {
+      try {
+        formData['user_id'] = _userId;
+
+        final postRequest = json.encode(formData);
+
+        final response = await PostToServer.post(postRequest, url);
+
+        return response['message'];
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  //loan calculator
+  Future<Map<String, dynamic>> fetchGroupLoanCalculator(
+      Map<String, dynamic> formData) async {
+    final url = EndpointUrl.GET_GROUP_LOAN_CALCULATOR;
+    try {
+      formData['user_id'] = _userId;
+      formData['group_id'] = _currentGroupId;
+      final postRequest = json.encode(formData);
+      print("post request is: " + postRequest);
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        //print("response is" + response);
+        Map<String, dynamic> _loanCalculator = {
+          "amortizationTotals": {
+            "totalPayable": double.tryParse(response['amortization_totals']
+                        ['total_payable']
+                    .toString()) ??
+                0.0,
+            "totalPrinciple": double.tryParse(response['amortization_totals']
+                        ['total_principle'] //total_principle
+                    .toString()) ??
+                0.0,
+            "totalInterest": double.tryParse(response['amortization_totals']
+                        ['total_interest'] //total_interest
+                    .toString()) ??
+                0.0,
+          },
+          "breakdown": response['breakdown']
+              .map((breakdown) => {
+                    "dueDate": breakdown['due_date'],
+                    "amountPayable": double.tryParse(
+                            breakdown['amount_payable'].toString()) ??
+                        0.0,
+                    "principlePayable": double.tryParse(
+                            breakdown['principle_payable'].toString()) ??
+                        0.0,
+                    "interestPayable": double.tryParse(
+                            breakdown['interest_payable'].toString()) ??
+                        0.0,
+                    "totalInterestPayable": double.tryParse(
+                            breakdown['total_intrest_payable'].toString()) ??
+                        0.0,
+                    "balance":
+                        double.tryParse(breakdown['balance'].toString()) ?? 0.0
+                  })
+              .toList(),
+        };
+
+        return _loanCalculator;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        print("error $error");
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
   }
 }

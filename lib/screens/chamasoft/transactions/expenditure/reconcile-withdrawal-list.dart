@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, duplicate_ignore
+
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -247,7 +249,7 @@ class _UnreconciledWithdrawalCardState
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            customTitle(
+                            customTitle(  
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use

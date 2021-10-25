@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable
+
 import 'dart:async';
 import 'dart:typed_data';
 
@@ -19,10 +21,10 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
+//import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+//import 'package:share/share.dart';
 import 'dart:ui' as ui;
 
 class DepositReceipts extends StatefulWidget {
@@ -350,16 +352,16 @@ class DepositCard extends StatelessWidget {
       ByteData byteData =
           await boxImage.toByteData(format: ui.ImageByteFormat.png);
       Uint8List uInt8List = byteData.buffer.asUint8List();
-      if (byteData != null) {
-        final result = await ImageGallerySaver.saveImage(
-            Uint8List.fromList(uInt8List),
-            quality: 90,
-            name: 'screenshot-${DateTime.now()}');
-        print(result);
-        print('Screenshot Saved' + result);
+      // if (byteData != null) {
+      //   final result = await ImageGallerySaver.saveImage(
+      //       Uint8List.fromList(uInt8List),
+      //       quality: 90,
+      //       name: 'screenshot-${DateTime.now()}');
+      //   print(result);
+      //   print('Screenshot Saved' + result);
 
-        Share.shareFiles([result.path]);
-      }
+      //   Share.shareFiles([result.path]);
+      // }
     } catch (e) {
       print(e);
       return null;
