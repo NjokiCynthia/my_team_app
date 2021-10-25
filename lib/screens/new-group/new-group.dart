@@ -384,6 +384,7 @@ class _NewGroupState extends State<NewGroup> {
   }
 
   Future<void> _fetchContributions(BuildContext context) async {
+    print("in fetch contributions");
     WidgetsBinding.instance.addPostFrameCallback(
       (_) {
         showDialog<String>(
@@ -402,22 +403,23 @@ class _NewGroupState extends State<NewGroup> {
     );
     try {
       final group = Provider.of<Groups>(context, listen: false);
-      await group.fetchContributions();
-      setState(() {
-        List<dynamic> _ctrbs = [];
-        group.contributions.forEach((m) {
-          _ctrbs.add({
-            'id': m.id,
-            'name': m.name,
-            'amount': m.amount,
-            'contributionDate': m.contributionDate,
-            'contributionType': m.contributionType,
+      await group.fetchContributions().then((value) {
+        setState(() {
+          List<dynamic> _ctrbs = [];
+          group.contributions.forEach((m) {
+            _ctrbs.add({
+              'id': m.id,
+              'name': m.name,
+              'amount': m.amount,
+              'contributionDate': m.contributionDate,
+              'contributionType': m.contributionType,
+            });
           });
+          _data['contributions'] = _ctrbs;
+          _isInit = false;
         });
-        _data['contributions'] = _ctrbs;
-        _isInit = false;
+        Navigator.of(context).pop();
       });
-      Navigator.of(context, rootNavigator: true).pop();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
         context: context,
@@ -741,13 +743,15 @@ class _NewGroupState extends State<NewGroup> {
                 context: context,
                 action: () => Navigator.of(context)
                     .push(
-                      MaterialPageRoute(
-                        builder: (BuildContext context) => ListContributions(),
-                      ),
-                    )
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => ListContributions(),
+                  ),
+                )
                     .then(
-                      (resp) => _fetchContributions(context),
-                    ),
+                  (resp) {
+                    _fetchContributions(context);
+                  },
+                ),
                 title: "Group Contributions",
                 subtitle: "Tap to manage contributions",
                 icon: Icons.edit,

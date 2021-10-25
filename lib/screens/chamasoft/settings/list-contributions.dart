@@ -156,6 +156,8 @@ class _ListContributionsState extends State<ListContributions> {
 
   @override
   Widget build(BuildContext context) {
+    int numOfContributions =
+        Provider.of<Groups>(context, listen: true).contributions.length;
     return Scaffold(
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
@@ -201,19 +203,18 @@ class _ListContributionsState extends State<ListContributions> {
           ),
         ],
       ),
-      floatingActionButton:
-          Provider.of<Groups>(context, listen: false).contributions.length > 0
-              ? FloatingActionButton(
-                  child: const Icon(
-                    Icons.check,
-                    color: Colors.white,
-                  ),
-                  backgroundColor: primaryColor,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                )
-              : SizedBox(),
+      floatingActionButton: numOfContributions > 0
+          ? FloatingActionButton(
+              child: const Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+              backgroundColor: primaryColor,
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          : SizedBox(),
       backgroundColor: Theme.of(context).backgroundColor,
       // backgroundColor: Colors.transparent,
       body: Builder(

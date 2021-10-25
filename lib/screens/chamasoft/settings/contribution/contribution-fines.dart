@@ -141,6 +141,7 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
           .addContributionStepThree(formData);
       print(response);
       requestId = null;
+
       alertDialogWithAction(context, response["message"].toString(), () {
         Navigator.of(context).pop();
         widget.onButtonPressed(response);
@@ -200,7 +201,7 @@ class _ContributionFineSettingsState extends State<ContributionFineSettings> {
             children: <Widget>[
               customTitle(
                   text: "Activate Fine Settings",
-            // ignore: deprecated_member_use
+                  // ignore: deprecated_member_use
                   color: Theme.of(context).textSelectionHandleColor,
                   fontWeight: FontWeight.w500,
                   textAlign: TextAlign.start),

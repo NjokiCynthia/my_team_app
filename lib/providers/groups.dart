@@ -2119,30 +2119,30 @@ class Groups with ChangeNotifier {
           orderBy: 'name',
           order: 'DESC',
         );
-        if (_localData.length > 0) {
-          addContributions(groupContributions: _localData, isLocal: true);
-        } else {
-          try {
-            final response = await PostToServer.post(postRequest, url);
-            _contributions = []; //clear
-            final groupContributions =
-                response['contributions'] as List<dynamic>;
-            addContributions(groupContributions: groupContributions);
-          } on CustomException catch (error) {
-            if (error.status == ErrorStatusCode.statusNoInternet) {
-              addContributions(groupContributions: _localData, isLocal: true);
-            } else {
-              throw CustomException(
-                  message: error.message, status: error.status);
-            }
-          } catch (error) {
-            if (error.status == ErrorStatusCode.statusNoInternet) {
-              addContributions(groupContributions: _localData, isLocal: true);
-            } else {
-              throw CustomException(message: ERROR_MESSAGE);
-            }
+        // ignore: todo
+        // TODO: To be checked upon.
+        // if (_localData.length > 0) {
+        //   addContributions(groupContributions: _localData, isLocal: true);
+        // } else {
+        try {
+          final response = await PostToServer.post(postRequest, url);
+          _contributions = []; //clear
+          final groupContributions = response['contributions'] as List<dynamic>;
+          addContributions(groupContributions: groupContributions);
+        } on CustomException catch (error) {
+          if (error.status == ErrorStatusCode.statusNoInternet) {
+            addContributions(groupContributions: _localData, isLocal: true);
+          } else {
+            throw CustomException(message: error.message, status: error.status);
+          }
+        } catch (error) {
+          if (error.status == ErrorStatusCode.statusNoInternet) {
+            addContributions(groupContributions: _localData, isLocal: true);
+          } else {
+            throw CustomException(message: ERROR_MESSAGE);
           }
         }
+        //}
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           addContributions(groupContributions: _localData, isLocal: true);
