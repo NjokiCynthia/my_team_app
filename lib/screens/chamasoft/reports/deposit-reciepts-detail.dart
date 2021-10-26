@@ -45,7 +45,7 @@ class _DetailRecieptState extends State<DetailReciept> {
               Center(
                 child: Container(
                   width: 300.0,
-                  height: 400.0,
+                  // height: 400.0,
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
@@ -186,17 +186,17 @@ class _DetailRecieptState extends State<DetailReciept> {
                           ),
 
                           SizedBox(height: 5.0),
-                          Padding(padding: EdgeInsets.all(10.0),
-                          child: subtitle2(
-                              text: "${widget.deposit.narration} ",
-                              fontSize: 14.0,
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                              textAlign: TextAlign.center),
-                          
+                          Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child: subtitle2(
+                                text: "${widget.deposit.narration} ",
+                                fontSize: 14.0,
+                                color:
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionHandleColor,
+                                textAlign: TextAlign.center),
                           ),
                         ],
                       ),
