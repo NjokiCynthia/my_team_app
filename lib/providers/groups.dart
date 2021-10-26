@@ -5260,6 +5260,35 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> voidWithdrawlTransaction(
+      String id, int position, BuildContext context) async {
+    try {
+      final url = EndpointUrl.VOID_WITHDRAWAL;
+      Map<String, String> formData = {
+        "user_id": _userId,
+        "group_id": currentGroupId,
+        "id": id,
+      };
+
+      try {
+        final postRequest = json.encode(formData);
+        await PostToServer.post(postRequest, url);
+        Provider.of<Dashboard>(context, listen: false)
+            .unreconciledWithdrawalCount = 1;
+        _withdrawalList.removeAt(position);
+        notifyListeners();
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   void switchGroupValuesToDefault({bool removeGroups = false}) {
     if (removeGroups) {
       _groups = [];

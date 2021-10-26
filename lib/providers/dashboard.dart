@@ -146,8 +146,8 @@ class Dashboard with ChangeNotifier {
     return _unreconciledDepositsCount;
   }
 
-  set unreconciledDepositCount(int value){
-    if(value>0)
+  set unreconciledDepositCount(int value) {
+    if (value > 0)
       ++_unreconciledDepositsCount;
     else
       --_unreconciledDepositsCount;
@@ -157,7 +157,14 @@ class Dashboard with ChangeNotifier {
     return _unreconciledWithdrawalsCount;
   }
 
-  bool get isPartnerBankAccount{
+  set unreconciledWithdrawalCount(int value) {
+    if (value > 0)
+      ++_unreconciledWithdrawalsCount;
+    else
+      --_unreconciledWithdrawalsCount;
+  }
+
+  bool get isPartnerBankAccount {
     return _isPartnerBankAccount;
   }
 
@@ -276,8 +283,10 @@ class Dashboard with ChangeNotifier {
       _unreconciledWithdrawalsCount = int.tryParse(
               groupMemberObject["unreconciled_withdrawals_count"].toString()) ??
           0.0;
-      _isPartnerBankAccount = (int.tryParse(
-              groupMemberObject["partner"].toString()))==1 ?true: false;
+      _isPartnerBankAccount =
+          (int.tryParse(groupMemberObject["partner"].toString())) == 1
+              ? true
+              : false;
 
       print("count $_unreconciledWithdrawalsCount");
       _memberContributionAmount =
