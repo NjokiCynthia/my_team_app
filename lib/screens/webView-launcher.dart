@@ -48,18 +48,18 @@ class _WebViewLauncherState extends State<WebViewLauncher> {
               _controller.complete(webViewController);
             },
             onProgress: (int progress) {
-              // _isLoading = true;
-              // if (progress > 20) {
-              //   _isLoading = false;
-              // }
+              setState(() {
+                _isLoading = true;
+              });
               print("WebView is loading (progress : $progress%)");
             },
             javascriptChannels: <JavascriptChannel>{
               _toasterJavascriptChannel(context),
             },
             onPageStarted: (String url) {
-              // _isLoading = true;
-
+              setState(() {
+                _isLoading = true;
+              });
               print('Page started loading: $url');
             },
             onPageFinished: (String url) {
