@@ -6,6 +6,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/screens/webView-launcher.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -106,6 +107,9 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   Widget build(BuildContext context) {
     final themeChange = Provider.of<DarkThemeProvider>(context);
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    final helpUrl = 'https://help.chamasoft.com/';
+    final aboutUrl = 'https://chamasoft.com/company/about-chamasoft';
+    final termsandConditionsUrl = 'https://chamasoft.com/terms-and-conditions';
 
     setState(() {
       theme = themeChange.darkTheme ? "Dark" : "Light";
@@ -437,25 +441,31 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () => launchURL("https://help.chamasoft.com/"),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      WebViewLauncher(helpUrl: helpUrl, type: 'help'),
+                ),
+              ),
+              // onTap: () => launchURL("https://help.chamasoft.com/"),
             ),
-//            ListTile(
-//              title: Text("Chat Support",
-//                  style: TextStyle(
-//                    fontWeight: FontWeight.w500,
-//                    fontSize: 16,
-//                    color: Theme.of(context).textSelectionHandleColor,
-//                  )),
-//              trailing: Padding(
-//                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-//                child: Icon(
-//                  Icons.chat,
-//                  color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
-//                ),
-//              ),
-//              dense: true,
-//              onTap: () {},
-//            ),
+            // ListTile(
+            //   title: Text("Chat Support",
+            //       style: TextStyle(
+            //         fontWeight: FontWeight.w500,
+            //         fontSize: 16,
+            //         color: Theme.of(context).textSelectionHandleColor,
+            //       )),
+            //   trailing: Padding(
+            //     padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+            //     child: Icon(
+            //       Icons.chat,
+            //       color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+            //     ),
+            //   ),
+            //   dense: true,
+            //   onTap: () {},
+            // ),
             ListTile(
               title: Text("Call Support",
                   style: TextStyle(
@@ -502,8 +512,13 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () =>
-                  launchURL("https://chamasoft.com/company/about-chamasoft"),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) =>
+                      WebViewLauncher(helpUrl: aboutUrl, type: 'about'),
+                ),
+              ),
+              // launchURL("https://chamasoft.com/company/about-chamasoft"),
             ),
             ListTile(
               title: Text("Terms & Conditions",
@@ -521,8 +536,13 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
                 ),
               ),
               dense: true,
-              onTap: () =>
-                  launchURL("https://chamasoft.com/terms-and-conditions"),
+              onTap: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => WebViewLauncher(
+                      helpUrl: termsandConditionsUrl, type: 'terms'),
+                ),
+              ),
+              //   launchURL("https://chamasoft.com/terms-and-conditions"),
             ),
             // ListTile(
             //   title: Text("E-Wallet Charges",
