@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+// ignore: must_be_immutable
 class WebViewLauncher extends StatefulWidget {
   //WebViewLauncher(String helpUrl);
   String helpUrl;
+  String type;
 
-  WebViewLauncher({Key key, this.helpUrl}) : super(key: key);
+  WebViewLauncher({Key key, this.helpUrl, this.type}) : super(key: key);
 
   @override
   _WebViewLauncherState createState() => _WebViewLauncherState();
@@ -18,15 +20,20 @@ class WebViewLauncher extends StatefulWidget {
 
 class _WebViewLauncherState extends State<WebViewLauncher> {
   Completer<WebViewController> _controller = Completer<WebViewController>();
-
   WebViewController _webViewController;
+
   bool _isLoading = true;
-  bool _isInit = true;
+  String _title = "Chamasoft Help Center";
 
   @override
   void initState() {
     super.initState();
     _isLoading = true;
+    if (widget.type == 'help')
+      _title = "Documentations and FAQS";
+    else if (widget.type == 'about')
+      _title = "About Chamasoft";
+    else if (widget.type == 'terms') _title = "Terms and Conditions";
   }
 
   @override
@@ -34,7 +41,7 @@ class _WebViewLauncherState extends State<WebViewLauncher> {
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
-          title: "Help Page",
+          title: "$_title",
           action: () => Navigator.of(context).pop(),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left),

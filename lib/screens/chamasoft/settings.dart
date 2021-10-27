@@ -444,7 +444,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      WebViewLauncher(helpUrl: helpUrl),
+                      WebViewLauncher(helpUrl: helpUrl, type: 'help'),
                 ),
               ),
               // onTap: () => launchURL("https://help.chamasoft.com/"),
@@ -515,7 +515,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (BuildContext context) =>
-                      WebViewLauncher(helpUrl: aboutUrl),
+                      WebViewLauncher(helpUrl: aboutUrl, type: 'about'),
                 ),
               ),
               // launchURL("https://chamasoft.com/company/about-chamasoft"),
@@ -538,8 +538,8 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
               dense: true,
               onTap: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      WebViewLauncher(helpUrl: termsandConditionsUrl),
+                  builder: (BuildContext context) => WebViewLauncher(
+                      helpUrl: termsandConditionsUrl, type: 'terms'),
                 ),
               ),
               //   launchURL("https://chamasoft.com/terms-and-conditions"),
