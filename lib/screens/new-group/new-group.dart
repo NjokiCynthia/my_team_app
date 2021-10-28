@@ -127,7 +127,7 @@ class _NewGroupState extends State<NewGroup> {
           goTo(3);
         }
       } else if (currentStep == 3) {
-        if (_data['accounts'].length < 1) {
+        if (_data['accounts'].length) {
           _showSnackbar("You need to setup an account to continue", 6);
         } else {
           goTo(4);
