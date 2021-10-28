@@ -25,6 +25,12 @@ class NotificationManager {
     };
     print("refresh toke stream");
     try {
+      // String token = await FirebaseMessaging.instance.getToken();
+      // Map<String, String> notificationData = {
+      //   'user_id': userId,
+      //   'mobile_token': token,
+      // };
+      // print("refresh toke stream");
       await Provider.of<Auth>(context, listen: false)
           .updateUserToken(notificationData)
           .then((response) => {

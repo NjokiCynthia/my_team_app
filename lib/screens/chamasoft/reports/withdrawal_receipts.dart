@@ -4,6 +4,8 @@ import 'package:chamasoft/screens/chamasoft/reports/sort-container.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+// ignore: unused_import
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal-reciepts-detail.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -285,6 +287,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   }
 }
 
+// ignore: must_be_immutable
 class WithdrawalCard extends StatelessWidget {
   WithdrawalCard(
       {Key key,
@@ -512,47 +515,52 @@ class WithdrawalCard extends StatelessWidget {
                               ? Row(
                                   children: <Widget>[
                                     plainButtonWithIcon(
-                                        text: "VOID",
+                                        text: "    ",
                                         size: 14.0,
                                         spacing: 2.0,
                                         color: Colors.red,
-                                        iconData: Icons.delete,
+                                        //iconData: Icons.delete,
                                         action: () {
-                                          twoButtonAlertDialog(
-                                            action: () {
-                                              _voidWithdrawalTransaction(
-                                                  withdrawal.id);
-                                            },
-                                            context: context,
-                                            message:
-                                                "Are you sure you want to void ${withdrawal.type} of ${groupObject.groupCurrency} ${currencyFormat.format(withdrawal.amount)} by ${withdrawal.recipient}?",
-                                            title: "Confirm Action",
-                                          );
+                                          // twoButtonAlertDialog(
+                                          //   action: () {
+                                          //     _voidWithdrawalTransaction(
+                                          //         withdrawal.id);
+                                          //   },
+                                          //   context: context,
+                                          //   message:
+                                          //       "Are you sure you want to void ${withdrawal.type} of ${groupObject.groupCurrency} ${currencyFormat.format(withdrawal.amount)} by ${withdrawal.recipient}?",
+                                          //   title: "Confirm Action",
+                                          // );
                                         }),
                                   ],
                                 )
                               : Container(),
-                          Container(
-                            child: Column(
-                              children: <Widget>[
-                                DottedLine(
-                                  direction: Axis.vertical,
-                                  lineLength: 45.0,
-                                  lineThickness: 0.5,
-                                  dashLength: 2.0,
-                                  dashColor: Colors.black45,
-                                  dashRadius: 0.0,
-                                  dashGapLength: 2.0,
-                                  dashGapColor: Colors.transparent,
-                                  dashGapRadius: 0.0,
-                                ),
-                              ],
-                            ),
+                          Row(
+                            children: <Widget>[
+                              plainButtonWithIcon(
+                                  text: "VOID",
+                                  size: 14.0,
+                                  spacing: 2.0,
+                                  color: Colors.red,
+                                  iconData: Icons.delete,
+                                  action: () {
+                                    twoButtonAlertDialog(
+                                      action: () {
+                                        _voidWithdrawalTransaction(
+                                            withdrawal.id);
+                                      },
+                                      context: context,
+                                      message:
+                                          "Are you sure you want to void ${withdrawal.type} of ${groupObject.groupCurrency} ${currencyFormat.format(withdrawal.amount)} by ${withdrawal.recipient}?",
+                                      title: "Confirm Action",
+                                    );
+                                  }),
+                            ],
                           ),
                           Row(
                             children: <Widget>[
                               plainButtonWithArrow(
-                                  text: "VIEW",
+                                  text: "    ",
                                   size: 14.0,
                                   spacing: 2.0,
                                   color: Colors.blue,
@@ -561,8 +569,8 @@ class WithdrawalCard extends StatelessWidget {
                                     //     context,
                                     //     MaterialPageRoute(
                                     //         builder: (context) =>
-                                    //             new DetailReciept(
-                                    //                 deposit: deposit,
+                                    //             new DetailRecieptWithdrawl(
+                                    //                 withdrawal: withdrawal,
                                     //                 group: groupObject)));
                                   }),
                             ],
@@ -572,7 +580,7 @@ class WithdrawalCard extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-//                Row(
+//                Row(0...
 //                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
 //                  crossAxisAlignment: CrossAxisAlignment.center,
 //                  children: <Widget>[

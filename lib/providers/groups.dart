@@ -1927,6 +1927,7 @@ class Groups with ChangeNotifier {
 
   Future<void> fetchAccounts() async {
     final url = EndpointUrl.GET_GROUP_ACCOUNT_OPTIONS;
+    // ignore: unused_local_variable
     List<dynamic> _localData = [];
     try {
       final postRequest = json.encode({
@@ -1941,26 +1942,26 @@ class Groups with ChangeNotifier {
           orderBy: 'modified_on',
           order: 'DESC',
         );
-        if (_localData.length > 0) {
-          try {
-            await _stripAndAddAccounts(jsonDecode(_localData[0]["value"]));
-          } catch (e) {
-            throw CustomException(message: ERROR_MESSAGE);
-          }
-        } else {
-          final response = await PostToServer.post(postRequest, url);
-          _accounts = []; //clear accounts
-          _allAccounts = []; //clear all accounts
-          Map<String, dynamic> accounts = {
-            "group_id": currentGroupId,
-            "value": jsonEncode(response['accounts']),
-            "modified_on": DateTime.now().millisecondsSinceEpoch,
-          };
-          await _stripAndAddAccounts(response['accounts']);
-          await dbHelper.deleteMultiple(
-              [int.parse(_currentGroupId)], DatabaseHelper.groupAccountsTable);
-          await dbHelper.insert(accounts, DatabaseHelper.groupAccountsTable);
-        }
+        // if (_localData.length > 0) {
+        //   try {
+        //     await _stripAndAddAccounts(jsonDecode(_localData[0]["value"]));
+        //   } catch (e) {
+        //     throw CustomException(message: ERROR_MESSAGE);
+        //   }
+        // } else {
+        final response = await PostToServer.post(postRequest, url);
+        _accounts = []; //clear accounts
+        _allAccounts = []; //clear all accounts
+        Map<String, dynamic> accounts = {
+          "group_id": currentGroupId,
+          "value": jsonEncode(response['accounts']),
+          "modified_on": DateTime.now().millisecondsSinceEpoch,
+        };
+        await _stripAndAddAccounts(response['accounts']);
+        await dbHelper.deleteMultiple(
+            [int.parse(_currentGroupId)], DatabaseHelper.groupAccountsTable);
+        await dbHelper.insert(accounts, DatabaseHelper.groupAccountsTable);
+        // }
       } on CustomException catch (error) {
         if (error.status == ErrorStatusCode.statusNoInternet) {
           _stripAndAddAccounts({});
@@ -2178,6 +2179,7 @@ class Groups with ChangeNotifier {
         "user_id": _userId,
         "group_id": _currentGroupId,
       });
+      // ignore: unused_local_variable
       List<dynamic> _localData = [];
       _localData = await dbHelper.queryWhere(
         table: DatabaseHelper.payContributionsTable,
@@ -2186,20 +2188,20 @@ class Groups with ChangeNotifier {
         orderBy: 'name',
         order: 'DESC',
       );
-      if (_localData.length > 0) {
-        addPayContributions(groupContributions: _localData, isLocal: true);
-      } else {
-        try {
-          final response = await PostToServer.post(postRequest, url);
-          _payContributions = []; //clear
-          final groupContributions = response['contributions'] as List<dynamic>;
-          addPayContributions(groupContributions: groupContributions);
-        } on CustomException catch (error) {
-          throw CustomException(message: error.message, status: error.status);
-        } catch (error) {
-          throw CustomException(message: ERROR_MESSAGE);
-        }
+      // if (_localData.length > 0) {
+      //   addPayContributions(groupContributions: _localData, isLocal: true);
+      // } else {
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _payContributions = []; //clear
+        final groupContributions = response['contributions'] as List<dynamic>;
+        addPayContributions(groupContributions: groupContributions);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
       }
+      // }
     } on CustomException catch (error) {
       throw CustomException(message: error.message, status: error.status);
     } catch (error) {
@@ -5267,7 +5269,7 @@ class Groups with ChangeNotifier {
       Map<String, String> formData = {
         "user_id": _userId,
         "group_id": currentGroupId,
-        "id": id,
+        "withdrawal_id": id,
       };
 
       try {
