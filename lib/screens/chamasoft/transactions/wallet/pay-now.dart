@@ -320,6 +320,7 @@ class _PayNowState extends State<PayNow> {
           content: TextFormField(
             //controller: controller,
             style: inputTextStyle(),
+            readOnly: true,
             initialValue: Provider.of<Auth>(context).phoneNumber,
             keyboardType: TextInputType.number,
             inputFormatters: <TextInputFormatter>[
