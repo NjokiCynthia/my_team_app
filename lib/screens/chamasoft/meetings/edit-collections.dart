@@ -179,7 +179,7 @@ class _EditCollectionsState extends State<EditCollections> {
       );
       _showSnackbar("Fine type successfully added", 4);
     } catch (error) {
-      _showSnackbar("Error adding the fine type", 4);
+      _showSnackbar(" ", 4);
     }
   }
 
