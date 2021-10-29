@@ -45,6 +45,7 @@ class _DetailRecieptState extends State<DetailReciept> {
               Center(
                 child: Container(
                   width: 300.0,
+                  // height: 400.0,
                   child: Card(
                     elevation: 0.0,
                     shape: RoundedRectangleBorder(
