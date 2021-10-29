@@ -114,7 +114,7 @@ class _ConfigureGroupState extends State<ConfigureGroup> {
         ],
         child: ButtonTheme(
           height: 36,
-          // ignore: deprecated_member_use
+          // ignore: deprecated_member_use, missing_required_param
           child: FlatButton(
             ///DON'T ADD 'onPressed', otherwise it will intercept the click event and prevent the
             ///PopupMenu from being triggered. Should have used a different widget, I know :(
