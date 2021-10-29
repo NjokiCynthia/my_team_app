@@ -20,6 +20,7 @@ class WebViewLauncher extends StatefulWidget {
 
 class _WebViewLauncherState extends State<WebViewLauncher> {
   Completer<WebViewController> _controller = Completer<WebViewController>();
+  // ignore: unused_field
   WebViewController _webViewController;
 
   bool _isLoading = true;
