@@ -422,6 +422,11 @@ class _EditMeetingState extends State<EditMeeting> {
 
     String _renderMembersText(String type) {
       List<dynamic> _mbrs = _data['members'][type];
+      // if (_mbrs.length > 1)
+      //   return (_mbrs.length).toString() + " members";
+      // else if (_mbrs.length == 1) {
+      //   return (_mbrs.length).toString() + " member";
+      // }
       if (_mbrs.length == 1)
         return "1 member";
       else if (_mbrs.length > 1)
@@ -886,6 +891,8 @@ class _EditMeetingState extends State<EditMeeting> {
                     "2. Loan repayments: ${_getTotals('repayments')}\n" +
                     "3. Fine payments: ${_getTotals('fines')}\n" +
                     "4. Loan disbursements: ${_getTotals('disbursements')}\n",
+                // "\n"+
+                // "4. Total Collections: ${_getTotals('disbursements')}\n",
                 style: summaryContentFormat(),
                 overflow: TextOverflow.ellipsis,
               ),

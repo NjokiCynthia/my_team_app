@@ -1,7 +1,9 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/common.dart';
+// ignore: unused_import
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/withdrawal.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -10,16 +12,16 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-class DetailReciept extends StatefulWidget {
-  final Deposit deposit;
+class DetailRecieptWithdrawl extends StatefulWidget {
+  final Withdrawal withdrawal;
   final Group group;
-  const DetailReciept({this.deposit, this.group});
+  const DetailRecieptWithdrawl({this.withdrawal, this.group});
 
   @override
-  _DetailRecieptState createState() => _DetailRecieptState();
+  _DetailRecieptWithdrawlState createState() => _DetailRecieptWithdrawlState();
 }
 
-class _DetailRecieptState extends State<DetailReciept> {
+class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
   //String name = NumberToWord().convert('en-in', int.parse(widget.name));
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,7 @@ class _DetailRecieptState extends State<DetailReciept> {
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
-          title: "Deposit Receipts",
+          title: "Withdrawal Receipts",
           action: () => Navigator.of(context).pop(),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left),
@@ -62,7 +64,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                           ),
                           // ignore: deprecated_member_use
                           heading2(
-                              text: widget.deposit.type.toUpperCase(),
+                              text: widget.withdrawal.name.toUpperCase(),
                               color:
                                   // ignore: deprecated_member_use
                                   Theme.of(context).textSelectionHandleColor),
@@ -73,7 +75,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                           ),
 
                           customTitleWithWrap(
-                            text: widget.deposit.depositor,
+                            text: widget.withdrawal.recipient,
                             fontSize: 22,
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context)
@@ -150,7 +152,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                                     widget.group.groupCurrency +
                                     " " +
                                     currencyFormat
-                                        .format(widget.deposit.amount),
+                                        .format(widget.withdrawal.amount),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context)
@@ -161,7 +163,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                                 height: 5.0,
                               ),
                               customTitleWithWrap(
-                                text: 'Date: ' + widget.deposit.date,
+                                text: 'Date: ' + widget.withdrawal.recordedOn,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
@@ -172,8 +174,8 @@ class _DetailRecieptState extends State<DetailReciept> {
                                 height: 5.0,
                               ),
                               customTitleWithWrap(
-                                text:
-                                    'Status: ' + widget.deposit.reconciliation,
+                                text: 'Status: ' +
+                                    widget.withdrawal.reconciliation,
                                 fontSize: 18,
                                 textAlign: TextAlign.center,
                                 fontWeight: FontWeight.w300,
@@ -188,7 +190,7 @@ class _DetailRecieptState extends State<DetailReciept> {
                           Padding(
                             padding: EdgeInsets.all(10.0),
                             child: subtitle2(
-                                text: "${widget.deposit.narration} ",
+                                text: "${widget.withdrawal.narration} ",
                                 fontSize: 14.0,
                                 color:
                                     // ignore: deprecated_member_use
