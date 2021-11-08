@@ -359,88 +359,91 @@ class _SelectGroupMembersState extends State<SelectGroupMembers> {
                         ],
                       ),
                     ),
-                    SingleChildScrollView(
-                      padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
-                      child: (_groupMembers.length) > 0
-                          ? ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: _groupMembers.length,
-                              controller: _scrollController,
-                              itemBuilder: (BuildContext context, int index) {
-                                return Container(
-                                  padding:
-                                      EdgeInsets.only(top: 2.0, bottom: 2.0),
-                                  child: Column(
-                                    children: <Widget>[
-                                      ListTile(
-                                        isThreeLine: false,
-                                        dense: true,
-                                        title: customTitleWithWrap(
-                                          text:
-                                              '${_groupMembers[index]['name']}',
-                                          color: Theme.of(context)
-                                              // ignore: deprecated_member_use
-                                              .textSelectionHandleColor,
-                                          fontWeight: FontWeight.w800,
-                                          textAlign: TextAlign.start,
-                                          fontSize: 15.0,
-                                        ),
-                                        subtitle: customTitleWithWrap(
-                                          text:
-                                              '${_groupMembers[index]['identity']}',
-                                          fontWeight: FontWeight.w600,
-                                          textAlign: TextAlign.start,
-                                          color: Theme.of(context)
-                                              // ignore: deprecated_member_use
-                                              .textSelectionHandleColor
-                                              .withOpacity(0.5),
-                                          fontSize: 12.0,
-                                        ),
-                                        leading: Container(
-                                          height: 42,
-                                          width: 42,
-                                          child: CircleAvatar(
-                                            foregroundColor:
-                                                (themeChangeProvider.darkTheme)
-                                                    ? Colors.blueGrey[900]
-                                                    : Colors.white,
-                                            backgroundColor: Theme.of(context)
+                    Expanded(
+                      child: SingleChildScrollView(
+                        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 40.0),
+                        child: (_groupMembers.length) > 0
+                            ? ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: _groupMembers.length,
+                                controller: _scrollController,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding:
+                                        EdgeInsets.only(top: 2.0, bottom: 2.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        ListTile(
+                                          isThreeLine: false,
+                                          dense: true,
+                                          title: customTitleWithWrap(
+                                            text:
+                                                '${_groupMembers[index]['name']}',
+                                            color: Theme.of(context)
                                                 // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
-                                            child: Text(
-                                              getInitials(
-                                                _groupMembers[index]['name'],
+                                            fontWeight: FontWeight.w800,
+                                            textAlign: TextAlign.start,
+                                            fontSize: 15.0,
+                                          ),
+                                          subtitle: customTitleWithWrap(
+                                            text:
+                                                '${_groupMembers[index]['identity']}',
+                                            fontWeight: FontWeight.w600,
+                                            textAlign: TextAlign.start,
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor
+                                                .withOpacity(0.5),
+                                            fontSize: 12.0,
+                                          ),
+                                          leading: Container(
+                                            height: 42,
+                                            width: 42,
+                                            child: CircleAvatar(
+                                              foregroundColor:
+                                                  (themeChangeProvider
+                                                          .darkTheme)
+                                                      ? Colors.blueGrey[900]
+                                                      : Colors.white,
+                                              backgroundColor: Theme.of(context)
+                                                  // ignore: deprecated_member_use
+                                                  .textSelectionHandleColor,
+                                              child: Text(
+                                                getInitials(
+                                                  _groupMembers[index]['name'],
+                                                ),
                                               ),
                                             ),
                                           ),
+                                          trailing: smallBadgeButton(
+                                            backgroundColor: Colors.blueGrey
+                                                .withOpacity(0.2),
+                                            textColor: Colors.blueGrey,
+                                            text: roles["3"],
+                                            action: () {},
+                                            buttonHeight: 24.0,
+                                            textSize: 12.0,
+                                          ),
                                         ),
-                                        trailing: smallBadgeButton(
-                                          backgroundColor:
-                                              Colors.blueGrey.withOpacity(0.2),
-                                          textColor: Colors.blueGrey,
-                                          text: roles["3"],
-                                          action: () {},
-                                          buttonHeight: 24.0,
-                                          textSize: 12.0,
-                                        ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
+                                  );
+                                },
+                              )
+                            : Flexible(
+                                child: Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.6,
+                                  alignment: Alignment.center,
+                                  child: emptyList(
+                                    color: Colors.blue[400],
+                                    iconData: LineAwesomeIcons.file_text,
+                                    text: "There are no members to show",
                                   ),
-                                );
-                              },
-                            )
-                          : Flexible(
-                              child: Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.6,
-                                alignment: Alignment.center,
-                                child: emptyList(
-                                  color: Colors.blue[400],
-                                  iconData: LineAwesomeIcons.file_text,
-                                  text: "There are no members to show",
                                 ),
                               ),
-                            ),
+                      ),
                     ),
                   ],
                 );

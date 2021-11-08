@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
+
   @override
   _ChamasoftDashboardState createState() => _ChamasoftDashboardState();
 }
@@ -182,6 +183,11 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
     Group _group = Provider.of<Groups>(context).getCurrentGroup();
+
+    // RateAppInitWidget(
+    //               builder: (rateMyApp) =>
+    //                   ChamasoftDashboard(rateMyApp: rateMyApp),
+    //             ),
 
     return GestureDetector(
       onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP'),
@@ -346,7 +352,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               ),
               // ignore: deprecated_member_use
               title: Text(
-                toBeginningOfSentenceCase(getUserName( (_group.groupName).replaceAll(" ", "-") )),
+                toBeginningOfSentenceCase(
+                    getUserName((_group.groupName).replaceAll(" ", "-"))),
                 style: TextStyle(
                     color: _currentPage == 1
                         ? primaryColor
@@ -448,6 +455,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         appBarElevation: (elevation) => _setElevation(elevation),
       );
     }
+
     switch (page) {
       case 0:
         return ChamasoftHome(
@@ -463,6 +471,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         // return Wallet(
         //   appBarElevation: (elevation) => _setElevation(elevation),
         // );
+
         return ChamasoftTransactions(
           appBarElevation: (elevation) => _setElevation(elevation),
         );
