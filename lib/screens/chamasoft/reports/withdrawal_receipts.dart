@@ -537,24 +537,26 @@ class WithdrawalCard extends StatelessWidget {
                               : Container(),
                           Row(
                             children: <Widget>[
-                              plainButtonWithIcon(
-                                  text: "VOID",
-                                  size: 14.0,
-                                  spacing: 2.0,
-                                  color: Colors.red,
-                                  iconData: Icons.delete,
-                                  action: () {
-                                    twoButtonAlertDialog(
+                              groupObject.isGroupAdmin
+                                  ? plainButtonWithIcon(
+                                      text: "VOID",
+                                      size: 14.0,
+                                      spacing: 2.0,
+                                      color: Colors.red,
+                                      iconData: Icons.delete,
                                       action: () {
-                                        _voidWithdrawalTransaction(
-                                            withdrawal.id);
-                                      },
-                                      context: context,
-                                      message:
-                                          "Are you sure you want to void ${withdrawal.type} of ${groupObject.groupCurrency} ${currencyFormat.format(withdrawal.amount)} by ${withdrawal.recipient}?",
-                                      title: "Confirm Action",
-                                    );
-                                  }),
+                                        twoButtonAlertDialog(
+                                          action: () {
+                                            _voidWithdrawalTransaction(
+                                                withdrawal.id);
+                                          },
+                                          context: context,
+                                          message:
+                                              "Are you sure you want to void ${withdrawal.type} of ${groupObject.groupCurrency} ${currencyFormat.format(withdrawal.amount)} by ${withdrawal.recipient}?",
+                                          title: "Confirm Action",
+                                        );
+                                      })
+                                  : Container(),
                             ],
                           ),
                           Row(
