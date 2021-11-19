@@ -4,6 +4,7 @@ import 'package:chamasoft/screens/verification.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/screens/webView-launcher.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -38,6 +39,7 @@ class _LoginState extends State<Login> {
   bool _isPhoneNumber = false;
   bool _setStateCalled = false;
   String appSignature = "{{app signature}}";
+  final termsandConditionsUrl = 'https://chamasoft.com/terms-and-conditions/';
 
   FocusNode _focusNode;
   bool _focused = false;
@@ -439,8 +441,17 @@ class _LoginState extends State<Login> {
                         textData: {
                           'By continuing you agree to our': {},
                           'terms & conditions': {
-                            "url": () => launchURL(
-                                'https://chamasoft.com/terms-and-conditions/'),
+                            "url": () => Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        WebViewLauncher(
+                                            helpUrl: termsandConditionsUrl,
+                                            type: 'terms'),
+                                  ),
+                                ),
+
+                            // launchURL(
+                            //     'https://chamasoft.com/terms-and-conditions/'),
                             "color": primaryColor,
                             "weight": FontWeight.w500
                           },
