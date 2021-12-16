@@ -4306,6 +4306,32 @@ class Groups with ChangeNotifier {
     }
   }
 
+  Future<void> fetchMemberContributionStatement(int statementFlag) async {
+    String url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
+    if (statementFlag == FINE_STATEMENT) {
+      url = EndpointUrl.GET_FINE_STATEMENT;
+    }
+
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        addContributionStatement(statementFlag, response);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
   /// ***********************Member Loans*****************************
   Future<void> fetchMemberLoans() async {
     final url = EndpointUrl.GET_GROUP_LOAN_LIST;

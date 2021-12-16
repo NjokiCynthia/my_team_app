@@ -4,6 +4,7 @@ import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -24,6 +25,7 @@ class MemeberSatement extends StatefulWidget {
 }
 
 class _MemeberSatementState extends State<MemeberSatement> {
+  TextEditingController controller = new TextEditingController();
   double _appBarElevation = 0;
   ScrollController _scrollController;
   bool _isInit = true;
@@ -33,6 +35,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Member> _member = [];
   bool _hasMoreData = false;
+  String filter;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -84,6 +87,11 @@ class _MemeberSatementState extends State<MemeberSatement> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
+    controller.addListener(() {
+      setState(() {
+        filter = controller.text;
+      });
+    });
     super.initState();
   }
 
@@ -98,6 +106,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
   void dispose() {
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
+    controller.dispose();
     super.dispose();
   }
 
@@ -119,54 +128,79 @@ class _MemeberSatementState extends State<MemeberSatement> {
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: RefreshIndicator(
-          backgroundColor: (themeChangeProvider.darkTheme)
-              ? Colors.blueGrey[800]
-              : Colors.white,
-          key: _refreshIndicatorKey,
-          onRefresh: () => _fetchData(),
-          child: Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            decoration: primaryGradient(context),
-            child: Column(
-              children: <Widget>[
-                _isLoading
-                    ? showLinearProgressIndicator()
-                    : SizedBox(
-                        height: 0.0,
-                      ),
-                Expanded(
-                  child: _member.length > 0
-                      ? NotificationListener<ScrollNotification>(
-                          onNotification: (ScrollNotification scrollInfo) {
-                            if (!_isLoading &&
-                                scrollInfo.metrics.pixels ==
-                                    scrollInfo.metrics.maxScrollExtent &&
-                                _hasMoreData) {
-                              _fetchData();
-                            }
-                            return true;
-                          },
-                          child: ListView.builder(
-                              itemBuilder: (context, index) {
-                                Member member = _member[index];
-                                return MemberCard(
-                                  member: member,
-                                  position: index,
-                                  bodyContext: context,
-                                );
-                              },
-                              itemCount: _member.length),
-                        )
-                      : emptyList(
-                          color: Colors.blue[400],
-                          iconData: LineAwesomeIcons.angle_double_down,
-                          text: "There are no members to display"),
-                )
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            TextField(
+              decoration: InputDecoration(
+                labelText: "Search Member",
+                prefixIcon: Icon(LineAwesomeIcons.search),
+              ),
+              controller: controller,
             ),
-          )),
+            RefreshIndicator(
+                backgroundColor: (themeChangeProvider.darkTheme)
+                    ? Colors.blueGrey[800]
+                    : Colors.white,
+                key: _refreshIndicatorKey,
+                onRefresh: () => _fetchData(),
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: primaryGradient(context),
+                  child: Column(
+                    children: <Widget>[
+                      _isLoading
+                          ? showLinearProgressIndicator()
+                          : SizedBox(
+                              height: 0.0,
+                            ),
+                      Expanded(
+                        child: _member.length > 0
+                            ? NotificationListener<ScrollNotification>(
+                                onNotification:
+                                    (ScrollNotification scrollInfo) {
+                                  if (!_isLoading &&
+                                      scrollInfo.metrics.pixels ==
+                                          scrollInfo.metrics.maxScrollExtent &&
+                                      _hasMoreData) {
+                                    _fetchData();
+                                  }
+                                  return true;
+                                },
+                                child: ListView.builder(
+                                    itemBuilder: (context, index) {
+                                      Member member = _member[index];
+                                      return filter == null || filter == ""
+                                          ? MemberCard(
+                                              member: member,
+                                              position: index,
+                                              bodyContext: context,
+                                            )
+                                          : member.name.toLowerCase().contains(
+                                                  filter.toLowerCase())
+                                              ? MemberCard(
+                                                  member: member,
+                                                  position: index,
+                                                  bodyContext: context,
+                                                )
+                                              : Visibility(
+                                                  visible: false,
+                                                  child: new Container());
+                                    },
+                                    itemCount: _member.length),
+                              )
+                            : emptyList(
+                                color: Colors.blue[400],
+                                iconData: LineAwesomeIcons.angle_double_down,
+                                text: "There are no members to display"),
+                      )
+                    ],
+                  ),
+                )),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -210,6 +244,37 @@ class MemberCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        member.avatar != null
+                            ? Container(
+                                height: 50,
+                                width: 50,
+                                child: new CachedNetworkImage(
+                                  imageUrl: member.avatar,
+                                  placeholder: (context, url) =>
+                                      const CircleAvatar(
+                                    backgroundImage:
+                                        const AssetImage('assets/no-user.png'),
+                                  ),
+                                  imageBuilder: (context, image) =>
+                                      CircleAvatar(
+                                    backgroundImage: image,
+                                  ),
+                                  errorWidget: (context, url, error) =>
+                                      const CircleAvatar(
+                                    backgroundImage:
+                                        const AssetImage('assets/no-user.png'),
+                                  ),
+                                  fadeOutDuration: const Duration(seconds: 1),
+                                  fadeInDuration: const Duration(seconds: 3),
+                                ),
+                              )
+                            : const CircleAvatar(
+                                backgroundImage:
+                                    const AssetImage('assets/no-user.png'),
+                              ),
+                        SizedBox(
+                          width: 10,
+                        ),
                         Expanded(
                           flex: 1,
                           child: Column(
@@ -229,6 +294,17 @@ class MemberCard extends StatelessWidget {
                               ),
                               subtitle2(
                                 text: member.identity,
+                                textAlign: TextAlign.start,
+                                // ignore: deprecated_member_use
+                                color:
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context).textSelectionHandleColor,
+                              ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              subtitle2(
+                                text: " ",
                                 textAlign: TextAlign.start,
                                 // ignore: deprecated_member_use
                                 color:
@@ -278,7 +354,18 @@ class MemberCard extends StatelessWidget {
                                                   spacing: 2.0,
                                                   color: Colors.blue,
                                                   // iconData: Icons.remove_red_eye,
-                                                  action: () {}),
+                                                  action: () => Navigator.of(
+                                                          context)
+                                                      .push(MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              ContributionStatement(
+                                                                  statementFlag:
+                                                                      CONTRIBUTION_STATEMENT),
+                                                          settings:
+                                                              RouteSettings(
+                                                                  arguments:
+                                                                      0)))),
                                             ],
                                           )
                                         : Container(),
@@ -307,16 +394,18 @@ class MemberCard extends StatelessWidget {
                                                   size: 14.0,
                                                   spacing: 2.0,
                                                   color: Colors.red,
-                                                  action: () {
-                                                    // Navigator.push(
-                                                    //     context,
-                                                    //     MaterialPageRoute(
-                                                    //         builder: (context) =>
-                                                    //             new DetailReciept(
-                                                    //                 deposit: deposit,
-                                                    //                 group: groupObject))
-                                                    //                 );
-                                                  }),
+                                                  action: () => Navigator.of(
+                                                          context)
+                                                      .push(MaterialPageRoute(
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              ContributionStatement(
+                                                                  statementFlag:
+                                                                      FINE_STATEMENT),
+                                                          settings:
+                                                              RouteSettings(
+                                                                  arguments:
+                                                                      0)))),
                                             ],
                                           )
                                         : Container()
