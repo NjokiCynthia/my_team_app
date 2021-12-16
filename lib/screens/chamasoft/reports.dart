@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/reports/deposit-receipts.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/loan-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
@@ -149,6 +150,29 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
               isHighlighted: false,
               action: () => Navigator.of(context).push(MaterialPageRoute(
                   builder: (BuildContext context) => WithdrawalReceipts(),
+                  settings: RouteSettings(arguments: 0))),
+              margin: 0,
+              imageHeight: 100.0)),
+      SizedBox(
+        width: 16.0,
+      ),
+    ];
+
+    List<Widget> statementOptions = [
+      SizedBox(
+        width: 16.0,
+      ),
+      Container(
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['transaction'],
+              title: 'MEMBER',
+              subtitle: 'STATEMENTS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => MemeberSatement(),
                   settings: RouteSettings(arguments: 0))),
               margin: 0,
               imageHeight: 100.0)),
@@ -379,6 +403,41 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                 padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
                 physics: BouncingScrollPhysics(),
                 children: groupOptions,
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(
+                  "Statements",
+                  style: TextStyle(
+                    color: Colors.blueGrey[400],
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                IconButton(
+                    icon: Icon(
+                      Feather.more_horizontal,
+                      color: Colors.blueGrey,
+                    ),
+                    onPressed: () {})
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+            child: Container(
+              height: 160.0,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+                physics: BouncingScrollPhysics(),
+                children: statementOptions,
               ),
             ),
           ),
