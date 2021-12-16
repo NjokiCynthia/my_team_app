@@ -149,6 +149,9 @@ class _DepositReceiptsState extends State<DepositReceipts> {
   @override
   Widget build(BuildContext context) {
     _deposits = Provider.of<Groups>(context, listen: true).getDeposits;
+    print('Deposits are as:  ');
+    print(_deposits);
+
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(

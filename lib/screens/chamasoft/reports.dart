@@ -158,29 +158,6 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
       ),
     ];
 
-    List<Widget> statementOptions = [
-      SizedBox(
-        width: 16.0,
-      ),
-      Container(
-          width: 132.0,
-          child: svgGridButton(
-              context: context,
-              icon: customIcons['transaction'],
-              title: 'MEMBER',
-              subtitle: 'STATEMENTS',
-              color: Colors.blue[400],
-              isHighlighted: false,
-              action: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (BuildContext context) => MemeberSatement(),
-                  settings: RouteSettings(arguments: 0))),
-              margin: 0,
-              imageHeight: 100.0)),
-      SizedBox(
-        width: 16.0,
-      ),
-    ];
-
     List<Widget> groupOptions = [
       SizedBox(
         width: 16.0,
@@ -293,6 +270,28 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
         SizedBox(
           width: 16.0,
         ),
+    ];
+
+    List<Widget> statementOptions = [
+      SizedBox(
+        width: 16.0,
+      ),
+      Container(
+          width: 132.0,
+          child: svgGridButton(
+              context: context,
+              icon: customIcons['transaction'],
+              title: 'MEMBER',
+              subtitle: 'STATEMENTS',
+              color: Colors.blue[400],
+              isHighlighted: false,
+              action: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (BuildContext context) => MemeberSatement())),
+              margin: 0,
+              imageHeight: 100.0)),
+      SizedBox(
+        width: 16.0,
+      ),
     ];
 
     return new WillPopScope(

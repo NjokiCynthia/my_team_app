@@ -7,6 +7,7 @@ import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
@@ -23,9 +24,24 @@ class MemeberSatement extends StatefulWidget {
 }
 
 class _MemeberSatementState extends State<MemeberSatement> {
+  double _appBarElevation = 0;
+  ScrollController _scrollController;
+  bool _isInit = true;
+  bool _isLoading = true;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<Member> _member = [];
+  bool _hasMoreData = false;
+
+  void _scrollListener() {
+    double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
+    if (_appBarElevation != newElevation) {
+      setState(() {
+        _appBarElevation = newElevation;
+      });
+    }
+  }
 
   Future<void> _fetchMembers(BuildContext context) async {
     try {
@@ -36,31 +52,71 @@ class _MemeberSatementState extends State<MemeberSatement> {
           error: error,
           callback: () {
             _fetchMembers(context);
-          });
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
+  }
+
+  Future<bool> _fetchData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    _fetchMembers(context).then((_) {
+      if (context != null) {
+        setState(() {
+          if (_member.length < 20) {
+            _hasMoreData = false;
+          } else
+            _hasMoreData = true;
+          _isLoading = false;
+        });
+      }
+    });
+
+    _isInit = false;
+    return true;
   }
 
   // print('${_fetchMembers}');
 
   @override
   void initState() {
+    _scrollController = ScrollController();
+    _scrollController.addListener(_scrollListener);
     super.initState();
   }
 
   @override
+  void didChangeDependencies() {
+    if (_isInit)
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
+    _scrollController?.removeListener(_scrollListener);
+    _scrollController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // final groupObject =
+    //     Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    _member = Provider.of<Groups>(context, listen: true).members;
+
+    print('Members are as:  ');
+    print(_member);
+
     return Scaffold(
-      //_member = Provider.of<Groups>(context, listen: true).groupMembersDetails;
+      key: _scaffoldKey,
       appBar: secondaryPageAppbar(
           context: context,
           title: "Member Statements",
           action: () => Navigator.of(context).pop(),
-          elevation: 1,
+          elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
@@ -68,35 +124,45 @@ class _MemeberSatementState extends State<MemeberSatement> {
               ? Colors.blueGrey[800]
               : Colors.white,
           key: _refreshIndicatorKey,
-          onRefresh: () => _fetchMembers(context),
+          onRefresh: () => _fetchData(),
           child: Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             decoration: primaryGradient(context),
             child: Column(
-              children: [
+              children: <Widget>[
+                _isLoading
+                    ? showLinearProgressIndicator()
+                    : SizedBox(
+                        height: 0.0,
+                      ),
                 Expanded(
-                  child: Consumer<Groups>(
-                    builder: (context, groupData, child) {
-                      return groupData.members.length > 0
-                          ? NotificationListener<ScrollNotification>(
-                              child: ListView.builder(
-                                  itemBuilder: (context, index) {
-                                    Member member = _member[index];
-                                    return MemberCard(
-                                      member: member,
-                                      position: index,
-                                      bodyContext: context,
-                                    );
-                                  },
-                                  itemCount: _member.length),
-                            )
-                          : emptyList(
-                              color: Colors.blue[400],
-                              iconData: LineAwesomeIcons.angle_double_down,
-                              text: "There are no Members to display");
-                    },
-                  ),
+                  child: _member.length > 0
+                      ? NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if (!_isLoading &&
+                                scrollInfo.metrics.pixels ==
+                                    scrollInfo.metrics.maxScrollExtent &&
+                                _hasMoreData) {
+                              _fetchData();
+                            }
+                            return true;
+                          },
+                          child: ListView.builder(
+                              itemBuilder: (context, index) {
+                                Member member = _member[index];
+                                return MemberCard(
+                                  member: member,
+                                  position: index,
+                                  bodyContext: context,
+                                );
+                              },
+                              itemCount: _member.length),
+                        )
+                      : emptyList(
+                          color: Colors.blue[400],
+                          iconData: LineAwesomeIcons.angle_double_down,
+                          text: "There are no members to display"),
                 )
               ],
             ),
@@ -105,6 +171,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
   }
 }
 
+// ignore: must_be_immutable
 class MemberCard extends StatelessWidget {
   MemberCard(
       {Key key,
@@ -149,7 +216,7 @@ class MemberCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               customTitle1(
-                                text: member.identity,
+                                text: member.name,
                                 fontSize: 16.0,
                                 // ignore: deprecated_member_use
                                 color:
@@ -157,8 +224,11 @@ class MemberCard extends StatelessWidget {
                                     Theme.of(context).textSelectionHandleColor,
                                 textAlign: TextAlign.start,
                               ),
+                              SizedBox(
+                                height: 10.0,
+                              ),
                               subtitle2(
-                                text: member.name,
+                                text: member.identity,
                                 textAlign: TextAlign.start,
                                 // ignore: deprecated_member_use
                                 color:
@@ -177,77 +247,86 @@ class MemberCard extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  DottedLine(
-                    direction: Axis.horizontal,
-                    lineLength: double.infinity,
-                    lineThickness: 0.5,
-                    dashLength: 2.0,
-                    dashColor: Colors.black45,
-                    dashRadius: 0.0,
-                    dashGapLength: 2.0,
-                    dashGapColor: Colors.transparent,
-                    dashGapRadius: 0.0,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 12.0, right: 12.0),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          groupObject.isGroupAdmin
-                              ? Row(
+                  groupObject.isGroupAdmin
+                      ? Container(
+                          padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                          child: Column(
+                            children: [
+                              DottedLine(
+                                direction: Axis.horizontal,
+                                lineLength: double.infinity,
+                                lineThickness: 0.5,
+                                dashLength: 2.0,
+                                dashColor: Colors.black45,
+                                dashRadius: 0.0,
+                                dashGapLength: 2.0,
+                                dashGapColor: Colors.transparent,
+                                dashGapRadius: 0.0,
+                              ),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: <Widget>[
-                                    plainButtonWithArrow(
-                                        text: "Contribution Statement",
-                                        size: 14.0,
-                                        spacing: 2.0,
-                                        color: Colors.blue,
-                                        // iconData: Icons.remove_red_eye,
-                                        action: () {}),
-                                  ],
-                                )
-                              : Container(),
-                          Container(
-                            child: Column(
-                              children: <Widget>[
-                                DottedLine(
-                                  direction: Axis.vertical,
-                                  lineLength: 45.0,
-                                  lineThickness: 0.5,
-                                  dashLength: 2.0,
-                                  dashColor: Colors.black45,
-                                  dashRadius: 0.0,
-                                  dashGapLength: 2.0,
-                                  dashGapColor: Colors.transparent,
-                                  dashGapRadius: 0.0,
-                                ),
-                              ],
-                            ),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              plainButtonWithArrow(
-                                  text: "Fine Statement",
-                                  size: 14.0,
-                                  spacing: 2.0,
-                                  color: Colors.red,
-                                  action: () {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) =>
-                                    //             new DetailReciept(
-                                    //                 deposit: deposit,
-                                    //                 group: groupObject))
-                                    //                 );
-                                  }),
+                                    groupObject.isGroupAdmin
+                                        ? Row(
+                                            children: <Widget>[
+                                              plainButtonWithArrow(
+                                                  text:
+                                                      "Contribution Statement",
+                                                  size: 14.0,
+                                                  spacing: 2.0,
+                                                  color: Colors.blue,
+                                                  // iconData: Icons.remove_red_eye,
+                                                  action: () {}),
+                                            ],
+                                          )
+                                        : Container(),
+                                    Container(
+                                      child: Column(
+                                        children: <Widget>[
+                                          DottedLine(
+                                            direction: Axis.vertical,
+                                            lineLength: 45.0,
+                                            lineThickness: 0.5,
+                                            dashLength: 2.0,
+                                            dashColor: Colors.black45,
+                                            dashRadius: 0.0,
+                                            dashGapLength: 2.0,
+                                            dashGapColor: Colors.transparent,
+                                            dashGapRadius: 0.0,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    groupObject.isGroupAdmin
+                                        ? Row(
+                                            children: <Widget>[
+                                              plainButtonWithArrow(
+                                                  text: "Fine Statement",
+                                                  size: 14.0,
+                                                  spacing: 2.0,
+                                                  color: Colors.red,
+                                                  action: () {
+                                                    // Navigator.push(
+                                                    //     context,
+                                                    //     MaterialPageRoute(
+                                                    //         builder: (context) =>
+                                                    //             new DetailReciept(
+                                                    //                 deposit: deposit,
+                                                    //                 group: groupObject))
+                                                    //                 );
+                                                  }),
+                                            ],
+                                          )
+                                        : Container()
+                                  ]),
                             ],
                           ),
-                        ]),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
+                        )
+                      : SizedBox(
+                          height: 10,
+                        ),
                 ],
               )),
         ),
