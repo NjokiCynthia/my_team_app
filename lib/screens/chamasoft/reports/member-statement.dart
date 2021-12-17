@@ -5,6 +5,7 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/member-contribution-statement.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -280,9 +281,12 @@ class MemberCard extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              customTitle1(
+                              SizedBox(
+                                height: 10.0,
+                              ),
+                              heading2(
                                 text: member.name,
-                                fontSize: 16.0,
+                                // fontSize: 16.0,
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
@@ -292,9 +296,10 @@ class MemberCard extends StatelessWidget {
                               SizedBox(
                                 height: 10.0,
                               ),
-                              subtitle2(
+                              customTitle(
                                 text: member.identity,
                                 textAlign: TextAlign.start,
+                                fontSize: 16.0,
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
@@ -354,18 +359,17 @@ class MemberCard extends StatelessWidget {
                                                   spacing: 2.0,
                                                   color: Colors.blue,
                                                   // iconData: Icons.remove_red_eye,
-                                                  action: () => Navigator.of(
-                                                          context)
-                                                      .push(MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              ContributionStatement(
-                                                                  statementFlag:
-                                                                      CONTRIBUTION_STATEMENT),
-                                                          settings:
-                                                              RouteSettings(
-                                                                  arguments:
-                                                                      0)))),
+                                                  action: () =>
+                                                      Navigator.of(context)
+                                                          .push(
+                                                              MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            MemberContributionStatement(
+                                                                memberName:
+                                                                    member
+                                                                        .name),
+                                                      ))),
                                             ],
                                           )
                                         : Container(),

@@ -1517,6 +1517,11 @@ class Groups with ChangeNotifier {
     notifyListeners();
   }
 
+  void addMemberContributionStatement(dynamic data) {
+    _contributionStatement = getContributionStatement(data);
+    notifyListeners();
+  }
+
   void addMemberLoans(List<dynamic> data) {
     _memberLoanList = getMemberLoanList(data);
     notifyListeners();
@@ -4306,12 +4311,8 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchMemberContributionStatement(int statementFlag) async {
-    String url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
-    if (statementFlag == FINE_STATEMENT) {
-      url = EndpointUrl.GET_FINE_STATEMENT;
-    }
-
+  Future<void> fetchMemberContributionStatement() async {
+    final url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
     try {
       final postRequest = json.encode({
         "user_id": _userId,
@@ -4319,7 +4320,8 @@ class Groups with ChangeNotifier {
       });
       try {
         final response = await PostToServer.post(postRequest, url);
-        addContributionStatement(statementFlag, response);
+        print('This is the response $response ');
+        addMemberContributionStatement(response);
       } on CustomException catch (error) {
         throw CustomException(message: error.message, status: error.status);
       } catch (error) {
