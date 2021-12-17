@@ -4315,7 +4315,8 @@ class Groups with ChangeNotifier {
     final url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
     try {
       final postRequest = json.encode({
-        "user_id": _userId,
+        "member_id": _userId,
+        // memberId: member['member_id'],
         "group_id": _currentGroupId,
       });
       try {
