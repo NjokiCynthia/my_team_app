@@ -4311,13 +4311,37 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> fetchMemberContributionStatement() async {
+  Future<void> fetchMemberContributionStatement({String memberId = ""}) async {
     final url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
     try {
       final postRequest = json.encode({
-        "member_id": _userId,
-        // memberId: member['member_id'],
+        "user_id": _userId,
         "group_id": _currentGroupId,
+        "member_id": memberId
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        print('This is the response $response ');
+        addMemberContributionStatement(response);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+   Future<void> fetchMemberFineStatement({String memberId = ""}) async {
+    final url = EndpointUrl.GET_FINE_STATEMENT;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+        "member_id": memberId
       });
       try {
         final response = await PostToServer.post(postRequest, url);

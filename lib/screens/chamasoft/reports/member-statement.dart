@@ -6,6 +6,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/member-contribution-statement.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/member-fine-statement.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -30,7 +31,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   bool _isInit = true;
-  bool _isLoading = true;
+  bool _isLoading = true; 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -51,13 +52,13 @@ class _MemeberSatementState extends State<MemeberSatement> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
     } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchMembers(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
+      // StatusHandler().handleStatus(
+      //     context: context,
+      //     error: error,
+      //     callback: () {
+      //       _fetchMembers(context);
+      //     },
+      //     scaffoldState: _scaffoldKey.currentState);
     }
   }
 
@@ -367,8 +368,9 @@ class MemberCard extends StatelessWidget {
                                                                 context) =>
                                                             MemberContributionStatement(
                                                                 memberName:
-                                                                    member
-                                                                        .name),
+                                                                    member.name,
+                                                                memberId:
+                                                                    member.id),
                                                       ))),
                                             ],
                                           )
@@ -400,16 +402,16 @@ class MemberCard extends StatelessWidget {
                                                   color: Colors.red,
                                                   action: () => Navigator.of(
                                                           context)
-                                                      .push(MaterialPageRoute(
-                                                          builder: (BuildContext
-                                                                  context) =>
-                                                              ContributionStatement(
-                                                                  statementFlag:
-                                                                      FINE_STATEMENT),
-                                                          settings:
-                                                              RouteSettings(
-                                                                  arguments:
-                                                                      0)))),
+                                                      .push(
+                                                              MaterialPageRoute(
+                                                        builder: (BuildContext
+                                                                context) =>
+                                                            MemberFineStatement(
+                                                                memberNames:
+                                                                    member.name,
+                                                                memberIds:
+                                                                    member.id),
+                                                      ))),
                                             ],
                                           )
                                         : Container()

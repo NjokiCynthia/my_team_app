@@ -13,9 +13,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class MemberContributionStatement extends StatefulWidget {
-  final String memberName;
+  final String memberName, memberId;
 
-  const MemberContributionStatement({Key key, this.memberName})
+  const MemberContributionStatement({Key key, this.memberName, this.memberId})
       : super(key: key);
 
   @override
@@ -49,7 +49,7 @@ class _MemberContributionStatementState
   Future<void> _fetchMemberStatement(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false)
-          .fetchMemberContributionStatement();
+          .fetchMemberContributionStatement(memberId: widget.memberId);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -96,8 +96,6 @@ class _MemberContributionStatementState
       }
     });
 
- 
-
     _isInit = false;
     return true;
   }
@@ -114,6 +112,14 @@ class _MemberContributionStatementState
     _scrollController?.removeListener(_scrollListener);
     _scrollController?.dispose();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    }
+    super.didChangeDependencies();
   }
 
   @override
