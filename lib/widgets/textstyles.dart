@@ -31,6 +31,19 @@ Widget heading2(
   );
 }
 
+Widget heading3(
+    {String text, Color color, TextAlign textAlign = TextAlign.center}) {
+  return Text(
+    text,
+    style: TextStyle(
+        fontWeight: FontWeight.w700,
+        fontSize: 16.0,
+        color: color,
+        fontFamily: 'SegoeUI'),
+    textAlign: textAlign,
+  );
+}
+
 Widget subtitle1(
     {String text, Color color, TextAlign textAlign = TextAlign.center}) {
   return Text(

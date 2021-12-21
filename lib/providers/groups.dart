@@ -4310,6 +4310,7 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+  /// ***********************Contribution Statement*****************************
 
   Future<void> fetchMemberContributionStatement({String memberId = ""}) async {
     final url = EndpointUrl.GET_CONTRIBUTION_STATEMENT;
@@ -4334,6 +4335,7 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+  /// ***********************Fine Statement*****************************
 
    Future<void> fetchMemberFineStatement({String memberId = ""}) async {
     final url = EndpointUrl.GET_FINE_STATEMENT;

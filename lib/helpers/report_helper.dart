@@ -25,28 +25,38 @@ AccountBalanceModel getAccountBalances(dynamic data) {
         final accountBalance = AccountBalance(
             isHeader: false,
             name: account['account_name'].toString(),
-            accountNumber: "0",//account['account_number'].toString(),
+            accountNumber: "0", //account['account_number'].toString(),
             balance: account['account_balance'].toString());
         bankAccounts.add(accountBalance);
       }
     }
   }
-  double totalBalance = ParseHelper.stringToDouble(data['grand_total_balance'].toString());
-  return AccountBalanceModel(accounts: bankAccounts, totalBalance: totalBalance);
+  double totalBalance =
+      ParseHelper.stringToDouble(data['grand_total_balance'].toString());
+  return AccountBalanceModel(
+      accounts: bankAccounts, totalBalance: totalBalance);
 }
 
 TransactionStatementModel getTransactionStatement(dynamic data) {
-  final String statementAsAt = data['statement_details']['statement_as_at'].toString();
-  final String statementPeriodFrom = data['statement_details']['statement_period_from'].toString();
-  final String statementPeriodTo = data['statement_details']['statement_period_to'].toString();
-  final double totalBalance = ParseHelper.getDoubleFromJson(data['statement_footer'], 'balance');
+  final String statementAsAt =
+      data['statement_details']['statement_as_at'].toString();
+  final String statementPeriodFrom =
+      data['statement_details']['statement_period_from'].toString();
+  final String statementPeriodTo =
+      data['statement_details']['statement_period_to'].toString();
+  final double totalBalance =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'balance');
 
   final List<TransactionStatementRow> transactionStatements = [];
 
-  final double depositsBroughtForward = ParseHelper.getDoubleFromJson(data['statement_header'], 'deposited');
-  final double withdrawalsBroughtForward = ParseHelper.getDoubleFromJson(data['statement_header'], 'withdrawn');
-  final double balanceBroughtForward = ParseHelper.getDoubleFromJson(data['statement_header'], 'balance');
-  final String descriptionBF = data['statement_header']['description'].toString();
+  final double depositsBroughtForward =
+      ParseHelper.getDoubleFromJson(data['statement_header'], 'deposited');
+  final double withdrawalsBroughtForward =
+      ParseHelper.getDoubleFromJson(data['statement_header'], 'withdrawn');
+  final double balanceBroughtForward =
+      ParseHelper.getDoubleFromJson(data['statement_header'], 'balance');
+  final String descriptionBF =
+      data['statement_header']['description'].toString();
   final String dateBF = data['statement_header']['date'].toString();
 
   final transactionRow = TransactionStatementRow(
@@ -68,7 +78,11 @@ TransactionStatementModel getTransactionStatement(dynamic data) {
       final balance = ParseHelper.getDoubleFromJson(statement, 'balance');
 
       final transactionRow = TransactionStatementRow(
-          date: date, description: description, deposit: deposited, withdrawal: withdrawn, balance: balance);
+          date: date,
+          description: description,
+          deposit: deposited,
+          withdrawal: withdrawn,
+          balance: balance);
       transactionStatements.add(transactionRow);
     }
   }
@@ -95,15 +109,20 @@ ExpenseSummaryList getExpenseSummary(dynamic data) {
     }
   }
   double totalExpenses = ParseHelper.getDoubleFromJson(data, "total_expenses");
-  return ExpenseSummaryList(expenseSummary: expenseList, totalExpenses: totalExpenses);
+  return ExpenseSummaryList(
+      expenseSummary: expenseList, totalExpenses: totalExpenses);
 }
 
 LoansSummaryList getLoanSummaryList(dynamic data) {
-  final double totalLoan = ParseHelper.getDoubleFromJson(data['statement_footer'], 'total_loan');
-  final double totalInterest = ParseHelper.getDoubleFromJson(data['statement_footer'], 'total_interest');
+  final double totalLoan =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'total_loan');
+  final double totalInterest =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'total_interest');
   final double totalPayable = totalLoan + totalInterest;
-  final double totalPaid = ParseHelper.getDoubleFromJson(data['statement_footer'], 'total_paid');
-  final double totalBalance = ParseHelper.getDoubleFromJson(data['statement_footer'], 'total_balance');
+  final double totalPaid =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'total_paid');
+  final double totalBalance =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'total_balance');
 
   final List<LoanSummaryRow> summaryList = [];
 
@@ -118,8 +137,12 @@ LoansSummaryList getLoanSummaryList(dynamic data) {
       final paid = ParseHelper.getDoubleFromJson(statement, 'amount_paid');
       final balance = ParseHelper.getDoubleFromJson(statement, 'balance');
 
-      final loanSummaryRow =
-          LoanSummaryRow(name: member, amountDue: due, paid: paid, balance: balance, date: DateTime.now());
+      final loanSummaryRow = LoanSummaryRow(
+          name: member,
+          amountDue: due,
+          paid: paid,
+          balance: balance,
+          date: DateTime.now());
       summaryList.add(loanSummaryRow);
     }
   }
@@ -133,13 +156,23 @@ LoansSummaryList getLoanSummaryList(dynamic data) {
 }
 
 ContributionStatementModel getContributionStatement(dynamic data) {
-  final double totalPayable = ParseHelper.getDoubleFromJson(data['statement_footer'], 'payable');
-  final double totalPaid = ParseHelper.getDoubleFromJson(data['statement_footer'], 'paid');
-  final double totalBalance = ParseHelper.getDoubleFromJson(data['statement_footer'], 'balance');
-  final String statementAsAt = data['statement_details']['statement_as_at'].toString();
-  final String statementPeriodFrom = data['statement_details']['statement_period_from'].toString();
-  final String statementPeriodTo = data['statement_details']['statement_period_to'].toString();
+  final double totalPayable =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'payable');
+  final double totalPaid =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'paid');
+  final double totalBalance =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'balance');
+  final String statementAsAt =
+      data['statement_details']['statement_as_at'].toString();
+  final String statementPeriodFrom =
+      data['statement_details']['statement_period_from'].toString();
+  final String statementPeriodTo =
+      data['statement_details']['statement_period_to'].toString();
+  final String role = data['member_datails']['role'].toString();
+  final String email = data['member_datails']['email'].toString();
+  final String phone = data['member_datails']['phone'].toString();
   final List<ContributionStatementRow> statementList = [];
+  // final double payable = ParseHelper.getDoubleFromJson(data[''], )
 
 //  final description = data['statement_header']['description'].toString();
 //  final date = ParseHelper.formatDate(data['statement_header']['date'].toString(), "dd-MM-yyyy");
@@ -162,20 +195,31 @@ ContributionStatementModel getContributionStatement(dynamic data) {
   if (statementBody.length > 0) {
     for (var statement in statementBody) {
       final description = statement['description'].toString();
-      final date = ParseHelper.formatDate(statement['date'].toString(), "dd-MM-yyyy");
+
+      final date =
+          ParseHelper.formatDate(statement['date'].toString(), "dd-MM-yyyy");
       double amount = 0;
+      double payable = 0;
+      double balance = 0;
       String type = "";
 
       if (description.contains("invoice")) {
-        amount = ParseHelper.getDoubleFromJson(statement, 'payable');
+        payable = ParseHelper.getDoubleFromJson(statement, 'payable');
         type = "Invoice";
       } else {
         amount = ParseHelper.getDoubleFromJson(statement, 'paid');
+        balance = ParseHelper.getDoubleFromJson(statement, 'balance');
         type = "Payment";
       }
 
-      final statementRow =
-          ContributionStatementRow(isHeader: false, title: description, description: type, amount: amount, date: date);
+      final statementRow = ContributionStatementRow(
+          isHeader: false,
+          title: description,
+          description: type,
+          amount: amount,
+          date: date,
+          payable: payable,
+          balance: balance);
       statementList.add(statementRow);
     }
   }
@@ -187,7 +231,10 @@ ContributionStatementModel getContributionStatement(dynamic data) {
       totalBalance: totalBalance,
       statementAsAt: statementAsAt,
       statementFrom: statementPeriodFrom,
-      statementTo: statementPeriodTo);
+      statementTo: statementPeriodTo,
+      role: role,
+      phone: phone,
+      email: email);
 }
 
 List<ActiveLoan> getMemberLoanList(List<dynamic> list) {
@@ -201,8 +248,12 @@ List<ActiveLoan> getMemberLoanList(List<dynamic> list) {
       final disbursementDate = loan["disbursement_date"].toString();
       final isFullPaid = ParseHelper.getIntFromJson(loan, "is_fully_paid");
 
-      final activeLoan =
-          ActiveLoan(id: id, name: name, amount: amount, disbursementDate: disbursementDate, status: isFullPaid);
+      final activeLoan = ActiveLoan(
+          id: id,
+          name: name,
+          amount: amount,
+          disbursementDate: disbursementDate,
+          status: isFullPaid);
       loanList.add(activeLoan);
     }
   }
@@ -213,8 +264,10 @@ List<ActiveLoan> getMemberLoanList(List<dynamic> list) {
 LoanStatementModel getLoanStatementModel(dynamic data) {
   final double lumpSum = ParseHelper.getDoubleFromJson(data, 'lump_sum');
   final String loanDescription = data["description"].toString();
-  final double paid = ParseHelper.getDoubleFromJson(data['statement_footer'], 'paid');
-  final double balance = ParseHelper.getDoubleFromJson(data['statement_footer'], 'balance');
+  final double paid =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'paid');
+  final double balance =
+      ParseHelper.getDoubleFromJson(data['statement_footer'], 'balance');
 
   final List<LoanStatementRow> statementRows = [];
 
@@ -223,17 +276,28 @@ LoanStatementModel getLoanStatementModel(dynamic data) {
   if (statementBody.length > 0) {
     for (var statement in statementBody) {
       final description = statement['description'].toString();
-      final date = ParseHelper.formatDate(statement['date'].toString(), "dd-MM-yyyy");
-      double amountPaid = ParseHelper.getDoubleFromJson(statement, 'amount_paid');
-      double remainingBalance = ParseHelper.getDoubleFromJson(statement, 'balance');
+      final date =
+          ParseHelper.formatDate(statement['date'].toString(), "dd-MM-yyyy");
+      double amountPaid =
+          ParseHelper.getDoubleFromJson(statement, 'amount_paid');
+      double remainingBalance =
+          ParseHelper.getDoubleFromJson(statement, 'balance');
 
-      final statementRow = LoanStatementRow(type: description, paid: amountPaid, balance: remainingBalance, date: date);
+      final statementRow = LoanStatementRow(
+          type: description,
+          paid: amountPaid,
+          balance: remainingBalance,
+          date: date);
       statementRows.add(statementRow);
     }
   }
 
   return LoanStatementModel(
-      statementRows: statementRows, lumpSum: lumpSum, paid: paid, balance: balance, description: loanDescription);
+      statementRows: statementRows,
+      lumpSum: lumpSum,
+      paid: paid,
+      balance: balance,
+      description: loanDescription);
 }
 
 List<Deposit> getDepositList(List<dynamic> data) {
@@ -336,7 +400,8 @@ List<WithdrawalRequest> getWithdrawalRequests(List<dynamic> data) {
       int isOwner = ParseHelper.getIntFromJson(withdrawal, "is_owner");
       String recipient = withdrawal["recipient"].toString();
       int hasResponse = ParseHelper.getIntFromJson(withdrawal, "has_responded");
-      int responseStatus = ParseHelper.getIntFromJson(withdrawal, "response_status");
+      int responseStatus =
+          ParseHelper.getIntFromJson(withdrawal, "response_status");
       String description = withdrawal["description"].toString();
 
       final withdrawalItem = WithdrawalRequest(

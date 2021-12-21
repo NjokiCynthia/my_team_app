@@ -89,6 +89,92 @@ class StatementBody extends StatelessWidget {
   }
 }
 
+class MemberStatementBody extends StatelessWidget {
+  final ContributionStatementRow row;
+  const MemberStatementBody({
+    Key key,
+    @required this.row,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    return Container(
+      height: 50.0,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: 150.0,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                customTitle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  text: row.date,
+                  color: Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  textAlign: TextAlign.end,
+                ),
+                customTitle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  text: '${row.title}',
+                  color: Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  textAlign: TextAlign.end,
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.72,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                customTitle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  text: 
+                      currencyFormat.format(row.payable),
+                  color: Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  textAlign: TextAlign.end,
+                ),
+                customTitle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  text: 
+                      currencyFormat.format(row.amount),
+                  color: Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  textAlign: TextAlign.end,
+                ),
+                customTitle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  text:
+                      currencyFormat.format(row.balance),
+                  color: Theme.of(context)
+                      // ignore: deprecated_member_use
+                      .textSelectionHandleColor,
+                  textAlign: TextAlign.end,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class StatementHeader extends StatelessWidget {
   const StatementHeader({
     Key key,

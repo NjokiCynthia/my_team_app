@@ -149,6 +149,37 @@ class _MemberContributionStatementState
                       : Color(0xffededfe),
                   child: Column(
                     children: <Widget>[
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            subtitle1(
+                                text: "Contribution Statement for:  ",
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                                textAlign: TextAlign.start),
+                            subtitle1(
+                                text: widget.memberName,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                                textAlign: TextAlign.start),
+                            // customTitle(
+                            //     text: widget.memberName,
+                            //     color: Theme.of(context)
+                            //         // ignore: deprecated_member_use
+                            //         .textSelectionHandleColor,
+                            //     fontSize: 14,
+                            //     fontWeight: FontWeight.w500,
+                            //     textAlign: TextAlign.start),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,60 +187,67 @@ class _MemberContributionStatementState
                           Container(
                             width: MediaQuery.of(context).size.width / 2,
                             child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                heading2(
-                                    text: "Total Contibution",
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
-                                    textAlign: TextAlign.start),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
-                                    subtitle2(
-                                        text: "Total amount due ",
+                                    heading2(
+                                        text: "Total Contibution",
                                         color: Theme.of(context)
                                             // ignore: deprecated_member_use
                                             .textSelectionHandleColor,
                                         textAlign: TextAlign.start),
-                                    customTitle(
-                                        text: groupObject.groupCurrency +
-                                            " " +
-                                            currencyFormat.format(_totalDue),
-                                        color: Theme.of(context)
-                                            // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        textAlign: TextAlign.start)
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: <Widget>[
-                                    subtitle2(
-                                        text: "Balance ",
-                                        color: Theme.of(context)
-                                            // ignore: deprecated_member_use
-                                            .textSelectionHandleColor,
-                                        textAlign: TextAlign.start),
-                                    customTitle(
-                                      text: groupObject.groupCurrency +
-                                          " " +
-                                          currencyFormat.format(_balance),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500,
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                      textAlign: TextAlign.start,
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        subtitle2(
+                                            text: "Total amount due ",
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        customTitle(
+                                            text: groupObject.groupCurrency +
+                                                " " +
+                                                currencyFormat
+                                                    .format(_totalDue),
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            textAlign: TextAlign.start)
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: <Widget>[
+                                        subtitle2(
+                                            text: "Balance ",
+                                            color: Theme.of(context)
+                                                // ignore: deprecated_member_use
+                                                .textSelectionHandleColor,
+                                            textAlign: TextAlign.start),
+                                        customTitle(
+                                          text: groupObject.groupCurrency +
+                                              " " +
+                                              currencyFormat.format(_balance),
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w500,
+                                          color: Theme.of(context)
+                                              // ignore: deprecated_member_use
+                                              .textSelectionHandleColor,
+                                          textAlign: TextAlign.start,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -222,7 +260,7 @@ class _MemberContributionStatementState
                                   currencyFormat.format(_totalContributions),
                               // ignore: deprecated_member_use
                               color: Theme.of(context).textSelectionHandleColor,
-                              textAlign: TextAlign.start)
+                              textAlign: TextAlign.start),
                         ],
                       ),
                       SizedBox(

@@ -11,9 +11,9 @@ import 'package:path_provider/path_provider.dart' as syspaths;
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomHelper {
-  static final String _flavor =  Config.APP_FLAVOR.toLowerCase();
-  
-  static final String baseUrl =  _getBaseUrl();
+  static final String _flavor = Config.APP_FLAVOR.toLowerCase();
+
+  static final String baseUrl = _getBaseUrl();
   static const String chamasoftProdUrl = "https://app.chamasoft.com";
   static const String chamasoftUatUrl = "https://uat.chamasoft.com";
   static const String EazzychamaUatUrl = "https://app.eazzychamademo.com";
@@ -22,21 +22,20 @@ class CustomHelper {
   static const String EazzyclubProdUrl = "https://app.eazzyclub.co.ug";
   static final String imageUrl = baseUrl + "/uploads/groups/";
 
-  static  String _getBaseUrl() {
+  static String _getBaseUrl() {
     String _url = chamasoftUatUrl;
     print("the flavor $_flavor");
-    if(_flavor.contains("eazzyclub"))
+    if (_flavor.contains("eazzyclub"))
       _url = EazzyclubProdUrl;
-    else if(_flavor.contains("eazzychamadev"))
+    else if (_flavor.contains("eazzychamadev"))
       _url = EazzychamaProdUrl;
-    else if(_flavor.contains("eazzykikundi"))
+    else if (_flavor.contains("eazzykikundi"))
       _url = EazzykikundiProdUrl;
-    else if(_flavor.contains("eazzychama"))
-     _url = EazzychamaUatUrl;   
-    else if(_flavor.contains("chamasoftdev"))
+    else if (_flavor.contains("eazzychama"))
+      _url = EazzychamaUatUrl;
+    else if (_flavor.contains("chamasoftdev"))
       _url = chamasoftUatUrl;
-    else if(_flavor.contains("chamasoft"))
-      _url = chamasoftProdUrl;
+    else if (_flavor.contains("chamasoft")) _url = chamasoftProdUrl;
     return _url;
   }
 
@@ -49,7 +48,14 @@ class CustomHelper {
       return false;
   }
 
-  static String getInitials(String name) => name.isNotEmpty ? name.trim().split(' ').map((l) => l.length>1?l[0]:" - ").take(2).join(): '';
+  static String getInitials(String name) => name.isNotEmpty
+      ? name
+          .trim()
+          .split(' ')
+          .map((l) => l.length > 1 ? l[0] : " - ")
+          .take(2)
+          .join()
+      : '';
 
   static bool validEmail(String email) {
     Pattern pattern =

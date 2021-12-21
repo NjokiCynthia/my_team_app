@@ -3,10 +3,8 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
-import 'package:chamasoft/screens/chamasoft/reports/member/member-contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/member-fine-statement.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/member_contribution_statement.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -31,7 +29,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   bool _isInit = true;
-  bool _isLoading = true; 
+  bool _isLoading = true;
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -52,13 +50,13 @@ class _MemeberSatementState extends State<MemeberSatement> {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
     } on CustomException catch (error) {
-      // StatusHandler().handleStatus(
-      //     context: context,
-      //     error: error,
-      //     callback: () {
-      //       _fetchMembers(context);
-      //     },
-      //     scaffoldState: _scaffoldKey.currentState);
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchMembers(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
   }
 
@@ -173,6 +171,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
                                 child: ListView.builder(
                                     itemBuilder: (context, index) {
                                       Member member = _member[index];
+                                      
                                       return filter == null || filter == ""
                                           ? MemberCard(
                                               member: member,
@@ -285,7 +284,7 @@ class MemberCard extends StatelessWidget {
                               SizedBox(
                                 height: 10.0,
                               ),
-                              heading2(
+                              heading3(
                                 text: member.name,
                                 // fontSize: 16.0,
                                 // ignore: deprecated_member_use
@@ -370,7 +369,7 @@ class MemberCard extends StatelessWidget {
                                                                 memberName:
                                                                     member.name,
                                                                 memberId:
-                                                                    member.id),
+                                                                    member.id, memberPhoto: member.avatar, memberIndentity: member.identity),
                                                       ))),
                                             ],
                                           )
@@ -400,9 +399,9 @@ class MemberCard extends StatelessWidget {
                                                   size: 14.0,
                                                   spacing: 2.0,
                                                   color: Colors.red,
-                                                  action: () => Navigator.of(
-                                                          context)
-                                                      .push(
+                                                  action: () =>
+                                                      Navigator.of(context)
+                                                          .push(
                                                               MaterialPageRoute(
                                                         builder: (BuildContext
                                                                 context) =>

@@ -1,5 +1,6 @@
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -12,8 +13,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class MemberFineStatement extends StatefulWidget {
-    final String memberNames, memberIds;
-  const MemberFineStatement({ Key key, this.memberIds, this.memberNames }) : super(key: key);
+  final String memberNames, memberIds;
+  const MemberFineStatement({Key key, this.memberIds, this.memberNames})
+      : super(key: key);
 
   @override
   _MemberFineStatementState createState() => _MemberFineStatementState();
@@ -44,7 +46,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
   Future<void> _fetchMemberfineStatement(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false)
-          .fetchMemberContributionStatement(memberId: widget.memberIds);
+          .fetchMemberFineStatement(memberId: widget.memberIds);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -116,9 +118,9 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
     }
     super.didChangeDependencies();
   }
+
   @override
   Widget build(BuildContext context) {
-
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
@@ -144,6 +146,37 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                       : Color(0xffededfe),
                   child: Column(
                     children: <Widget>[
+                      Center(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            subtitle1(
+                                text: "Fine Statement for:  ",
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                                textAlign: TextAlign.start),
+                            subtitle1(
+                                text: widget.memberNames,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                                textAlign: TextAlign.start),
+                            // customTitle(
+                            //     text: widget.memberName,
+                            //     color: Theme.of(context)
+                            //         // ignore: deprecated_member_use
+                            //         .textSelectionHandleColor,
+                            //     fontSize: 14,
+                            //     fontWeight: FontWeight.w500,
+                            //     textAlign: TextAlign.start),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -154,7 +187,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 heading2(
-                                    text: "Total Contibution",
+                                    text: "Total Fine Paid",
                                     color: Theme.of(context)
                                         // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
@@ -301,14 +334,8 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
                             color: Colors.blue[400],
                             iconData: LineAwesomeIcons.file_text,
                             text:
-                                "There are no statements for ${widget.memberNames}"))
+                                "There are no Fine statements for ${widget.memberNames}"))
               ],
             )));
-
-
-     }
-
   }
-
-StatusHandler() {
 }
