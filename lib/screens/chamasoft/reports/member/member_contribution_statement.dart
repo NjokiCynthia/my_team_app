@@ -42,6 +42,8 @@ class _MemberContributionStatementState
   String _email, _phone, _role;
   List<ContributionStatementRow> _statements = [];
   ContributionStatementModel _contributionStatementModel;
+  bool _hasMoreData = false;
+  bool _forceFetch = false;
   //ContributionStatementRow _contributionStatementRow;
 
   double _amount, _payable, _singleBalance;
@@ -60,6 +62,8 @@ class _MemberContributionStatementState
 
   Future<void> _fetchMemberStatement(BuildContext context) async {
     try {
+      int _length = _statements.length;
+      if (_forceFetch) _length = 0;
       await Provider.of<Groups>(context, listen: false)
           .fetchMemberContributionStatement(memberId: widget.memberId);
     } on CustomException catch (error) {
@@ -111,6 +115,10 @@ class _MemberContributionStatementState
 
     _fetchMemberStatement(context).then((_) {
       if (context != null) {
+        _contributionStatementModel =
+            Provider.of<Groups>(context, listen: false)
+                .getContributionStatements;
+
         setState(() {
           _isLoading = false;
           if (_contributionStatementModel != null) {
@@ -231,56 +239,69 @@ class _MemberContributionStatementState
                   ),
                   Expanded(
                     flex: 1,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        heading3(
-                          text: widget.memberName,
-                          // fontSize: 16.0,
-                          // ignore: deprecated_member_use
-                          color:
-                              // ignore: deprecated_member_use
-                              Theme.of(context).textSelectionHandleColor,
-                          textAlign: TextAlign.start,
-                        ),
-                        SizedBox(
-                          height: 3.0,
-                        ),
-                        customTitle(
-                          text: _role != null ? _role : '--',
-                          textAlign: TextAlign.start,
-                          fontSize: 16.0,
-                          // ignore: deprecated_member_use
-                          color:
-                              // ignore: deprecated_member_use
-                              Theme.of(context).textSelectionHandleColor,
-                        ),
-                        SizedBox(
-                          height: 10.0,
-                        ),
-                        subtitle2(
-                          text: _phone != null ? _phone : '--',
-                          textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
-                          color:
-                              // ignore: deprecated_member_use
-                              Theme.of(context).textSelectionHandleColor,
-                        ),
-                        SizedBox(
-                          height: 3.0,
-                        ),
-                        subtitle2(
-                          text: _email != null ? _email : '--',
-                          textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
-                          color:
-                              // ignore: deprecated_member_use
-                              Theme.of(context).textSelectionHandleColor,
-                        )
-                      ],
+                    child: NotificationListener<ScrollNotification>(
+                      onNotification: (ScrollNotification scrollInfo) {
+                        if (!_isLoading &&
+                            scrollInfo.metrics.pixels ==
+                                scrollInfo.metrics.maxScrollExtent &&
+                            _hasMoreData) {
+                          // ignore: todo
+                          //TODO check if has more data before fetching again
+                          _fetchData();
+                        }
+                        return true;
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          heading3(
+                            text: widget.memberName,
+                            // fontSize: 16.0,
+                            // ignore: deprecated_member_use
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start,
+                          ),
+                          SizedBox(
+                            height: 3.0,
+                          ),
+                          customTitle(
+                            text: _role != null ? _role : '--',
+                            textAlign: TextAlign.start,
+                            fontSize: 16.0,
+                            // ignore: deprecated_member_use
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor,
+                          ),
+                          SizedBox(
+                            height: 10.0,
+                          ),
+                          subtitle2(
+                            text: _phone != null ? _phone : '--',
+                            textAlign: TextAlign.start,
+                            // ignore: deprecated_member_use
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor,
+                          ),
+                          SizedBox(
+                            height: 3.0,
+                          ),
+                          subtitle2(
+                            text: _email != null ? _email : '--',
+                            textAlign: TextAlign.start,
+                            // ignore: deprecated_member_use
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -421,38 +442,49 @@ class _MemberContributionStatementState
             ),
             Expanded(
                 child: _statements.length > 0
-                    ? ListView.builder(
-                        controller: _scrollController,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          ContributionStatementRow row = _statements[index];
-
-                          return InkWell(
-                            child: MemberStatementBody(row: row),
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          new MemberDetailStatement(
-                                              groupName: groupObject.groupName,
-                                              groupEmail:
-                                                  groupObject.groupEmail,
-                                              groupPhone:
-                                                  groupObject.groupPhone,
-                                              // amount: _amount,
-                                              // payable: _payable,
-                                              // singleBalance: _singleBalance,
-
-                                              // date: _date,
-                                              // title: _title,
-                                              // description: _description,
-                                              memberName: widget.memberName,
-                                              group: groupObject)));
-                            },
-                          );
+                    ? NotificationListener<ScrollNotification>(
+                        onNotification: (ScrollNotification scrollInfo) {
+                          if (!_isLoading &&
+                              scrollInfo.metrics.pixels ==
+                                  scrollInfo.metrics.maxScrollExtent) {
+                            _fetchData();
+                          }
+                          return true;
                         },
-                        itemCount: _statements.length,
+                        child: ListView.builder(
+                          controller: _scrollController,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            ContributionStatementRow row = _statements[index];
+
+                            return InkWell(
+                              child: MemberStatementBody(row: row),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            new MemberDetailStatement(
+                                                groupName:
+                                                    groupObject.groupName,
+                                                groupEmail:
+                                                    groupObject.groupEmail,
+                                                groupPhone:
+                                                    groupObject.groupPhone,
+                                                // amount: _amount,
+                                                // payable: _payable,
+                                                // singleBalance: _singleBalance,
+
+                                                // date: _date,
+                                                // title: _title,
+                                                // description: _description,
+                                                memberName: widget.memberName,
+                                                group: groupObject)));
+                              },
+                            );
+                          },
+                          itemCount: _statements.length,
+                        ),
                       )
                     : emptyList(
                         color: Colors.blue[400],
