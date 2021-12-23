@@ -4,6 +4,7 @@ import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/detail-member-statement.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -14,14 +15,13 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class MemberContributionStatement extends StatefulWidget {
-  final String memberName, memberId, memberPhoto, memberIndentity;
-  const MemberContributionStatement(
-      {Key key,
-      this.memberName,
-      this.memberId,
-      this.memberPhoto,
-      this.memberIndentity})
-      : super(key: key);
+  final String memberName, memberId, memberPhoto;
+  const MemberContributionStatement({
+    Key key,
+    this.memberName,
+    this.memberId,
+    this.memberPhoto,
+  }) : super(key: key);
 
   @override
   _MemberContributionStatementState createState() =>
@@ -42,6 +42,11 @@ class _MemberContributionStatementState
   String _email, _phone, _role;
   List<ContributionStatementRow> _statements = [];
   ContributionStatementModel _contributionStatementModel;
+  //ContributionStatementRow _contributionStatementRow;
+
+  double _amount, _payable, _singleBalance;
+  //String _date, _title, _description;
+
   // Member member;
 
   void _scrollListener() {
@@ -84,9 +89,24 @@ class _MemberContributionStatementState
       _statementAsAt = _contributionStatementModel.statementAsAt;
       _statementFrom = _contributionStatementModel.statementFrom;
       _statementTo = _contributionStatementModel.statementTo;
+
       _role = _contributionStatementModel.role;
       _phone = _contributionStatementModel.phone;
       _email = _contributionStatementModel.email;
+
+      print('Members Statement :');
+
+      print('Members Statement is : ${_statements.toString()}');
+      print('Total Due : $_totalDue');
+      print('Total Contributions : $_totalContributions');
+      print('Total balance : $_balance');
+
+      // _payable = _contributionStatementRow.payable;
+      // _singleBalance = _contributionStatementRow.balance;
+
+      // _date = _contributionStatementRow.date;
+      // _title = _contributionStatementRow.title;
+      // _description = _contributionStatementRow.description;
     }
 
     _fetchMemberStatement(context).then((_) {
@@ -105,6 +125,21 @@ class _MemberContributionStatementState
             _role = _contributionStatementModel.role;
             _phone = _contributionStatementModel.phone;
             _email = _contributionStatementModel.email;
+
+            print('Members Statement:');
+
+            print('Members Statement is  ii : ${_statements.toString()}');
+            print('Total Due II : $_totalDue');
+            print('Total Contributions II : $_totalContributions');
+            print('Total balance II : $_balance');
+
+            // _amount = _contributionStatementRow.amount;
+            // _payable = _contributionStatementRow.payable;
+            // _singleBalance = _contributionStatementRow.balance;
+
+            // _date = _contributionStatementRow.date;
+            // _title = _contributionStatementRow.title;
+            // _description = _contributionStatementRow.description;
           }
         });
       }
@@ -212,10 +247,10 @@ class _MemberContributionStatementState
                           textAlign: TextAlign.start,
                         ),
                         SizedBox(
-                          height: 10.0,
+                          height: 3.0,
                         ),
                         customTitle(
-                          text: _role,
+                          text: _role != null ? _role : '--',
                           textAlign: TextAlign.start,
                           fontSize: 16.0,
                           // ignore: deprecated_member_use
@@ -227,7 +262,7 @@ class _MemberContributionStatementState
                           height: 10.0,
                         ),
                         subtitle2(
-                          text: _phone,
+                          text: _phone != null ? _phone : '--',
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
                           color:
@@ -235,10 +270,10 @@ class _MemberContributionStatementState
                               Theme.of(context).textSelectionHandleColor,
                         ),
                         SizedBox(
-                          height: 10.0,
+                          height: 3.0,
                         ),
                         subtitle2(
-                          text: _email,
+                          text: _email != null ? _email : '--',
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
                           color:
@@ -272,6 +307,7 @@ class _MemberContributionStatementState
                     children: <Widget>[
                       customTitle(
                         text: "Statement as At",
+                        fontWeight: FontWeight.w700,
                         color:
                             // ignore: deprecated_member_use
                             Theme.of(context).textSelectionHandleColor,
@@ -292,8 +328,9 @@ class _MemberContributionStatementState
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: <Widget>[
-                        subtitle2(
+                        customTitle(
                           text: "Statement Period",
+                          fontWeight: FontWeight.w700,
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
                               .textSelectionHandleColor,
@@ -319,66 +356,67 @@ class _MemberContributionStatementState
             SizedBox(
               height: 10,
             ),
-            Container(
-              color: Theme.of(context).backgroundColor,
-              
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 180.0,
-                    child: Column(
-                      //mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        customTitle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          text: 'Date',
-                          color: Theme.of(context)
-                              // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                color: (themeChangeProvider.darkTheme)
+                    ? Color(0xffededfe)
+                    : Theme.of(context).primaryColor,
+                //color: Theme.of(context).primaryColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 150.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          customTitle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            text: 'Date',
+                            color: Colors.white,
+                            textAlign: TextAlign.end,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.72,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        customTitle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          text: 'Due (${groupObject.groupCurrency})',
-                          color: Theme.of(context)
-                              // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
-                        customTitle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          text: 'Paid (${groupObject.groupCurrency})',
-                          color: Theme.of(context)
-                              // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
-                        customTitle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          text: 'Bal (${groupObject.groupCurrency})',
-                          color: Theme.of(context)
-                              // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.71,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SizedBox(
+                            width: 2,
+                          ),
+                          customTitle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            text: 'Due (${groupObject.groupCurrency})',
+                            color: Colors.white,
+                            textAlign: TextAlign.start,
+                          ),
+                          customTitle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            text: 'Paid (${groupObject.groupCurrency})',
+                            color: Colors.white,
+                            textAlign: TextAlign.start,
+                          ),
+                          customTitle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            text: 'Bal (${groupObject.groupCurrency})',
+                            color: Colors.white,
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             Expanded(
@@ -388,11 +426,31 @@ class _MemberContributionStatementState
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           ContributionStatementRow row = _statements[index];
-                          // if (row.isHeader) {
-                          // return StatementHeader(row: row);
-                          //  } else {
-                          return MemberStatementBody(row: row);
-                          // }
+
+                          return InkWell(
+                            child: MemberStatementBody(row: row),
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          new MemberDetailStatement(
+                                              groupName: groupObject.groupName,
+                                              groupEmail:
+                                                  groupObject.groupEmail,
+                                              groupPhone:
+                                                  groupObject.groupPhone,
+                                              // amount: _amount,
+                                              // payable: _payable,
+                                              // singleBalance: _singleBalance,
+
+                                              // date: _date,
+                                              // title: _title,
+                                              // description: _description,
+                                              memberName: widget.memberName,
+                                              group: groupObject)));
+                            },
+                          );
                         },
                         itemCount: _statements.length,
                       )
@@ -404,69 +462,71 @@ class _MemberContributionStatementState
             SizedBox(
               height: 10,
             ),
-            Container(
-              color: Theme.of(context).backgroundColor,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 150.0,
-                    child: Column(
-                      children: [
-                        customTitle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w900,
-                          text: 'Total',
-                          color: Theme.of(context)
-                              // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Container(
+                color: Theme.of(context).primaryColor,
+                padding: EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 150.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          customTitle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w900,
+                            text: 'Total',
+                            color: Colors.white,
+                            textAlign: TextAlign.end,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.72,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        customTitle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          text: groupObject.groupCurrency +
-                              " " +
-                              currencyFormat.format(_totalDue),
-                          color: Theme.of(context)
-                              // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
-                        customTitle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          text: groupObject.groupCurrency +
-                              " " +
-                              currencyFormat.format(_totalContributions),
-                          color: Theme.of(context)
-                              // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
-                        customTitle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w800,
-                          text: groupObject.groupCurrency +
-                              " " +
-                              currencyFormat.format(_balance),
-                          color: Theme.of(context)
-                              // ignore: deprecated_member_use
-                              .textSelectionHandleColor,
-                          textAlign: TextAlign.end,
-                        ),
-                      ],
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.71,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        // crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 2,
+                          ),
+                          customTitle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            text: groupObject.groupCurrency +
+                                " " +
+                                currencyFormat.format(_totalDue),
+                            color: Colors.white,
+                            textAlign: TextAlign.end,
+                          ),
+                          customTitle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            text: groupObject.groupCurrency +
+                                " " +
+                                currencyFormat.format(_totalContributions),
+                            color: Colors.white,
+                            textAlign: TextAlign.end,
+                          ),
+                          customTitle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w800,
+                            text: groupObject.groupCurrency +
+                                " " +
+                                currencyFormat.format(_balance),
+                            color: Colors.white,
+                            textAlign: TextAlign.end,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
             SizedBox(

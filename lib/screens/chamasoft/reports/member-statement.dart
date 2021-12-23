@@ -36,6 +36,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
   List<Member> _member = [];
   bool _hasMoreData = false;
   String filter;
+  Member member;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -171,7 +172,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
                                 child: ListView.builder(
                                     itemBuilder: (context, index) {
                                       Member member = _member[index];
-                                      
+
                                       return filter == null || filter == ""
                                           ? MemberCard(
                                               member: member,
@@ -369,7 +370,10 @@ class MemberCard extends StatelessWidget {
                                                                 memberName:
                                                                     member.name,
                                                                 memberId:
-                                                                    member.id, memberPhoto: member.avatar, memberIndentity: member.identity),
+                                                                    member.id,
+                                                                memberPhoto:
+                                                                    member
+                                                                        .avatar),
                                                       ))),
                                             ],
                                           )

@@ -100,76 +100,83 @@ class MemberStatementBody extends StatelessWidget {
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    return Container(
-      height: 50.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            width: 150.0,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                customTitle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  text: row.date,
-                  color: Theme.of(context)
-                      // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
-                  textAlign: TextAlign.end,
-                ),
-                customTitle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  text: '${row.title}',
-                  color: Theme.of(context)
-                      // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
-                  textAlign: TextAlign.end,
-                ),
-              ],
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Container(
+        height: 50.0,
+        padding: EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: 150.0,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  customTitle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    text: row.date,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                    // textAlign: TextAlign.end,
+                  ),
+                  Expanded(
+                    child: customTitle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      text: '${row.title}',
+                      color: Theme.of(context)
+                          // ignore: deprecated_member_use
+                          .textSelectionHandleColor,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.72,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                customTitle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  text: 
-                      currencyFormat.format(row.payable),
-                  color: Theme.of(context)
-                      // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
-                  textAlign: TextAlign.end,
-                ),
-                customTitle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  text: 
-                      currencyFormat.format(row.amount),
-                  color: Theme.of(context)
-                      // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
-                  textAlign: TextAlign.end,
-                ),
-                customTitle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  text:
-                      currencyFormat.format(row.balance),
-                  color: Theme.of(context)
-                      // ignore: deprecated_member_use
-                      .textSelectionHandleColor,
-                  textAlign: TextAlign.end,
-                ),
-              ],
+            Container(
+              width: MediaQuery.of(context).size.width * 0.72,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: 3,
+                  ),
+                  customTitle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    text: currencyFormat.format(row.payable),
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                    textAlign: TextAlign.start,
+                  ),
+                  customTitle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      text: currencyFormat.format(row.amount),
+                      color: Theme.of(context)
+                          // ignore: deprecated_member_use
+                          .textSelectionHandleColor,
+                      textAlign: TextAlign.center),
+                  customTitle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    text: currencyFormat.format(row.balance),
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                    textAlign: TextAlign.start,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
