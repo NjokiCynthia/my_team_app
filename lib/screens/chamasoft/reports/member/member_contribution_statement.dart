@@ -191,7 +191,7 @@ class _MemberContributionStatementState
         child: Column(
           children: [
             Container(
-              padding: EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(8.0),
               color: (themeChangeProvider.darkTheme)
                   ? Colors.blueGrey[800]
                   : Color(0xffededfe),
@@ -201,8 +201,8 @@ class _MemberContributionStatementState
                 children: <Widget>[
                   widget.memberPhoto != null
                       ? Container(
-                          height: 100,
-                          width: 100,
+                          height: 70,
+                          width: 75,
                           child: new CachedNetworkImage(
                             imageUrl: widget.memberPhoto,
                             placeholder: (context, url) => const CircleAvatar(
@@ -320,6 +320,7 @@ class _MemberContributionStatementState
                       customTitle(
                         text: "Statement as At",
                         fontWeight: FontWeight.w700,
+                        fontSize: 14,
                         color:
                             // ignore: deprecated_member_use
                             Theme.of(context).textSelectionHandleColor,
@@ -343,6 +344,7 @@ class _MemberContributionStatementState
                         customTitle(
                           text: "Statement Period",
                           fontWeight: FontWeight.w700,
+                          fontSize: 14,
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
                               .textSelectionHandleColor,
