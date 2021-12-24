@@ -98,8 +98,7 @@ class MemberStatementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final groupObject =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
+   
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Container(

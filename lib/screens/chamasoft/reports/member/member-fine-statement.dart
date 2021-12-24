@@ -142,7 +142,7 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
           context: context,
-          title: "Member Fine Statements",
+          title: "Fine Statements",
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),

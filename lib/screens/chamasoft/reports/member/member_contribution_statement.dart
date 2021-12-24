@@ -43,13 +43,6 @@ class _MemberContributionStatementState
   List<ContributionStatementRow> _statements = [];
   ContributionStatementModel _contributionStatementModel;
   bool _hasMoreData = false;
-  bool _forceFetch = false;
-  //ContributionStatementRow _contributionStatementRow;
-
-  double _amount, _payable, _singleBalance;
-  //String _date, _title, _description;
-
-  // Member member;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -62,8 +55,6 @@ class _MemberContributionStatementState
 
   Future<void> _fetchMemberStatement(BuildContext context) async {
     try {
-      int _length = _statements.length;
-      if (_forceFetch) _length = 0;
       await Provider.of<Groups>(context, listen: false)
           .fetchMemberContributionStatement(memberId: widget.memberId);
     } on CustomException catch (error) {
@@ -187,7 +178,7 @@ class _MemberContributionStatementState
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
           context: context,
-          title: "Member Statements",
+          title: "Contribution Statements",
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),
