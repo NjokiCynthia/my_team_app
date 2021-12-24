@@ -300,7 +300,7 @@ class MemberCard extends StatelessWidget {
                               customTitle(
                                 text: member.identity,
                                 textAlign: TextAlign.start,
-                                fontSize: 16.0,
+                                fontSize: 12.0,
                                 // ignore: deprecated_member_use
                                 color:
                                     // ignore: deprecated_member_use
@@ -356,10 +356,9 @@ class MemberCard extends StatelessWidget {
                                               plainButtonWithArrow(
                                                   text:
                                                       "Contribution Statement",
-                                                  size: 14.0,
-                                                  spacing: 2.0,
+                                                  size: 12.0,
+                                                  spacing: 1.0,
                                                   color: Colors.blue,
-                                                  // iconData: Icons.remove_red_eye,
                                                   action: () =>
                                                       Navigator.of(context)
                                                           .push(
@@ -400,8 +399,8 @@ class MemberCard extends StatelessWidget {
                                             children: <Widget>[
                                               plainButtonWithArrow(
                                                   text: "Fine Statement",
-                                                  size: 14.0,
-                                                  spacing: 2.0,
+                                                  size: 12.0,
+                                                  spacing: 1.0,
                                                   color: Colors.red,
                                                   action: () =>
                                                       Navigator.of(context)
@@ -414,7 +413,9 @@ class MemberCard extends StatelessWidget {
                                                                     member.name,
                                                                 memberIds:
                                                                     member.id,
-                                                                    memberPhoto: member.avatar),
+                                                                memberPhoto:
+                                                                    member
+                                                                        .avatar),
                                                       ))),
                                             ],
                                           )
