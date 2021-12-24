@@ -413,7 +413,8 @@ class MemberCard extends StatelessWidget {
                                                                 memberNames:
                                                                     member.name,
                                                                 memberIds:
-                                                                    member.id),
+                                                                    member.id,
+                                                                    memberPhoto: member.avatar),
                                                       ))),
                                             ],
                                           )

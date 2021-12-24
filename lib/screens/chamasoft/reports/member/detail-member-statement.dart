@@ -8,13 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 class MemberDetailStatement extends StatefulWidget {
-  final String groupName,
-      groupEmail,
-      groupPhone,
-      date,
-      title,
-      description,
-      memberName;
+  final String groupName, groupEmail, groupPhone, date, title, description;
+  final double singleBalance, payable, amount;
+  final String memberName, recieptTitle;
   final Group group;
   //final double amount, payable;
   //singleBalance;
@@ -23,12 +19,13 @@ class MemberDetailStatement extends StatefulWidget {
       this.groupName,
       this.groupEmail,
       this.groupPhone,
-      //  this.amount,
-      // this.payable,
-      //   this.singleBalance,
+      this.payable,
+      this.singleBalance,
+      this.amount,
       this.date,
       this.title,
       this.group,
+      this.recieptTitle,
       this.memberName,
       this.description})
       : super(key: key);
@@ -46,7 +43,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
     return Scaffold(
       appBar: secondaryPageAppbar(
           context: context,
-          title: "Contribution Receipts",
+          title: "${widget.recieptTitle} Receipts",
           action: () => Navigator.of(context).pop(),
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left),
@@ -63,7 +60,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
             children: [
               Center(
                 child: Container(
-                  width: 300.0,
+                  width: 308.0,
                   // height: 400.0,
                   child: Card(
                     elevation: 0.0,
@@ -81,11 +78,14 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                             height: 10,
                           ),
                           // ignore: deprecated_member_use
-                          heading2(
-                              text: 'Kennedy Mwangi',
-                              color:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: heading2(
+                                text: widget.title,
+                                color:
+                                    // ignore: deprecated_member_use
+                                    Theme.of(context).textSelectionHandleColor),
+                          ),
                           Image.asset(
                             'assets/icon/main.png',
                             width: 80.0,
@@ -169,7 +169,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                 text: 'Paid: ' +
                                     widget.group.groupCurrency +
                                     " " +
-                                    currencyFormat.format(3000),
+                                    currencyFormat.format(widget.amount),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context)
@@ -180,10 +180,10 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                 height: 5.0,
                               ),
                               customTitleWithWrap(
-                                text: 'Due: KES 750' +
+                                text: 'Due: ' +
                                     widget.group.groupCurrency +
                                     " " +
-                                    currencyFormat.format(payable),
+                                    currencyFormat.format(widget.payable),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context)
@@ -194,10 +194,10 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                 height: 5.0,
                               ),
                               customTitleWithWrap(
-                                text: 'Paid: KES 5,000' +
+                                text: 'Bal: ' +
                                     widget.group.groupCurrency +
                                     " " +
-                                    currencyFormat.format(singleBalance.abs()),
+                                    currencyFormat.format(widget.singleBalance),
                                 fontSize: 18,
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context)
@@ -208,8 +208,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                 height: 5.0,
                               ),
                               customTitleWithWrap(
-                                text: 'Date: 12-19-2021',
-                                //+ widget.date,
+                                text: 'Date: ' + widget.date,
                                 fontSize: 18,
                                 fontWeight: FontWeight.w300,
                                 color: Theme.of(context)
@@ -223,7 +222,8 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                           Padding(
                             padding: EdgeInsets.all(10.0),
                             child: subtitle2(
-                                text: " ",
+                                text:
+                                    "${widget.description} for ${widget.title.toLowerCase()}",
                                 fontSize: 14.0,
                                 color:
                                     // ignore: deprecated_member_use
@@ -232,6 +232,9 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                         .textSelectionHandleColor,
                                 textAlign: TextAlign.center),
                           ),
+                          SizedBox(
+                            height: 10,
+                          )
                         ],
                       ),
                     ),

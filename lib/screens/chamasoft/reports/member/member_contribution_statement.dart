@@ -389,7 +389,7 @@ class _MemberContributionStatementState
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      width: 150.0,
+                      width: 100.0,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -471,13 +471,13 @@ class _MemberContributionStatementState
                                                     groupObject.groupEmail,
                                                 groupPhone:
                                                     groupObject.groupPhone,
-                                                // amount: _amount,
-                                                // payable: _payable,
-                                                // singleBalance: _singleBalance,
-
-                                                // date: _date,
-                                                // title: _title,
-                                                // description: _description,
+                                                amount: row.amount,
+                                                payable: row.payable,
+                                                singleBalance: row.balance,
+                                                date: row.date,
+                                                title: row.title,
+                                                recieptTitle: "Contribution",
+                                                description: row.description,
                                                 memberName: widget.memberName,
                                                 group: groupObject)));
                               },
@@ -503,7 +503,7 @@ class _MemberContributionStatementState
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      width: 150.0,
+                      width: 100.0,
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
