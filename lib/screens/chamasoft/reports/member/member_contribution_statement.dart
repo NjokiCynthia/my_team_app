@@ -488,71 +488,75 @@ class _MemberContributionStatementState
             SizedBox(
               height: 10,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                color: Theme.of(context).primaryColor,
-                padding: EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 100.0,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          customTitle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w900,
-                            text: 'Total',
-                            color: Colors.white,
-                            textAlign: TextAlign.end,
-                          ),
-                        ],
+            Container(
+              height: 35.0,
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  color: Theme.of(context).primaryColor,
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        width: 100.0,
+                        height: 18.0,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            customTitle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w900,
+                              text: 'Total',
+                              color: Colors.white,
+                              textAlign: TextAlign.end,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    Container(
-                      height: 18.0,
-                      width: MediaQuery.of(context).size.width * 0.71,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        // crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            width: 2,
-                          ),
-                          customTitle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            text: groupObject.groupCurrency +
-                                " " +
-                                currencyFormat.format(_totalDue),
-                            color: Colors.white,
-                            textAlign: TextAlign.end,
-                          ),
-                          customTitle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            text: groupObject.groupCurrency +
-                                " " +
-                                currencyFormat.format(_totalContributions),
-                            color: Colors.white,
-                            textAlign: TextAlign.end,
-                          ),
-                          customTitle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            text: groupObject.groupCurrency +
-                                " " +
-                                currencyFormat.format(_balance),
-                            color: Colors.white,
-                            textAlign: TextAlign.end,
-                          ),
-                        ],
+                      Container(
+                        height: 18.0,
+                        width: MediaQuery.of(context).size.width * 0.71,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          // crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 2,
+                            ),
+                            customTitle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              text: groupObject.groupCurrency +
+                                  " " +
+                                  currencyFormat.format(_totalDue),
+                              color: Colors.white,
+                              textAlign: TextAlign.end,
+                            ),
+                            customTitle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              text: groupObject.groupCurrency +
+                                  " " +
+                                  currencyFormat.format(_totalContributions),
+                              color: Colors.white,
+                              textAlign: TextAlign.end,
+                            ),
+                            customTitle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              text: groupObject.groupCurrency +
+                                  " " +
+                                  currencyFormat.format(_balance),
+                              color: Colors.white,
+                              textAlign: TextAlign.end,
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

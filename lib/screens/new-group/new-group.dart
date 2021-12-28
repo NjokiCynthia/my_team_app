@@ -127,17 +127,17 @@ class _NewGroupState extends State<NewGroup> {
           goTo(3);
         }
       } else if (currentStep == 3) {
-        if (_data['accounts'].length < 1) {
-          _showSnackbar("You need to setup an account to continue", 6);
-        } else {
-          goTo(4);
-        }
+        // if (_data['accounts'].length < 1) {
+        //   _showSnackbar("You need to setup an account to continue", 6);
+        // } else {
+        goTo(4);
+        // }
       } else if (currentStep == 4) {
-        if (_data['loan_types'].length < 1) {
-          _showSnackbar("You need to setup a loan type to continue", 6);
-        } else {
-          goTo(5);
-        }
+        //if (_data['loan_types'].length < 0) {
+        //  _showSnackbar("You need to setup a loan type to continue", 6);
+        //} else {
+        goTo(5);
+        //}
       } else {
         goTo(currentStep + 1);
       }
