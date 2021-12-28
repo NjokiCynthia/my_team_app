@@ -373,6 +373,7 @@ class _MemberContributionStatementState
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Container(
+                height: 32.0,
                 padding: EdgeInsets.all(8.0),
                 color: (themeChangeProvider.darkTheme)
                     ? Color(0xffededfe)
@@ -512,6 +513,7 @@ class _MemberContributionStatementState
                       ),
                     ),
                     Container(
+                      height: 18.0,
                       width: MediaQuery.of(context).size.width * 0.71,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
