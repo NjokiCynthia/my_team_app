@@ -129,80 +129,78 @@ class _MemeberSatementState extends State<MemeberSatement> {
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextField(
-              decoration: InputDecoration(
-                labelText: "Search Member",
-                prefixIcon: Icon(LineAwesomeIcons.search),
-              ),
-              controller: controller,
-            ),
-            RefreshIndicator(
-                backgroundColor: (themeChangeProvider.darkTheme)
-                    ? Colors.blueGrey[800]
-                    : Colors.white,
-                key: _refreshIndicatorKey,
-                onRefresh: () => _fetchData(),
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: primaryGradient(context),
-                  child: Column(
-                    children: <Widget>[
-                      _isLoading
-                          ? showLinearProgressIndicator()
-                          : SizedBox(
-                              height: 0.0,
-                            ),
-                      Expanded(
-                        child: _member.length > 0
-                            ? NotificationListener<ScrollNotification>(
-                                onNotification:
-                                    (ScrollNotification scrollInfo) {
-                                  if (!_isLoading &&
-                                      scrollInfo.metrics.pixels ==
-                                          scrollInfo.metrics.maxScrollExtent &&
-                                      _hasMoreData) {
-                                    _fetchData();
-                                  }
-                                  return true;
-                                },
-                                child: ListView.builder(
-                                    itemBuilder: (context, index) {
-                                      Member member = _member[index];
-
-                                      return filter == null || filter == ""
-                                          ? MemberCard(
-                                              member: member,
-                                              position: index,
-                                              bodyContext: context,
-                                            )
-                                          : member.name.toLowerCase().contains(
-                                                  filter.toLowerCase())
-                                              ? MemberCard(
-                                                  member: member,
-                                                  position: index,
-                                                  bodyContext: context,
-                                                )
-                                              : Visibility(
-                                                  visible: false,
-                                                  child: new Container());
-                                    },
-                                    itemCount: _member.length),
-                              )
-                            : emptyList(
-                                color: Colors.blue[400],
-                                iconData: LineAwesomeIcons.angle_double_down,
-                                text: "There are no members to display"),
-                      )
-                    ],
+      body: RefreshIndicator(
+          backgroundColor: (themeChangeProvider.darkTheme)
+              ? Colors.blueGrey[800]
+              : Colors.white,
+          key: _refreshIndicatorKey,
+          onRefresh: () => _fetchData(),
+          child: Container(
+            // height: MediaQuery.of(context).size.height,
+            // width: MediaQuery.of(context).size.width,
+            // decoration: primaryGradient(context),
+            decoration: primaryGradient(context),
+            width: double.infinity,
+            height: double.infinity,
+            child: Column(
+              children: <Widget>[
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: "Search Member",
+                    prefixIcon: Icon(LineAwesomeIcons.search),
                   ),
-                )),
-          ],
-        ),
-      ),
+                  controller: controller,
+                ),
+                _isLoading
+                    ? showLinearProgressIndicator()
+                    : SizedBox(
+                        height: 0.0,
+                      ),
+                Expanded(
+                  child: _member.length > 0
+                      ? NotificationListener<ScrollNotification>(
+                          onNotification: (ScrollNotification scrollInfo) {
+                            if (!_isLoading &&
+                                scrollInfo.metrics.pixels ==
+                                    scrollInfo.metrics.maxScrollExtent &&
+                                _hasMoreData) {
+                              _fetchData();
+                            }
+                            return true;
+                          },
+                          child: ListView.builder(
+                              scrollDirection: Axis.vertical,
+                              itemBuilder: (context, index) {
+                                Member member = _member[index];
+
+                                return filter == null || filter == ""
+                                    ? MemberCard(
+                                        member: member,
+                                        position: index,
+                                        bodyContext: context,
+                                      )
+                                    : member.name
+                                            .toLowerCase()
+                                            .contains(filter.toLowerCase())
+                                        ? MemberCard(
+                                            member: member,
+                                            position: index,
+                                            bodyContext: context,
+                                          )
+                                        : Visibility(
+                                            visible: false,
+                                            child: new Container());
+                              },
+                              itemCount: _member.length),
+                        )
+                      : emptyList(
+                          color: Colors.blue[400],
+                          iconData: LineAwesomeIcons.angle_double_down,
+                          text: "There are no members to display"),
+                )
+              ],
+            ),
+          )),
     );
   }
 }
