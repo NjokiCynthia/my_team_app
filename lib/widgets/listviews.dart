@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, duplicate_ignore
+
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-installment.dart';
@@ -98,84 +100,61 @@ class MemberStatementBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-   
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Container(
-        height: 50.0,
-        padding: EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              width: 100.0,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  customTitle(
+    return Container(
+      padding: EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0, bottom: 0.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+            flex: 2,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                customTitle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500,
+                  text: row.date,
+                  color: Theme.of(context).textSelectionHandleColor,
+                ),
+                customTitle2(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
-                    text: row.date,
-                    color: Theme.of(context)
-                        // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    // textAlign: TextAlign.end,
-                  ),
-                  Expanded(
-                    child: customTitle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      text: '${row.title}',
-                      color: Theme.of(context)
-                          // ignore: deprecated_member_use
-                          .textSelectionHandleColor,
-                      textAlign: TextAlign.start,
-                    ),
-                  ),
-                ],
-              ),
+                    text: row.title,
+                    color: Theme.of(context).textSelectionHandleColor,
+                    textAlign: TextAlign.start),
+              ], 
             ),
-            Container(
-              width: MediaQuery.of(context).size.width * 0.72,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: 3,
-                  ),
-                  customTitle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    text: currencyFormat.format(row.payable),
-                    color: Theme.of(context)
+          ),
+          Expanded(
+            flex: 1,
+            child: customTitle(
+                fontSize: 12,
+                text: currencyFormat.format(row.payable),
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.end),
+          ),
+          Expanded(
+            flex: 1,
+            child: customTitle(
+                fontSize: 12,
+                text: currencyFormat.format(row.amount),
+                color: Theme.of(context).textSelectionHandleColor,
+                textAlign: TextAlign.end),
+          ),
+          Expanded(
+            flex: 1,
+            child: customTitle(
+                fontSize: 12,
+                text: currencyFormat.format(row.balance),
+                color: (row.balance > 0)
+                    ? Colors.red
+                    : (row.balance < 0
+                        ? Colors.green
                         // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    textAlign: TextAlign.start,
-                  ),
-                  customTitle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      text: currencyFormat.format(row.amount),
-                      color: Theme.of(context)
-                          // ignore: deprecated_member_use
-                          .textSelectionHandleColor,
-                      textAlign: TextAlign.center),
-                  customTitle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    text: currencyFormat.format(row.balance),
-                    color: Theme.of(context)
-                        // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    textAlign: TextAlign.start,
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+                        : Theme.of(context).textSelectionHandleColor),
+                textAlign: TextAlign.end),
+          ),
+        ],
       ),
     );
   }

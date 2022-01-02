@@ -223,7 +223,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                             padding: EdgeInsets.all(10.0),
                             child: subtitle2(
                                 text:
-                                    "${widget.description} for ${widget.title.toLowerCase()}",
+                                    "${widget.title.toLowerCase()}",
                                 fontSize: 14.0,
                                 color:
                                     // ignore: deprecated_member_use

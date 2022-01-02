@@ -76,7 +76,7 @@ Widget subtitle3(
     text,
     style: TextStyle(
         fontWeight: FontWeight.w400,
-        fontSize: 12.0,
+        fontSize: 13.0,
         color: color,
         fontFamily: 'SegoeUI'),
     textAlign: textAlign,
@@ -120,6 +120,26 @@ Widget customTitle(
     ),
     textAlign: textAlign,
     overflow: TextOverflow.ellipsis,
+  );
+}
+
+Widget customTitle2(
+    {String text,
+    Color color,
+    TextAlign textAlign = TextAlign.center,
+    double fontSize = 16.0,
+    FontWeight fontWeight = FontWeight.w400,
+    String fontFamily = 'SegoeUI'}) {
+  return Text(
+    text,
+    style: TextStyle(
+      fontWeight: fontWeight,
+      fontSize: fontSize,
+      fontFamily: fontFamily,
+      color: color,
+    ),
+    textAlign: textAlign,
+    overflow: TextOverflow.clip,
   );
 }
 

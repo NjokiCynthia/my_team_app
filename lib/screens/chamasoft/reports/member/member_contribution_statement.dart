@@ -39,7 +39,7 @@ class _MemberContributionStatementState
   double _totalDue = 0;
   double _balance = 0;
   String _statementAsAt = '', _statementFrom = '', _statementTo = '';
-  String _email, _phone, _role;
+  String _email, _phone, _role, _memberName;
   List<ContributionStatementRow> _statements = [];
   ContributionStatementModel _contributionStatementModel;
   bool _hasMoreData = false;
@@ -88,20 +88,7 @@ class _MemberContributionStatementState
       _role = _contributionStatementModel.role;
       _phone = _contributionStatementModel.phone;
       _email = _contributionStatementModel.email;
-
-      print('Members Statement :');
-
-      print('Members Statement is : ${_statements.toString()}');
-      print('Total Due : $_totalDue');
-      print('Total Contributions : $_totalContributions');
-      print('Total balance : $_balance');
-
-      // _payable = _contributionStatementRow.payable;
-      // _singleBalance = _contributionStatementRow.balance;
-
-      // _date = _contributionStatementRow.date;
-      // _title = _contributionStatementRow.title;
-      // _description = _contributionStatementRow.description;
+      _memberName = _contributionStatementModel.memberName;
     }
 
     _fetchMemberStatement(context).then((_) {
@@ -124,21 +111,7 @@ class _MemberContributionStatementState
             _role = _contributionStatementModel.role;
             _phone = _contributionStatementModel.phone;
             _email = _contributionStatementModel.email;
-
-            print('Members Statement:');
-
-            print('Members Statement is  ii : ${_statements.toString()}');
-            print('Total Due II : $_totalDue');
-            print('Total Contributions II : $_totalContributions');
-            print('Total balance II : $_balance');
-
-            // _amount = _contributionStatementRow.amount;
-            // _payable = _contributionStatementRow.payable;
-            // _singleBalance = _contributionStatementRow.balance;
-
-            // _date = _contributionStatementRow.date;
-            // _title = _contributionStatementRow.title;
-            // _description = _contributionStatementRow.description;
+            _memberName = _contributionStatementModel.memberName;
           }
         });
       }
@@ -249,7 +222,8 @@ class _MemberContributionStatementState
                             height: 10.0,
                           ),
                           heading3(
-                            text: widget.memberName,
+                            text: _memberName != null ? _memberName : '--',
+                            // text: widget.memberName,
                             // fontSize: 16.0,
                             // ignore: deprecated_member_use
                             color:
@@ -319,17 +293,17 @@ class _MemberContributionStatementState
                     children: <Widget>[
                       customTitle(
                         text: "Statement as At",
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         fontSize: 14,
                         color:
                             // ignore: deprecated_member_use
                             Theme.of(context).textSelectionHandleColor,
                         textAlign: TextAlign.start,
                       ),
-                      customTitle(
+                      subtitle2(
                         text: _statementAsAt,
                         fontSize: 12,
-                        fontWeight: FontWeight.w500,
+                        // fontWeight: FontWeight.w500,
                         color:
                             // ignore: deprecated_member_use
                             Theme.of(context).textSelectionHandleColor,
@@ -343,16 +317,16 @@ class _MemberContributionStatementState
                       children: <Widget>[
                         customTitle(
                           text: "Statement Period",
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w600,
                           fontSize: 14,
                           color: Theme.of(context)
                               // ignore: deprecated_member_use
                               .textSelectionHandleColor,
                           textAlign: TextAlign.end,
                         ),
-                        customTitle(
+                        subtitle2(
                           fontSize: 12,
-                          fontWeight: FontWeight.w500,
+                          // fontWeight: FontWeight.w500,
                           text: _statementFrom.isNotEmpty
                               ? "$_statementFrom to $_statementTo"
                               : "",
@@ -370,69 +344,45 @@ class _MemberContributionStatementState
             SizedBox(
               height: 10,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Container(
-                height: 32.0,
-                padding: EdgeInsets.all(8.0),
-                color: (themeChangeProvider.darkTheme)
-                    ? Color(0xffededfe)
-                    : Theme.of(context).primaryColor,
-                //color: Theme.of(context).primaryColor,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 100.0,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          customTitle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            text: 'Date',
-                            color: Colors.white,
-                            textAlign: TextAlign.end,
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.71,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          SizedBox(
-                            width: 2,
-                          ),
-                          customTitle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            text: 'Due (${groupObject.groupCurrency})',
-                            color: Colors.white,
-                            textAlign: TextAlign.start,
-                          ),
-                          customTitle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            text: 'Paid (${groupObject.groupCurrency})',
-                            color: Colors.white,
-                            textAlign: TextAlign.start,
-                          ),
-                          customTitle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w800,
-                            text: 'Bal (${groupObject.groupCurrency})',
-                            color: Colors.white,
-                            textAlign: TextAlign.start,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+            Container(
+              padding:
+                  EdgeInsets.only(left: 8.0, top: 0.0, right: 8.0, bottom: 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: subtitle3(
+                        text: "Date",
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.start),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: subtitle3(
+                        text: 'Due (${groupObject.groupCurrency})',
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.end),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: subtitle3(
+                        text: 'Paid (${groupObject.groupCurrency})',
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.end),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: subtitle3(
+                        text: 'Bal (${groupObject.groupCurrency})',
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.end),
+                  ),
+                ],
               ),
+            ),
+            SizedBox(
+              height: 5,
             ),
             Expanded(
                 child: _statements.length > 0
@@ -451,30 +401,39 @@ class _MemberContributionStatementState
                           itemBuilder: (context, index) {
                             ContributionStatementRow row = _statements[index];
 
-                            return InkWell(
-                              child: MemberStatementBody(row: row),
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            new MemberDetailStatement(
-                                                groupName:
-                                                    groupObject.groupName,
-                                                groupEmail:
-                                                    groupObject.groupEmail,
-                                                groupPhone:
-                                                    groupObject.groupPhone,
-                                                amount: row.amount,
-                                                payable: row.payable,
-                                                singleBalance: row.balance,
-                                                date: row.date,
-                                                title: row.title,
-                                                recieptTitle: "Contribution",
-                                                description: row.description,
-                                                memberName: widget.memberName,
-                                                group: groupObject)));
-                              },
+                            return Container(
+                              color: (index % 2 == 0)
+                                  ? (themeChangeProvider.darkTheme)
+                                      ? Colors.blueGrey[800]
+                                      : Color(0xffededfe)
+                                  : Theme.of(context).backgroundColor,
+                              padding: EdgeInsets.only(
+                                  left: 0.0, top: 0.0, right: 0.0, bottom: 5.0),
+                              child: InkWell(
+                                child: MemberStatementBody(row: row),
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              new MemberDetailStatement(
+                                                  groupName:
+                                                      groupObject.groupName,
+                                                  groupEmail:
+                                                      groupObject.groupEmail,
+                                                  groupPhone:
+                                                      groupObject.groupPhone,
+                                                  amount: row.amount,
+                                                  payable: row.payable,
+                                                  singleBalance: row.balance,
+                                                  date: row.date,
+                                                  title: row.title,
+                                                  recieptTitle: "Contribution",
+                                                  description: row.description,
+                                                  memberName: widget.memberName,
+                                                  group: groupObject)));
+                                },
+                              ),
                             );
                           },
                           itemCount: _statements.length,
@@ -485,94 +444,58 @@ class _MemberContributionStatementState
                         iconData: LineAwesomeIcons.file_text,
                         text:
                             "There are no statements for ${widget.memberName}")),
-            SizedBox(
-              height: 10,
-            ),
             Container(
-              height: 35.0,
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Container(
-                  color: Theme.of(context).primaryColor,
-                  padding: EdgeInsets.all(8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Container(
-                        width: 100.0,
-                        height: 18.0,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            customTitle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w900,
-                              text: 'Total',
-                              color: Colors.white,
-                              textAlign: TextAlign.end,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Container(
-                        height: 18.0,
-                        width: MediaQuery.of(context).size.width * 0.71,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          // crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(
-                              width: 2,
-                            ),
-                            customTitle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              text: groupObject.groupCurrency +
-                                  " " +
-                                  currencyFormat.format(_totalDue),
-                              color: Colors.white,
-                              textAlign: TextAlign.end,
-                            ),
-                            customTitle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              text: groupObject.groupCurrency +
-                                  " " +
-                                  currencyFormat.format(_totalContributions),
-                              color: Colors.white,
-                              textAlign: TextAlign.end,
-                            ),
-                            customTitle(
-                              fontSize: 12,
-                              fontWeight: FontWeight.w800,
-                              text: groupObject.groupCurrency +
-                                  " " +
-                                  currencyFormat.format(_balance),
-                              color: Colors.white,
-                              textAlign: TextAlign.end,
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
+              padding:
+                  EdgeInsets.only(left: 8.0, top: 0.0, right: 8.0, bottom: 0.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: subtitle1(
+                        text: "Total",
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.start),
                   ),
-                ),
+                  Expanded(
+                    flex: 1,
+                    child: subtitle3(
+                        text: currencyFormat.format(_totalDue),
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.end),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: subtitle3(
+                        text: currencyFormat.format(_totalContributions),
+                        color: Theme.of(context).primaryColor,
+                        textAlign: TextAlign.end),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: subtitle3(
+                        text: currencyFormat.format(_balance),
+                        color: (_balance > 0)
+                            ? Colors.red
+                            : (_balance < 0
+                                ? Colors.green
+                                // ignore: deprecated_member_use
+                                : Theme.of(context).textSelectionHandleColor),
+                        textAlign: TextAlign.end),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 10,
             ),
             Container(
               child: Column(
                 children: [
                   Center(
-                    child: customTitle(
+                    child: subtitle3(
                       text: _balance < 0
                           ? "You have an Overpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}"
                           : "You have an Underpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}",
                       textAlign: TextAlign.start,
-                      fontSize: 14.0,
+                      // fontSize: 14.0,
                       // ignore: deprecated_member_use
                       color:
                           // ignore: deprecated_member_use

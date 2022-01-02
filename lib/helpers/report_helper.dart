@@ -171,6 +171,7 @@ ContributionStatementModel getContributionStatement(dynamic data) {
   final String role = data['member_datails']['role'].toString();
   final String email = data['member_datails']['email'].toString();
   final String phone = data['member_datails']['phone'].toString();
+  final String name = data['member_datails']['name'].toString();
   final List<ContributionStatementRow> statementList = [];
   // final double payable = ParseHelper.getDoubleFromJson(data[''], )
 
@@ -234,7 +235,8 @@ ContributionStatementModel getContributionStatement(dynamic data) {
       statementTo: statementPeriodTo,
       role: role,
       phone: phone,
-      email: email);
+      email: email,
+      memberName: name);
 }
 
 List<ActiveLoan> getMemberLoanList(List<dynamic> list) {
