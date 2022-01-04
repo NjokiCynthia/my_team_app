@@ -68,8 +68,8 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
       _isLoading = true;
     });
 
-    _contributionStatementModel =
-        Provider.of<Groups>(context, listen: false).getContributionStatements;
+    // _contributionStatementModel =
+    //     Provider.of<Groups>(context, listen: false).getContributionStatements;
 
     if (_contributionStatementModel != null) {
       _statements = _contributionStatementModel.statements;
