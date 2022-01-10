@@ -4138,9 +4138,9 @@ class Groups with ChangeNotifier {
         orderBy: 'id',
         order: 'DESC',
       );
-      if (_localData.length > 0) {
-        addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
-      } else {
+      // if (_localData.length > 0) {
+      //   addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
+      // } else {
         try {
           final response = await PostToServer.post(postRequest, url);
           final data = response['loans'] as List<dynamic>;
@@ -4157,7 +4157,7 @@ class Groups with ChangeNotifier {
           } else {
             throw CustomException(message: ERROR_MESSAGE);
           }
-        }
+        // }
       }
     } on CustomException catch (error) {
       if (error.status == ErrorStatusCode.statusNoInternet) {
