@@ -310,7 +310,7 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                                 MaterialPageRoute(
                                                   builder:
                                                       (BuildContext context) =>
-                                                          NewGroup(),
+                                                          NewGroup(groupName: groups.item[index].groupName, groupId: groups.item[index].groupId),
                                                 ),
                                               );
                                             } else {
