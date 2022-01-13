@@ -389,7 +389,7 @@ class Dashboard with ChangeNotifier {
     }
 
     if (_groupDashboardData[groupId].containsKey("chart_data")) {
-      double maxY = 0;
+      int maxY = 0;
       int divider = 1;
       var transactions = _groupDashboardData[groupId]["chart_data"]
           ["group_transactions"] as Map<String, dynamic>;
