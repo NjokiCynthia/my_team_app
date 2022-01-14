@@ -1143,10 +1143,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             ),
                     ],
                   )
-                : dataLoadingEffect(
-                    context: context,
-                    width: MediaQuery.of(context).size.width,
-                    height: MediaQuery.of(context).size.height),
+                : homePlaceholder(context: context),
+            // : dataLoadingEffect(
+            //     context: context,
+            //     width: MediaQuery.of(context).size.width,
+            //     height: MediaQuery.of(context).size.height),
           ),
         ),
       ),
