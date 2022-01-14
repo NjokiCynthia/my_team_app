@@ -254,57 +254,6 @@ class _ContributionStatementState extends State<ContributionStatement> {
                       SizedBox(
                         height: 10,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              subtitle2(
-                                text: "Statement as At",
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.start,
-                              ),
-                              customTitle(
-                                text: _statementAsAt,
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                color:
-                                    // ignore: deprecated_member_use
-                                    Theme.of(context).textSelectionHandleColor,
-                                textAlign: TextAlign.start,
-                              ),
-                            ],
-                          ),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: <Widget>[
-                                subtitle2(
-                                  text: "Statement Period",
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  textAlign: TextAlign.end,
-                                ),
-                                customTitle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  text: _statementFrom.isNotEmpty
-                                      ? "$_statementFrom to $_statementTo"
-                                      : "",
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  textAlign: TextAlign.end,
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      )
                     ],
                   ),
                 ),
@@ -313,6 +262,106 @@ class _ContributionStatementState extends State<ContributionStatement> {
                     : SizedBox(
                         height: 0.0,
                       ),
+                SizedBox(
+                  height: 5.0,
+                ),
+                Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          subtitle2(
+                            text: "Statement as At",
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start,
+                          ),
+                          customTitle(
+                            text: _statementAsAt,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            color:
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor,
+                            textAlign: TextAlign.start,
+                          ),
+                        ],
+                      ),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          children: <Widget>[
+                            subtitle2(
+                              text: "Statement Period",
+                              color: Theme.of(context)
+                                  // ignore: deprecated_member_use
+                                  .textSelectionHandleColor,
+                              textAlign: TextAlign.end,
+                            ),
+                            customTitle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                              text: _statementFrom.isNotEmpty
+                                  ? "$_statementFrom to $_statementTo"
+                                  : "",
+                              color: Theme.of(context)
+                                  // ignore: deprecated_member_use
+                                  .textSelectionHandleColor,
+                              textAlign: TextAlign.end,
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  padding: EdgeInsets.only(
+                      left: 8.0, top: 0.0, right: 8.0, bottom: 0.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 2,
+                        child: subtitle3(
+                            text: "Date",
+                            color: Theme.of(context).primaryColor,
+                            textAlign: TextAlign.start),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: subtitle3(
+                            text: 'Due (${groupObject.groupCurrency})',
+                            color: Theme.of(context).primaryColor,
+                            textAlign: TextAlign.end),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: subtitle3(
+                            text: 'Paid (${groupObject.groupCurrency})',
+                            color: Theme.of(context).primaryColor,
+                            textAlign: TextAlign.end),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: subtitle3(
+                            text: 'Bal (${groupObject.groupCurrency})',
+                            color: Theme.of(context).primaryColor,
+                            textAlign: TextAlign.end),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
                 Expanded(
                     child: _statements.length > 0
                         ? ListView.builder(
@@ -320,18 +369,93 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               ContributionStatementRow row = _statements[index];
-                              if (row.isHeader) {
-                                return StatementHeader(row: row);
-                              } else {
-                                return StatementBody(row: row);
-                              }
+                              return Container(
+                                 color: (index % 2 == 0)
+                                  ? (themeChangeProvider.darkTheme)
+                                      ? Colors.blueGrey[800]
+                                      : Color(0xffededfe)
+                                  : Theme.of(context).backgroundColor,
+                              padding: EdgeInsets.only(
+                                  left: 0.0, top: 0.0, right: 0.0, bottom: 5.0),
+                                  child: MemberStatementBody(row: row,),
+                              );
+                              // if (row.isHeader) {
+                              //   return StatementHeader(row: row);
+                              // } else {
+                              //   return StatementBody(row: row);
+                              // }
                             },
                             itemCount: _statements.length,
                           )
                         : emptyList(
                             color: Colors.blue[400],
                             iconData: LineAwesomeIcons.file_text,
-                            text: "There are no statements for the period"))
+                            text: "There are no statements for the period")),
+                Container(
+                  padding: EdgeInsets.only(
+                      left: 8.0, top: 0.0, right: 8.0, bottom: 0.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Expanded(
+                        flex: 2,
+                        child: subtitle1(
+                            text: "Total",
+                            color: Theme.of(context).primaryColor,
+                            textAlign: TextAlign.start),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: subtitle3(
+                            text: currencyFormat.format(_totalDue),
+                            color: Theme.of(context).primaryColor,
+                            textAlign: TextAlign.end),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: subtitle3(
+                            text: currencyFormat.format(_totalContributions),
+                            color: Theme.of(context).primaryColor,
+                            textAlign: TextAlign.end),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: subtitle3(
+                            text: currencyFormat.format(_balance),
+                            color: (_balance > 0)
+                                ? Colors.red
+                                : (_balance < 0
+                                    ? Colors.green
+                                    // ignore: deprecated_member_use
+                                    : Theme.of(context)
+                                        .textSelectionHandleColor),
+                            textAlign: TextAlign.end),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  child: Column(
+                    children: [
+                      Center(
+                        child: subtitle3(
+                          text: _balance < 0
+                              ? "You have an Overpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}"
+                              : "You have an Underpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}",
+                          textAlign: TextAlign.start,
+                          // fontSize: 14.0,
+                          // ignore: deprecated_member_use
+                          color:
+                              // ignore: deprecated_member_use
+                              Theme.of(context).textSelectionHandleColor,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20.0,
+                )
               ],
             )));
   }

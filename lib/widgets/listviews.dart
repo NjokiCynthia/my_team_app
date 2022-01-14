@@ -122,7 +122,7 @@ class MemberStatementBody extends StatelessWidget {
                     text: row.title,
                     color: Theme.of(context).textSelectionHandleColor,
                     textAlign: TextAlign.start),
-              ], 
+              ],
             ),
           ),
           Expanded(
@@ -331,59 +331,61 @@ class ContributionSummaryBody extends StatelessWidget {
               : Theme.of(context).backgroundColor,
           child: Padding(
             padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 12.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Expanded(
-                  flex: 2,
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Feather.user,
-                        color: Colors.blueGrey,
-                        size: 32,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: subtitle1(
-                            text: contributionSummary[index].memberName,
-                            // ignore: deprecated_member_use
-                            color: Theme.of(context).textSelectionHandleColor,
-                            textAlign: TextAlign.start),
-                      ),
-                    ],
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: subtitle1(
-                      text: groupObject.groupCurrency +
-                          " " +
-                          currencyFormat
-                              .format(contributionSummary[index].paidAmount),
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor,
-                      textAlign: TextAlign.end),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: subtitle1(
-                      text: groupObject.groupCurrency +
-                          " " +
-                          currencyFormat
-                              .format(contributionSummary[index].balanceAmount),
-                      color: (contributionSummary[index].balanceAmount > 0)
-                          ? Colors.red
-                          : (contributionSummary[index].balanceAmount < 0
-                              ? Colors.green
+            child: InkWell(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Feather.user,
+                          color: Colors.blueGrey,
+                          size: 32,
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          child: subtitle1(
+                              text: contributionSummary[index].memberName,
                               // ignore: deprecated_member_use
-                              : Theme.of(context).textSelectionHandleColor),
-                      textAlign: TextAlign.end),
-                ),
-              ],
+                              color: Theme.of(context).textSelectionHandleColor,
+                              textAlign: TextAlign.start),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: subtitle1(
+                        text: groupObject.groupCurrency +
+                            " " +
+                            currencyFormat
+                                .format(contributionSummary[index].paidAmount),
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor,
+                        textAlign: TextAlign.end),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: subtitle1(
+                        text: groupObject.groupCurrency +
+                            " " +
+                            currencyFormat.format(
+                                contributionSummary[index].balanceAmount),
+                        color: (contributionSummary[index].balanceAmount > 0)
+                            ? Colors.red
+                            : (contributionSummary[index].balanceAmount < 0
+                                ? Colors.green
+                                // ignore: deprecated_member_use
+                                : Theme.of(context).textSelectionHandleColor),
+                        textAlign: TextAlign.end),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
