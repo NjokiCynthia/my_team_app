@@ -5,6 +5,7 @@ import 'package:chamasoft/providers/groups.dart';
 // import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
 import 'package:chamasoft/screens/chamasoft/home.dart';
+import 'package:chamasoft/screens/chamasoft/market-place.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notification-alert.dart';
@@ -409,6 +410,62 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 ),
               ),
             ),
+            BottomNavigationBarItem(
+              icon:
+
+                  // Stack(
+                  //   children: [
+                  //     IconButton(
+                  //         icon: Icon(
+                  //           Feather.shopping_cart,
+                  //           color: _currentPage == 4
+                  //               ? primaryColor
+                  //               : Config.appName.toLowerCase() == 'chamasoft'
+                  //                   ? Colors.blueGrey[300]
+                  //                   : Colors.blueGrey[300].withOpacity(0.5),
+                  //         ),
+                  //         // onPressed: null, // Disable notifications for now
+                  //         onPressed: () {}),
+                  //     Visibility(
+                  //       visible: true,
+                  //       child: Positioned(
+                  //         top: 12,
+                  //         right: 6,
+                  //         child: Container(
+                  //           width: 12.0,
+                  //           height: 12.0,
+                  //           decoration: new BoxDecoration(
+                  //             color: Colors.blue,
+                  //             shape: BoxShape.circle,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     )
+                  //   ],
+                  // ),
+
+                  Icon(
+                Feather.shopping_cart,
+                color: _currentPage == 4
+                    ? primaryColor
+                    : Config.appName.toLowerCase() == 'chamasoft'
+                        ? Colors.blueGrey[300]
+                        : Colors.blueGrey[300].withOpacity(0.5),
+              ),
+              // ignore: deprecated_member_use
+              title: Text(
+                "Market",
+                style: TextStyle(
+                  color: _currentPage == 4
+                      ? primaryColor
+                      : Config.appName.toLowerCase() == 'chamasoft'
+                          ? Colors.blueGrey[300]
+                          : Colors.blueGrey[300].withOpacity(0.5),
+                  fontFamily: 'SegoeUI',
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
           ],
           onTap: (index) {
             setState(() {
@@ -477,6 +534,10 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         );
       case 3:
         return ChamasoftReports(
+          appBarElevation: (elevation) => _setElevation(elevation),
+        );
+      case 4:
+        return ChamasoftMarketPlace(
           appBarElevation: (elevation) => _setElevation(elevation),
         );
     }

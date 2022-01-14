@@ -428,6 +428,7 @@ class _ContributionStatementState extends State<ContributionStatement> {
                                     ? Colors.green
                                     // ignore: deprecated_member_use
                                     : Theme.of(context)
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor),
                             textAlign: TextAlign.end),
                       ),
