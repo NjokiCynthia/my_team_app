@@ -266,30 +266,30 @@ class ActiveLoanCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                          decoration: BoxDecoration(
-                              border: Border(
-                                  top: BorderSide(
-                                      color:
-                                          Theme.of(context).bottomAppBarColor,
-                                      width: 1.0),
-                                  right: BorderSide(
-                                      color:
-                                          Theme.of(context).bottomAppBarColor,
-                                      width: 0.5))),
-                          child: plainButton(
-                              text: "REPAY NOW",
-                              size: 16.0,
-                              spacing: 2.0,
-                              color: Theme.of(context)
-                                  .primaryColor
-                                  .withOpacity(0.5),
-                              // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
-                              action: null) //loan.status == 2 ? null : repay),
-                          ),
-                    ),
+                    // Expanded(
+                    //   flex: 1,
+                    //   child: Container(
+                    //       decoration: BoxDecoration(
+                    //           border: Border(
+                    //               top: BorderSide(
+                    //                   color:
+                    //                       Theme.of(context).bottomAppBarColor,
+                    //                   width: 1.0),
+                    //               right: BorderSide(
+                    //                   color:
+                    //                       Theme.of(context).bottomAppBarColor,
+                    //                   width: 0.5))),
+                    //       child: plainButton(
+                    //           text: "REPAY NOW",
+                    //           size: 16.0,
+                    //           spacing: 2.0,
+                    //           color: Theme.of(context)
+                    //               .primaryColor
+                    //               .withOpacity(0.5),
+                    //           // loan.status == 2 ? Theme.of(context).primaryColor.withOpacity(0.5) : Theme.of(context).primaryColor,
+                    //           action: null) //loan.status == 2 ? null : repay),
+                    //       ),
+                    // ),
                     Expanded(
                       flex: 1,
                       child: Container(
