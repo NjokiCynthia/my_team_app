@@ -2,7 +2,8 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-final _amountValidator = RegExInputFormatter.withRegex('^\$|^(0|([1-9][0-9]{0,}))(\\.[0-9]{0,})?\$');
+final _amountValidator =
+    RegExInputFormatter.withRegex('^\$|^(0|([1-9][0-9]{0,}))(\\.[0-9]{0,})?\$');
 
 Widget simpleTextInputField(
     {BuildContext context,
@@ -89,7 +90,9 @@ Widget numberDecimalFieldWithInitialValue(
     ),
     decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.auto,
-        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+        enabledBorder: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
         labelText: labelText,
         hintText: hintText,
         labelStyle: inputTextStyle()),
@@ -117,7 +120,9 @@ Widget textFieldWithInitialValue(
     textCapitalization: textCapitalization,
     decoration: InputDecoration(
         floatingLabelBehavior: FloatingLabelBehavior.auto,
-        enabledBorder: UnderlineInputBorder(borderSide: BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
+        enabledBorder: UnderlineInputBorder(
+            borderSide:
+                BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
         labelText: labelText,
         hintText: hintText,
         labelStyle: inputTextStyle()),
@@ -163,12 +168,20 @@ Widget numberTextInputField(
 }
 
 Widget multilineTextField(
-    {BuildContext context, String labelText, Function onChanged, Function validator, bool enabled, int maxLines}) {
+    {BuildContext context,
+    String labelText,
+    TextEditingController controller,
+    Function onChanged,
+    Function validator,
+    bool enabled,
+    String hintText = '',
+    int maxLines}) {
   return TextFormField(
     keyboardType: TextInputType.multiline,
     maxLines: maxLines,
     minLines: 2,
     onChanged: onChanged,
+    controller: controller,
     validator: validator,
     enabled: enabled ?? true,
     decoration: InputDecoration(
@@ -176,6 +189,7 @@ Widget multilineTextField(
       labelStyle: inputTextStyle(),
       errorStyle: inputTextStyle(),
       hintStyle: inputTextStyle(),
+      hintText: hintText,
       enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(
         color: Theme.of(context).hintColor,
@@ -203,7 +217,8 @@ class RegExInputFormatter implements TextInputFormatter {
   }
 
   @override
-  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
     final oldValueValid = _isValid(oldValue.text);
     final newValueValid = _isValid(newValue.text);
     if (oldValueValid && !newValueValid) {

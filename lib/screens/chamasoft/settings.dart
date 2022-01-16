@@ -6,6 +6,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/screens/chamasoft/feedback.dart';
 import 'package:chamasoft/screens/webView-launcher.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
@@ -29,6 +30,59 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
   String theme = "Light";
   String language = "English";
   bool pushNotifications = true;
+
+  void _rateMyAppDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          backgroundColor: Theme.of(context).backgroundColor,
+          title: heading2(
+              text: "Post a feedback",
+              textAlign: TextAlign.start,
+              // ignore: deprecated_member_use
+              color: Theme.of(context).textSelectionHandleColor),
+          content: customTitleWithWrap(
+              text:
+                  "Let us know how we can improve our service to serve you better.",
+              textAlign: TextAlign.start,
+              // ignore: deprecated_member_use
+              color: Theme.of(context).textSelectionHandleColor,
+              maxLines: null),
+          actions: <Widget>[
+            negativeActionDialogButton(
+              text: "Cancel",
+              // ignore: deprecated_member_use
+              color: Theme.of(context).textSelectionHandleColor,
+              action: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            // ignore: deprecated_member_use
+            FlatButton(
+              padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+              child: customTitle(
+                text: "Continue",
+                color: Colors.blue,
+                fontWeight: FontWeight.w600,
+              ),
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (BuildContext context) => FeedBackForm(),
+                  ),
+                );
+              },
+              shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(4.0)),
+              textColor: Colors.blue,
+              color: Colors.blue.withOpacity(0.2),
+            )
+          ],
+        );
+      },
+    );
+  }
 
   void _logoutDialog() {
     showDialog(
@@ -561,6 +615,35 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
             //   dense: true,
             //   onTap: () => launchURL("https://chamasoft.com/"),
             // ),
+            Padding(
+              padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: heading2(
+                  text: "Feedback",
+                  color: Colors.blueGrey,
+                ),
+              ),
+            ),
+            ListTile(
+                title: Text("Post a feedback",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      // ignore: deprecated_member_use
+                      color: Theme.of(context).textSelectionHandleColor,
+                    )),
+                trailing: Padding(
+                  padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+                  child: Icon(
+                    LineAwesomeIcons.star,
+                    color: Theme.of(context).bottomAppBarColor.withOpacity(0.6),
+                  ),
+                ),
+                dense: true,
+                onTap: () => _rateMyAppDialog()
+                // launchURL("https://chamasoft.com/company/about-chamasoft"),
+                ),
             Padding(
               padding: EdgeInsets.only(
                 top: 20.0,
