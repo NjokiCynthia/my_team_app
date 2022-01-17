@@ -428,7 +428,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.end,
                                             children: [
-                                              Text( "${Config.appName} Meetings",
+                                              Text(
+                                                "${Config.appName} Meetings",
                                                 style: TextStyle(
                                                   color: Colors.white,
                                                   fontFamily: 'SegoeUI',
@@ -1142,7 +1143,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             ),
                     ],
                   )
-                : chamasoftHomeLoadingData(context: context),
+                : homePlaceholder(context: context),
+            // : dataLoadingEffect(
+            //     context: context,
+            //     width: MediaQuery.of(context).size.width,
+            //     height: MediaQuery.of(context).size.height),
           ),
         ),
       ),

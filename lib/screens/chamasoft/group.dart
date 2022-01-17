@@ -607,8 +607,13 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                           ),
                         ),
                       ],
-                    )
-                  : chamasoftGroupLoadingData(context: context),
+                    ): groupPlaceholder(context: context),
+                  // : dataLoadingEffect(
+                  //     context: context,
+                  //     width: MediaQuery.of(context).size.width,
+                  //     height: MediaQuery.of(context).size.height),
+
+              // chamasoftGroupLoadingData(context: context),
             ),
           ),
         ));

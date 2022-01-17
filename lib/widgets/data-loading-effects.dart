@@ -1,4 +1,17 @@
+import 'package:chamasoft/config.dart';
+import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/helpers/svg-icons.dart';
+import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/widgets/backgrounds.dart';
+import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_vector_icons/flutter_vector_icons.dart';
+import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 // import 'backgrounds.dart';
 
@@ -20,6 +33,991 @@ Widget dataLoadingEffect(
         ),
       ),
     ),
+  );
+}
+
+Widget groupPlaceholder({BuildContext context}) {
+  return Column(
+    children: <Widget>[
+      showLinearProgressIndicator(),
+      Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0.0),
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          decoration: cardDecoration(
+              gradient: plainCardGradient(context), context: context),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  customTitle(
+                    text: "Contributions & Expenses",
+                    color: Colors.blueGrey[400],
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ],
+              ),
+              Divider(
+                color: Theme.of(context).hintColor.withOpacity(0.1),
+                thickness: 2.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "All Group Contributions",
+                    textAlign: TextAlign.start,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                      currency: 'KES',
+                      amount: currencyFormat.format(0),
+                      size: 16.0,
+                      color: Theme.of(context)
+                          // ignore: deprecated_member_use
+                          .textSelectionHandleColor,
+                      action: () {},
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Total Fine Payments",
+                    textAlign: TextAlign.start,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                        currency: "KES",
+                        amount: currencyFormat.format(0),
+                        size: 16.0,
+                        color: Theme.of(context)
+                            // ignore: deprecated_member_use
+                            .textSelectionHandleColor,
+                        action: () => {}),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Group Expenses",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                      currency: "KES",
+                      amount: currencyFormat.format(0),
+                      size: 14.0,
+                      color: Colors.red[400],
+                      action: () {},
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(20.0, 10.0, 16.0, 0.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Account Balances",
+              style: TextStyle(
+                color: Colors.blueGrey[400],
+                fontFamily: 'SegoeUI',
+                fontSize: 16.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            IconButton(
+                icon: Icon(
+                  Feather.more_horizontal,
+                  color: Colors.blueGrey,
+                ),
+                onPressed: () {})
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+        child: Container(
+          height: 180.0,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+            physics: BouncingScrollPhysics(),
+            children: <Widget>[
+              SizedBox(
+                width: 16.0,
+              ),
+              Container(
+                width: 160.0,
+                padding: EdgeInsets.all(16.0),
+                decoration: cardDecoration(
+                    gradient: csCardGradient(), context: context),
+                child: accountBalance(
+                  color: Colors.white,
+                  cardIcon: Feather.globe,
+                  cardAmount: currencyFormat.format(0),
+                  currency: "KES",
+                  accountName: "Total",
+                ),
+              ),
+              SizedBox(
+                width: 16.0,
+              ),
+              Row(children: <Widget>[
+                Container(
+                  width: 160.0,
+                  height: 165.0,
+                  padding: EdgeInsets.all(16.0),
+                  decoration: cardDecoration(
+                      gradient: plainCardGradient(context), context: context),
+                  child: accountBalance(
+                    color: primaryColor,
+                    cardIcon: Feather.credit_card,
+                    cardAmount: currencyFormat.format(0),
+                    currency: "KES",
+                    accountName: "Cash at Bank",
+                  ),
+                ),
+                SizedBox(
+                  width: 16.0,
+                ),
+                Container(
+                  width: 160.0,
+                  height: 165.0,
+                  padding: EdgeInsets.all(16.0),
+                  decoration: cardDecoration(
+                      gradient: plainCardGradient(context), context: context),
+                  child: accountBalance(
+                    color: primaryColor,
+                    cardIcon: Feather.credit_card,
+                    cardAmount: currencyFormat.format(0),
+                    currency: 'KES',
+                    accountName: "Cash at Hand",
+                  ),
+                )
+              ]),
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          decoration: cardDecoration(
+              gradient: plainCardGradient(context), context: context),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Text(
+                    "Loan Balances",
+                    style: TextStyle(
+                      color: Colors.blueGrey[400],
+                      fontFamily: 'SegoeUI',
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+              Divider(
+                color: Theme.of(context).hintColor.withOpacity(0.1),
+                thickness: 2.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Loaned Out",
+                    textAlign: TextAlign.start,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                        currency: 'KES',
+                        amount: currencyFormat.format(0),
+                        size: 16.0,
+                        color: Theme.of(context)
+                            // ignore: deprecated_member_use
+                            .textSelectionHandleColor,
+                        action: () {}),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Total Repaid",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                        currency: 'KES',
+                        amount: currencyFormat.format(0),
+                        size: 14.0,
+                        color: Theme.of(context)
+                            // ignore: deprecated_member_use
+                            .textSelectionHandleColor,
+                        action: () {}),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Pending Loan Balance",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                        currency: 'KES',
+                        amount: currencyFormat.format(0),
+                        size: 14.0,
+                        color: Theme.of(context)
+                            // ignore: deprecated_member_use
+                            .textSelectionHandleColor,
+                        action: () {}),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(
+          16.0,
+          16.0,
+          16.0,
+          16.0,
+        ),
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          decoration: flatGradient(context),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    "Deposits Vs Withdrawals",
+                    style: TextStyle(
+                      color: Colors.blueGrey[400],
+                      fontFamily: 'SegoeUI',
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Feather.more_horizontal,
+                      color: Colors.blueGrey,
+                    ),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Container(
+                  height: 280,
+                  margin: EdgeInsets.only(top: 24),
+                  child: Column(
+                    children: [
+                      SvgPicture.asset(
+                        customIcons['no-data'],
+                        semanticsLabel: 'icon',
+                        height: 120.0,
+                      ),
+                      customTitleWithWrap(
+                          text: "Nothing to display!",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14.0,
+                          textAlign: TextAlign.center,
+                          color: Colors.blueGrey[400]),
+                      customTitleWithWrap(
+                          text:
+                              "Sorry, you don't have enough data to plot a chart.",
+                          //fontWeight: FontWeight.w500,
+                          fontSize: 12.0,
+                          textAlign: TextAlign.center,
+                          color: Colors.blueGrey[400])
+                    ],
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget homePlaceholder({BuildContext context}) {
+  Group _currentGroup;
+  bool _onlineBankingEnabled = true;
+  String _groupCurrency = 'KES';
+  _currentGroup = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+  return Column(
+    children: <Widget>[
+      showLinearProgressIndicator(),
+      Visibility(
+        visible: false,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            16.0,
+            16.0,
+            16.0,
+            16.0,
+          ),
+          child: Container(
+            width: double.infinity,
+            decoration: cardDecoration(
+              gradient: plainCardGradient(context),
+              context: context,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16.0),
+              child: Stack(
+                children: <Widget>[
+                  Image(
+                    image: AssetImage(
+                      'assets/meeting-minutes.jpg',
+                    ),
+                    width: double.infinity,
+                  ),
+                  Positioned(
+                    top: 0,
+                    bottom: 0,
+                    right: 0,
+                    left: 0,
+                    child: Container(
+                      height: double.infinity,
+                      width: double.infinity,
+                      color: Colors.black.withOpacity(0.3),
+                      padding: EdgeInsets.only(
+                        right: 16.0,
+                        top: 6.0,
+                        bottom: 6.0,
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.max,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                "${Config.appName} Meetings",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontFamily: 'SegoeUI',
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 22.0,
+                                ),
+                                textAlign: TextAlign.right,
+                              ),
+                              subtitle2(
+                                color: Colors.white.withOpacity(0.9),
+                                text: "Manage group meetings, easily.",
+                                textAlign: TextAlign.right,
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (BuildContext context) => Meetings(),
+                              ),
+                            ),
+                            child: Text(
+                              "Get Started",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontFamily: 'SegoeUI',
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16.0,
+                                decoration: TextDecoration.underline,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {},
+                            child: Text(
+                              "Don't show this again",
+                              style: TextStyle(
+                                color: Colors.white.withOpacity(0.8),
+                                fontFamily: 'SegoeUI',
+                                fontWeight: FontWeight.w300,
+                                fontSize: 11.0,
+                              ),
+                              textAlign: TextAlign.right,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(
+          16.0,
+          16.0,
+          16.0,
+          0.0,
+        ),
+        child: Container(
+          padding: EdgeInsets.all(16.0),
+          decoration: cardDecoration(
+            gradient: plainCardGradient(context),
+            context: context,
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  customTitle(
+                    text: _currentGroup.disableArrears
+                        ? "Total Deposits and Loan Balances"
+                        : "Total Balances",
+                    color: Colors.blueGrey[400],
+                    fontFamily: 'SegoeUI',
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ],
+              ),
+              Divider(
+                color: Theme.of(context).hintColor.withOpacity(0.1),
+                thickness: 2.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Your Contribution Balance",
+                    textAlign: TextAlign.start,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                      currency: _groupCurrency,
+                      amount: _currentGroup.disableArrears
+                          ? currencyFormat.format(0)
+                          : currencyFormat.format(0),
+                      size: 16.0,
+                      color: (0) > 0
+                          ? Colors.red[400]
+                          : Theme.of(context)
+                              // ignore: deprecated_member_use
+                              .textSelectionHandleColor,
+                      action: () {},
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Fines",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                        currency: _groupCurrency,
+                        amount: _currentGroup.disableArrears
+                            ? currencyFormat.format(0)
+                            : currencyFormat.format(0),
+                        size: 14.0,
+                        color: (0) > 0
+                            ? Colors.red[400]
+                            : Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionHandleColor,
+                        action: () {}),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Loans",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                        currency: _groupCurrency,
+                        amount: currencyFormat.format(0),
+                        size: 14.0,
+                        color: (0) > 0
+                            ? Colors.red[400]
+                            : Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionHandleColor,
+                        action: () {}),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  customTitle(
+                    text: "Pending Installment Balance",
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: Theme.of(context)
+                        // ignore: deprecated_member_use
+                        .textSelectionHandleColor,
+                  ),
+                  SizedBox(
+                    height: 22,
+                    child: cardAmountButton(
+                        currency: _groupCurrency,
+                        amount: currencyFormat.format(0),
+                        size: 14.0,
+                        color: (0) > 0
+                            ? Colors.red[400]
+                            : Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionHandleColor,
+                        action: () {}),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+      // Padding(
+      //   padding: EdgeInsets.fromLTRB(
+      //     20.0,
+      //     10.0,
+      //     16.0,
+      //     0.0,
+      //   ),
+      //   child: Row(
+      //     mainAxisAlignment:
+      //         MainAxisAlignment.spaceBetween,
+      //     children: <Widget>[
+      //       Text(
+      //         "E-Wallet",
+      //         style: TextStyle(
+      //           color: Colors.blueGrey[400],
+      //           fontFamily: 'SegoeUI',
+      //           fontSize: 16.0,
+      //           fontWeight: FontWeight.w800,
+      //         ),
+      //       ),
+      //       IconButton(
+      //         icon: Icon(
+      //           Feather.more_horizontal,
+      //           color: Colors.blueGrey,
+      //         ),
+      //         onPressed: () {},
+      //       ),
+      //     ],
+      //   ),
+      // ),
+      // Padding(
+      //   padding: EdgeInsets.fromLTRB(
+      //     16.0,
+      //     20.0,
+      //     16.0,
+      //     0.0,
+      //   ),
+      //   child: Container(
+      //     padding: EdgeInsets.all(16.0),
+      //     decoration: cardDecoration(
+      //       gradient: plainCardGradient(context),
+      //       context: context,
+      //     ),
+      //     child: Column(
+      //       mainAxisSize: MainAxisSize.min,
+      //       children: <Widget>[
+      //         Row(
+      //           mainAxisAlignment:
+      //               MainAxisAlignment.spaceBetween,
+      //           children: <Widget>[
+      //             Column(
+      //               crossAxisAlignment:
+      //                   CrossAxisAlignment.start,
+      //               children: [
+      //                 Text(
+      //                   "Wallet Balance",
+      //                   style: TextStyle(
+      //                     color: Colors.blueGrey[400],
+      //                     fontFamily: 'SegoeUI',
+      //                     fontSize: 16.0,
+      //                     fontWeight: FontWeight.w600,
+      //                   ),
+      //                   textAlign: TextAlign.start,
+      //                 ),
+      //                 Row(
+      //                   children: [
+      //                     Text(
+      //                       "KES",
+      //                       style: TextStyle(
+      //                         color: Colors.blueGrey[400],
+      //                         fontFamily: 'SegoeUI',
+      //                         fontSize: 32.0,
+      //                         fontWeight: FontWeight.w300,
+      //                       ),
+      //                       textAlign: TextAlign.start,
+      //                     ),
+      //                     SizedBox(width: 6.0),
+      //                     Text(
+      //                       "12,390",
+      //                       style: TextStyle(
+      //                         color: Colors.blueGrey[400],
+      //                         fontFamily: 'SegoeUI',
+      //                         fontSize: 32.0,
+      //                         fontWeight: FontWeight.w600,
+      //                       ),
+      //                       textAlign: TextAlign.start,
+      //                     ),
+      //                   ],
+      //                 ),
+      //                 SizedBox(height: 12.0),
+      //                 SizedBox(
+      //                   height: 32.0,
+      //                   child: LineChart(
+      //                     eWalletTrend(),
+      //                   ),
+      //                 ),
+      //               ],
+      //             ),
+      //             Column(
+      //               crossAxisAlignment:
+      //                   CrossAxisAlignment.end,
+      //               children: [
+      //                 Text(
+      //                   "Deposits",
+      //                   style: TextStyle(
+      //                     color: Colors.blueGrey[400],
+      //                     fontFamily: 'SegoeUI',
+      //                     fontSize: 12.0,
+      //                     fontWeight: FontWeight.w300,
+      //                   ),
+      //                   textAlign: TextAlign.start,
+      //                 ),
+      //                 Row(
+      //                   children: [
+      //                     Icon(
+      //                       Icons.arrow_drop_down_sharp,
+      //                       color: Colors.red,
+      //                     ),
+      //                     Text(
+      //                       "0.92%",
+      //                       style: TextStyle(
+      //                         color: Colors.blueGrey[400],
+      //                         fontFamily: 'SegoeUI',
+      //                         fontSize: 12.0,
+      //                         fontWeight: FontWeight.w600,
+      //                       ),
+      //                       textAlign: TextAlign.start,
+      //                     ),
+      //                   ],
+      //                 ),
+      //                 SizedBox(height: 12.0),
+      //                 Text(
+      //                   "Withdrawals",
+      //                   style: TextStyle(
+      //                     color: Colors.blueGrey[400],
+      //                     fontFamily: 'SegoeUI',
+      //                     fontSize: 12.0,
+      //                     fontWeight: FontWeight.w300,
+      //                   ),
+      //                   textAlign: TextAlign.start,
+      //                 ),
+      //                 Row(
+      //                   children: [
+      //                     Icon(
+      //                       Icons.arrow_drop_up_sharp,
+      //                       color: Colors.green,
+      //                     ),
+      //                     Text(
+      //                       "1.2%",
+      //                       style: TextStyle(
+      //                         color: Colors.blueGrey[400],
+      //                         fontFamily: 'SegoeUI',
+      //                         fontSize: 12.0,
+      //                         fontWeight: FontWeight.w600,
+      //                       ),
+      //                       textAlign: TextAlign.start,
+      //                     ),
+      //                   ],
+      //                 ),
+      //               ],
+      //             ),
+      //           ],
+      //         ),
+      //       ],
+      //     ),
+      //   ),
+      // ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(
+          20.0,
+          20.0,
+          16.0,
+          0.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Contribution Summary",
+              style: TextStyle(
+                color: Colors.blueGrey[400],
+                fontFamily: 'SegoeUI',
+                fontSize: 16.0,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            IconButton(
+              icon: Icon(
+                Feather.more_horizontal,
+                color: Colors.blueGrey,
+              ),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+        child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(16.0),
+            decoration: flatGradient(context),
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                  customIcons['no-data'],
+                  semanticsLabel: 'icon',
+                  height: 120.0,
+                ),
+                customTitleWithWrap(
+                    text: "Nothing to display!",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14.0,
+                    textAlign: TextAlign.center,
+                    color: Colors.blueGrey[400]),
+                customTitleWithWrap(
+                    text: "Sorry, you haven't made any contributions",
+                    //fontWeight: FontWeight.w500,
+                    fontSize: 12.0,
+                    textAlign: TextAlign.center,
+                    color: Colors.blueGrey[400])
+              ],
+            )),
+      ),
+      if (_onlineBankingEnabled)
+        Padding(
+          padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
+          child: Container(
+            // ignore: todo
+            // width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
+            padding: EdgeInsets.symmetric(vertical: 10.0),
+            color: Theme.of(context).cardColor.withOpacity(0.1),
+            child: Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                    ),
+                    child: paymentActionButton(
+                      color: primaryColor,
+                      textColor: primaryColor,
+                      icon: FontAwesome.chevron_right,
+                      isFlat: false,
+                      text: "PAY NOW",
+                      iconSize: 12.0,
+                      action: () {},
+                    ),
+                  ),
+                ),
+                // Expanded(
+                //   child: Padding(
+                //     padding: EdgeInsets.symmetric(
+                //       horizontal: 16.0,
+                //     ),
+                //     child: paymentActionButton(
+                //       color: primaryColor,
+                //       textColor: Colors.white,
+                //       icon: FontAwesome.chevron_right,
+                //       isFlat: true,
+                //       text: "APPLY LOAN",
+                //       iconSize: 12.0,
+                //       action: () => Navigator.of(context).push(
+                //         MaterialPageRoute(
+                //           builder: (BuildContext context) =>
+                //               ApplyLoan(),
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
+          ),
+        ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(
+          20.0,
+          0.0,
+          16.0,
+          0.0,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              "Recent Transactions",
+              style: TextStyle(
+                color: Colors.blueGrey[400],
+                fontSize: 16.0,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            IconButton(
+                icon: Icon(
+                  Feather.more_horizontal,
+                  color: Colors.blueGrey,
+                ),
+                onPressed: () {})
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+        child: Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(16.0),
+            decoration: flatGradient(context),
+            child: Column(
+              children: [
+                SvgPicture.asset(
+                  customIcons['no-data'],
+                  semanticsLabel: 'icon',
+                  height: 120.0,
+                ),
+                customTitleWithWrap(
+                    text: "Nothing to display!",
+                    fontWeight: FontWeight.w700,
+                    fontSize: 14.0,
+                    textAlign: TextAlign.center,
+                    color: Colors.blueGrey[400]),
+                customTitleWithWrap(
+                    text: "Sorry, you haven't made any transactions",
+                    //fontWeight: FontWeight.w500,
+                    fontSize: 12.0,
+                    textAlign: TextAlign.center,
+                    color: Colors.blueGrey[400])
+              ],
+            )),
+      ),
+    ],
   );
 }
 

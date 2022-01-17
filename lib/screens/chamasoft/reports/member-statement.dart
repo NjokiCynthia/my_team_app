@@ -117,8 +117,6 @@ class _MemeberSatementState extends State<MemeberSatement> {
     //     Provider.of<Groups>(context, listen: false).getCurrentGroup();
     _member = Provider.of<Groups>(context, listen: true).members;
 
-    print('Members are as:  ');
-    print(_member);
 
     return Scaffold(
       key: _scaffoldKey,
