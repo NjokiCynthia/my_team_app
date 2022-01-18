@@ -2294,36 +2294,36 @@ class Groups with ChangeNotifier {
         order: 'ASC',
       );
       _expenseCategories = [];
-      if (_localData.length > 0) {
-        addExpenseCategories(
-            expenseCategories: jsonDecode(_localData[0]['value']));
-      } else {
-        try {
-          final response = await PostToServer.post(postRequest, url);
-          final expenseCategoriesTypes =
-              response['expense_categories'] as List<dynamic>;
-          Map<String, dynamic> expenseCategoriesMap = {
-            "group_id": currentGroupId,
-            "value": jsonEncode(expenseCategoriesTypes),
-            "modified_on": DateTime.now().millisecondsSinceEpoch,
-          };
-          await dbHelper.deleteMultiple([int.parse(_currentGroupId)],
-              DatabaseHelper.expenseCategoriesTable);
-          await dbHelper.insert(
-              expenseCategoriesMap, DatabaseHelper.expenseCategoriesTable);
-          addExpenseCategories(expenseCategories: expenseCategoriesTypes);
-        } on CustomException catch (error) {
-          if (error.status == ErrorStatusCode.statusNoInternet) {
-            addExpenseCategories(expenseCategories: _localData);
-          } else {
-            throw CustomException(message: error.message, status: error.status);
-          }
-        } catch (error) {
-          if (error.status == ErrorStatusCode.statusNoInternet) {
-            addExpenseCategories(expenseCategories: _localData);
-          } else {
-            throw CustomException(message: ERROR_MESSAGE);
-          }
+      // if (_localData.length > 0) {
+      //   addExpenseCategories(
+      //       expenseCategories: jsonDecode(_localData[0]['value']));
+      // } else {
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final expenseCategoriesTypes =
+            response['expense_categories'] as List<dynamic>;
+        Map<String, dynamic> expenseCategoriesMap = {
+          "group_id": currentGroupId,
+          "value": jsonEncode(expenseCategoriesTypes),
+          "modified_on": DateTime.now().millisecondsSinceEpoch,
+        };
+        await dbHelper.deleteMultiple([int.parse(_currentGroupId)],
+            DatabaseHelper.expenseCategoriesTable);
+        await dbHelper.insert(
+            expenseCategoriesMap, DatabaseHelper.expenseCategoriesTable);
+        addExpenseCategories(expenseCategories: expenseCategoriesTypes);
+      } on CustomException catch (error) {
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          addExpenseCategories(expenseCategories: _localData);
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
+      } catch (error) {
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          addExpenseCategories(expenseCategories: _localData);
+        } else {
+          throw CustomException(message: ERROR_MESSAGE);
+          //   }
         }
       }
     } on CustomException catch (error) {
@@ -4141,22 +4141,22 @@ class Groups with ChangeNotifier {
       // if (_localData.length > 0) {
       //   addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
       // } else {
-        try {
-          final response = await PostToServer.post(postRequest, url);
-          final data = response['loans'] as List<dynamic>;
-          addOngoingMemberLoans(memberLoansList: data);
-        } on CustomException catch (error) {
-          if (error.status == ErrorStatusCode.statusNoInternet) {
-            addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
-          } else {
-            throw CustomException(message: error.message, status: error.status);
-          }
-        } catch (error) {
-          if (error.status == ErrorStatusCode.statusNoInternet) {
-            addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
-          } else {
-            throw CustomException(message: ERROR_MESSAGE);
-          }
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        final data = response['loans'] as List<dynamic>;
+        addOngoingMemberLoans(memberLoansList: data);
+      } on CustomException catch (error) {
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
+        } else {
+          throw CustomException(message: error.message, status: error.status);
+        }
+      } catch (error) {
+        if (error.status == ErrorStatusCode.statusNoInternet) {
+          addOngoingMemberLoans(memberLoansList: _localData, isLocal: true);
+        } else {
+          throw CustomException(message: ERROR_MESSAGE);
+        }
         // }
       }
     } on CustomException catch (error) {
@@ -4310,6 +4310,7 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
   /// ***********************Contribution Statement*****************************
 
   Future<void> fetchMemberContributionStatement({String memberId = ""}) async {
@@ -4335,9 +4336,10 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
   /// ***********************Fine Statement*****************************
 
-   Future<void> fetchMemberFineStatement({String memberId = ""}) async {
+  Future<void> fetchMemberFineStatement({String memberId = ""}) async {
     final url = EndpointUrl.GET_FINE_STATEMENT;
     try {
       final postRequest = json.encode({
