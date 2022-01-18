@@ -295,19 +295,45 @@ class _MyGroupsState extends State<MyGroups> with TickerProviderStateMixin {
                                           borderColor:
                                               Colors.blueGrey.withOpacity(0.2),
                                           action: () {
-                                            Provider.of<Groups>(
-                                              ctx2,
-                                              listen: false,
-                                            ).setSelectedGroupId(
-                                              groups.item[index].groupId,
-                                            );
-                                            Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        ChamasoftDashboard(),
-                                              ),
-                                            );
+                                            if (int.parse(groups.item[index]
+                                                        .groupSize) <
+                                                    3 &&
+                                                groups
+                                                    .item[index].isGroupAdmin) {
+                                              Provider.of<Groups>(
+                                                ctx2,
+                                                listen: false,
+                                              ).setSelectedGroupId(
+                                                groups.item[index].groupId,
+                                              );
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (BuildContext
+                                                          context) =>
+                                                      NewGroup(
+                                                          groupName: groups
+                                                              .item[index]
+                                                              .groupName,
+                                                          groupId: groups
+                                                              .item[index]
+                                                              .groupId),
+                                                ),
+                                              );
+                                            } else {
+                                              Provider.of<Groups>(
+                                                ctx2,
+                                                listen: false,
+                                              ).setSelectedGroupId(
+                                                groups.item[index].groupId,
+                                              );
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          ChamasoftDashboard(),
+                                                ),
+                                              );
+                                            }
                                           },
                                         );
                                       },

@@ -21,6 +21,9 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class NewGroup extends StatefulWidget {
+  final String groupName, groupId;
+  const NewGroup({Key key, this.groupName, this.groupId}) : super(key: key);
+
   @override
   _NewGroupState createState() => _NewGroupState();
 }
@@ -105,7 +108,12 @@ class _NewGroupState extends State<NewGroup> {
     if (currentStep + 1 != steps.length) {
       if (currentStep == 0) {
         if (_stepOneFormKey.currentState.validate()) {
-          if (_data['name'] == '') {
+           if(widget.groupId != null){
+           
+            _data['name'] == widget.groupName;
+
+          } 
+         else if (_data['name'] == '') {
             _showSnackbar("You need to fill group info to continue.", 4);
           } else {
             // goTo(1);
