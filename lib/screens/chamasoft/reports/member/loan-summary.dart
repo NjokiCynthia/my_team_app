@@ -298,9 +298,9 @@ class ActiveLoanCard extends StatelessWidget {
                                 top: BorderSide(
                                     color: Theme.of(context).bottomAppBarColor,
                                     width: 1.0),
-                                left: BorderSide(
+                                left: BorderSide.none/* (
                                     color: Theme.of(context).bottomAppBarColor,
-                                    width: 0.5))),
+                                    width: 0.5) */)),
                         child: plainButton(
                             text: "STATEMENT",
                             size: 16.0,
