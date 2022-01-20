@@ -4,6 +4,7 @@ import 'package:chamasoft/providers/groups.dart' as GroupProvider;
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/chamasoft/notifications/notification-alert.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dashed-divider.dart';
@@ -74,7 +75,7 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
       appBar: secondaryPageAppbar(
           context: context,
           title: "Notifications",
-          action: () => Navigator.pop(context,true),
+          action: () => Navigator.pop(context, true),
           elevation: 2.5,
           leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,
@@ -154,13 +155,16 @@ class _ChamasoftNotificationsState extends State<ChamasoftNotifications> {
                                 GroupProvider.Notification notification =
                                     groupData.notifications[index];
                                 return InkWell(
-                                  // onTap: () => Navigator.of(context).push(
-                                  //   MaterialPageRoute(
-                                  //     builder: (BuildContext context) =>
-                                  //       NotificationAlert(notification: notification,),
-                                  //         // NotificationDetails(notification: notification),
-                                  //   ),
-                                  // ),
+                                  onTap: () => Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          NotificationAlert(
+                                        notification: notification,
+                                      ),
+                                      // NotificationDetails(
+                                      //     notification: notification),
+                                    ),
+                                  ),
                                   child: Container(
                                     child: Column(
                                       children: <Widget>[

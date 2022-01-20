@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,6 @@ class NotificationAlert extends StatefulWidget {
 }
 
 class _NotificationAlertState extends State<NotificationAlert> {
-
   @override
   void initState() {
     // ignore: todo
@@ -31,17 +31,17 @@ class _NotificationAlertState extends State<NotificationAlert> {
     // ignore: todo
     // TODO: implement didChangeDependencies
     //mark notification as read
-    if(widget.notification.isRead=='0'){
-      Provider.of<Groups>(context, listen: false).markNotificationAsRead((widget.notification.id).toString());
+    if (widget.notification.isRead == '0') {
+      Provider.of<Groups>(context, listen: false)
+          .markNotificationAsRead((widget.notification.id).toString());
     }
-    
+
     super.didChangeDependencies();
   }
 
-  void _takeNotificationAction(){
-    return null;
-  }
-
+  // void _takeNotificationAction() {
+  //   return null;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +70,7 @@ class _NotificationAlertState extends State<NotificationAlert> {
                     textAlign: TextAlign.center,
                   ),
                   subtitle1(
-                    text: "Subtitle goes here",
+                    text: " ",
                     color: primaryColor.withOpacity(0.8),
                     textAlign: TextAlign.center,
                   ),
@@ -89,8 +89,8 @@ class _NotificationAlertState extends State<NotificationAlert> {
                     ),
                     errorWidget: (context, url, error) =>
                         const Icon(Icons.error),
-                    fadeOutDuration: const Duration(seconds: 1),
-                    fadeInDuration: const Duration(seconds: 3),
+                    fadeOutDuration: const Duration(milliseconds: 700),
+                    fadeInDuration: const Duration(milliseconds: 1000),
                   ),
                   SizedBox(
                     height: 20.0,
@@ -107,34 +107,42 @@ class _NotificationAlertState extends State<NotificationAlert> {
                   ),
                   // ignore: deprecated_member_use
                   Row(
-                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       TextButton(
                         child: customTitle(
                           text: "Cancel",
-                          color:  Colors.red,
+                          color: Colors.red,
                           fontWeight: FontWeight.w600,
                         ),
-                        onPressed: ()=> Navigator.of(context).pop(),
+                        onPressed: () => Navigator.of(context).pop(),
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.red.withOpacity(0.2),
-                          padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(4.0))
-                        ),
+                            backgroundColor: Colors.red.withOpacity(0.2),
+                            padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(4.0))),
                       ),
                       TextButton(
-                        onPressed: _takeNotificationAction, 
+                        onPressed: () => {
+                          //  _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  ContributionStatement(),
+                            ),
+                          ),
+                        },
                         child: customTitle(
                           text: "View Statement",
-                          color:  primaryColor,
+                          color: primaryColor,
                           fontWeight: FontWeight.w600,
                         ),
                         style: TextButton.styleFrom(
-                          primary: primaryColor, 
-                          backgroundColor: primaryColor.withOpacity(0.2),
-                          padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
-                          shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(4.0))
-                        ),
+                            primary: primaryColor,
+                            backgroundColor: primaryColor.withOpacity(0.2),
+                            padding: EdgeInsets.fromLTRB(22.0, 0.0, 22.0, 0.0),
+                            shape: new RoundedRectangleBorder(
+                                borderRadius: new BorderRadius.circular(4.0))),
                       ),
                     ],
                   ),

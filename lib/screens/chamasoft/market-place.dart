@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/config.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
@@ -283,8 +284,24 @@ class _ChamasoftMarketPlaceState extends State<ChamasoftMarketPlace> {
                     width: MediaQuery.of(context).size.width,
                     child: Column(
                       children: [
-                        Image.network(
-                            'https://app.chamasoft.com/templates/admin_themes/groups/img/adverts/studiorm.jfif'),
+                        CachedNetworkImage(
+                          imageUrl:
+                              "https://app.chamasoft.com/templates/admin_themes/groups/img/adverts/studiorm.jfif",
+                          placeholder: (context, url) =>
+                              CircularProgressIndicator(
+                            strokeWidth: 3.0,
+                          ),
+                          imageBuilder: (context, image) => Image(
+                            image: image,
+                            width: double.infinity,
+                          ),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                          fadeOutDuration: const Duration(milliseconds: 700),
+                          fadeInDuration: const Duration(milliseconds: 1000),
+                        ),
+                        // Image.network(
+                        //     'https://app.chamasoft.com/templates/admin_themes/groups/img/adverts/studiorm.jfif'),
                         DottedLine(
                           direction: Axis.horizontal,
                           lineLength: double.infinity,
