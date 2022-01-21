@@ -14,6 +14,7 @@ import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/showCase.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -49,10 +50,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   List<ContributionsSummary> _itableContributionSummary = [];
   bool _showMeetingsBanner = false;
   Dashboard dashboardData;
-  final switchGroupKey = GlobalKey();
-  final meetingsKey = GlobalKey();
-  final notificationsKey = GlobalKey();
-  final settingsKey = GlobalKey();
+
+  BuildContext homeContext;
+
+  final meetingsBannarKey = GlobalKey();
+  final totalBalanceKey = GlobalKey();
+  final contributionSummayKey = GlobalKey();
+  final recentTransactionKey = GlobalKey();
+  final payNowButtonKey = GlobalKey();
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -128,9 +133,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        ShowCaseWidget.of(context).startShowCase(
-            [switchGroupKey, settingsKey, settingsKey, notificationsKey]));
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => ShowCaseWidget.of(homeContext).startShowCase([
+              meetingsBannarKey,
+              totalBalanceKey,
+              contributionSummayKey,
+              payNowButtonKey,
+              recentTransactionKey
+            ]));
 
     super.initState();
   }
@@ -372,9 +382,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           });
     });
 
-    return ShowCaseWidget(
-        builder: Builder(
-      builder: (_) => WillPopScope(
+    return ShowCaseWidget(builder: Builder(builder: (context) {
+      homeContext = context;
+      return WillPopScope(
         onWillPop: _onWillPop,
         child: RefreshIndicator(
           backgroundColor: (themeChangeProvider.darkTheme)
@@ -390,115 +400,122 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       children: <Widget>[
                         Visibility(
                           visible: _showMeetingsBanner,
-                          child: Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              16.0,
-                              16.0,
-                              16.0,
-                              16.0,
-                            ),
-                            child: Container(
-                              width: double.infinity,
-                              decoration: cardDecoration(
-                                gradient: plainCardGradient(context),
-                                context: context,
+                          child: customShowCase(
+                            key: meetingsBannarKey,
+                            title: "Chamasoft Meetings Banner",
+                            description:
+                                "Schedule,View and Manage Chama Meetings",
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                16.0,
+                                16.0,
+                                16.0,
+                                16.0,
                               ),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(16.0),
-                                child: Stack(
-                                  children: <Widget>[
-                                    Image(
-                                      image: AssetImage(
-                                        'assets/meeting-minutes.jpg',
-                                      ),
-                                      width: double.infinity,
-                                    ),
-                                    Positioned(
-                                      top: 0,
-                                      bottom: 0,
-                                      right: 0,
-                                      left: 0,
-                                      child: Container(
-                                        height: double.infinity,
-                                        width: double.infinity,
-                                        color: Colors.black.withOpacity(0.3),
-                                        padding: EdgeInsets.only(
-                                          right: 16.0,
-                                          top: 6.0,
-                                          bottom: 6.0,
+                              child: Container(
+                                width: double.infinity,
+                                decoration: cardDecoration(
+                                  gradient: plainCardGradient(context),
+                                  context: context,
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(16.0),
+                                  child: Stack(
+                                    children: <Widget>[
+                                      Image(
+                                        image: AssetImage(
+                                          'assets/meeting-minutes.jpg',
                                         ),
-                                        child: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                Text(
-                                                  "${Config.appName} Meetings",
+                                        width: double.infinity,
+                                      ),
+                                      Positioned(
+                                        top: 0,
+                                        bottom: 0,
+                                        right: 0,
+                                        left: 0,
+                                        child: Container(
+                                          height: double.infinity,
+                                          width: double.infinity,
+                                          color: Colors.black.withOpacity(0.3),
+                                          padding: EdgeInsets.only(
+                                            right: 16.0,
+                                            top: 6.0,
+                                            bottom: 6.0,
+                                          ),
+                                          child: Column(
+                                            mainAxisSize: MainAxisSize.max,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Column(
+                                                mainAxisSize: MainAxisSize.max,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    "${Config.appName} Meetings",
+                                                    style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontFamily: 'SegoeUI',
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 22.0,
+                                                    ),
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                                  subtitle2(
+                                                    color: Colors.white
+                                                        .withOpacity(0.9),
+                                                    text:
+                                                        "Manage group meetings, easily.",
+                                                    textAlign: TextAlign.right,
+                                                  ),
+                                                ],
+                                              ),
+                                              InkWell(
+                                                onTap: () =>
+                                                    Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        Meetings(),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  "Get Started",
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontFamily: 'SegoeUI',
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 22.0,
+                                                    fontSize: 16.0,
+                                                    decoration: TextDecoration
+                                                        .underline,
                                                   ),
                                                   textAlign: TextAlign.right,
                                                 ),
-                                                subtitle2(
-                                                  color: Colors.white
-                                                      .withOpacity(0.9),
-                                                  text:
-                                                      "Manage group meetings, easily.",
+                                              ),
+                                              InkWell(
+                                                onTap: () => hideBanner(),
+                                                child: Text(
+                                                  "Don't show this again",
+                                                  style: TextStyle(
+                                                    color: Colors.white
+                                                        .withOpacity(0.8),
+                                                    fontFamily: 'SegoeUI',
+                                                    fontWeight: FontWeight.w300,
+                                                    fontSize: 11.0,
+                                                  ),
                                                   textAlign: TextAlign.right,
                                                 ),
-                                              ],
-                                            ),
-                                            InkWell(
-                                              onTap: () =>
-                                                  Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          Meetings(),
-                                                ),
                                               ),
-                                              child: Text(
-                                                "Get Started",
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontFamily: 'SegoeUI',
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16.0,
-                                                  decoration:
-                                                      TextDecoration.underline,
-                                                ),
-                                                textAlign: TextAlign.right,
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () => hideBanner(),
-                                              child: Text(
-                                                "Don't show this again",
-                                                style: TextStyle(
-                                                  color: Colors.white
-                                                      .withOpacity(0.8),
-                                                  fontFamily: 'SegoeUI',
-                                                  fontWeight: FontWeight.w300,
-                                                  fontSize: 11.0,
-                                                ),
-                                                textAlign: TextAlign.right,
-                                              ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -517,102 +534,63 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               gradient: plainCardGradient(context),
                               context: context,
                             ),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Row(
-                                  children: <Widget>[
-                                    customTitle(
-                                      text: _currentGroup.disableArrears
-                                          ? "Total Deposits and Loan Balances"
-                                          : "Total Balances",
-                                      color: Colors.blueGrey[400],
-                                      fontFamily: 'SegoeUI',
-                                      fontSize: 16.0,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ],
-                                ),
-                                Divider(
-                                  color: Theme.of(context)
-                                      .hintColor
-                                      .withOpacity(0.1),
-                                  thickness: 2.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    customTitle(
-                                      text: "Your Contribution Balance",
-                                      textAlign: TextAlign.start,
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                    ),
-                                    SizedBox(
-                                      height: 22,
-                                      child: cardAmountButton(
-                                        currency: _groupCurrency,
-                                        amount: _currentGroup.disableArrears
-                                            ? currencyFormat.format(
-                                                dashboardData
-                                                    .memberContributionAmount)
-                                            : currencyFormat.format(
-                                                dashboardData
-                                                    .memberContributionArrears),
-                                        size: 16.0,
-                                        color: (dashboardData
-                                                    .memberContributionArrears) >
-                                                0
-                                            ? Colors.red[400]
-                                            : Theme.of(context)
-                                                // ignore: deprecated_member_use
-                                                .textSelectionHandleColor,
-                                        action: () => Navigator.of(context)
-                                            .push(MaterialPageRoute(
-                                                builder: (BuildContext
-                                                        context) =>
-                                                    ContributionStatement(
-                                                        statementFlag:
-                                                            CONTRIBUTION_STATEMENT),
-                                                settings: RouteSettings(
-                                                    arguments: 0))),
+                            child: customShowCase(
+                              key: totalBalanceKey,
+                              title: 'Total Balances',
+                              description:
+                                  'View a summary of Your Contribution Balance, Fines, Loans and Pending Instalments',
+                              textColor:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor,
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: <Widget>[
+                                  Row(
+                                    children: <Widget>[
+                                      customTitle(
+                                        text: _currentGroup.disableArrears
+                                            ? "Total Deposits and Loan Balances"
+                                            : "Total Balances",
+                                        color: Colors.blueGrey[400],
+                                        fontFamily: 'SegoeUI',
+                                        fontSize: 16.0,
+                                        fontWeight: FontWeight.w600,
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 4.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    customTitle(
-                                      text: "Fines",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                    ),
-                                    SizedBox(
-                                      height: 22,
-                                      child: cardAmountButton(
+                                    ],
+                                  ),
+                                  Divider(
+                                    color: Theme.of(context)
+                                        .hintColor
+                                        .withOpacity(0.1),
+                                    thickness: 2.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      customTitle(
+                                        text: "Your Contribution Balance",
+                                        textAlign: TextAlign.start,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                      ),
+                                      SizedBox(
+                                        height: 22,
+                                        child: cardAmountButton(
                                           currency: _groupCurrency,
                                           amount: _currentGroup.disableArrears
                                               ? currencyFormat.format(
                                                   dashboardData
-                                                      .memberFineAmount)
+                                                      .memberContributionAmount)
                                               : currencyFormat.format(
                                                   dashboardData
-                                                      .memberFineArrears),
-                                          size: 14.0,
+                                                      .memberContributionArrears),
+                                          size: 16.0,
                                           color: (dashboardData
-                                                      .memberFineArrears) >
+                                                      .memberContributionArrears) >
                                                   0
                                               ? Colors.red[400]
                                               : Theme.of(context)
@@ -620,96 +598,143 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                                   .textSelectionHandleColor,
                                           action: () => Navigator.of(context)
                                               .push(MaterialPageRoute(
-                                                  builder: (BuildContext context) =>
+                                                  builder: (BuildContext
+                                                          context) =>
                                                       ContributionStatement(
                                                           statementFlag:
-                                                              FINE_STATEMENT),
+                                                              CONTRIBUTION_STATEMENT),
                                                   settings: RouteSettings(
-                                                      arguments: 0)))),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 4.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    customTitle(
-                                      text: "Loans",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                    ),
-                                    SizedBox(
-                                      height: 22,
-                                      child: cardAmountButton(
-                                          currency: _groupCurrency,
-                                          amount: currencyFormat
-                                              .format(dashboardData
-                                                  .memberTotalLoanBalance),
-                                          size: 14.0,
-                                          color: (dashboardData
-                                                      .memberTotalLoanBalance) >
-                                                  0
-                                              ? Colors.red[400]
-                                              : Theme.of(context)
-                                                  // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
-                                          action: () => Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          LoanSummary(),
-                                                  settings: RouteSettings(
-                                                      arguments: 0)))),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 4.0,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    customTitle(
-                                      text: "Pending Installment Balance",
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400,
-                                      color: Theme.of(context)
-                                          // ignore: deprecated_member_use
-                                          .textSelectionHandleColor,
-                                    ),
-                                    SizedBox(
-                                      height: 22,
-                                      child: cardAmountButton(
-                                          currency: _groupCurrency,
-                                          amount: currencyFormat.format(
-                                              dashboardData.memberLoanArrears),
-                                          size: 14.0,
-                                          color: (dashboardData
-                                                      .memberLoanArrears) >
-                                                  0
-                                              ? Colors.red[400]
-                                              : Theme.of(context)
-                                                  // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
-                                          action: () => Navigator.of(
-                                                  context)
-                                              .push(MaterialPageRoute(
-                                                  builder:
-                                                      (BuildContext context) =>
-                                                          LoanSummary(),
-                                                  settings: RouteSettings(
-                                                      arguments: 0)))),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                                      arguments: 0))),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 4.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      customTitle(
+                                        text: "Fines",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                      ),
+                                      SizedBox(
+                                        height: 22,
+                                        child: cardAmountButton(
+                                            currency: _groupCurrency,
+                                            amount: _currentGroup.disableArrears
+                                                ? currencyFormat.format(dashboardData
+                                                    .memberFineAmount)
+                                                : currencyFormat.format(
+                                                    dashboardData
+                                                        .memberFineArrears),
+                                            size: 14.0,
+                                            color: (dashboardData
+                                                        .memberFineArrears) >
+                                                    0
+                                                ? Colors.red[400]
+                                                : Theme.of(context)
+                                                    // ignore: deprecated_member_use
+                                                    .textSelectionHandleColor,
+                                            action: () => Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (BuildContext context) =>
+                                                        ContributionStatement(
+                                                            statementFlag:
+                                                                FINE_STATEMENT),
+                                                    settings: RouteSettings(
+                                                        arguments: 0)))),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 4.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      customTitle(
+                                        text: "Loans",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                      ),
+                                      SizedBox(
+                                        height: 22,
+                                        child: cardAmountButton(
+                                            currency: _groupCurrency,
+                                            amount: currencyFormat.format(
+                                                dashboardData
+                                                    .memberTotalLoanBalance),
+                                            size: 14.0,
+                                            color: (dashboardData
+                                                        .memberTotalLoanBalance) >
+                                                    0
+                                                ? Colors.red[400]
+                                                : Theme.of(context)
+                                                    // ignore: deprecated_member_use
+                                                    .textSelectionHandleColor,
+                                            action: () => Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        LoanSummary(),
+                                                    settings: RouteSettings(
+                                                        arguments: 0)))),
+                                      ),
+                                    ],
+                                  ),
+                                  SizedBox(
+                                    height: 4.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      customTitle(
+                                        text: "Pending Installment Balance",
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context)
+                                            // ignore: deprecated_member_use
+                                            .textSelectionHandleColor,
+                                      ),
+                                      SizedBox(
+                                        height: 22,
+                                        child: cardAmountButton(
+                                            currency: _groupCurrency,
+                                            amount: currencyFormat.format(
+                                                dashboardData
+                                                    .memberLoanArrears),
+                                            size: 14.0,
+                                            color: (dashboardData
+                                                        .memberLoanArrears) >
+                                                    0
+                                                ? Colors.red[400]
+                                                : Theme.of(context)
+                                                    // ignore: deprecated_member_use
+                                                    .textSelectionHandleColor,
+                                            action: () => Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: (BuildContext
+                                                            context) =>
+                                                        LoanSummary(),
+                                                    settings: RouteSettings(
+                                                        arguments: 0)))),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -913,175 +938,213 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             ? Padding(
                                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0,
                                     _onlineBankingEnabled ? 10.0 : 0.0),
-                                child: Container(
-                                  height: 180.0,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    padding:
-                                        EdgeInsets.only(top: 5.0, bottom: 10.0),
-                                    physics: BouncingScrollPhysics(),
-                                    children: _itableContributionSummary
-                                                .length >
-                                            0
-                                        ? contributionsSummary.toList()
-                                        : <Widget>[
-                                            SizedBox(
-                                              width: 16.0,
-                                            ),
-                                            Container(
-                                              width: 160.0,
-                                              padding: EdgeInsets.all(16.0),
-                                              decoration: cardDecoration(
-                                                  gradient: csCardGradient(),
-                                                  context: context),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: contributionSummary(
-                                                  color: Colors.white,
-                                                  cardIcon: Feather.bar_chart_2,
-                                                  amountDue: "0",
-                                                  cardAmount: "0",
-                                                  currency: _groupCurrency,
-                                                  dueDate: "14 Apr 20",
-                                                  contributionName:
-                                                      "Monthly Savings",
+                                child: customShowCase(
+                                  key: contributionSummayKey,
+                                  title: 'Contribution Summary',
+                                  description:
+                                      'View all Your Contribution Summary Here',
+                                  textColor:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          .textSelectionHandleColor,
+                                  child: Container(
+                                    height: 180.0,
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: EdgeInsets.only(
+                                          top: 5.0, bottom: 10.0),
+                                      physics: BouncingScrollPhysics(),
+                                      children: _itableContributionSummary
+                                                  .length >
+                                              0
+                                          ? contributionsSummary.toList()
+                                          : <Widget>[
+                                              SizedBox(
+                                                width: 16.0,
+                                              ),
+                                              Container(
+                                                width: 160.0,
+                                                padding: EdgeInsets.all(16.0),
+                                                decoration: cardDecoration(
+                                                    gradient: csCardGradient(),
+                                                    context: context),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: contributionSummary(
+                                                    color: Colors.white,
+                                                    cardIcon:
+                                                        Feather.bar_chart_2,
+                                                    amountDue: "0",
+                                                    cardAmount: "0",
+                                                    currency: _groupCurrency,
+                                                    dueDate: "14 Apr 20",
+                                                    contributionName:
+                                                        "Monthly Savings",
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 26.0,
-                                            ),
-                                            Container(
-                                              width: 160.0,
-                                              padding: EdgeInsets.all(16.0),
-                                              decoration: cardDecoration(
-                                                  gradient: plainCardGradient(
-                                                      context),
-                                                  context: context),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: contributionSummary(
-                                                  color: primaryColor,
-                                                  cardIcon: Feather.bar_chart,
-                                                  amountDue: "0",
-                                                  cardAmount: "0",
-                                                  currency: _groupCurrency,
-                                                  dueDate: "4 Apr 20",
-                                                  contributionName: "Welfare",
+                                              SizedBox(
+                                                width: 26.0,
+                                              ),
+                                              Container(
+                                                width: 160.0,
+                                                padding: EdgeInsets.all(16.0),
+                                                decoration: cardDecoration(
+                                                    gradient: plainCardGradient(
+                                                        context),
+                                                    context: context),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: contributionSummary(
+                                                    color: primaryColor,
+                                                    cardIcon: Feather.bar_chart,
+                                                    amountDue: "0",
+                                                    cardAmount: "0",
+                                                    currency: _groupCurrency,
+                                                    dueDate: "4 Apr 20",
+                                                    contributionName: "Welfare",
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 26.0,
-                                            ),
-                                            Container(
-                                              width: 160.0,
-                                              padding: EdgeInsets.all(16.0),
-                                              decoration: cardDecoration(
-                                                  gradient: plainCardGradient(
-                                                      context),
-                                                  context: context),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: contributionSummary(
-                                                  color: Colors.blueGrey,
-                                                  cardIcon: Feather.bar_chart_2,
-                                                  amountDue: "0",
-                                                  cardAmount: "0",
-                                                  currency: _groupCurrency,
-                                                  dueDate: "14 Apr 20",
-                                                  contributionName: "Insurance",
+                                              SizedBox(
+                                                width: 26.0,
+                                              ),
+                                              Container(
+                                                width: 160.0,
+                                                padding: EdgeInsets.all(16.0),
+                                                decoration: cardDecoration(
+                                                    gradient: plainCardGradient(
+                                                        context),
+                                                    context: context),
+                                                child: Column(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: contributionSummary(
+                                                    color: Colors.blueGrey,
+                                                    cardIcon:
+                                                        Feather.bar_chart_2,
+                                                    amountDue: "0",
+                                                    cardAmount: "0",
+                                                    currency: _groupCurrency,
+                                                    dueDate: "14 Apr 20",
+                                                    contributionName:
+                                                        "Insurance",
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(
-                                              width: 16.0,
-                                            ),
-                                          ],
+                                              SizedBox(
+                                                width: 16.0,
+                                              ),
+                                            ],
+                                    ),
                                   ),
                                 ),
                               )
                             : Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
-                                child: Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.all(16.0),
-                                    decoration: flatGradient(context),
-                                    child: Column(
-                                      children: [
-                                        SvgPicture.asset(
-                                          customIcons['no-data'],
-                                          semanticsLabel: 'icon',
-                                          height: 120.0,
-                                        ),
-                                        customTitleWithWrap(
-                                            text: "Nothing to display!",
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 14.0,
-                                            textAlign: TextAlign.center,
-                                            color: Colors.blueGrey[400]),
-                                        customTitleWithWrap(
-                                            text:
-                                                "Sorry, you haven't made any contributions",
-                                            //fontWeight: FontWeight.w500,
-                                            fontSize: 12.0,
-                                            textAlign: TextAlign.center,
-                                            color: Colors.blueGrey[400])
-                                      ],
-                                    )),
+                                child: customShowCase(
+                                  key: contributionSummayKey,
+                                  title: 'Contribution Summary',
+                                  description:
+                                      'View all Your Contribution Summary Here',
+                                  textColor:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                  child: Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(16.0),
+                                      decoration: flatGradient(context),
+                                      child: Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            customIcons['no-data'],
+                                            semanticsLabel: 'icon',
+                                            height: 120.0,
+                                          ),
+                                          customTitleWithWrap(
+                                              text: "Nothing to display!",
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14.0,
+                                              textAlign: TextAlign.center,
+                                              color: Colors.blueGrey[400]),
+                                          customTitleWithWrap(
+                                              text:
+                                                  "Sorry, you haven't made any contributions",
+                                              //fontWeight: FontWeight.w500,
+                                              fontSize: 12.0,
+                                              textAlign: TextAlign.center,
+                                              color: Colors.blueGrey[400])
+                                        ],
+                                      )),
+                                ),
                               ),
                         if (_onlineBankingEnabled)
                           Padding(
                             padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                            child: Container(
-                              // ignore: todo
-                              // width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
-                              padding: EdgeInsets.symmetric(vertical: 10.0),
-                              color:
-                                  Theme.of(context).cardColor.withOpacity(0.1),
-                              child: Row(
-                                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Expanded(
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(
-                                        horizontal: 16.0,
-                                      ),
-                                      child: paymentActionButton(
-                                        color: primaryColor,
-                                        textColor: primaryColor,
-                                        icon: FontAwesome.chevron_right,
-                                        isFlat: false,
-                                        text: "PAY NOW",
-                                        iconSize: 12.0,
-                                        action: () => _openPayNowTray(context),
+                            child: customShowCase(
+                              key: payNowButtonKey,
+                              title: 'Pay Your Contribution Summary',
+                              description:
+                                  'Click here to Pay your contribution to chama e-wallet using M-PESA',
+                              textColor:
+                                  // ignore: deprecated_member_use
+                                  Theme.of(context).textSelectionHandleColor,
+                              child: Container(
+                                // ignore: todo
+                                // width: 260, //TODO: Remove this when you uncomment the 'APPLY LOAD' button below
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
+                                color: Theme.of(context)
+                                    .cardColor
+                                    .withOpacity(0.1),
+                                child: Row(
+                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          horizontal: 16.0,
+                                        ),
+                                        child: paymentActionButton(
+                                          color: primaryColor,
+                                          textColor: primaryColor,
+                                          icon: FontAwesome.chevron_right,
+                                          isFlat: false,
+                                          text: "PAY NOW",
+                                          iconSize: 12.0,
+                                          action: () =>
+                                              _openPayNowTray(context),
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  // Expanded(
-                                  //   child: Padding(
-                                  //     padding: EdgeInsets.symmetric(
-                                  //       horizontal: 16.0,
-                                  //     ),
-                                  //     child: paymentActionButton(
-                                  //       color: primaryColor,
-                                  //       textColor: Colors.white,
-                                  //       icon: FontAwesome.chevron_right,
-                                  //       isFlat: true,
-                                  //       text: "APPLY LOAN",
-                                  //       iconSize: 12.0,
-                                  //       action: () => Navigator.of(context).push(
-                                  //         MaterialPageRoute(
-                                  //           builder: (BuildContext context) =>
-                                  //               ApplyLoan(),
-                                  //         ),
-                                  //       ),
-                                  //     ),
-                                  //   ),
-                                  // ),
-                                ],
+                                    // Expanded(
+                                    //   child: Padding(
+                                    //     padding: EdgeInsets.symmetric(
+                                    //       horizontal: 16.0,
+                                    //     ),
+                                    //     child: paymentActionButton(
+                                    //       color: primaryColor,
+                                    //       textColor: Colors.white,
+                                    //       icon: FontAwesome.chevron_right,
+                                    //       isFlat: true,
+                                    //       text: "APPLY LOAN",
+                                    //       iconSize: 12.0,
+                                    //       action: () => Navigator.of(context).push(
+                                    //         MaterialPageRoute(
+                                    //           builder: (BuildContext context) =>
+                                    //               ApplyLoan(),
+                                    //         ),
+                                    //       ),
+                                    //     ),
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -1116,14 +1179,26 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             ? Padding(
                                 padding:
                                     EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
-                                child: Container(
-                                  height: 180.0,
-                                  child: ListView(
-                                    scrollDirection: Axis.horizontal,
-                                    padding:
-                                        EdgeInsets.only(top: 5.0, bottom: 10.0),
-                                    physics: BouncingScrollPhysics(),
-                                    children: recentTransactionSummary.toList(),
+                                child: customShowCase(
+                                  key: recentTransactionKey,
+                                  title: 'Recent Summary',
+                                  description:
+                                      'Scroll Horizontal to View all your recent Transactions',
+                                  textColor:
+                                      // ignore: deprecated_member_use
+                                      Theme.of(context)
+                                          // ignore: deprecated_member_use
+                                          .textSelectionHandleColor,
+                                  child: Container(
+                                    height: 180.0,
+                                    child: ListView(
+                                      scrollDirection: Axis.horizontal,
+                                      padding: EdgeInsets.only(
+                                          top: 5.0, bottom: 10.0),
+                                      physics: BouncingScrollPhysics(),
+                                      children:
+                                          recentTransactionSummary.toList(),
+                                    ),
                                   ),
                                 ),
                               )
@@ -1167,8 +1242,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             ),
           ),
         ),
-      ),
-    ));
+      );
+    }));
   }
 
   void _openPayNowTray(BuildContext context) {

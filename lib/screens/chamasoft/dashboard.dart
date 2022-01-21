@@ -146,20 +146,20 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   void initState() {
     _currentPage = 0;
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Future.delayed(Duration(milliseconds: 200), () {
-              ShowCaseWidget.of(dashboardContext).startShowCase([
-                switchGroupKey,
-                meetingsKey,
-                notificationsKey,
-                settingsKey,
-                homeDashboardKey,
-                groupDashboardKey,
-                transactionKey,
-                reportKey,
-                marketplaceKey
-              ]);
-            }));
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (_) => Future.delayed(Duration(milliseconds: 200), () {
+    //           ShowCaseWidget.of(dashboardContext).startShowCase([
+    //             switchGroupKey,
+    //             meetingsKey,
+    //             notificationsKey,
+    //             settingsKey,
+    //             homeDashboardKey,
+    //             groupDashboardKey,
+    //             transactionKey,
+    //             reportKey,
+    //             marketplaceKey
+    //           ]);
+    //         }));
     super.initState();
   }
 
