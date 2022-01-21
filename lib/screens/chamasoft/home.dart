@@ -528,20 +528,20 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             16.0,
                             0.0,
                           ),
-                          child: Container(
-                            padding: EdgeInsets.all(16.0),
-                            decoration: cardDecoration(
-                              gradient: plainCardGradient(context),
-                              context: context,
-                            ),
-                            child: customShowCase(
-                              key: totalBalanceKey,
-                              title: 'Total Balances',
-                              description:
-                                  'View a summary of Your Contribution Balance, Fines, Loans and Pending Instalments',
-                              textColor:
-                                  // ignore: deprecated_member_use
-                                  Theme.of(context).textSelectionHandleColor,
+                          child: customShowCase(
+                            key: totalBalanceKey,
+                            title: 'Total Balances',
+                            description:
+                                'View a summary of Your Contribution Balance, Fines, Loans and Pending Instalments',
+                            textColor:
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor,
+                            child: Container(
+                              padding: EdgeInsets.all(16.0),
+                              decoration: cardDecoration(
+                                gradient: plainCardGradient(context),
+                                context: context,
+                              ),
                               child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
