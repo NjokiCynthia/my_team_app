@@ -110,6 +110,7 @@ class _NewGroupState extends State<NewGroup> {
         if (_stepOneFormKey.currentState.validate()) {
            if(widget.groupId != null){
            
+            // ignore: unnecessary_statements
             _data['name'] == widget.groupName;
 
           } 

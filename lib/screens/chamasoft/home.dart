@@ -946,6 +946,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   textColor:
                                       // ignore: deprecated_member_use
                                       Theme.of(context)
+                                          // ignore: deprecated_member_use
                                           .textSelectionHandleColor,
                                   child: Container(
                                     height: 180.0,

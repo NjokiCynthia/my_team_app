@@ -508,7 +508,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   key: reportKey,
                   title: 'Chamasoft Reports',
                   description: "View well summarized Transactions reports",
-
                   // ignore: deprecated_member_use
                   textColor: Theme.of(context).textSelectionHandleColor,
                   child: Icon(
@@ -620,6 +619,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           appBarElevation: (elevation) => _setElevation(elevation),
           notificationCount: (_notificationCount) =>
               _setNotificationCount(_notificationCount),
+            
         );
       case 1:
         return ChamasoftGroup(
