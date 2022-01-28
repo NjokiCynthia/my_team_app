@@ -406,7 +406,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             description:
                                 "Schedule,View and Manage Chama Meetings",
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB(
+                              padding: EdgeInsets.fromLTRB( 
                                 16.0,
                                 16.0,
                                 16.0,
