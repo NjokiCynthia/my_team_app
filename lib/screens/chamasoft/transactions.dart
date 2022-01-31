@@ -79,10 +79,10 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         (_) => ShowCaseWidget.of(transactionsContext).startShowCase([
               createWithdrwalKey,
               reviewWithdrawalKey,
-              recordIncomeKey,
-              reconcileDepositKey,
+              //  reconcileDepositKey,
               recordContributionKey,
               recordFineKey,
+              recordIncomeKey,
               recordExpenseKey,
               recordContributionRefundKey,
               recordMemberLoanKey,
