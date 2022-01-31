@@ -44,11 +44,13 @@ dependencies:
   fluttertoast: ^8.0.8
   lite_rolling_switch: ^0.1.1
   flutter_toggle_tab: "^0.0.1+2"
-  share: ^2.0.4
- # image_gallery_saver: '^1.6.9'
- # pdf: ^3.1.0
- # path_provider: ^2.0.1
- # open_file: ^3.1.0
+
+  share: ^0.6.5+4
+  screenshot: ^1.2.3
+  image_gallery_saver: '^1.6.9'
+  pdf: any
+  path_provider: ^2.0.1
+  open_file: ^3.1.0
   dotted_line: ^3.0.0
   data_table_2: ^2.1.1
   webview_flutter: ^2.1.2

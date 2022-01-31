@@ -486,25 +486,25 @@ class _MemberContributionStatementState
                 ],
               ),
             ),
-            Container(
-              child: Column(
-                children: [
-                  Center(
-                    child: subtitle3(
-                      text: _balance < 0
-                          ? "You have an Overpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}"
-                          : "You have an Underpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}",
-                      textAlign: TextAlign.start,
-                      // fontSize: 14.0,
-                      // ignore: deprecated_member_use
-                      color:
-                          // ignore: deprecated_member_use
-                          Theme.of(context).textSelectionHandleColor,
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // Container(
+            //   child: Column(
+            //     children: [
+            //       Center(
+            //         child: subtitle3(
+            //           text: _balance < 0
+            //               ? "You have an Overpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}"
+            //               : "You have an Underpayment of ${groupObject.groupCurrency + " " + currencyFormat.format(_balance.abs())}",
+            //           textAlign: TextAlign.start,
+            //           // fontSize: 14.0,
+            //           // ignore: deprecated_member_use
+            //           color:
+            //               // ignore: deprecated_member_use
+            //               Theme.of(context).textSelectionHandleColor,
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
             SizedBox(
               height: 20.0,
             )
