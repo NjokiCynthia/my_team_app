@@ -59,11 +59,12 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
     final image = File('${directory.path}/screenshot.png');
     image.writeAsBytesSync(bytes);
 
-    final text = "Shared from Chamasoft Mobile.";
+    final text =
+        "Shared from Chamasoft Mobile. " + "\n" + "https://bit.ly/3GkX3lM";
     final subject = "${widget.title}";
 
     // await Share.share([image.path] );
-    await Share.shareFiles([image.path], subject: subject, text: text);
+    await Share.shareFiles([image.path], text: text);
 
     // Share.share(imageFile);
   }
@@ -313,7 +314,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                                   " to " +
                                   widget.groupName +
                                   "\n" +
-                                  " https://bit.ly/3GkX3lM ");
+                                  "https://bit.ly/3GkX3lM ");
                               //Share.shareFiles([convertWidgetToImage().path]);
                             },
                           ),
