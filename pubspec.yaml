@@ -46,6 +46,7 @@ dependencies:
   flutter_toggle_tab: "^0.0.1+2"
 
   share: ^0.6.5+4
+  #share_plus: any
   screenshot: ^1.2.3
   image_gallery_saver: '^1.6.9'
   pdf: any

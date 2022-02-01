@@ -1,3 +1,7 @@
+// import 'dart:ffi';
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -6,8 +10,10 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:screenshot/screenshot.dart';
 import 'package:share/share.dart';
+// import 'package:share_plus/share.dart';
 
 class MemberDetailStatement extends StatefulWidget {
   final String groupName, groupEmail, groupPhone, date, title, description;
@@ -48,8 +54,16 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
 
   shareTransaction() {}
 
-  void _takeScreenshot() async {
-    final imageFile = await _screenshotController.capture();
+  Future _takeScreenshot(Uint8List bytes) async {
+    final directory = await getApplicationDocumentsDirectory();
+    final image = File('${directory.path}/screenshot.png');
+    image.writeAsBytesSync(bytes);
+
+    final text = "Shared from Chamasoft Mobile.";
+    final subject = "${widget.title}";
+
+    // await Share.share([image.path] );
+    await Share.shareFiles([image.path], subject: subject, text: text);
 
     // Share.share(imageFile);
   }
@@ -348,8 +362,10 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                               LineAwesomeIcons.mobile,
                             ),
                             iconSize: 20.0,
-                            onPressed: () {
-                              _takeScreenshot();
+                            onPressed: () async {
+                              final imageFile =
+                                  await _screenshotController.capture();
+                              _takeScreenshot(imageFile);
                               //Share.shareFiles([convertWidgetToImage().path]);
                             },
                           ),
