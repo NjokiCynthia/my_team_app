@@ -9,6 +9,64 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
+  static Future<File> generateDepositPdf({
+    String title,
+    String memberName,
+    String groupName,
+    String groupCurrency,
+    String depositAmount,
+    String depositDate,
+    String depositStatus,
+    String depositAbout,
+  }) async {
+    final pdf = Document();
+
+    final imageSvg =
+        (await rootBundle.load('assets/logofull.png')).buffer.asUint8List();
+
+    final pageTheme = PageTheme(
+        pageFormat: PdfPageFormat.a4,
+        buildBackground: (context) {
+          if (context.pageNumber == 1) {
+            return FullPage(ignoreMargins: true);
+          } else {
+            return Container();
+          }
+        });
+    pdf.addPage(MultiPage(
+        pageTheme: pageTheme,
+        build: (context) => [
+              Container(
+                child: Center(
+                  child: builderHearder(imageSvg),
+                ),
+              ),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Center(
+                  child: depositTitle(title),
+                ),
+              ),
+              //buildTitle(),
+              Divider(),
+              depositBody(memberName, groupName, groupCurrency, depositDate,
+                  depositStatus, depositAbout, depositAmount),
+
+              SizedBox(height: 2 * PdfPageFormat.cm),
+              Text(depositAbout,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
+                  )),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Divider(),
+              SizedBox(height: 2 * PdfPageFormat.cm),
+              buildTotal(/* imagefb, imagetwt */),
+            ]));
+    return saveDocument(name: 'Chammasoft.pdf', pdf: pdf);
+  }
+
   static Future<File> generateTranasactionalPdf({
     String title,
     String memberName,
@@ -56,6 +114,7 @@ class PdfApi {
               buildInvoice(memberName, groupName, groupCurrency, paidAmount,
                   dateofTranasaction),
               SizedBox(height: 3 * PdfPageFormat.cm),
+
               Divider(),
               SizedBox(height: 2 * PdfPageFormat.cm),
               buildTotal(/* imagefb, imagetwt */),
@@ -214,4 +273,76 @@ class PdfApi {
     //await PDFDocument.fromFile(file);
     await OpenFile.open(url);
   }
+
+  static depositTitle(String title) => Column(children: [
+        Text(title,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: PdfColors.cyanAccent700))
+      ]);
+
+  static depositBody(
+          String memberName,
+          String groupName,
+          String groupCurrency,
+          String depositDate,
+          String depositStatus,
+          String depositAbout,
+          String depositAmount) =>
+      Column(children: [
+        SizedBox(height: 3 * PdfPageFormat.cm),
+        Row(children: [
+          Container(
+            decoration: BoxDecoration(
+              color: PdfColors.cyanAccent700,
+              borderRadius: BorderRadius.all(Radius.circular(16.0)),
+            ),
+            width: 150,
+            height: 150,
+            child: Center(
+              child: Text("$groupCurrency $depositAmount",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: PdfColors.white)),
+            ),
+          ),
+          SizedBox(width: 2 * PdfPageFormat.cm),
+          Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('Name: $memberName',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    )),
+                SizedBox(height: 0.5 * PdfPageFormat.cm),
+                Text('Transaction Date: $depositDate',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    )),
+                SizedBox(height: 0.5 * PdfPageFormat.cm),
+                Text('To: $groupName',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                    )),
+                SizedBox(height: 0.5 * PdfPageFormat.cm),
+                Text('Status: $depositStatus',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    )),
+              ])
+        ])
+      ]);
 }
