@@ -24,7 +24,7 @@ Widget heading2(
     text,
     style: TextStyle(
         fontWeight: FontWeight.w700,
-        fontSize: 18.0,
+        fontSize:  18.0,
         color: color,
         fontFamily: 'SegoeUI'),
     textAlign: textAlign,

@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
@@ -61,7 +62,7 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
 
     final text =
         "Shared from Chamasoft Mobile. " + "\n" + "https://bit.ly/3GkX3lM";
-    final subject = "${widget.title}";
+    //final subject = "${widget.title}";
 
     // await Share.share([image.path] );
     await Share.shareFiles([image.path], text: text);
@@ -338,7 +339,17 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                               LineAwesomeIcons.download,
                             ),
                             iconSize: 20.0,
-                            onPressed: () {
+                            onPressed: () async {
+                              final pdfFile =
+                                  await PdfApi.generateTranasactionalPdf(
+                                      title: widget.recieptTitle,
+                                      memberName: widget.memberName,
+                                      groupName: widget.groupName,
+                                      groupCurrency: widget.group.groupCurrency,
+                                      paidAmount: widget.amount,
+                                      dueAmount: widget.payable,
+                                      dateofTranasaction: widget.date);
+                              PdfApi.openFile(pdfFile);
                               // convertWidgetToImage();
                               //Share.shareFiles([convertWidgetToImage().path]);
                             },
