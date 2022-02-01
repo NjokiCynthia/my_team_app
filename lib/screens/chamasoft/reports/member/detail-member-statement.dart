@@ -293,104 +293,143 @@ class _MemberDetailStatementState extends State<MemberDetailStatement> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              LineAwesomeIcons.paper_plane,
+                      InkWell(
+                        onTap: () async {
+                          await Share.share(widget.memberName +
+                              " " +
+                              'paid ' +
+                              widget.group.groupCurrency +
+                              " " +
+                              currencyFormat.format(widget.amount) +
+                              " " +
+                              "on " +
+                              widget.date +
+                              " for " +
+                              widget.title.toLowerCase() +
+                              " to " +
+                              widget.groupName +
+                              "\n" +
+                              "https://bit.ly/3GkX3lM ");
+                        },
+                        child: Row(
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                LineAwesomeIcons.paper_plane,
+                              ),
+                              iconSize: 20.0,
+                              onPressed: () async {
+                                await Share.share(widget.memberName +
+                                    " " +
+                                    'paid ' +
+                                    widget.group.groupCurrency +
+                                    " " +
+                                    currencyFormat.format(widget.amount) +
+                                    " " +
+                                    "on " +
+                                    widget.date +
+                                    " for " +
+                                    widget.title.toLowerCase() +
+                                    " to " +
+                                    widget.groupName +
+                                    "\n" +
+                                    "https://bit.ly/3GkX3lM ");
+                                //Share.shareFiles([convertWidgetToImage().path]);
+                              },
                             ),
-                            iconSize: 20.0,
-                            onPressed: () async {
-                              await Share.share(widget.memberName +
-                                  " " +
-                                  'paid ' +
-                                  widget.group.groupCurrency +
-                                  " " +
-                                  currencyFormat.format(widget.amount) +
-                                  " " +
-                                  "on " +
-                                  widget.date +
-                                  " for " +
-                                  widget.title.toLowerCase() +
-                                  " to " +
-                                  widget.groupName +
-                                  "\n" +
-                                  "https://bit.ly/3GkX3lM ");
-                              //Share.shareFiles([convertWidgetToImage().path]);
-                            },
-                          ),
-                          customTitleWithWrap(
-                            text: 'Share',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300,
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                          ),
-                        ],
+                            customTitleWithWrap(
+                              text: 'Share',
+                              fontSize: 18,
+                              fontWeight: FontWeight.w300,
+                              color: Theme.of(context)
+                                  // ignore: deprecated_member_use
+                                  .textSelectionHandleColor,
+                            ),
+                          ],
+                        ),
                       ),
                       SizedBox(
                         width: 20.0,
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              LineAwesomeIcons.download,
-                            ),
-                            iconSize: 20.0,
-                            onPressed: () async {
-                              final pdfFile =
-                                  await PdfApi.generateTranasactionalPdf(
-                                      title: widget.recieptTitle,
-                                      memberName: widget.memberName,
-                                      groupName: widget.groupName,
-                                      groupCurrency: widget.group.groupCurrency,
-                                      paidAmount: widget.amount,
-                                      dueAmount: widget.payable,
-                                      dateofTranasaction: widget.date);
-                              PdfApi.openFile(pdfFile);
-                              // convertWidgetToImage();
-                              //Share.shareFiles([convertWidgetToImage().path]);
-                            },
+                      InkWell(
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  LineAwesomeIcons.download,
+                                ),
+                                iconSize: 20.0,
+                                onPressed: () async {
+                                  final pdfFile =
+                                      await PdfApi.generateTranasactionalPdf(
+                                          title: widget.recieptTitle,
+                                          memberName: widget.memberName,
+                                          groupName: widget.groupName,
+                                          groupCurrency:
+                                              widget.group.groupCurrency,
+                                          paidAmount: widget.amount,
+                                          dueAmount: widget.payable,
+                                          dateofTranasaction: widget.date);
+                                  PdfApi.openFile(pdfFile);
+                                  // convertWidgetToImage();
+                                  //Share.shareFiles([convertWidgetToImage().path]);
+                                },
+                              ),
+                              customTitleWithWrap(
+                                text: 'Download',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
+                            ],
                           ),
-                          customTitleWithWrap(
-                            text: 'Download',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300,
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                          ),
-                        ],
-                      ),
+                          onTap: () async {
+                            final pdfFile =
+                                await PdfApi.generateTranasactionalPdf(
+                                    title: widget.recieptTitle,
+                                    memberName: widget.memberName,
+                                    groupName: widget.groupName,
+                                    groupCurrency: widget.group.groupCurrency,
+                                    paidAmount: widget.amount,
+                                    dueAmount: widget.payable,
+                                    dateofTranasaction: widget.date);
+                            PdfApi.openFile(pdfFile);
+                          }),
                       SizedBox(
                         width: 20.0,
                       ),
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              LineAwesomeIcons.mobile,
-                            ),
-                            iconSize: 20.0,
-                            onPressed: () async {
-                              final imageFile =
-                                  await _screenshotController.capture();
-                              _takeScreenshot(imageFile);
-                              //Share.shareFiles([convertWidgetToImage().path]);
-                            },
+                      InkWell(
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  LineAwesomeIcons.mobile,
+                                ),
+                                iconSize: 20.0,
+                                onPressed: () async {
+                                  final imageFile =
+                                      await _screenshotController.capture();
+                                  _takeScreenshot(imageFile);
+                                  //Share.shareFiles([convertWidgetToImage().path]);
+                                },
+                              ),
+                              customTitleWithWrap(
+                                text: 'Screenshot',
+                                fontSize: 18,
+                                fontWeight: FontWeight.w300,
+                                color: Theme.of(context)
+                                    // ignore: deprecated_member_use
+                                    .textSelectionHandleColor,
+                              ),
+                            ],
                           ),
-                          customTitleWithWrap(
-                            text: 'Screenshot',
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300,
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                          ),
-                        ],
-                      ),
+                          onTap: () async {
+                            final imageFile =
+                                await _screenshotController.capture();
+                            _takeScreenshot(imageFile);
+                          }),
                     ],
                   ),
                 ],
