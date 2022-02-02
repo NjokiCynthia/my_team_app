@@ -1,9 +1,11 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter-statements.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -34,6 +36,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
   ScrollController _scrollController;
   bool _isLoading = true;
   bool _isInit = true;
+  
+ 
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -137,6 +141,11 @@ class _ContributionStatementState extends State<ContributionStatement> {
             ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
+  Future _downloadPdf(BuildContext context, [Group groupObject]) async {
+    final pdfFile = await PdfApi.generateContributionStatementPdf(_statements,_contributionStatementModel, groupObject );
+    PdfApi.openFile(pdfFile);
+  }
+
   @override
   Widget build(BuildContext context) {
     final groupObject =
@@ -151,14 +160,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
 
     return Scaffold(
         key: _scaffoldKey,
-        appBar: secondaryPageAppbar(
+        appBar: tertiaryPageAppbar(
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
-          //trailingIcon: LineAwesomeIcons.filter,
+          trailingIcon: LineAwesomeIcons.download,
           title: appbarTitle,
-          //trailingAction: () => _showFilter(context),
+          trailingAction: () =>
+              _downloadPdf(context, groupObject), /* _showFilter(context) */
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
@@ -370,14 +380,19 @@ class _ContributionStatementState extends State<ContributionStatement> {
                             itemBuilder: (context, index) {
                               ContributionStatementRow row = _statements[index];
                               return Container(
-                                 color: (index % 2 == 0)
-                                  ? (themeChangeProvider.darkTheme)
-                                      ? Colors.blueGrey[800]
-                                      : Color(0xffededfe)
-                                  : Theme.of(context).backgroundColor,
-                              padding: EdgeInsets.only(
-                                  left: 0.0, top: 0.0, right: 0.0, bottom: 5.0),
-                                  child: MemberStatementBody(row: row,),
+                                color: (index % 2 == 0)
+                                    ? (themeChangeProvider.darkTheme)
+                                        ? Colors.blueGrey[800]
+                                        : Color(0xffededfe)
+                                    : Theme.of(context).backgroundColor,
+                                padding: EdgeInsets.only(
+                                    left: 0.0,
+                                    top: 0.0,
+                                    right: 0.0,
+                                    bottom: 5.0),
+                                child: MemberStatementBody(
+                                  row: row,
+                                ),
                               );
                               // if (row.isHeader) {
                               //   return StatementHeader(row: row);
