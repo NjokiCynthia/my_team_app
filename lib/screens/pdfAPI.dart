@@ -10,22 +10,19 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
-class User {
-  final String name;
-  final int age;
-  const User({this.name, this.age});
-}
-
 class PdfApi {
   static Future<File> generateContributionStatementPdf(
       List<ContributionStatementRow> _statements,
       ContributionStatementModel _contributionStatementModel,
-      Group groupObject) async {
+      Group groupObject,
+      String title) async {
     final pdf = Document();
     final header = [
       'Date',
       'Description',
-      'Paid(${groupObject.groupCurrency})'
+      'Opening(${groupObject.groupCurrency})',
+      'Amount(${groupObject.groupCurrency})',
+      'Clossing(${groupObject.groupCurrency})'
     ];
 
     _statements = _contributionStatementModel.statements;
@@ -40,7 +37,9 @@ class PdfApi {
         .map((item) => [
               item.date,
               item.title,
+              currencyFormat.format(item.payable),
               currencyFormat.format(item.amount),
+              currencyFormat.format(item.balance),
             ])
         .toList();
 
@@ -49,6 +48,7 @@ class PdfApi {
 
     final pageTheme = PageTheme(
         pageFormat: PdfPageFormat.a4,
+        orientation: PageOrientation.portrait,
         buildBackground: (context) {
           if (context.pageNumber == 1) {
             return FullPage(ignoreMargins: true);
@@ -68,7 +68,7 @@ class PdfApi {
               SizedBox(height: 1 * PdfPageFormat.cm),
               Container(
                 child: Center(
-                  child: Text("Contribution Statement",
+                  child: Text(title,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 28,
@@ -113,6 +113,23 @@ class PdfApi {
               statementInfo(_statementFrom, statementAsAt, _statementTo),
               SizedBox(height: 0.5 * PdfPageFormat.mm),
               Divider(),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          "Total Member Investment: ${groupObject.groupCurrency} $_totalPaid",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                    ]),
+              ),
+              SizedBox(height: 0.5 * PdfPageFormat.mm),
+              Divider(),
               SizedBox(height: 1 * PdfPageFormat.cm),
               Table.fromTextArray(
                   headers: header,
@@ -123,16 +140,168 @@ class PdfApi {
                   cellHeight: 30,
                   cellAlignments: {
                     0: Alignment.centerLeft,
-                    1: Alignment.center,
-                    2: Alignment.centerRight
+                    1: Alignment.centerRight,
+                    2: Alignment.centerRight,
+                    3: Alignment.centerRight,
+                    4: Alignment.centerRight
                   }),
-              Divider(),
-              contibutionTotal(_totalPaid, groupObject),
+              // Divider(),
+              // contibutionTotal(_totalPaid, groupObject),
               SizedBox(height: 1 * PdfPageFormat.cm),
               Divider(),
               signOff(imageSvg)
             ]));
-    return saveDocument(name: 'Chammasoft.pdf', pdf: pdf);
+    return saveDocument(name: '$_memberName-Contribution.pdf', pdf: pdf);
+  }
+
+  static Future<File> generateFineStatementPdf(
+      List<ContributionStatementRow> _statements,
+      ContributionStatementModel _contributionStatementModel,
+      Group groupObject,
+      String title) async {
+    final pdf = Document();
+    final header = [
+      'Type',
+      'Date',
+      'Description',
+      'Payable(${groupObject.groupCurrency})',
+      'Paid(${groupObject.groupCurrency})',
+      'Balance(${groupObject.groupCurrency})'
+    ];
+    final header1 = [
+      'Total',
+      '',
+      '                                    ',
+      '${currencyFormat.format(_contributionStatementModel.totalDue)}',
+      '${currencyFormat.format(_contributionStatementModel.totalPaid)}',
+      '${currencyFormat.format(_contributionStatementModel.totalBalance)}'
+    ];
+
+    _statements = _contributionStatementModel.statements;
+    final _memberName = _contributionStatementModel.memberName;
+    final _memberPhone = _contributionStatementModel.phone;
+    final _memberRole = _contributionStatementModel.role;
+    final _totalPaid = _contributionStatementModel.totalPaid;
+    final statementAsAt = _contributionStatementModel.statementAsAt;
+    final _statementFrom = _contributionStatementModel.statementFrom;
+    final _statementTo = _contributionStatementModel.statementTo;
+    final data = _statements
+        .map((item) => [
+              item.description,
+              item.date,
+              item.title,
+              currencyFormat.format(item.payable),
+              currencyFormat.format(item.amount),
+              currencyFormat.format(item.balance),
+            ])
+        .toList();
+
+    final imageSvg =
+        (await rootBundle.load('assets/logofull.png')).buffer.asUint8List();
+
+    final pageTheme = PageTheme(
+        pageFormat: PdfPageFormat.a4,
+        orientation: PageOrientation.landscape,
+        buildBackground: (context) {
+          if (context.pageNumber == 1) {
+            return FullPage(ignoreMargins: true);
+          } else {
+            return Container();
+          }
+        });
+
+    pdf.addPage(MultiPage(
+        pageTheme: pageTheme,
+        build: (context) => [
+              Container(
+                child: Center(
+                  child: builderHearder(imageSvg),
+                ),
+              ),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Center(
+                  child: Text(title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: PdfColors.cyanAccent700)),
+                ),
+              ),
+              Divider(),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Group: ${groupObject.groupName}",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text("Member: $_memberName",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text("Member Phone: $_memberPhone",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text("Member Role: $_memberRole",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ))
+                    ]),
+              ),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              fineStatementInfo(_statementFrom, statementAsAt, _statementTo),
+              SizedBox(height: 0.5 * PdfPageFormat.mm),
+              Divider(),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Table.fromTextArray(
+                  headers: header,
+                  data: data,
+                  border: null,
+                  headerStyle: TextStyle(fontWeight: FontWeight.bold),
+                  headerDecoration: BoxDecoration(color: PdfColors.grey300),
+                  cellHeight: 30,
+                  cellAlignments: {
+                    0: Alignment.centerLeft,
+                    1: Alignment.centerRight,
+                    2: Alignment.centerRight,
+                    3: Alignment.centerRight,
+                    4: Alignment.centerRight,
+                    5: Alignment.centerRight
+                  }),
+              Table.fromTextArray(
+                  headers: header1,
+                  data: [],
+                  border: null,
+                  headerStyle: TextStyle(fontWeight: FontWeight.bold),
+                  headerDecoration: BoxDecoration(color: PdfColors.grey300),
+                  cellHeight: 30,
+                  cellAlignments: {
+                    0: Alignment.centerLeft,
+                    1: Alignment.centerRight,
+                    2: Alignment.centerRight,
+                    3: Alignment.centerRight,
+                    4: Alignment.centerRight,
+                    5: Alignment.centerRight
+                  }),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Divider(),
+              signOff(imageSvg)
+            ]));
+    return saveDocument(name: '$_memberName-Chamasoft Fine.pdf', pdf: pdf);
   }
 
   static Future<File> generateDepositPdf({
@@ -188,7 +357,7 @@ class PdfApi {
               SizedBox(height: 1 * PdfPageFormat.cm),
               Divider(),
               SizedBox(height: 2 * PdfPageFormat.cm),
-              buildTotal(/* imagefb, imagetwt */),
+              signOff(imageSvg)
             ]));
     return saveDocument(name: 'Chammasoft.pdf', pdf: pdf);
   }
@@ -206,11 +375,6 @@ class PdfApi {
 
     final imageSvg =
         (await rootBundle.load('assets/logofull.png')).buffer.asUint8List();
-
-    // final imagefb =
-    //     (await rootBundle.load('assets/fb.png')).buffer.asUint8List();
-    // final imagetwt =
-    //     (await rootBundle.load('assets/twt.png')).buffer.asUint8List();
 
     final pageTheme = PageTheme(
         pageFormat: PdfPageFormat.a4,
@@ -243,7 +407,7 @@ class PdfApi {
 
               Divider(),
               SizedBox(height: 2 * PdfPageFormat.cm),
-              buildTotal(/* imagefb, imagetwt */),
+              signOff(imageSvg)
             ]));
     return saveDocument(name: 'Chammasoft.pdf', pdf: pdf);
   }
@@ -251,10 +415,6 @@ class PdfApi {
   static builderHearder(Uint8List imageSvg) => Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [Image(MemoryImage(imageSvg))]);
-
-  // static buildTitle(String title) {
-  //   heading2(text: title, fontSize: 28);
-  // }
 
   static buildTitle(String title) => Column(children: [
         Text(title,
@@ -322,61 +482,61 @@ class PdfApi {
         ])
       ]);
 
-  static buildTotal(/* Uint8List imagefb, Uint8List imagetwt */) =>
-      Row(children: [
-        Container(width: 70),
-        Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text('Ralph Bunche Road, Elgon Court Block D1, Upperhill,',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal,
-                  )),
-              Text('P.O. BOX 104230 - 00101, Nairobi, Kenya',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.normal,
-                  )),
-              Text('+254 733 366 240',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  )),
-              Text('info@chamasoft.com',
-                  textAlign: TextAlign.left,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  )),
-            ]),
-        // Container(
-        //     child: Center(
-        //         child: Row(children: [
-        //   Column(children: [
-        //     Image(MemoryImage(imagefb)),
-        //     Text('@ChamaSoft',
-        //         textAlign: TextAlign.center,
-        //         style: TextStyle(
-        //           fontSize: 18,
-        //           fontWeight: FontWeight.normal,
-        //         )),
-        //   ]),
-        //   Column(children: [
-        //     Image(MemoryImage(imagetwt)),
-        //     Text('@ChamaSoft',
-        //         textAlign: TextAlign.center,
-        //         style: TextStyle(
-        //           fontSize: 18,
-        //           fontWeight: FontWeight.normal,
-        //         )),
-        //   ])
-        // ])))
-      ]);
+  // static buildTotal(/* Uint8List imagefb, Uint8List imagetwt */) =>
+  //     Row(children: [
+  //       Container(width: 70),
+  //       Column(
+  //           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //           crossAxisAlignment: CrossAxisAlignment.end,
+  //           children: [
+  //             Text('Ralph Bunche Road, Elgon Court Block D1, Upperhill,',
+  //                 textAlign: TextAlign.left,
+  //                 style: TextStyle(
+  //                   fontSize: 18,
+  //                   fontWeight: FontWeight.normal,
+  //                 )),
+  //             Text('P.O. BOX 104230 - 00101, Nairobi, Kenya',
+  //                 textAlign: TextAlign.left,
+  //                 style: TextStyle(
+  //                   fontSize: 12,
+  //                   fontWeight: FontWeight.normal,
+  //                 )),
+  //             Text('+254 733 366 240',
+  //                 textAlign: TextAlign.left,
+  //                 style: TextStyle(
+  //                   fontSize: 14,
+  //                   fontWeight: FontWeight.bold,
+  //                 )),
+  //             Text('info@chamasoft.com',
+  //                 textAlign: TextAlign.left,
+  //                 style: TextStyle(
+  //                   fontSize: 14,
+  //                   fontWeight: FontWeight.bold,
+  //                 )),
+  //           ]),
+  //       // Container(
+  //       //     child: Center(
+  //       //         child: Row(children: [
+  //       //   Column(children: [
+  //       //     Image(MemoryImage(imagefb)),
+  //       //     Text('@ChamaSoft',
+  //       //         textAlign: TextAlign.center,
+  //       //         style: TextStyle(
+  //       //           fontSize: 18,
+  //       //           fontWeight: FontWeight.normal,
+  //       //         )),
+  //       //   ]),
+  //       //   Column(children: [
+  //       //     Image(MemoryImage(imagetwt)),
+  //       //     Text('@ChamaSoft',
+  //       //         textAlign: TextAlign.center,
+  //       //         style: TextStyle(
+  //       //           fontSize: 18,
+  //       //           fontWeight: FontWeight.normal,
+  //       //         )),
+  //       //   ])
+  //       // ])))
+  //     ]);
 
   static Future<File> saveDocument({String name, Document pdf}) async {
     final bytes = await pdf.save();
@@ -551,5 +711,56 @@ class PdfApi {
               color: PdfColors.cyanAccent700)),
       Image(MemoryImage(imageSvg))
     ]));
+  }
+
+  static fineStatementInfo(
+      String statementFrom, String statementAsAt, String statementTo) {
+    return Padding(
+      padding: EdgeInsets.all(0.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Fine Statement as At ',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                  )),
+              Text(statementAsAt,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                  )),
+            ],
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text('Statement Period ',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                    )),
+                Text(
+                    statementFrom.isNotEmpty
+                        ? "$statementFrom to $statementTo"
+                        : "",
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                    )),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

@@ -3,8 +3,10 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/detail-member-statement.dart';
+import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -143,18 +145,26 @@ class _MemberContributionStatementState
     super.didChangeDependencies();
   }
 
+   Future _downloadContributionPdf(BuildContext context, [Group groupObject]) async {
+    final title = "Contribution Payment";
+    final pdfFile = await PdfApi.generateContributionStatementPdf(_statements,_contributionStatementModel, groupObject, title );
+    PdfApi.openFile(pdfFile);
+  }
+
   @override
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       key: _scaffoldKey,
-      appBar: secondaryPageAppbar(
+      appBar: tertiaryPageAppbar(
           context: context,
           title: "Contribution Statements",
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left),
+          leadingIcon: LineAwesomeIcons.arrow_left,
+          trailingIcon: LineAwesomeIcons.download,
+            trailingAction: () =>_downloadContributionPdf(context,groupObject)),
       backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
         backgroundColor: (themeChangeProvider.darkTheme)

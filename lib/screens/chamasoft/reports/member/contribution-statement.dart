@@ -141,8 +141,15 @@ class _ContributionStatementState extends State<ContributionStatement> {
             ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
-  Future _downloadPdf(BuildContext context, [Group groupObject]) async {
-    final pdfFile = await PdfApi.generateContributionStatementPdf(_statements,_contributionStatementModel, groupObject );
+  Future _downloadContributionPdf(BuildContext context, [Group groupObject]) async {
+    final title = "Contribution Payment";
+    final pdfFile = await PdfApi.generateContributionStatementPdf(_statements,_contributionStatementModel, groupObject, title );
+    PdfApi.openFile(pdfFile);
+  }
+
+   Future _downloadFinePdf(BuildContext context, [Group groupObject]) async {
+     final title = "Fine Payment";
+    final pdfFile = await PdfApi.generateFineStatementPdf(_statements,_contributionStatementModel, groupObject, title);
     PdfApi.openFile(pdfFile);
   }
 
@@ -167,8 +174,8 @@ class _ContributionStatementState extends State<ContributionStatement> {
           leadingIcon: LineAwesomeIcons.arrow_left,
           trailingIcon: LineAwesomeIcons.download,
           title: appbarTitle,
-          trailingAction: () =>
-              _downloadPdf(context, groupObject), /* _showFilter(context) */
+          trailingAction: () => widget.statementFlag == FINE_STATEMENT
+              ?_downloadFinePdf(context, groupObject):_downloadContributionPdf(context,groupObject) /* _showFilter(context) */
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
