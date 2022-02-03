@@ -20,7 +20,7 @@ class PdfApi {
     final header = [
       'Date',
       'Description',
-      'Opening(${groupObject.groupCurrency})',
+      // 'Opening(${groupObject.groupCurrency})',
       'Amount(${groupObject.groupCurrency})',
       'Clossing(${groupObject.groupCurrency})'
     ];
@@ -37,9 +37,9 @@ class PdfApi {
         .map((item) => [
               item.date,
               item.title,
-              currencyFormat.format(item.payable),
+              // currencyFormat.format(item.payable),
               currencyFormat.format(item.amount),
-              currencyFormat.format(item.balance),
+              currencyFormat.format(item.balance.abs()),
             ])
         .toList();
 
@@ -161,18 +161,18 @@ class PdfApi {
       String title) async {
     final pdf = Document();
     final header = [
-      'Type',
+      // 'Type',
       'Date',
       'Description',
-      'Payable(${groupObject.groupCurrency})',
+      // 'Payable(${groupObject.groupCurrency})',
       'Paid(${groupObject.groupCurrency})',
       'Balance(${groupObject.groupCurrency})'
     ];
     final header1 = [
+      // 'Total',
       'Total',
-      '',
       '                                    ',
-      '${currencyFormat.format(_contributionStatementModel.totalDue)}',
+      // '${currencyFormat.format(_contributionStatementModel.totalDue)}',
       '${currencyFormat.format(_contributionStatementModel.totalPaid)}',
       '${currencyFormat.format(_contributionStatementModel.totalBalance)}'
     ];
@@ -187,12 +187,12 @@ class PdfApi {
     final _statementTo = _contributionStatementModel.statementTo;
     final data = _statements
         .map((item) => [
-              item.description,
+              // item.description,
               item.date,
               item.title,
-              currencyFormat.format(item.payable),
+              // currencyFormat.format(item.payable),
               currencyFormat.format(item.amount),
-              currencyFormat.format(item.balance),
+              currencyFormat.format(item.balance.abs()),
             ])
         .toList();
 
