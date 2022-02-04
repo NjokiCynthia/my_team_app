@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/reports/filter-statements.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
+import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/listviews.dart';
@@ -139,17 +141,33 @@ class _ContributionSummaryState extends State<ContributionSummary> {
     }
   }
 
+  Future _downoadContributionSummaryPdf(
+      BuildContext context, Group groupObject) async {
+    final contributionSummary = _statementType == 1
+        ? Provider.of<Groups>(context, listen: false).groupContributionSummary
+        : Provider.of<Groups>(context, listen: false).groupFinesSummary;
+
+    final title = "Contribution Summary";
+    final title2 = "Fine Summary";
+    final pdfFile = await PdfApi.generateContributionSammary(_totalAmount, title2,
+        _statementType, title, groupObject, contributionSummary);
+    PdfApi.openFile(pdfFile);
+  }
+
   @override
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
       key: _scaffoldKey,
-      appBar: secondaryPageAppbar(
+      appBar: tertiaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.arrow_left,
+        trailingIcon: LineAwesomeIcons.download,
+        trailingAction: () =>
+            _downoadContributionSummaryPdf(context, groupObject),
         //trailingIcon: LineAwesomeIcons.filter,
         title: appbarTitle,
         //trailingAction: () => _showFilter(context),

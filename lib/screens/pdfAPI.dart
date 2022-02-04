@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
+import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:flutter/services.dart';
@@ -12,39 +12,22 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
-  static Future<File> generateAccountBalancePdf(String title) async {
+  static Future<File> generateContributionSammary(double _totalAmount,
+      String title2, int _statementType, String title, Group groupObject,
+      [List<GroupContributionSummary> contributionSummary]) async {
     final pdf = Document();
-  }
 
-  static Future<File> generateContributionStatementPdf(
-      List<ContributionStatementRow> _statements,
-      ContributionStatementModel _contributionStatementModel,
-      Group groupObject,
-      String title) async {
-    final pdf = Document();
     final header = [
-      'Date',
-      'Description',
-      // 'Opening(${groupObject.groupCurrency})',
-      'Amount(${groupObject.groupCurrency})',
-      'Clossing(${groupObject.groupCurrency})'
+      'Name',
+      'Paid(${groupObject.groupCurrency})',
+      'Balance(${groupObject.groupCurrency})',
     ];
 
-    _statements = _contributionStatementModel.statements;
-    final _memberName = _contributionStatementModel.memberName;
-    final _memberPhone = _contributionStatementModel.phone;
-    final _memberRole = _contributionStatementModel.role;
-    final _totalPaid = _contributionStatementModel.totalPaid;
-    final statementAsAt = _contributionStatementModel.statementAsAt;
-    final _statementFrom = _contributionStatementModel.statementFrom;
-    final _statementTo = _contributionStatementModel.statementTo;
-    final data = _statements
+    final data = contributionSummary
         .map((item) => [
-              item.date,
-              item.title,
-              // currencyFormat.format(item.payable),
-              currencyFormat.format(item.amount),
-              currencyFormat.format(item.balance.abs()),
+              item.memberName,
+              currencyFormat.format(item.paidAmount),
+              currencyFormat.format(item.balanceAmount.abs())
             ])
         .toList();
 
@@ -73,7 +56,7 @@ class PdfApi {
               SizedBox(height: 1 * PdfPageFormat.cm),
               Container(
                 child: Center(
-                  child: Text(title,
+                  child: Text(_statementType == 1 ? title : title2,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           fontSize: 28,
@@ -88,44 +71,20 @@ class PdfApi {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Group: ${groupObject.groupName}",
+                      Text("Group Name: ${groupObject.groupName}",
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
                           )),
-                      Text("Member: $_memberName",
+                      Text("Group Size: ${groupObject.groupSize} Members ",
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.normal,
                           )),
-                      Text("Member Phone: $_memberPhone",
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          )),
-                      Text("Member Role: $_memberRole",
-                          textAlign: TextAlign.right,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.normal,
-                          ))
-                    ]),
-              ),
-              SizedBox(height: 0.5 * PdfPageFormat.cm),
-              statementInfo(_statementFrom, statementAsAt, _statementTo),
-              SizedBox(height: 0.5 * PdfPageFormat.mm),
-              Divider(),
-              SizedBox(height: 0.5 * PdfPageFormat.cm),
-              Container(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
                       Text(
-                          "Total Member Investment: ${groupObject.groupCurrency} $_totalPaid",
+                          "Total Fine : ${groupObject.groupCurrency} ${currencyFormat.format(_totalAmount)} ",
                           textAlign: TextAlign.right,
                           style: TextStyle(
                             fontSize: 14,
@@ -133,9 +92,27 @@ class PdfApi {
                           )),
                     ]),
               ),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              // statementInfo(_statementFrom, statementAsAt, _statementTo),
               SizedBox(height: 0.5 * PdfPageFormat.mm),
               Divider(),
-              SizedBox(height: 1 * PdfPageFormat.cm),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              // Container(
+              //   child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         Text("Total Member Investment: ",
+              //             textAlign: TextAlign.right,
+              //             style: TextStyle(
+              //               fontSize: 14,
+              //               fontWeight: FontWeight.normal,
+              //             )),
+              //       ]),
+              // ),
+              // SizedBox(height: 0.5 * PdfPageFormat.mm),
+              // Divider(),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
               Table.fromTextArray(
                   headers: header,
                   data: data,
@@ -156,7 +133,7 @@ class PdfApi {
               Divider(),
               signOff(imageSvg)
             ]));
-    return saveDocument(name: '$_memberName-Contribution.pdf', pdf: pdf);
+    return saveDocument(name: '${groupObject.groupName}.pdf', pdf: pdf);
   }
 
   static Future<File> generateFineStatementPdf(
@@ -307,6 +284,153 @@ class PdfApi {
               signOff(imageSvg)
             ]));
     return saveDocument(name: '$_memberName-Chamasoft Fine.pdf', pdf: pdf);
+  }
+
+  static Future<File> generateAccountBalancePdf(String title) async {
+    final pdf = Document();
+  }
+
+  static Future<File> generateContributionStatementPdf(
+      List<ContributionStatementRow> _statements,
+      ContributionStatementModel _contributionStatementModel,
+      Group groupObject,
+      String title) async {
+    final pdf = Document();
+    final header = [
+      'Date',
+      'Description',
+      // 'Opening(${groupObject.groupCurrency})',
+      'Amount(${groupObject.groupCurrency})',
+      'Clossing(${groupObject.groupCurrency})'
+    ];
+
+    _statements = _contributionStatementModel.statements;
+    final _memberName = _contributionStatementModel.memberName;
+    final _memberPhone = _contributionStatementModel.phone;
+    final _memberRole = _contributionStatementModel.role;
+    final _totalPaid = _contributionStatementModel.totalPaid;
+    final statementAsAt = _contributionStatementModel.statementAsAt;
+    final _statementFrom = _contributionStatementModel.statementFrom;
+    final _statementTo = _contributionStatementModel.statementTo;
+    final data = _statements
+        .map((item) => [
+              item.date,
+              item.title,
+              // currencyFormat.format(item.payable),
+              currencyFormat.format(item.amount),
+              currencyFormat.format(item.balance.abs()),
+            ])
+        .toList();
+
+    final imageSvg =
+        (await rootBundle.load('assets/logofull.png')).buffer.asUint8List();
+
+    final pageTheme = PageTheme(
+        pageFormat: PdfPageFormat.a4,
+        orientation: PageOrientation.portrait,
+        buildBackground: (context) {
+          if (context.pageNumber == 1) {
+            return FullPage(ignoreMargins: true);
+          } else {
+            return Container();
+          }
+        });
+
+    pdf.addPage(MultiPage(
+        pageTheme: pageTheme,
+        build: (context) => [
+              Container(
+                child: Center(
+                  child: builderHearder(imageSvg),
+                ),
+              ),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Center(
+                  child: Text(title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: PdfColors.cyanAccent700)),
+                ),
+              ),
+              Divider(),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Group: ${groupObject.groupName}",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text("Member: $_memberName",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text("Member Phone: $_memberPhone",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text("Member Role: $_memberRole",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ))
+                    ]),
+              ),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              statementInfo(_statementFrom, statementAsAt, _statementTo),
+              SizedBox(height: 0.5 * PdfPageFormat.mm),
+              Divider(),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                          "Total Member Investment: ${groupObject.groupCurrency} $_totalPaid",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                    ]),
+              ),
+              SizedBox(height: 0.5 * PdfPageFormat.mm),
+              Divider(),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Table.fromTextArray(
+                  headers: header,
+                  data: data,
+                  border: null,
+                  headerStyle: TextStyle(fontWeight: FontWeight.bold),
+                  headerDecoration: BoxDecoration(color: PdfColors.grey300),
+                  cellHeight: 30,
+                  cellAlignments: {
+                    0: Alignment.centerLeft,
+                    1: Alignment.centerRight,
+                    2: Alignment.centerRight,
+                    3: Alignment.centerRight,
+                    4: Alignment.centerRight
+                  }),
+              // Divider(),
+              // contibutionTotal(_totalPaid, groupObject),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Divider(),
+              signOff(imageSvg)
+            ]));
+    return saveDocument(name: '$_memberName-Contribution.pdf', pdf: pdf);
   }
 
   static Future<File> generateDepositPdf({
