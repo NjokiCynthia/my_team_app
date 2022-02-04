@@ -1,8 +1,10 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -112,6 +114,16 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
     super.dispose();
   }
 
+  Future _downoadLoanSummaryPdf(BuildContext context,   Group groupObject) async{
+    //  final contributionSummary = _statementType == 1
+    //     ? Provider.of<Groups>(context, listen: false).groupContributionSummary
+    //     : Provider.of<Groups>(context, listen: false).groupFinesSummary;
+
+    final title = "Loan Summary";
+    final pdfFile = await PdfApi.generateLoanSummaryPdf(title, groupObject, _totalLoanedOut, _payable, _paid,_balance, _loanSummaryRows);
+    PdfApi.openFile(pdfFile);
+  }
+
   @override
   Widget build(BuildContext context) {
     final groupObject =
@@ -119,12 +131,15 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
     String appbarTitle = "Group Loans Summary";
     return Scaffold(
         key: _scaffoldKey,
-        appBar: secondaryPageAppbar(
+        appBar: tertiaryPageAppbar(
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: appbarTitle,
+          trailingIcon: LineAwesomeIcons.download,
+        trailingAction: () =>
+            _downoadLoanSummaryPdf(context, groupObject)
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(

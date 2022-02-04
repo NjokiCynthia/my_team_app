@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
@@ -12,6 +13,133 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
+  static Future<File> generateLoanSummaryPdf(
+    String title,
+    Group groupObject,
+    double totalLoanedOut,
+    double payable,
+    double paid,
+    double balance,
+    List<LoanSummaryRow> loanSummaryRows,
+  ) async {
+    final pdf = Document();
+    final header = [
+      'Name',
+      // 'Date',
+      'Due(${groupObject.groupCurrency})',
+      'Paid(${groupObject.groupCurrency})',
+      'Balance(${groupObject.groupCurrency})'
+    ];
+
+    final data = loanSummaryRows
+        .map((item) => [
+              item.name,
+              // item.date,
+              currencyFormat.format(item.amountDue),
+              currencyFormat.format(item.paid),
+              currencyFormat.format(item.balance)
+            ])
+        .toList();
+
+    final imageSvg =
+        (await rootBundle.load('assets/logofull.png')).buffer.asUint8List();
+
+    final pageTheme = PageTheme(
+        pageFormat: PdfPageFormat.a4,
+        orientation: PageOrientation.portrait,
+        buildBackground: (context) {
+          if (context.pageNumber == 1) {
+            return FullPage(ignoreMargins: true);
+          } else {
+            return Container();
+          }
+        });
+
+    pdf.addPage(MultiPage(
+        pageTheme: pageTheme,
+        build: (context) => [
+              Container(
+                child: Center(
+                  child: builderHearder(imageSvg),
+                ),
+              ),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Center(
+                  child: Text(title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: PdfColors.cyanAccent700)),
+                ),
+              ),
+              Divider(),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Group: ${groupObject.groupName}",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      SizedBox(height: 1 * PdfPageFormat.mm),
+                      Text(
+                          "Total Loaned Out: ${groupObject.groupCurrency} $totalLoanedOut",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      SizedBox(height: 1 * PdfPageFormat.mm),
+                      Text("Payable: ${groupObject.groupCurrency} $payable",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      SizedBox(height: 1 * PdfPageFormat.mm),
+                      Text("Balance: ${groupObject.groupCurrency} $balance",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          ))
+                    ]),
+              ),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              // fineStatementInfo(_statementFrom, statementAsAt, _statementTo),
+              SizedBox(height: 0.5 * PdfPageFormat.mm),
+              Divider(),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Table.fromTextArray(
+                  headers: header,
+                  data: data,
+                  border: null,
+                  headerStyle: TextStyle(fontWeight: FontWeight.bold),
+                  headerDecoration: BoxDecoration(color: PdfColors.grey300),
+                  cellHeight: 30,
+                  cellAlignments: {
+                    0: Alignment.centerLeft,
+                    1: Alignment.centerRight,
+                    2: Alignment.centerRight,
+                    3: Alignment.centerRight,
+                    4: Alignment.centerRight,
+                    5: Alignment.centerRight
+                  }),
+
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Divider(),
+              signOff(imageSvg)
+            ]));
+    return saveDocument(
+        name: '${groupObject.groupName}-Loan Summary.pdf', pdf: pdf);
+  }
+
   static Future<File> generateContributionSammary(double _totalAmount,
       String title2, int _statementType, String title, Group groupObject,
       [List<GroupContributionSummary> contributionSummary]) async {
