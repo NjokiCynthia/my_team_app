@@ -7,6 +7,7 @@ import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
+import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:flutter/services.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
@@ -14,6 +15,126 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
+  static Future<File> generateGroupTransactionStatementPdf(
+      String statementFrom,
+      List<TransactionStatementRow> transactions,
+      String statementTo,
+      String statementAsAt,
+      String title,
+      Group groupObject,
+      double totalBalance) async {
+    final pdf = Document();
+    final header = [
+      'Date',
+      'Description',
+      'Deposit(${groupObject.groupCurrency})',
+      'Withdrwal(${groupObject.groupCurrency})',
+      'Balance(${groupObject.groupCurrency})'
+    ];
+
+    final data = transactions
+        .map((item) => [
+              item.date,
+              item.description,
+              item.deposit,
+              item.withdrawal,
+              item.balance
+            ])
+        .toList();
+
+    final imageSvg =
+        (await rootBundle.load('assets/logofull.png')).buffer.asUint8List();
+
+    final pageTheme = PageTheme(
+        pageFormat: PdfPageFormat.a3,
+        orientation: PageOrientation.landscape,
+        buildBackground: (context) {
+          if (context.pageNumber == 1) {
+            return FullPage(ignoreMargins: true);
+          } else {
+            return Container();
+          }
+        });
+
+    pdf.addPage(MultiPage(
+        pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        build: (context) => [
+              Container(
+                child: Center(
+                  child: builderHearder(imageSvg),
+                ),
+              ),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Center(
+                  child: Text(title,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: PdfColors.cyanAccent700)),
+                ),
+              ),
+              Divider(),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Group: ${groupObject.groupName}",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                      Text(
+                          "Total Balance: ${groupObject.groupCurrency} $totalBalance",
+                          textAlign: TextAlign.right,
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                          )),
+                    ]),
+              ),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              transactionalStatementInfo(
+                  statementFrom, statementAsAt, statementTo),
+              SizedBox(height: 0.5 * PdfPageFormat.mm),
+              Divider(),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Table.fromTextArray(
+                  headers: header,
+                  data: data,
+                  border: null,
+                  headerStyle: TextStyle(fontWeight: FontWeight.bold),
+                  headerDecoration: BoxDecoration(color: PdfColors.grey300),
+                  cellHeight: 30,
+                  cellAlignments: {
+                    0: Alignment.centerLeft,
+                    1: Alignment.centerLeft,
+                    2: Alignment.centerRight,
+                    3: Alignment.centerRight,
+                    4: Alignment.centerRight
+                  }),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Divider(),
+              signOff(imageSvg)
+            ]));
+    return saveDocument(
+        name: '${groupObject.groupName}-Transaction Statement.pdf', pdf: pdf);
+  }
+
   static Future<File> generateExpensesPdf(
       List<SummaryRow> expenseRows, String title, Group groupObject,
       [double totalExpenses]) async {
@@ -43,6 +164,15 @@ class PdfApi {
 
     pdf.addPage(MultiPage(
         pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
         build: (context) => [
               Container(
                 child: Center(
@@ -119,8 +249,10 @@ class PdfApi {
               signOff(imageSvg)
             ]));
     return saveDocument(
-        name: '${groupObject.groupName}-Loan Summary.pdf', pdf: pdf);
+        name: '${groupObject.groupName}-Expense Summary.pdf', pdf: pdf);
   }
+
+  /* Group Loan Summary */
 
   static Future<File> generateLoanSummaryPdf(
     String title,
@@ -166,6 +298,15 @@ class PdfApi {
 
     pdf.addPage(MultiPage(
         pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
         build: (context) => [
               Container(
                 child: Center(
@@ -249,6 +390,7 @@ class PdfApi {
         name: '${groupObject.groupName}-Loan Summary.pdf', pdf: pdf);
   }
 
+/* Group Contribution Summary */
   static Future<File> generateContributionSammary(double _totalAmount,
       String title2, int _statementType, String title, Group groupObject,
       [List<GroupContributionSummary> contributionSummary]) async {
@@ -284,6 +426,15 @@ class PdfApi {
 
     pdf.addPage(MultiPage(
         pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
         build: (context) => [
               Container(
                 child: Center(
@@ -373,6 +524,7 @@ class PdfApi {
     return saveDocument(name: '${groupObject.groupName}.pdf', pdf: pdf);
   }
 
+  /* Member Fine Statement */
   static Future<File> generateFineStatementPdf(
       List<ContributionStatementRow> _statements,
       ContributionStatementModel _contributionStatementModel,
@@ -431,6 +583,15 @@ class PdfApi {
 
     pdf.addPage(MultiPage(
         pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
         build: (context) => [
               Container(
                 child: Center(
@@ -527,6 +688,8 @@ class PdfApi {
     final pdf = Document();
   }
 
+  /* Member Contribution Statement */
+
   static Future<File> generateContributionStatementPdf(
       List<ContributionStatementRow> _statements,
       ContributionStatementModel _contributionStatementModel,
@@ -575,6 +738,15 @@ class PdfApi {
 
     pdf.addPage(MultiPage(
         pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
         build: (context) => [
               Container(
                 child: Center(
@@ -670,6 +842,7 @@ class PdfApi {
     return saveDocument(name: '$_memberName-Contribution.pdf', pdf: pdf);
   }
 
+  /* Member Deposit Reciept */
   static Future<File> generateDepositPdf({
     String title,
     String memberName,
@@ -696,6 +869,15 @@ class PdfApi {
         });
     pdf.addPage(MultiPage(
         pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
         build: (context) => [
               Container(
                 child: Center(
@@ -753,6 +935,15 @@ class PdfApi {
         });
     pdf.addPage(MultiPage(
         pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
         build: (context) => [
               Container(
                 child: Center(
@@ -1069,7 +1260,8 @@ class PdfApi {
   static signOff(Uint8List imageSvg) {
     return Center(
         child: Column(children: [
-      Text('© 2022 . This statement was issued with no alteration',
+      Text(
+          '© ${DateTime.now().year} . This statement was issued with no alteration',
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 14,
@@ -1097,6 +1289,57 @@ class PdfApi {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text('Fine Statement as At ',
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                  )),
+              Text(statementAsAt,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.normal,
+                  )),
+            ],
+          ),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: <Widget>[
+                Text('Statement Period ',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                    )),
+                Text(
+                    statementFrom.isNotEmpty
+                        ? "$statementFrom to $statementTo"
+                        : "",
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.normal,
+                    )),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  static transactionalStatementInfo(
+      String statementFrom, String statementAsAt, String statementTo) {
+    return Padding(
+      padding: EdgeInsets.all(0.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Transaction Statement as At ',
                   textAlign: TextAlign.left,
                   style: TextStyle(
                     fontSize: 12,

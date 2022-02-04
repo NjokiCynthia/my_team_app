@@ -105,12 +105,11 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
 
   Future _downoadExpensesSummaryPdf(
       BuildContext context, Group groupObject) async {
-   
     final title = "Expenses Summary";
-    final pdfFile = await PdfApi.generateExpensesPdf(_expenseRows, title,groupObject, _totalExpenses);
+    final pdfFile = await PdfApi.generateExpensesPdf(
+        _expenseRows, title, groupObject, _totalExpenses);
     PdfApi.openFile(pdfFile);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -123,8 +122,9 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: "Expense Summary",
-           trailingIcon: LineAwesomeIcons.download,
-        trailingAction: () =>_downoadExpensesSummaryPdf(context, groupObject),
+          trailingIcon: LineAwesomeIcons.download,
+          trailingAction: () =>
+              _downoadExpensesSummaryPdf(context, groupObject),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
@@ -160,7 +160,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                   heading2(
                                     text: "Total Expenses",
                                     color: Theme.of(context)
-            // ignore: deprecated_member_use
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                   ),
                                   subtitle2(
@@ -168,7 +168,7 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                         ? "1 Expense"
                                         : "${_expenseRows.length} Expenses",
                                     color: Theme.of(context)
-            // ignore: deprecated_member_use
+                                        // ignore: deprecated_member_use
                                         .textSelectionHandleColor,
                                     textAlign: TextAlign.start,
                                   ),
@@ -182,13 +182,13 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
                                   fontWeight: FontWeight.w400,
                                   fontSize: 18.0,
                                   color: Theme.of(context)
-            // ignore: deprecated_member_use
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                 ),
                                 heading2(
                                   text: currencyFormat.format(_totalExpenses),
                                   color: Theme.of(context)
-            // ignore: deprecated_member_use
+                                      // ignore: deprecated_member_use
                                       .textSelectionHandleColor,
                                   textAlign: TextAlign.end,
                                 ),

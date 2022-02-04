@@ -1,8 +1,10 @@
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/transaction-statement-model.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/listviews.dart';
@@ -108,17 +110,34 @@ class _TransactionStatementState extends State<TransactionStatement> {
     super.dispose();
   }
 
+  Future _downloadGroupTransactionStatement(
+      BuildContext context, Group groupObject) async {
+    final title = "Transaction Statement";
+    final pdfFile = await PdfApi.generateGroupTransactionStatementPdf(
+        _statementFrom,
+        _transactions,
+        _statementTo,
+        _statementAsAt,
+        title,
+        groupObject,
+        _totalBalance);
+    PdfApi.openFile(pdfFile);
+  }
+
   @override
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
-      appBar: secondaryPageAppbar(
+      appBar: tertiaryPageAppbar(
         context: context,
         action: () => Navigator.of(context).pop(),
         elevation: _appBarElevation,
         leadingIcon: LineAwesomeIcons.close,
         title: "Transaction Statement",
+        trailingIcon: LineAwesomeIcons.download,
+        trailingAction: () =>
+            _downloadGroupTransactionStatement(context, groupObject),
       ),
       backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
