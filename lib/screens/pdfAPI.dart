@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:chamasoft/helpers/common.dart';
+import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
 import 'package:flutter/services.dart';
@@ -11,6 +12,10 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
+  static Future<File> generateAccountBalancePdf(String title) async {
+    final pdf = Document();
+  }
+
   static Future<File> generateContributionStatementPdf(
       List<ContributionStatementRow> _statements,
       ContributionStatementModel _contributionStatementModel,
@@ -347,7 +352,7 @@ class PdfApi {
               depositBody(memberName, groupName, groupCurrency, depositDate,
                   depositStatus, depositAbout, depositAmount),
 
-              SizedBox(height: 2 * PdfPageFormat.cm),
+              SizedBox(height: 4 * PdfPageFormat.mm),
               Text(depositAbout,
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -455,21 +460,21 @@ class PdfApi {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     )),
                 SizedBox(height: 1 * PdfPageFormat.cm),
                 Text('Transaction Date: $dateofTranasaction',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     )),
                 SizedBox(height: 1 * PdfPageFormat.cm),
                 Text('To: $groupName',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 19,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     )),
                 SizedBox(height: 1 * PdfPageFormat.cm),
                 Text('',
@@ -599,28 +604,28 @@ class PdfApi {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     )),
                 SizedBox(height: 0.5 * PdfPageFormat.cm),
                 Text('Transaction Date: $depositDate',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     )),
                 SizedBox(height: 0.5 * PdfPageFormat.cm),
                 Text('To: $groupName',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 19,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     )),
                 SizedBox(height: 0.5 * PdfPageFormat.cm),
                 Text('Status: $depositStatus',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 18,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.normal,
                     )),
               ])
         ])
@@ -703,6 +708,13 @@ class PdfApi {
   static signOff(Uint8List imageSvg) {
     return Center(
         child: Column(children: [
+      Text('© 2022 . This statement was issued with no alteration',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+          )),
+      SizedBox(height: 2 * PdfPageFormat.cm),
       Text('Powered by ',
           textAlign: TextAlign.center,
           style: TextStyle(
