@@ -1,9 +1,11 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -101,17 +103,28 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
     super.dispose();
   }
 
+  Future _downoadExpensesSummaryPdf(
+      BuildContext context, Group groupObject) async {
+   
+    final title = "Expenses Summary";
+    final pdfFile = await PdfApi.generateExpensesPdf(_expenseRows, title,groupObject, _totalExpenses);
+    PdfApi.openFile(pdfFile);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     return Scaffold(
-        appBar: secondaryPageAppbar(
+        appBar: tertiaryPageAppbar(
           context: context,
           action: () => Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: "Expense Summary",
+           trailingIcon: LineAwesomeIcons.download,
+        trailingAction: () =>_downoadExpensesSummaryPdf(context, groupObject),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
