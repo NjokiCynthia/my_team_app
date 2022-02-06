@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-summary-row.dart';
 import 'package:chamasoft/screens/chamasoft/models/statement-row.dart';
@@ -15,6 +16,9 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
+  static Future<File> generateMemberLoanStatementPdf(
+    ActiveLoan loan,
+  ) async {}
   static Future<File> generateGroupTransactionStatementPdf(
       String statementFrom,
       List<TransactionStatementRow> transactions,
@@ -141,9 +145,7 @@ class PdfApi {
     final pdf = Document();
     final header = [
       'Expense title',
-      // 'Due(${groupObject.groupCurrency})',
       'Paid(${groupObject.groupCurrency})',
-      // 'Balance(${groupObject.groupCurrency})'
     ];
 
     final data = expenseRows.map((item) => [item.name, item.paid]).toList();
@@ -224,7 +226,6 @@ class PdfApi {
                     ]),
               ),
               SizedBox(height: 0.5 * PdfPageFormat.cm),
-              // fineStatementInfo(_statementFrom, statementAsAt, _statementTo),
               SizedBox(height: 0.5 * PdfPageFormat.mm),
               Divider(),
               SizedBox(height: 1 * PdfPageFormat.cm),
@@ -243,7 +244,6 @@ class PdfApi {
                     4: Alignment.centerRight,
                     5: Alignment.centerRight
                   }),
-
               SizedBox(height: 1 * PdfPageFormat.cm),
               Divider(),
               signOff(imageSvg)
@@ -266,7 +266,6 @@ class PdfApi {
     final pdf = Document();
     final header = [
       'Name',
-      // 'Date',
       'Due(${groupObject.groupCurrency})',
       'Paid(${groupObject.groupCurrency})',
       'Balance(${groupObject.groupCurrency})'
@@ -275,7 +274,6 @@ class PdfApi {
     final data = loanSummaryRows
         .map((item) => [
               item.name,
-              // item.date,
               currencyFormat.format(item.amountDue),
               currencyFormat.format(item.paid),
               currencyFormat.format(item.balance)
@@ -362,8 +360,6 @@ class PdfApi {
                     ]),
               ),
               SizedBox(height: 0.5 * PdfPageFormat.cm),
-              // fineStatementInfo(_statementFrom, statementAsAt, _statementTo),
-              SizedBox(height: 0.5 * PdfPageFormat.mm),
               Divider(),
               SizedBox(height: 1 * PdfPageFormat.cm),
               Table.fromTextArray(
@@ -381,8 +377,7 @@ class PdfApi {
                     4: Alignment.centerRight,
                     5: Alignment.centerRight
                   }),
-
-              SizedBox(height: 1 * PdfPageFormat.cm),
+              SizedBox(height: 0.5 * PdfPageFormat.cm),
               Divider(),
               signOff(imageSvg)
             ]));
@@ -481,25 +476,9 @@ class PdfApi {
                     ]),
               ),
               SizedBox(height: 0.5 * PdfPageFormat.cm),
-              // statementInfo(_statementFrom, statementAsAt, _statementTo),
               SizedBox(height: 0.5 * PdfPageFormat.mm),
               Divider(),
               SizedBox(height: 0.5 * PdfPageFormat.cm),
-              // Container(
-              //   child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         Text("Total Member Investment: ",
-              //             textAlign: TextAlign.right,
-              //             style: TextStyle(
-              //               fontSize: 14,
-              //               fontWeight: FontWeight.normal,
-              //             )),
-              //       ]),
-              // ),
-              // SizedBox(height: 0.5 * PdfPageFormat.mm),
-              // Divider(),
               SizedBox(height: 0.5 * PdfPageFormat.cm),
               Table.fromTextArray(
                   headers: header,
@@ -515,8 +494,6 @@ class PdfApi {
                     3: Alignment.centerRight,
                     4: Alignment.centerRight
                   }),
-              // Divider(),
-              // contibutionTotal(_totalPaid, groupObject),
               SizedBox(height: 1 * PdfPageFormat.cm),
               Divider(),
               signOff(imageSvg)
@@ -532,18 +509,14 @@ class PdfApi {
       String title) async {
     final pdf = Document();
     final header = [
-      // 'Type',
       'Date',
       'Description',
-      // 'Payable(${groupObject.groupCurrency})',
       'Paid(${groupObject.groupCurrency})',
       'Balance(${groupObject.groupCurrency})'
     ];
     final header1 = [
-      // 'Total',
       'Total',
       '                                    ',
-      // '${currencyFormat.format(_contributionStatementModel.totalDue)}',
       '${currencyFormat.format(_contributionStatementModel.totalPaid)}',
       '${currencyFormat.format(_contributionStatementModel.totalBalance)}'
     ];
@@ -558,10 +531,8 @@ class PdfApi {
     final _statementTo = _contributionStatementModel.statementTo;
     final data = _statements
         .map((item) => [
-              // item.description,
               item.date,
               item.title,
-              // currencyFormat.format(item.payable),
               currencyFormat.format(item.amount),
               currencyFormat.format(item.balance.abs()),
             ])
@@ -681,7 +652,8 @@ class PdfApi {
               Divider(),
               signOff(imageSvg)
             ]));
-    return saveDocument(name: '$_memberName-Chamasoft Fine.pdf', pdf: pdf);
+    return saveDocument(
+        name: '$_memberName-${groupObject.groupName} Fine.pdf', pdf: pdf);
   }
 
   static Future<File> generateAccountBalancePdf(String title) async {
@@ -699,7 +671,6 @@ class PdfApi {
     final header = [
       'Date',
       'Description',
-      // 'Opening(${groupObject.groupCurrency})',
       'Amount(${groupObject.groupCurrency})',
       'Clossing(${groupObject.groupCurrency})'
     ];
@@ -716,7 +687,6 @@ class PdfApi {
         .map((item) => [
               item.date,
               item.title,
-              // currencyFormat.format(item.payable),
               currencyFormat.format(item.amount),
               currencyFormat.format(item.balance.abs()),
             ])
@@ -833,13 +803,13 @@ class PdfApi {
                     3: Alignment.centerRight,
                     4: Alignment.centerRight
                   }),
-              // Divider(),
-              // contibutionTotal(_totalPaid, groupObject),
               SizedBox(height: 1 * PdfPageFormat.cm),
               Divider(),
               signOff(imageSvg)
             ]));
-    return saveDocument(name: '$_memberName-Contribution.pdf', pdf: pdf);
+    return saveDocument(
+        name: '$_memberName-${groupObject.groupName}-Contribution.pdf',
+        pdf: pdf);
   }
 
   /* Member Deposit Reciept */
@@ -890,24 +860,23 @@ class PdfApi {
                   child: depositTitle(title),
                 ),
               ),
-              //buildTitle(),
               Divider(),
               depositBody(memberName, groupName, groupCurrency, depositDate,
                   depositStatus, depositAbout, depositAmount),
-
-              SizedBox(height: 4 * PdfPageFormat.mm),
+              SizedBox(height: 1 * PdfPageFormat.cm),
               Text(depositAbout,
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.normal,
                   )),
-              SizedBox(height: 1 * PdfPageFormat.cm),
+              SizedBox(height: 1 * PdfPageFormat.mm),
               Divider(),
-              SizedBox(height: 2 * PdfPageFormat.cm),
+              SizedBox(height: 2 * PdfPageFormat.mm),
               signOff(imageSvg)
             ]));
-    return saveDocument(name: 'Chammasoft.pdf', pdf: pdf);
+    return saveDocument(
+        name: '$memberName-$groupName-Deposit Reciept.pdf', pdf: pdf);
   }
 
   static Future<File> generateTranasactionalPdf({
@@ -956,17 +925,16 @@ class PdfApi {
                   child: buildTitle(title),
                 ),
               ),
-              //buildTitle(),
               Divider(),
               buildInvoice(memberName, groupName, groupCurrency, paidAmount,
                   dateofTranasaction),
-              SizedBox(height: 3 * PdfPageFormat.cm),
-
+              SizedBox(height: 1 * PdfPageFormat.cm),
               Divider(),
-              SizedBox(height: 2 * PdfPageFormat.cm),
+              SizedBox(height: 2 * PdfPageFormat.mm),
               signOff(imageSvg)
             ]));
-    return saveDocument(name: 'Chammasoft.pdf', pdf: pdf);
+    return saveDocument(
+        name: '$memberName-$groupName Transaction Reciept .pdf', pdf: pdf);
   }
 
   static builderHearder(Uint8List imageSvg) => Column(
@@ -1107,7 +1075,7 @@ class PdfApi {
 
   static Future openFile(File file) async {
     final url = file.path;
-    //await PDFDocument.fromFile(file);
+    // await PDFDocument.fromFile(file);
     await OpenFile.open(url);
   }
 
@@ -1129,7 +1097,7 @@ class PdfApi {
           String depositAbout,
           String depositAmount) =>
       Column(children: [
-        SizedBox(height: 3 * PdfPageFormat.cm),
+        SizedBox(height: 1 * PdfPageFormat.cm),
         Row(children: [
           Container(
             decoration: BoxDecoration(

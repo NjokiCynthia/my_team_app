@@ -1,9 +1,11 @@
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
 import 'package:chamasoft/widgets/listviews.dart';
@@ -70,6 +72,20 @@ class _LoanStatementState extends State<LoanStatement> {
     super.dispose();
   }
 
+  Future _downloadMemberLoanStatement(
+      BuildContext context, Group groupObject) async {
+//           LoanStatementModel statementModel =
+//                               data.getLoanStatements;
+//  List<LoanStatementRow> statementRows =
+//                                 data.getLoanStatements.statementRows;
+//     final title = "Transaction Statement";
+//     final pdfFile = await PdfApi.generateMemberLoanStatementPdf(
+//         widget.loan,
+//         statementRows,
+//         title,
+//         groupObject,);
+//     PdfApi.openFile(pdfFile);
+  }
   @override
   Widget build(BuildContext context) {
     final groupObject =
@@ -81,6 +97,9 @@ class _LoanStatementState extends State<LoanStatement> {
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.close,
           title: "Loan Statement",
+          // trailingIcon: LineAwesomeIcons.download,
+          // trailingAction: () =>
+          // _downloadMemberLoanStatement(context, groupObject),
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: Builder(
