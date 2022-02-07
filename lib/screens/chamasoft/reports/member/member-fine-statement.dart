@@ -138,12 +138,28 @@ class _MemberFineStatementState extends State<MemberFineStatement> {
     super.didChangeDependencies();
   }
 
-  Future _downloadFinePdf(BuildContext context, [Group groupObject]) async {
-    final title = "Fine Payment";
-    final pdfFile = await PdfApi.generateFineStatementPdf(
-        _statements, _contributionStatementModel, groupObject, title);
-    PdfApi.openFile(pdfFile);
+  Future _downloadFinePdf(BuildContext context, Group groupObject) async {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    setState(() async {
+      final title = "Fine Payment";
+      final pdfFile = await PdfApi.generateFineStatementPdf(
+          _statements, _contributionStatementModel, groupObject, title);
+      PdfApi.openFile(pdfFile);
+      _isLoading = false;
+    });
   }
+
+  // Future _downloadFinePdf(BuildContext context, [Group groupObject]) async {
+  //   final title = "Fine Payment";
+  //   final pdfFile = await PdfApi.generateFineStatementPdf(
+  //       _statements, _contributionStatementModel, groupObject, title);
+  //   PdfApi.openFile(pdfFile);
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -117,7 +117,6 @@ class _MemeberSatementState extends State<MemeberSatement> {
     //     Provider.of<Groups>(context, listen: false).getCurrentGroup();
     _member = Provider.of<Groups>(context, listen: true).members;
 
-
     return Scaffold(
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(

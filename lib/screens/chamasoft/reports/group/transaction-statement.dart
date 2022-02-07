@@ -12,6 +12,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 
 class TransactionStatement extends StatefulWidget {
   @override
@@ -112,16 +113,25 @@ class _TransactionStatementState extends State<TransactionStatement> {
 
   Future _downloadGroupTransactionStatement(
       BuildContext context, Group groupObject) async {
-    final title = "Transaction Statement";
-    final pdfFile = await PdfApi.generateGroupTransactionStatementPdf(
-        _statementFrom,
-        _transactions,
-        _statementTo,
-        _statementAsAt,
-        title,
-        groupObject,
-        _totalBalance);
-    PdfApi.openFile(pdfFile);
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    setState(() async {
+      final title = "Transaction Statement";
+      final pdfFile = await PdfApi.generateGroupTransactionStatementPdf(
+          _statementFrom,
+          _transactions,
+          _statementTo,
+          _statementAsAt,
+          title,
+          groupObject,
+          _totalBalance);
+      PdfApi.openFile(pdfFile);
+      _isLoading = false;
+    });
   }
 
   @override

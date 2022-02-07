@@ -105,11 +105,28 @@ class _ExpenseSummaryState extends State<ExpenseSummary> {
 
   Future _downoadExpensesSummaryPdf(
       BuildContext context, Group groupObject) async {
-    final title = "Expenses Summary";
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    setState(() async {
+      final title = "Expenses Summary";
     final pdfFile = await PdfApi.generateExpensesPdf(
         _expenseRows, title, groupObject, _totalExpenses);
     PdfApi.openFile(pdfFile);
+      _isLoading = false;
+    });
   }
+
+  // Future _downoadExpensesSummaryPdf(
+  //     BuildContext context, Group groupObject) async {
+  //   final title = "Expenses Summary";
+  //   final pdfFile = await PdfApi.generateExpensesPdf(
+  //       _expenseRows, title, groupObject, _totalExpenses);
+  //   PdfApi.openFile(pdfFile);
+  // }
 
   @override
   Widget build(BuildContext context) {

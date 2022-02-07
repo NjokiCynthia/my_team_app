@@ -36,8 +36,6 @@ class _ContributionStatementState extends State<ContributionStatement> {
   ScrollController _scrollController;
   bool _isLoading = true;
   bool _isInit = true;
-  
- 
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBarElevation : 0;
@@ -141,17 +139,50 @@ class _ContributionStatementState extends State<ContributionStatement> {
             ModalRoute.of(context).settings.arguments, _applyFilter));
   }
 
-  Future _downloadContributionPdf(BuildContext context, [Group groupObject]) async {
-    final title = "Contribution Payment";
-    final pdfFile = await PdfApi.generateContributionStatementPdf(_statements,_contributionStatementModel, groupObject, title );
-    PdfApi.openFile(pdfFile);
+  Future _downloadFinePdf(BuildContext context, Group groupObject) async {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    setState(() async {
+      final title = "Fine Payment";
+      final pdfFile = await PdfApi.generateFineStatementPdf(
+          _statements, _contributionStatementModel, groupObject, title);
+      PdfApi.openFile(pdfFile);
+      _isLoading = false;
+    });
   }
 
-   Future _downloadFinePdf(BuildContext context, [Group groupObject]) async {
-     final title = "Fine Payment";
-    final pdfFile = await PdfApi.generateFineStatementPdf(_statements,_contributionStatementModel, groupObject, title);
-    PdfApi.openFile(pdfFile);
+  Future _downloadContributionPdf(
+      BuildContext context, Group groupObject) async {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    setState(() async {
+      final title = "Contribution Payment";
+      final pdfFile = await PdfApi.generateContributionStatementPdf(
+          _statements, _contributionStatementModel, groupObject, title);
+      PdfApi.openFile(pdfFile);
+      _isLoading = false;
+    });
   }
+
+  // Future _downloadContributionPdf(BuildContext context, [Group groupObject]) async {
+  //   final title = "Contribution Payment";
+  //   final pdfFile = await PdfApi.generateContributionStatementPdf(_statements,_contributionStatementModel, groupObject, title );
+  //   PdfApi.openFile(pdfFile);
+  // }
+
+  //  Future _downloadFinePdf(BuildContext context, [Group groupObject]) async {
+  //    final title = "Fine Payment";
+  //   final pdfFile = await PdfApi.generateFineStatementPdf(_statements,_contributionStatementModel, groupObject, title);
+  //   PdfApi.openFile(pdfFile);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -168,15 +199,17 @@ class _ContributionStatementState extends State<ContributionStatement> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: tertiaryPageAppbar(
-          context: context,
-          action: () => Navigator.of(context).pop(),
-          elevation: _appBarElevation,
-          leadingIcon: LineAwesomeIcons.arrow_left,
-          trailingIcon: LineAwesomeIcons.download,
-          title: appbarTitle,
-          trailingAction: () => widget.statementFlag == FINE_STATEMENT
-              ?_downloadFinePdf(context, groupObject):_downloadContributionPdf(context,groupObject) /* _showFilter(context) */
-        ),
+            context: context,
+            action: () => Navigator.of(context).pop(),
+            elevation: _appBarElevation,
+            leadingIcon: LineAwesomeIcons.arrow_left,
+            trailingIcon: LineAwesomeIcons.download,
+            title: appbarTitle,
+            trailingAction: () => widget.statementFlag == FINE_STATEMENT
+                ? _downloadFinePdf(context, groupObject)
+                : _downloadContributionPdf(
+                    context, groupObject) /* _showFilter(context) */
+            ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: RefreshIndicator(
             backgroundColor: (themeChangeProvider.darkTheme)

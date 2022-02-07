@@ -114,15 +114,31 @@ class _GroupLoansSummaryState extends State<GroupLoansSummary> {
     super.dispose();
   }
 
-  Future _downoadLoanSummaryPdf(BuildContext context,   Group groupObject) async{
-    //  final contributionSummary = _statementType == 1
-    //     ? Provider.of<Groups>(context, listen: false).groupContributionSummary
-    //     : Provider.of<Groups>(context, listen: false).groupFinesSummary;
+  Future _downoadLoanSummaryPdf(
+      BuildContext context, Group groupObject) async {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
 
-    final title = "Loan Summary";
+    setState(() async {
+     final title = "Loan Summary";
     final pdfFile = await PdfApi.generateLoanSummaryPdf(title, groupObject, _totalLoanedOut, _payable, _paid,_balance, _loanSummaryRows);
     PdfApi.openFile(pdfFile);
+      _isLoading = false;
+    });
   }
+
+  // Future _downoadLoanSummaryPdf(BuildContext context,   Group groupObject) async{
+  //   //  final contributionSummary = _statementType == 1
+  //   //     ? Provider.of<Groups>(context, listen: false).groupContributionSummary
+  //   //     : Provider.of<Groups>(context, listen: false).groupFinesSummary;
+
+  //   final title = "Loan Summary";
+  //   final pdfFile = await PdfApi.generateLoanSummaryPdf(title, groupObject, _totalLoanedOut, _payable, _paid,_balance, _loanSummaryRows);
+  //   PdfApi.openFile(pdfFile);
+  // }
 
   @override
   Widget build(BuildContext context) {

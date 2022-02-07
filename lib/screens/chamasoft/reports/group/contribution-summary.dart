@@ -143,6 +143,13 @@ class _ContributionSummaryState extends State<ContributionSummary> {
 
   Future _downoadContributionSummaryPdf(
       BuildContext context, Group groupObject) async {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    setState(() async {
     final contributionSummary = _statementType == 1
         ? Provider.of<Groups>(context, listen: false).groupContributionSummary
         : Provider.of<Groups>(context, listen: false).groupFinesSummary;
@@ -152,7 +159,21 @@ class _ContributionSummaryState extends State<ContributionSummary> {
     final pdfFile = await PdfApi.generateContributionSammary(_totalAmount, title2,
         _statementType, title, groupObject, contributionSummary);
     PdfApi.openFile(pdfFile);
+    });
   }
+
+  // Future _downoadContributionSummaryPdf(
+  //     BuildContext context, Group groupObject) async {
+  //   final contributionSummary = _statementType == 1
+  //       ? Provider.of<Groups>(context, listen: false).groupContributionSummary
+  //       : Provider.of<Groups>(context, listen: false).groupFinesSummary;
+
+  //   final title = "Contribution Summary";
+  //   final title2 = "Fine Summary";
+  //   final pdfFile = await PdfApi.generateContributionSammary(_totalAmount, title2,
+  //       _statementType, title, groupObject, contributionSummary);
+  //   PdfApi.openFile(pdfFile);
+  // }
 
   @override
   Widget build(BuildContext context) {

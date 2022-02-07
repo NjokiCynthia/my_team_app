@@ -145,11 +145,28 @@ class _MemberContributionStatementState
     super.didChangeDependencies();
   }
 
-   Future _downloadContributionPdf(BuildContext context, [Group groupObject]) async {
-    final title = "Contribution Payment";
-    final pdfFile = await PdfApi.generateContributionStatementPdf(_statements,_contributionStatementModel, groupObject, title );
-    PdfApi.openFile(pdfFile);
+  Future _downloadContributionPdf(
+      BuildContext context, Group groupObject) async {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    setState(() async {
+      final title = "Contribution Payment";
+      final pdfFile = await PdfApi.generateContributionStatementPdf(
+          _statements, _contributionStatementModel, groupObject, title);
+      PdfApi.openFile(pdfFile);
+      _isLoading = false;
+    });
   }
+
+  //  Future _downloadContributionPdf(BuildContext context, [Group groupObject]) async {
+  //   final title = "Contribution Payment";
+  //   final pdfFile = await PdfApi.generateContributionStatementPdf(_statements,_contributionStatementModel, groupObject, title );
+  //   PdfApi.openFile(pdfFile);
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -164,7 +181,7 @@ class _MemberContributionStatementState
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
           trailingIcon: LineAwesomeIcons.download,
-            trailingAction: () =>_downloadContributionPdf(context,groupObject)),
+          trailingAction: () => _downloadContributionPdf(context, groupObject)),
       backgroundColor: Theme.of(context).backgroundColor,
       body: RefreshIndicator(
         backgroundColor: (themeChangeProvider.darkTheme)

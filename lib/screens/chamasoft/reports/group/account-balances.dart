@@ -102,13 +102,23 @@ class _AccountBalancesState extends State<AccountBalances> {
     _scrollController?.dispose();
     super.dispose();
   }
-    Future _downloadAccounBalancesPdf(BuildContext context, [Group groupObject]) async {
-       
+
+  Future _downloadAccounBalancesPdf(
+      BuildContext context, Group groupObject) async {
+    Future.delayed(Duration(seconds: 1), () {
+      setState(() {
+        _isLoading = true;
+      });
+    });
+
+    setState(() async {
     final title = "Account Balance Report";
     final pdfFile = await PdfApi.generateAccountBalancePdf(title);
     PdfApi.openFile(pdfFile);
+      _isLoading = false;
+    });
   }
-
+   
   @override
   Widget build(BuildContext context) {
     final groupObject =
