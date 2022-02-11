@@ -47,24 +47,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   ScrollController _scrollController;
   List<Map> deposits = [];
   List<Map> withdrawals = [];
-  final createWithdrwalKey = GlobalKey();
+  final createWithdrawalKey = GlobalKey();
   final reviewWithdrawalKey = GlobalKey();
-  final recordIncomeKey = GlobalKey();
-  final recordContributionKey = GlobalKey();
-  final recordFineKey = GlobalKey();
-  final recordExpenseKey = GlobalKey();
-  final recordContributionRefundKey = GlobalKey();
-  final recordMemberLoanKey = GlobalKey();
-  final recordLoanRepaymentKey = GlobalKey();
-  final recordBankLoanRepaymentKey = GlobalKey();
-  final recordFineMemberKey = GlobalKey();
-  final accountTransferKey = GlobalKey();
-
   final reconcileDepositKey = GlobalKey();
-  final reconcileWithdarwalKey = GlobalKey();
-  final recordMiscellaneousKey = GlobalKey();
-  final recordBankLoanKey = GlobalKey();
-
+  final contributionPayementKey = GlobalKey();
+  final finePayementKey = GlobalKey();
+  final incomeKey = GlobalKey();
+  final miscellaneousKey = GlobalKey();
+  final bankLoanKey = GlobalKey();
+  final reconcileWithdralKey = GlobalKey();
+  final expensesKey = GlobalKey();
+  final contributionRefundKey = GlobalKey();
+  final recordMemberLoan = GlobalKey();
+  final recordRepaymentKey = GlobalKey();
+  final bankLoanRepaymentKey = GlobalKey();
+  final fineMemberKey = GlobalKey();
+  final accountTransferKey = GlobalKey();
   BuildContext transactionsContext;
 
   void _scrollListener() {
@@ -77,19 +75,22 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     _scrollController.addListener(_scrollListener);
     WidgetsBinding.instance.addPostFrameCallback(
         (_) => ShowCaseWidget.of(transactionsContext).startShowCase([
-              createWithdrwalKey,
+              createWithdrawalKey,
               reviewWithdrawalKey,
-              recordIncomeKey,
+              contributionPayementKey,
+              finePayementKey,
+              incomeKey,
+              miscellaneousKey,
+              bankLoanKey,
+              expensesKey,
+              contributionRefundKey,
+              recordMemberLoan,
+              recordRepaymentKey,
+              bankLoanRepaymentKey,
+              fineMemberKey,
+              accountTransferKey,
               reconcileDepositKey,
-              recordContributionKey,
-              recordFineKey,
-              recordExpenseKey,
-              recordContributionRefundKey,
-              recordMemberLoanKey,
-              recordLoanRepaymentKey,
-              recordBankLoanRepaymentKey,
-              recordFineMemberKey,
-              accountTransferKey
+              reconcileWithdralKey,
             ]));
 
     super.initState();
@@ -141,7 +142,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: createWithdrwalKey,
+            key: createWithdrawalKey,
             description:
                 "Create a withdrawal from from chamasoft ewalet to mpesa",
             child: Container(
@@ -192,7 +193,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordMemberLoanKey,
+            key: recordMemberLoan,
             description: "Manualy Record Loans given to members",
             child: Container(
                 width: 132.0,
@@ -213,7 +214,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordLoanRepaymentKey,
+            key: recordRepaymentKey,
             description: "Manualy Record Loans paid by a member",
             child: Container(
                 width: 132.0,
@@ -234,7 +235,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordBankLoanRepaymentKey,
+            key: bankLoanRepaymentKey,
             description: "Manualy Record Bank Loan repayment by members",
             child: Container(
                 width: 132.0,
@@ -289,7 +290,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordContributionKey,
+            key: contributionPayementKey,
             description: "Manualy Record Contributions made by members",
             child: Container(
                 width: 132.0,
@@ -311,7 +312,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordFineKey,
+            key: finePayementKey,
             description: "Manualy Record Fine repayment by members",
             child: Container(
                 width: 132.0,
@@ -332,7 +333,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordIncomeKey,
+            key: incomeKey,
             description: "Manualy Record income made by members",
             child: Container(
                 width: 132.0,
@@ -352,7 +353,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordMiscellaneousKey,
+            key: miscellaneousKey,
             description: "Manualy Record Miscellaneous repayment by members",
             child: Container(
                 width: 132.0,
@@ -373,7 +374,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordBankLoanKey,
+            key: bankLoanKey,
             description: "Manualy Record Bank Loan made to a members",
             child: Container(
                 width: 132.0,
@@ -402,7 +403,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                   width: 16.0,
                 ),
                 customShowCase(
-                  key: reconcileWithdarwalKey,
+                  key: reconcileWithdralKey,
                   description: "Manualy Reconcile a withdrawal made to members",
                   child: Container(
                       width: 132.0,
@@ -427,7 +428,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordExpenseKey,
+            key: expensesKey,
             description: "Manualy Record Expenses withdrawal",
             child: Container(
                 width: 132.0,
@@ -447,7 +448,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordContributionRefundKey,
+            key: contributionRefundKey,
             description: "Manualy Record Contribution Refund",
             child: Container(
                 width: 132.0,
@@ -491,7 +492,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
             width: 16.0,
           ),
           customShowCase(
-            key: recordFineMemberKey,
+            key: fineMemberKey,
             description: "Manualy Record Fine repayment by members",
             child: Container(
                 width: 132.0,
