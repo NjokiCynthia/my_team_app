@@ -31,6 +31,10 @@ class ChamasoftReports extends StatefulWidget {
 class _ChamasoftReportsState extends State<ChamasoftReports> {
   ScrollController _scrollController;
 
+  BuildContext reportContext;
+
+   
+
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
   }
