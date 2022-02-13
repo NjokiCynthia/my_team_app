@@ -1,3 +1,4 @@
+import 'package:chamasoft/helpers/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -12,14 +13,20 @@ Widget customShowCase(
     key: key,
     child: child,
     title: title,
+    shapeBorder: CircleBorder(),
     description: description,
+    showcaseBackgroundColor: primaryColor,
+    radius: BorderRadius.all(Radius.circular(40)),
     titleTextStyle: TextStyle(
       fontWeight: FontWeight.w500,
       fontSize: 13.0,
       fontFamily: 'SegoeUI',
     ),
     descTextStyle: TextStyle(
-        fontWeight: FontWeight.w300, fontSize: 12.0, fontFamily: 'SegoeUI'),
+        color: Colors.white,
+        fontWeight: FontWeight.w500,
+        fontSize: 13.0,
+        fontFamily: 'SegoeUI'),
     textColor: textColor,
   );
 }

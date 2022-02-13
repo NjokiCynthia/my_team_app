@@ -20,10 +20,13 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 import 'models/group-model.dart';
 
 class ChamasoftGroup extends StatefulWidget {
+  static const PREFERENCES_IS_FIRST_LAUNCH_STRING_GROUP =
+      "PREFERENCES_IS_FIRST_LAUNCH_STRING_GROUP";
   final ValueChanged<double> appBarElevation;
 
   @override
@@ -73,14 +76,33 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _scrollChartToEnd();
-    WidgetsBinding.instance.addPostFrameCallback((_) =>
-        ShowCaseWidget.of(groupContext).startShowCase([
-          contributionsSummaryKey,
-          accountBalanceKey,
-          groupLoanKey,
-          withdrwalDepositKey
-        ]));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isFirstLaunch().then((result) {
+        if (result)
+          ShowCaseWidget.of(groupContext).startShowCase([
+            contributionsSummaryKey,
+            accountBalanceKey,
+            groupLoanKey,
+            withdrwalDepositKey
+          ]);
+      });
+    });
+
     super.initState();
+  }
+
+  Future<bool> _isFirstLaunch() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    bool isFirstLaunch = sharedPreferences
+            .getBool(ChamasoftGroup.PREFERENCES_IS_FIRST_LAUNCH_STRING_GROUP) ??
+        true;
+
+    if (isFirstLaunch)
+      sharedPreferences.setBool(
+          ChamasoftGroup.PREFERENCES_IS_FIRST_LAUNCH_STRING_GROUP, false);
+
+    return isFirstLaunch;
   }
 
   @override

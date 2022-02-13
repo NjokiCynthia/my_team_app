@@ -26,12 +26,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 import 'reports/member/contribution-statement.dart';
 
 class ChamasoftTransactions extends StatefulWidget {
   static String namedRoute = "/transactions";
+  static const PREFERENCES_IS_FIRST_LAUNCH_STRING_TRANSACTION =
+      "PREFERENCES_IS_FIRST_LAUNCH_STRING_TRANSACTION";
 
   ChamasoftTransactions({
     this.appBarElevation,
@@ -49,12 +52,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   List<Map> withdrawals = [];
   final createWithdrawalKey = GlobalKey();
   final reviewWithdrawalKey = GlobalKey();
-  final reconcileDepositKey = GlobalKey();
-  final contributionPayementKey = GlobalKey();
-  final finePayementKey = GlobalKey();
-  final incomeKey = GlobalKey();
-  final miscellaneousKey = GlobalKey();
-  final bankLoanKey = GlobalKey();
+  final recordDepositSectionKey = GlobalKey();
   final reconcileWithdralKey = GlobalKey();
   final expensesKey = GlobalKey();
   final contributionRefundKey = GlobalKey();
@@ -63,7 +61,15 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   final bankLoanRepaymentKey = GlobalKey();
   final fineMemberKey = GlobalKey();
   final accountTransferKey = GlobalKey();
+
   BuildContext transactionsContext;
+
+  // final reconcileDepositKey = GlobalKey();
+  // final contributionPayementKey = GlobalKey();
+  // final finePayementKey = GlobalKey();
+  // final incomeKey = GlobalKey();
+  // final miscellaneousKey = GlobalKey();
+  // final bankLoanKey = GlobalKey();
 
   void _scrollListener() {
     widget.appBarElevation(_scrollController.offset);
@@ -73,27 +79,46 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(transactionsContext).startShowCase([
-              createWithdrawalKey,
-              reviewWithdrawalKey,
-              contributionPayementKey,
-              finePayementKey,
-              incomeKey,
-              miscellaneousKey,
-              bankLoanKey,
-              expensesKey,
-              contributionRefundKey,
-              recordMemberLoan,
-              recordRepaymentKey,
-              bankLoanRepaymentKey,
-              fineMemberKey,
-              accountTransferKey,
-              reconcileDepositKey,
-              reconcileWithdralKey,
-            ]));
-
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isFirstLaunch().then((result) {
+        if (result)
+          ShowCaseWidget.of(transactionsContext).startShowCase([
+            createWithdrawalKey,
+            reviewWithdrawalKey,
+            recordDepositSectionKey,
+            expensesKey,
+            contributionRefundKey,
+            recordMemberLoan,
+            recordRepaymentKey,
+            bankLoanRepaymentKey,
+            fineMemberKey,
+            accountTransferKey,
+            reconcileWithdralKey,
+          ]);
+      });
+    });
     super.initState();
+  }
+
+  // contributionPayementKey,
+  // finePayementKey,
+  // incomeKey,
+  // miscellaneousKey,
+  // bankLoanKey,
+  // reconcileDepositKey,
+
+  Future<bool> _isFirstLaunch() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    bool isFirstLaunch = sharedPreferences.getBool(ChamasoftTransactions
+            .PREFERENCES_IS_FIRST_LAUNCH_STRING_TRANSACTION) ??
+        true;
+
+    if (isFirstLaunch)
+      sharedPreferences.setBool(
+          ChamasoftTransactions.PREFERENCES_IS_FIRST_LAUNCH_STRING_TRANSACTION,
+          false);
+
+    return isFirstLaunch;
   }
 
   @override
@@ -257,6 +282,149 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           ),
         ];
 
+        // List<Widget> paymentsOptions = [
+        //   if (_isPartnerBankAccount)
+        //     customShowCase(
+        //       key: recordDepositSectionKey,
+        //       description:
+        //           "With this section, as an admin you can manualy record groups income and manual deposit reconsiliation",
+        //       child: Row(
+        //         children: [
+        //           SizedBox(
+        //             width: 16.0,
+        //           ),
+        //           customShowCase(
+        //             key: reconcileDepositKey,
+        //             description: "Reconcile Deposits made by your group mebers",
+        //             child: Container(
+        //                 width: 132.0,
+        //                 child: svgGridButton(
+        //                     context: context,
+        //                     icon: customIcons['money-bag'],
+        //                     title: 'RECONCILE',
+        //                     subtitle: 'DEPOSITS',
+        //                     color: Colors.blue[400],
+        //                     isHighlighted: false,
+        //                     action: () => Navigator.of(context).push(
+        //                         MaterialPageRoute(
+        //                             builder: (BuildContext ctx) =>
+        //                                 ReconcileDepositList())),
+        //                     margin: 0,
+        //                     imageHeight: 100.0,
+        //                     notifications: unreconciledDepositCount)),
+        //           ),
+        //         ],
+        //       ),
+        //     ),
+        //   SizedBox(
+        //     width: 16.0,
+        //   ),
+        //   customShowCase(
+        //     key: contributionPayementKey,
+        //     description: "Manualy Record Contributions made by members",
+        //     child: Container(
+        //         width: 132.0,
+        //         child: svgGridButton(
+        //             context: context,
+        //             icon: customIcons['cash-register'],
+        //             title: 'CONTRIBUTION',
+        //             subtitle: "PAYMENTS",
+        //             color: Colors.blue[400],
+        //             isHighlighted: false,
+        //             action: () => Navigator.of(context).push(MaterialPageRoute(
+        //                 builder: (BuildContext context) =>
+        //                     RecordContributionPayment(),
+        //                 settings: RouteSettings(arguments: 0))),
+        //             margin: 0,
+        //             imageHeight: 100.0)),
+        //   ),
+        //   SizedBox(
+        //     width: 16.0,
+        //   ),
+        //   customShowCase(
+        //     key: finePayementKey,
+        //     description: "Manualy Record Fine repayment by members",
+        //     child: Container(
+        //         width: 132.0,
+        //         child: svgGridButton(
+        //             context: context,
+        //             icon: customIcons['refund'],
+        //             title: 'FINE',
+        //             subtitle: "PAYMENTS",
+        //             color: Colors.blue[400],
+        //             isHighlighted: false,
+        //             action: () => Navigator.of(context).push(MaterialPageRoute(
+        //                 builder: (BuildContext context) => RecordFinePayment(),
+        //                 settings: RouteSettings(arguments: 0))),
+        //             margin: 0,
+        //             imageHeight: 100.0)),
+        //   ),
+        //   SizedBox(
+        //     width: 16.0,
+        //   ),
+        //   customShowCase(
+        //     key: incomeKey,
+        //     description: "Manualy Record income made by members",
+        //     child: Container(
+        //         width: 132.0,
+        //         child: svgGridButton(
+        //             context: context,
+        //             icon: customIcons['cash-in-hand'],
+        //             title: 'INCOME',
+        //             color: Colors.blue[400],
+        //             isHighlighted: false,
+        //             action: () => Navigator.of(context).push(MaterialPageRoute(
+        //                 builder: (BuildContext context) => RecordIncome(),
+        //                 settings: RouteSettings(arguments: 0))),
+        //             margin: 0,
+        //             imageHeight: 100.0)),
+        //   ),
+        //   SizedBox(
+        //     width: 16.0,
+        //   ),
+        //   customShowCase(
+        //     key: miscellaneousKey,
+        //     description: "Manualy Record Miscellaneous repayment by members",
+        //     child: Container(
+        //         width: 132.0,
+        //         child: svgGridButton(
+        //             context: context,
+        //             icon: customIcons['transaction'],
+        //             title: 'MISCELLANEOUS',
+        //             color: Colors.blue[400],
+        //             isHighlighted: false,
+        //             action: () => Navigator.of(context).push(MaterialPageRoute(
+        //                 builder: (BuildContext context) =>
+        //                     RecordMiscellaneousPayment(),
+        //                 settings: RouteSettings(arguments: 0))),
+        //             margin: 0,
+        //             imageHeight: 100.0)),
+        //   ),
+        //   SizedBox(
+        //     width: 16.0,
+        //   ),
+        //   customShowCase(
+        //     key: bankLoanKey,
+        //     description: "Manualy Record Bank Loan made to a members",
+        //     child: Container(
+        //         width: 132.0,
+        //         child: svgGridButton(
+        //             context: context,
+        //             icon: customIcons['bank'],
+        //             title: 'BANK LOANS',
+        //             color: Colors.blue[400],
+        //             isHighlighted: false,
+        //             action: () => Navigator.of(context).push(MaterialPageRoute(
+        //                 builder: (BuildContext context) => RecordBankLoan(),
+        //                 settings: RouteSettings(arguments: 0))),
+        //             margin: 0,
+        //             imageHeight: 100.0)),
+        //   ),
+        //   SizedBox(
+        //     width: 16.0,
+        //   ),
+        // ];
+
         List<Widget> paymentsOptions = [
           if (_isPartnerBankAccount)
             Row(
@@ -264,132 +432,108 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                 SizedBox(
                   width: 16.0,
                 ),
-                customShowCase(
-                  key: reconcileDepositKey,
-                  description: "Reconcile Deposits made by your group mebers",
-                  child: Container(
-                      width: 132.0,
-                      child: svgGridButton(
-                          context: context,
-                          icon: customIcons['money-bag'],
-                          title: 'RECONCILE',
-                          subtitle: 'DEPOSITS',
-                          color: Colors.blue[400],
-                          isHighlighted: false,
-                          action: () => Navigator.of(context).push(
-                              MaterialPageRoute(
-                                  builder: (BuildContext ctx) =>
-                                      ReconcileDepositList())),
-                          margin: 0,
-                          imageHeight: 100.0,
-                          notifications: unreconciledDepositCount)),
-                ),
+                Container(
+                    width: 132.0,
+                    child: svgGridButton(
+                        context: context,
+                        icon: customIcons['money-bag'],
+                        title: 'RECONCILE',
+                        subtitle: 'DEPOSITS',
+                        color: Colors.blue[400],
+                        isHighlighted: false,
+                        action: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (BuildContext ctx) =>
+                                    ReconcileDepositList())),
+                        margin: 0,
+                        imageHeight: 100.0,
+                        notifications: unreconciledDepositCount)),
               ],
             ),
           SizedBox(
             width: 16.0,
           ),
-          customShowCase(
-            key: contributionPayementKey,
-            description: "Manualy Record Contributions made by members",
-            child: Container(
-                width: 132.0,
-                child: svgGridButton(
-                    context: context,
-                    icon: customIcons['cash-register'],
-                    title: 'CONTRIBUTION',
-                    subtitle: "PAYMENTS",
-                    color: Colors.blue[400],
-                    isHighlighted: false,
-                    action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            RecordContributionPayment(),
-                        settings: RouteSettings(arguments: 0))),
-                    margin: 0,
-                    imageHeight: 100.0)),
-          ),
+          Container(
+              width: 132.0,
+              child: svgGridButton(
+                  context: context,
+                  icon: customIcons['cash-register'],
+                  title: 'CONTRIBUTION',
+                  subtitle: "PAYMENTS",
+                  color: Colors.blue[400],
+                  isHighlighted: false,
+                  action: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          RecordContributionPayment(),
+                      settings: RouteSettings(arguments: 0))),
+                  margin: 0,
+                  imageHeight: 100.0)),
           SizedBox(
             width: 16.0,
           ),
-          customShowCase(
-            key: finePayementKey,
-            description: "Manualy Record Fine repayment by members",
-            child: Container(
-                width: 132.0,
-                child: svgGridButton(
-                    context: context,
-                    icon: customIcons['refund'],
-                    title: 'FINE',
-                    subtitle: "PAYMENTS",
-                    color: Colors.blue[400],
-                    isHighlighted: false,
-                    action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => RecordFinePayment(),
-                        settings: RouteSettings(arguments: 0))),
-                    margin: 0,
-                    imageHeight: 100.0)),
-          ),
+          Container(
+              width: 132.0,
+              child: svgGridButton(
+                  context: context,
+                  icon: customIcons['refund'],
+                  title: 'FINE',
+                  subtitle: "PAYMENTS",
+                  color: Colors.blue[400],
+                  isHighlighted: false,
+                  action: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => RecordFinePayment(),
+                      settings: RouteSettings(arguments: 0))),
+                  margin: 0,
+                  imageHeight: 100.0)),
           SizedBox(
             width: 16.0,
           ),
-          customShowCase(
-            key: incomeKey,
-            description: "Manualy Record income made by members",
-            child: Container(
-                width: 132.0,
-                child: svgGridButton(
-                    context: context,
-                    icon: customIcons['cash-in-hand'],
-                    title: 'INCOME',
-                    color: Colors.blue[400],
-                    isHighlighted: false,
-                    action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => RecordIncome(),
-                        settings: RouteSettings(arguments: 0))),
-                    margin: 0,
-                    imageHeight: 100.0)),
-          ),
+          Container(
+              width: 132.0,
+              child: svgGridButton(
+                  context: context,
+                  icon: customIcons['cash-in-hand'],
+                  title: 'INCOME',
+                  color: Colors.blue[400],
+                  isHighlighted: false,
+                  action: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => RecordIncome(),
+                      settings: RouteSettings(arguments: 0))),
+                  margin: 0,
+                  imageHeight: 100.0)),
           SizedBox(
             width: 16.0,
           ),
-          customShowCase(
-            key: miscellaneousKey,
-            description: "Manualy Record Miscellaneous repayment by members",
-            child: Container(
-                width: 132.0,
-                child: svgGridButton(
-                    context: context,
-                    icon: customIcons['transaction'],
-                    title: 'MISCELLANEOUS',
-                    color: Colors.blue[400],
-                    isHighlighted: false,
-                    action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            RecordMiscellaneousPayment(),
-                        settings: RouteSettings(arguments: 0))),
-                    margin: 0,
-                    imageHeight: 100.0)),
-          ),
+          Container(
+              width: 132.0,
+              child: svgGridButton(
+                  context: context,
+                  icon: customIcons['transaction'],
+                  title: 'MISCELLANEOUS',
+                  color: Colors.blue[400],
+                  isHighlighted: false,
+                  action: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          RecordMiscellaneousPayment(),
+                      settings: RouteSettings(arguments: 0))),
+                  margin: 0,
+                  imageHeight: 100.0)),
           SizedBox(
             width: 16.0,
           ),
-          customShowCase(
-            key: bankLoanKey,
-            description: "Manualy Record Bank Loan made to a members",
-            child: Container(
-                width: 132.0,
-                child: svgGridButton(
-                    context: context,
-                    icon: customIcons['bank'],
-                    title: 'BANK LOANS',
-                    color: Colors.blue[400],
-                    isHighlighted: false,
-                    action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => RecordBankLoan(),
-                        settings: RouteSettings(arguments: 0))),
-                    margin: 0,
-                    imageHeight: 100.0)),
-          ),
+          Container(
+              width: 132.0,
+              child: svgGridButton(
+                  context: context,
+                  icon: customIcons['bank'],
+                  title: 'BANK LOANS',
+                  color: Colors.blue[400],
+                  isHighlighted: false,
+                  action: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => RecordBankLoan(),
+                      settings: RouteSettings(arguments: 0))),
+                  margin: 0,
+                  imageHeight: 100.0)),
           SizedBox(
             width: 16.0,
           ),
@@ -631,12 +775,17 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
                               child: Container(
                                 height: 160.0,
-                                child: ListView(
-                                  scrollDirection: Axis.horizontal,
-                                  padding:
-                                      EdgeInsets.only(top: 5.0, bottom: 10.0),
-                                  physics: BouncingScrollPhysics(),
-                                  children: paymentsOptions,
+                                child: customShowCase(
+                                  key: recordDepositSectionKey,
+                                  description:
+                                      "With this section, as an admin you can manualy record groups income and manual deposit reconsiliation",
+                                  child: ListView(
+                                    scrollDirection: Axis.horizontal,
+                                    padding:
+                                        EdgeInsets.only(top: 5.0, bottom: 10.0),
+                                    physics: BouncingScrollPhysics(),
+                                    children: paymentsOptions,
+                                  ),
                                 ),
                               ),
                             ),

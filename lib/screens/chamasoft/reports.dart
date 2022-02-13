@@ -17,12 +17,15 @@ import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.da
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class ChamasoftReports extends StatefulWidget {
   ChamasoftReports({
     this.appBarElevation,
   });
+  static const PREFERENCES_IS_FIRST_LAUNCH_STRING_REPORTS =
+      "PREFERENCES_IS_FIRST_LAUNCH_STRING_REPORTS";
 
   final ValueChanged<double> appBarElevation;
 
@@ -52,25 +55,35 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
 
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(reportContext).startShowCase([
-              contributionStatementKey,
-              fineStatementKey,
-              loansummaryKey,
-              depositRecieptKey,
-              withdrawalRecieptKey,
-              groupReortKey,
-              memberStatementKey,
-              // contributionStatementKey,
-              // fineStatementKey,
-              // loansummaryKey,
-              // depositRecieptKey,
-              // withdrawalRecieptKey,
-              // groupReortKey,
-              // memberStatementKey,
-            ]));
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isFirstLaunch().then((result) {
+        if (result)
+          ShowCaseWidget.of(reportContext).startShowCase([
+            contributionStatementKey,
+            fineStatementKey,
+            loansummaryKey,
+            depositRecieptKey,
+            withdrawalRecieptKey,
+            groupReortKey,
+            memberStatementKey,
+          ]);
+      });
+    });
 
     super.initState();
+  }
+
+  Future<bool> _isFirstLaunch() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    bool isFirstLaunch = sharedPreferences
+            .getBool(ChamasoftReports.PREFERENCES_IS_FIRST_LAUNCH_STRING_REPORTS) ??
+        true;
+
+    if (isFirstLaunch)
+      sharedPreferences.setBool(
+          ChamasoftReports.PREFERENCES_IS_FIRST_LAUNCH_STRING_REPORTS, false);
+
+    return isFirstLaunch;
   }
 
   @override

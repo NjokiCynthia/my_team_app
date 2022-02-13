@@ -31,6 +31,8 @@ import 'package:showcaseview/showcaseview.dart';
 import '../../config.dart';
 
 class ChamasoftHome extends StatefulWidget {
+  static const PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME =
+      "PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME";
   ChamasoftHome({this.appBarElevation, this.notificationCount});
 
   final ValueChanged<double> appBarElevation;
@@ -133,16 +135,34 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => ShowCaseWidget.of(homeContext).startShowCase([
-              meetingsBannarKey,
-              totalBalanceKey,
-              contributionSummayKey,
-              payNowButtonKey,
-              recentTransactionKey
-            ]));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isFirstLaunch().then((result) {
+        if (result)
+          ShowCaseWidget.of(homeContext).startShowCase([
+            meetingsBannarKey,
+            totalBalanceKey,
+            contributionSummayKey,
+            payNowButtonKey,
+            recentTransactionKey,
+          ]);
+      });
+    });
 
     super.initState();
+  }
+
+  Future<bool> _isFirstLaunch() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    bool isFirstLaunch = sharedPreferences
+            .getBool(ChamasoftHome.PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME) ??
+        true;
+
+    if (isFirstLaunch)
+      sharedPreferences.setBool(
+          ChamasoftHome.PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME, false);
+
+    return isFirstLaunch;
   }
 
   @override
@@ -406,7 +426,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             description:
                                 "Schedule,View and Manage Chama Meetings",
                             child: Padding(
-                              padding: EdgeInsets.fromLTRB( 
+                              padding: EdgeInsets.fromLTRB(
                                 16.0,
                                 16.0,
                                 16.0,
