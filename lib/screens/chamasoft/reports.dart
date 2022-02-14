@@ -55,20 +55,20 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _isFirstLaunch().then((result) {
-        if (result)
-          ShowCaseWidget.of(reportContext).startShowCase([
-            contributionStatementKey,
-            fineStatementKey,
-            loansummaryKey,
-            depositRecieptKey,
-            withdrawalRecieptKey,
-            groupReortKey,
-            memberStatementKey,
-          ]);
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _isFirstLaunch().then((result) {
+    //     if (result)
+    //       ShowCaseWidget.of(reportContext).startShowCase([
+    //         contributionStatementKey,
+    //         fineStatementKey,
+    //         loansummaryKey,
+    //         depositRecieptKey,
+    //         withdrawalRecieptKey,
+    //         groupReortKey,
+    //         memberStatementKey,
+    //       ]);
+    //   });
+    // });
 
     super.initState();
   }

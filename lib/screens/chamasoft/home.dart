@@ -136,18 +136,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _isFirstLaunch().then((result) {
-        if (result)
-          ShowCaseWidget.of(homeContext).startShowCase([
-            meetingsBannarKey,
-            totalBalanceKey,
-            contributionSummayKey,
-            payNowButtonKey,
-            recentTransactionKey,
-          ]);
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _isFirstLaunch().then((result) {
+    //     if (result)
+    //       ShowCaseWidget.of(homeContext).startShowCase([
+    //         meetingsBannarKey,
+    //         totalBalanceKey,
+    //         contributionSummayKey,
+    //         payNowButtonKey,
+    //         recentTransactionKey,
+    //       ]);
+    //   });
+    // });
 
     super.initState();
   }

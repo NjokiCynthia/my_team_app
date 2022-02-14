@@ -146,20 +146,20 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   void initState() {
     _currentPage = 0;
-    // WidgetsBinding.instance.addPostFrameCallback(
-    //     (_) => Future.delayed(Duration(milliseconds: 200), () {
-    //           ShowCaseWidget.of(dashboardContext).startShowCase([
-    //             switchGroupKey,
-    //             meetingsKey,
-    //             notificationsKey,
-    //             settingsKey,
-    //             homeDashboardKey,
-    //             groupDashboardKey,
-    //             transactionKey,
-    //             reportKey,
-    //             marketplaceKey
-    //           ]);
-    //         }));
+    WidgetsBinding.instance.addPostFrameCallback(
+        (_) => Future.delayed(Duration(milliseconds: 200), () {
+              ShowCaseWidget.of(dashboardContext).startShowCase([
+                switchGroupKey,
+                notificationsKey,
+                settingsKey,
+                homeDashboardKey,
+                groupDashboardKey,
+                transactionKey,
+                reportKey,
+                marketplaceKey,
+                meetingsKey,
+              ]);
+            }));
     super.initState();
   }
 
@@ -265,7 +265,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                     customShowCase(
                       key: meetingsKey,
                       title: "Chamasoft Meetings",
-                      description: "Schedule,View and Manage Chama Meetings",
+                      description:
+                          "Schedule,View and Manage your Chama Meetings",
 
                       // ignore: deprecated_member_use
                       textColor: Theme.of(context).textSelectionHandleColor,
@@ -333,7 +334,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   customShowCase(
                     key: notificationsKey,
                     title: 'Chamasoft Notifications',
-                    description: "View all your Transactions Notification",
+                    description:
+                        "View all your Transactions Notification from Here",
 
                     // ignore: deprecated_member_use
                     textColor: Theme.of(context).textSelectionHandleColor,
@@ -379,7 +381,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 key: settingsKey,
                 title: 'Chamasoft Settings',
                 description:
-                    "Personalize your Chama Settingsand Personal Settings",
+                    "Personalize your Chama Settings, Personal Settings,Help and Assistance , Preferences and Terms and Conditions",
 
                 // ignore: deprecated_member_use
                 textColor: Theme.of(context).textSelectionHandleColor,
@@ -419,7 +421,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 icon: customShowCase(
                   key: homeDashboardKey,
                   title: 'Personal Dashboard',
-                  description: "View all your Transactions Summaries",
+                  description: "View all your Summarized Transactions",
 
                   // ignore: deprecated_member_use
                   textColor: Theme.of(context).textSelectionHandleColor,
@@ -445,7 +447,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   key: groupDashboardKey,
                   title: 'Chama Dashboard',
                   description:
-                      "View your Chamas Transaction Summary and Accounts balances",
+                      "View your Chamas Transaction Summary, Loan balances and Accounts balances",
 
                   // ignore: deprecated_member_use
                   textColor: Theme.of(context).textSelectionHandleColor,
@@ -477,7 +479,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   key: transactionKey,
                   title: 'Chamasoft Transactions',
                   description:
-                      "Manualy Record chama Transactiona, Create withdrawals form E-Walet and Invoice Transfers",
+                      "Manualy Record chama Transactions, Create withdrawals form E-Walet and Invoice Transfers",
 
                   // ignore: deprecated_member_use
                   textColor: Theme.of(context).textSelectionHandleColor,
@@ -507,7 +509,8 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 icon: customShowCase(
                   key: reportKey,
                   title: 'Chamasoft Reports',
-                  description: "View well summarized Transactions reports",
+                  description:
+                      "View well summarized Transactions reports and Reciepts, You can down load and share.",
                   // ignore: deprecated_member_use
                   textColor: Theme.of(context).textSelectionHandleColor,
                   child: Icon(
@@ -537,7 +540,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 icon: customShowCase(
                   key: marketplaceKey,
                   title: 'Chamasoft MarketPlace',
-                  description: "View and Post Ads",
+                  description: "View Chamasoft Post Ads",
 
                   // ignore: deprecated_member_use
                   textColor: Theme.of(context).textSelectionHandleColor,
@@ -619,7 +622,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           appBarElevation: (elevation) => _setElevation(elevation),
           notificationCount: (_notificationCount) =>
               _setNotificationCount(_notificationCount),
-            
         );
       case 1:
         return ChamasoftGroup(
