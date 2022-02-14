@@ -24,10 +24,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
+  static const PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS =
+      "PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS";
 
   @override
   _ChamasoftDashboardState createState() => _ChamasoftDashboardState();
@@ -146,21 +149,53 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   void initState() {
     _currentPage = 0;
-    WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Future.delayed(Duration(milliseconds: 200), () {
-              ShowCaseWidget.of(dashboardContext).startShowCase([
-                switchGroupKey,
-                notificationsKey,
-                settingsKey,
-                homeDashboardKey,
-                groupDashboardKey,
-                transactionKey,
-                reportKey,
-                marketplaceKey,
-                meetingsKey,
-              ]);
-            }));
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _isFirstLaunch().then((result) {
+        if (result)
+          ShowCaseWidget.of(dashboardContext).startShowCase([
+            switchGroupKey,
+            notificationsKey,
+            settingsKey,
+            homeDashboardKey,
+            groupDashboardKey,
+            transactionKey,
+            reportKey,
+            marketplaceKey,
+            meetingsKey,
+          ]);
+      });
+    });
+
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (_) => Future.delayed(Duration(milliseconds: 200), () {
+    //           ShowCaseWidget.of(dashboardContext).startShowCase([
+    //             switchGroupKey,
+    //             notificationsKey,
+    //             settingsKey,
+    //             homeDashboardKey,
+    //             groupDashboardKey,
+    //             transactionKey,
+    //             reportKey,
+    //             marketplaceKey,
+    //             meetingsKey,
+    //           ]);
+    //         }));
     super.initState();
+  }
+
+  Future<bool> _isFirstLaunch() async {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    bool isFirstLaunch = sharedPreferences.getBool(
+            ChamasoftDashboard.PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS) ??
+        true;
+
+    if (isFirstLaunch)
+      sharedPreferences.setBool(
+          ChamasoftDashboard.PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS,
+          false);
+
+    return isFirstLaunch;
   }
 
   @override
