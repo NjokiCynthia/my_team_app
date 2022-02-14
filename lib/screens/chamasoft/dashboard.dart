@@ -19,10 +19,12 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/notifications.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
+import 'package:chamasoft/widgets/showCase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
@@ -44,6 +46,19 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   int _selectedGroupIndex = 0;
   bool _notificationCount = false;
   // bool _updateSelectedGroup = false;
+
+  final switchGroupKey = GlobalKey();
+  final meetingsKey = GlobalKey();
+  final notificationsKey = GlobalKey();
+  final settingsKey = GlobalKey();
+  final homeDashboardKey = GlobalKey();
+  final groupDashboardKey = GlobalKey();
+  final transactionKey = GlobalKey();
+  final transactionAdminKey = GlobalKey();
+  final reportKey = GlobalKey();
+  final marketplaceKey = GlobalKey();
+
+  BuildContext dashboardContext;
 
   _setElevation(double elevation) {
     double newElevation = elevation > 0 ? appBarElevation : 0;
@@ -131,6 +146,20 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   void initState() {
     _currentPage = 0;
+    // WidgetsBinding.instance.addPostFrameCallback(
+    //     (_) => Future.delayed(Duration(milliseconds: 200), () {
+    //           ShowCaseWidget.of(dashboardContext).startShowCase([
+    //             switchGroupKey,
+    //             meetingsKey,
+    //             notificationsKey,
+    //             settingsKey,
+    //             homeDashboardKey,
+    //             groupDashboardKey,
+    //             transactionKey,
+    //             reportKey,
+    //             marketplaceKey
+    //           ]);
+    //         }));
     super.initState();
   }
 
@@ -190,320 +219,391 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     //                   ChamasoftDashboard(rateMyApp: rateMyApp),
     //             ),
 
-    return GestureDetector(
-      onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP'),
-      child: Scaffold(
-        key: dashboardScaffoldKey,
-        backgroundColor: (themeChangeProvider.darkTheme)
-            ? Colors.blueGrey[900]
-            : Config.appName.toLowerCase() == 'chamasoft'
-                ? Colors.blue[50]
-                : Colors.white,
-        appBar: AppBar(
+    return ShowCaseWidget(builder: Builder(builder: (context) {
+      dashboardContext = context;
+      return GestureDetector(
+        onTapDown: (TapDownDetails details) => _eventDispatcher.add('TAP'),
+        child: Scaffold(
+          key: dashboardScaffoldKey,
           backgroundColor: (themeChangeProvider.darkTheme)
               ? Colors.blueGrey[900]
               : Config.appName.toLowerCase() == 'chamasoft'
                   ? Colors.blue[50]
-                  : Colors.white70,
-          centerTitle: false,
-          title: AppSwitcher(
-            key: ObjectKey('$_overlayItems'),
-            listItems: _overlayItems,
-            parentStream: _stream,
-            currentGroup: _overlayItems[_selectedGroupIndex],
-            selectedOption: (selected) {
-              _handleSelectedOption(context, selected, true);
-            },
-          ),
-          elevation: _appBarElevation,
-          automaticallyImplyLeading: false,
-          actions: <Widget>[
-            Visibility(
-              visible: (_group.isGroupAdmin),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.people_alt,
-                      color: Config.appName.toLowerCase() == 'chamasoft'
-                          ?
-                          // ignore: deprecated_member_use
-                          Theme.of(context).textSelectionHandleColor
-                          : primaryColor,
-                    ),
-                    onPressed: () => {
-                      _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => Meetings(),
-                        ),
-                      ),
-                    },
-                  ),
-                  // Positioned(
-                  //   top: 12,
-                  //   right: 6,
-                  //   child: Container(
-                  //     width: 12.0,
-                  //     height: 12.0,
-                  //     decoration: new BoxDecoration(
-                  //       color: Colors.blue,
-                  //       shape: BoxShape.circle,
-                  //     ),
-                  //   ),
-                  // ),
-                ],
+                  : Colors.white,
+          appBar: AppBar(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[900]
+                : Config.appName.toLowerCase() == 'chamasoft'
+                    ? Colors.blue[50]
+                    : Colors.white70,
+            centerTitle: false,
+            title: customShowCase(
+              key: switchGroupKey,
+              title: 'Switch Groups',
+              description: "Click here to switch in between Chamas",
+
+              // ignore: deprecated_member_use
+              textColor: Theme.of(context).textSelectionHandleColor,
+              child: AppSwitcher(
+                key: ObjectKey('$_overlayItems'),
+                listItems: _overlayItems,
+                parentStream: _stream,
+                currentGroup: _overlayItems[_selectedGroupIndex],
+                selectedOption: (selected) {
+                  _handleSelectedOption(context, selected, true);
+                },
               ),
             ),
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                IconButton(
-                    icon: Icon(
-                      Icons.notifications,
-                      color: Config.appName.toLowerCase() == 'chamasoft'
-                          ?
-                          // ignore: deprecated_member_use
-                          Theme.of(context).textSelectionHandleColor
-                          : primaryColor,
-                    ),
-                    // onPressed: null, // Disable notifications for now
-                    onPressed: () => {
+            elevation: _appBarElevation,
+            automaticallyImplyLeading: false,
+            actions: <Widget>[
+              Visibility(
+                visible: (_group.isGroupAdmin),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    customShowCase(
+                      key: meetingsKey,
+                      title: "Chamasoft Meetings",
+                      description: "Schedule,View and Manage Chama Meetings",
+
+                      // ignore: deprecated_member_use
+                      textColor: Theme.of(context).textSelectionHandleColor,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.people_alt,
+                          color: Config.appName.toLowerCase() == 'chamasoft'
+                              ?
+                              // ignore: deprecated_member_use
+                              Theme.of(context).textSelectionHandleColor
+                              : primaryColor,
+                        ),
+                        onPressed: () => {
                           _eventDispatcher.add('TAP'), //Closes the AppSwitcher
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ChamasoftNotifications(),
+                              builder: (BuildContext context) => Meetings(),
                             ),
                           ),
-                        }),
-                Visibility(
-                  visible: (_notificationCount),
-                  child: Positioned(
-                    top: 12,
-                    right: 6,
-                    child: Container(
-                      width: 12.0,
-                      height: 12.0,
-                      decoration: new BoxDecoration(
-                        color: Colors.blue,
-                        shape: BoxShape.circle,
+                        },
+                      ),
+                    )
+                    // Showcase(
+                    //   key: meetingsKey,
+                    //   title: 'Chamasoft Meetings',
+                    //   description: "Schedule,View and Manage Chama Meetings",
+                    // child: IconButton(
+                    //   icon: Icon(
+                    //     Icons.people_alt,
+                    //     color: Config.appName.toLowerCase() == 'chamasoft'
+                    //         ?
+                    //         // ignore: deprecated_member_use
+                    //         Theme.of(context).textSelectionHandleColor
+                    //         : primaryColor,
+                    //   ),
+                    //   onPressed: () => {
+                    //     _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                    //     Navigator.of(context).push(
+                    //       MaterialPageRoute(
+                    //         builder: (BuildContext context) => Meetings(),
+                    //       ),
+                    //     ),
+                    //   },
+                    //   ),
+                    // ),
+
+                    // Positioned(
+                    //   top: 12,
+                    //   right: 6,
+                    //   child: Container(
+                    //     width: 12.0,
+                    //     height: 12.0,
+                    //     decoration: new BoxDecoration(
+                    //       color: Colors.blue,
+                    //       shape: BoxShape.circle,
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
+                ),
+              ),
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  customShowCase(
+                    key: notificationsKey,
+                    title: 'Chamasoft Notifications',
+                    description: "View all your Transactions Notification",
+
+                    // ignore: deprecated_member_use
+                    textColor: Theme.of(context).textSelectionHandleColor,
+                    child: IconButton(
+                        icon: Icon(
+                          Icons.notifications,
+                          color: Config.appName.toLowerCase() == 'chamasoft'
+                              ?
+                              // ignore: deprecated_member_use
+                              Theme.of(context).textSelectionHandleColor
+                              : primaryColor,
+                        ),
+                        // onPressed: null, // Disable notifications for now
+                        onPressed: () => {
+                              _eventDispatcher
+                                  .add('TAP'), //Closes the AppSwitcher
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ChamasoftNotifications(),
+                                ),
+                              ),
+                            }),
+                  ),
+                  Visibility(
+                    visible: (_notificationCount),
+                    child: Positioned(
+                      top: 12,
+                      right: 6,
+                      child: Container(
+                        width: 12.0,
+                        height: 12.0,
+                        decoration: new BoxDecoration(
+                          color: Colors.blue,
+                          shape: BoxShape.circle,
+                        ),
                       ),
                     ),
-                  ),
-                )
-              ],
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.settings,
-                color: Config.appName.toLowerCase() == 'chamasoft'
-                    ?
-                    // ignore: deprecated_member_use
-                    Theme.of(context).textSelectionHandleColor
-                    : primaryColor,
+                  )
+                ],
               ),
-              onPressed: () => {
-                _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) => ChamasoftSettings(),
+              customShowCase(
+                key: settingsKey,
+                title: 'Chamasoft Settings',
+                description:
+                    "Personalize your Chama Settingsand Personal Settings",
+
+                // ignore: deprecated_member_use
+                textColor: Theme.of(context).textSelectionHandleColor,
+                child: IconButton(
+                  icon: Icon(
+                    Icons.settings,
+                    color: Config.appName.toLowerCase() == 'chamasoft'
+                        ?
+                        // ignore: deprecated_member_use
+                        Theme.of(context).textSelectionHandleColor
+                        : primaryColor,
                   ),
-                ),
-              },
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: (themeChangeProvider.darkTheme)
-              ? Colors.blueGrey[900] //.withOpacity(0.95)
-              : Config.appName.toLowerCase() == 'chamasoft'
-                  ? Colors.blue[50]
-                  : Colors.white,
-          //.withOpacity(0.89),
-          elevation: 0,
-          currentIndex: _currentPage,
-          type: BottomNavigationBarType.fixed,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Feather.user,
-                color: _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
-              ),
-              // ignore: deprecated_member_use
-              title: Text(
-                toBeginningOfSentenceCase(getUserName(auth.userName)),
-                style: TextStyle(
-                  color:
-                      _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
-                  fontFamily: 'SegoeUI',
-                  fontWeight: FontWeight.w700,
+                  onPressed: () => {
+                    _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (BuildContext context) => ChamasoftSettings(),
+                      ),
+                    ),
+                  },
                 ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Feather.users,
-                color: _currentPage == 1
-                    ? primaryColor
-                    : Config.appName.toLowerCase() == 'chamasoft'
-                        ? Colors.blueGrey[300]
-                        : Colors.blueGrey[300].withOpacity(0.5),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: (themeChangeProvider.darkTheme)
+                ? Colors.blueGrey[900] //.withOpacity(0.95)
+                : Config.appName.toLowerCase() == 'chamasoft'
+                    ? Colors.blue[50]
+                    : Colors.white,
+            //.withOpacity(0.89),
+            elevation: 0,
+            currentIndex: _currentPage,
+            type: BottomNavigationBarType.fixed,
+            items: [
+              BottomNavigationBarItem(
+                icon: customShowCase(
+                  key: homeDashboardKey,
+                  title: 'Personal Dashboard',
+                  description: "View all your Transactions Summaries",
+
+                  // ignore: deprecated_member_use
+                  textColor: Theme.of(context).textSelectionHandleColor,
+                  child: Icon(
+                    Feather.user,
+                    color:
+                        _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
+                  ),
+                ),
+                // ignore: deprecated_member_use
+                title: Text(
+                  toBeginningOfSentenceCase(getUserName(auth.userName)),
+                  style: TextStyle(
+                    color:
+                        _currentPage == 0 ? primaryColor : Colors.blueGrey[300],
+                    fontFamily: 'SegoeUI',
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
               ),
-              // ignore: deprecated_member_use
-              title: Text(
-                toBeginningOfSentenceCase(
-                    getUserName((_group.groupName).replaceAll(" ", "-"))),
-                style: TextStyle(
+              BottomNavigationBarItem(
+                icon: customShowCase(
+                  key: groupDashboardKey,
+                  title: 'Chama Dashboard',
+                  description:
+                      "View your Chamas Transaction Summary and Accounts balances",
+
+                  // ignore: deprecated_member_use
+                  textColor: Theme.of(context).textSelectionHandleColor,
+                  child: Icon(
+                    Feather.users,
                     color: _currentPage == 1
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
                             : Colors.blueGrey[300].withOpacity(0.5),
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w700),
+                  ),
+                ),
+                // ignore: deprecated_member_use
+                title: Text(
+                  toBeginningOfSentenceCase(
+                      getUserName((_group.groupName).replaceAll(" ", "-"))),
+                  style: TextStyle(
+                      color: _currentPage == 1
+                          ? primaryColor
+                          : Config.appName.toLowerCase() == 'chamasoft'
+                              ? Colors.blueGrey[300]
+                              : Colors.blueGrey[300].withOpacity(0.5),
+                      fontFamily: 'SegoeUI',
+                      fontWeight: FontWeight.w700),
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Feather.credit_card,
-                color: _currentPage == 2
-                    ? primaryColor
-                    : Config.appName.toLowerCase() == 'chamasoft'
-                        ? Colors.blueGrey[300]
-                        : Colors.blueGrey[300].withOpacity(0.5),
-              ),
-              // ignore: deprecated_member_use
-              title: Text(
-                "Transactions",
-                style: TextStyle(
+              BottomNavigationBarItem(
+                icon: customShowCase(
+                  key: transactionKey,
+                  title: 'Chamasoft Transactions',
+                  description:
+                      "Manualy Record chama Transactiona, Create withdrawals form E-Walet and Invoice Transfers",
+
+                  // ignore: deprecated_member_use
+                  textColor: Theme.of(context).textSelectionHandleColor,
+                  child: Icon(
+                    Feather.credit_card,
                     color: _currentPage == 2
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
                             : Colors.blueGrey[300].withOpacity(0.5),
+                  ),
+                ),
+                // ignore: deprecated_member_use
+                title: Text(
+                  "Transactions",
+                  style: TextStyle(
+                      color: _currentPage == 2
+                          ? primaryColor
+                          : Config.appName.toLowerCase() == 'chamasoft'
+                              ? Colors.blueGrey[300]
+                              : Colors.blueGrey[300].withOpacity(0.5),
+                      fontFamily: 'SegoeUI',
+                      fontWeight: FontWeight.w700),
+                ),
+              ),
+              BottomNavigationBarItem(
+                icon: customShowCase(
+                  key: reportKey,
+                  title: 'Chamasoft Reports',
+                  description: "View well summarized Transactions reports",
+                  // ignore: deprecated_member_use
+                  textColor: Theme.of(context).textSelectionHandleColor,
+                  child: Icon(
+                    Feather.copy,
+                    color: _currentPage == 3
+                        ? primaryColor
+                        : Config.appName.toLowerCase() == 'chamasoft'
+                            ? Colors.blueGrey[300]
+                            : Colors.blueGrey[300].withOpacity(0.5),
+                  ),
+                ),
+                // ignore: deprecated_member_use
+                title: Text(
+                  "Reports",
+                  style: TextStyle(
+                    color: _currentPage == 3
+                        ? primaryColor
+                        : Config.appName.toLowerCase() == 'chamasoft'
+                            ? Colors.blueGrey[300]
+                            : Colors.blueGrey[300].withOpacity(0.5),
                     fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Feather.copy,
-                color: _currentPage == 3
-                    ? primaryColor
-                    : Config.appName.toLowerCase() == 'chamasoft'
-                        ? Colors.blueGrey[300]
-                        : Colors.blueGrey[300].withOpacity(0.5),
-              ),
-              // ignore: deprecated_member_use
-              title: Text(
-                "Reports",
-                style: TextStyle(
-                  color: _currentPage == 3
-                      ? primaryColor
-                      : Config.appName.toLowerCase() == 'chamasoft'
-                          ? Colors.blueGrey[300]
-                          : Colors.blueGrey[300].withOpacity(0.5),
-                  fontFamily: 'SegoeUI',
-                  fontWeight: FontWeight.w700,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon:
+              BottomNavigationBarItem(
+                icon: customShowCase(
+                  key: marketplaceKey,
+                  title: 'Chamasoft MarketPlace',
+                  description: "View and Post Ads",
 
-                  // Stack(
-                  //   children: [
-                  //     IconButton(
-                  //         icon: Icon(
-                  //           Feather.shopping_cart,
-                  //           color: _currentPage == 4
-                  //               ? primaryColor
-                  //               : Config.appName.toLowerCase() == 'chamasoft'
-                  //                   ? Colors.blueGrey[300]
-                  //                   : Colors.blueGrey[300].withOpacity(0.5),
-                  //         ),
-                  //         // onPressed: null, // Disable notifications for now
-                  //         onPressed: () {}),
-                  //     Visibility(
-                  //       visible: true,
-                  //       child: Positioned(
-                  //         top: 12,
-                  //         right: 6,
-                  //         child: Container(
-                  //           width: 12.0,
-                  //           height: 12.0,
-                  //           decoration: new BoxDecoration(
-                  //             color: Colors.blue,
-                  //             shape: BoxShape.circle,
-                  //           ),
-                  //         ),
-                  //       ),
-                  //     )
-                  //   ],
-                  // ),
-
-                  Icon(
-                Feather.shopping_cart,
-                color: _currentPage == 4
-                    ? primaryColor
-                    : Config.appName.toLowerCase() == 'chamasoft'
-                        ? Colors.blueGrey[300]
-                        : Colors.blueGrey[300].withOpacity(0.5),
-              ),
-              // ignore: deprecated_member_use
-              title: Text(
-                "Market",
-                style: TextStyle(
-                  color: _currentPage == 4
-                      ? primaryColor
-                      : Config.appName.toLowerCase() == 'chamasoft'
-                          ? Colors.blueGrey[300]
-                          : Colors.blueGrey[300].withOpacity(0.5),
-                  fontFamily: 'SegoeUI',
-                  fontWeight: FontWeight.w700,
+                  // ignore: deprecated_member_use
+                  textColor: Theme.of(context).textSelectionHandleColor,
+                  child: Icon(
+                    Feather.shopping_cart,
+                    color: _currentPage == 4
+                        ? primaryColor
+                        : Config.appName.toLowerCase() == 'chamasoft'
+                            ? Colors.blueGrey[300]
+                            : Colors.blueGrey[300].withOpacity(0.5),
+                  ),
+                ),
+                // ignore: deprecated_member_use
+                title: Text(
+                  "Market",
+                  style: TextStyle(
+                    color: _currentPage == 4
+                        ? primaryColor
+                        : Config.appName.toLowerCase() == 'chamasoft'
+                            ? Colors.blueGrey[300]
+                            : Colors.blueGrey[300].withOpacity(0.5),
+                    fontFamily: 'SegoeUI',
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
-            ),
-          ],
-          onTap: (index) {
-            setState(() {
-              if ((Config.appName.toLowerCase() != 'chamasoft') && (index > 0))
-                _currentPage = 0;
-              else
-                _currentPage = index;
-            });
-          },
+            ],
+            onTap: (index) {
+              setState(() {
+                if ((Config.appName.toLowerCase() != 'chamasoft') &&
+                    (index > 0))
+                  _currentPage = 0;
+                else
+                  _currentPage = index;
+              });
+            },
+          ),
+          body: OrientationBuilder(
+            builder: (context, orientation) {
+              _eventDispatcher.add('ORIENTATION');
+              return SafeArea(
+                child: Container(
+                  // decoration: primaryGradient(context),
+                  child: getPage(_currentPage),
+                ),
+              );
+            },
+          ),
+          // floatingActionButton: FloatingActionButton(
+          //   onPressed: () {
+          //     _eventDispatcher.add('TAP');
+          //     Navigator.of(context).push(
+          //       MaterialPageRoute(
+          //         builder: (BuildContext context) => NewGroup(),
+          //       ),
+          //     );
+          //   },
+          //   child: const Icon(
+          //     Icons.add,
+          //     color: Colors.white,
+          //   ),
+          //   backgroundColor: primaryColor,
+          // ),
         ),
-        body: OrientationBuilder(
-          builder: (context, orientation) {
-            _eventDispatcher.add('ORIENTATION');
-            return SafeArea(
-              child: Container(
-                // decoration: primaryGradient(context),
-                child: getPage(_currentPage),
-              ),
-            );
-          },
-        ),
-        // floatingActionButton: FloatingActionButton(
-        //   onPressed: () {
-        //     _eventDispatcher.add('TAP');
-        //     Navigator.of(context).push(
-        //       MaterialPageRoute(
-        //         builder: (BuildContext context) => NewGroup(),
-        //       ),
-        //     );
-        //   },
-        //   child: const Icon(
-        //     Icons.add,
-        //     color: Colors.white,
-        //   ),
-        //   backgroundColor: primaryColor,
-        // ),
-      ),
-    );
+      );
+    }));
   }
 
   getPage(int page) {
@@ -519,6 +619,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
           appBarElevation: (elevation) => _setElevation(elevation),
           notificationCount: (_notificationCount) =>
               _setNotificationCount(_notificationCount),
+            
         );
       case 1:
         return ChamasoftGroup(

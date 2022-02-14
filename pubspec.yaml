@@ -55,6 +55,7 @@ dependencies:
   dotted_line: ^3.0.0
   data_table_2: ^2.1.1
   webview_flutter: ^2.1.2
+  showcaseview: ^1.1.4
 
   loading_overlay: ^0.3.0
 
