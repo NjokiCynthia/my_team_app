@@ -77,17 +77,17 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     _scrollController.addListener(_scrollListener);
     _scrollChartToEnd();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _isFirstLaunch().then((result) {
-        if (result)
-          ShowCaseWidget.of(groupContext).startShowCase([
-            contributionsSummaryKey,
-            accountBalanceKey,
-            groupLoanKey,
-            withdrwalDepositKey
-          ]);
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _isFirstLaunch().then((result) {
+    //     if (result)
+    //       ShowCaseWidget.of(groupContext).startShowCase([
+    //         contributionsSummaryKey,
+    //         accountBalanceKey,
+    //         groupLoanKey,
+    //         withdrwalDepositKey
+    //       ]);
+    //   });
+    // });
 
     super.initState();
   }

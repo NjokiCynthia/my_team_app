@@ -79,24 +79,24 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   void initState() {
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _isFirstLaunch().then((result) {
-        if (result)
-          ShowCaseWidget.of(transactionsContext).startShowCase([
-            createWithdrawalKey,
-            reviewWithdrawalKey,
-            recordDepositSectionKey,
-            expensesKey,
-            contributionRefundKey,
-            recordMemberLoan,
-            recordRepaymentKey,
-            bankLoanRepaymentKey,
-            fineMemberKey,
-            accountTransferKey,
-            reconcileWithdralKey,
-          ]);
-      });
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   _isFirstLaunch().then((result) {
+    //     if (result)
+    //       ShowCaseWidget.of(transactionsContext).startShowCase([
+    //         createWithdrawalKey,
+    //         reviewWithdrawalKey,
+    //         recordDepositSectionKey,
+    //         expensesKey,
+    //         contributionRefundKey,
+    //         recordMemberLoan,
+    //         recordRepaymentKey,
+    //         bankLoanRepaymentKey,
+    //         fineMemberKey,
+    //         accountTransferKey,
+    //         reconcileWithdralKey,
+    //       ]);
+    //   });
+    // });
     super.initState();
   }
 
