@@ -12,6 +12,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+// ignore: unused_import
 import 'package:loading_overlay/loading_overlay.dart';
 
 class TransactionStatement extends StatefulWidget {

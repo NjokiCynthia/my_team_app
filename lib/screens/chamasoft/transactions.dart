@@ -107,6 +107,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   // bankLoanKey,
   // reconcileDepositKey,
 
+  // ignore: unused_element
   Future<bool> _isFirstLaunch() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     bool isFirstLaunch = sharedPreferences.getBool(ChamasoftTransactions

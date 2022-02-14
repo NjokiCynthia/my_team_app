@@ -152,6 +152,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     super.initState();
   }
 
+  // ignore: unused_element
   Future<bool> _isFirstLaunch() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     bool isFirstLaunch = sharedPreferences

@@ -92,6 +92,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
     super.initState();
   }
 
+  // ignore: unused_element
   Future<bool> _isFirstLaunch() async {
     final sharedPreferences = await SharedPreferences.getInstance();
     bool isFirstLaunch = sharedPreferences

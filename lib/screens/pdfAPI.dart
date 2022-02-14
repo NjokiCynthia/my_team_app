@@ -1,3 +1,5 @@
+// ignore_for_file: missing_return
+
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -16,6 +18,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
+  
   static Future<File> generateMemberLoanStatementPdf(
     ActiveLoan loan,
   ) async {}
@@ -525,6 +528,7 @@ class PdfApi {
     final _memberName = _contributionStatementModel.memberName;
     final _memberPhone = _contributionStatementModel.phone;
     final _memberRole = _contributionStatementModel.role;
+    // ignore: unused_local_variable
     final _totalPaid = _contributionStatementModel.totalPaid;
     final statementAsAt = _contributionStatementModel.statementAsAt;
     final _statementFrom = _contributionStatementModel.statementFrom;
@@ -657,6 +661,7 @@ class PdfApi {
   }
 
   static Future<File> generateAccountBalancePdf(String title) async {
+    // ignore: unused_local_variable
     final pdf = Document();
   }
 

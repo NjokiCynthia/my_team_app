@@ -5,6 +5,7 @@ import 'package:chamasoft/screens/chamasoft/models/loan-statement-row.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+// ignore: unused_import
 import 'package:chamasoft/screens/pdfAPI.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/empty_screens.dart';
@@ -72,6 +73,7 @@ class _LoanStatementState extends State<LoanStatement> {
     super.dispose();
   }
 
+  // ignore: unused_element
   Future _downloadMemberLoanStatement(
       BuildContext context, Group groupObject) async {
 //           LoanStatementModel statementModel =
