@@ -19,11 +19,13 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/notifications.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
+import 'package:chamasoft/widgets/rate_app.dart';
 import 'package:chamasoft/widgets/showCase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
@@ -31,6 +33,12 @@ class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS =
       "PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS";
+  RateMyApp rateMyApp;
+
+  ChamasoftDashboard({
+    Key key,
+    this.rateMyApp,
+  }) : super(key: key);
 
   @override
   _ChamasoftDashboardState createState() => _ChamasoftDashboardState();
@@ -41,7 +49,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   List<dynamic> _overlayItems = [];
 
   Stream get _stream => _eventDispatcher.stream;
-
+  
   final GlobalKey<ScaffoldState> dashboardScaffoldKey =
       new GlobalKey<ScaffoldState>();
   int _currentPage;
@@ -653,11 +661,20 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
 
     switch (page) {
       case 0:
-        return ChamasoftHome(
-          appBarElevation: (elevation) => _setElevation(elevation),
-          notificationCount: (_notificationCount) =>
-              _setNotificationCount(_notificationCount),
+
+      return RateAppInitWidget(
+          builder: (rateMyApp) => ChamasoftHome(
+            rateMyApp: rateMyApp,
+            appBarElevation: (elevation) => _setElevation(elevation),
+            notificationCount: (_notificationCount) =>
+                _setNotificationCount(_notificationCount),
+          ),
         );
+        // return ChamasoftHome(
+        //   appBarElevation: (elevation) => _setElevation(elevation),
+        //   notificationCount: (_notificationCount) =>
+        //       _setNotificationCount(_notificationCount),
+        // );
       case 1:
         return ChamasoftGroup(
           appBarElevation: (elevation) => _setElevation(elevation),

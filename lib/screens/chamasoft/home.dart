@@ -23,6 +23,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
+import 'package:rate_my_app/src/core.dart';
 import 'dart:async';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -33,10 +34,11 @@ import '../../config.dart';
 class ChamasoftHome extends StatefulWidget {
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME =
       "PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME";
-  ChamasoftHome({this.appBarElevation, this.notificationCount});
+  ChamasoftHome({this.appBarElevation, this.notificationCount, this.rateMyApp});
 
   final ValueChanged<double> appBarElevation;
   final ValueChanged<double> notificationCount;
+  final RateMyApp rateMyApp;
 
   @override
   _ChamasoftHomeState createState() => _ChamasoftHomeState();
