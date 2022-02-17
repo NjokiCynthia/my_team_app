@@ -28,64 +28,64 @@ class _RateAppInitWidgetState extends State<RateAppInitWidget> {
           googlePlayIdentifier: playStoreId,
           // appStoreIdentifier: appstoreId,
           minDays: 0,
-          minLaunches: 1,
+          minLaunches: 2,
           // remindDays: 1,
           // remindLaunches: 1,
           preferencesPrefix: 'rateMyApp_',
-          remindDays: 7,
-          remindLaunches: 10,
+          remindDays: 3,
+          remindLaunches: 2,
         ),
         onInitialized: (context, rateMyApp) {
           setState(() => this.rateMyApp = rateMyApp);
 
-          // if (rateMyApp.shouldOpenDialog) {
-          rateMyApp.showStarRateDialog(
-            context,
-            title: 'Enjoying Chamasoft?',
-            message: 'Please Rate Chamasoft mobile App.',
+          if (rateMyApp.shouldOpenDialog) {
+            rateMyApp.showStarRateDialog(
+              context,
+              title: 'Enjoying Chamasoft?',
+              message: 'Please Rate Chamasoft mobile App.',
 
-            dialogStyle: DialogStyle(
-                titleAlign: TextAlign.center,
-                messageAlign: TextAlign.start,
-                messagePadding: EdgeInsets.only(bottom: 20)),
-            // ignoreNativeDialog: Platform.isIOS,
-            actionsBuilder: (context, stars) {
-              return [
-                // ignore: deprecated_member_use
-                defaultButton(
-                  context: context,
-                  text: 'Rate',
-                  onPressed: () {
-                    if (stars != null) {
-                      //   rateMyApp.d
-                      //  rateMyApp.doNotOpenAgain = true;
-                      rateMyApp.save().then((v) => Navigator.pop(context));
+              dialogStyle: DialogStyle(
+                  titleAlign: TextAlign.center,
+                  messageAlign: TextAlign.start,
+                  messagePadding: EdgeInsets.only(bottom: 20)),
+              // ignoreNativeDialog: Platform.isIOS,
+              actionsBuilder: (context, stars) {
+                return [
+                  // ignore: deprecated_member_use
+                  defaultButton(
+                    context: context,
+                    text: 'Rate',
+                    onPressed: () {
+                      if (stars != null) {
+                        //   rateMyApp.d
+                        //  rateMyApp.doNotOpenAgain = true;
+                        rateMyApp.save().then((v) => Navigator.pop(context));
 
-                      if (stars <= 2.5) {
-                        Fluttertoast.showToast(
-                            toastLength: Toast.LENGTH_SHORT,
-                            gravity: ToastGravity.SNACKBAR,
-                            timeInSecForIosWeb: 1,
-                            backgroundColor: primaryColor,
-                            textColor: Colors.white,
-                            fontSize: 16.0,
-                            msg:
-                                "Good news: Ratings successfuly recorded. Thankyou");
-                      } else if (stars <= 5) {
-                        print('Open Google Playstore');
-                        rateMyApp.launchStore();
+                        if (stars <= 2.5) {
+                          Fluttertoast.showToast(
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.SNACKBAR,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: primaryColor,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                              msg:
+                                  "Good news: Ratings successfuly recorded. Thankyou");
+                        } else if (stars <= 5) {
+                          print('Open Google Playstore');
+                          rateMyApp.launchStore();
+                        }
+                      } else {
+                        Navigator.pop(context);
                       }
-                    } else {
-                      Navigator.pop(context);
-                    }
-                  },
-                ),
-              ];
-            },
-            starRatingOptions:
-                StarRatingOptions(itemColor: Theme.of(context).primaryColor),
-          );
-          // }
+                    },
+                  ),
+                ];
+              },
+              starRatingOptions:
+                  StarRatingOptions(itemColor: Theme.of(context).primaryColor),
+            );
+          }
         },
         builder:
             (context) => /*  rateMyApp == null
