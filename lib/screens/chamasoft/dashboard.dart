@@ -19,7 +19,6 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/notifications.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/appswitcher.dart';
-import 'package:chamasoft/widgets/rate_app.dart';
 import 'package:chamasoft/widgets/showCase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -49,7 +48,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   List<dynamic> _overlayItems = [];
 
   Stream get _stream => _eventDispatcher.stream;
-  
+
   final GlobalKey<ScaffoldState> dashboardScaffoldKey =
       new GlobalKey<ScaffoldState>();
   int _currentPage;
@@ -662,19 +661,19 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
     switch (page) {
       case 0:
 
-      return RateAppInitWidget(
-          builder: (rateMyApp) => ChamasoftHome(
-            rateMyApp: rateMyApp,
-            appBarElevation: (elevation) => _setElevation(elevation),
-            notificationCount: (_notificationCount) =>
-                _setNotificationCount(_notificationCount),
-          ),
+        // return RateAppInitWidget(
+        //     builder: (rateMyApp) => ChamasoftHome(
+        //       rateMyApp: rateMyApp,
+        //       appBarElevation: (elevation) => _setElevation(elevation),
+        //       notificationCount: (_notificationCount) =>
+        //           _setNotificationCount(_notificationCount),
+        //     ),
+        //   );
+        return ChamasoftHome(
+          appBarElevation: (elevation) => _setElevation(elevation),
+          notificationCount: (_notificationCount) =>
+              _setNotificationCount(_notificationCount),
         );
-        // return ChamasoftHome(
-        //   appBarElevation: (elevation) => _setElevation(elevation),
-        //   notificationCount: (_notificationCount) =>
-        //       _setNotificationCount(_notificationCount),
-        // );
       case 1:
         return ChamasoftGroup(
           appBarElevation: (elevation) => _setElevation(elevation),

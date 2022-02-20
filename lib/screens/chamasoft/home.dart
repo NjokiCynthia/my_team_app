@@ -14,6 +14,7 @@ import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
+import 'package:chamasoft/widgets/rate_app.dart';
 import 'package:chamasoft/widgets/showCase.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -23,6 +24,7 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/widgets/data-loading-effects.dart';
+// ignore: implementation_imports
 import 'package:rate_my_app/src/core.dart';
 import 'dart:async';
 
@@ -407,7 +409,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
     return ShowCaseWidget(builder: Builder(builder: (context) {
       homeContext = context;
-      return WillPopScope(
+      return RateAppInitWidget(builder: (rateMyApp)=>  WillPopScope(
         onWillPop: _onWillPop,
         child: RefreshIndicator(
           backgroundColor: (themeChangeProvider.darkTheme)
@@ -1266,8 +1268,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             ),
           ),
         ),
+      )
+,
+        
       );
-    }));
+      
+          }));
   }
 
   void _openPayNowTray(BuildContext context) {

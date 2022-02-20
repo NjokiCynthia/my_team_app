@@ -26,14 +26,11 @@ class _RateAppInitWidgetState extends State<RateAppInitWidget> {
   Widget build(BuildContext context) => RateMyAppBuilder(
         rateMyApp: RateMyApp(
           googlePlayIdentifier: playStoreId,
-          // appStoreIdentifier: appstoreId,
-          minDays: 0,
+          minDays: 1,
           minLaunches: 2,
-          // remindDays: 1,
-          // remindLaunches: 1,
           preferencesPrefix: 'rateMyApp_',
           remindDays: 3,
-          remindLaunches: 2,
+          remindLaunches: 1,
         ),
         onInitialized: (context, rateMyApp) {
           setState(() => this.rateMyApp = rateMyApp);
@@ -43,6 +40,7 @@ class _RateAppInitWidgetState extends State<RateAppInitWidget> {
               context,
               title: 'Enjoying Chamasoft?',
               message: 'Please Rate Chamasoft mobile App.',
+              // starRatingOptions:StarRatingOptions(initialRating: 4),
 
               dialogStyle: DialogStyle(
                   titleAlign: TextAlign.center,
@@ -82,15 +80,13 @@ class _RateAppInitWidgetState extends State<RateAppInitWidget> {
                   ),
                 ];
               },
-              starRatingOptions:
-                  StarRatingOptions(itemColor: Theme.of(context).primaryColor),
+              starRatingOptions: StarRatingOptions(
+                  itemColor: Theme.of(context).primaryColor, initialRating: 4),
             );
           }
         },
-        builder:
-            (context) => /*  rateMyApp == null
+        builder: (context) => rateMyApp == null
             ? Center(child: CircularProgressIndicator())
-            : */
-                widget.builder(rateMyApp),
+            : widget.builder(rateMyApp),
       );
 }
