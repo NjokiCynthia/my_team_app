@@ -474,16 +474,26 @@ class GroupMemberDetail {
   final double contributionArrears;
   final double fineArrears;
 
-  GroupMemberDetail({
-    @required this.name,
-    @required this.memberId,
-    @required this.userId,
-    @required this.contributions,
-    @required this.fines,
-    @required this.loanBalance,
-    @required this.contributionArrears,
-    @required this.fineArrears,
-  });
+  final String avatar;
+  final String lastSeen;
+  final String phone;
+  final String email;
+  final String role;
+
+  GroupMemberDetail(
+      {@required this.name,
+      @required this.memberId,
+      @required this.userId,
+      @required this.contributions,
+      @required this.fines,
+      @required this.loanBalance,
+      @required this.contributionArrears,
+      @required this.fineArrears,
+      @required this.avatar,
+      @required this.lastSeen,
+      @required this.phone,
+      @required this.email,
+      @required this.role});
 }
 
 class Groups with ChangeNotifier {
@@ -1092,6 +1102,11 @@ class Groups with ChangeNotifier {
           name: member['name'],
           memberId: member['member_id'],
           userId: member['user_id'],
+          avatar: member['avatar'],
+          lastSeen: member['last_seen'],
+          phone: member['phone'],
+          email: member['email'],
+          role: member['Member'],
           contributions:
               double.tryParse(member["total_contributions"].toString()) ?? 0.0,
           fines: double.tryParse(member["total_fines"].toString()) ?? 0.0,
