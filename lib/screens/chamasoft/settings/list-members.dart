@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -22,6 +24,9 @@ import 'group-setup/list-contacts.dart';
 // import '../../../widgets/memberListItem.dart';
 
 class ListMembers extends StatefulWidget {
+  String groupId;
+  ListMembers({Key key, this.groupId}) : super(key: key);
+
   @override
   _ListMembersState createState() => _ListMembersState();
 }
@@ -106,12 +111,12 @@ class _ListMembersState extends State<ListMembers> {
     );
   }
 
-  void _showAction(BuildContext context, Member member) {
+  void _showAction(BuildContext context, GroupMemberDetail member) {
     showModalBottomSheet<void>(
       context: context,
       builder: (_) {
         return Container(
-          height: 200,
+          height: 70,
           color: Colors.white,
           child: Center(
             child: Column(
@@ -126,22 +131,8 @@ class _ListMembersState extends State<ListMembers> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => new ViewMemberProfile()));
-
-//                       Navigator.pop(context);
-//                       final result =
-//                           await Navigator.of(context).push(MaterialPageRoute(
-//                         builder: (context) => ViewMemberProfile(),
-//                       ));
-
-//                       if (result != null) {
-//                         int status = int.tryParse(result.toString()) ?? 0;
-//                         if (status == 1) {
-//                           _refreshIndicatorKey.currentState.show();
-// //                          print("here22");
-// //                          _fetchIncomeCategories(context);
-//                         }
-//                       }
+                              builder: (context) =>
+                                  new ViewMemberProfile(member: member)));
                     },
                     child: ListTile(
                       leading: Icon(
@@ -157,34 +148,34 @@ class _ListMembersState extends State<ListMembers> {
                     ),
                   ),
                 ),
-                Material(
-                  color: Theme.of(context).backgroundColor,
-                  child: InkWell(
-                    onTap: () {
-                      // Navigator.pop(context);
-                      // showConfirmationDialog(
-                      //     context,
-                      //     member,
-                      //     member.isHidden
-                      //         ? SettingActions.actionUnHide
-                      //         : SettingActions.actionHide);
-                    },
-                    splashColor: Colors.blueGrey.withOpacity(0.2),
-                    child: ListTile(
-                      leading: Icon(
-                        // incomeCategory.isHidden ? Feather.eye :
-                        Feather.eye_off,
-                        color: Colors.blueGrey,
-                      ),
-                      title: customTitle(
-                          text: /* incomeCategory.isHidden ? "UnSuspend" :  */ "Suspend",
-                          fontWeight: FontWeight.w600,
-                          textAlign: TextAlign.start,
-                          // ignore: deprecated_member_use
-                          color: Theme.of(context).textSelectionHandleColor),
-                    ),
-                  ),
-                ),
+                // Material(
+                //   color: Theme.of(context).backgroundColor,
+                //   child: InkWell(
+                //     onTap: () {
+                //       // Navigator.pop(context);
+                //       // showConfirmationDialog(
+                //       //     context,
+                //       //     member,
+                //       //     member.isHidden
+                //       //         ? SettingActions.actionUnHide
+                //       //         : SettingActions.actionHide);
+                //     },
+                //     splashColor: Colors.blueGrey.withOpacity(0.2),
+                //     child: ListTile(
+                //       leading: Icon(
+                //         // incomeCategory.isHidden ? Feather.eye :
+                //         Feather.eye_off,
+                //         color: Colors.blueGrey,
+                //       ),
+                //       title: customTitle(
+                //           text: /* incomeCategory.isHidden ? "UnSuspend" :  */ "Suspend",
+                //           fontWeight: FontWeight.w600,
+                //           textAlign: TextAlign.start,
+                //           // ignore: deprecated_member_use
+                //           color: Theme.of(context).textSelectionHandleColor),
+                //     ),
+                //   ),
+                // ),
                 // Material(
                 //   color: Theme.of(context).backgroundColor,
                 //   child: InkWell(
@@ -254,7 +245,7 @@ class _ListMembersState extends State<ListMembers> {
   Future<void> _fetchMembers(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false)
-          .getGroupMembersDetails(_currentGroup.groupId);
+          .getGroupMembersDetails(widget.groupId);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -357,12 +348,14 @@ class _ListMembersState extends State<ListMembers> {
                 width: MediaQuery.of(context).size.width,
                 decoration: primaryGradient(context),
                 child: Consumer<Groups>(builder: (context, groupData, child) {
-                  return groupData.members.length > 0
+                  log(' Group Members Size is ${groupData.groupMembersDetails.length}');
+                  return groupData.groupMembersDetails.length > 0
                       ? ListView.separated(
                           padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-                          itemCount: groupData.members.length,
+                          itemCount: groupData.groupMembersDetails.length,
                           itemBuilder: (context, index) {
-                            Member member = groupData.members[index];
+                            GroupMemberDetail member =
+                                groupData.groupMembersDetails[index];
                             return ListTile(
                               dense: true,
                               leading: member.avatar != null
@@ -426,8 +419,7 @@ class _ListMembersState extends State<ListMembers> {
                                                   Row(
                                                     children: <Widget>[
                                                       customTitle(
-                                                        text:
-                                                            '${member.identity}',
+                                                        text: '${member.phone}',
                                                         fontWeight:
                                                             FontWeight.w700,
                                                         color: Theme.of(context)

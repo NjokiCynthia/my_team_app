@@ -15,7 +15,8 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ViewMemberProfile extends StatefulWidget {
-  const ViewMemberProfile({Key key}) : super(key: key);
+  final GroupMemberDetail member;
+  const ViewMemberProfile({Key key, this.member}) : super(key: key);
 
   @override
   _ViewMemberProfileState createState() => _ViewMemberProfileState();
@@ -78,7 +79,8 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
 
   @override
   Widget build(BuildContext context) {
-    GroupMemberDetail groupMembersDetails;
+    final groupObject =
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     return Scaffold(
       appBar: secondaryPageAppbar(
@@ -99,11 +101,11 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   heading1(
-                      text: "Kelvin's Profile",
+                      text: "${widget.member.name}'s Profile",
                       // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor),
                   subtitle2(
-                      text: "Member Chamasoft Profile",
+                      text: "${groupObject.groupName} Member Profile",
                       // ignore: deprecated_member_use
                       color: Theme.of(context).textSelectionHandleColor),
                   SizedBox(
@@ -119,84 +121,75 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                             ? Center(
                                 child: CircularProgressIndicator(),
                               )
-                            // : groupMembersDetails.avatar != null
-                            //     ? Container(
-                            //         height: 50,
-                            //         width: 50,
-                            //         child: new CachedNetworkImage(
-                            //           imageUrl: groupMembersDetails.avatar,
-                            //           placeholder: (context, url) =>
-                            //               const CircleAvatar(
-                            //             backgroundImage: const AssetImage(
-                            //                 'assets/no-user.png'),
-                            //           ),
-                            //           imageBuilder: (context, image) =>
-                            //               CircleAvatar(
-                            //             backgroundImage: image,
-                            //           ),
-                            //           errorWidget: (context, url, error) =>
-                            //               const CircleAvatar(
-                            //             backgroundImage: const AssetImage(
-                            //                 'assets/no-user.png'),
-                            //           ),
-                            //           fadeOutDuration:
-                            //               const Duration(seconds: 1),
-                            //           fadeInDuration:
-                            //               const Duration(seconds: 3),
-                            //         ),
-                            //       )
-                            : const CircleAvatar(
-                                backgroundImage:
-                                    const AssetImage('assets/no-user.png'),
-                              ),
+                            : widget.member.avatar != null
+                                ? Container(
+                                    height: 50,
+                                    width: 50,
+                                    child: new CachedNetworkImage(
+                                      imageUrl: widget.member.avatar,
+                                      placeholder: (context, url) =>
+                                          const CircleAvatar(
+                                        backgroundImage: const AssetImage(
+                                            'assets/no-user.png'),
+                                      ),
+                                      imageBuilder: (context, image) =>
+                                          CircleAvatar(
+                                        backgroundImage: image,
+                                      ),
+                                      errorWidget: (context, url, error) =>
+                                          const CircleAvatar(
+                                        backgroundImage: const AssetImage(
+                                            'assets/no-user.png'),
+                                      ),
+                                      fadeOutDuration:
+                                          const Duration(seconds: 1),
+                                      fadeInDuration:
+                                          const Duration(seconds: 3),
+                                    ),
+                                  )
+                                : const CircleAvatar(
+                                    backgroundImage:
+                                        const AssetImage('assets/no-user.png'),
+                                  ),
                       ],
                     ),
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Name",
-                    updateText: /* groupMembersDetails.name  */ 'Kelvin Mbugua',
-                    onPressed: () {},
+                    updateText: /* groupMembersDetails.name  */ '${widget.member.name}',
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Phone Number",
-                    updateText: /* groupMembersDetails.phone */ '+254727589261',
-                    onPressed: () {},
+                    updateText: /* groupMembersDetails.phone */ '${widget.member.phone}',
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Email Address",
-                    updateText: /* groupMembersDetails.email */ 'kelvin.kamau@outlook.com',
-                    onPressed: () {},
+                    updateText: /* groupMembersDetails.email */ '${widget.member.email}',
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Last Seen",
-                    updateText: /* groupMembersDetails.lastSeen */ 'Online',
-                    onPressed: () {},
+                    updateText: /* groupMembersDetails.lastSeen */ '${widget.member.lastSeen}',
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Total Contributions",
-                    updateText: /* groupMembersDetails.contributions.toString() */ 'KES 30,000',
-                    onPressed: () {},
+                    updateText: /* groupMembersDetails.contributions.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributions)}',
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Contribution Arrears",
                     updateText:
-                        /* groupMembersDetails.contributionArrears.toString() */ 'KES 250',
-                    onPressed: () {},
+                        /* groupMembersDetails.contributionArrears.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributionArrears)}',
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Total Fines",
-                    updateText: /* groupMembersDetails.fines.toString() */ 'KES 325',
-                    onPressed: () {},
+                    updateText: /* groupMembersDetails.fines.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fines)}',
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Fines Arrears",
-                    updateText: /* groupMembersDetails.fineArrears.toString() */ 'KES 0',
-                    onPressed: () {},
+                    updateText: /* groupMembersDetails.fineArrears.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fineArrears)}',
                   ),
-                  InfoUpdateTile(
+                  ProfileUpdateTile(
                     labelText: "Loan Balance",
-                    updateText: /* groupMembersDetails.loanBalance.toString() */ 'KES 12,250',
-                    onPressed: () {},
+                    updateText: /* groupMembersDetails.loanBalance.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.loanBalance)}',
                   ),
                 ],
               ),
