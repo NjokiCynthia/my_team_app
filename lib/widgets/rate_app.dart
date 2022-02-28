@@ -35,7 +35,7 @@ class _RateAppInitWidgetState extends State<RateAppInitWidget> {
         onInitialized: (context, rateMyApp) {
           setState(() => this.rateMyApp = rateMyApp);
 
-          if (rateMyApp.shouldOpenDialog) {
+          if (!rateMyApp.shouldOpenDialog) {
             rateMyApp.showStarRateDialog(
               context,
               title: 'Enjoying Chamasoft?',

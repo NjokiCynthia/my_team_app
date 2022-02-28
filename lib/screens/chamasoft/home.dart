@@ -409,7 +409,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
     return ShowCaseWidget(builder: Builder(builder: (context) {
       homeContext = context;
-      return RateAppInitWidget(builder: (rateMyApp)=>  WillPopScope(
+      return WillPopScope(
         onWillPop: _onWillPop,
         child: RefreshIndicator(
           backgroundColor: (themeChangeProvider.darkTheme)
@@ -1268,12 +1268,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             ),
           ),
         ),
-      )
-,
-        
       );
-      
-          }));
+    }));
   }
 
   void _openPayNowTray(BuildContext context) {
