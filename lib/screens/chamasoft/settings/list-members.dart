@@ -6,7 +6,6 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
-import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/settings/view-member-profile.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -23,6 +22,7 @@ import 'group-setup/add-members-manually.dart';
 import 'group-setup/list-contacts.dart';
 // import '../../../widgets/memberListItem.dart';
 
+// ignore: must_be_immutable
 class ListMembers extends StatefulWidget {
   String groupId;
   ListMembers({Key key, this.groupId}) : super(key: key);
@@ -35,7 +35,6 @@ class _ListMembersState extends State<ListMembers> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-  Group _currentGroup;
 
   void _showActions(BuildContext context) {
     showModalBottomSheet<void>(

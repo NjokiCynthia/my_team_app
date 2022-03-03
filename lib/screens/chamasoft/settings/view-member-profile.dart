@@ -1,9 +1,6 @@
-import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings/user-settings/update-profile.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -26,17 +23,12 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   PickedFile avatar;
-  final ImagePicker _picker = ImagePicker();
   // String _retrieveDataError;
 
-  String _userAvatar;
   String name = 'Jane Doe';
-  String _oldName;
   String phoneNumber = '+254 701 234 567';
   String newNumber;
-  String emailAddress, _oldEmailAddress;
-  final _userNameFormKey = GlobalKey<FormState>();
-  final _emailFormKey = GlobalKey<FormState>();
+  String emailAddress;
   bool _isLoadingImage = false;
 
   //  Future<void> _fetchMemberDetails(BuildContext context) async {

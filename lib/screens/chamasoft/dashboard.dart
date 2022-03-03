@@ -28,6 +28,7 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+// ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS =

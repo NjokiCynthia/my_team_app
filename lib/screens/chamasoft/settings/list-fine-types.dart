@@ -96,34 +96,34 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: <Widget>[
-                                              // Row(
-                                              //   children: <Widget>[
-                                              //     Text(
-                                              //       'Balance: ',
-                                              //       style: TextStyle(
-                                              //         fontWeight:
-                                              //             FontWeight.w600,
-                                              //         color: Theme.of(context)
-                                              //             // ignore: deprecated_member_use
-                                              //             .textSelectionHandleColor
-                                              //             .withOpacity(0.5),
-                                              //         fontSize: 12.0,
-                                              //       ),
-                                              //     ),
-                                              //     Text(
-                                              //       '${fineType.amount}',
-                                              //       style: TextStyle(
-                                              //         fontWeight:
-                                              //             FontWeight.w700,
-                                              //         color: Theme.of(context)
-                                              //             // ignore: deprecated_member_use
-                                              //             .textSelectionHandleColor
-                                              //             .withOpacity(0.7),
-                                              //         fontSize: 12.0,
-                                              //       ),
-                                              //     ),
-                                              //   ],
-                                              // ),
+                                              Row(
+                                                children: <Widget>[
+                                                  Text(
+                                                    'Balance: ',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      color: Theme.of(context)
+                                                          // ignore: deprecated_member_use
+                                                          .textSelectionHandleColor
+                                                          .withOpacity(0.5),
+                                                      fontSize: 12.0,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    '${fineType.amount}',
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      color: Theme.of(context)
+                                                          // ignore: deprecated_member_use
+                                                          .textSelectionHandleColor
+                                                          .withOpacity(0.7),
+                                                      fontSize: 12.0,
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ],
                                           )
                                         ],
