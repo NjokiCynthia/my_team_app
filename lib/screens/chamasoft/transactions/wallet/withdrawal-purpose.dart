@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
+import 'package:chamasoft/screens/chamasoft/transactions/wallet/choose_member.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-banks.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-phone-contacts.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -104,7 +105,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 
   Future<void> fetchBankAccounts() async {}
 
-  void _prepareSubmission(BuildContext context, int flag) async {
+  void _prepareSubmission(BuildContext context, int flag, String groupId) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -192,6 +193,22 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
       formData['recipient'] = "1";
       final result = await Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) =>
+              ListMemberContacts(formData: formData, groupId: groupId)));
+      if (result != null) {
+        print("result: $result");
+        final id = int.tryParse(result) ?? 0;
+        if (id != 0) {
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => ReviewWithdrawal(
+                    requestId: id,
+                  )));
+        }
+      }
+    } /* else {
+      //send to phone
+      formData['recipient'] = "1";
+      final result = await Navigator.of(context).push(MaterialPageRoute(
+          builder: (BuildContext context) =>
               ListPhoneContacts(formData: formData)));
       if (result != null) {
         print("result: $result");
@@ -203,7 +220,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                   )));
         }
       }
-    }
+    } */
   }
 
   String _getOptionName(int id, List<NamesListItem> list) {
@@ -487,7 +504,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     text: "Send To Bank",
                                     iconSize: 12.0,
                                     action: () =>
-                                        _prepareSubmission(context, 1),
+                                        _prepareSubmission(context, 1, groupObject.groupId),
                                     showIcon: false),
                               ),
                               SizedBox(
@@ -502,7 +519,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     text: "Send To Mobile",
                                     iconSize: 12.0,
                                     action: () =>
-                                        _prepareSubmission(context, 2),
+                                        _prepareSubmission(context, 2, groupObject.groupId),
                                     showIcon: false),
                               )
                             ],

@@ -60,6 +60,7 @@ dependencies:
   loading_overlay: ^0.3.0
   in_app_review: ^2.0.3
   rate_my_app: ^1.1.1
+  # contact_picker: any
 
 
 dev_dependencies:

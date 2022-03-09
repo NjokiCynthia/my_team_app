@@ -1,4 +1,3 @@
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/providers/groups.dart';
@@ -146,42 +145,136 @@ class _ViewMemberProfileState extends State<ViewMemberProfile> {
                       ],
                     ),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Name",
-                    updateText: /* groupMembersDetails.name  */ '${widget.member.name}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Name",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text: widget.member.name,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Phone Number",
-                    updateText: /* groupMembersDetails.phone */ '${widget.member.phone}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Phone Number",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text: widget.member.phone,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Email Address",
-                    updateText: /* groupMembersDetails.email */ '${widget.member.email}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Email Address",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text: widget.member.email,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Last Seen",
-                    updateText: /* groupMembersDetails.lastSeen */ '${widget.member.lastSeen}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Last Seen",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text: widget.member.lastSeen,
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Total Contributions",
-                    updateText: /* groupMembersDetails.contributions.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributions)}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Total Contributions",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text:
+                            '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributions)}',
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Contribution Arrears",
-                    updateText:
-                        /* groupMembersDetails.contributionArrears.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributionArrears)}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Contribution Arrears",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text:
+                            '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.contributionArrears)}',
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Total Fines",
-                    updateText: /* groupMembersDetails.fines.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fines)}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Total Fines",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text:
+                            '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fines)}',
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Fines Arrears",
-                    updateText: /* groupMembersDetails.fineArrears.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fineArrears)}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Fines Arrears",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text:
+                            '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.fineArrears)}',
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
-                  ProfileUpdateTile(
-                    labelText: "Loan Balance",
-                    updateText: /* groupMembersDetails.loanBalance.toString() */ '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.loanBalance)}',
+                  ListTile(
+                    title: customTitle(
+                        text: "Loan Balance",
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
+                    subtitle: customTitle(
+                        text:
+                            '${groupObject.groupCurrency} ${currencyFormat.format(widget.member.loanBalance)}',
+                        fontWeight: FontWeight.w600,
+                        textAlign: TextAlign.start,
+                        // ignore: deprecated_member_use
+                        color: Theme.of(context).textSelectionHandleColor),
                   ),
                 ],
               ),

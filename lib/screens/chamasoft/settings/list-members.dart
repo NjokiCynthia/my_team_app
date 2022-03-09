@@ -35,7 +35,6 @@ class _ListMembersState extends State<ListMembers> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
 
-
   void _showActions(BuildContext context) {
     showModalBottomSheet<void>(
       context: context,
@@ -115,7 +114,7 @@ class _ListMembersState extends State<ListMembers> {
       context: context,
       builder: (_) {
         return Container(
-          height: 70,
+          height: 130,
           color: Colors.white,
           child: Center(
             child: Column(
@@ -140,6 +139,33 @@ class _ListMembersState extends State<ListMembers> {
                       ),
                       title: customTitle(
                           text: "View",
+                          fontWeight: FontWeight.w600,
+                          textAlign: TextAlign.start,
+                          // ignore: deprecated_member_use
+                          color: Theme.of(context).textSelectionHandleColor),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: Theme.of(context).backgroundColor,
+                  child: InkWell(
+                    splashColor: Colors.blueGrey.withOpacity(0.2),
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      // ignore: deprecated_member_use
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                          duration: Duration(milliseconds: 4000),
+                          content: Text(
+                            "You can not edit an active member. Kindly communicate to the member to update their profile",
+                          )));
+                    },
+                    child: ListTile(
+                      leading: Icon(
+                        Feather.edit,
+                        color: Colors.blueGrey,
+                      ),
+                      title: customTitle(
+                          text: "Edit",
                           fontWeight: FontWeight.w600,
                           textAlign: TextAlign.start,
                           // ignore: deprecated_member_use
