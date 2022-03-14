@@ -166,19 +166,39 @@ class _EditFineTypeState extends State<EditFineType> {
                                 SizedBox(
                                   height: 24,
                                 ),
-                                amountTextInputField(
-                                  context: context,
-                                  labelText: 'Enter amount',
-                                  controller: amountTextController,
-                                  onChanged: (value) {
-                                    setState(() {
-                                      amount = double.parse(value);
-                                    });
-                                  },
-                                  validator: (value) {
-                                    return null;
-                                  },
-                                ),
+                                simpleTextInputField(
+                                    context: context,
+                                    labelText: 'Enter Amount',
+                                    validator: (value) {
+                                      /*  Pattern pattern =
+                                          r'^([A-Za-z0-9_ ]{2,})$';
+                                      RegExp regex = new RegExp(pattern);
+                                      if (!regex.hasMatch(value))
+                                        return 'Invalid name';
+                                      else */
+                                      return null;
+                                    },
+                                    onSaved: (value) => amount = value,
+                                    controller: amountTextController,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        amount = value;
+                                      });
+                                    }),
+                                // amountTextInputField(
+                                //   context: context,
+                                //   labelText: 'Enter amount',
+                                //   controller: amountTextController,
+
+                                //   onChanged: (value) {
+                                //     setState(() {
+                                //       amount = double.parse(value);
+                                //     });
+                                //   },
+                                //   validator: (value) {
+                                //     return null;
+                                //   },
+                                // ),
                                 SizedBox(
                                   height: 24,
                                 ),

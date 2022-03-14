@@ -281,12 +281,12 @@ class _GroupSettingsState extends State<GroupSettings> {
     }
   }
 
-  Future<void> fetchMembers(BuildContext context) async {
+  Future<void> fetchMembers(BuildContext context, String groupId) async {
     try {
-      await Provider.of<Groups>(context, listen: false).fetchMembers();
+      await Provider.of<Groups>(context, listen: false).getGroupMembersDetails(groupId);
       Navigator.pop(context);
       Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => ListMembers()));
+          .push(MaterialPageRoute(builder: (context) => ListMembers(groupId: groupId)));
     } on CustomException catch (error) {
       print(error.message);
       final snackBar = SnackBar(
@@ -294,7 +294,7 @@ class _GroupSettingsState extends State<GroupSettings> {
         action: SnackBarAction(
           label: 'Retry',
           onPressed: () async {
-            fetchMembers(context);
+            fetchMembers(context, groupId);
           },
         ),
       );
@@ -590,7 +590,7 @@ class _GroupSettingsState extends State<GroupSettings> {
                           child: CircularProgressIndicator(),
                         );
                       });
-                  await fetchMembers(context);
+                  await fetchMembers(context, currentGroup.groupId);
                 },
               ),
               DashedDivider(

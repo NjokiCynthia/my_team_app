@@ -13,8 +13,10 @@ import 'package:provider/provider.dart';
 
 class AmountToWithdraw extends StatefulWidget {
   final Map<String, String> formData;
+  final GroupMemberDetail member;
+  final String phoneNumber;
 
-  AmountToWithdraw({this.formData});
+  AmountToWithdraw({this.formData, this.member, this.phoneNumber});
 
   @override
   _AmountToWithdrawState createState() => _AmountToWithdrawState();
@@ -33,6 +35,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
     if (!_formKey.currentState.validate()) {
       return;
     }
+
+    // widget.formData['phone'] = widget.member.phone;
 
     widget.formData['amount'] = _controller.text;
     widget.formData['request_id'] = requestId;
@@ -146,7 +150,8 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                               Expanded(
                                 flex: 1,
                                 child: customTitle(
-                                  text: widget.formData['name'],
+                                  text: widget.formData[
+                                      'name'] /* =widget.member.name ??widget.formData['member_name'] */,
                                   fontWeight: FontWeight.w600,
                                   color: Theme.of(context)
                                       // ignore: deprecated_member_use
@@ -223,7 +228,9 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
                                   child: customTitleWithWrap(
                                 textAlign: TextAlign.start,
                                 text: recipient == 1
-                                    ? widget.formData['phone']
+                                    ? /* idget.formData['phone'] =
+                                        widget.member.phone ?? */
+                                    widget.formData['phone']
                                     : widget.formData['account_number'],
                                 color:
                                     // ignore: deprecated_member_use

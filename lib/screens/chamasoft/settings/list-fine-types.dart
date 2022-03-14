@@ -111,12 +111,12 @@ class _ListFineTypesState extends State<ListFineTypes> {
                                                     ),
                                                   ),
                                                   Text(
-                                                    '${fineType.balance}',
+                                                    '${fineType.amount}',
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.w700,
                                                       color: Theme.of(context)
-            // ignore: deprecated_member_use
+                                                          // ignore: deprecated_member_use
                                                           .textSelectionHandleColor
                                                           .withOpacity(0.7),
                                                       fontSize: 12.0,
