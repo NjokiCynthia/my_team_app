@@ -410,7 +410,9 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                               key: accountBalanceKey,
                               description:
                                   "View accurate balances in your groups accounts.",
-                              child: Container(
+                              child: 
+                              
+                              Container(
                                 height: 180.0,
                                 child: ListView(
                                   scrollDirection: Axis.horizontal,
