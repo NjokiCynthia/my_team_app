@@ -688,6 +688,22 @@ Widget circleIconButton(
   );
 }
 
+Widget circleButton(
+    {Color color,
+    Color backgroundColor,
+    double iconSize = 32.0,
+    double padding = 2.0}) {
+  return Container(
+    padding: EdgeInsets.all(padding),
+    width: 10,
+    height: 10,
+    decoration: ShapeDecoration(
+      color: backgroundColor,
+      shape: CircleBorder(),
+    ),
+  );
+}
+
 Widget negativeActionDialogButton(
     {String text = "Cancel", Color color, Function action}) {
   // ignore: deprecated_member_use

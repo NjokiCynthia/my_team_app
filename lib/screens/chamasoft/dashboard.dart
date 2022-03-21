@@ -580,37 +580,37 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   ),
                 ),
               ),
-              BottomNavigationBarItem(
-                icon: customShowCase(
-                  key: marketplaceKey,
-                  title: 'Chamasoft MarketPlace',
-                  description: "View Chamasoft Post Ads",
+              // BottomNavigationBarItem(
+              //   icon: customShowCase(
+              //     key: marketplaceKey,
+              //     title: 'Chamasoft MarketPlace',
+              //     description: "View Chamasoft Post Ads",
 
-                  // ignore: deprecated_member_use
-                  textColor: Theme.of(context).textSelectionHandleColor,
-                  child: Icon(
-                    Feather.shopping_cart,
-                    color: _currentPage == 4
-                        ? primaryColor
-                        : Config.appName.toLowerCase() == 'chamasoft'
-                            ? Colors.blueGrey[300]
-                            : Colors.blueGrey[300].withOpacity(0.5),
-                  ),
-                ),
-                // ignore: deprecated_member_use
-                title: Text(
-                  "Market",
-                  style: TextStyle(
-                    color: _currentPage == 4
-                        ? primaryColor
-                        : Config.appName.toLowerCase() == 'chamasoft'
-                            ? Colors.blueGrey[300]
-                            : Colors.blueGrey[300].withOpacity(0.5),
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
+              //     // ignore: deprecated_member_use
+              //     textColor: Theme.of(context).textSelectionHandleColor,
+              //     child: Icon(
+              //       Feather.shopping_cart,
+              //       color: _currentPage == 4
+              //           ? primaryColor
+              //           : Config.appName.toLowerCase() == 'chamasoft'
+              //               ? Colors.blueGrey[300]
+              //               : Colors.blueGrey[300].withOpacity(0.5),
+              //     ),
+              //   ),
+              //   // ignore: deprecated_member_use
+              //   title: Text(
+              //     "Market",
+              //     style: TextStyle(
+              //       color: _currentPage == 4
+              //           ? primaryColor
+              //           : Config.appName.toLowerCase() == 'chamasoft'
+              //               ? Colors.blueGrey[300]
+              //               : Colors.blueGrey[300].withOpacity(0.5),
+              //       fontFamily: 'SegoeUI',
+              //       fontWeight: FontWeight.w700,
+              //     ),
+              //   ),
+              // ),
             ],
             onTap: (index) {
               setState(() {
@@ -692,10 +692,10 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         return ChamasoftReports(
           appBarElevation: (elevation) => _setElevation(elevation),
         );
-      case 4:
-        return ChamasoftMarketPlace(
-          appBarElevation: (elevation) => _setElevation(elevation),
-        );
+      // case 4:
+      //   return ChamasoftMarketPlace(
+      //     appBarElevation: (elevation) => _setElevation(elevation),
+      //   );
     }
   }
 }

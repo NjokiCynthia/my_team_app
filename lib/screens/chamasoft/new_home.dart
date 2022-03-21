@@ -6,10 +6,13 @@ import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/contribution.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/widgets/annimationSlider.dart';
@@ -116,8 +119,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     //if(_isInit){
     _getMemberDashboardDataNew();
-   if (_isInit)
-      WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
+    // if (_isInit)
+    //   WidgetsBinding.instance.addPostFrameCallback((_) => _fetchData());
     // _getMemberDashboardData();
     // _getGroupDashboardData();
     //}
@@ -140,7 +143,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         Provider.of<Dashboard>(context, listen: false)
             .resetGroupDashboardData(_currentGroup.groupId);
 
-        Provider.of(context, listen: false).fetchMemberLoans();
+        // Provider.of(context, listen: false).fetchMemberLoans();
       }
       if (!Provider.of<Dashboard>(context, listen: false)
           .memberGroupDataExists(_currentGroup.groupId)) {
@@ -211,30 +214,30 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     }
   }
 
-  Future<void> _getMemberLoan(BuildContext context,
-      [bool hardRefresh = false]) async {
-    try {
-      await Provider.of(context, listen: false).fetchMemberLoans();
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _getMemberLoan(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
-    }
-  }
+  // Future<void> _getMemberLoan(BuildContext context,
+  //     [bool hardRefresh = false]) async {
+  //   try {
+  //     await Provider.of(context, listen: false).fetchMemberLoans();
+  //   } on CustomException catch (error) {
+  //     StatusHandler().handleStatus(
+  //         context: context,
+  //         error: error,
+  //         callback: () {
+  //           _getMemberLoan(context);
+  //         },
+  //         scaffoldState: _scaffoldKey.currentState);
+  //   }
+  // }
 
-  Future<bool> _fetchData() async {
-    _activeLoans = Provider.of<Groups>(context, listen: false).getMemberLoans;
-    _getMemberLoan(context).then((_) {
-      _activeLoans = Provider.of<Groups>(context, listen: false).getMemberLoans;
-    });
+  // Future<bool> _fetchData() async {
+  //   _activeLoans = Provider.of<Groups>(context, listen: false).getMemberLoans;
+  //   _getMemberLoan(context).then((_) {
+  //     _activeLoans = Provider.of<Groups>(context, listen: false).getMemberLoans;
+  //   });
 
-    _isInit = false;
-    return true;
-  }
+  //   _isInit = false;
+  //   return true;
+  // }
 
   // Future<void> _getMemberDashboardData([bool hardRefresh = false]) async {
   //   try {
@@ -574,7 +577,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
-    
+
     setState(() {
       _iteratableRecentTransactionSummary =
           dashboardData.recentMemberTransactions;
@@ -611,64 +614,71 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           ),
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Column(
-                              children: [
-                                circleIconButton(
-                                  icon: Icons.import_export,
-                                  backgroundColor:
-                                      primaryColor /* rimaryColor.withOpacity(.3) */,
-                                  color: Colors.white,
-                                  iconSize: 24.0,
-                                  padding: 0.0,
-                                  onPressed: () => _openPayNowTray(context),
-                                ),
-                                SizedBox(height: 10),
-                                customTitle1(
-                                  text: 'Make Payment',
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  textAlign: TextAlign.start,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 100),
-                            Column(
-                              children: [
-                                circleIconButton(
-                                  icon: Icons.credit_card,
-                                  backgroundColor:
-                                      primaryColor /* rimaryColor.withOpacity(.3) */,
-                                  color: Colors.white,
-                                  iconSize: 24.0,
-                                  padding: 0.0,
-                                  onPressed:
-                                      () /*  =>
-                                          _showActions(context, incomeCategory) */
-                                      {},
-                                ),
-                                SizedBox(height: 10),
-                                customTitle1(
-                                  text: 'Apply Loan',
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  textAlign: TextAlign.start,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-                          ],
+                      if (_onlineBankingEnabled)
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              /*  Expanded(
+                                child: */
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  circleIconButton(
+                                    icon: Icons.import_export,
+                                    backgroundColor:
+                                        primaryColor /* rimaryColor.withOpacity(.3) */,
+                                    color: Colors.white,
+                                    iconSize: 24.0,
+                                    padding: 0.0,
+                                    onPressed: () => _openPayNowTray(context),
+                                  ),
+                                  SizedBox(height: 10),
+                                  customTitle1(
+                                    text: 'Make Payment',
+                                    color: Theme.of(context)
+                                        // ignore: deprecated_member_use
+                                        .textSelectionHandleColor,
+                                    textAlign: TextAlign.start,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ],
+                              ),
+                              /*  ), */
+                              // SizedBox(width: 100),
+                              // Expanded(
+                              //   child: Column(
+                              //     children: [
+                              //       circleIconButton(
+                              //         icon: Icons.credit_card,
+                              //         backgroundColor:
+                              //             primaryColor /* rimaryColor.withOpacity(.3) */,
+                              //         color: Colors.white,
+                              //         iconSize: 24.0,
+                              //         padding: 0.0,
+                              //         onPressed:
+                              //             () /*  =>
+                              //               _showActions(context, incomeCategory) */
+                              //             {},
+                              //       ),
+                              //       SizedBox(height: 10),
+                              //       customTitle1(
+                              //         text: 'Apply Loan',
+                              //         color: Theme.of(context)
+                              //             // ignore: deprecated_member_use
+                              //             .textSelectionHandleColor,
+                              //         textAlign: TextAlign.start,
+                              //         fontSize: 16,
+                              //         fontWeight: FontWeight.w600,
+                              //       ),
+                              //     ],
+                              //   ),
+                              // )
+                            ],
+                          ),
                         ),
-                      ),
                       SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
@@ -697,8 +707,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             children: <Widget>[
                               CarouselSlider(
                                 options: CarouselOptions(
-                                  height: 230.0,
-                                  autoPlay: false,
+                                  height: 175.0,
+                                  autoPlay: true,
                                   autoPlayInterval: Duration(seconds: 10),
                                   autoPlayAnimationDuration:
                                       Duration(milliseconds: 1000),
@@ -744,14 +754,29 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                       SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                        child: Text(
-                          "Account Balances",
-                          style: TextStyle(
-                            color: Colors.blueGrey[400],
-                            fontFamily: 'SegoeUI',
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Account Balances",
+                              style: TextStyle(
+                                color: Colors.blueGrey[400],
+                                fontFamily: 'SegoeUI',
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w800,
+                              ),
+                            ),
+                            plainButtonWithArrow(
+                                text: "View All",
+                                size: 16.0,
+                                spacing: 2.0,
+                                color: Colors.blue,
+                                action: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              AccountBalances()),
+                                    ))
+                          ],
                         ),
                       ),
                       SizedBox(height: 20),
@@ -846,7 +871,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 size: 16.0,
                                 spacing: 2.0,
                                 color: Colors.blue,
-                                action: () {})
+                                action: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              ContributionStatement()),
+                                    ))
                           ],
                         ),
                       ),
@@ -908,7 +937,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                             ),
                     ],
                   )
-                : homePlaceholder(context: context),
+                : newHomePlaceHolder(context: context),
+            // : homePlaceholder(context: context),
+            // : dataLoadingEffect(
+            //     context: context,
+            //     width: MediaQuery.of(context).size.width,
+            //     height: MediaQuery.of(context).size.height),
           )),
         ));
   }
@@ -939,9 +973,9 @@ class Contrubutions extends StatelessWidget {
 
     // ContributionsSummary contributionsSummary;
 
-    List<ContributionsSummary> _itableContributionSummary = [];
-    _itableContributionSummary =
-        Provider.of<Dashboard>(context, listen: true).memberContributionSummary;
+    // List<ContributionsSummary> _itableContributionSummary = [];
+    // _itableContributionSummary =
+    //     Provider.of<Dashboard>(context, listen: true).memberContributionSummary;
 
     // ContributionsSummary contributionsSum =
     //     _itableContributionSummary[];
@@ -949,12 +983,12 @@ class Contrubutions extends StatelessWidget {
     // String contributionDate =
     //      dashboardData.memberDetails["next_contribution_date"].toString();
 
-    ContributionsSummary contributionsSummary =
-        _itableContributionSummary as ContributionsSummary;
+    // ContributionsSummary contributionsSummary =
+    //     _itableContributionSummary as ContributionsSummary;
 
-    final data = dashboardData.memberContributionSummary.map((item) => [
-          item.balance,
-        ]);
+    // final data = dashboardData.memberContributionSummary.map((item) => [
+    //       item.balance,
+    //     ]);
 
     // final contributionsSummary = Provider.of<ContributionsSummary>(context);
 
@@ -1010,24 +1044,38 @@ class Contrubutions extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  customTitle1(
-                    text: _currentGroup.disableArrears
-                        ? _currentGroup.groupCurrency +
-                            " " +
-                            currencyFormat
-                                .format(dashboardData.memberContributionAmount)
-                        : _currentGroup.groupCurrency +
-                            " " +
-                            currencyFormat.format(
-                                dashboardData.memberContributionArrears),
-                    color: (dashboardData.memberContributionArrears) > 0
-                        ? Colors.red[400]
-                        : Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                    textAlign: TextAlign.start,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
+                  Row(
+                    children: [
+                      circleButton(
+                        backgroundColor:
+                            dashboardData.memberContributionAmount > 0
+                                ? Colors.redAccent
+                                : Colors
+                                    .white /* rimaryColor.withOpacity(.3) */,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      customTitle1(
+                        text: _currentGroup.disableArrears
+                            ? _currentGroup.groupCurrency +
+                                " " +
+                                currencyFormat.format(
+                                    dashboardData.memberContributionAmount)
+                            : _currentGroup.groupCurrency +
+                                " " +
+                                currencyFormat.format(
+                                    dashboardData.memberContributionArrears),
+                        color: (dashboardData.memberContributionArrears) > 0
+                            ? Colors.red[400]
+                            : Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionHandleColor,
+                        textAlign: TextAlign.start,
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 20,
@@ -1041,83 +1089,93 @@ class Contrubutions extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  customTitle1(
-                    color: Theme.of(context)
-                        // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    text: _currentGroup.groupCurrency +
-                        " " +
-                        currencyFormat
-                            .format(dashboardData.groupContributionAmount),
-                    textAlign: TextAlign.start,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          DottedLine(
-            direction: Axis.horizontal,
-            lineLength: double.infinity,
-            lineThickness: 0.5,
-            dashLength: 2.0,
-            dashColor: Colors.black45,
-            dashRadius: 0.0,
-            dashGapLength: 2.0,
-            dashGapColor: Colors.transparent,
-            dashGapRadius: 0.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Next Conribution",
-                    style: TextStyle(
-                      color: Colors.blueGrey[400],
-                      fontFamily: 'SegoeUI',
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w800,
+                  Row(children: [
+                    circleButton(
+                      backgroundColor: dashboardData.groupPendingLoanBalance > 0
+                          ? primaryColor
+                          : Colors.white /* rimaryColor.withOpacity(.3) */,
                     ),
-                  ),
-                  Row(
-                    children: [
-                      customTitle1(
-                        text: "KES 100,000",
-                        textAlign: TextAlign.start,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
-                      SizedBox(
-                        width: 20,
-                      ),
-                      customTitle1(
-                        text: contributionsSummary.dueDate,
-                        textAlign: TextAlign.start,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
-                    ],
-                  )
+                    SizedBox(
+                      width: 10,
+                    ),
+                    customTitle1(
+                      color: Theme.of(context)
+                          // ignore: deprecated_member_use
+                          .textSelectionHandleColor,
+                      text: _currentGroup.groupCurrency +
+                          " " +
+                          currencyFormat
+                              .format(dashboardData.groupContributionAmount),
+                      textAlign: TextAlign.start,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ])
                 ],
               ),
-              buttonWithArrow(
-                  text: "Pay Now",
-                  size: 14.0,
-                  spacing: 2.0,
-                  color: Colors.white,
-                  action: () => _openPayNowTray(context))
             ],
           ),
+          // DottedLine(
+          //   direction: Axis.horizontal,
+          //   lineLength: double.infinity,
+          //   lineThickness: 0.5,
+          //   dashLength: 2.0,
+          //   dashColor: Colors.black45,
+          //   dashRadius: 0.0,
+          //   dashGapLength: 2.0,
+          //   dashGapColor: Colors.transparent,
+          //   dashGapRadius: 0.0,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     // Column(
+          //     //   crossAxisAlignment: CrossAxisAlignment.start,
+          //     //   children: [
+          //     //     Text(
+          //     //       "Next Conribution",
+          //     //       style: TextStyle(
+          //     //         color: Colors.blueGrey[400],
+          //     //         fontFamily: 'SegoeUI',
+          //     //         fontSize: 14.0,
+          //     //         fontWeight: FontWeight.w800,
+          //     //       ),
+          //     //     ),
+          //     //     Row(
+          //     //       children: [
+          //     //         customTitle1(
+          //     //           text: "KES 100,000",
+          //     //           textAlign: TextAlign.start,
+          //     //           fontSize: 14,
+          //     //           fontWeight: FontWeight.w400,
+          //     //           color: Theme.of(context)
+          //     //               // ignore: deprecated_member_use
+          //     //               .textSelectionHandleColor,
+          //     //         ),
+          //     //         SizedBox(
+          //     //           width: 20,
+          //     //         ),
+          //     //         customTitle1(
+          //     //           text: contributionsSummary.dueDate,
+          //     //           textAlign: TextAlign.start,
+          //     //           fontSize: 14,
+          //     //           fontWeight: FontWeight.w400,
+          //     //           color: Theme.of(context)
+          //     //               // ignore: deprecated_member_use
+          //     //               .textSelectionHandleColor,
+          //     //         ),
+          //     //       ],
+          //     //     )
+          //     //   ],
+          //     // ),
+          //     buttonWithArrow(
+          //         text: "Pay Now",
+          //         size: 14.0,
+          //         spacing: 2.0,
+          //         color: Colors.white,
+          //         action: () => _openPayNowTray(context))
+          //   ],
+          // ),
         ],
       ),
     );
@@ -1219,24 +1277,37 @@ class Fines extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  customTitle1(
-                    text: _currentGroup.disableArrears
-                        ? _currentGroup.groupCurrency +
-                            " " +
-                            currencyFormat
-                                .format(dashboardData.memberFineAmount)
-                        : _currentGroup.groupCurrency +
-                            " " +
-                            currencyFormat
-                                .format(dashboardData.memberFineArrears),
-                    color: (dashboardData.memberFineArrears) > 0
-                        ? Colors.red[400]
-                        : Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                    textAlign: TextAlign.start,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
+                  Row(
+                    children: [
+                      circleButton(
+                        backgroundColor: dashboardData.memberFineArrears.abs() >
+                                0
+                            ? Colors.redAccent
+                            : Colors.white /* rimaryColor.withOpacity(.3) */,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      customTitle1(
+                        text: _currentGroup.disableArrears
+                            ? _currentGroup.groupCurrency +
+                                " " +
+                                currencyFormat
+                                    .format(dashboardData.memberFineAmount)
+                            : _currentGroup.groupCurrency +
+                                " " +
+                                currencyFormat
+                                    .format(dashboardData.memberFineArrears),
+                        color: (dashboardData.memberFineArrears) > 0
+                            ? Colors.red[400]
+                            : Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionHandleColor,
+                        textAlign: TextAlign.start,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 20,
@@ -1250,83 +1321,98 @@ class Fines extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  customTitle1(
-                    color: Theme.of(context)
-                        // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    text: _currentGroup.groupCurrency +
-                        " " +
-                        currencyFormat
-                            .format(dashboardData.groupFinePaymentAmount),
-                    textAlign: TextAlign.start,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          DottedLine(
-            direction: Axis.horizontal,
-            lineLength: double.infinity,
-            lineThickness: 0.5,
-            dashLength: 2.0,
-            dashColor: Colors.black45,
-            dashRadius: 0.0,
-            dashGapLength: 2.0,
-            dashGapColor: Colors.transparent,
-            dashGapRadius: 0.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Pending Fines",
-                    style: TextStyle(
-                      color: Colors.blueGrey[400],
-                      fontFamily: 'SegoeUI',
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
                   Row(
                     children: [
-                      customTitle1(
-                        text: "KES 500",
-                        textAlign: TextAlign.start,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                      circleButton(
+                        backgroundColor:
+                            dashboardData.groupFinePaymentAmount > 0
+                                ? primaryColor
+                                : Colors.white
+                        // backgroundColor:
+                        /* rimaryColor.withOpacity(.3) */,
                       ),
                       SizedBox(
-                        width: 20,
+                        width: 10,
                       ),
                       customTitle1(
-                        text: "Due: 14TH May, 2022",
-                        textAlign: TextAlign.start,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
                             .textSelectionHandleColor,
+                        text: _currentGroup.groupCurrency +
+                            " " +
+                            currencyFormat
+                                .format(dashboardData.groupFinePaymentAmount),
+                        textAlign: TextAlign.start,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
-              buttonWithArrow(
-                  text: "Pay Now",
-                  size: 14.0,
-                  spacing: 2.0,
-                  color: Colors.white,
-                  action: () => _openPayNowTray(context))
             ],
           ),
+          // DottedLine(
+          //   direction: Axis.horizontal,
+          //   lineLength: double.infinity,
+          //   lineThickness: 0.5,
+          //   dashLength: 2.0,
+          //   dashColor: Colors.black45,
+          //   dashRadius: 0.0,
+          //   dashGapLength: 2.0,
+          //   dashGapColor: Colors.transparent,
+          //   dashGapRadius: 0.0,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     // Column(
+          //     //   crossAxisAlignment: CrossAxisAlignment.start,
+          //     //   children: [
+          //     //     Text(
+          //     //       "Pending Fines",
+          //     //       style: TextStyle(
+          //     //         color: Colors.blueGrey[400],
+          //     //         fontFamily: 'SegoeUI',
+          //     //         fontSize: 14.0,
+          //     //         fontWeight: FontWeight.w800,
+          //     //       ),
+          //     //     ),
+          //     //     Row(
+          //     //       children: [
+          //     //         customTitle1(
+          //     //           text: "KES 500",
+          //     //           textAlign: TextAlign.start,
+          //     //           fontSize: 14,
+          //     //           fontWeight: FontWeight.w400,
+          //     //           color: Theme.of(context)
+          //     //               // ignore: deprecated_member_use
+          //     //               .textSelectionHandleColor,
+          //     //         ),
+          //     //         SizedBox(
+          //     //           width: 20,
+          //     //         ),
+          //     //         customTitle1(
+          //     //           text: "Due: 14TH May, 2022",
+          //     //           textAlign: TextAlign.start,
+          //     //           fontSize: 14,
+          //     //           fontWeight: FontWeight.w400,
+          //     //           color: Theme.of(context)
+          //     //               // ignore: deprecated_member_use
+          //     //               .textSelectionHandleColor,
+          //     //         ),
+          //     //       ],
+          //     //     )
+          //     //   ],
+          //     // ),
+          //     buttonWithArrow(
+          //         text: "More Details",
+          //         size: 14.0,
+          //         spacing: 2.0,
+          //         color: Colors.white,
+          //         action: () => _openPayNowTray(context))
+          //   ],
+          // ),
         ]));
   }
 }
@@ -1340,7 +1426,6 @@ class Balances extends StatelessWidget {
     Dashboard dashboardData = Provider.of<Dashboard>(context);
 
     final currencyFormat = new NumberFormat("#,##0", "en_US");
-   
 
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
@@ -1391,22 +1476,35 @@ class Balances extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  customTitle1(
-                    text: _currentGroup.disableArrears
-                        ? _currentGroup.groupCurrency +
-                            " " +
-                            currencyFormat
-                                .format(dashboardData.memberTotalLoanBalance)
-                        : _currentGroup.groupCurrency +
-                            " " +
-                            currencyFormat
-                                .format(dashboardData.memberTotalLoanBalance),
-                    color: Theme.of(context)
-                        // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    textAlign: TextAlign.start,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
+                  Row(
+                    children: [
+                      circleButton(
+                        backgroundColor: dashboardData.memberTotalLoanBalance >
+                                0
+                            ? Colors.redAccent
+                            : Colors.white /* rimaryColor.withOpacity(.3) */,
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      customTitle1(
+                        text: _currentGroup.disableArrears
+                            ? _currentGroup.groupCurrency +
+                                " " +
+                                currencyFormat.format(
+                                    dashboardData.memberTotalLoanBalance)
+                            : _currentGroup.groupCurrency +
+                                " " +
+                                currencyFormat.format(
+                                    dashboardData.memberTotalLoanBalance),
+                        color: Theme.of(context)
+                            // ignore: deprecated_member_use
+                            .textSelectionHandleColor,
+                        textAlign: TextAlign.start,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 20,
@@ -1420,83 +1518,96 @@ class Balances extends StatelessWidget {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  customTitle1(
-                    color: Theme.of(context)
-                        // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    text: _currentGroup.groupCurrency +
-                        " " +
-                        currencyFormat
-                            .format(dashboardData.groupPendingLoanBalance),
-                    textAlign: TextAlign.start,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ],
-              ),
-            ],
-          ),
-          DottedLine(
-            direction: Axis.horizontal,
-            lineLength: double.infinity,
-            lineThickness: 0.5,
-            dashLength: 2.0,
-            dashColor: Colors.black45,
-            dashRadius: 0.0,
-            dashGapLength: 2.0,
-            dashGapColor: Colors.transparent,
-            dashGapRadius: 0.0,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Next Loan Repayment",
-                    style: TextStyle(
-                      color: Colors.blueGrey[400],
-                      fontFamily: 'SegoeUI',
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
                   Row(
                     children: [
-                      customTitle1(
-                        text:dashboardData.member,
-                        textAlign: TextAlign.start,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
+                      circleButton(
+                        backgroundColor: dashboardData.groupPendingLoanBalance >
+                                0
+                            ? primaryColor
+                            : Colors.white /* rimaryColor.withOpacity(.3) */,
                       ),
                       SizedBox(
-                        width: 20,
+                        width: 10,
                       ),
                       customTitle1(
-                        text: "14TH May, 2022",
-                        textAlign: TextAlign.start,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
                             .textSelectionHandleColor,
+                        text: _currentGroup.groupCurrency +
+                            " " +
+                            currencyFormat
+                                .format(dashboardData.groupPendingLoanBalance),
+                        textAlign: TextAlign.start,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
-              buttonWithArrow(
-                  text: "Pay Now",
-                  size: 14.0,
-                  spacing: 2.0,
-                  color: Colors.white,
-                  action: () => _openPayNowTray(context))
             ],
           ),
+          // DottedLine(
+          //   direction: Axis.horizontal,
+          //   lineLength: double.infinity,
+          //   lineThickness: 0.5,
+          //   dashLength: 2.0,
+          //   dashColor: Colors.black45,
+          //   dashRadius: 0.0,
+          //   dashGapLength: 2.0,
+          //   dashGapColor: Colors.transparent,
+          //   dashGapRadius: 0.0,
+          // ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     // Column(
+          //     //   crossAxisAlignment: CrossAxisAlignment.start,
+          //     //   children: [
+          //     //     Text(
+          //     //       "Next Loan Repayment",
+          //     //       style: TextStyle(
+          //     //         color: Colors.blueGrey[400],
+          //     //         fontFamily: 'SegoeUI',
+          //     //         fontSize: 14.0,
+          //     //         fontWeight: FontWeight.w800,
+          //     //       ),
+          //     //     ),
+          //     //     Row(
+          //     //       children: [
+          //     //         customTitle1(
+          //     //           text:dashboardData.member,
+          //     //           textAlign: TextAlign.start,
+          //     //           fontSize: 14,
+          //     //           fontWeight: FontWeight.w400,
+          //     //           color: Theme.of(context)
+          //     //               // ignore: deprecated_member_use
+          //     //               .textSelectionHandleColor,
+          //     //         ),
+          //     //         SizedBox(
+          //     //           width: 20,
+          //     //         ),
+          //     //         customTitle1(
+          //     //           text: "14TH May, 2022",
+          //     //           textAlign: TextAlign.start,
+          //     //           fontSize: 14,
+          //     //           fontWeight: FontWeight.w400,
+          //     //           color: Theme.of(context)
+          //     //               // ignore: deprecated_member_use
+          //     //               .textSelectionHandleColor,
+          //     //         ),
+          //     //       ],
+          //     //     )
+          //     //   ],
+          //     // ),
+          //     buttonWithArrow(
+          //         text: "More Details",
+          //         size: 14.0,
+          //         spacing: 2.0,
+          //         color: Colors.white,
+          //         action: () => _openPayNowTray(context))
+          //   ],
+          // ),
         ]));
   }
 }

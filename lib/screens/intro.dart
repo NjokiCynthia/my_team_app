@@ -1,4 +1,5 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
@@ -26,15 +27,40 @@ class IntroScreenState extends State<IntroScreen> {
   _dashNav() async {
     String currentGroupId = await getPreference("selectedGroupId");
     dynamic groups = Provider.of<Groups>(context, listen: false);
+    dynamic groupData = Provider.of<Dashboard>(context, listen: false);
     await groups.fetchAndSetUserGroups();
     await groups.setSelectedGroupId(currentGroupId);
-    groups.fetchMembers();
-    groups.fetchContributions();
-    groups.fetchPayContributions();
-    groups.fetchLoanTypes();
-    groups.fetchAccounts();
-    groups.fetchFineTypes();
-    groups.fetchGroupMembersOngoingLoans();
+    // await groups.fetchMembers();
+    // await groups.fetchContributions();
+    // await groups.fetchPayContributions();
+    // await groups.fetchLoanTypes();
+    // await groups.fetchAccounts();
+    // await groups.fetchFineTypes();
+    // await groups.fetchGroupMembersOngoingLoans();
+
+    // groups.fetchExpenses();
+    // groups.fetchFineCategories();
+    // groups.fetchExpenseCategory();
+    // groups.fetchGroupNotifications();
+    // groups.fetchReportAccountBalances();
+    // groups.fetchTransactionStatement();
+    // groups.getGroupContributionSummary();
+    // groups.getGroupFinesSummary();
+    // groups.fetchExpenseSummary();
+    // groups.fetchLoansSummary();
+    // groups.fetchContributionStatement();
+    // groups.fetchMemberContributionStatement();
+    // groups.fetchMemberFineStatement();
+    // groups.fetchMemberLoans();
+    // groups.fetchLoanStatement();
+    // groups.fetchExpenseCategories();
+    // groups.fetchIncomeCategories();
+    // groups.getGroupMembersDetails();
+
+    await groupData.getMemberDashboardData(currentGroupId);
+    await groupData.getGroupDashboardData(currentGroupId);
+    await groupData.getGroupDepositVWithdrawals(currentGroupId);
+
     Navigator.of(context)
         .pushReplacement(
       MaterialPageRoute(
