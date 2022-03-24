@@ -376,7 +376,7 @@ class _DetailRecieptWithdrawlState extends State<DetailRecieptWithdrawl> {
     //                         height: 10.0,
     //                       ),
     //                       customTitle(
-    //                         text: "Payement For: " +
+    //                         text: "Payment For: " +
     //                             widget.type +
     //                             ' ; ' +
     //                             widget.name,
