@@ -438,7 +438,26 @@ Widget newHomePlaceHolder({BuildContext context}) {
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Text(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Transactional Summary",
+                style: TextStyle(
+                  color: Colors.blueGrey[400],
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Feather.more_horizontal,
+                    color: Colors.blueGrey,
+                  ),
+                  onPressed: () {})
+            ],
+          ),
+          /* child: Text(
             "Make Payments",
             style: TextStyle(
               color: Colors.blueGrey[400],
@@ -446,82 +465,91 @@ Widget newHomePlaceHolder({BuildContext context}) {
               fontSize: 16.0,
               fontWeight: FontWeight.w800,
             ),
+          ), */
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    circleIconButton(
+                      icon: Icons.import_export,
+                      backgroundColor:
+                          primaryColor /* rimaryColor.withOpacity(.3) */,
+                      color: Colors.white,
+                      iconSize: 24.0,
+                      padding: 0.0,
+                      onPressed: () {},
+                    ),
+                    SizedBox(height: 10),
+                    customTitle1(
+                      text: 'Make Payment',
+                      color: Theme.of(context)
+                          // ignore: deprecated_member_use
+                          .textSelectionHandleColor,
+                      textAlign: TextAlign.start,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(width: 100),
+              Expanded(
+                child: Column(
+                  children: [
+                    circleIconButton(
+                      icon: Icons.credit_card,
+                      backgroundColor:
+                          primaryColor /* rimaryColor.withOpacity(.3) */,
+                      color: Colors.white,
+                      iconSize: 24.0,
+                      padding: 0.0,
+                      onPressed:
+                          () /*  =>
+                              _showActions(context, incomeCategory) */
+                          {},
+                    ),
+                    SizedBox(height: 10),
+                    customTitle1(
+                      text: 'Apply Loan',
+                      color: Theme.of(context)
+                          // ignore: deprecated_member_use
+                          .textSelectionHandleColor,
+                      textAlign: TextAlign.start,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ],
+                ),
+              )
+            ],
           ),
         ),
-        if (_onlineBankingEnabled)
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      circleIconButton(
-                        icon: Icons.import_export,
-                        backgroundColor:
-                            primaryColor /* rimaryColor.withOpacity(.3) */,
-                        color: Colors.white,
-                        iconSize: 24.0,
-                        padding: 0.0,
-                        onPressed: () {},
-                      ),
-                      SizedBox(height: 10),
-                      customTitle1(
-                        text: 'Make Payment',
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                        textAlign: TextAlign.start,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(width: 100),
-                Expanded(
-                  child: Column(
-                    children: [
-                      circleIconButton(
-                        icon: Icons.credit_card,
-                        backgroundColor:
-                            primaryColor /* rimaryColor.withOpacity(.3) */,
-                        color: Colors.white,
-                        iconSize: 24.0,
-                        padding: 0.0,
-                        onPressed:
-                            () /*  =>
-                              _showActions(context, incomeCategory) */
-                            {},
-                      ),
-                      SizedBox(height: 10),
-                      customTitle1(
-                        text: 'Apply Loan',
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                        textAlign: TextAlign.start,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
         SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Text(
-            "Transactional Summary",
-            style: TextStyle(
-              color: Colors.blueGrey[400],
-              fontFamily: 'SegoeUI',
-              fontSize: 16.0,
-              fontWeight: FontWeight.w800,
-            ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Transactional Summary",
+                style: TextStyle(
+                  color: Colors.blueGrey[400],
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Feather.more_horizontal,
+                    color: Colors.blueGrey,
+                  ),
+                  onPressed: () {})
+            ],
           ),
         ),
         SizedBox(height: 20),
@@ -539,7 +567,7 @@ Widget newHomePlaceHolder({BuildContext context}) {
               children: <Widget>[
                 CarouselSlider(
                   options: CarouselOptions(
-                    height: 175.0,
+                    height: 200.0,
                     autoPlay: true,
                     autoPlayInterval: Duration(seconds: 10),
                     autoPlayAnimationDuration: Duration(milliseconds: 1000),
@@ -705,13 +733,13 @@ Widget newHomePlaceHolder({BuildContext context}) {
                     height: 120.0,
                   ),
                   customTitleWithWrap(
-                      text: "Nothing to display!",
+                      text: "Fetching Data!",
                       fontWeight: FontWeight.w700,
                       fontSize: 14.0,
                       textAlign: TextAlign.center,
                       color: Colors.blueGrey[400]),
                   customTitleWithWrap(
-                      text: "Sorry, you haven't made any transactions",
+                      text: "Kindly Wait, Fetching Data",
                       //fontWeight: FontWeight.w500,
                       fontSize: 12.0,
                       textAlign: TextAlign.center,
@@ -737,146 +765,174 @@ class Contrubution extends StatelessWidget {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     return Container(
-      color: Theme.of(context).backgroundColor,
-      child: Column(
-        children: [
-          Row(
+      child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16.0),
+          decoration: flatGradient(context),
+          child: Column(
             children: [
-              chart.PieChart(
-                dataMap: dataMap,
-                animationDuration: Duration(milliseconds: 800),
-                chartLegendSpacing: 32,
-                chartRadius: MediaQuery.of(context).size.width / 3.2,
-                initialAngleInDegree: 0,
-                ringStrokeWidth: 32,
-                legendOptions: chart.LegendOptions(
-                  showLegendsInRow: false,
-                  legendPosition: chart.LegendPosition.right,
-                  showLegends: false,
-                  legendTextStyle: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      // ignore: deprecated_member_use
-                      color: Theme.of(context).textSelectionHandleColor),
-                ),
-                chartValuesOptions: chart.ChartValuesOptions(
-                  showChartValueBackground: false,
-                  showChartValues: true,
-                  showChartValuesInPercentage: true,
-                  showChartValuesOutside: false,
-                  decimalPlaces: 1,
-                ),
+              SvgPicture.asset(
+                customIcons['no-data'],
+                semanticsLabel: 'icon',
+                height: 120.0,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "My Total Contribution",
-                    style: TextStyle(
-                      color: Colors.blueGrey[400],
-                      fontFamily: 'SegoeUI',
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  customTitle1(
-                    text: _currentGroup.groupCurrency + " " + " 0",
-                    color: Theme.of(context)
-                        // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    textAlign: TextAlign.start,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Group Total Contribution",
-                    style: TextStyle(
-                      color: Colors.blueGrey[400],
-                      fontFamily: 'SegoeUI',
-                      fontSize: 14.0,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  customTitle1(
-                    color: Theme.of(context)
-                        // ignore: deprecated_member_use
-                        .textSelectionHandleColor,
-                    text: _currentGroup.groupCurrency + " " + "0 ",
-                    textAlign: TextAlign.start,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ],
-              ),
+              customTitleWithWrap(
+                  text: "Fetching Data!",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400]),
+              customTitleWithWrap(
+                  text: "Kindy Wait, Fetching Data",
+                  //fontWeight: FontWeight.w500,
+                  fontSize: 12.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400])
             ],
-          ),
-          // DottedLine(
-          //   direction: Axis.horizontal,
-          //   lineLength: double.infinity,
-          //   lineThickness: 0.5,
-          //   dashLength: 2.0,
-          //   dashColor: Colors.black45,
-          //   dashRadius: 0.0,
-          //   dashGapLength: 2.0,
-          //   dashGapColor: Colors.transparent,
-          //   dashGapRadius: 0.0,
-          // ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     // Column(
-          //     //   crossAxisAlignment: CrossAxisAlignment.start,
-          //     //   children: [
-          //     //     Text(
-          //     //       "Next Conribution",
-          //     //       style: TextStyle(
-          //     //         color: Colors.blueGrey[400],
-          //     //         fontFamily: 'SegoeUI',
-          //     //         fontSize: 14.0,
-          //     //         fontWeight: FontWeight.w800,
-          //     //       ),
-          //     //     ),
-          //     //     Row(
-          //     //       children: [
-          //     //         customTitle1(
-          //     //           text: "KES 100,000",
-          //     //           textAlign: TextAlign.start,
-          //     //           fontSize: 14,
-          //     //           fontWeight: FontWeight.w400,
-          //     //           color: Theme.of(context)
-          //     //               // ignore: deprecated_member_use
-          //     //               .textSelectionHandleColor,
-          //     //         ),
-          //     //         SizedBox(
-          //     //           width: 20,
-          //     //         ),
-          //     //         customTitle1(
-          //     //           text: contributionsSummary.dueDate,
-          //     //           textAlign: TextAlign.start,
-          //     //           fontSize: 14,
-          //     //           fontWeight: FontWeight.w400,
-          //     //           color: Theme.of(context)
-          //     //               // ignore: deprecated_member_use
-          //     //               .textSelectionHandleColor,
-          //     //         ),
-          //     //       ],
-          //     //     )
-          //     //   ],
-          //     // ),
-          //     buttonWithArrow(
-          //         text: "Pay Now",
-          //         size: 14.0,
-          //         spacing: 2.0,
-          //         color: Colors.white,
-          //         action: () => _openPayNowTray(context))
-          //   ],
-          // ),
-        ],
-      ),
+          )),
     );
+
+    //  Container(
+    //   color: Theme.of(context).backgroundColor,
+    //   child: Column(
+    //     children: [
+    //       Row(
+    //         children: [
+    //           chart.PieChart(
+    //             dataMap: dataMap,
+    //             animationDuration: Duration(milliseconds: 800),
+    //             chartLegendSpacing: 32,
+    //             chartRadius: MediaQuery.of(context).size.width / 3.2,
+    //             initialAngleInDegree: 0,
+    //             ringStrokeWidth: 32,
+    //             legendOptions: chart.LegendOptions(
+    //               showLegendsInRow: false,
+    //               legendPosition: chart.LegendPosition.right,
+    //               showLegends: false,
+    //               legendTextStyle: TextStyle(
+    //                   fontWeight: FontWeight.w500,
+    //                   // ignore: deprecated_member_use
+    //                   color: Theme.of(context).textSelectionHandleColor),
+    //             ),
+    //             chartValuesOptions: chart.ChartValuesOptions(
+    //               showChartValueBackground: false,
+    //               showChartValues: true,
+    //               showChartValuesInPercentage: true,
+    //               showChartValuesOutside: false,
+    //               decimalPlaces: 1,
+    //             ),
+    //           ),
+    //           Column(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             crossAxisAlignment: CrossAxisAlignment.start,
+    //             children: <Widget>[
+    //               Text(
+    //                 "My Total Contribution",
+    //                 style: TextStyle(
+    //                   color: Colors.blueGrey[400],
+    //                   fontFamily: 'SegoeUI',
+    //                   fontSize: 14.0,
+    //                   fontWeight: FontWeight.w800,
+    //                 ),
+    //               ),
+    //               customTitle1(
+    //                 text: _currentGroup.groupCurrency + " " + " 0",
+    //                 color: Theme.of(context)
+    //                     // ignore: deprecated_member_use
+    //                     .textSelectionHandleColor,
+    //                 textAlign: TextAlign.start,
+    //                 fontSize: 14,
+    //                 fontWeight: FontWeight.w400,
+    //               ),
+    //               SizedBox(
+    //                 height: 20,
+    //               ),
+    //               Text(
+    //                 "Group Total Contribution",
+    //                 style: TextStyle(
+    //                   color: Colors.blueGrey[400],
+    //                   fontFamily: 'SegoeUI',
+    //                   fontSize: 14.0,
+    //                   fontWeight: FontWeight.w800,
+    //                 ),
+    //               ),
+    //               customTitle1(
+    //                 color: Theme.of(context)
+    //                     // ignore: deprecated_member_use
+    //                     .textSelectionHandleColor,
+    //                 text: _currentGroup.groupCurrency + " " + "0 ",
+    //                 textAlign: TextAlign.start,
+    //                 fontSize: 14,
+    //                 fontWeight: FontWeight.w400,
+    //               ),
+    //             ],
+    //           ),
+    //         ],
+    //       ),
+    //       // DottedLine(
+    //       //   direction: Axis.horizontal,
+    //       //   lineLength: double.infinity,
+    //       //   lineThickness: 0.5,
+    //       //   dashLength: 2.0,
+    //       //   dashColor: Colors.black45,
+    //       //   dashRadius: 0.0,
+    //       //   dashGapLength: 2.0,
+    //       //   dashGapColor: Colors.transparent,
+    //       //   dashGapRadius: 0.0,
+    //       // ),
+    //       // Row(
+    //       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //       //   children: [
+    //       //     // Column(
+    //       //     //   crossAxisAlignment: CrossAxisAlignment.start,
+    //       //     //   children: [
+    //       //     //     Text(
+    //       //     //       "Next Conribution",
+    //       //     //       style: TextStyle(
+    //       //     //         color: Colors.blueGrey[400],
+    //       //     //         fontFamily: 'SegoeUI',
+    //       //     //         fontSize: 14.0,
+    //       //     //         fontWeight: FontWeight.w800,
+    //       //     //       ),
+    //       //     //     ),
+    //       //     //     Row(
+    //       //     //       children: [
+    //       //     //         customTitle1(
+    //       //     //           text: "KES 100,000",
+    //       //     //           textAlign: TextAlign.start,
+    //       //     //           fontSize: 14,
+    //       //     //           fontWeight: FontWeight.w400,
+    //       //     //           color: Theme.of(context)
+    //       //     //               // ignore: deprecated_member_use
+    //       //     //               .textSelectionHandleColor,
+    //       //     //         ),
+    //       //     //         SizedBox(
+    //       //     //           width: 20,
+    //       //     //         ),
+    //       //     //         customTitle1(
+    //       //     //           text: contributionsSummary.dueDate,
+    //       //     //           textAlign: TextAlign.start,
+    //       //     //           fontSize: 14,
+    //       //     //           fontWeight: FontWeight.w400,
+    //       //     //           color: Theme.of(context)
+    //       //     //               // ignore: deprecated_member_use
+    //       //     //               .textSelectionHandleColor,
+    //       //     //         ),
+    //       //     //       ],
+    //       //     //     )
+    //       //     //   ],
+    //       //     // ),
+    //       //     buttonWithArrow(
+    //       //         text: "Pay Now",
+    //       //         size: 14.0,
+    //       //         spacing: 2.0,
+    //       //         color: Colors.white,
+    //       //         action: () => _openPayNowTray(context))
+    //       //   ],
+    //       // ),
+    //     ],
+    //   ),
+    // );
   }
 }
 
