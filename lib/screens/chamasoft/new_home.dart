@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:chamasoft/config.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -14,6 +15,7 @@ import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/recent_transaction_reciept.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
+import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/total_account_balance.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
@@ -623,195 +625,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Make Payments",
-                              style: TextStyle(
-                                color: Colors.blueGrey[400],
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Feather.more_horizontal,
-                                  color: Colors.blueGrey,
-                                ),
-                                onPressed: () {})
-                          ],
-                        ),
-
-                        /* child: Text(
-                          "Make Payments",
-                          style: TextStyle(
-                            color: Colors.blueGrey[400],
-                            fontFamily: 'SegoeUI',
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ), */
-                      ),
-                      if (_onlineBankingEnabled)
-                        Padding(
-                          padding: const EdgeInsets.all(24.0),
-                          child: Row(
-                            // mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              /*  Expanded(
-                                child: */
-                              Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  circleIconButton(
-                                    icon: Icons.import_export,
-                                    backgroundColor:
-                                        primaryColor /* rimaryColor.withOpacity(.3) */,
-                                    color: Colors.white,
-                                    iconSize: 24.0,
-                                    padding: 0.0,
-                                    onPressed: () => _openPayNowTray(context),
-                                  ),
-                                  SizedBox(height: 10),
-                                  customTitle1(
-                                    text: 'Make Payment',
-                                    color: Theme.of(context)
-                                        // ignore: deprecated_member_use
-                                        .textSelectionHandleColor,
-                                    textAlign: TextAlign.start,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ],
-                              ),
-                              /*  ), */
-                              // SizedBox(width: 100),
-                              // Expanded(
-                              //   child: Column(
-                              //     children: [
-                              //       circleIconButton(
-                              //         icon: Icons.credit_card,
-                              //         backgroundColor:
-                              //             primaryColor /* rimaryColor.withOpacity(.3) */,
-                              //         color: Colors.white,
-                              //         iconSize: 24.0,
-                              //         padding: 0.0,
-                              //         onPressed:
-                              //             () /*  =>
-                              //               _showActions(context, incomeCategory) */
-                              //             {},
-                              //       ),
-                              //       SizedBox(height: 10),
-                              //       customTitle1(
-                              //         text: 'Apply Loan',
-                              //         color: Theme.of(context)
-                              //             // ignore: deprecated_member_use
-                              //             .textSelectionHandleColor,
-                              //         textAlign: TextAlign.start,
-                              //         fontSize: 16,
-                              //         fontWeight: FontWeight.w600,
-                              //       ),
-                              //     ],
-                              //   ),
-                              // )
-                            ],
-                          ),
-                        ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text(
-                              "Transactional Summary",
-                              style: TextStyle(
-                                color: Colors.blueGrey[400],
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                            IconButton(
-                                icon: Icon(
-                                  Feather.more_horizontal,
-                                  color: Colors.blueGrey,
-                                ),
-                                onPressed: () {})
-                          ],
-                        ),
-                        /* child: Text(
-                          "Transactional Summary",
-                          style: TextStyle(
-                            color: Colors.blueGrey[400],
-                            fontFamily: 'SegoeUI',
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ), */
-                      ),
-                      SizedBox(height: 20),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                        child: Container(
-                          padding: EdgeInsets.all(8.0),
-                          decoration: cardDecoration(
-                            gradient: plainCardGradient(context),
-                            context: context,
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            children: <Widget>[
-                              CarouselSlider(
-                                options: CarouselOptions(
-                                  height: 200.0,
-                                  autoPlay: true,
-                                  autoPlayInterval: Duration(seconds: 10),
-                                  autoPlayAnimationDuration:
-                                      Duration(milliseconds: 1000),
-                                  autoPlayCurve: Curves.easeInCirc,
-                                  pauseAutoPlayOnTouch: true,
-                                  aspectRatio: 2.0,
-                                  initialPage: 0,
-                                  viewportFraction: 1.0,
-                                  onPageChanged: (index, reason) {
-                                    setState(() {
-                                      _currentIndex = index;
-                                    });
-                                  },
-                                ),
-                                items: cardList.map((card) {
-                                  return Builder(
-                                      builder: (BuildContext context) {
-                                    return Container(
-                                      // height:
-                                      //     MediaQuery.of(context).size.height *
-                                      //         0.70,
-                                      width: MediaQuery.of(context).size.width,
-                                      // child: Card(
-                                      child: card,
-                                      //),
-                                    );
-                                  });
-                                }).toList(),
-                              ),
-
-                              SizedBox(
-                                height: 5,
-                              ),
-                              customSlider(
-                                  context: context,
-                                  count: cardList,
-                                  index: _currentIndex)
-                              // animationSlider(),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
                               "Account Balances",
@@ -819,7 +632,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 color: Colors.blueGrey[400],
                                 fontFamily: 'SegoeUI',
                                 fontSize: 16.0,
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                             plainButtonWithArrow(
@@ -835,7 +648,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 5),
                       Container(
                         height: 180.0,
                         child: ListView(
@@ -851,7 +664,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         TotalAccountBalanceReciept(
-                                            totalBalance: dashboardData.totalBankBalances)),
+                                            totalBalance: dashboardData
+                                                .totalBankBalances)),
                               ),
                               child: Container(
                                 width: 160.0,
@@ -916,7 +730,242 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 10),
+                      SizedBox(height: 0),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text(
+                              "Contibution Summary",
+                              style: TextStyle(
+                                color: Colors.blueGrey[400],
+                                fontFamily: 'SegoeUI',
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            plainButtonWithArrow(
+                                text: "View All",
+                                size: 16.0,
+                                spacing: 2.0,
+                                color: Colors.blue,
+                                action: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              TransactionStatement()),
+                                    ))
+                          ],
+                        ),
+                        /* child: Text(
+                          "Transactional Summary",
+                          style: TextStyle(
+                            color: Colors.blueGrey[400],
+                            fontFamily: 'SegoeUI',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ), */
+                      ),
+                      SizedBox(height: 5),
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                        child: Container(
+                          padding: EdgeInsets.all(8.0),
+                          decoration: cardDecoration(
+                            gradient: plainCardGradient(context),
+                            context: context,
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Center(
+                                child: CarouselSlider(
+                                  options: CarouselOptions(
+                                    height: 190.0,
+                                    autoPlay: true,
+                                    autoPlayInterval: Duration(seconds: 10),
+                                    autoPlayAnimationDuration:
+                                        Duration(milliseconds: 1000),
+                                    autoPlayCurve: Curves.easeInCirc,
+                                    pauseAutoPlayOnTouch: true,
+                                    aspectRatio: 2.0,
+                                    initialPage: 0,
+                                    viewportFraction: 1.0,
+                                    onPageChanged: (index, reason) {
+                                      setState(() {
+                                        _currentIndex = index;
+                                      });
+                                    },
+                                  ),
+                                  items: cardList.map((card) {
+                                    return Builder(
+                                        builder: (BuildContext context) {
+                                      return Container(
+                                        // height:
+                                        //     MediaQuery.of(context).size.height *
+                                        //         0.70,
+                                        width:
+                                            MediaQuery.of(context).size.width,
+                                        // child: Card(
+                                        child: card,
+                                        //),
+                                      );
+                                    });
+                                  }).toList(),
+                                ),
+                              ),
+
+                              SizedBox(
+                                height: 5,
+                              ),
+                              customSlider(
+                                  context: context,
+                                  count: cardList,
+                                  index: _currentIndex)
+                              // animationSlider(),
+                            ],
+                          ),
+                        ),
+                      ),
+                      if (_onlineBankingEnabled)
+                        Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Text(
+                                "Make Payments",
+                                style: TextStyle(
+                                  color: Colors.blueGrey[400],
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              IconButton(
+                                  icon: Icon(
+                                    Feather.more_horizontal,
+                                    color: Colors.blueGrey,
+                                  ),
+                                  onPressed: () {})
+                            ],
+                          ),
+
+                          /* child: Text(
+                          "Make Payments",
+                          style: TextStyle(
+                            color: Colors.blueGrey[400],
+                            fontFamily: 'SegoeUI',
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ), */
+                        ),
+                      if (_onlineBankingEnabled)
+                        Padding(
+                          padding: const EdgeInsets.all(24.0),
+                          child: Row(
+                            // mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.0,
+                                  ),
+                                  child: paymentActionButton(
+                                    color: primaryColor,
+                                    textColor: primaryColor,
+                                    icon: FontAwesome.chevron_right,
+                                    isFlat: false,
+                                    text: "PAY NOW",
+                                    iconSize: 12.0,
+                                    action: () => _openPayNowTray(context),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 16.0,
+                                  ),
+                                  child: paymentActionButton(
+                                      color: primaryColor,
+                                      textColor: Colors.white,
+                                      icon: FontAwesome.chevron_right,
+                                      isFlat: true,
+                                      text: "APPLY LOAN",
+                                      iconSize: 12.0,
+                                      action:
+                                          () /* => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            /* ApplyLoan */(){},
+                                      ),
+                                    ), */
+                                          {}),
+                                ),
+                              ),
+                              // /*  Expanded(
+                              //   child: */
+                              // Column(
+                              //   mainAxisAlignment: MainAxisAlignment.start,
+                              //   children: [
+                              //     circleIconButton(
+                              //       icon: Icons.import_export,
+                              //       backgroundColor:
+                              //           primaryColor /* rimaryColor.withOpacity(.3) */,
+                              //       color: Colors.white,
+                              //       iconSize: 24.0,
+                              //       padding: 0.0,
+                              //       onPressed: () => _openPayNowTray(context),
+                              //     ),
+                              //     SizedBox(height: 10),
+                              //     customTitle1(
+                              //       text: 'Make Payment',
+                              //       color: Theme.of(context)
+                              //           // ignore: deprecated_member_use
+                              //           .textSelectionHandleColor,
+                              //       textAlign: TextAlign.start,
+                              //       fontSize: 16,
+                              //       fontWeight: FontWeight.w600,
+                              //     ),
+                              //   ],
+                              // ),
+                              /*  ), */
+                              // SizedBox(width: 100),
+                              // Expanded(
+                              //   child: Column(
+                              //     children: [
+                              //       circleIconButton(
+                              //         icon: Icons.credit_card,
+                              //         backgroundColor:
+                              //             primaryColor /* rimaryColor.withOpacity(.3) */,
+                              //         color: Colors.white,
+                              //         iconSize: 24.0,
+                              //         padding: 0.0,
+                              //         onPressed:
+                              //             () /*  =>
+                              //               _showActions(context, incomeCategory) */
+                              //             {},
+                              //       ),
+                              //       SizedBox(height: 10),
+                              //       customTitle1(
+                              //         text: 'Apply Loan',
+                              //         color: Theme.of(context)
+                              //             // ignore: deprecated_member_use
+                              //             .textSelectionHandleColor,
+                              //         textAlign: TextAlign.start,
+                              //         fontSize: 16,
+                              //         fontWeight: FontWeight.w600,
+                              //       ),
+                              //     ],
+                              //   ),
+                              // )
+                            ],
+                          ),
+                        ),
+                      SizedBox(height: 5),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
                         child: Row(
@@ -928,7 +977,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 color: Colors.blueGrey[400],
                                 fontFamily: 'SegoeUI',
                                 fontSize: 16.0,
-                                fontWeight: FontWeight.w800,
+                                fontWeight: FontWeight.w600,
                               ),
                             ),
                             plainButtonWithArrow(
@@ -944,7 +993,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                           ],
                         ),
                       ),
-                      SizedBox(height: 20),
+                      SizedBox(height: 5),
                       recentTransactionSummary.length > 0
                           ? Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
@@ -1066,6 +1115,25 @@ class Contrubutions extends StatelessWidget {
       "Group Total Contribution": dashboardData.groupContributionAmount.abs(),
     };
 
+    final List<Color> color = <Color>[];
+    color.addAll(
+      [Color(0xff8f2c21), Color(0xff561913)],
+    );
+
+    final List<double> stops = <double>[];
+    stops.add(0.0);
+    stops.add(0.5);
+    stops.add(1.0);
+
+    final List<Color> colorList = <Color>[];
+    colorList.addAll(color);
+
+    final gradientList = <List<Color>>[
+      // [Colors.red[200], Colors.red[200]],
+      [primaryColor.withOpacity(.3), primaryColor.withOpacity(.3)],
+      [Color(0xFF00ABF2), Color(/* 0xFF008CC5 */ 0xFF00ABF2)],
+    ];
+
     return dashboardData.groupContributionAmount > 0
         ? Container(
             color: Theme.of(context).backgroundColor,
@@ -1080,7 +1148,9 @@ class Contrubutions extends StatelessWidget {
                       chartRadius: MediaQuery.of(context).size.width / 3.2,
                       initialAngleInDegree: 0,
                       ringStrokeWidth: 32,
-                      colorList: [Colors.red[300], primaryColor],
+                      // colorList: [Colors.red[300], primaryColor],
+                      gradientList: gradientList,
+                      // gradientList: [colorMain, color],
                       // centerTextStyle:
                       //     TextStyle(fontFamily: 'SegoeUI', fontSize: 36.0),
                       legendOptions: chart.LegendOptions(
@@ -1097,13 +1167,17 @@ class Contrubutions extends StatelessWidget {
                         showChartValues: true,
                         showChartValuesInPercentage: true,
                         showChartValuesOutside: false,
-                        decimalPlaces: 1,
+                        decimalPlaces: 0,
                         chartValueStyle: TextStyle(
-                            fontFamily: 'SegoeUI',
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500,
-                            // ignore: deprecated_member_use
-                            color: Colors.black),
+                          fontFamily: 'SegoeUI',
+                          fontSize: 14.0,
+                          color: Theme.of(context)
+                              // ignore: deprecated_member_use
+                              .textSelectionColor,
+                          fontWeight: FontWeight.w500,
+                          // ignore: deprecated_member_use
+                          /* color: Colors.black */
+                        ),
                       ),
                     ),
                     Column(
@@ -1126,7 +1200,8 @@ class Contrubutions extends StatelessWidget {
                                                 .memberContributionAmount >
                                             0
                                         ?  */
-                                        Colors.red[300]
+                                        // Colors.red[300]
+                                        primaryColor.withOpacity(.3)
                                     /* : Colors
                                             .white */ /* rimaryColor.withOpacity(.3) */,
                                   ),
@@ -1378,6 +1453,12 @@ class Fines extends StatelessWidget {
           : dashboardData.memberFineArrears.abs()),
       "Group Fines": dashboardData.groupFinePaymentAmount.abs(),
     };
+    final gradientList = <List<Color>>[
+      // [Colors.red[200], Colors.red[200]],
+      [primaryColor.withOpacity(.3), primaryColor.withOpacity(.3)],
+
+      [Color(0xFF00ABF2), Color(0xFF00ABF2)],
+    ];
     return dashboardData.groupFinePaymentAmount > 0
         ? Container(
             color: Theme.of(context).backgroundColor,
@@ -1391,7 +1472,8 @@ class Fines extends StatelessWidget {
                     chartRadius: MediaQuery.of(context).size.width / 3.2,
                     initialAngleInDegree: 0,
                     ringStrokeWidth: 32,
-                    colorList: [Colors.red[300], primaryColor],
+                    // colorList: [Colors.red[300], primaryColor],
+                    gradientList: gradientList,
                     legendOptions: chart.LegendOptions(
                       showLegendsInRow: false,
                       legendPosition: chart.LegendPosition.right,
@@ -1406,13 +1488,15 @@ class Fines extends StatelessWidget {
                         showChartValues: true,
                         showChartValuesInPercentage: true,
                         showChartValuesOutside: false,
-                        decimalPlaces: 1,
+                        decimalPlaces: 0,
                         chartValueStyle: TextStyle(
                             fontFamily: 'SegoeUI',
-                            fontSize: 16.0,
+                            fontSize: 14.0,
                             fontWeight: FontWeight.w500,
                             // ignore: deprecated_member_use
-                            color: Colors.black)),
+                            color: Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionColor)),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1434,8 +1518,10 @@ class Fines extends StatelessWidget {
                                         .abs() >
                                     0
                                 ? */
-                                      Colors.red[300]
-                                  /* : Colors
+                                      // Colors.red[300]
+
+                                      primaryColor.withOpacity(
+                                          .3) /* : Colors
                                     .white */ /* rimaryColor.withOpacity(.3) */,
                                 ),
                                 SizedBox(
@@ -1496,13 +1582,7 @@ class Fines extends StatelessWidget {
                           ? Row(
                               children: [
                                 circleButton(
-                                  backgroundColor: /* 
-                                      dashboardData.groupFinePaymentAmount > 0
-                                          ?  */
-                                      primaryColor
-                                  /* : Colors.white */
-                                  // backgroundColor:
-                                  /* rimaryColor.withOpacity(.3) */,
+                                  backgroundColor: primaryColor,
                                 ),
                                 SizedBox(
                                   width: 10,
@@ -1645,6 +1725,12 @@ class Balances extends StatelessWidget {
       "Your Loan Balances": (dashboardData.memberTotalLoanBalance.abs()),
       "Group Loan Balances": dashboardData.groupPendingLoanBalance.abs(),
     };
+    final gradientList = <List<Color>>[
+      // [Colors.red[200], Colors.red[200]],
+      [primaryColor.withOpacity(.3), primaryColor.withOpacity(.3)],
+
+      [Color(0xFF00ABF2), Color(0xFF00ABF2)],
+    ];
 
     return dashboardData.memberTotalLoanBalance > 0 &&
             dashboardData.groupPendingLoanBalance > 0
@@ -1660,7 +1746,8 @@ class Balances extends StatelessWidget {
                     chartRadius: MediaQuery.of(context).size.width / 3.2,
                     initialAngleInDegree: 0,
                     ringStrokeWidth: 32,
-                    colorList: [Colors.red[300], primaryColor],
+                    // colorList: [Colors.red[300], primaryColor],
+                    gradientList: gradientList,
                     legendOptions: chart.LegendOptions(
                       showLegendsInRow: false,
                       legendPosition: chart.LegendPosition.right,
@@ -1675,13 +1762,15 @@ class Balances extends StatelessWidget {
                         showChartValues: true,
                         showChartValuesInPercentage: true,
                         showChartValuesOutside: false,
-                        decimalPlaces: 1,
+                        decimalPlaces: 0,
                         chartValueStyle: TextStyle(
                             fontFamily: 'SegoeUI',
-                            fontSize: 16.0,
+                            fontSize: 14.0,
                             fontWeight: FontWeight.w500,
                             // ignore: deprecated_member_use
-                            color: Colors.black)),
+                            color: Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionColor)),
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -1712,7 +1801,7 @@ class Balances extends StatelessWidget {
                                         .memberTotalLoanBalance >
                                     0
                                 ? */
-                                      Colors.red[300]
+                                      primaryColor.withOpacity(.3)
                                   /*  : Colors
                                     .white */ /* rimaryColor.withOpacity(.3) */,
                                 ),

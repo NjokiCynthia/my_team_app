@@ -440,178 +440,6 @@ Widget newHomePlaceHolder({BuildContext context}) {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Transactional Summary",
-                style: TextStyle(
-                  color: Colors.blueGrey[400],
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              IconButton(
-                  icon: Icon(
-                    Feather.more_horizontal,
-                    color: Colors.blueGrey,
-                  ),
-                  onPressed: () {})
-            ],
-          ),
-          /* child: Text(
-            "Make Payments",
-            style: TextStyle(
-              color: Colors.blueGrey[400],
-              fontFamily: 'SegoeUI',
-              fontSize: 16.0,
-              fontWeight: FontWeight.w800,
-            ),
-          ), */
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                child: Column(
-                  children: [
-                    circleIconButton(
-                      icon: Icons.import_export,
-                      backgroundColor:
-                          primaryColor /* rimaryColor.withOpacity(.3) */,
-                      color: Colors.white,
-                      iconSize: 24.0,
-                      padding: 0.0,
-                      onPressed: () {},
-                    ),
-                    SizedBox(height: 10),
-                    customTitle1(
-                      text: 'Make Payment',
-                      color: Theme.of(context)
-                          // ignore: deprecated_member_use
-                          .textSelectionHandleColor,
-                      textAlign: TextAlign.start,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 100),
-              Expanded(
-                child: Column(
-                  children: [
-                    circleIconButton(
-                      icon: Icons.credit_card,
-                      backgroundColor:
-                          primaryColor /* rimaryColor.withOpacity(.3) */,
-                      color: Colors.white,
-                      iconSize: 24.0,
-                      padding: 0.0,
-                      onPressed:
-                          () /*  =>
-                              _showActions(context, incomeCategory) */
-                          {},
-                    ),
-                    SizedBox(height: 10),
-                    customTitle1(
-                      text: 'Apply Loan',
-                      color: Theme.of(context)
-                          // ignore: deprecated_member_use
-                          .textSelectionHandleColor,
-                      textAlign: TextAlign.start,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                "Transactional Summary",
-                style: TextStyle(
-                  color: Colors.blueGrey[400],
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              IconButton(
-                  icon: Icon(
-                    Feather.more_horizontal,
-                    color: Colors.blueGrey,
-                  ),
-                  onPressed: () {})
-            ],
-          ),
-        ),
-        SizedBox(height: 20),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Container(
-            padding: EdgeInsets.all(8.0),
-            decoration: cardDecoration(
-              gradient: plainCardGradient(context),
-              context: context,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                CarouselSlider(
-                  options: CarouselOptions(
-                    height: 200.0,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 10),
-                    autoPlayAnimationDuration: Duration(milliseconds: 1000),
-                    autoPlayCurve: Curves.easeInCirc,
-                    pauseAutoPlayOnTouch: true,
-                    aspectRatio: 2.0,
-                    initialPage: 0,
-                    viewportFraction: 1.0,
-                    onPageChanged: (index, reason) {
-                      // setState(() {
-                      //   _currentIndex = index;
-                      // });
-                    },
-                  ),
-                  items: cardList.map((card) {
-                    return Builder(builder: (BuildContext context) {
-                      return Container(
-                        // height:
-                        //     MediaQuery.of(context).size.height *
-                        //         0.70,
-                        width: MediaQuery.of(context).size.width,
-                        // child: Card(
-                        child: card,
-                        //),
-                      );
-                    });
-                  }).toList(),
-                ),
-
-                SizedBox(
-                  height: 5,
-                ),
-                customSlider(
-                    context: context, count: cardList, index: _currentIndex)
-                // animationSlider(),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(height: 10),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
                 "Account Balances",
@@ -694,6 +522,218 @@ Widget newHomePlaceHolder({BuildContext context}) {
             ],
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Make Payement",
+                style: TextStyle(
+                  color: Colors.blueGrey[400],
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Feather.more_horizontal,
+                    color: Colors.blueGrey,
+                  ),
+                  onPressed: () {})
+            ],
+          ),
+          /* child: Text(
+            "Make Payments",
+            style: TextStyle(
+              color: Colors.blueGrey[400],
+              fontFamily: 'SegoeUI',
+              fontSize: 16.0,
+              fontWeight: FontWeight.w800,
+            ),
+          ), */
+        ),
+        Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Row(
+            // mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                  ),
+                  child: paymentActionButton(
+                    color: primaryColor,
+                    textColor: primaryColor,
+                    icon: FontAwesome.chevron_right,
+                    isFlat: false,
+                    text: "PAY NOW",
+                    iconSize: 12.0,
+                    action: () {},
+                  ),
+                ),
+              ),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.0,
+                  ),
+                  child: paymentActionButton(
+                      color: primaryColor,
+                      textColor: Colors.white,
+                      icon: FontAwesome.chevron_right,
+                      isFlat: true,
+                      text: "APPLY LOAN",
+                      iconSize: 12.0,
+                      action:
+                          () /* => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (BuildContext context) =>
+                                            /* ApplyLoan */(){},
+                                      ),
+                                    ), */
+                          {}),
+                ),
+              ),
+              // /*  Expanded(
+              //   child: */
+              // Column(
+              //   mainAxisAlignment: MainAxisAlignment.start,
+              //   children: [
+              //     circleIconButton(
+              //       icon: Icons.import_export,
+              //       backgroundColor:
+              //           primaryColor /* rimaryColor.withOpacity(.3) */,
+              //       color: Colors.white,
+              //       iconSize: 24.0,
+              //       padding: 0.0,
+              //       onPressed: () => _openPayNowTray(context),
+              //     ),
+              //     SizedBox(height: 10),
+              //     customTitle1(
+              //       text: 'Make Payment',
+              //       color: Theme.of(context)
+              //           // ignore: deprecated_member_use
+              //           .textSelectionHandleColor,
+              //       textAlign: TextAlign.start,
+              //       fontSize: 16,
+              //       fontWeight: FontWeight.w600,
+              //     ),
+              //   ],
+              // ),
+              /*  ), */
+              // SizedBox(width: 100),
+              // Expanded(
+              //   child: Column(
+              //     children: [
+              //       circleIconButton(
+              //         icon: Icons.credit_card,
+              //         backgroundColor:
+              //             primaryColor /* rimaryColor.withOpacity(.3) */,
+              //         color: Colors.white,
+              //         iconSize: 24.0,
+              //         padding: 0.0,
+              //         onPressed:
+              //             () /*  =>
+              //               _showActions(context, incomeCategory) */
+              //             {},
+              //       ),
+              //       SizedBox(height: 10),
+              //       customTitle1(
+              //         text: 'Apply Loan',
+              //         color: Theme.of(context)
+              //             // ignore: deprecated_member_use
+              //             .textSelectionHandleColor,
+              //         textAlign: TextAlign.start,
+              //         fontSize: 16,
+              //         fontWeight: FontWeight.w600,
+              //       ),
+              //     ],
+              //   ),
+              // )
+            ],
+          ),
+        ),
+        SizedBox(height: 10),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text(
+                "Transactional Summary",
+                style: TextStyle(
+                  color: Colors.blueGrey[400],
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Feather.more_horizontal,
+                    color: Colors.blueGrey,
+                  ),
+                  onPressed: () {})
+            ],
+          ),
+        ),
+        SizedBox(height: 20),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+          child: Container(
+            padding: EdgeInsets.all(8.0),
+            decoration: cardDecoration(
+              gradient: plainCardGradient(context),
+              context: context,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                CarouselSlider(
+                  options: CarouselOptions(
+                    height: 200.0,
+                    autoPlay: true,
+                    autoPlayInterval: Duration(seconds: 10),
+                    autoPlayAnimationDuration: Duration(milliseconds: 1000),
+                    autoPlayCurve: Curves.easeInCirc,
+                    pauseAutoPlayOnTouch: true,
+                    aspectRatio: 2.0,
+                    initialPage: 0,
+                    viewportFraction: 1.0,
+                    onPageChanged: (index, reason) {
+                      // setState(() {
+                      //   _currentIndex = index;
+                      // });
+                    },
+                  ),
+                  items: cardList.map((card) {
+                    return Builder(builder: (BuildContext context) {
+                      return Container(
+                        // height:
+                        //     MediaQuery.of(context).size.height *
+                        //         0.70,
+                        width: MediaQuery.of(context).size.width,
+                        // child: Card(
+                        child: card,
+                        //),
+                      );
+                    });
+                  }).toList(),
+                ),
+
+                SizedBox(
+                  height: 5,
+                ),
+                customSlider(
+                    context: context, count: cardList, index: _currentIndex)
+                // animationSlider(),
+              ],
+            ),
+          ),
+        ),
+        SizedBox(height: 10),
         SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
