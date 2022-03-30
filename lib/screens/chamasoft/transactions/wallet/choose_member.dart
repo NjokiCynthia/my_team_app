@@ -51,8 +51,6 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   IconData icon;
   Contact selectedContact;
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<GroupMemberDetail> _member = [];
   bool _hasMoreData = false;
@@ -157,6 +155,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
     super.dispose();
   }
 
+  // ignore: unused_element
   void _numberPrompt() {
     showDialog(
       context: context,
@@ -460,6 +459,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
     });
   }
 
+  // ignore: unused_element
   ListTile _buildListTile(int index, Contact contact, List<Item> list) {
     return ListTile(
       leading: CircleAvatar(

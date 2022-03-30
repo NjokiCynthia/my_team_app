@@ -1,9 +1,5 @@
-import 'package:chamasoft/helpers/theme.dart';
-import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
-import 'package:line_awesome_icons/line_awesome_icons.dart';
 
 // KeyPad widget
 // This widget is reusable and its buttons are customizable (color, size)

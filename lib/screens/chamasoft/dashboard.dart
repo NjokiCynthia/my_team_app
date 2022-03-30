@@ -4,8 +4,6 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 // import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
-import 'package:chamasoft/screens/chamasoft/home.dart';
-import 'package:chamasoft/screens/chamasoft/market-place.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/new_home.dart';

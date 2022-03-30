@@ -1,5 +1,4 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:chamasoft/config.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
@@ -8,13 +7,10 @@ import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/account_balances.dart';
-import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
-import 'package:chamasoft/screens/chamasoft/models/contribution.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/recent_transaction_reciept.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
-import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/transaction-statement.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
 import 'package:chamasoft/screens/chamasoft/total_account_balance.dart';
@@ -27,7 +23,6 @@ import 'package:chamasoft/widgets/data-loading-effects.dart';
 import 'package:chamasoft/widgets/showCase.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:date_time_picker/date_time_picker.dart';
-import 'package:dotted_line/dotted_line.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -35,7 +30,6 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:pie_chart/pie_chart.dart' as chart;
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChamasoftHome extends StatefulWidget {
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME =
@@ -60,11 +54,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   String _groupCurrency = "Ksh";
   List<RecentTransactionSummary> _iteratableRecentTransactionSummary = [];
   List<ContributionsSummary> _itableContributionSummary = [];
-  bool _showMeetingsBanner = false;
   Dashboard dashboardData;
   List<BankAccountDashboardSummary> _iteratableData = [];
-
-  List<ActiveLoan> _activeLoans = [];
 
   int _currentIndex = 0;
 
@@ -95,7 +86,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   final groupLoanKey = GlobalKey();
   final withdrwalDepositKey = GlobalKey();
   BuildContext groupContext;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   ScrollController _chartScrollController;
 
@@ -884,26 +874,29 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   ),
                                 ),
                               ),
-                              Expanded(
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0,
+                              Visibility(
+                                visible: false,
+                                child: Expanded(
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16.0,
+                                    ),
+                                    child: paymentActionButton(
+                                        color: primaryColor,
+                                        textColor: Colors.white,
+                                        icon: FontAwesome.chevron_right,
+                                        isFlat: true,
+                                        text: "APPLY LOAN",
+                                        iconSize: 12.0,
+                                        action:
+                                            () {} /* => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              /* ApplyLoan */(){},
+                                        ),
+                                      ), */
+                                        ),
                                   ),
-                                  child: paymentActionButton(
-                                      color: primaryColor,
-                                      textColor: Colors.white,
-                                      icon: FontAwesome.chevron_right,
-                                      isFlat: true,
-                                      text: "APPLY LOAN",
-                                      iconSize: 12.0,
-                                      action:
-                                          () /* => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (BuildContext context) =>
-                                            /* ApplyLoan */(){},
-                                      ),
-                                    ), */
-                                          {}),
                                 ),
                               ),
                               // /*  Expanded(
@@ -1400,6 +1393,7 @@ class Contrubutions extends StatelessWidget {
   }
 }
 
+// ignore: unused_element
 void _openPayNowTray(BuildContext context) {
   Future<void> _initiatePayNow(
       {int paymentFor,

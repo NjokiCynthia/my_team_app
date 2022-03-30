@@ -3,7 +3,6 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/choose_member.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-banks.dart';
-import 'package:chamasoft/screens/chamasoft/transactions/wallet/list-phone-contacts.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';

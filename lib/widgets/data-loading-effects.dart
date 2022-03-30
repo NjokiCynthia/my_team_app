@@ -6,19 +6,15 @@ import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
-import 'package:chamasoft/screens/chamasoft/new_home.dart';
 import 'package:chamasoft/widgets/annimationSlider.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/showCase.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:pie_chart/pie_chart.dart' as chart;
 // import 'backgrounds.dart';
 
 Widget dataLoadingEffect(
@@ -422,14 +418,10 @@ Widget groupPlaceholder({BuildContext context}) {
 }
 
 Widget newHomePlaceHolder({BuildContext context}) {
-  Group _currentGroup;
-  bool _onlineBankingEnabled = true;
   String _groupCurrency = 'KES';
-  _currentGroup = Provider.of<Groups>(context, listen: false).getCurrentGroup();
   List cardList = [
     Contrubution(),
   ];
-  final recentTransactionKey = GlobalKey();
   int _currentIndex = 0;
   return Column(children: <Widget>[
     showLinearProgressIndicator(),
@@ -795,14 +787,7 @@ Widget newHomePlaceHolder({BuildContext context}) {
 class Contrubution extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Map<String, double> dataMap = {
-      "My Total Contribution": (1000),
-      "Group Total Contribution": 0,
-    };
 
-    final currencyFormat = new NumberFormat("#,##0", "en_US");
-    Group _currentGroup =
-        Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     return Container(
       child: Container(

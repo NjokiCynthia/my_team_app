@@ -1,7 +1,6 @@
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/theme.dart';
-import 'package:chamasoft/screens/chamasoft/settings/group-setup/list-contacts.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/amount-to-withdraw.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/contact_list.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/phone_number.dart';

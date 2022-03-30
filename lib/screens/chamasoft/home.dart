@@ -14,7 +14,6 @@ import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/rate_app.dart';
 import 'package:chamasoft/widgets/showCase.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';

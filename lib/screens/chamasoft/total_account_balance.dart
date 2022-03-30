@@ -2,8 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:chamasoft/helpers/common.dart';
-import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
@@ -51,7 +49,6 @@ class _TotalAccountBalanceRecieptState
   Widget build(BuildContext context) {
     final groupObject =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    final auth = Provider.of<Auth>(context, listen: false);
     final now = new DateTime.now();
     String formatter = DateFormat('yMd').format(now);
     var formatterTime = DateFormat('kk:mm');
