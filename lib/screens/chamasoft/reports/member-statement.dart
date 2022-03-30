@@ -174,7 +174,7 @@ class _MemeberSatementState extends State<MemeberSatement> {
                                     ? MemberCard(
                                         member: member,
                                         position: index,
-                                        bodyContext: context,
+                                         bodyContext: context,
                                       )
                                     : member.name
                                             .toLowerCase()

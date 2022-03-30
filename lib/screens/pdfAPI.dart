@@ -18,7 +18,6 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart';
 
 class PdfApi {
-  
   static Future<File> generateMemberLoanStatementPdf(
     ActiveLoan loan,
   ) async {}
@@ -882,6 +881,64 @@ class PdfApi {
             ]));
     return saveDocument(
         name: '$memberName-$groupName-Deposit Reciept.pdf', pdf: pdf);
+  }
+
+  static Future<File> generateRecentTranasactionalPdf({
+    String title,
+    String memberName,
+    String groupName,
+    String groupCurrency,
+    double paidAmount,
+    String dateofTranasaction,
+  }) async {
+    final pdf = Document();
+
+    final imageSvg =
+        (await rootBundle.load('assets/logofull.png')).buffer.asUint8List();
+
+    final pageTheme = PageTheme(
+        pageFormat: PdfPageFormat.a4,
+        buildBackground: (context) {
+          if (context.pageNumber == 1) {
+            return FullPage(ignoreMargins: true);
+          } else {
+            return Container();
+          }
+        });
+    pdf.addPage(MultiPage(
+        pageTheme: pageTheme,
+        footer: (Context context) {
+          return Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 1.0 * PdfPageFormat.cm),
+              child: Text('Page ${context.pageNumber} of ${context.pagesCount}',
+                  style: Theme.of(context)
+                      .defaultTextStyle
+                      .copyWith(color: PdfColors.grey)));
+        },
+        build: (context) => [
+              Container(
+                child: Center(
+                  child: builderHearder(imageSvg),
+                ),
+              ),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Container(
+                child: Center(
+                  child: buildTitle(title),
+                ),
+              ),
+              Divider(),
+              buildInvoice(memberName, groupName, groupCurrency, paidAmount,
+                  dateofTranasaction),
+              SizedBox(height: 1 * PdfPageFormat.cm),
+              Divider(),
+              SizedBox(height: 2 * PdfPageFormat.mm),
+              signOff(imageSvg)
+            ]));
+    return saveDocument(
+        name: '$memberName-$groupName Recent Transaction Reciept .pdf',
+        pdf: pdf);
   }
 
   static Future<File> generateTranasactionalPdf({

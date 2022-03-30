@@ -14,7 +14,6 @@ import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/widgets/backgrounds.dart';
 import 'package:chamasoft/widgets/buttons.dart';
-import 'package:chamasoft/widgets/rate_app.dart';
 import 'package:chamasoft/widgets/showCase.dart';
 import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -33,20 +32,21 @@ import 'package:showcaseview/showcaseview.dart';
 
 import '../../config.dart';
 
-class ChamasoftHome extends StatefulWidget {
+class ChamasoftHomeOld extends StatefulWidget {
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME =
       "PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME";
-  ChamasoftHome({this.appBarElevation, this.notificationCount, this.rateMyApp});
+  ChamasoftHomeOld(
+      {this.appBarElevation, this.notificationCount, this.rateMyApp});
 
   final ValueChanged<double> appBarElevation;
   final ValueChanged<double> notificationCount;
   final RateMyApp rateMyApp;
 
   @override
-  _ChamasoftHomeState createState() => _ChamasoftHomeState();
+  _ChamasoftHomeOldState createState() => _ChamasoftHomeOldState();
 }
 
-class _ChamasoftHomeState extends State<ChamasoftHome> {
+class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
   ScrollController _scrollController;
   Group _currentGroup;
   bool _onlineBankingEnabled = true;
@@ -159,13 +159,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   // ignore: unused_element
   Future<bool> _isFirstLaunch() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    bool isFirstLaunch = sharedPreferences
-            .getBool(ChamasoftHome.PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME) ??
+    bool isFirstLaunch = sharedPreferences.getBool(
+            ChamasoftHomeOld.PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME) ??
         true;
 
     if (isFirstLaunch)
       sharedPreferences.setBool(
-          ChamasoftHome.PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME, false);
+          ChamasoftHomeOld.PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME, false);
 
     return isFirstLaunch;
   }

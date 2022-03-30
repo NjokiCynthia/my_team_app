@@ -706,3 +706,35 @@ class InfoUpdateTile extends StatelessWidget {
     );
   }
 }
+
+class ProfileUpdateTile extends StatelessWidget {
+  final String labelText;
+  final String updateText;
+
+
+  const ProfileUpdateTile({
+    this.labelText,
+    this.updateText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text("$labelText",
+          style: TextStyle(
+            fontSize: 14.0,
+            color: Theme.of(context).bottomAppBarColor,
+          )),
+      subtitle: Text(
+        "$updateText",
+        style: TextStyle(
+          // ignore: deprecated_member_use
+          color: Theme.of(context).textSelectionHandleColor,
+          fontSize: 20.0,
+        ),
+      ),
+    
+      onTap: () {},
+    );
+  }
+}

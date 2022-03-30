@@ -4,10 +4,9 @@ import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 // import 'package:chamasoft/providers/helpers/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/group.dart';
-import 'package:chamasoft/screens/chamasoft/home.dart';
-import 'package:chamasoft/screens/chamasoft/market-place.dart';
 import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
+import 'package:chamasoft/screens/chamasoft/new_home.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notification-alert.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
@@ -28,6 +27,7 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+// ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_DASHBOARDS =
@@ -578,37 +578,37 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   ),
                 ),
               ),
-              BottomNavigationBarItem(
-                icon: customShowCase(
-                  key: marketplaceKey,
-                  title: 'Chamasoft MarketPlace',
-                  description: "View Chamasoft Post Ads",
+              // BottomNavigationBarItem(
+              //   icon: customShowCase(
+              //     key: marketplaceKey,
+              //     title: 'Chamasoft MarketPlace',
+              //     description: "View Chamasoft Post Ads",
 
-                  // ignore: deprecated_member_use
-                  textColor: Theme.of(context).textSelectionHandleColor,
-                  child: Icon(
-                    Feather.shopping_cart,
-                    color: _currentPage == 4
-                        ? primaryColor
-                        : Config.appName.toLowerCase() == 'chamasoft'
-                            ? Colors.blueGrey[300]
-                            : Colors.blueGrey[300].withOpacity(0.5),
-                  ),
-                ),
-                // ignore: deprecated_member_use
-                title: Text(
-                  "Market",
-                  style: TextStyle(
-                    color: _currentPage == 4
-                        ? primaryColor
-                        : Config.appName.toLowerCase() == 'chamasoft'
-                            ? Colors.blueGrey[300]
-                            : Colors.blueGrey[300].withOpacity(0.5),
-                    fontFamily: 'SegoeUI',
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
+              //     // ignore: deprecated_member_use
+              //     textColor: Theme.of(context).textSelectionHandleColor,
+              //     child: Icon(
+              //       Feather.shopping_cart,
+              //       color: _currentPage == 4
+              //           ? primaryColor
+              //           : Config.appName.toLowerCase() == 'chamasoft'
+              //               ? Colors.blueGrey[300]
+              //               : Colors.blueGrey[300].withOpacity(0.5),
+              //     ),
+              //   ),
+              //   // ignore: deprecated_member_use
+              //   title: Text(
+              //     "Market",
+              //     style: TextStyle(
+              //       color: _currentPage == 4
+              //           ? primaryColor
+              //           : Config.appName.toLowerCase() == 'chamasoft'
+              //               ? Colors.blueGrey[300]
+              //               : Colors.blueGrey[300].withOpacity(0.5),
+              //       fontFamily: 'SegoeUI',
+              //       fontWeight: FontWeight.w700,
+              //     ),
+              //   ),
+              // ),
             ],
             onTap: (index) {
               setState(() {
@@ -690,10 +690,10 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         return ChamasoftReports(
           appBarElevation: (elevation) => _setElevation(elevation),
         );
-      case 4:
-        return ChamasoftMarketPlace(
-          appBarElevation: (elevation) => _setElevation(elevation),
-        );
+      // case 4:
+      //   return ChamasoftMarketPlace(
+      //     appBarElevation: (elevation) => _setElevation(elevation),
+      //   );
     }
   }
 }

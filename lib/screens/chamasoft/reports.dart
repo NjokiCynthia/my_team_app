@@ -76,8 +76,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
   // ignore: unused_element
   Future<bool> _isFirstLaunch() async {
     final sharedPreferences = await SharedPreferences.getInstance();
-    bool isFirstLaunch = sharedPreferences
-            .getBool(ChamasoftReports.PREFERENCES_IS_FIRST_LAUNCH_STRING_REPORTS) ??
+    bool isFirstLaunch = sharedPreferences.getBool(
+            ChamasoftReports.PREFERENCES_IS_FIRST_LAUNCH_STRING_REPORTS) ??
         true;
 
     if (isFirstLaunch)
@@ -103,6 +103,8 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
+    // final groupObject =
+    //     Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     return ShowCaseWidget(builder: Builder(
       builder: (context) {
@@ -353,27 +355,30 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
           SizedBox(
             width: 16.0,
           ),
-          customShowCase(
-            key: memberStatementKey,
-            description:
-                "View, Download and Share your members Transaction statements and Fine statements",
-            child: Container(
-                width: 132.0,
-                child: svgGridButton(
-                    context: context,
-                    icon: customIcons['transaction'],
-                    title: 'MEMBER',
-                    subtitle: 'STATEMENTS',
-                    color: Colors.blue[400],
-                    isHighlighted: false,
-                    action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => MemeberSatement())),
-                    margin: 0,
-                    imageHeight: 100.0)),
-          ),
-          SizedBox(
-            width: 16.0,
-          ),
+          group.isGroupAdmin
+              ? customShowCase(
+                  key: memberStatementKey,
+                  description:
+                      "View, Download and Share your members Transaction statements and Fine statements",
+                  child: Container(
+                      width: 132.0,
+                      child: svgGridButton(
+                          context: context,
+                          icon: customIcons['transaction'],
+                          title: 'MEMBER',
+                          subtitle: 'STATEMENTS',
+                          color: Colors.blue[400],
+                          isHighlighted: false,
+                          action: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      MemeberSatement())),
+                          margin: 0,
+                          imageHeight: 100.0)),
+                )
+              : SizedBox(
+                  width: 16.0,
+                ),
         ];
 
         return new WillPopScope(
@@ -492,29 +497,31 @@ class _ChamasoftReportsState extends State<ChamasoftReports> {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Statements",
-                      style: TextStyle(
-                        color: Colors.blueGrey[400],
-                        fontFamily: 'SegoeUI',
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.w600,
+              group.isGroupAdmin
+                  ? Padding(
+                      padding: EdgeInsets.fromLTRB(20.0, 0.0, 16.0, 0.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            "Statements",
+                            style: TextStyle(
+                              color: Colors.blueGrey[400],
+                              fontFamily: 'SegoeUI',
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          IconButton(
+                              icon: Icon(
+                                Feather.more_horizontal,
+                                color: Colors.blueGrey,
+                              ),
+                              onPressed: () {})
+                        ],
                       ),
-                    ),
-                    IconButton(
-                        icon: Icon(
-                          Feather.more_horizontal,
-                          color: Colors.blueGrey,
-                        ),
-                        onPressed: () {})
-                  ],
-                ),
-              ),
+                    )
+                  : Container(),
               Padding(
                 padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                 child: Container(
