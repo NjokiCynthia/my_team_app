@@ -94,6 +94,8 @@ class Dashboard with ChangeNotifier {
   int _unreconciledDepositsCount = 0;
   int _unreconciledWithdrawalsCount = 0;
   bool _isPartnerBankAccount = false;
+  String _contributionDateDaysleft = "";
+  String _nextcontributionDate = "";
 
   //***************Group****************/
 
@@ -116,6 +118,14 @@ class Dashboard with ChangeNotifier {
 
   double get memberContributionAmount {
     return _memberContributionAmount;
+  }
+
+  String get contributionDateDaysleft {
+    return _contributionDateDaysleft;
+  }
+
+  String get nextcontributionDate {
+    return _nextcontributionDate;
   }
 
   double get notificationCount {
@@ -291,6 +301,11 @@ class Dashboard with ChangeNotifier {
       print("count $_unreconciledWithdrawalsCount");
       _memberContributionAmount =
           double.tryParse(memberDetails["total_contributions"].toString()) ??
+              0.0;
+      _contributionDateDaysleft =
+          memberDetails["contribution_date_days_left"] ?? "--";
+      _nextcontributionDate = memberDetails["next_contribution_date"] ?? "--";
+      _memberFinesAmount = double.tryParse(memberDetails["total_fines"].toString()) ??
               0.0;
       _memberContributionArrears =
           double.tryParse(memberDetails["contribution_arrears"].toString()) ??
