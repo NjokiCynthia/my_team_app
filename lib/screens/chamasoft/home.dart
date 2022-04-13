@@ -602,36 +602,36 @@ class _ChamasoftHomeOldState extends State<ChamasoftHomeOld> {
                                             // ignore: deprecated_member_use
                                             .textSelectionHandleColor,
                                       ),
-                                      SizedBox(
-                                        height: 22,
-                                        child: cardAmountButton(
-                                          currency: _groupCurrency,
-                                          amount: _currentGroup.disableArrears
-                                              ? currencyFormat.format(
-                                                  dashboardData
-                                                      .memberContributionAmount)
-                                              : currencyFormat.format(
-                                                  dashboardData
-                                                      .memberContributionArrears),
-                                          size: 16.0,
-                                          color: (dashboardData
-                                                      .memberContributionArrears) >
-                                                  0
-                                              ? Colors.red[400]
-                                              : Theme.of(context)
-                                                  // ignore: deprecated_member_use
-                                                  .textSelectionHandleColor,
-                                          action: () => Navigator.of(context)
-                                              .push(MaterialPageRoute(
-                                                  builder: (BuildContext
-                                                          context) =>
-                                                      ContributionStatement(
-                                                          statementFlag:
-                                                              CONTRIBUTION_STATEMENT),
-                                                  settings: RouteSettings(
-                                                      arguments: 0))),
-                                        ),
-                                      ),
+                                      // SizedBox(
+                                      //   height: 22,
+                                      //   child: cardAmountButton(
+                                      //     currency: _groupCurrency,
+                                      //     amount: _currentGroup.disableArrears
+                                      //         ? currencyFormat.format(
+                                      //             dashboardData
+                                      //                 .memberContributionAmount)
+                                      //         : currencyFormat.format(
+                                      //             dashboardData
+                                      //                 .memberContributionArrears),
+                                      //     size: 16.0,
+                                      //     color: (dashboardData
+                                      //                 .memberContributionArrears) >
+                                      //             0
+                                      //         ? Colors.red[400]
+                                      //         : Theme.of(context)
+                                      //             // ignore: deprecated_member_use
+                                      //             .textSelectionHandleColor,
+                                      //     action: () => Navigator.of(context)
+                                      //         .push(MaterialPageRoute(
+                                      //             builder: (BuildContext
+                                      //                     context) =>
+                                      //                 ContributionStatement(
+                                      //                     statementFlag:
+                                      //                         CONTRIBUTION_STATEMENT),
+                                      //             settings: RouteSettings(
+                                      //                 arguments: 0))),
+                                      //   ),
+                                      // ),
                                     ],
                                   ),
                                   SizedBox(

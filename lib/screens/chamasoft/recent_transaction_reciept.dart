@@ -53,7 +53,7 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,
-        title: "Recent Transaction Receipts",
+        title: "Transaction Receipts",
         action: () => Navigator.of(context).pop(),
         elevation: 1,
         trailingAction: shareTransaction(),
@@ -354,36 +354,36 @@ class _RecentTransactionRecieptState extends State<RecentTransactionReciept> {
                       SizedBox(
                         width: 20.0,
                       ),
-                      InkWell(
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  LineAwesomeIcons.mobile,
-                                ),
-                                iconSize: 20.0,
-                                onPressed: () async {
-                                  final imageFile =
-                                      await _screenshotController.capture();
-                                  _takeScreenshot(imageFile);
-                                  //Share.shareFiles([convertWidgetToImage().path]);
-                                },
-                              ),
-                              customTitleWithWrap(
-                                text: 'Screenshot',
-                                fontSize: 18,
-                                fontWeight: FontWeight.w300,
-                                color: Theme.of(context)
-                                    // ignore: deprecated_member_use
-                                    .textSelectionHandleColor,
-                              ),
-                            ],
-                          ),
-                          onTap: () async {
-                            final imageFile =
-                                await _screenshotController.capture();
-                            _takeScreenshot(imageFile);
-                          }),
+                      // InkWell(
+                      //     child: Row(
+                      //       children: [
+                      //         IconButton(
+                      //           icon: Icon(
+                      //             LineAwesomeIcons.mobile,
+                      //           ),
+                      //           iconSize: 20.0,
+                      //           onPressed: () async {
+                      //             final imageFile =
+                      //                 await _screenshotController.capture();
+                      //             _takeScreenshot(imageFile);
+                      //             //Share.shareFiles([convertWidgetToImage().path]);
+                      //           },
+                      //         ),
+                      //         customTitleWithWrap(
+                      //           text: 'Screenshot',
+                      //           fontSize: 18,
+                      //           fontWeight: FontWeight.w300,
+                      //           color: Theme.of(context)
+                      //               // ignore: deprecated_member_use
+                      //               .textSelectionHandleColor,
+                      //         ),
+                      //       ],
+                      //     ),
+                      //     onTap: () async {
+                      //       final imageFile =
+                      //           await _screenshotController.capture();
+                      //       _takeScreenshot(imageFile);
+                      //     }),
                     ],
                   ),
                 ],

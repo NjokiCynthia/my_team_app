@@ -1,6 +1,10 @@
 import 'package:chamasoft/config.dart';
+import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/dashboard.dart';
+import 'package:chamasoft/providers/fine_summary.dart';
+import 'package:chamasoft/providers/loan-summaries.dart';
+import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/list-institutions.dart';
@@ -125,7 +129,61 @@ class _MyAppState extends State<MyApp> {
               dashboardData == null ? {} : dashboardData.groupDashboardData),
           // ignore: missing_return
           create: (BuildContext context) {},
-        )
+        ),
+        ChangeNotifierProxyProvider<Groups, DashboardContributionSummary>(
+          update: (ctx, groups, dashboardContributionSummary) =>
+              DashboardContributionSummary(
+            groups.userId,
+            groups.currentGroupId,
+            dashboardContributionSummary == null
+                ? {}
+                : dashboardContributionSummary.memberData,
+            dashboardContributionSummary == null
+                ? {}
+                : dashboardContributionSummary.totalGroupContributionAmount,
+          ),
+          // ignore: missing_return
+          create: (BuildContext context) {},
+        ),
+        ChangeNotifierProxyProvider<Groups, DashboardFineSummary>(
+          update: (ctx, groups, dashboardFineSummary) => DashboardFineSummary(
+            groups.userId,
+            groups.currentGroupId,
+            dashboardFineSummary == null ? {} : dashboardFineSummary.memberData,
+            dashboardFineSummary == null
+                ? {}
+                : dashboardFineSummary.totalGroupFineAmount,
+          ),
+          // ignore: missing_return
+          create: (BuildContext context) {},
+        ),
+        ChangeNotifierProxyProvider<Groups, BalancesDashboardSummary>(
+          update: (ctx, groups, balancesDashboardSummary) =>
+              BalancesDashboardSummary(
+            groups.userId,
+            groups.currentGroupId,
+            balancesDashboardSummary == null
+                ? {}
+                : balancesDashboardSummary.accountData,
+            balancesDashboardSummary == null
+                ? {}
+                : balancesDashboardSummary.totalBankBalance,
+          ),
+          // ignore: missing_return
+          create: (BuildContext context) {},
+        ),
+        ChangeNotifierProxyProvider<Groups, LoanDashboardSummary>(
+          update: (ctx, groups, loanDashboardSummary) => LoanDashboardSummary(
+            groups.userId,
+            groups.currentGroupId,
+            loanDashboardSummary == null ? {} : loanDashboardSummary.loanData,
+            loanDashboardSummary == null
+                ? {}
+                : loanDashboardSummary.totalLoanBankBalance,
+          ),
+          // ignore: missing_return
+          create: (BuildContext context) {},
+        ),
       ],
       child: Consumer<DarkThemeProvider>(
           builder: (BuildContext context, value, Widget child) {

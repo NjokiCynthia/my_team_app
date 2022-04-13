@@ -292,7 +292,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                             amount: currencyFormat.format(
                                                 dashboardData
                                                     .groupContributionAmount),
-                                            size: 16.0,
+                                            size: 14.0,
                                             color: Theme.of(context)
                                                 // ignore: deprecated_member_use
                                                 .textSelectionHandleColor,
@@ -331,7 +331,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                               amount: currencyFormat.format(
                                                   dashboardData
                                                       .groupFinePaymentAmount),
-                                              size: 16.0,
+                                              size: 14.0,
                                               color: Theme.of(context)
                                                   // ignore: deprecated_member_use
                                                   .textSelectionHandleColor,
@@ -369,7 +369,7 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                             amount: currencyFormat.format(
                                                 dashboardData
                                                     .groupExpensesAmount),
-                                            size: 16.0,
+                                            size: 14.0,
                                             color: Colors.red[400],
                                             action: () => Navigator.of(context)
                                                 .push(MaterialPageRoute(
@@ -431,13 +431,13 @@ class _ChamasoftGroupState extends State<ChamasoftGroup> {
                                       width: 16.0,
                                     ),
                                     InkWell(
-                                      onTap: () => Navigator.of(context).push(
+                                      onTap: () {}/*=> Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: (BuildContext context) =>
                                                 TotalAccountBalanceReciept(
                                                     totalBalance: dashboardData
                                                         .totalBankBalances)),
-                                      ),
+                                      )*/,
                                       child: Container(
                                         width: 160.0,
                                         padding: EdgeInsets.all(16.0),

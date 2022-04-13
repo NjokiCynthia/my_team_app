@@ -290,6 +290,18 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
             //     }
             //   },
             // ),
+            Config.appName.toLowerCase() == 'chamasoft'
+                ? Padding(
+                    padding: EdgeInsets.fromLTRB(16.0, 30.0, 16.0, 10.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: heading2(
+                        text: "Group Settings",
+                        color: Colors.blueGrey,
+                      ),
+                    ),
+                  )
+                : SizedBox(),
             Visibility(
               visible: group.isGroupAdmin,
               child: ListTile(

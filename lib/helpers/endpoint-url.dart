@@ -262,6 +262,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String ENABLE_CHAMASOFT_WALLET =
       CustomHelper.baseUrl + "/mobile/bank_accounts/activate_wallet";
+  // ignore: non_constant_identifier_names
+  static final String ACCOUNT_BALANCE_SUMMARY =
+      CustomHelper.baseUrl + "/mobile/get_group_bank_balances";
 
   //Upload images
   // ignore: non_constant_identifier_names
@@ -355,6 +358,10 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_CONTRIBUTION_DETAILS =
       CustomHelper.baseUrl + "/mobile/contributions/get_group_contribution";
+
+  // ignore: non_constant_identifier_names
+  static final String GET_MEMBER_CONTRIBUTION_SUMMARY =
+      CustomHelper.baseUrl + "/mobile/get_group_member_contribution_summary";
 
   //Selected Settings Adapter Api
   // ignore: non_constant_identifier_names
@@ -481,6 +488,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_GROUP_LOAN_TYPE_OPTIONS =
       CustomHelper.baseUrl + "/mobile/loan_types/get_group_loan_type_options";
+  // ignore: non_constant_identifier_names
+  static final GET_GROUP_MEMBER_LOANS_SUMMARY =
+      CustomHelper.baseUrl + "/mobile/get_group_member_loans_summary";
 
   //Notifications
   // ignore: non_constant_identifier_names
@@ -689,6 +699,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_LOAN_STATEMENT =
       CustomHelper.baseUrl + "/mobile/loans/statement";
+  // ignore: non_constant_identifier_names
+  static final String GET_FINES_SUMMARY =
+      CustomHelper.baseUrl + "/mobile/get_group_member_fines_summary";
 
   //Meetings
   // ignore: non_constant_identifier_names

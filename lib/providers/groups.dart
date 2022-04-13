@@ -554,6 +554,7 @@ class Groups with ChangeNotifier {
   List<Group> _groups = [];
   String _currentGroupId;
   // String _currentMemberId;
+  String _requestId;
 
   List<dynamic> _meetings = [];
   List<GroupMemberDetail> _groupMembersDetails = [];
@@ -5362,6 +5363,7 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
+
 
   void switchGroupValuesToDefault({bool removeGroups = false}) {
     if (removeGroups) {

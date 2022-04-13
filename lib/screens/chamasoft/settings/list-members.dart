@@ -34,6 +34,7 @@ class ListMembers extends StatefulWidget {
 class _ListMembersState extends State<ListMembers> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
+  bool _isInit = true;
 
   void _showActions(BuildContext context) {
     showModalBottomSheet<void>(
@@ -278,6 +279,12 @@ class _ListMembersState extends State<ListMembers> {
           callback: () {
             _fetchMembers(context);
           });
+    } finally {
+      if (this.mounted) {
+        setState(() {
+          _isInit = false;
+        });
+      }
     }
   }
 
@@ -291,6 +298,14 @@ class _ListMembersState extends State<ListMembers> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      _fetchMembers(context);
+    }
+    super.didChangeDependencies();
   }
 
   @override

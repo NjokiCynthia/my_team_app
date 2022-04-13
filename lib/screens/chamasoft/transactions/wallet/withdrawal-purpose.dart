@@ -104,7 +104,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
 
   Future<void> fetchBankAccounts() async {}
 
-  void _prepareSubmission(BuildContext context, int flag, String groupId) async {
+  void _prepareSubmission(
+      BuildContext context, int flag, String groupId) async {
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -502,8 +503,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     isFlat: false,
                                     text: "Send To Bank",
                                     iconSize: 12.0,
-                                    action: () =>
-                                        _prepareSubmission(context, 1, groupObject.groupId),
+                                    action: () => _prepareSubmission(
+                                        context, 1, groupObject.groupId),
                                     showIcon: false),
                               ),
                               SizedBox(
@@ -517,8 +518,8 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
                                     isFlat: true,
                                     text: "Send To Mobile",
                                     iconSize: 12.0,
-                                    action: () =>
-                                        _prepareSubmission(context, 2, groupObject.groupId),
+                                    action: () => _prepareSubmission(
+                                        context, 2, groupObject.groupId),
                                     showIcon: false),
                               )
                             ],

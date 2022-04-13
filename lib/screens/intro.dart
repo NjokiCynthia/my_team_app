@@ -1,6 +1,10 @@
 import 'package:chamasoft/providers/auth.dart';
+import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/dashboard.dart';
+import 'package:chamasoft/providers/fine_summary.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/loan-summaries.dart';
+import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
 import 'package:chamasoft/screens/my-groups.dart';
@@ -56,10 +60,25 @@ class IntroScreenState extends State<IntroScreen> {
     // groups.fetchExpenseCategories();
     // groups.fetchIncomeCategories();
     // groups.getGroupMembersDetails();
+    // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+    // await Provider.of<DashboardContributionSummary>(context, listen: false)
+    //     .getContributionsSummary(currentGroupId);
+    // await Provider.of<DashboardContributionSummary>(context, listen: false)
+    //     .getContributionsSummary(currentGroupId);
+    // await Provider.of<DashboardFineSummary>(context, listen: false)
+    //     .getFinesSummary(currentGroupId);
+    // await Provider.of<DashboardFineSummary>(context, listen: false)
+    //     .getFinesSummary(currentGroupId);
+    // await Provider.of<BalancesDashboardSummary>(context, listen: false)
+    //     .getAccountBalancesSummary(currentGroupId);
+    // await Provider.of<LoanDashboardSummary>(context, listen: false)
+    //     .getDashboardLoanSummary(currentGroupId);
+    // await Provider.of<LoanDashboardSummary>(context, listen: false)
+    //     .getDashboardLoanSummary(currentGroupId);
 
-    await groupData.getMemberDashboardData(currentGroupId);
-    await groupData.getGroupDashboardData(currentGroupId);
-    await groupData.getGroupDepositVWithdrawals(currentGroupId);
+    // await groupData.getMemberDashboardData(currentGroupId);
+    // await groupData.getGroupDashboardData(currentGroupId);
+    // await groupData.getGroupDepositVWithdrawals(currentGroupId);
 
     Navigator.of(context)
         .pushReplacement(

@@ -6,9 +6,13 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:chamasoft/helpers/post-to-server.dart';
+import 'package:chamasoft/helpers/report_helper.dart';
+import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'groups.dart';
 
 class BankAccountDashboardSummary {
   final String accountName;
@@ -57,6 +61,8 @@ class Dashboard with ChangeNotifier {
   List<String> _months = [];
   List<int> _chartYAxisParameters = [1, 1];
   List<ContributionsSummary> _memberContributionSummary = [];
+  ExpenseSummaryList _expenseSummaryList;
+  List<Expense> _expenses = [];
 
   // ignore: unused_field
   String _currentGroupId;
@@ -238,6 +244,19 @@ class Dashboard with ChangeNotifier {
 
   List<ContributionsSummary> get memberContributionSummary {
     return [..._memberContributionSummary];
+  }
+
+  List<Expense> get expenses {
+    return [..._expenses];
+  }
+
+  ExpenseSummaryList get expenseSummaryList {
+    return _expenseSummaryList;
+  }
+
+  void addExpenseSummary(dynamic data) {
+    _expenseSummaryList = getExpenseSummary(data);
+    notifyListeners();
   }
 
   bool memberGroupDataExists(String groupId) {
@@ -448,6 +467,31 @@ class Dashboard with ChangeNotifier {
     }
 
     notifyListeners();
+  }
+
+  /// ***********************Expense Summary*****************************
+  Future<void> fetchExpenseSummary() async {
+    final url = EndpointUrl.GET_EXPENSES_SUMMARY;
+    try {
+      final postRequest = json.encode({
+        "user_id": _userId,
+        "group_id": _currentGroupId,
+      });
+      try {
+        final response = await PostToServer.post(postRequest, url);
+        _expenses = []; //clear accounts
+        final groupExpenses = response['data'] as dynamic;
+        addExpenseSummary(groupExpenses);
+      } on CustomException catch (error) {
+        throw CustomException(message: error.message, status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.message, status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
   }
 
   Future<void> getMemberDashboardData(String groupId) async {

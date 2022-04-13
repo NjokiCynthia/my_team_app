@@ -24,7 +24,7 @@ Widget heading2(
     text,
     style: TextStyle(
         fontWeight: FontWeight.w700,
-        fontSize:  18.0,
+        fontSize: 17.0,
         color: color,
         fontFamily: 'SegoeUI'),
     textAlign: textAlign,
@@ -58,12 +58,15 @@ Widget subtitle1(
 }
 
 Widget subtitle2(
-    {String text, Color color, TextAlign textAlign = TextAlign.center,double fontSize}) {
+    {String text,
+    Color color,
+    TextAlign textAlign = TextAlign.center,
+    double fontSize}) {
   return Text(
     text,
     style: TextStyle(
         fontWeight: FontWeight.w300,
-        fontSize: fontSize??13.0,
+        fontSize: fontSize ?? 13.0,
         color: color,
         fontFamily: 'SegoeUI'),
     textAlign: textAlign,

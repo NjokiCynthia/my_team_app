@@ -27,6 +27,8 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
+import 'home.dart';
+
 // ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
   static const namedRoute = "/dashboard";
@@ -62,7 +64,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   final notificationsKey = GlobalKey();
   final settingsKey = GlobalKey();
   final homeDashboardKey = GlobalKey();
-  final groupDashboardKey = GlobalKey();
+  // final groupDashboardKey = GlobalKey();
   final transactionKey = GlobalKey();
   final transactionAdminKey = GlobalKey();
   final reportKey = GlobalKey();
@@ -162,14 +164,14 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         if (result)
           ShowCaseWidget.of(dashboardContext).startShowCase([
             switchGroupKey,
-            notificationsKey,
+            // notificationsKey,
             settingsKey,
             homeDashboardKey,
-            groupDashboardKey,
+            // groupDashboardKey,
             transactionKey,
             reportKey,
             marketplaceKey,
-            meetingsKey,
+            // meetingsKey,
           ]);
       });
     });
@@ -300,7 +302,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
             automaticallyImplyLeading: false,
             actions: <Widget>[
               Visibility(
-                visible: (_group.isGroupAdmin),
+                visible:  /*_group.isGroupAdmin*/ false ,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -321,13 +323,13 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                               Theme.of(context).textSelectionHandleColor
                               : primaryColor,
                         ),
-                        onPressed: () => {
-                          _eventDispatcher.add('TAP'), //Closes the AppSwitcher
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => Meetings(),
-                            ),
-                          ),
+                        onPressed: () /*=>*/ {
+                          // _eventDispatcher.add('TAP'), //Closes the AppSwitcher
+                          // Navigator.of(context).push(
+                          //   MaterialPageRoute(
+                          //     builder: (BuildContext context) => Meetings(),
+                          //   ),
+                          // ),
                         },
                       ),
                     )
@@ -373,37 +375,40 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  customShowCase(
-                    key: notificationsKey,
-                    title: 'Chamasoft Notifications',
-                    description:
-                        "View all your Transactions Notification from Here",
+                  Visibility(
+                    visible: true,
+                    child: customShowCase(
+                      key: notificationsKey,
+                      title: 'Chamasoft Notifications',
+                      description:
+                          "View all your Transactions Notification from Here",
 
-                    // ignore: deprecated_member_use
-                    textColor: Theme.of(context).textSelectionHandleColor,
-                    child: IconButton(
-                        icon: Icon(
-                          Icons.notifications,
-                          color: Config.appName.toLowerCase() == 'chamasoft'
-                              ?
-                              // ignore: deprecated_member_use
-                              Theme.of(context).textSelectionHandleColor
-                              : primaryColor,
-                        ),
-                        // onPressed: null, // Disable notifications for now
-                        onPressed: () => {
-                              _eventDispatcher
-                                  .add('TAP'), //Closes the AppSwitcher
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ChamasoftNotifications(),
+                      // ignore: deprecated_member_use
+                      textColor: Theme.of(context).textSelectionHandleColor,
+                      child: IconButton(
+                          icon: Icon(
+                            Icons.notifications,
+                            color: Config.appName.toLowerCase() == 'chamasoft'
+                                ?
+                                // ignore: deprecated_member_use
+                                Theme.of(context).textSelectionHandleColor
+                                : primaryColor,
+                          ),
+                          onPressed: null, // Disable notifications for now
+                          /*onPressed: () => {
+                                _eventDispatcher
+                                    .add('TAP'), //Closes the AppSwitcher
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ChamasoftNotifications(),
+                                  ),
                                 ),
-                              ),
-                            }),
+                              }*/),
+                    ),
                   ),
                   Visibility(
-                    visible: (_notificationCount),
+                    visible: /*(_notificationCount)*/ false,
                     child: Positioned(
                       top: 12,
                       right: 6,
@@ -484,50 +489,50 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   ),
                 ),
               ),
-              BottomNavigationBarItem(
-                icon: customShowCase(
-                  key: groupDashboardKey,
-                  title: 'Chama Dashboard',
-                  description:
-                      "View your Chamas Transaction Summary, Loan balances and Accounts balances",
+              // BottomNavigationBarItem(
+              //   icon: customShowCase(
+              //     key: groupDashboardKey,
+              //     title: 'Chama Dashboard',
+              //     description:
+              //         "View your Chamas Transaction Summary, Loan balances and Accounts balances",
 
-                  // ignore: deprecated_member_use
-                  textColor: Theme.of(context).textSelectionHandleColor,
-                  child: Icon(
-                    Feather.users,
-                    color: _currentPage == 1
-                        ? primaryColor
-                        : Config.appName.toLowerCase() == 'chamasoft'
-                            ? Colors.blueGrey[300]
-                            : Colors.blueGrey[300].withOpacity(0.5),
-                  ),
-                ),
-                // ignore: deprecated_member_use
-                title: Text(
-                  toBeginningOfSentenceCase(
-                      getUserName((_group.groupName).replaceAll(" ", "-"))),
-                  style: TextStyle(
-                      color: _currentPage == 1
-                          ? primaryColor
-                          : Config.appName.toLowerCase() == 'chamasoft'
-                              ? Colors.blueGrey[300]
-                              : Colors.blueGrey[300].withOpacity(0.5),
-                      fontFamily: 'SegoeUI',
-                      fontWeight: FontWeight.w700),
-                ),
-              ),
+              //     // ignore: deprecated_member_use
+              //     textColor: Theme.of(context).textSelectionHandleColor,
+              //     child: Icon(
+              //       Feather.users,
+              //       color: _currentPage == 1
+              //           ? primaryColor
+              //           : Config.appName.toLowerCase() == 'chamasoft'
+              //               ? Colors.blueGrey[300]
+              //               : Colors.blueGrey[300].withOpacity(0.5),
+              //     ),
+              //   ),
+              //   // ignore: deprecated_member_use
+              //   title: Text(
+              //     toBeginningOfSentenceCase(
+              //         getUserName((_group.groupName).replaceAll(" ", "-"))),
+              //     style: TextStyle(
+              //         color: _currentPage == 1
+              //             ? primaryColor
+              //             : Config.appName.toLowerCase() == 'chamasoft'
+              //                 ? Colors.blueGrey[300]
+              //                 : Colors.blueGrey[300].withOpacity(0.5),
+              //         fontFamily: 'SegoeUI',
+              //         fontWeight: FontWeight.w700),
+              //   ),
+              // ),
               BottomNavigationBarItem(
                 icon: customShowCase(
                   key: transactionKey,
                   title: 'Chamasoft Transactions',
                   description:
-                      "Manualy Record chama Transactions, Create withdrawals form E-Walet and Invoice Transfers",
+                      "Manually Record chama Transactions, Create withdrawals form E-Walet and Invoice Transfers",
 
                   // ignore: deprecated_member_use
                   textColor: Theme.of(context).textSelectionHandleColor,
                   child: Icon(
                     Feather.credit_card,
-                    color: _currentPage == 2
+                    color: _currentPage == /*2*/1
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
@@ -538,7 +543,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 title: Text(
                   "Transactions",
                   style: TextStyle(
-                      color: _currentPage == 2
+                      color: _currentPage == /*2*/1
                           ? primaryColor
                           : Config.appName.toLowerCase() == 'chamasoft'
                               ? Colors.blueGrey[300]
@@ -557,7 +562,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                   textColor: Theme.of(context).textSelectionHandleColor,
                   child: Icon(
                     Feather.copy,
-                    color: _currentPage == 3
+                    color: _currentPage == /*3*/2
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
@@ -568,7 +573,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                 title: Text(
                   "Reports",
                   style: TextStyle(
-                    color: _currentPage == 3
+                    color: _currentPage == /*3*/2
                         ? primaryColor
                         : Config.appName.toLowerCase() == 'chamasoft'
                             ? Colors.blueGrey[300]
@@ -669,16 +674,16 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         //           _setNotificationCount(_notificationCount),
         //     ),
         //   );
-        return ChamasoftHome(
+        return ChamasoftHome/*ChamasoftHomeOld*/(
           appBarElevation: (elevation) => _setElevation(elevation),
           notificationCount: (_notificationCount) =>
               _setNotificationCount(_notificationCount),
         );
+      // case 1:
+      //   return ChamasoftGroup(
+      //     appBarElevation: (elevation) => _setElevation(elevation),
+      //   );
       case 1:
-        return ChamasoftGroup(
-          appBarElevation: (elevation) => _setElevation(elevation),
-        );
-      case 2:
         // return Wallet(
         //   appBarElevation: (elevation) => _setElevation(elevation),
         // );
@@ -686,7 +691,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
         return ChamasoftTransactions(
           appBarElevation: (elevation) => _setElevation(elevation),
         );
-      case 3:
+      case 2:
         return ChamasoftReports(
           appBarElevation: (elevation) => _setElevation(elevation),
         );

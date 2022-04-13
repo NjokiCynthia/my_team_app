@@ -16,8 +16,8 @@ import 'package:screenshot/screenshot.dart';
 import 'package:share/share.dart';
 
 class TotalAccountBalanceReciept extends StatefulWidget {
-  final double totalBalance;
-  const TotalAccountBalanceReciept({Key key, this.totalBalance})
+  final int totalBalance;
+  const TotalAccountBalanceReciept({Key key,this.totalBalance})
       : super(key: key);
 
   @override
