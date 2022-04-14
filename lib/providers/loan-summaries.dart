@@ -129,6 +129,7 @@ class LoanDashboardSummary with ChangeNotifier {
 
 
   void _updateLoanDashboardSummaries(String groupId) {
+    // if(_loanData[groupId].containsKey("member_loans_summary")) {
     var loanObject = _loanData[groupId];
     var groupLoanObject = _totalLoanBankBalance[groupId];
     // int groupLoanDetail =
@@ -147,6 +148,7 @@ class LoanDashboardSummary with ChangeNotifier {
         (memberDetails["next_instalment_date"]) ?? 0;
         _nexttoNextInstalmentDay =
         memberDetails["days_to_next_instalment"] ?? "--";
+    // }notifyListeners();
   }
 
   // /*********** New Contributions APIs *********/

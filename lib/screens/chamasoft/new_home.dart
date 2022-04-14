@@ -9,6 +9,7 @@ import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/loan-summaries.dart';
+import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/account_balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
@@ -65,6 +66,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   List<ContributionsSummary> _itableContributionSummary = [];
   Dashboard dashboardData;
   // List<BankAccountDashboardSummary> _iteratableData = [];
+  // List<NewRecentTransactionSummary> _iteratableRecentTransactionSummary = [];
 
   ExpenseSummaryList _expenseSummaryList;
   double _totalExpenses = 0;
@@ -142,7 +144,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
-  Future<void> _getExpenseSummary(BuildContext context) async {
+ /* Future<void> _getExpenseSummary(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
     } on CustomException catch (error) {
@@ -153,7 +155,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             _getExpenseSummary(context);
           });
     }
-  }
+  }*/
 
 
 
@@ -189,16 +191,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             
 
         // Provider.of(context, listen: false).fetchMemberLoans();
-        // if (_expenseSummaryList != null) {
-        //   _expenseRows = _expenseSummaryList.expenseSummary;
-        //   _totalExpenses = _expenseSummaryList.totalExpenses;
-        // }else{
-        //   _expenseRows = [];
-        //   _totalExpenses = 0;
-        //   _getExpenseSummary(context);
-        // }
+
       }
-      /*if (!Provider.of<Dashboard>(context, listen: false)
+      if (!Provider.of<Dashboard>(context, listen: false)
           .memberGroupDataExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -220,7 +215,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     // });
                   })
                 });
-      }*/
+      }
       // if (!Provider.of<Dashboard>(context, listen: false)
       //     .groupDataExists(_currentGroup.groupId)) {
       //   if (this.mounted) {
@@ -237,11 +232,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       // }
 
-      await Provider.of<DashboardContributionSummary>(context, listen: false)
-          .getContributionsSummary(_currentGroup.groupId);
-      await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      // await Provider.of<Dashboard>(context, listen: false)
-      //     .getMemberDashboardData(_currentGroup.groupId);
+
 
      /* if (!Provider.of<DashboardContributionSummary>(context, listen: false)
           .memberContributionSummaryExists(_currentGroup.groupId)) {
@@ -256,18 +247,36 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getContributionsSummary(_currentGroup.groupId);
       }*/
 
-      /*if (!Provider.of<DashboardContributionSummary>(context, listen: false)
+      // if(!Provider.of<Groups>(context, listen: false).groupExpensesExists(_currentGroup.groupId)){
+      //   if (this.mounted) {
+      //     if (_isInit == false) {
+      //       setState(() {
+      //         _isInit = true;
+      //       });
+      //     }
+      //   }
+      //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // }
+
+      // if (_expenseSummaryList != null) {
+      //   // _expenseRows = _expenseSummaryList.expenseSummary;
+      //   // _totalExpenses = _expenseSummaryList.totalExpenses;
+      // }else{
+        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // }
+
+      if (!Provider.of<DashboardContributionSummary>(context, listen: false)
           .groupContributionSummaryExists(_currentGroup.groupId)) {
-        if (this.mounted) {
+        // if (this.mounted) {
           if (_isInit == false) {
             setState(() {
               _isInit = true;
             });
           }
-        }
+        // }
         await Provider.of<DashboardContributionSummary>(context, listen: false)
             .getContributionsSummary(_currentGroup.groupId);
-      }*/
+      }
 
      /* if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .memberFineSummaryExists(_currentGroup.groupId)) {
@@ -282,7 +291,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getFinesSummary(_currentGroup.groupId);
       }*/
 
-      /*if (!Provider.of<DashboardFineSummary>(context, listen: false)
+      if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .groupFineSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -293,7 +302,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         }
         await Provider.of<DashboardFineSummary>(context, listen: false)
             .getFinesSummary(_currentGroup.groupId);
-      }*/
+      }
 
 
       if (!Provider.of<BalancesDashboardSummary>(context, listen: false)
@@ -309,6 +318,15 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getAccountBalancesSummary(_currentGroup.groupId);
       }
 
+
+      // await Provider.of<DashboardContributionSummary>(context, listen: false)
+      //     .getContributionsSummary(_currentGroup.groupId);
+      // // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // await Provider.of<MemberRecentTransaction>(context, listen: false)
+      //     .getRecentTransactionsSummary(_currentGroup.groupId);
+      // await Provider.of<Dashboard>(context, listen: false)
+      //     .getMemberDashboardData(_currentGroup.groupId);
+
       /*if (!Provider.of<BalancesDashboardSummary>(context, listen: false)
           .totalBankBalanceSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -322,7 +340,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getAccountBalancesSummary(_currentGroup.groupId);
       }*/
 
-      /*if (!Provider.of<LoanDashboardSummary>(context, listen: false)
+      if (!Provider.of<LoanDashboardSummary>(context, listen: false)
           .loanSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -333,7 +351,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         }
         await Provider.of<LoanDashboardSummary>(context, listen: false)
             .getDashboardLoanSummary(_currentGroup.groupId);
-      }*/
+      }
       /*if (!Provider.of<LoanDashboardSummary>(context, listen: false)
           .grouploanExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -408,11 +426,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             width: 16.0,
           ),
           InkWell(
-            onTap: () => Navigator.of(context).push(
+            onTap: () {} /* => Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (BuildContext context) =>
                       RecentTransactionReciept(data: data)),
-            ),
+            ) */,
             child: Container(
               width: 160.0,
               padding: EdgeInsets.all(16.0),
@@ -644,12 +662,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
+    final memberRecentTransaction = Provider.of<MemberRecentTransaction>(context);
     final balancesDashboardSummary =
         Provider.of<BalancesDashboardSummary>(context);
 
     setState(() {
       _iteratableRecentTransactionSummary =
           dashboardData.recentMemberTransactions;
+     /* memberRecentTransaction.recentTransactions;*/
       // _iteratableData = dashboardData.bankAccountDashboardSummary;
       // _itableContributionSummary = dashboardData.memberContributionSummary;
       // WidgetsBinding.instance.addPostFrameCallback((_) => () {
@@ -1083,7 +1103,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         ),
                       ),
                       SizedBox(height: 5),
-                      /*recentTransactionSummary.length > 0
+                      recentTransactionSummary.length > 0
                           ? Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                               child: customShowCase(
@@ -1108,7 +1128,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                             )
-                          :*/ Padding(
+                          : Padding(
                               padding:
                                   EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
                               child: Container(
@@ -1170,28 +1190,33 @@ class _ContrubutionsState extends State<Contrubutions> {
     final currencyFormat = new NumberFormat("#,##0", "en_US");
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    bool _isInit = true;
+    // bool _isInit = true;
+
+    /*DashboardFineSummary dashboardFineSummary =
+        Provider.of<DashboardFineSummary>(context);*/
     
 
-    Future<void> _getContributionSummary(BuildContext context) async {
+    /*Future<void> _getContributionSummary(BuildContext context) async {
       try {
         await Provider.of<DashboardContributionSummary>(context, listen: false)
             .getContributionsSummary(_currentGroup.groupId);
 
-        await Provider.of<DashboardFineSummary>(context, listen: false)
+        if(dashboardFineSummary.groupFineSummaryExists(_currentGroup.groupId) == null){
+          await Provider.of<DashboardFineSummary>(context, listen: false)
             .getFinesSummary(_currentGroup.groupId);
-        // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+        }
+
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
             context: context,
             error: error,
-           /* callback: () {
-              _getExpenseSummary(context);
-            }*/);
+            callback: () {
+              _getContributionSummary(context);
+            });
       }
-    }
+    }*/
     
-    if (dashboardContributionSummary.groupContributionSummaryExists(_currentGroup.groupId) == null) {
+    /*if (dashboardContributionSummary.groupContributionSummaryExists(_currentGroup.groupId) == null) {
       _getContributionSummary(context);
     }else {
       if (!Provider.of<DashboardContributionSummary>(context, listen: false)
@@ -1205,7 +1230,7 @@ class _ContrubutionsState extends State<Contrubutions> {
         }
         _getContributionSummary(context);
       }
-    }
+    }*/
 
     // if (_expenseSummaryList != null) {
     //   _expenseRows = _expenseSummaryList.expenseSummary;
@@ -1678,40 +1703,47 @@ class _FinesState extends State<Fines> {
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     bool _isInit = true;
+    // LoanDashboardSummary _loanDashboardSummary =
+    //     Provider.of<LoanDashboardSummary>(context);
 
-    Future<void> _getFineSummary(BuildContext context) async {
-      try {
-        await Provider.of<DashboardFineSummary>(context, listen: false)
-            .getFinesSummary(_currentGroup.groupId);
+    // Future<void> _getFineSummary(BuildContext context) async {
+    //   try {
+    //     await Provider.of<DashboardFineSummary>(context, listen: false)
+    //         .getFinesSummary(_currentGroup.groupId);
+    //
+    //    /* if(_loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null){
+    //       await Provider.of<LoanDashboardSummary>(context, listen: false)
+    //           .getDashboardLoanSummary(_currentGroup.groupId);
+    //     }*/
+    //
+    //
+    //     // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+    //   } on CustomException catch (error) {
+    //     StatusHandler().handleStatus(
+    //       context: context,
+    //       error: error,
+    //       /* callback: () {
+    //          _getFineSummary(context);
+    //         }*/);
+    //   }
+    // }
 
-        await Provider.of<LoanDashboardSummary>(context, listen: false)
-            .getDashboardLoanSummary(_currentGroup.groupId);
-        // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      } on CustomException catch (error) {
-        StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          /* callback: () {
-              _getExpenseSummary(context);
-            }*/);
-      }
-    }
-
-    if (dashboardFineSummary.groupFineSummaryExists(_currentGroup.groupId) == null) {
-      _getFineSummary(context);
-    }else {
-      if (!Provider.of<DashboardFineSummary>(context, listen: false)
-          .groupFineSummaryExists(_currentGroup.groupId)) {
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-            });
-          }
-        }
-        _getFineSummary(context);
-      }
-    }
+    // if (dashboardFineSummary.groupFineSummaryExists(_currentGroup.groupId) == null) {
+    //   _getFineSummary(context);
+    // }else {
+    //   if (!Provider.of<DashboardFineSummary>(context, listen: false)
+    //       .groupFineSummaryExists(_currentGroup.groupId)) {
+    //     if (this.mounted) {
+    //       if (_isInit == false) {
+    //         setState(() {
+    //           _isInit = true;
+    //         });
+    //       }
+    //     }
+    //   }
+    //   _getFineSummary(context);
+    //
+    // }
     final groupTotalFine = dashboardFineSummary
         .totalGroupFinePaid - dashboardFineSummary
         .memberFinePaid;
@@ -2057,37 +2089,46 @@ class _BalancesState extends State<Balances> {
     Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     bool _isInit = true;
+    ExpenseSummaryList _expenseSummaryList;
+    double _totalExpenses = 0;
+    List<SummaryRow> _expenseRows = [];
 
-    Future<void> _getLoanSummary(BuildContext context) async {
-      try {
-        await Provider.of<LoanDashboardSummary>(context, listen: false)
-            .getDashboardLoanSummary(_currentGroup.groupId);
-        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      } on CustomException catch (error) {
-        StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          /* callback: () {
-              _getExpenseSummary(context);
-            }*/);
-      }
-    }
+    // Future<void> _getLoanSummary(BuildContext context) async {
+    //   try {
+    //     await Provider.of<LoanDashboardSummary>(context, listen: false)
+    //         .getDashboardLoanSummary(_currentGroup.groupId);
+    //
+    //     if(_currentGroup.groupId == null){
+    //       _getLoanSummary(context);
+    //     }
+    //     // if (_expenseSummaryList == null) {
+    //     //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+    //     // }
+    //   } on CustomException catch (error) {
+    //     StatusHandler().handleStatus(
+    //       context: context,
+    //       error: error,
+    //       /* callback: () {
+    //          _getLoanSummary(context);
+    //         }*/);
+    //   }
+    // }
 
-    if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
-      _getLoanSummary(context);
-    }else {
-      if (!Provider.of<DashboardFineSummary>(context, listen: false)
-          .groupFineSummaryExists(_currentGroup.groupId)) {
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-            });
-          }
-        }
-        _getLoanSummary(context);
-      }
-    }
+    // if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
+    //   _getLoanSummary(context);
+    // }else {
+    //   if (!Provider.of<DashboardFineSummary>(context, listen: false)
+    //       .groupFineSummaryExists(_currentGroup.groupId)) {
+    //     if (this.mounted) {
+    //       if (_isInit == false) {
+    //         setState(() {
+    //           _isInit = true;
+    //         });
+    //       }
+    //     }
+    //   }
+    //   _getLoanSummary(context);
+    // }
 
     var nextInstallmentRepaymentDate = DateTime.fromMillisecondsSinceEpoch(loanDashboardSummary.nextInstalmentDate * 1000);
 
@@ -2468,12 +2509,19 @@ class _BalancesState extends State<Balances> {
   }
 }
 
-class Expenses extends StatelessWidget {
+class Expenses extends StatefulWidget {
   const Expenses({Key key}) : super(key: key);
 
   @override
+  State<Expenses> createState() => _ExpensesState();
+}
+
+class _ExpensesState extends State<Expenses> {
+  @override
   Widget build(BuildContext context) {
     Dashboard dashboardData = Provider.of<Dashboard>(context);
+
+
 
     ExpenseSummaryList _expenseSummaryList;
     double _totalExpenses = 0;
@@ -2489,30 +2537,36 @@ class Expenses extends StatelessWidget {
     _expenseSummaryList =
         Provider.of<Groups>(context, listen: false).expenseSummaryList;
 
-    Future<void> _getExpenseSummary(BuildContext context) async {
-      try {
-        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      } on CustomException catch (error) {
-        StatusHandler().handleStatus(
-            context: context,
-            error: error,
-            /*callback: () {
-              _getExpenseSummary(context);
-            }*/);
-      }
-    }
+    // Future<void> _getExpenseSummary(BuildContext context) async {
+    //   try {
+    //     await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+    //   } on CustomException catch (error) {
+    //     StatusHandler().handleStatus(
+    //         context: context,
+    //         error: error,
+    //         callback: () {
+    //           _getExpenseSummary(context);
+    //         });
+    //   }
+    // }
 
-    if(_currentGroup.groupId == null){
-      _getExpenseSummary(context);
-    }
-    if (_expenseSummaryList != null) {
+    // if(_currentGroup.groupId == null){
+      // _getExpenseSummary(context);
+    // }
+    // if (_expenseSummaryList != null) {
+      // _getExpenseSummary(context);/*
       _expenseRows = _expenseSummaryList.expenseSummary;
       _totalExpenses = _expenseSummaryList.totalExpenses;
-    }else{
-      _expenseRows = [];
-      _totalExpenses = 0;
-      _getExpenseSummary(context);
-    }
+    //}
+    /*else{
+     *//* _expenseRows = [];
+      _totalExpenses = 0;*//*
+      _expenseRows = _expenseSummaryList.expenseSummary;
+      _totalExpenses = _expenseSummaryList.totalExpenses;
+      _getExpenseSummary(context).then((_){
+        Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      });
+    }*/
 
 
     final otherExpenses = /*dashboardData.groupExpensesAmount*/_totalExpenses - (
