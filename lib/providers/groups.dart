@@ -764,6 +764,10 @@ class Groups with ChangeNotifier {
     return [..._groupMembersDetails];
   }
 
+  bool expenseListExists() {
+    return ((expenseSummaryList.expenseSummary != null) && (expenseSummaryList.totalExpenses != null)) ? true : false;
+  }
+
   /// ********************Group Objects************/
   setSelectedGroupId(String groupId) async {
     switchGroupValuesToDefault();
@@ -1517,6 +1521,7 @@ class Groups with ChangeNotifier {
 
   void addExpenseSummary(dynamic data) {
     _expenseSummaryList = getExpenseSummary(data);
+    print(_expenseSummaryList);
     notifyListeners();
   }
 
@@ -5363,7 +5368,6 @@ class Groups with ChangeNotifier {
       throw CustomException(message: ERROR_MESSAGE);
     }
   }
-
 
   void switchGroupValuesToDefault({bool removeGroups = false}) {
     if (removeGroups) {

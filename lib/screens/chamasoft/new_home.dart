@@ -155,8 +155,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     }
   }
 
-
-
   Future<void> _getMemberDashboardDataNew([bool hardRefresh = false]) async {
     try {
       if (hardRefresh) {
@@ -185,8 +183,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .resetloanSummary(_currentGroup.groupId);
         Provider.of<LoanDashboardSummary>(context, listen: false)
             .resetGroupLoanSummary(_currentGroup.groupId);
-
-            
 
         // Provider.of(context, listen: false).fetchMemberLoans();
         // if (_expenseSummaryList != null) {
@@ -237,13 +233,25 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       // }
 
-      await Provider.of<DashboardContributionSummary>(context, listen: false)
-          .getContributionsSummary(_currentGroup.groupId);
-      await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // await Provider.of<DashboardContributionSummary>(context, listen: false)
+      //     .getContributionsSummary(_currentGroup.groupId);
+
+      if (!Provider.of<Groups>(context, listen: false).expenseListExists()) {
+        print("We have no expenses, fetching them");
+        if (this.mounted) {
+          if (_isInit == false) {
+            setState(() {
+              _isInit = true;
+            });
+          }
+        }
+        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      }
+
       // await Provider.of<Dashboard>(context, listen: false)
       //     .getMemberDashboardData(_currentGroup.groupId);
 
-     /* if (!Provider.of<DashboardContributionSummary>(context, listen: false)
+      /* if (!Provider.of<DashboardContributionSummary>(context, listen: false)
           .memberContributionSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -269,7 +277,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getContributionsSummary(_currentGroup.groupId);
       }*/
 
-     /* if (!Provider.of<DashboardFineSummary>(context, listen: false)
+      /* if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .memberFineSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -294,7 +302,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         await Provider.of<DashboardFineSummary>(context, listen: false)
             .getFinesSummary(_currentGroup.groupId);
       }*/
-
 
       if (!Provider.of<BalancesDashboardSummary>(context, listen: false)
           .accountBalanceSummaryExists(_currentGroup.groupId)) {
@@ -710,12 +717,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                               width: 16.0,
                             ),
                             InkWell(
-                              onTap: () {},/*=> Navigator.of(context).push(
+                              onTap: () {},
+                              /*=> Navigator.of(context).push(
                                 MaterialPageRoute(
                                     builder: (BuildContext context) =>
                                         TotalAccountBalanceReciept(
-                                            totalBalance: *//*dashboardData
-                                                .totalBankBalances*//*balancesDashboardSummary
+                                            totalBalance: */ /*dashboardData
+                                                .totalBankBalances*/ /*balancesDashboardSummary
                                                 .totalBackBalanceAccount)),
                               ),*/
                               child: Container(
@@ -1108,36 +1116,36 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                             )
-                          :*/ Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
-                              child: Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(16.0),
-                                  decoration: flatGradient(context),
-                                  child: Column(
-                                    children: [
-                                      SvgPicture.asset(
-                                        customIcons['no-data'],
-                                        semanticsLabel: 'icon',
-                                        height: 120.0,
-                                      ),
-                                      customTitleWithWrap(
-                                          text: "Nothing to display!",
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14.0,
-                                          textAlign: TextAlign.center,
-                                          color: Colors.blueGrey[400]),
-                                      customTitleWithWrap(
-                                          text:
-                                              "Sorry, you haven't made any transactions",
-                                          //fontWeight: FontWeight.w500,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.center,
-                                          color: Colors.blueGrey[400])
-                                    ],
-                                  )),
-                            ),
+                          :*/
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+                        child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16.0),
+                            decoration: flatGradient(context),
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  customIcons['no-data'],
+                                  semanticsLabel: 'icon',
+                                  height: 120.0,
+                                ),
+                                customTitleWithWrap(
+                                    text: "Nothing to display!",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.0,
+                                    textAlign: TextAlign.center,
+                                    color: Colors.blueGrey[400]),
+                                customTitleWithWrap(
+                                    text:
+                                        "Sorry, you haven't made any transactions",
+                                    //fontWeight: FontWeight.w500,
+                                    fontSize: 12.0,
+                                    textAlign: TextAlign.center,
+                                    color: Colors.blueGrey[400])
+                              ],
+                            )),
+                      ),
                     ],
                   )
                 : newHomePlaceHolder(context: context),
@@ -1154,8 +1162,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 }
 
 class Contrubutions extends StatefulWidget {
-
-
   @override
   State<Contrubutions> createState() => _ContrubutionsState();
 }
@@ -1171,7 +1177,6 @@ class _ContrubutionsState extends State<Contrubutions> {
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     bool _isInit = true;
-    
 
     Future<void> _getContributionSummary(BuildContext context) async {
       try {
@@ -1183,17 +1188,20 @@ class _ContrubutionsState extends State<Contrubutions> {
         // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
-            context: context,
-            error: error,
-           /* callback: () {
+          context: context,
+          error: error,
+          /* callback: () {
               _getExpenseSummary(context);
-            }*/);
+            }*/
+        );
       }
     }
-    
-    if (dashboardContributionSummary.groupContributionSummaryExists(_currentGroup.groupId) == null) {
+
+    if (dashboardContributionSummary
+            .groupContributionSummaryExists(_currentGroup.groupId) ==
+        null) {
       _getContributionSummary(context);
-    }else {
+    } else {
       if (!Provider.of<DashboardContributionSummary>(context, listen: false)
           .memberContributionSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -1216,16 +1224,18 @@ class _ContrubutionsState extends State<Contrubutions> {
     //   _getExpenseSummary(context);
     // }
 
-
-    var nextContributionDate = DateTime.fromMillisecondsSinceEpoch(dashboardContributionSummary.nextcontributionDate * 1000);
+    var nextContributionDate = DateTime.fromMillisecondsSinceEpoch(
+        dashboardContributionSummary.nextcontributionDate * 1000);
 
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String nextContributionDateFormatted = formatter.format(nextContributionDate);
+    final String nextContributionDateFormatted =
+        formatter.format(nextContributionDate);
     print("formatted $nextContributionDateFormatted");
-print("nextContributionDate $nextContributionDate");
+    print("nextContributionDate $nextContributionDate");
 
-final groupTotalContribution = dashboardContributionSummary
-    .groupContributionAmount - dashboardContributionSummary.memberContributionAmount;
+    final groupTotalContribution =
+        dashboardContributionSummary.groupContributionAmount -
+            dashboardContributionSummary.memberContributionAmount;
 
     Map<String, double> dataMap = {
       "Your Total Contribution":
@@ -1233,7 +1243,8 @@ final groupTotalContribution = dashboardContributionSummary
                   .abs() */
               dashboardContributionSummary.memberContributionAmount.abs()),
       "Group Total Contribution": /* dashboardData.groupContributionAmount.abs() */ /*dashboardContributionSummary
-          .groupContributionAmount*/groupTotalContribution.abs(),
+          .groupContributionAmount*/
+          groupTotalContribution.abs(),
     };
 
     final List<Color> color = <Color>[];
@@ -1255,10 +1266,7 @@ final groupTotalContribution = dashboardContributionSummary
       [Color(0xFF00ABF2), Color(/* 0xFF008CC5 */ 0xFF00ABF2)],
     ];
 
-    return  dashboardContributionSummary
-                .groupContributionAmount
-                .abs() >
-            0
+    return dashboardContributionSummary.groupContributionAmount.abs() > 0
         ? Container(
             color: Theme.of(context).backgroundColor,
             child: Column(
@@ -1693,13 +1701,15 @@ class _FinesState extends State<Fines> {
           error: error,
           /* callback: () {
               _getExpenseSummary(context);
-            }*/);
+            }*/
+        );
       }
     }
 
-    if (dashboardFineSummary.groupFineSummaryExists(_currentGroup.groupId) == null) {
+    if (dashboardFineSummary.groupFineSummaryExists(_currentGroup.groupId) ==
+        null) {
       _getFineSummary(context);
-    }else {
+    } else {
       if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .groupFineSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -1712,9 +1722,8 @@ class _FinesState extends State<Fines> {
         _getFineSummary(context);
       }
     }
-    final groupTotalFine = dashboardFineSummary
-        .totalGroupFinePaid - dashboardFineSummary
-        .memberFinePaid;
+    final groupTotalFine = dashboardFineSummary.totalGroupFinePaid -
+        dashboardFineSummary.memberFinePaid;
     Map<String, double> dataMap = {
       "Your Total Fines":
           (/* dashboardData.memberFineAmount */ dashboardFineSummary
@@ -1979,59 +1988,61 @@ class _FinesState extends State<Fines> {
                     ]),
               )
             ]))
-        :    dashboardFineSummary.groupFineSummaryExists == null ? Container(
-            child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(16.0),
-                decoration: flatGradient(context),
-                child: Column(
-                  children: [
-                    SvgPicture.asset(
-                      customIcons['no-data'],
-                      semanticsLabel: 'icon',
-                      height: 120.0,
-                    ),
-                    customTitleWithWrap(
-                        text: "Fetching Data!",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14.0,
-                        textAlign: TextAlign.center,
-                        color: Colors.blueGrey[400]),
-                    customTitleWithWrap(
-                        text: "Kindly Wait, Fetching your fines ...",
-                        //fontWeight: FontWeight.w500,
-                        fontSize: 12.0,
-                        textAlign: TextAlign.center,
-                        color: Colors.blueGrey[400])
-                  ],
-                )),
-          ): Container(
-      child: Container(
-          width: double.infinity,
-          padding: EdgeInsets.all(16.0),
-          decoration: flatGradient(context),
-          child: Column(
-            children: [
-              SvgPicture.asset(
-                customIcons['no-data'],
-                semanticsLabel: 'icon',
-                height: 120.0,
-              ),
-              customTitleWithWrap(
-                  text: "Nothing to display!",
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14.0,
-                  textAlign: TextAlign.center,
-                  color: Colors.blueGrey[400]),
-              customTitleWithWrap(
-                  text: "Sorry, There are no Fines available",
-                  //fontWeight: FontWeight.w500,
-                  fontSize: 12.0,
-                  textAlign: TextAlign.center,
-                  color: Colors.blueGrey[400])
-            ],
-          )),
-    );
+        : dashboardFineSummary.groupFineSummaryExists == null
+            ? Container(
+                child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: flatGradient(context),
+                    child: Column(
+                      children: [
+                        SvgPicture.asset(
+                          customIcons['no-data'],
+                          semanticsLabel: 'icon',
+                          height: 120.0,
+                        ),
+                        customTitleWithWrap(
+                            text: "Fetching Data!",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14.0,
+                            textAlign: TextAlign.center,
+                            color: Colors.blueGrey[400]),
+                        customTitleWithWrap(
+                            text: "Kindly Wait, Fetching your fines ...",
+                            //fontWeight: FontWeight.w500,
+                            fontSize: 12.0,
+                            textAlign: TextAlign.center,
+                            color: Colors.blueGrey[400])
+                      ],
+                    )),
+              )
+            : Container(
+                child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.all(16.0),
+                    decoration: flatGradient(context),
+                    child: Column(
+                      children: [
+                        SvgPicture.asset(
+                          customIcons['no-data'],
+                          semanticsLabel: 'icon',
+                          height: 120.0,
+                        ),
+                        customTitleWithWrap(
+                            text: "Nothing to display!",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14.0,
+                            textAlign: TextAlign.center,
+                            color: Colors.blueGrey[400]),
+                        customTitleWithWrap(
+                            text: "Sorry, There are no Fines available",
+                            //fontWeight: FontWeight.w500,
+                            fontSize: 12.0,
+                            textAlign: TextAlign.center,
+                            color: Colors.blueGrey[400])
+                      ],
+                    )),
+              );
   }
 }
 
@@ -2052,9 +2063,8 @@ class _BalancesState extends State<Balances> {
 
     final currencyFormat = new NumberFormat("#,##0", "en_US");
 
-
     Group _currentGroup =
-    Provider.of<Groups>(context, listen: false).getCurrentGroup();
+        Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     bool _isInit = true;
 
@@ -2069,13 +2079,14 @@ class _BalancesState extends State<Balances> {
           error: error,
           /* callback: () {
               _getExpenseSummary(context);
-            }*/);
+            }*/
+        );
       }
     }
 
     if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
       _getLoanSummary(context);
-    }else {
+    } else {
       if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .groupFineSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -2089,10 +2100,12 @@ class _BalancesState extends State<Balances> {
       }
     }
 
-    var nextInstallmentRepaymentDate = DateTime.fromMillisecondsSinceEpoch(loanDashboardSummary.nextInstalmentDate * 1000);
+    var nextInstallmentRepaymentDate = DateTime.fromMillisecondsSinceEpoch(
+        loanDashboardSummary.nextInstalmentDate * 1000);
 
     final DateFormat formatter = DateFormat('dd-MM-yyyy');
-    final String nextInstallmentRepaymentDateFormatted = formatter.format(nextInstallmentRepaymentDate);
+    final String nextInstallmentRepaymentDateFormatted =
+        formatter.format(nextInstallmentRepaymentDate);
     print("formatted $nextInstallmentRepaymentDateFormatted");
     print("nextContributionDate $nextInstallmentRepaymentDate");
 
@@ -2101,9 +2114,8 @@ class _BalancesState extends State<Balances> {
           (/* dashboardData.memberTotalLoanBalance.abs() */ loanDashboardSummary
               .totalLoanAmount
               .abs()),
-      "Group Loan Balances": /* dashboardData.groupPendingLoanBalance. */ double.tryParse(loanDashboardSummary
-          .totalGroupLoanBalance
-          .abs().toString())
+      "Group Loan Balances": /* dashboardData.groupPendingLoanBalance. */ double
+          .tryParse(loanDashboardSummary.totalGroupLoanBalance.abs().toString())
     };
     final gradientList = <List<Color>>[
       // [Colors.red[200], Colors.red[200]],
@@ -2319,11 +2331,12 @@ class _BalancesState extends State<Balances> {
                           children: [
                             customTitle(
                               text:
-                                  /*(*//* dashboardData.memberLoanArrears *//* loanDashboardSummary
+                                  /*(*/ /* dashboardData.memberLoanArrears */ /* loanDashboardSummary
                                               .loanBalance) <
                                           0
-                                      ?*/ "Your Loan Balance",
-                                      /*: "Your Loan Overpayment",*/
+                                      ?*/
+                                  "Your Loan Balance",
+                              /*: "Your Loan Overpayment",*/
                               fontSize: 12,
                               textAlign: TextAlign.start,
                               fontWeight: FontWeight.w400,
@@ -2388,8 +2401,11 @@ class _BalancesState extends State<Balances> {
                                 text: _currentGroup.groupCurrency +
                                     " " +
                                     currencyFormat.format(loanDashboardSummary
-                                        .nextInstalmentAmount
-                                        .abs() ?? loanDashboardSummary.nextInstalmentAmountInt.abs()),
+                                            .nextInstalmentAmount
+                                            .abs() ??
+                                        loanDashboardSummary
+                                            .nextInstalmentAmountInt
+                                            .abs()),
                                 // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                 color: Theme.of(context)
                                     // ignore: deprecated_member_use
@@ -2421,7 +2437,7 @@ class _BalancesState extends State<Balances> {
                             children: [
                               customTitle1(
                                 text:
-                                    "${/*defaultDateFormat.format*/(nextInstallmentRepaymentDateFormatted)} (${loanDashboardSummary.nexttoNextInstalmentDay == "0 days" ? "today" : loanDashboardSummary.nexttoNextInstalmentDay != null ? "${loanDashboardSummary.nexttoNextInstalmentDay} left" : "--"})",
+                                    "${/*defaultDateFormat.format*/ (nextInstallmentRepaymentDateFormatted)} (${loanDashboardSummary.nexttoNextInstalmentDay == "0 days" ? "today" : loanDashboardSummary.nexttoNextInstalmentDay != null ? "${loanDashboardSummary.nexttoNextInstalmentDay} left" : "--"})",
 
                                 // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                 color: Theme.of(context)
@@ -2480,7 +2496,6 @@ class Expenses extends StatelessWidget {
     List<SummaryRow> _expenseRows = [];
     // var otherExpenses;
 
-
     final currencyFormat = new NumberFormat("#,##0", "en_US");
 
     Group _currentGroup =
@@ -2494,50 +2509,48 @@ class Expenses extends StatelessWidget {
         await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
-            context: context,
-            error: error,
-            /*callback: () {
+          context: context,
+          error: error,
+          /*callback: () {
               _getExpenseSummary(context);
-            }*/);
+            }*/
+        );
       }
     }
 
-    if(_currentGroup.groupId == null){
+    if (_currentGroup.groupId == null) {
       _getExpenseSummary(context);
     }
     if (_expenseSummaryList != null) {
       _expenseRows = _expenseSummaryList.expenseSummary;
       _totalExpenses = _expenseSummaryList.totalExpenses;
-    }else{
+    } else {
       _expenseRows = [];
       _totalExpenses = 0;
       _getExpenseSummary(context);
     }
 
-
-    final otherExpenses = /*dashboardData.groupExpensesAmount*/_totalExpenses - (
-        // _expenseRows[3].paid ?? 0 +
-        (_expenseRows?.length >2 ? _expenseRows[2].paid : 0) +
-            (_expenseRows?.length >1 ? _expenseRows[1].paid : 0) +
-            (_expenseRows?.length >0 ? _expenseRows[0].paid : 0)
+    final otherExpenses = /*dashboardData.groupExpensesAmount*/ _totalExpenses -
+        (
+            // _expenseRows[3].paid ?? 0 +
+            (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) +
+                (_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) +
+                (_expenseRows?.length > 0 ? _expenseRows[0].paid : 0)
         /*_expenseRows[1].paid ?? 0  +
-        _expenseRows[0].paid ?? 0*/);
+        _expenseRows[0].paid ?? 0*/
+        );
 
     print("object Other Expenses will be $otherExpenses");
     print("Total Expenses will be $_totalExpenses");
 
     Map<String, double> dataMaptest = {
-
-
-      "Item1": (_expenseRows?.length >0 ? _expenseRows[0].paid : 0),
-      "Item2": (_expenseRows?.length >1 ? _expenseRows[1].paid : 0),
-      "Item3": (_expenseRows?.length >2 ? _expenseRows[2].paid : 0),
+      "Item1": (_expenseRows?.length > 0 ? _expenseRows[0].paid : 0),
+      "Item2": (_expenseRows?.length > 1 ? _expenseRows[1].paid : 0),
+      "Item3": (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0),
       // "Item3": _expenseRows[2].paid  ?? 0,
       // "Item3": _expenseRows[2].paid  ?? 0,
       // "Item4": _expenseRows[3].paid??0,
-      "Others": otherExpenses??0,
-
-
+      "Others": otherExpenses ?? 0,
     };
     final gradientList = <List<Color>>[
       [primaryColor.withOpacity(.3), primaryColor.withOpacity(.3)],
@@ -2548,9 +2561,8 @@ class Expenses extends StatelessWidget {
       [Color(0xFF00ABF2), Color(0xFF00ABF2)],
     ];
 
-    return  _expenseRows != null && _expenseRows.length > 0
-        ?
-        Container(
+    return _expenseRows != null && _expenseRows.length > 0
+        ? Container(
             color: Theme.of(context).backgroundColor,
             child: Column(children: [
               Row(
@@ -2596,7 +2608,9 @@ class Expenses extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       customTitle(
-                        text: (_expenseRows?.length >0 ? _expenseRows[0].name : ' '),
+                        text: (_expenseRows?.length > 0
+                            ? _expenseRows[0].name
+                            : ' '),
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Theme.of(context)
@@ -2621,14 +2635,11 @@ class Expenses extends StatelessWidget {
                           customTitle1(
                             text: _currentGroup.groupCurrency +
                                 " " +
-                                currencyFormat.format(
-                                    (_expenseRows?.length >0 ? _expenseRows[0].paid : 0))+" "+
-                                ("(${
-                                  (((_expenseRows?.length >0 ? _expenseRows[0].paid : 0) / _totalExpenses) *
-                                              100)
-                                          .toStringAsFixed(1) +
-                                      "%"
-                                }) "),
+                                currencyFormat.format((_expenseRows?.length > 0
+                                    ? _expenseRows[0].paid
+                                    : 0)) +
+                                " " +
+                                ("(${(((_expenseRows?.length > 0 ? _expenseRows[0].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
                                 .textSelectionHandleColor,
@@ -2643,7 +2654,9 @@ class Expenses extends StatelessWidget {
                       //   height: 20,
                       // ),
                       customTitle(
-                        text: (_expenseRows?.length >1 ? _expenseRows[1].name : 0),
+                        text: (_expenseRows?.length > 1
+                            ? _expenseRows[1].name
+                            : 0),
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Theme.of(context)
@@ -2673,14 +2686,11 @@ class Expenses extends StatelessWidget {
                                 .textSelectionHandleColor,
                             text: _currentGroup.groupCurrency +
                                 " " +
-                                currencyFormat.format(
-                                    (_expenseRows?.length >1 ? _expenseRows[1].paid : 0)) +" "+
-                                ("(${
-                                    (((_expenseRows?.length >1 ? _expenseRows[1].paid : 0) / _totalExpenses) *
-                                        100)
-                                        .toStringAsFixed(1) +
-                                        "%"
-                                }) "),
+                                currencyFormat.format((_expenseRows?.length > 1
+                                    ? _expenseRows[1].paid
+                                    : 0)) +
+                                " " +
+                                ("(${(((_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),
                             textAlign: TextAlign.start,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -2689,7 +2699,9 @@ class Expenses extends StatelessWidget {
                       ),
                       SizedBox(height: 5),
                       customTitle(
-                        text: /*_expenseRows[2].name*/ (_expenseRows?.length >2 ? _expenseRows[2].name : ""),
+                        text: /*_expenseRows[2].name*/ (_expenseRows?.length > 2
+                            ? _expenseRows[2].name
+                            : ""),
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Theme.of(context)
@@ -2719,13 +2731,13 @@ class Expenses extends StatelessWidget {
                             text: _currentGroup.groupCurrency +
                                 " " +
                                 currencyFormat.format(
-                                    /*_expenseRows[2].paid*/(_expenseRows?.length >2 ? _expenseRows[2].paid : 0))+" "+
-                                ("(${
-                                    ((/*_expenseRows[2].paid*/ (_expenseRows?.length >2 ? _expenseRows[2].paid : 0) / _totalExpenses) *
-                                        100)
-                                        .toStringAsFixed(1) +
-                                        "%"
-                                }) "),
+                                    /*_expenseRows[2].paid*/ (_expenseRows
+                                                ?.length >
+                                            2
+                                        ? _expenseRows[2].paid
+                                        : 0)) +
+                                " " +
+                                ("(${((/*_expenseRows[2].paid*/ (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),
                             textAlign: TextAlign.start,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -2772,58 +2784,54 @@ class Expenses extends StatelessWidget {
                       // ),
                       SizedBox(height: 5),
                       /*otherExpenses < 0
-                          ?*/ customTitle(
-                              text: "Others",
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context)
-                                  // ignore: deprecated_member_use
-                                  .textSelectionHandleColor,
-                            ),
-                         /* : Container(),*/
+                          ?*/
+                      customTitle(
+                        text: "Others",
+                        fontSize: 13,
+                        fontWeight: FontWeight.w400,
+                        color: Theme.of(context)
+                            // ignore: deprecated_member_use
+                            .textSelectionHandleColor,
+                      ),
+                      /* : Container(),*/
                       SizedBox(height: 5),
                       /*otherExpenses < 0
-                          ?*/ Row(
-                              children: [
-                                circleButton(
-                                  backgroundColor: /*  dashboardData
+                          ?*/
+                      Row(
+                        children: [
+                          circleButton(
+                            backgroundColor: /*  dashboardData
                                         .groupPendingLoanBalance >
                                     0
                                 ?  */
-                                      primaryColor
-                                  /*  : Colors
+                                primaryColor
+                            /*  : Colors
                                     .white  */ /* rimaryColor.withOpacity(.3) */,
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                customTitle1(
-                                  color: Theme.of(context)
-                                      // ignore: deprecated_member_use
-                                      .textSelectionHandleColor,
-                                  text: _currentGroup.groupCurrency +
-                                      " " +
-                                      currencyFormat.format(otherExpenses) +" "+
-                                      ("(${
-                                          ((otherExpenses / _totalExpenses) *
-                                              100)
-                                              .toStringAsFixed(1) +
-                                              "%"
-                                      }) "),
-                                  textAlign: TextAlign.start,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ],
-                            )
-
+                          ),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          customTitle1(
+                            color: Theme.of(context)
+                                // ignore: deprecated_member_use
+                                .textSelectionHandleColor,
+                            text: _currentGroup.groupCurrency +
+                                " " +
+                                currencyFormat.format(otherExpenses) +
+                                " " +
+                                ("(${((otherExpenses / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),
+                            textAlign: TextAlign.start,
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ],
               ),
-
-            ])
-        ): Container(
+            ]))
+        : Container(
             child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
