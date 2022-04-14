@@ -819,6 +819,14 @@ class Groups with ChangeNotifier {
     return result;
   }
 
+  bool groupExpensesExists(String group){
+    if(_expenses.length > 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   Future<void> addGroups(List<dynamic> groupObject,
       [bool replace = false, int position = 0, bool isNewGroup = false]) async {
     final List<Group> loadedGroups = [];

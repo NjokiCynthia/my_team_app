@@ -4,6 +4,7 @@ import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
 import 'package:chamasoft/providers/loan-summaries.dart';
+import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
@@ -184,6 +185,20 @@ class _MyAppState extends State<MyApp> {
           // ignore: missing_return
           create: (BuildContext context) {},
         ),
+        ChangeNotifierProxyProvider<Groups, MemberRecentTransaction>(
+          update: (ctx, groups, memberRecentTransaction) =>
+              MemberRecentTransaction(
+            groups.userId,
+            groups.currentGroupId,
+            memberRecentTransaction == null
+                ? {}
+                : memberRecentTransaction.recentTransactionData,
+          ),
+          // ignore: missing_return
+          create: (BuildContext context) {},
+        ),
+
+
       ],
       child: Consumer<DarkThemeProvider>(
           builder: (BuildContext context, value, Widget child) {

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:ffi';
 
 import 'package:chamasoft/helpers/common.dart';
@@ -131,26 +132,30 @@ class DashboardContributionSummary with ChangeNotifier {
   }
 
   void _updateMemberContributionSummaries(String groupId) async {
-    var groupMemberObject = _memberData[groupId];
-    var groupContributionObject = _totalGroupContributionAmount[groupId];
-    var groupContributionDetail =
-        groupContributionObject["total_group_contribution"];
-    var memberDetails = groupMemberObject["member_contribution_summary"]
-        as Map<String, dynamic>;
-    _groupContributionAmount = int.tryParse(groupContributionDetail) ?? 0.0;
-    _memberContributionAmount =
-        double.tryParse(memberDetails["contribution_paid"].toString()) ?? 0.0;
-    _memberContributionArrears =
-        double.tryParse(memberDetails["contribution_arrears"].toString()) ??
-            0.0;
-    _nextcontributionDate = int.tryParse(memberDetails["next_contribution_date"].toString()) ?? 0;
-    _contributionDateDaysleft =
-        memberDetails["days_to_next_contribution"] ?? "--";
+    // if(_memberData[groupId].containsKey("member_contribution_summary")) {
+      var groupMemberObject = _memberData[groupId];
+      var groupContributionObject = _totalGroupContributionAmount[groupId];
+      var groupContributionDetail =
+      groupContributionObject["total_group_contribution"];
+      var memberDetails = groupMemberObject["member_contribution_summary"]
+      as Map<String, dynamic>;
+      _groupContributionAmount = int.tryParse(groupContributionDetail) ?? 0.0;
+      _memberContributionAmount =
+          double.tryParse(memberDetails["contribution_paid"].toString()) ?? 0.0;
+      _memberContributionArrears =
+          double.tryParse(memberDetails["contribution_arrears"].toString()) ??
+              0.0;
+      _nextcontributionDate =
+          int.tryParse(memberDetails["next_contribution_date"].toString()) ?? 0;
+      _contributionDateDaysleft =
+          memberDetails["days_to_next_contribution"] ?? "--";
+    // }notifyListeners();
   }
 
   // /*********** New Contributions APIs *********/
   Future<void> getContributionsSummary(String groupId) async {
     final url = EndpointUrl.GET_MEMBER_CONTRIBUTION_SUMMARY;
+    var dt = DateTime.now();
     try {
       final postRequest = json.encode({
         "request_id": _requestId,
@@ -160,6 +165,7 @@ class DashboardContributionSummary with ChangeNotifier {
       try {
         final response = await PostToServer.post(postRequest, url);
         _memberData[groupId] = response;
+        // log('getcontributionssummary'+ response + ' ' + dt.toString());
         _totalGroupContributionAmount[groupId] = response;
         _updateMemberContributionSummaries(groupId);
         // final data = response['data'] as dynamic;

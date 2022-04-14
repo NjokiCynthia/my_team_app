@@ -702,6 +702,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_FINES_SUMMARY =
       CustomHelper.baseUrl + "/mobile/get_group_member_fines_summary";
+  // ignore: non_constant_identifier_names
+  static final String GET_RECENT_MEMBER_TRANSACTIONS =
+  CustomHelper.baseUrl + "/mobile/get_member_recent_transactions";
 
   //Meetings
   // ignore: non_constant_identifier_names

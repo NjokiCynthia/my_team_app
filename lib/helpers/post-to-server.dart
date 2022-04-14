@@ -163,7 +163,9 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
       });
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         final String randomKey = CustomHelper.generateRandomString(16);
-        print(url);
+        // print(url);
+        var newDate = DateTime.now();
+        print("$newDate $url");
         try {
           final String secretKey = await _encryptSecretKey(randomKey);
           final String versionCode =
@@ -189,7 +191,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             });
             try {
               final responseBody = await generateResponse(response.body);
-              print("Server Response >>>>>>>> $responseBody");
+              // print("Server Response >>>>>>>> $responseBody");
               String message = responseBody["message"].toString();
               switch (responseBody['status']) {
                 case 0:

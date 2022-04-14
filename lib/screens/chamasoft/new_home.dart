@@ -9,6 +9,7 @@ import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/loan-summaries.dart';
+import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/account_balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
@@ -65,6 +66,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   List<ContributionsSummary> _itableContributionSummary = [];
   Dashboard dashboardData;
   // List<BankAccountDashboardSummary> _iteratableData = [];
+  // List<NewRecentTransactionSummary> _iteratableRecentTransactionSummary = [];
 
   ExpenseSummaryList _expenseSummaryList;
   double _totalExpenses = 0;
@@ -142,7 +144,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
-  Future<void> _getExpenseSummary(BuildContext context) async {
+  /* Future<void> _getExpenseSummary(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
     } on CustomException catch (error) {
@@ -153,7 +155,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             _getExpenseSummary(context);
           });
     }
-  }
+  }*/
 
   Future<void> _getMemberDashboardDataNew([bool hardRefresh = false]) async {
     try {
@@ -185,16 +187,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .resetGroupLoanSummary(_currentGroup.groupId);
 
         // Provider.of(context, listen: false).fetchMemberLoans();
-        // if (_expenseSummaryList != null) {
-        //   _expenseRows = _expenseSummaryList.expenseSummary;
-        //   _totalExpenses = _expenseSummaryList.totalExpenses;
-        // }else{
-        //   _expenseRows = [];
-        //   _totalExpenses = 0;
-        //   _getExpenseSummary(context);
-        // }
+
       }
-      /*if (!Provider.of<Dashboard>(context, listen: false)
+      if (!Provider.of<Dashboard>(context, listen: false)
           .memberGroupDataExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -216,7 +211,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                     // });
                   })
                 });
-      }*/
+      }
       // if (!Provider.of<Dashboard>(context, listen: false)
       //     .groupDataExists(_currentGroup.groupId)) {
       //   if (this.mounted) {
@@ -264,18 +259,36 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getContributionsSummary(_currentGroup.groupId);
       }*/
 
-      /*if (!Provider.of<DashboardContributionSummary>(context, listen: false)
+      // if(!Provider.of<Groups>(context, listen: false).groupExpensesExists(_currentGroup.groupId)){
+      //   if (this.mounted) {
+      //     if (_isInit == false) {
+      //       setState(() {
+      //         _isInit = true;
+      //       });
+      //     }
+      //   }
+      await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // }
+
+      // if (_expenseSummaryList != null) {
+      //   // _expenseRows = _expenseSummaryList.expenseSummary;
+      //   // _totalExpenses = _expenseSummaryList.totalExpenses;
+      // }else{
+      //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // }
+
+      if (!Provider.of<DashboardContributionSummary>(context, listen: false)
           .groupContributionSummaryExists(_currentGroup.groupId)) {
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-            });
-          }
+        // if (this.mounted) {
+        if (_isInit == false) {
+          setState(() {
+            _isInit = true;
+          });
         }
+        // }
         await Provider.of<DashboardContributionSummary>(context, listen: false)
             .getContributionsSummary(_currentGroup.groupId);
-      }*/
+      }
 
       /* if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .memberFineSummaryExists(_currentGroup.groupId)) {
@@ -290,7 +303,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getFinesSummary(_currentGroup.groupId);
       }*/
 
-      /*if (!Provider.of<DashboardFineSummary>(context, listen: false)
+      if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .groupFineSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -301,7 +314,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         }
         await Provider.of<DashboardFineSummary>(context, listen: false)
             .getFinesSummary(_currentGroup.groupId);
-      }*/
+      }
 
       if (!Provider.of<BalancesDashboardSummary>(context, listen: false)
           .accountBalanceSummaryExists(_currentGroup.groupId)) {
@@ -316,6 +329,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getAccountBalancesSummary(_currentGroup.groupId);
       }
 
+      // await Provider.of<DashboardContributionSummary>(context, listen: false)
+      //     .getContributionsSummary(_currentGroup.groupId);
+      // // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // await Provider.of<MemberRecentTransaction>(context, listen: false)
+      //     .getRecentTransactionsSummary(_currentGroup.groupId);
+      // await Provider.of<Dashboard>(context, listen: false)
+      //     .getMemberDashboardData(_currentGroup.groupId);
+
       /*if (!Provider.of<BalancesDashboardSummary>(context, listen: false)
           .totalBankBalanceSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -329,7 +350,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getAccountBalancesSummary(_currentGroup.groupId);
       }*/
 
-      /*if (!Provider.of<LoanDashboardSummary>(context, listen: false)
+      if (!Provider.of<LoanDashboardSummary>(context, listen: false)
           .loanSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -340,7 +361,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         }
         await Provider.of<LoanDashboardSummary>(context, listen: false)
             .getDashboardLoanSummary(_currentGroup.groupId);
-      }*/
+      }
       /*if (!Provider.of<LoanDashboardSummary>(context, listen: false)
           .grouploanExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -415,11 +436,13 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             width: 16.0,
           ),
           InkWell(
-            onTap: () => Navigator.of(context).push(
+            onTap:
+                () {} /* => Navigator.of(context).push(
               MaterialPageRoute(
                   builder: (BuildContext context) =>
                       RecentTransactionReciept(data: data)),
-            ),
+            ) */
+            ,
             child: Container(
               width: 160.0,
               padding: EdgeInsets.all(16.0),
@@ -651,12 +674,15 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   @override
   Widget build(BuildContext context) {
     final dashboardData = Provider.of<Dashboard>(context);
+    final memberRecentTransaction =
+        Provider.of<MemberRecentTransaction>(context);
     final balancesDashboardSummary =
         Provider.of<BalancesDashboardSummary>(context);
 
     setState(() {
       _iteratableRecentTransactionSummary =
           dashboardData.recentMemberTransactions;
+      /* memberRecentTransaction.recentTransactions;*/
       // _iteratableData = dashboardData.bankAccountDashboardSummary;
       // _itableContributionSummary = dashboardData.memberContributionSummary;
       // WidgetsBinding.instance.addPostFrameCallback((_) => () {
@@ -1091,7 +1117,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         ),
                       ),
                       SizedBox(height: 5),
-                      /*recentTransactionSummary.length > 0
+                      recentTransactionSummary.length > 0
                           ? Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                               child: customShowCase(
@@ -1116,36 +1142,36 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                             )
-                          :*/
-                      Padding(
-                        padding: EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
-                        child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(16.0),
-                            decoration: flatGradient(context),
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  customIcons['no-data'],
-                                  semanticsLabel: 'icon',
-                                  height: 120.0,
-                                ),
-                                customTitleWithWrap(
-                                    text: "Nothing to display!",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.0,
-                                    textAlign: TextAlign.center,
-                                    color: Colors.blueGrey[400]),
-                                customTitleWithWrap(
-                                    text:
-                                        "Sorry, you haven't made any transactions",
-                                    //fontWeight: FontWeight.w500,
-                                    fontSize: 12.0,
-                                    textAlign: TextAlign.center,
-                                    color: Colors.blueGrey[400])
-                              ],
-                            )),
-                      ),
+                          : Padding(
+                              padding:
+                                  EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+                              child: Container(
+                                  width: double.infinity,
+                                  padding: EdgeInsets.all(16.0),
+                                  decoration: flatGradient(context),
+                                  child: Column(
+                                    children: [
+                                      SvgPicture.asset(
+                                        customIcons['no-data'],
+                                        semanticsLabel: 'icon',
+                                        height: 120.0,
+                                      ),
+                                      customTitleWithWrap(
+                                          text: "Nothing to display!",
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 14.0,
+                                          textAlign: TextAlign.center,
+                                          color: Colors.blueGrey[400]),
+                                      customTitleWithWrap(
+                                          text:
+                                              "Sorry, you haven't made any transactions",
+                                          //fontWeight: FontWeight.w500,
+                                          fontSize: 12.0,
+                                          textAlign: TextAlign.center,
+                                          color: Colors.blueGrey[400])
+                                    ],
+                                  )),
+                            ),
                     ],
                   )
                 : newHomePlaceHolder(context: context),
@@ -1178,14 +1204,16 @@ class _ContrubutionsState extends State<Contrubutions> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     bool _isInit = true;
 
-    Future<void> _getContributionSummary(BuildContext context) async {
+    /*Future<void> _getContributionSummary(BuildContext context) async {
       try {
         await Provider.of<DashboardContributionSummary>(context, listen: false)
             .getContributionsSummary(_currentGroup.groupId);
 
-        await Provider.of<DashboardFineSummary>(context, listen: false)
+        if(dashboardFineSummary.groupFineSummaryExists(_currentGroup.groupId) == null){
+          await Provider.of<DashboardFineSummary>(context, listen: false)
             .getFinesSummary(_currentGroup.groupId);
-        // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+        }
+
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
           context: context,
@@ -1213,7 +1241,7 @@ class _ContrubutionsState extends State<Contrubutions> {
         }
         _getContributionSummary(context);
       }
-    }
+    }*/
 
     // if (_expenseSummaryList != null) {
     //   _expenseRows = _expenseSummaryList.expenseSummary;
@@ -1686,6 +1714,30 @@ class _FinesState extends State<Fines> {
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     bool _isInit = true;
+    // LoanDashboardSummary _loanDashboardSummary =
+    //     Provider.of<LoanDashboardSummary>(context);
+
+    // Future<void> _getFineSummary(BuildContext context) async {
+    //   try {
+    //     await Provider.of<DashboardFineSummary>(context, listen: false)
+    //         .getFinesSummary(_currentGroup.groupId);
+    //
+    //    /* if(_loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null){
+    //       await Provider.of<LoanDashboardSummary>(context, listen: false)
+    //           .getDashboardLoanSummary(_currentGroup.groupId);
+    //     }*/
+    //
+    //
+    //     // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+    //   } on CustomException catch (error) {
+    //     StatusHandler().handleStatus(
+    //       context: context,
+    //       error: error,
+    //       /* callback: () {
+    //          _getFineSummary(context);
+    //         }*/);
+    //   }
+    // }
 
     Future<void> _getFineSummary(BuildContext context) async {
       try {
@@ -2067,6 +2119,9 @@ class _BalancesState extends State<Balances> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
     bool _isInit = true;
+    ExpenseSummaryList _expenseSummaryList;
+    double _totalExpenses = 0;
+    List<SummaryRow> _expenseRows = [];
 
     Future<void> _getLoanSummary(BuildContext context) async {
       try {
@@ -2484,9 +2539,14 @@ class _BalancesState extends State<Balances> {
   }
 }
 
-class Expenses extends StatelessWidget {
+class Expenses extends StatefulWidget {
   const Expenses({Key key}) : super(key: key);
 
+  @override
+  State<Expenses> createState() => _ExpensesState();
+}
+
+class _ExpensesState extends State<Expenses> {
   @override
   Widget build(BuildContext context) {
     Dashboard dashboardData = Provider.of<Dashboard>(context);
@@ -2522,6 +2582,7 @@ class Expenses extends StatelessWidget {
       _getExpenseSummary(context);
     }
     if (_expenseSummaryList != null) {
+      // _getExpenseSummary(context);/*
       _expenseRows = _expenseSummaryList.expenseSummary;
       _totalExpenses = _expenseSummaryList.totalExpenses;
     } else {
@@ -2529,6 +2590,15 @@ class Expenses extends StatelessWidget {
       _totalExpenses = 0;
       _getExpenseSummary(context);
     }
+    /*else{
+     */ /* _expenseRows = [];
+      _totalExpenses = 0;*/ /*
+      _expenseRows = _expenseSummaryList.expenseSummary;
+      _totalExpenses = _expenseSummaryList.totalExpenses;
+      _getExpenseSummary(context).then((_){
+        Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      });
+    }*/
 
     final otherExpenses = /*dashboardData.groupExpensesAmount*/ _totalExpenses -
         (
@@ -2653,97 +2723,108 @@ class Expenses extends StatelessWidget {
                       // SizedBox(
                       //   height: 20,
                       // ),
-                      customTitle(
-                        text: (_expenseRows?.length > 1
-                            ? _expenseRows[1].name
-                            : 0),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
+                      (_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0
+                          ? customTitle(
+                              text: (_expenseRows?.length > 1
+                                  ? _expenseRows[1].name
+                                  : 0),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context)
+                                  // ignore: deprecated_member_use
+                                  .textSelectionHandleColor,
+                            )
+                          : SizedBox(height: 0),
                       SizedBox(height: 5),
-                      Row(
-                        children: [
-                          circleButton(
-                            backgroundColor: /*  dashboardData
+                      (_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0
+                          ? Row(
+                              children: [
+                                circleButton(
+                                  backgroundColor: /*  dashboardData
                                         .groupPendingLoanBalance >
                                     0
                                 ?  */
-                                // primaryColor
-                                /* Colors.blue[100] */ primaryColor
-                                    .withOpacity(.5)
-                            /*  : Colors
+                                      // primaryColor
+                                      /* Colors.blue[100] */ primaryColor
+                                          .withOpacity(.5)
+                                  /*  : Colors
                                     .white  */ /* rimaryColor.withOpacity(.3) */,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          customTitle1(
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                            text: _currentGroup.groupCurrency +
-                                " " +
-                                currencyFormat.format((_expenseRows?.length > 1
-                                    ? _expenseRows[1].paid
-                                    : 0)) +
-                                " " +
-                                ("(${(((_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),
-                            textAlign: TextAlign.start,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ],
-                      ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                customTitle1(
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  text: _currentGroup.groupCurrency +
+                                      " " +
+                                      currencyFormat.format(
+                                          (_expenseRows?.length > 1
+                                              ? _expenseRows[1].paid
+                                              : 0)) +
+                                      " " +
+                                      ("(${(((_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),
+                                  textAlign: TextAlign.start,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ],
+                            )
+                          : SizedBox(height: 0),
                       SizedBox(height: 5),
-                      customTitle(
-                        text: /*_expenseRows[2].name*/ (_expenseRows?.length > 2
-                            ? _expenseRows[2].name
-                            : ""),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ),
+                      (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0
+                          ? customTitle(
+                              text: /*_expenseRows[2].name*/ (_expenseRows
+                                          ?.length >
+                                      2
+                                  ? _expenseRows[2].name
+                                  : ""),
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context)
+                                  // ignore: deprecated_member_use
+                                  .textSelectionHandleColor,
+                            )
+                          : SizedBox(height: 0),
                       SizedBox(height: 5),
-                      Row(
-                        children: [
-                          circleButton(
-                              backgroundColor: primaryColor.withOpacity(
-                                  .7) /*  dashboardData
+                      (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0
+                          ? Row(
+                              children: [
+                                circleButton(
+                                    backgroundColor: primaryColor.withOpacity(
+                                        .7) /*  dashboardData
                                         .groupPendingLoanBalance >
                                     0
                                 ?  */
-                              // primaryColor
-                              /*  : Colors
+                                    // primaryColor
+                                    /*  : Colors
                                     .white  */ /* rimaryColor.withOpacity(.3) */
-                              ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          customTitle1(
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                            text: _currentGroup.groupCurrency +
-                                " " +
-                                currencyFormat.format(
-                                    /*_expenseRows[2].paid*/ (_expenseRows
-                                                ?.length >
-                                            2
-                                        ? _expenseRows[2].paid
-                                        : 0)) +
-                                " " +
-                                ("(${((/*_expenseRows[2].paid*/ (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),
-                            textAlign: TextAlign.start,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ],
-                      ),
+                                    ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                customTitle1(
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  text: _currentGroup.groupCurrency +
+                                      " " +
+                                      currencyFormat.format(
+                                          /*_expenseRows[2].paid*/ (_expenseRows
+                                                      ?.length >
+                                                  2
+                                              ? _expenseRows[2].paid
+                                              : 0)) +
+                                      " " +
+                                      ("(${((/*_expenseRows[2].paid*/ (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),
+                                  textAlign: TextAlign.start,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ],
+                            )
+                          : SizedBox(height: 0),
                       // customTitle(
                       //   text: _expenseRows[3].name,
                       //   fontSize: 13,
