@@ -255,14 +255,14 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       //       });
       //     }
       //   }
-      //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       // }
 
       // if (_expenseSummaryList != null) {
       //   // _expenseRows = _expenseSummaryList.expenseSummary;
       //   // _totalExpenses = _expenseSummaryList.totalExpenses;
       // }else{
-        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       // }
 
       if (!Provider.of<DashboardContributionSummary>(context, listen: false)
@@ -2541,7 +2541,7 @@ class _ExpensesState extends State<Expenses> {
     //   try {
     //     await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
     //   } on CustomException catch (error) {
-    //     StatusHandler().handleStatus(
+    //     StatusHandler().handleStatus(fetchExpenseSummary
     //         context: context,
     //         error: error,
     //         callback: () {
@@ -2553,11 +2553,11 @@ class _ExpensesState extends State<Expenses> {
     // if(_currentGroup.groupId == null){
       // _getExpenseSummary(context);
     // }
-    // if (_expenseSummaryList != null) {
+    if (_expenseSummaryList != null) {
       // _getExpenseSummary(context);/*
       _expenseRows = _expenseSummaryList.expenseSummary;
       _totalExpenses = _expenseSummaryList.totalExpenses;
-    //}
+    }
     /*else{
      *//* _expenseRows = [];
       _totalExpenses = 0;*//*
@@ -2696,6 +2696,7 @@ class _ExpensesState extends State<Expenses> {
                       // SizedBox(
                       //   height: 20,
                       // ),
+                      (_expenseRows?.length >1 ? _expenseRows[1].paid : 0) > 0?
                       customTitle(
                         text: (_expenseRows?.length >1 ? _expenseRows[1].name : 0),
                         fontSize: 13,
@@ -2703,8 +2704,9 @@ class _ExpensesState extends State<Expenses> {
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
                             .textSelectionHandleColor,
-                      ),
+                      ):SizedBox(height: 0),
                       SizedBox(height: 5),
+                      (_expenseRows?.length >1 ? _expenseRows[1].paid : 0) > 0?
                       Row(
                         children: [
                           circleButton(
@@ -2740,8 +2742,9 @@ class _ExpensesState extends State<Expenses> {
                             fontWeight: FontWeight.w600,
                           ),
                         ],
-                      ),
+                      ):SizedBox(height: 0),
                       SizedBox(height: 5),
+                      (_expenseRows?.length >2 ? _expenseRows[2].paid : 0) > 0?
                       customTitle(
                         text: /*_expenseRows[2].name*/ (_expenseRows?.length >2 ? _expenseRows[2].name : ""),
                         fontSize: 13,
@@ -2749,8 +2752,9 @@ class _ExpensesState extends State<Expenses> {
                         color: Theme.of(context)
                             // ignore: deprecated_member_use
                             .textSelectionHandleColor,
-                      ),
+                      ):SizedBox(height: 0),
                       SizedBox(height: 5),
+                      (_expenseRows?.length >2 ? _expenseRows[2].paid : 0) > 0?
                       Row(
                         children: [
                           circleButton(
@@ -2785,7 +2789,7 @@ class _ExpensesState extends State<Expenses> {
                             fontWeight: FontWeight.w600,
                           ),
                         ],
-                      ),
+                      ):SizedBox(height: 0),
                       // customTitle(
                       //   text: _expenseRows[3].name,
                       //   fontSize: 13,
@@ -2825,19 +2829,19 @@ class _ExpensesState extends State<Expenses> {
                       //   ],
                       // ),
                       SizedBox(height: 5),
-                      /*otherExpenses < 0
-                          ?*/ customTitle(
+                      otherExpenses > 0
+                          ? customTitle(
                               text: "Others",
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
                                   .textSelectionHandleColor,
-                            ),
+                            ):SizedBox(height: 0),
                          /* : Container(),*/
                       SizedBox(height: 5),
-                      /*otherExpenses < 0
-                          ?*/ Row(
+                      otherExpenses > 0
+                          ? Row(
                               children: [
                                 circleButton(
                                   backgroundColor: /*  dashboardData
@@ -2869,7 +2873,7 @@ class _ExpensesState extends State<Expenses> {
                                   fontWeight: FontWeight.w600,
                                 ),
                               ],
-                            )
+                            ):SizedBox(height: 0),
 
                     ],
                   ),
