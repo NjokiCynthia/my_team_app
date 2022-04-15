@@ -62,11 +62,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   bool _onlineBankingEnabled = true;
   bool _isInit = true;
   String _groupCurrency = "Ksh";
-  List<RecentTransactionSummary> _iteratableRecentTransactionSummary = [];
+  //List<RecentTransactionSummary> _iteratableRecentTransactionSummary = [];
   List<ContributionsSummary> _itableContributionSummary = [];
   Dashboard dashboardData;
   // List<BankAccountDashboardSummary> _iteratableData = [];
-  // List<NewRecentTransactionSummary> _iteratableRecentTransactionSummary = [];
+  List<NewRecentTransactionSummary> _iteratableRecentTransactionSummary = [];
 
   ExpenseSummaryList _expenseSummaryList;
   double _totalExpenses = 0;
@@ -189,29 +189,29 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         // Provider.of(context, listen: false).fetchMemberLoans();
 
       }
-      if (!Provider.of<Dashboard>(context, listen: false)
-          .memberGroupDataExists(_currentGroup.groupId)) {
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-              _currentIndex = 0;
-            });
-          }
-        }
-        await Provider.of<Dashboard>(context, listen: false)
-            .getMemberDashboardData(_currentGroup.groupId)
-            .then((_) => {
-                  setState(() {
-                    dashboardData =
-                        Provider.of<Dashboard>(context, listen: false);
-                    // WidgetsBinding.instance.addPostFrameCallback((_) => () {
-                    print("inside here ${dashboardData.notificationCount}");
-                    widget.notificationCount(dashboardData.notificationCount);
-                    // });
-                  })
-                });
-      }
+      // if (!Provider.of<Dashboard>(context, listen: false)
+      //     .memberGroupDataExists(_currentGroup.groupId)) {
+      //   if (this.mounted) {
+      //     if (_isInit == false) {
+      //       setState(() {
+      //         _isInit = true;
+      //         _currentIndex = 0;
+      //       });
+      //     }
+      //   }
+      //   await Provider.of<Dashboard>(context, listen: false)
+      //       .getMemberDashboardData(_currentGroup.groupId)
+      //       .then((_) => {
+      //             setState(() {
+      //               dashboardData =
+      //                   Provider.of<Dashboard>(context, listen: false);
+      //               // WidgetsBinding.instance.addPostFrameCallback((_) => () {
+      //               print("inside here ${dashboardData.notificationCount}");
+      //               widget.notificationCount(dashboardData.notificationCount);
+      //               // });
+      //             })
+      //           });
+      // }
       // if (!Provider.of<Dashboard>(context, listen: false)
       //     .groupDataExists(_currentGroup.groupId)) {
       //   if (this.mounted) {
@@ -231,7 +231,17 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       // await Provider.of<DashboardContributionSummary>(context, listen: false)
       //     .getContributionsSummary(_currentGroup.groupId);
 
-
+      // if (!Provider.of<Groups>(context, listen: false).expenseListExists()) {
+      //   print("We have no expenses, fetching them");
+      //   if (this.mounted) {
+      //     if (_isInit == false) {
+      //       setState(() {
+      //         _isInit = true;
+      //       });
+      //     }
+      //   }
+      //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // }
 
       // await Provider.of<Dashboard>(context, listen: false)
       //     .getMemberDashboardData(_currentGroup.groupId);
@@ -257,7 +267,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       //       });
       //     }
       //   }
-      // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      //await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       // }
 
       // if (_expenseSummaryList != null) {
@@ -293,18 +303,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getFinesSummary(_currentGroup.groupId);
       }*/
 
-      if (!Provider.of<DashboardFineSummary>(context, listen: false)
-          .groupFineSummaryExists(_currentGroup.groupId)) {
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-            });
-          }
-        }
-        await Provider.of<DashboardFineSummary>(context, listen: false)
-            .getFinesSummary(_currentGroup.groupId);
-      }
+      // if (!Provider.of<DashboardFineSummary>(context, listen: false)
+      //     .groupFineSummaryExists(_currentGroup.groupId)) {
+      //   if (this.mounted) {
+      //     if (_isInit == false) {
+      //       setState(() {
+      //         _isInit = true;
+      //       });
+      //     }
+      //   }
+      //   await Provider.of<DashboardFineSummary>(context, listen: false)
+      //       .getFinesSummary(_currentGroup.groupId);
+      // }
 
       if (!Provider.of<BalancesDashboardSummary>(context, listen: false)
           .accountBalanceSummaryExists(_currentGroup.groupId)) {
@@ -321,9 +331,21 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
       // await Provider.of<DashboardContributionSummary>(context, listen: false)
       //     .getContributionsSummary(_currentGroup.groupId);
-      // // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      // await Provider.of<MemberRecentTransaction>(context, listen: false)
-      //     .getRecentTransactionsSummary(_currentGroup.groupId);
+      // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+
+      if (!Provider.of<MemberRecentTransaction>(context, listen: false)
+          .recentTransactionsExist(_currentGroup.groupId)) {
+        if (this.mounted) {
+          if (_isInit == false) {
+            setState(() {
+              _isInit = true;
+            });
+          }
+        }
+        await Provider.of<MemberRecentTransaction>(context, listen: false)
+            .getRecentTransactionsSummary(_currentGroup.groupId);
+      }
+
       // await Provider.of<Dashboard>(context, listen: false)
       //     .getMemberDashboardData(_currentGroup.groupId);
 
@@ -340,30 +362,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getAccountBalancesSummary(_currentGroup.groupId);
       }*/
 
-      if (!Provider.of<LoanDashboardSummary>(context, listen: false)
-          .loanSummaryExists(_currentGroup.groupId)) {
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-            });
-          }
-        }
-        await Provider.of<LoanDashboardSummary>(context, listen: false)
-            .getDashboardLoanSummary(_currentGroup.groupId);
-      }
-
-      if (!Provider.of<Groups>(context, listen: false).expenseListExists()) {
-        print("We have no expenses, fetching them");
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-            });
-          }
-        }
-        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      }
+      // if (!Provider.of<LoanDashboardSummary>(context, listen: false)
+      //     .loanSummaryExists(_currentGroup.groupId)) {
+      //   if (this.mounted) {
+      //     if (_isInit == false) {
+      //       setState(() {
+      //         _isInit = true;
+      //       });
+      //     }
+      //   }
+      //   await Provider.of<LoanDashboardSummary>(context, listen: false)
+      //       .getDashboardLoanSummary(_currentGroup.groupId);
+      // }
       /*if (!Provider.of<LoanDashboardSummary>(context, listen: false)
           .grouploanExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -683,8 +693,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
     setState(() {
       _iteratableRecentTransactionSummary =
-          dashboardData.recentMemberTransactions;
-      /* memberRecentTransaction.recentTransactions;*/
+          /* dashboardData.recentMemberTransactions; */
+          memberRecentTransaction.recentTransactions;
       // _iteratableData = dashboardData.bankAccountDashboardSummary;
       // _itableContributionSummary = dashboardData.memberContributionSummary;
       // WidgetsBinding.instance.addPostFrameCallback((_) => () {
