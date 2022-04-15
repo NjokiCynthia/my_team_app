@@ -35,7 +35,7 @@ class MemberRecentTransaction with ChangeNotifier {
     this._userId = _userId;
 
     if (_recentTransactionData.containsKey(_currentGroupId)) {
-      if (_recentTransactionData[_currentGroupId] == null) {
+      if (_recentTransactionData[_currentGroupId].isNotEmpty) {
         _updateRecentTransactions(_currentGroupId);
       }
     }
@@ -46,12 +46,7 @@ class MemberRecentTransaction with ChangeNotifier {
   }
 
   List<NewRecentTransactionSummary> get recentTransactions {
-    // print('recent transactions: ${_recentTransactions.length}');
-    // print(_recentTransactionData);
-    // return [..._recentTransactions];
-    if (_recentTransactions.length == 0) {
-      _updateRecentTransactions(_currentGroupId);
-    }
+    print("recent transactions ${_recentTransactions.length}");
     return [..._recentTransactions];
   }
 
