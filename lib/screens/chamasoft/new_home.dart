@@ -231,17 +231,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       // await Provider.of<DashboardContributionSummary>(context, listen: false)
       //     .getContributionsSummary(_currentGroup.groupId);
 
-      if (!Provider.of<Groups>(context, listen: false).expenseListExists()) {
-        print("We have no expenses, fetching them");
-        if (this.mounted) {
-          if (_isInit == false) {
-            setState(() {
-              _isInit = true;
-            });
-          }
-        }
-        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      }
+
 
       // await Provider.of<Dashboard>(context, listen: false)
       //     .getMemberDashboardData(_currentGroup.groupId);
@@ -267,7 +257,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       //       });
       //     }
       //   }
-      await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       // }
 
       // if (_expenseSummaryList != null) {
@@ -361,6 +351,18 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         }
         await Provider.of<LoanDashboardSummary>(context, listen: false)
             .getDashboardLoanSummary(_currentGroup.groupId);
+      }
+
+      if (!Provider.of<Groups>(context, listen: false).expenseListExists()) {
+        print("We have no expenses, fetching them");
+        if (this.mounted) {
+          if (_isInit == false) {
+            setState(() {
+              _isInit = true;
+            });
+          }
+        }
+        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       }
       /*if (!Provider.of<LoanDashboardSummary>(context, listen: false)
           .grouploanExists(_currentGroup.groupId)) {
