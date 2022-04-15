@@ -8,7 +8,7 @@ import 'package:flutter/material.dart';
 
 class NewExpensesSummariesList {
   final String expenseName;
-  final String expenseAmount;
+  final double expenseAmount;
 
   NewExpensesSummariesList({
     this.expenseName,
@@ -111,7 +111,7 @@ class NewExpensesSummaries with ChangeNotifier {
     if(expenseSummaries.length > 0){
      expenseSummaries.map((expense) {
        var name = expense["expense_name"].toString();
-       var amount = expense["amount"].toString();
+       var amount = expense["amount"];
 
        if(name != null && name != "" && amount != null && amount != ""){
          _newExpensesSummariesList.add(NewExpensesSummariesList(
