@@ -2,6 +2,7 @@ import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/chamasoft-loans.dart';
 import 'package:chamasoft/providers/dashboard.dart';
+import 'package:chamasoft/providers/expenses-summaries.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
 import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
@@ -194,6 +195,22 @@ class _MyAppState extends State<MyApp> {
                 ? {}
                 : memberRecentTransaction.recentTransactionData,
           ),
+          // ignore: missing_return
+          create: (BuildContext context) {},
+        ),
+
+        ChangeNotifierProxyProvider<Groups, NewExpensesSummaries>(
+          update: (ctx, groups, newExpensesSummaries) =>
+              NewExpensesSummaries(
+                groups.userId,
+                groups.currentGroupId,
+                newExpensesSummaries == null
+                    ? {}
+                    : newExpensesSummaries.expensesSummariesData,
+                newExpensesSummaries == null
+                    ? {}
+                    : newExpensesSummaries.expensesSummariesTotalData,
+              ),
           // ignore: missing_return
           create: (BuildContext context) {},
         ),

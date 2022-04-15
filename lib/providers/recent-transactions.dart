@@ -46,7 +46,6 @@ class MemberRecentTransaction with ChangeNotifier {
   }
 
   List<NewRecentTransactionSummary> get recentTransactions {
-    print("recent transactions ${_recentTransactions.length}");
     return [..._recentTransactions];
   }
 
