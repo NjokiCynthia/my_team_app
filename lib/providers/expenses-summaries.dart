@@ -25,43 +25,47 @@ class NewExpensesSummaries with ChangeNotifier {
 
   int _totalExpensesSummaries = 0;
 
-  NewExpensesSummaries(String _userId, String _currentGroupId, Map<String, Map<String, dynamic>> _expensesSummariesData, Map<String, Map<String, dynamic>> _expensesSummariesTotalData) {
+  NewExpensesSummaries(
+      String _userId,
+      String _currentGroupId,
+      Map<String, Map<String, dynamic>> _expensesSummariesData,
+      Map<String, Map<String, dynamic>> _expensesSummariesTotalData) {
+    this._userId = _userId;
+    this._currentGroupId = _currentGroupId;
     this._expensesSummariesData = _expensesSummariesData;
     this._expensesSummariesTotalData = _expensesSummariesTotalData;
 
-    if(_expensesSummariesData.containsKey(_currentGroupId)) {
-      if(_expensesSummariesData[_currentGroupId].containsKey(_userId)) {
+    if (_expensesSummariesData.containsKey(_currentGroupId)) {
+      if (_expensesSummariesData[_currentGroupId].isNotEmpty) {
         _updateExpensesSummariesList(_currentGroupId);
       }
-
     }
 
-    if(_expensesSummariesTotalData.containsKey(_currentGroupId)) {
-      if(_expensesSummariesTotalData[_currentGroupId].containsKey(_userId)) {
+    if (_expensesSummariesTotalData.containsKey(_currentGroupId)) {
+      if (_expensesSummariesTotalData[_currentGroupId].isNotEmpty) {
         _updateExpensesSummariesList(_currentGroupId);
       }
-
     }
   }
 
-  String get userId{
+  String get userId {
     return _userId;
   }
 
-  List<NewExpensesSummariesList> get newExpensesSummariesList{
+  List<NewExpensesSummariesList> get newExpensesSummariesList {
     return [..._newExpensesSummariesList];
   }
 
-  Map<String, Map<String, dynamic>> get expensesSummariesData{
+  Map<String, Map<String, dynamic>> get expensesSummariesData {
     return this._expensesSummariesData;
   }
 
-  Map<String, Map<String, dynamic>> get expensesSummariesTotalData{
+  Map<String, Map<String, dynamic>> get expensesSummariesTotalData {
     return this._expensesSummariesTotalData;
   }
 
-  bool expensesSummariesExists(String groupId){
-    if(_expensesSummariesData.containsKey(groupId)){
+  bool expensesSummariesExists(String groupId) {
+    if (_expensesSummariesData.containsKey(groupId)) {
       if (_expensesSummariesData[groupId].length > 0) {
         return true;
       }
@@ -71,8 +75,9 @@ class NewExpensesSummaries with ChangeNotifier {
     }
     return false;
   }
-  bool expensesSummariesTotalExists(String groupId){
-    if(_expensesSummariesTotalData.containsKey(groupId)){
+
+  bool expensesSummariesTotalExists(String groupId) {
+    if (_expensesSummariesTotalData.containsKey(groupId)) {
       if (_expensesSummariesTotalData[groupId].length > 0) {
         return true;
       }
@@ -83,43 +88,42 @@ class NewExpensesSummaries with ChangeNotifier {
     return false;
   }
 
-  void resetExpensesSummaries(String groupId){
-    if(_expensesSummariesData.containsKey(groupId)){
+  void resetExpensesSummaries(String groupId) {
+    if (_expensesSummariesData.containsKey(groupId)) {
       _expensesSummariesData.removeWhere((key, value) => key == groupId);
     }
   }
 
-  void resetExpensesTotalSummaries(String groupId){
-    if(_expensesSummariesData.containsKey(groupId)){
+  void resetExpensesTotalSummaries(String groupId) {
+    if (_expensesSummariesData.containsKey(groupId)) {
       _expensesSummariesTotalData.removeWhere((key, value) => key == groupId);
     }
   }
 
-  int get totalExpensesSummaries{
+  int get totalExpensesSummaries {
     return _totalExpensesSummaries;
   }
 
-  void _updateExpensesSummariesList(String groupId){
-    var groupObject = _expensesSummariesData[groupId];
+  void _updateExpensesSummariesList(String groupId) {
+    var groupObject = _expensesSummariesData[groupId]['data'];
     var expenseSummaries = groupObject["expenses"];
     _newExpensesSummariesList = [];
 
-    var expensesTotalObject = _expensesSummariesTotalData[groupId];
-    var expensesTotalSummaries = expensesTotalObject["total_expenses"];
-    _totalExpensesSummaries = int.parse(expensesTotalSummaries) ?? 0;
+    var expensesTotalSummaries = groupObject["total_expenses"];
+    _totalExpensesSummaries = expensesTotalSummaries ?? 0;
 
-    if(expenseSummaries.length > 0){
-     expenseSummaries.map((expense) {
-       var name = expense["expense_name"].toString();
-       var amount = expense["amount"];
+    if (expenseSummaries.length > 0) {
+      expenseSummaries.map((expense) {
+        var name = expense["expense_name"].toString();
+        var amount = expense["amount"];
 
-       if(name != null && name != "" && amount != null && amount != ""){
-         _newExpensesSummariesList.add(NewExpensesSummariesList(
-           expenseName: name,
-           expenseAmount: amount,
-         ));
-       }
-     }).toList();
+        if (name != null && name != "" && amount != null && amount != "") {
+          _newExpensesSummariesList.add(NewExpensesSummariesList(
+            expenseName: name,
+            expenseAmount: double.tryParse(amount) ?? 0.0,
+          ));
+        }
+      }).toList();
     }
   }
 
@@ -128,7 +132,7 @@ class NewExpensesSummaries with ChangeNotifier {
     try {
       final postRequest = json.encode({
         "user_id": _userId,
-        "group_id": _currentGroupId,
+        "group_id": groupId,
       });
       try {
         final response = await PostToServer.post(postRequest, url);

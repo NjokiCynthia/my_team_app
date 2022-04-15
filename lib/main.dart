@@ -198,7 +198,6 @@ class _MyAppState extends State<MyApp> {
           // ignore: missing_return
           create: (BuildContext context) {},
         ),
-
         ChangeNotifierProxyProvider<Groups, NewExpensesSummaries>(
           update: (ctx, groups, newExpensesSummaries) =>
               NewExpensesSummaries(

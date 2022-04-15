@@ -2569,16 +2569,42 @@ class _ExpensesState extends State<Expenses> {
     // List<SummaryRow> _expenseRows = [];
     // var otherExpenses;
 
-    NewExpensesSummariesList _expenseSummaryList;
+    //NewExpensesSummariesList _expenseSummaryList;
 
     final currencyFormat = new NumberFormat("#,##0", "en_US");
-
+    bool _isInit = true;
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-    _expenseSummaryList =
-        Provider.of<NewExpensesSummariesList>(context, listen: false);
+    // _expenseSummaryList =
+    //     Provider.of<NewExpensesSummariesList>(context, listen: false);
     NewExpensesSummaries _expenseSummary =
-        Provider.of<NewExpensesSummaries>(context, listen: false);
+        Provider.of<NewExpensesSummaries>(context);
+
+    Future<void> _getExpensesSummary(BuildContext context) async {
+      try {
+        await Provider.of<NewExpensesSummaries>(context, listen: false)
+            .fetchExpenses(_currentGroup.groupId);
+      } on CustomException catch (error) {
+        StatusHandler().handleStatus(
+            context: context,
+            error: error,
+            callback: () {
+              _getExpensesSummary(context);
+            });
+      }
+    }
+
+    if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+        .expensesSummariesTotalExists(_currentGroup.groupId)) {
+      if (this.mounted) {
+        if (_isInit == false) {
+          setState(() {
+            _isInit = true;
+          });
+        }
+      }
+      _getExpensesSummary(context);
+    }
 
     // _expenseSummaryList =
     //     Provider.of<Groups>(context, listen: false).expenseSummaryList;
@@ -2610,7 +2636,6 @@ class _ExpensesState extends State<Expenses> {
     //   _getExpenseSummary(context);
     // }
 
-
     /*else{
      */ /* _expenseRows = [];
       _totalExpenses = 0;*/ /*
@@ -2621,16 +2646,14 @@ class _ExpensesState extends State<Expenses> {
       });
     }*/
 
-    final otherExpenses = _expenseSummary.totalExpensesSummaries - (
-    _expenseSummary.newExpensesSummariesList[2].expenseAmount
-        + _expenseSummary.newExpensesSummariesList[1].expenseAmount
-        + _expenseSummary.newExpensesSummariesList[0].expenseAmount);
+    final otherExpenses = _expenseSummary.totalExpensesSummaries -
+        (_expenseSummary.newExpensesSummariesList[2].expenseAmount +
+            _expenseSummary.newExpensesSummariesList[1].expenseAmount +
+            _expenseSummary.newExpensesSummariesList[0].expenseAmount);
 
-        // (_expenseSummary.newExpensesSummariesList[2].expenseAmount)
-        //     (_expenseSummary.newExpensesSummariesList.length> 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0) +
-        //     (_expenseSummary.newExpensesSummariesList.length> 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0)
-
-
+    // (_expenseSummary.newExpensesSummariesList[2].expenseAmount)
+    //     (_expenseSummary.newExpensesSummariesList.length> 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0) +
+    //     (_expenseSummary.newExpensesSummariesList.length> 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0)
 
     // final otherExpenses = /*dashboardData.groupExpensesAmount*/ _totalExpenses -
     //     (
@@ -2655,13 +2678,11 @@ class _ExpensesState extends State<Expenses> {
       "Others": otherExpenses ?? 0,
     };*/
 
-    Map <String, double> dataMaptest = {
+    Map<String, double> dataMaptest = {
       "Item1": (_expenseSummary.newExpensesSummariesList[0].expenseAmount) ?? 0,
       "Item2": (_expenseSummary.newExpensesSummariesList[1].expenseAmount) ?? 0,
       "Item3": (_expenseSummary.newExpensesSummariesList[2].expenseAmount) ?? 0,
       "Others": otherExpenses ?? 0,
-
-
     };
     final gradientList = <List<Color>>[
       [primaryColor.withOpacity(.3), primaryColor.withOpacity(.3)],
@@ -2672,8 +2693,10 @@ class _ExpensesState extends State<Expenses> {
       [Color(0xFF00ABF2), Color(0xFF00ABF2)],
     ];
 
-   /* return _expenseRows != null && _expenseRows.length > 0*/
-    return _expenseSummary.newExpensesSummariesList != null && _expenseSummary.newExpensesSummariesList.length > 0
+    /* return _expenseRows != null && _expenseRows.length > 0*/
+
+    return _expenseSummary.newExpensesSummariesList != null &&
+            _expenseSummary.newExpensesSummariesList.length > 0
         ? Container(
             color: Theme.of(context).backgroundColor,
             child: Column(children: [
@@ -2720,9 +2743,11 @@ class _ExpensesState extends State<Expenses> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       customTitle(
-                        text:/* (_expenseRows?.length > 0
+                        text: /* (_expenseRows?.length > 0
                             ? _expenseRows[0].name
-                            : ' ')*/ (_expenseSummary.newExpensesSummariesList[0].expenseName),
+                            : ' ')*/
+                            (_expenseSummary
+                                .newExpensesSummariesList[0].expenseName),
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Theme.of(context)
@@ -2754,7 +2779,9 @@ class _ExpensesState extends State<Expenses> {
                                 ("(${(((_expenseRows?.length > 0 ? _expenseRows[0].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),*/
                                 _currentGroup.groupCurrency +
                                     " " +
-                                    currencyFormat.format(_expenseSummary.newExpensesSummariesList[0].expenseAmount) +
+                                    currencyFormat.format(_expenseSummary
+                                        .newExpensesSummariesList[0]
+                                        .expenseAmount) +
                                     " " +
                                     ("(${((_expenseSummary.newExpensesSummariesList[0].expenseAmount / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                             color: Theme.of(context)
@@ -2771,12 +2798,15 @@ class _ExpensesState extends State<Expenses> {
                       //   height: 20,
                       // ),
                       /*(_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0*/
-                      (_expenseSummary.newExpensesSummariesList[1].expenseAmount > 0)
+                      (_expenseSummary
+                                  .newExpensesSummariesList[1].expenseAmount >
+                              0)
                           ? customTitle(
                               text: /*(_expenseRows?.length > 1
                                   ? _expenseRows[1].name
                                   : 0)*/
-                              (_expenseSummary.newExpensesSummariesList[1].expenseName),
+                                  (_expenseSummary
+                                      .newExpensesSummariesList[1].expenseName),
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
@@ -2786,7 +2816,9 @@ class _ExpensesState extends State<Expenses> {
                           : SizedBox(height: 0),
                       SizedBox(height: 5),
                       /*(_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0*/
-                      (_expenseSummary.newExpensesSummariesList[1].expenseAmount > 0)
+                      (_expenseSummary
+                                  .newExpensesSummariesList[1].expenseAmount >
+                              0)
                           ? Row(
                               children: [
                                 circleButton(
@@ -2809,14 +2841,15 @@ class _ExpensesState extends State<Expenses> {
                                       .textSelectionHandleColor,
                                   text: _currentGroup.groupCurrency +
                                       " " +
-                                     /* currencyFormat.format(
+                                      /* currencyFormat.format(
                                           (_expenseRows?.length > 1
                                               ? _expenseRows[1].paid
                                               : 0)) +
                                       " " +
                                       ("(${(((_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) ")*/
-                                  currencyFormat.format(
-                                      (_expenseSummary.newExpensesSummariesList[1].expenseAmount)) +
+                                      currencyFormat.format((_expenseSummary
+                                          .newExpensesSummariesList[1]
+                                          .expenseAmount)) +
                                       " " +
                                       ("(${(((_expenseSummary.newExpensesSummariesList[1].expenseAmount) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                                   textAlign: TextAlign.start,
@@ -2828,13 +2861,17 @@ class _ExpensesState extends State<Expenses> {
                           : SizedBox(height: 0),
                       SizedBox(height: 5),
                       /*(_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0*/
-                      (_expenseSummary.newExpensesSummariesList[2].expenseAmount > 0)
+                      (_expenseSummary
+                                  .newExpensesSummariesList[2].expenseAmount >
+                              0)
                           ? customTitle(
                               text: /*_expenseRows[2].name*/ /*(_expenseRows
                                           ?.length >
                                       2
                                   ? _expenseRows[2].name
-                                  : "")*/ _expenseSummary.newExpensesSummariesList[2].expenseName,
+                                  : "")*/
+                                  _expenseSummary
+                                      .newExpensesSummariesList[2].expenseName,
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
@@ -2844,8 +2881,10 @@ class _ExpensesState extends State<Expenses> {
                           : SizedBox(height: 0),
                       SizedBox(height: 5),
                       /*(_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0*/
-                          (_expenseSummary.newExpensesSummariesList[2].expenseAmount > 0)
-                            ? Row(
+                      (_expenseSummary
+                                  .newExpensesSummariesList[2].expenseAmount >
+                              0)
+                          ? Row(
                               children: [
                                 circleButton(
                                     backgroundColor: primaryColor.withOpacity(
@@ -2867,14 +2906,17 @@ class _ExpensesState extends State<Expenses> {
                                   text: _currentGroup.groupCurrency +
                                       " " +
                                       /*currencyFormat.format(
-                                          *//*_expenseRows[2].paid*//* (_expenseRows
+                                          */ /*_expenseRows[2].paid*/ /* (_expenseRows
                                                       ?.length >
                                                   2
                                               ? _expenseRows[2].paid
                                               : 0)) +
                                       " " +
-                                      ("(${((*//*_expenseRows[2].paid*//* (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),*/
-                                      currencyFormat.format(_expenseSummary.newExpensesSummariesList[2].expenseAmount) + " " +
+                                      ("(${((*/ /*_expenseRows[2].paid*/ /* (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),*/
+                                      currencyFormat.format(_expenseSummary
+                                          .newExpensesSummariesList[2]
+                                          .expenseAmount) +
+                                      " " +
                                       ("(${((_expenseSummary.newExpensesSummariesList[2].expenseAmount / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                                   textAlign: TextAlign.start,
                                   fontSize: 12,
@@ -2925,49 +2967,51 @@ class _ExpensesState extends State<Expenses> {
                       /*otherExpenses < 0
                           ?*/
 
-                      otherExpenses > 0?
-                      customTitle(
-                        text: "Others",
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context)
-                            // ignore: deprecated_member_use
-                            .textSelectionHandleColor,
-                      ):SizedBox(height: 0),
+                      otherExpenses > 0
+                          ? customTitle(
+                              text: "Others",
+                              fontSize: 13,
+                              fontWeight: FontWeight.w400,
+                              color: Theme.of(context)
+                                  // ignore: deprecated_member_use
+                                  .textSelectionHandleColor,
+                            )
+                          : SizedBox(height: 0),
                       /* : Container(),*/
                       SizedBox(height: 5),
                       /*otherExpenses < 0
                           ?*/
-                      otherExpenses > 0?
-                      Row(
-                        children: [
-                          circleButton(
-                            backgroundColor: /*  dashboardData
+                      otherExpenses > 0
+                          ? Row(
+                              children: [
+                                circleButton(
+                                  backgroundColor: /*  dashboardData
                                         .groupPendingLoanBalance >
                                     0
                                 ?  */
-                                primaryColor
-                            /*  : Colors
+                                      primaryColor
+                                  /*  : Colors
                                     .white  */ /* rimaryColor.withOpacity(.3) */,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          customTitle1(
-                            color: Theme.of(context)
-                                // ignore: deprecated_member_use
-                                .textSelectionHandleColor,
-                            text: _currentGroup.groupCurrency +
-                                " " +
-                                currencyFormat.format(otherExpenses) +
-                                " " +
-                                ("(${((otherExpenses / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
-                            textAlign: TextAlign.start,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ],
-                      ):SizedBox(height: 0),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                customTitle1(
+                                  color: Theme.of(context)
+                                      // ignore: deprecated_member_use
+                                      .textSelectionHandleColor,
+                                  text: _currentGroup.groupCurrency +
+                                      " " +
+                                      currencyFormat.format(otherExpenses) +
+                                      " " +
+                                      ("(${((otherExpenses / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                  textAlign: TextAlign.start,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ],
+                            )
+                          : SizedBox(height: 0),
                     ],
                   ),
                 ],
