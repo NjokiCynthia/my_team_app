@@ -765,7 +765,11 @@ class Groups with ChangeNotifier {
   }
 
   bool expenseListExists() {
-    return ((expenseSummaryList.expenseSummary != null) && (expenseSummaryList.totalExpenses != null)) ? true : false;
+    return (expenseSummaryList != null &&
+            (expenseSummaryList.expenseSummary != null) &&
+            (expenseSummaryList.totalExpenses != null))
+        ? true
+        : false;
   }
 
   /// ********************Group Objects************/
@@ -819,10 +823,10 @@ class Groups with ChangeNotifier {
     return result;
   }
 
-  bool groupExpensesExists(String group){
-    if(_expenses.length > 0){
+  bool groupExpensesExists(String group) {
+    if (_expenses.length > 0) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
