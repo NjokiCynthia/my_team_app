@@ -50,7 +50,16 @@ class MemberRecentTransaction with ChangeNotifier {
     // print(_recentTransactionData);
     // return [..._recentTransactions];
     if (_recentTransactions.length == 0) {
-      _updateRecentTransactions(_currentGroupId);
+      if (_recentTransactionData[_currentGroupId].length == null) {
+        _updateRecentTransactions(_currentGroupId);
+      }
+     /* if (_recentTransactionData.containsKey(_currentGroupId)) {
+        if (_recentTransactionData[_currentGroupId] == null) {
+          _updateRecentTransactions(_currentGroupId);
+        }
+      }*/
+      // _updateRecentTransactions(_currentGroupId);
+
     }
     return [..._recentTransactions];
   }
