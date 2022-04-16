@@ -53,7 +53,12 @@ class NewExpensesSummaries with ChangeNotifier {
   }
 
   List<NewExpensesSummariesList> get newExpensesSummariesList {
-    return [..._newExpensesSummariesList];
+    if(_newExpensesSummariesList == null) {
+      return [];
+    }else {
+      return [..._newExpensesSummariesList];
+    }
+    // return [..._newExpensesSummariesList];
   }
 
   Map<String, Map<String, dynamic>> get expensesSummariesData {

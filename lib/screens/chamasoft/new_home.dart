@@ -45,6 +45,7 @@ import 'package:pie_chart/pie_chart.dart' as chart;
 class ChamasoftHome extends StatefulWidget {
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME =
       "PREFERENCES_IS_FIRST_LAUNCH_STRING_HOME";
+
   const ChamasoftHome(
       {Key key, this.appBarElevation, this.notificationCount, this.rateMyApp})
       : super(key: key);
@@ -63,9 +64,11 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
   bool _onlineBankingEnabled = true;
   bool _isInit = true;
   String _groupCurrency = "Ksh";
-  //List<RecentTransactionSummary> _iteratableRecentTransactionSummary = [];
+
+  // List<RecentTransactionSummary> _iteratableRecentTransactionSummary = [];
   List<ContributionsSummary> _itableContributionSummary = [];
   Dashboard dashboardData;
+
   // List<BankAccountDashboardSummary> _iteratableData = [];
   List<NewRecentTransactionSummary> _iteratableRecentTransactionSummary = [];
 
@@ -278,18 +281,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       // }
 
-      if (!Provider.of<DashboardContributionSummary>(context, listen: false)
-          .groupContributionSummaryExists(_currentGroup.groupId)) {
-        // if (this.mounted) {
-        if (_isInit == false) {
-          setState(() {
-            _isInit = true;
-          });
-        }
-        // }
-        await Provider.of<DashboardContributionSummary>(context, listen: false)
-            .getContributionsSummary(_currentGroup.groupId);
-      }
+
 
       /* if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .memberFineSummaryExists(_currentGroup.groupId)) {
@@ -330,6 +322,33 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getAccountBalancesSummary(_currentGroup.groupId);
       }
 
+      if (!Provider.of<DashboardContributionSummary>(context, listen: false)
+          .groupContributionSummaryExists(_currentGroup.groupId)) {
+        // if (this.mounted) {
+        if (_isInit == false) {
+          setState(() {
+            _isInit = true;
+          });
+        }
+        // }
+        await Provider.of<DashboardContributionSummary>(context, listen: false)
+            .getContributionsSummary(_currentGroup.groupId);
+      }
+
+      // if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+      //     .expensesSummariesTotalExists(_currentGroup.groupId)) {
+      //   if (this.mounted) {
+      //     if (_isInit == false) {
+      //       setState(() {
+      //         _isInit = true;
+      //         // _getExpensesSummary(context);
+      //       });
+      //     }
+      //   }
+      //   await Provider.of<NewExpensesSummaries>(context, listen: false)
+      //       .fetchExpenses(_currentGroup.groupId);
+      // }
+
       // await Provider.of<DashboardContributionSummary>(context, listen: false)
       //     .getContributionsSummary(_currentGroup.groupId);
       // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
@@ -346,6 +365,22 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         await Provider.of<MemberRecentTransaction>(context, listen: false)
             .getRecentTransactionsSummary(_currentGroup.groupId);
       }
+
+     /* Future<void> _getExpensesSummary(BuildContext context) async {
+        try {
+          await Provider.of<NewExpensesSummaries>(context, listen: false)
+              .fetchExpenses(_currentGroup.groupId);
+        } on CustomException catch (error) {
+          StatusHandler().handleStatus(
+              context: context,
+              error: error,
+              callback: () {
+                _getExpensesSummary(context);
+              });
+        }
+      }*/
+
+
 
       // await Provider.of<Dashboard>(context, listen: false)
       //     .getMemberDashboardData(_currentGroup.groupId);
@@ -775,7 +810,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   color: Colors.white,
                                   cardIcon: Feather.globe,
                                   cardAmount: currencyFormat.format(
-                                      /* dashboardData.totalBankBalances */ balancesDashboardSummary
+                                      /* dashboardData.totalBankBalances */
+                                      balancesDashboardSummary
                                           .totalBackBalanceAccount),
                                   currency: _groupCurrency,
                                   accountName: "Total",
@@ -802,7 +838,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   color: primaryColor,
                                   cardIcon: Feather.credit_card,
                                   cardAmount: currencyFormat.format(
-                                      /* dashboardData.bankBalances */ balancesDashboardSummary
+                                      /* dashboardData.bankBalances */
+                                      balancesDashboardSummary
                                           .bankAccountBalance),
                                   currency: _groupCurrency,
                                   accountName: "Cash at Bank",
@@ -822,7 +859,8 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                   color: primaryColor,
                                   cardIcon: Feather.credit_card,
                                   cardAmount: currencyFormat.format(
-                                      /* dashboardData.cashBalances */ balancesDashboardSummary
+                                      /* dashboardData.cashBalances */
+                                      balancesDashboardSummary
                                           .cashAccounBalance),
                                   currency: _groupCurrency,
                                   accountName: "Cash at Hand",
@@ -1197,7 +1235,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         ));
   }
 
-  // customSlider({BuildContext context, count, index}) {}
+// customSlider({BuildContext context, count, index}) {}
 }
 
 class Contrubutions extends StatefulWidget {
@@ -1216,6 +1254,44 @@ class _ContrubutionsState extends State<Contrubutions> {
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     bool _isInit = true;
+    DashboardFineSummary dashboardFineSummary =
+    Provider.of<DashboardFineSummary>(context);
+
+    Future<void> _getFineSummary(BuildContext context) async {
+      try {
+        await Provider.of<DashboardFineSummary>(context, listen: false)
+            .getFinesSummary(_currentGroup.groupId);
+
+        // await Provider.of<LoanDashboardSummary>(context, listen: false)
+        //     .getDashboardLoanSummary(_currentGroup.groupId);
+        // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      } on CustomException catch (error) {
+        StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          /* callback: () {
+              _getExpenseSummary(context);
+            }*/
+        );
+      }
+    }
+
+    if (dashboardFineSummary.groupFineSummaryExists(_currentGroup.groupId) ==
+        null) {
+      _getFineSummary(context);
+    } else {
+      if (!Provider.of<DashboardFineSummary>(context, listen: false)
+          .groupFineSummaryExists(_currentGroup.groupId)) {
+        if (this.mounted) {
+          if (_isInit == false) {
+            setState(() {
+              _isInit = true;
+            });
+          }
+        }
+        _getFineSummary(context);
+      }
+    }
 
     /*Future<void> _getContributionSummary(BuildContext context) async {
       try {
@@ -1365,8 +1441,8 @@ class _ContrubutionsState extends State<Contrubutions> {
                               // ignore: deprecated_member_use
                               .textSelectionHandleColor,
                         ),
-                        /* dashboardData.memberContributionAmount */ dashboardContributionSummary
-                                    .memberContributionAmount
+                        /* dashboardData.memberContributionAmount */
+                        dashboardContributionSummary.memberContributionAmount
                                     .abs() >
                                 0
                             ? Row(
@@ -1754,8 +1830,8 @@ class _FinesState extends State<Fines> {
 
     Future<void> _getFineSummary(BuildContext context) async {
       try {
-        await Provider.of<DashboardFineSummary>(context, listen: false)
-            .getFinesSummary(_currentGroup.groupId);
+        // await Provider.of<DashboardFineSummary>(context, listen: false)
+        //     .getFinesSummary(_currentGroup.groupId);
 
         await Provider.of<LoanDashboardSummary>(context, listen: false)
             .getDashboardLoanSummary(_currentGroup.groupId);
@@ -1882,7 +1958,8 @@ class _FinesState extends State<Fines> {
                                       _currentGroup.groupCurrency +
                                           " " +
                                           currencyFormat.format(
-                                              /* dashboardData.memberFineAmount */ dashboardFineSummary
+                                              /* dashboardData.memberFineAmount */
+                                              dashboardFineSummary
                                                   .memberFinePaid)
                                   /* : _currentGroup.groupCurrency +
                                           " " +
@@ -1907,8 +1984,8 @@ class _FinesState extends State<Fines> {
                                   _currentGroup.groupCurrency +
                                       " " +
                                       currencyFormat.format(
-                                          /* dashboardData.memberFineAmount */ dashboardFineSummary
-                                              .memberFinePaid)
+                                          /* dashboardData.memberFineAmount */
+                                          dashboardFineSummary.memberFinePaid)
                               /* : _currentGroup.groupCurrency +
                                       " " +
                                       currencyFormat.format(
@@ -1951,7 +2028,8 @@ class _FinesState extends State<Fines> {
                                   text: _currentGroup.groupCurrency +
                                       " " +
                                       currencyFormat.format(
-                                          /* dashboardData.groupFinePaymentAmount */ dashboardFineSummary
+                                          /* dashboardData.groupFinePaymentAmount */
+                                          dashboardFineSummary
                                               .totalGroupFinePaid),
                                   textAlign: TextAlign.start,
                                   fontSize: 16,
@@ -1966,8 +2044,8 @@ class _FinesState extends State<Fines> {
                               text: _currentGroup.groupCurrency +
                                   " " +
                                   currencyFormat.format(
-                                      /* dashboardData.groupFinePaymentAmount */ dashboardFineSummary
-                                          .totalGroupFinePaid),
+                                      /* dashboardData.groupFinePaymentAmount */
+                                      dashboardFineSummary.totalGroupFinePaid),
                               textAlign: TextAlign.start,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -2113,6 +2191,7 @@ class _FinesState extends State<Fines> {
 
 class Balances extends StatefulWidget {
   final ActiveLoan loan;
+
   const Balances({Key key, this.loan}) : super(key: key);
 
   @override
@@ -2140,7 +2219,8 @@ class _BalancesState extends State<Balances> {
       try {
         await Provider.of<LoanDashboardSummary>(context, listen: false)
             .getDashboardLoanSummary(_currentGroup.groupId);
-        await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+        await Provider.of<NewExpensesSummaries>(context, listen: false)
+            .fetchExpenses(_currentGroup.groupId);
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
           context: context,
@@ -2166,6 +2246,19 @@ class _BalancesState extends State<Balances> {
         }
         _getLoanSummary(context);
       }
+    }
+
+    if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+        .expensesSummariesTotalExists(_currentGroup.groupId)) {
+      if (this.mounted) {
+        if (_isInit == false) {
+          setState(() {
+            _isInit = true;
+            // _getExpensesSummary(context);
+          });
+        }
+      }
+      _getLoanSummary(context);
     }
 
     var nextInstallmentRepaymentDate = DateTime.fromMillisecondsSinceEpoch(
@@ -2252,9 +2345,8 @@ class _BalancesState extends State<Balances> {
                       //     fontWeight: FontWeight.w800,
                       //   ),
                       // ),
-                      /* dashboardData.memberTotalLoanBalance */ loanDashboardSummary
-                                  .totalLoanAmount >
-                              0
+                      /* dashboardData.memberTotalLoanBalance */
+                      loanDashboardSummary.totalLoanAmount > 0
                           ? Row(
                               children: [
                                 circleButton(
@@ -2298,13 +2390,13 @@ class _BalancesState extends State<Balances> {
                                   ? _currentGroup.groupCurrency +
                                       " " +
                                       currencyFormat.format(
-                                          /* dashboardData.memberTotalLoanBalance */ loanDashboardSummary
-                                              .totalLoanAmount)
+                                          /* dashboardData.memberTotalLoanBalance */
+                                          loanDashboardSummary.totalLoanAmount)
                                   : _currentGroup.groupCurrency +
                                       " " +
                                       currencyFormat.format(
-                                          /* dashboardData.memberTotalLoanBalance */ loanDashboardSummary
-                                              .totalLoanAmount),
+                                          /* dashboardData.memberTotalLoanBalance */
+                                          loanDashboardSummary.totalLoanAmount),
                               color: Theme.of(context)
                                   // ignore: deprecated_member_use
                                   .textSelectionHandleColor,
@@ -2324,9 +2416,8 @@ class _BalancesState extends State<Balances> {
                             .textSelectionHandleColor,
                       ),
 
-                      /* dashboardData.groupLoanedAmount */ loanDashboardSummary
-                                  .totalGroupLoanBalance >
-                              0
+                      /* dashboardData.groupLoanedAmount */
+                      loanDashboardSummary.totalGroupLoanBalance > 0
                           ? Row(
                               children: [
                                 circleButton(
@@ -2348,7 +2439,8 @@ class _BalancesState extends State<Balances> {
                                   text: _currentGroup.groupCurrency +
                                       " " +
                                       currencyFormat.format(
-                                          /* dashboardData.groupLoanedAmount */ loanDashboardSummary
+                                          /* dashboardData.groupLoanedAmount */
+                                          loanDashboardSummary
                                               .totalGroupLoanBalance),
                                   textAlign: TextAlign.start,
                                   fontSize: 14,
@@ -2363,7 +2455,8 @@ class _BalancesState extends State<Balances> {
                               text: _currentGroup.groupCurrency +
                                   " " +
                                   currencyFormat.format(
-                                      /* dashboardData.groupLoanedAmount */ loanDashboardSummary
+                                      /* dashboardData.groupLoanedAmount */
+                                      loanDashboardSummary
                                           .totalGroupLoanBalance),
                               textAlign: TextAlign.start,
                               fontSize: 14,
@@ -2580,31 +2673,36 @@ class _ExpensesState extends State<Expenses> {
     NewExpensesSummaries _expenseSummary =
         Provider.of<NewExpensesSummaries>(context);
 
-    Future<void> _getExpensesSummary(BuildContext context) async {
-      try {
-        await Provider.of<NewExpensesSummaries>(context, listen: false)
-            .fetchExpenses(_currentGroup.groupId);
-      } on CustomException catch (error) {
-        StatusHandler().handleStatus(
-            context: context,
-            error: error,
-            callback: () {
-              _getExpensesSummary(context);
-            });
-      }
-    }
-
-    if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+    // Future<void> _getExpensesSummary(BuildContext context) async {
+    //   try {
+    //     await Provider.of<NewExpensesSummaries>(context, listen: false)
+    //         .fetchExpenses(_currentGroup.groupId);
+    //   } on CustomException catch (error) {
+    //     StatusHandler().handleStatus(
+    //         context: context,
+    //         error: error,
+    //         callback: () {
+    //           _getExpensesSummary(context);
+    //         });
+    //   }
+    // }
+    //
+   /* if (!Provider.of<NewExpensesSummaries>(context, listen: false)
         .expensesSummariesTotalExists(_currentGroup.groupId)) {
       if (this.mounted) {
         if (_isInit == false) {
           setState(() {
             _isInit = true;
+            // _getExpensesSummary(context);
           });
         }
       }
       _getExpensesSummary(context);
-    }
+    }*/
+
+    // setState(() {
+    //
+    // });
 
     // _expenseSummaryList =
     //     Provider.of<Groups>(context, listen: false).expenseSummaryList;
@@ -2647,9 +2745,15 @@ class _ExpensesState extends State<Expenses> {
     }*/
 
     final otherExpenses = _expenseSummary.totalExpensesSummaries -
-        (_expenseSummary.newExpensesSummariesList[2].expenseAmount +
-            _expenseSummary.newExpensesSummariesList[1].expenseAmount +
-            _expenseSummary.newExpensesSummariesList[0].expenseAmount);
+        (_expenseSummary.newExpensesSummariesList.length > 2
+            ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
+            : 0) +
+        (_expenseSummary.newExpensesSummariesList.length > 1
+            ? _expenseSummary.newExpensesSummariesList[1].expenseAmount
+            : 0) +
+        (_expenseSummary.newExpensesSummariesList.length > 0
+            ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
+            : 0);
 
     // (_expenseSummary.newExpensesSummariesList[2].expenseAmount)
     //     (_expenseSummary.newExpensesSummariesList.length> 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0) +
@@ -2679,10 +2783,16 @@ class _ExpensesState extends State<Expenses> {
     };*/
 
     Map<String, double> dataMaptest = {
-      "Item1": (_expenseSummary.newExpensesSummariesList[0].expenseAmount) ?? 0,
-      "Item2": (_expenseSummary.newExpensesSummariesList[1].expenseAmount) ?? 0,
-      "Item3": (_expenseSummary.newExpensesSummariesList[2].expenseAmount) ?? 0,
-      "Others": otherExpenses ?? 0,
+      "Item1": (_expenseSummary.newExpensesSummariesList.length > 0
+          ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
+          : 0),
+      "Item2": (_expenseSummary.newExpensesSummariesList.length > 1
+          ? _expenseSummary.newExpensesSummariesList[1].expenseAmount
+          : 0),
+      "Item3": (_expenseSummary.newExpensesSummariesList.length > 2
+          ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
+          : 0),
+      "Others": double.tryParse(otherExpenses.toString()) ?? 0,
     };
     final gradientList = <List<Color>>[
       [primaryColor.withOpacity(.3), primaryColor.withOpacity(.3)],
@@ -2746,8 +2856,10 @@ class _ExpensesState extends State<Expenses> {
                         text: /* (_expenseRows?.length > 0
                             ? _expenseRows[0].name
                             : ' ')*/
-                            (_expenseSummary
-                                .newExpensesSummariesList[0].expenseName),
+                            (_expenseSummary.newExpensesSummariesList.length > 0
+                                ? _expenseSummary
+                                    .newExpensesSummariesList[0].expenseName
+                                : " "),
                         fontSize: 13,
                         fontWeight: FontWeight.w400,
                         color: Theme.of(context)
@@ -2780,10 +2892,15 @@ class _ExpensesState extends State<Expenses> {
                                 _currentGroup.groupCurrency +
                                     " " +
                                     currencyFormat.format(_expenseSummary
-                                        .newExpensesSummariesList[0]
-                                        .expenseAmount) +
+                                                .newExpensesSummariesList
+                                                .length >
+                                            0
+                                        ? _expenseSummary
+                                            .newExpensesSummariesList[0]
+                                            .expenseAmount
+                                        : 0) +
                                     " " +
-                                    ("(${((_expenseSummary.newExpensesSummariesList[0].expenseAmount / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                    ("(${(((_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                             color: Theme.of(context)
                                 // ignore: deprecated_member_use
                                 .textSelectionHandleColor,
@@ -2798,15 +2915,22 @@ class _ExpensesState extends State<Expenses> {
                       //   height: 20,
                       // ),
                       /*(_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0*/
-                      (_expenseSummary
-                                  .newExpensesSummariesList[1].expenseAmount >
+                      ((_expenseSummary.newExpensesSummariesList.length > 1
+                                  ? _expenseSummary
+                                      .newExpensesSummariesList[1].expenseAmount
+                                  : 0) >
                               0)
                           ? customTitle(
                               text: /*(_expenseRows?.length > 1
                                   ? _expenseRows[1].name
                                   : 0)*/
                                   (_expenseSummary
-                                      .newExpensesSummariesList[1].expenseName),
+                                              .newExpensesSummariesList.length >
+                                          1
+                                      ? _expenseSummary
+                                          .newExpensesSummariesList[1]
+                                          .expenseName
+                                      : " "),
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
@@ -2816,8 +2940,10 @@ class _ExpensesState extends State<Expenses> {
                           : SizedBox(height: 0),
                       SizedBox(height: 5),
                       /*(_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) > 0*/
-                      (_expenseSummary
-                                  .newExpensesSummariesList[1].expenseAmount >
+                      ((_expenseSummary.newExpensesSummariesList.length > 1
+                                  ? _expenseSummary
+                                      .newExpensesSummariesList[1].expenseAmount
+                                  : 0) >
                               0)
                           ? Row(
                               children: [
@@ -2848,10 +2974,15 @@ class _ExpensesState extends State<Expenses> {
                                       " " +
                                       ("(${(((_expenseRows?.length > 1 ? _expenseRows[1].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) ")*/
                                       currencyFormat.format((_expenseSummary
-                                          .newExpensesSummariesList[1]
-                                          .expenseAmount)) +
+                                                  .newExpensesSummariesList
+                                                  .length >
+                                              1
+                                          ? _expenseSummary
+                                              .newExpensesSummariesList[1]
+                                              .expenseAmount
+                                          : 0)) +
                                       " " +
-                                      ("(${(((_expenseSummary.newExpensesSummariesList[1].expenseAmount) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                      ("(${(((_expenseSummary.newExpensesSummariesList.length > 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                                   textAlign: TextAlign.start,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
@@ -2861,8 +2992,10 @@ class _ExpensesState extends State<Expenses> {
                           : SizedBox(height: 0),
                       SizedBox(height: 5),
                       /*(_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0*/
-                      (_expenseSummary
-                                  .newExpensesSummariesList[2].expenseAmount >
+                      ((_expenseSummary.newExpensesSummariesList.length > 2
+                                  ? _expenseSummary
+                                      .newExpensesSummariesList[2].expenseAmount
+                                  : 0) >
                               0)
                           ? customTitle(
                               text: /*_expenseRows[2].name*/ /*(_expenseRows
@@ -2871,7 +3004,12 @@ class _ExpensesState extends State<Expenses> {
                                   ? _expenseRows[2].name
                                   : "")*/
                                   _expenseSummary
-                                      .newExpensesSummariesList[2].expenseName,
+                                              .newExpensesSummariesList.length >
+                                          2
+                                      ? _expenseSummary
+                                          .newExpensesSummariesList[2]
+                                          .expenseName
+                                      : " ",
                               fontSize: 13,
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context)
@@ -2881,8 +3019,10 @@ class _ExpensesState extends State<Expenses> {
                           : SizedBox(height: 0),
                       SizedBox(height: 5),
                       /*(_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) > 0*/
-                      (_expenseSummary
-                                  .newExpensesSummariesList[2].expenseAmount >
+                      ((_expenseSummary.newExpensesSummariesList.length > 2
+                                  ? _expenseSummary
+                                      .newExpensesSummariesList[2].expenseAmount
+                                  : 0) >
                               0)
                           ? Row(
                               children: [
@@ -2914,10 +3054,15 @@ class _ExpensesState extends State<Expenses> {
                                       " " +
                                       ("(${((*/ /*_expenseRows[2].paid*/ /* (_expenseRows?.length > 2 ? _expenseRows[2].paid : 0) / _totalExpenses) * 100).toStringAsFixed(1) + "%"}) "),*/
                                       currencyFormat.format(_expenseSummary
-                                          .newExpensesSummariesList[2]
-                                          .expenseAmount) +
+                                                  .newExpensesSummariesList
+                                                  .length >
+                                              2
+                                          ? _expenseSummary
+                                              .newExpensesSummariesList[2]
+                                              .expenseAmount
+                                          : 0) +
                                       " " +
-                                      ("(${((_expenseSummary.newExpensesSummariesList[2].expenseAmount / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                      ("(${(((_expenseSummary.newExpensesSummariesList.length > 2 ? _expenseSummary.newExpensesSummariesList[2].expenseAmount : 0) / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                                   textAlign: TextAlign.start,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,
