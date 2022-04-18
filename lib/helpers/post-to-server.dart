@@ -191,7 +191,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             });
             try {
               final responseBody = await generateResponse(response.body);
-              // print("Server Response >>>>>>>> $responseBody");
+              print("Server Response >>>>>>>> $responseBody");
               String message = responseBody["message"].toString();
               switch (responseBody['status']) {
                 case 0:

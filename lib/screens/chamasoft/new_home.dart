@@ -1168,7 +1168,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                         ),
                       ),
                       SizedBox(height: 5),
-                      recentTransactionSummary.length > 0
+                      recentTransactionSummary?.length > 0
                           ? Padding(
                               padding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                               child: customShowCase(
@@ -1193,7 +1193,36 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                             )
-                          : Padding(
+                          : recentTransactionSummary == null ? Padding(
+                        padding:
+                        EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
+                        child: Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16.0),
+                            decoration: flatGradient(context),
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                  customIcons['no-data'],
+                                  semanticsLabel: 'icon',
+                                  height: 120.0,
+                                ),
+                                customTitleWithWrap(
+                                    text: "Nothing to display!",
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: 14.0,
+                                    textAlign: TextAlign.center,
+                                    color: Colors.blueGrey[400]),
+                                customTitleWithWrap(
+                                    text:
+                                    "Sorry, you haven't made any transactions",
+                                    //fontWeight: FontWeight.w500,
+                                    fontSize: 12.0,
+                                    textAlign: TextAlign.center,
+                                    color: Colors.blueGrey[400])
+                              ],
+                            )),
+                      ) : Padding(
                               padding:
                                   EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
                               child: Container(
@@ -2744,6 +2773,18 @@ class _ExpensesState extends State<Expenses> {
       });
     }*/
 
+    final sumOfThreeItems = (_expenseSummary.newExpensesSummariesList.length > 2
+        ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
+        : 0) +
+        (_expenseSummary.newExpensesSummariesList.length > 1
+            ? _expenseSummary.newExpensesSummariesList[1].expenseAmount
+            : 0) +
+        (_expenseSummary.newExpensesSummariesList.length > 0
+            ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
+            : 0);
+
+    final newOtherExpenses = _expenseSummary.totalExpensesSummaries - sumOfThreeItems;
+
     final otherExpenses = _expenseSummary.totalExpensesSummaries -
         (_expenseSummary.newExpensesSummariesList.length > 2
             ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
@@ -2754,6 +2795,7 @@ class _ExpensesState extends State<Expenses> {
         (_expenseSummary.newExpensesSummariesList.length > 0
             ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
             : 0);
+
 
     // (_expenseSummary.newExpensesSummariesList[2].expenseAmount)
     //     (_expenseSummary.newExpensesSummariesList.length> 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0) +
@@ -2769,8 +2811,20 @@ class _ExpensesState extends State<Expenses> {
     //     _expenseRows[0].paid ?? 0*/
     //     );
 
+
+    print("Total Expenses will be ${_expenseSummary.totalExpensesSummaries}");
+    print("Some of the three items will be $sumOfThreeItems");
     print("object Other Expenses will be $otherExpenses");
-    print("Total Expenses will be $_expenseSummary.totalExpensesSummaries");
+    print("new other Expenses amount will be $newOtherExpenses");
+    print("Item1 will be ${(_expenseSummary.newExpensesSummariesList.length > 0
+        ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
+        : 0)}");
+    print("Item2 will be ${(_expenseSummary.newExpensesSummariesList.length > 1
+        ? _expenseSummary.newExpensesSummariesList[1].expenseAmount
+        : 0)}");
+    print("Item3 will be ${(_expenseSummary.newExpensesSummariesList.length > 2
+        ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
+        : 0)}");
 
     /*Map<String, double> dataMaptest = {
       "Item1": (_expenseRows?.length > 0 ? _expenseRows[0].paid : 0),
@@ -2792,7 +2846,7 @@ class _ExpensesState extends State<Expenses> {
       "Item3": (_expenseSummary.newExpensesSummariesList.length > 2
           ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
           : 0),
-      "Others": double.tryParse(otherExpenses.toString()) ?? 0,
+      "Others": double.tryParse(newOtherExpenses.toString()) ?? 0,
     };
     final gradientList = <List<Color>>[
       [primaryColor.withOpacity(.3), primaryColor.withOpacity(.3)],
@@ -3112,7 +3166,7 @@ class _ExpensesState extends State<Expenses> {
                       /*otherExpenses < 0
                           ?*/
 
-                      otherExpenses > 0
+                      newOtherExpenses > 0
                           ? customTitle(
                               text: "Others",
                               fontSize: 13,
@@ -3126,7 +3180,7 @@ class _ExpensesState extends State<Expenses> {
                       SizedBox(height: 5),
                       /*otherExpenses < 0
                           ?*/
-                      otherExpenses > 0
+                      newOtherExpenses > 0
                           ? Row(
                               children: [
                                 circleButton(
@@ -3147,9 +3201,9 @@ class _ExpensesState extends State<Expenses> {
                                       .textSelectionHandleColor,
                                   text: _currentGroup.groupCurrency +
                                       " " +
-                                      currencyFormat.format(otherExpenses) +
+                                      currencyFormat.format(newOtherExpenses) +
                                       " " +
-                                      ("(${((otherExpenses / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
+                                      ("(${((newOtherExpenses / _expenseSummary.totalExpensesSummaries) * 100).toStringAsFixed(1) + "%"}) "),
                                   textAlign: TextAlign.start,
                                   fontSize: 12,
                                   fontWeight: FontWeight.w600,

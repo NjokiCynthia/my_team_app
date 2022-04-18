@@ -57,10 +57,15 @@ class MemberRecentTransaction with ChangeNotifier {
     if (_recentTransactionData.containsKey(groupId)) {
       if (_recentTransactionData[groupId].length > 0) {
         return true;
+      }else if(_recentTransactionData[groupId] == null){
+        return false;
       }
+      else
       {
         return false;
       }
+    }else if(_recentTransactionData == null){
+      return false;
     } else {
       return false;
     }
