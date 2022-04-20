@@ -1,6 +1,11 @@
+
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/get_path.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/svg-icons.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -148,6 +153,43 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
+  Future <void>  readFileData() async {
+    // Map<String, dynamic> _formData = {};
+    // BuildContext context;
+    final _dirPath = await getDirPath();
+    final logfilePath = File('$_dirPath/data.txt');
+    final logDataSaved = await logfilePath.readAsString(encoding: utf8);
+    print("saved data on the file is $logDataSaved");
+
+    final _myFile = File('$_dirPath/data.txt');
+
+    print("File size is : ${ await _myFile.length()}");
+
+    if(await _myFile.length() >= 1000){
+      print("Hello, its more than 10kb");
+
+      // _formData['data'] = logDataSaved;
+      try {
+        await Provider.of<Groups>(context, listen: false).recordLogAPIs(logdata: logDataSaved);
+      } on CustomException catch (error) {
+        StatusHandler().handleStatus(
+            context:context,
+            error:error,
+            callback: () {
+          readFileData();
+      });
+      }
+      print("Data saved to the server");
+      await _myFile.delete();
+      // readFileData();
+
+    }
+    else{
+      print("Hello, its less than 10kb");
+      // readFileData();
+    }
+  }
+
   /* Future<void> _getExpenseSummary(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
@@ -170,6 +212,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         //
         // Provider.of<Dashboard>(context, listen: false)
         //     .resetGroupDashboardData(_currentGroup.groupId);
+        readFileData();
 
         Provider.of<DashboardContributionSummary>(context, listen: false)
             .resetMemberContributionSummary(_currentGroup.groupId);
@@ -437,6 +480,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getDashboardLoanSummary(_currentGroup.groupId);
       }*/
       // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
+      readFileData();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,

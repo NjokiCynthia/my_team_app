@@ -704,7 +704,7 @@ class EndpointUrl {
       CustomHelper.baseUrl + "/mobile/get_group_member_fines_summary";
   // ignore: non_constant_identifier_names
   static final String GET_RECENT_MEMBER_TRANSACTIONS =
-  CustomHelper.baseUrl + "/mobile/get_member_recent_transactions";
+      CustomHelper.baseUrl + "/mobile/get_member_recent_transactions";
 
   //Meetings
   // ignore: non_constant_identifier_names
@@ -734,4 +734,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String GET_GROUP_LOAN_CALCULATOR = CustomHelper.baseUrl +
       "/mobile/chamasoft_loans/get_group_loan_calculator";
+
+  //Log APIs
+  // ignore: non_constant_identifier_names
+  static final String POST_API_LOGS =
+      CustomHelper.baseUrl + "/mobile/save_activity_log";
 }

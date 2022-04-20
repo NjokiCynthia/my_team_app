@@ -54,6 +54,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
         await themeChangeProvider.darkThemePreference.getTheme();
@@ -66,6 +67,9 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+
+
+
     super.initState();
     getCurrentAppTheme();
     initDB();
@@ -88,10 +92,18 @@ class _MyAppState extends State<MyApp> {
       print("message here $messageBody");
     }
 
+
+
     FirebaseMessaging.instance.subscribeToTopic('chamasoft');
     NotificationManager.listenTokenChange(context);
     super.didChangeDependencies();
   }
+
+
+
+
+
+
 
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,7 @@ import 'dart:developer';
 // import 'dart:developer';
 import 'dart:io' as io;
 import 'dart:io';
+import 'package:chamasoft/helpers/get_path.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
@@ -4927,6 +4928,36 @@ class Groups with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         String message = response["message"].toString();
         return message;
+      } on CustomException catch (error) {
+        throw CustomException(message: error.toString(), status: error.status);
+      } catch (error) {
+        throw CustomException(message: ERROR_MESSAGE);
+      }
+    } on CustomException catch (error) {
+      throw CustomException(message: error.toString(), status: error.status);
+    } catch (error) {
+      throw CustomException(message: ERROR_MESSAGE);
+    }
+  }
+
+  Future<void> recordLogAPIs ({String logdata}) async {
+    try {
+      /*final url = EndpointUrl.POST_API_LOGS;
+      final _dirPath = await getDirPath();
+      final logfilePath = File('$_dirPath/data.txt');
+      final logDataSaved = await logfilePath.readAsString(encoding: utf8);
+      formData['data'] = logDataSaved;
+
+      log(formData.toString());*/
+      final url = EndpointUrl.POST_API_LOGS;
+        final postRequest = json.encode({"data":logdata});
+
+      try {
+        await PostToServer.post(postRequest, url);
+        return PostToServer.post(postRequest, url).toString();
+        /*final postRequest = json.encode(formData);
+        final response = await PostToServer.post(postRequest, url);
+        return response["message"].toString();*/
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
