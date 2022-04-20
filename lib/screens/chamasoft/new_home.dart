@@ -335,6 +335,20 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getContributionsSummary(_currentGroup.groupId);
       }
 
+     /* if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+          .expensesSummariesTotalExists(_currentGroup.groupId)) {
+        if (this.mounted) {
+          if (_isInit == false) {
+            setState(() {
+              _isInit = true;
+              // _getExpensesSummary(context);
+            });
+          }
+        }
+        await Provider.of<NewExpensesSummaries>(context, listen: false)
+            .fetchExpenses(_currentGroup.groupId);
+      }*/
+
       // if (!Provider.of<NewExpensesSummaries>(context, listen: false)
       //     .expensesSummariesTotalExists(_currentGroup.groupId)) {
       //   if (this.mounted) {
@@ -1291,6 +1305,7 @@ class _ContrubutionsState extends State<Contrubutions> {
         await Provider.of<DashboardFineSummary>(context, listen: false)
             .getFinesSummary(_currentGroup.groupId);
 
+
         // await Provider.of<LoanDashboardSummary>(context, listen: false)
         //     .getDashboardLoanSummary(_currentGroup.groupId);
         // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
@@ -1652,7 +1667,7 @@ class _ContrubutionsState extends State<Contrubutions> {
                               customTitle(
                                 text:
                                     (/* dashboardData.memberContributionArrears */ dashboardContributionSummary
-                                                .memberContributionAmount) <
+                                                .memberContributionArrears) <
                                             0
                                         ? "Your Contribution overpayment"
                                         : "Your Contribution Arrears",
@@ -1832,6 +1847,8 @@ class _FinesState extends State<Fines> {
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     bool _isInit = true;
+    LoanDashboardSummary loanDashboardSummary =
+    Provider.of<LoanDashboardSummary>(context);
     // LoanDashboardSummary _loanDashboardSummary =
     //     Provider.of<LoanDashboardSummary>(context);
 
@@ -1864,6 +1881,8 @@ class _FinesState extends State<Fines> {
 
         await Provider.of<LoanDashboardSummary>(context, listen: false)
             .getDashboardLoanSummary(_currentGroup.groupId);
+        await Provider.of<NewExpensesSummaries>(context, listen: false)
+            .fetchExpenses(_currentGroup.groupId);
         // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
@@ -1876,12 +1895,12 @@ class _FinesState extends State<Fines> {
       }
     }
 
-    if (dashboardFineSummary.groupFineSummaryExists(_currentGroup.groupId) ==
+    if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) ==
         null) {
       _getFineSummary(context);
     } else {
-      if (!Provider.of<DashboardFineSummary>(context, listen: false)
-          .groupFineSummaryExists(_currentGroup.groupId)) {
+      if (!Provider.of<LoanDashboardSummary>(context, listen: false).grouploanExists
+          (_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
             setState(() {
@@ -1892,6 +1911,7 @@ class _FinesState extends State<Fines> {
         _getFineSummary(context);
       }
     }
+
     final groupTotalFine = dashboardFineSummary.totalGroupFinePaid -
         dashboardFineSummary.memberFinePaid;
     Map<String, double> dataMap = {
@@ -2244,24 +2264,24 @@ class _BalancesState extends State<Balances> {
     double _totalExpenses = 0;
     List<SummaryRow> _expenseRows = [];
 
-    Future<void> _getLoanSummary(BuildContext context) async {
+    /*Future<void> _getLoanSummary(BuildContext context) async {
       try {
-        await Provider.of<LoanDashboardSummary>(context, listen: false)
-            .getDashboardLoanSummary(_currentGroup.groupId);
+        // await Provider.of<LoanDashboardSummary>(context, listen: false)
+        //     .getDashboardLoanSummary(_currentGroup.groupId);
         await Provider.of<NewExpensesSummaries>(context, listen: false)
             .fetchExpenses(_currentGroup.groupId);
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
           context: context,
           error: error,
-          /* callback: () {
-              _getExpenseSummary(context);
-            }*/
+           callback: () {
+             _getLoanSummary(context);
+            }
         );
       }
-    }
+    }*/
 
-    if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
+   /* if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
       _getLoanSummary(context);
     } else {
       if (!Provider.of<DashboardFineSummary>(context, listen: false)
@@ -2274,21 +2294,22 @@ class _BalancesState extends State<Balances> {
           }
         }
         _getLoanSummary(context);
-      }
-    }
+      }*/
+    // }
 
-    if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+    /*if (!Provider.of<NewExpensesSummaries>(context, listen: false)
         .expensesSummariesTotalExists(_currentGroup.groupId)) {
       if (this.mounted) {
         if (_isInit == false) {
           setState(() {
             _isInit = true;
-            // _getExpensesSummary(context);
+            // _getLoanSummary(context);
           });
         }
       }
       _getLoanSummary(context);
-    }
+    }*/
+
 
     var nextInstallmentRepaymentDate = DateTime.fromMillisecondsSinceEpoch(
         loanDashboardSummary.nextInstalmentDate * 1000);
@@ -2701,6 +2722,36 @@ class _ExpensesState extends State<Expenses> {
     //     Provider.of<NewExpensesSummariesList>(context, listen: false);
     NewExpensesSummaries _expenseSummary =
         Provider.of<NewExpensesSummaries>(context);
+
+    /*Future<void> _getLoanSummary(BuildContext context) async {
+      try {
+        // await Provider.of<LoanDashboardSummary>(context, listen: false)
+        //     .getDashboardLoanSummary(_currentGroup.groupId);
+        await Provider.of<NewExpensesSummaries>(context, listen: false)
+            .fetchExpenses(_currentGroup.groupId);
+      } on CustomException catch (error) {
+        StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          *//* callback: () {
+              _getExpenseSummary(context);
+            }*//*
+        );
+      }
+    }
+
+    if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+        .expensesSummariesTotalExists(_currentGroup.groupId)) {
+      if (this.mounted) {
+        if (_isInit == false) {
+          setState(() {
+            _isInit = true;
+            // _getExpensesSummary(context);
+          });
+        }
+      }
+      _getLoanSummary(context);
+    }*/
 
     // Future<void> _getExpensesSummary(BuildContext context) async {
     //   try {

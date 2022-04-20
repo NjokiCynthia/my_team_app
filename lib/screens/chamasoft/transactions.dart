@@ -181,7 +181,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     color: Colors.blue[400],
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => WithdrawalPurpose(),
+                        builder: (BuildContext context) => WithdrawalPurpose(groupId:group.groupId ),
                         settings: RouteSettings(arguments: 0))),
                     margin: 0,
                     imageHeight: 100.0)),

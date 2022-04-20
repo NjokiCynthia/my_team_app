@@ -21,6 +21,9 @@ import 'package:provider/provider.dart';
 import 'review-withdrawal.dart';
 
 class WithdrawalPurpose extends StatefulWidget {
+  final String groupId;
+  const WithdrawalPurpose({Key key, this.groupId})
+      : super(key: key);
   @override
   _WithdrawalPurposeState createState() => _WithdrawalPurposeState();
 }
@@ -47,12 +50,29 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
   int _contributionId;
   int _loanTypeId;
 
+
+
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
     if (_appBarElevation != newElevation) {
       setState(() {
         _appBarElevation = newElevation;
       });
+    }
+  }
+
+  Future<void> _fetchMembers(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .getGroupMembersDetails(widget.groupId);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchMembers(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
     }
   }
 
@@ -238,6 +258,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     if (_isInit)
       WidgetsBinding.instance
           .addPostFrameCallback((_) => _fetchDefaultValues(context));
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _fetchMembers(context));
     super.didChangeDependencies();
   }
 
