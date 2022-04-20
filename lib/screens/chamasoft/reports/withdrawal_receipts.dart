@@ -18,6 +18,8 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
+import '../new_home.dart';
+import '../reports.dart';
 import 'filter_container.dart';
 
 class WithdrawalReceipts extends StatefulWidget {
@@ -144,7 +146,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
         appBar: secondaryPageAppbar(
             context: context,
             title: "Withdrawals Receipts",
-            action: () => Navigator.of(context).pop(),
+            action: () => /*Navigator.of(context).pop()*/ Navigator.of(context).popUntil((route) => route.isFirst),
             elevation: 1,
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,

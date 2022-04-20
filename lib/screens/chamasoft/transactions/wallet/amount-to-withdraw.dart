@@ -2,6 +2,7 @@ import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/screens/chamasoft/reports/withdrawal_receipts.dart';
 import 'package:chamasoft/widgets/appbars.dart';
 import 'package:chamasoft/widgets/buttons.dart';
 import 'package:chamasoft/widgets/dialogs.dart';
@@ -52,13 +53,26 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
 
       alertDialogWithAction(context, "Withdrawal request has been submitted",
           () {
-        Navigator.of(context).pop();
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
+            );
+
+        // Navigator.of(context).pop();
         if (requestId == "-1") {
           //request is duplicate
           int count = 0;
-          Navigator.of(context).popUntil((_) => count++ >= 3);
+          // Navigator.of(context).popUntil((_) => count++ >= 3);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
+          );
         } else
-          Navigator.of(context).pop(requestId);
+          // Navigator.of(context).pop(requestId);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
+          );
       }, false);
       setState(() {
         _isLoading = false;

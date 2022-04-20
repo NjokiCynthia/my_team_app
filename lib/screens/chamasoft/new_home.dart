@@ -153,42 +153,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
-  Future <void>  readFileData() async {
-    // Map<String, dynamic> _formData = {};
-    // BuildContext context;
-    final _dirPath = await getDirPath();
-    final logfilePath = File('$_dirPath/data.txt');
-    final logDataSaved = await logfilePath.readAsString(encoding: utf8);
-    print("saved data on the file is $logDataSaved");
 
-    final _myFile = File('$_dirPath/data.txt');
-
-    print("File size is : ${ await _myFile.length()}");
-
-    if(await _myFile.length() >= 1000){
-      print("Hello, its more than 10kb");
-
-      // _formData['data'] = logDataSaved;
-      try {
-        await Provider.of<Groups>(context, listen: false).recordLogAPIs(logdata: logDataSaved);
-      } on CustomException catch (error) {
-        StatusHandler().handleStatus(
-            context:context,
-            error:error,
-            callback: () {
-          readFileData();
-      });
-      }
-      print("Data saved to the server");
-      await _myFile.delete();
-      // readFileData();
-
-    }
-    else{
-      print("Hello, its less than 10kb");
-      // readFileData();
-    }
-  }
 
   /* Future<void> _getExpenseSummary(BuildContext context) async {
     try {
@@ -212,7 +177,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         //
         // Provider.of<Dashboard>(context, listen: false)
         //     .resetGroupDashboardData(_currentGroup.groupId);
-        readFileData();
+        // readFileData();
 
         Provider.of<DashboardContributionSummary>(context, listen: false)
             .resetMemberContributionSummary(_currentGroup.groupId);
@@ -480,7 +445,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getDashboardLoanSummary(_currentGroup.groupId);
       }*/
       // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      readFileData();
+      // readFileData();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -497,6 +462,44 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       }
     }
   }
+
+
+  /*Future <void>  readFileData() async {
+    // Map<String, dynamic> _formData = {};
+    // BuildContext context;
+    final _dirPath = await getDirPath();
+    final logfilePath = File('$_dirPath/data.txt');
+    final logDataSaved = await logfilePath.readAsString(encoding: utf8);
+    print("saved data on the file is $logDataSaved");
+
+    final _myFile = File('$_dirPath/data.txt');
+
+    print("File size is : ${ await _myFile.length()}");
+
+    if(await _myFile.length() >= 1000){
+      print("Hello, its more than 10kb");
+
+      // _formData['data'] = logDataSaved;
+      try {
+        await Provider.of<Groups>(context, listen: false).recordLogAPIs(logdata: logDataSaved);
+      } on CustomException catch (error) {
+        StatusHandler().handleStatus(
+            context:context,
+            error:error,
+            callback: () {
+              readFileData();
+            });
+      }
+      print("Data saved to the server");
+      await _myFile.delete();
+      // readFileData();
+
+    }
+    else{
+      print("Hello, its less than 10kb");
+      // readFileData();
+    }
+  }*/
 
 /* 
   void _scrollChartToEnd() {
@@ -2709,7 +2712,36 @@ class _BalancesState extends State<Balances> {
                     ]),
               )
             ]))
-        : Container(
+        : loanDashboardSummary.grouploanExists != null
+        ? Container(
+      child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16.0),
+          decoration: flatGradient(context),
+          child: Column(
+            children: [
+              SvgPicture.asset(
+                customIcons['no-data'],
+                semanticsLabel: 'icon',
+                height: 120.0,
+              ),
+              customTitleWithWrap(
+                  text: "Fetching Data!",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400]),
+              customTitleWithWrap(
+                  text: "Kindly Wait, Fetching your fines ...",
+                  //fontWeight: FontWeight.w500,
+                  fontSize: 12.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400])
+            ],
+          )),
+    )
+
+    : Container(
             child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -3311,7 +3343,36 @@ class _ExpensesState extends State<Expenses> {
                 ],
               ),
             ]))
-        : Container(
+        : _expenseSummary.expensesSummariesTotalExists != null
+        ? Container(
+      child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(16.0),
+          decoration: flatGradient(context),
+          child: Column(
+            children: [
+              SvgPicture.asset(
+                customIcons['no-data'],
+                semanticsLabel: 'icon',
+                height: 120.0,
+              ),
+              customTitleWithWrap(
+                  text: "Fetching Data!",
+                  fontWeight: FontWeight.w700,
+                  fontSize: 14.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400]),
+              customTitleWithWrap(
+                  text: "Kindly Wait, Fetching your fines ...",
+                  //fontWeight: FontWeight.w500,
+                  fontSize: 12.0,
+                  textAlign: TextAlign.center,
+                  color: Colors.blueGrey[400])
+            ],
+          )),
+    )
+        
+    : Container(
             child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
