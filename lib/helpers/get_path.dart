@@ -18,7 +18,8 @@ Future<void> writeData(String url, String groupId, String userId,
   final _dirPath = await getDirPath();
   final _myFile = File('$_dirPath/data.txt');
   // If data.txt doesn't exist, it will be created automatically
-  var datatoSave = ("$url $groupId $userId $newrequestDate $newResponseDate\n");
+  var datatoSave =
+      ("$url,$groupId,$userId,$newrequestDate,$newResponseDate\n");
   for (int i = 0; i < 1; i++) {
     await _myFile.writeAsString(datatoSave, mode: FileMode.append);
   }

@@ -158,27 +158,23 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     final _dirPath = await getDirPath();
     final logfilePath = File('$_dirPath/data.txt');
     final logDataSaved = await logfilePath.readAsString(encoding: utf8);
-    print("saved data on the file is $logDataSaved");
-
     final _myFile = File('$_dirPath/data.txt');
-
     print("File size is : ${await _myFile.length()}");
-
     if (await _myFile.length() >= 1000) {
-      print("Hello, its more than 10kb");
-
+      print("Hello, its more than 10kb, below is the data.");
+      print(logDataSaved);
       // _formData['data'] = logDataSaved;
-      try {
-        await Provider.of<Groups>(context, listen: false)
-            .recordLogAPIs(logdata: logDataSaved);
-      } on CustomException catch (error) {
-        StatusHandler().handleStatus(
-            context: context,
-            error: error,
-            callback: () {
-              readFileData();
-            });
-      }
+      // try {
+      //   await Provider.of<Groups>(context, listen: false)
+      //       .recordLogAPIs(logdata: logDataSaved);
+      // } on CustomException catch (error) {
+      //   StatusHandler().handleStatus(
+      //       context: context,
+      //       error: error,
+      //       callback: () {
+      //         readFileData();
+      //       });
+      // }
       print("Data saved to the server");
       await _myFile.delete();
       // readFileData();

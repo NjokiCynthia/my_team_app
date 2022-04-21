@@ -139,8 +139,6 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
     groupObject = Provider.of<Groups>(context, listen: false).getCurrentGroup();
     _unreconciledWithdrawal =
         Provider.of<Groups>(context, listen: true).getUnreconciledWithdrawals;
-
-    print(_unreconciledWithdrawal.length);
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
