@@ -170,7 +170,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
       if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
         final String randomKey = CustomHelper.generateRandomString(16);
         // print(url);
-        var newrequestDate = DateTime.now();
+        var newrequestDate = DateTime.now().millisecondsSinceEpoch;
         print("$newrequestDate $url");
         try {
           final String secretKey = await _encryptSecretKey(randomKey);
@@ -196,11 +196,11 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                   message: ERROR_MESSAGE, status: ErrorStatusCode.statusNormal);
             });
             try {
-              var newResponseDate = DateTime.now();
+              var newResponseDate = DateTime.now().millisecondsSinceEpoch;
               final responseBody = await generateResponse(response.body);
               String message = responseBody["message"].toString();
-              String groupId = json.decode(jsonObject)['groupId'] ?? 'null';
-              String userId = json.decode(jsonObject)['userId'] ?? 'null';
+              String groupId = json.decode(jsonObject)['group_id'] ?? 'null';
+              String userId = json.decode(jsonObject)['user_id'] ?? 'null';
               await writeData(url, groupId, userId, newrequestDate.toString(),
                   newResponseDate.toString());
 

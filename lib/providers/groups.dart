@@ -4940,7 +4940,7 @@ class Groups with ChangeNotifier {
     }
   }
 
-  Future<void> recordLogAPIs ({String logdata}) async {
+  Future<void> recordLogAPIs({String logdata}) async {
     try {
       /*final url = EndpointUrl.POST_API_LOGS;
       final _dirPath = await getDirPath();
@@ -4950,7 +4950,7 @@ class Groups with ChangeNotifier {
 
       log(formData.toString());*/
       final url = EndpointUrl.POST_API_LOGS;
-        final postRequest = json.encode({"data":logdata});
+      final postRequest = json.encode({"data": logdata});
 
       try {
         await PostToServer.post(postRequest, url);
