@@ -2732,7 +2732,7 @@ class _BalancesState extends State<Balances> {
                   textAlign: TextAlign.center,
                   color: Colors.blueGrey[400]),
               customTitleWithWrap(
-                  text: "Kindly Wait, Fetching your fines ...",
+                  text: "Kindly Wait, Fetching your Loans ...",
                   //fontWeight: FontWeight.w500,
                   fontSize: 12.0,
                   textAlign: TextAlign.center,
@@ -3343,7 +3343,7 @@ class _ExpensesState extends State<Expenses> {
                 ],
               ),
             ]))
-        : _expenseSummary.expensesSummariesTotalExists != null
+        : _expenseSummary.expensesSummariesTotalExists == null
         ? Container(
       child: Container(
           width: double.infinity,
@@ -3363,7 +3363,7 @@ class _ExpensesState extends State<Expenses> {
                   textAlign: TextAlign.center,
                   color: Colors.blueGrey[400]),
               customTitleWithWrap(
-                  text: "Kindly Wait, Fetching your fines ...",
+                  text: "Kindly Wait, Fetching your expenses ...",
                   //fontWeight: FontWeight.w500,
                   fontSize: 12.0,
                   textAlign: TextAlign.center,
@@ -3371,7 +3371,7 @@ class _ExpensesState extends State<Expenses> {
             ],
           )),
     )
-        
+
     : Container(
             child: Container(
                 width: double.infinity,
@@ -3391,7 +3391,7 @@ class _ExpensesState extends State<Expenses> {
                         textAlign: TextAlign.center,
                         color: Colors.blueGrey[400]),
                     customTitleWithWrap(
-                        text: "Sorry, There are no Expenses available",
+                        text: "Sorry, there are no expenses to display",
                         //fontWeight: FontWeight.w500,
                         fontSize: 12.0,
                         textAlign: TextAlign.center,
