@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -153,7 +152,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
-  Future <void>  readFileData() async {
+  Future<void> readFileData() async {
     // Map<String, dynamic> _formData = {};
     // BuildContext context;
     final _dirPath = await getDirPath();
@@ -163,28 +162,28 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
     final _myFile = File('$_dirPath/data.txt');
 
-    print("File size is : ${ await _myFile.length()}");
+    print("File size is : ${await _myFile.length()}");
 
-    if(await _myFile.length() >= 1000){
+    if (await _myFile.length() >= 1000) {
       print("Hello, its more than 10kb");
 
       // _formData['data'] = logDataSaved;
       try {
-        await Provider.of<Groups>(context, listen: false).recordLogAPIs(logdata: logDataSaved);
+        await Provider.of<Groups>(context, listen: false)
+            .recordLogAPIs(logdata: logDataSaved);
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
-            context:context,
-            error:error,
+            context: context,
+            error: error,
             callback: () {
-          readFileData();
-      });
+              readFileData();
+            });
       }
       print("Data saved to the server");
       await _myFile.delete();
       // readFileData();
 
-    }
-    else{
+    } else {
       print("Hello, its less than 10kb");
       // readFileData();
     }
@@ -212,7 +211,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         //
         // Provider.of<Dashboard>(context, listen: false)
         //     .resetGroupDashboardData(_currentGroup.groupId);
-        readFileData();
+        //readFileData();
 
         Provider.of<DashboardContributionSummary>(context, listen: false)
             .resetMemberContributionSummary(_currentGroup.groupId);
@@ -324,8 +323,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       //   await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
       // }
 
-
-
       /* if (!Provider.of<DashboardFineSummary>(context, listen: false)
           .memberFineSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
@@ -378,7 +375,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getContributionsSummary(_currentGroup.groupId);
       }
 
-     /* if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+      /* if (!Provider.of<NewExpensesSummaries>(context, listen: false)
           .expensesSummariesTotalExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -423,7 +420,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getRecentTransactionsSummary(_currentGroup.groupId);
       }
 
-     /* Future<void> _getExpensesSummary(BuildContext context) async {
+      /* Future<void> _getExpensesSummary(BuildContext context) async {
         try {
           await Provider.of<NewExpensesSummaries>(context, listen: false)
               .fetchExpenses(_currentGroup.groupId);
@@ -436,8 +433,6 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
               });
         }
       }*/
-
-
 
       // await Provider.of<Dashboard>(context, listen: false)
       //     .getMemberDashboardData(_currentGroup.groupId);
@@ -480,7 +475,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getDashboardLoanSummary(_currentGroup.groupId);
       }*/
       // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-      readFileData();
+      //readFileData();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -1251,65 +1246,67 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 ),
                               ),
                             )
-                          : recentTransactionSummary == null ? Padding(
-                        padding:
-                        EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
-                        child: Container(
-                            width: double.infinity,
-                            padding: EdgeInsets.all(16.0),
-                            decoration: flatGradient(context),
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  customIcons['no-data'],
-                                  semanticsLabel: 'icon',
-                                  height: 120.0,
+                          : recentTransactionSummary == null
+                              ? Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      16.0, 10.0, 16.0, 20.0),
+                                  child: Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(16.0),
+                                      decoration: flatGradient(context),
+                                      child: Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            customIcons['no-data'],
+                                            semanticsLabel: 'icon',
+                                            height: 120.0,
+                                          ),
+                                          customTitleWithWrap(
+                                              text: "Nothing to display!",
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14.0,
+                                              textAlign: TextAlign.center,
+                                              color: Colors.blueGrey[400]),
+                                          customTitleWithWrap(
+                                              text:
+                                                  "Sorry, you haven't made any transactions",
+                                              //fontWeight: FontWeight.w500,
+                                              fontSize: 12.0,
+                                              textAlign: TextAlign.center,
+                                              color: Colors.blueGrey[400])
+                                        ],
+                                      )),
+                                )
+                              : Padding(
+                                  padding: EdgeInsets.fromLTRB(
+                                      16.0, 10.0, 16.0, 20.0),
+                                  child: Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(16.0),
+                                      decoration: flatGradient(context),
+                                      child: Column(
+                                        children: [
+                                          SvgPicture.asset(
+                                            customIcons['no-data'],
+                                            semanticsLabel: 'icon',
+                                            height: 120.0,
+                                          ),
+                                          customTitleWithWrap(
+                                              text: "Nothing to display!",
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 14.0,
+                                              textAlign: TextAlign.center,
+                                              color: Colors.blueGrey[400]),
+                                          customTitleWithWrap(
+                                              text:
+                                                  "Sorry, you haven't made any transactions",
+                                              //fontWeight: FontWeight.w500,
+                                              fontSize: 12.0,
+                                              textAlign: TextAlign.center,
+                                              color: Colors.blueGrey[400])
+                                        ],
+                                      )),
                                 ),
-                                customTitleWithWrap(
-                                    text: "Nothing to display!",
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.0,
-                                    textAlign: TextAlign.center,
-                                    color: Colors.blueGrey[400]),
-                                customTitleWithWrap(
-                                    text:
-                                    "Sorry, you haven't made any transactions",
-                                    //fontWeight: FontWeight.w500,
-                                    fontSize: 12.0,
-                                    textAlign: TextAlign.center,
-                                    color: Colors.blueGrey[400])
-                              ],
-                            )),
-                      ) : Padding(
-                              padding:
-                                  EdgeInsets.fromLTRB(16.0, 10.0, 16.0, 20.0),
-                              child: Container(
-                                  width: double.infinity,
-                                  padding: EdgeInsets.all(16.0),
-                                  decoration: flatGradient(context),
-                                  child: Column(
-                                    children: [
-                                      SvgPicture.asset(
-                                        customIcons['no-data'],
-                                        semanticsLabel: 'icon',
-                                        height: 120.0,
-                                      ),
-                                      customTitleWithWrap(
-                                          text: "Nothing to display!",
-                                          fontWeight: FontWeight.w700,
-                                          fontSize: 14.0,
-                                          textAlign: TextAlign.center,
-                                          color: Colors.blueGrey[400]),
-                                      customTitleWithWrap(
-                                          text:
-                                              "Sorry, you haven't made any transactions",
-                                          //fontWeight: FontWeight.w500,
-                                          fontSize: 12.0,
-                                          textAlign: TextAlign.center,
-                                          color: Colors.blueGrey[400])
-                                    ],
-                                  )),
-                            ),
                     ],
                   )
                 : newHomePlaceHolder(context: context),
@@ -1342,13 +1339,12 @@ class _ContrubutionsState extends State<Contrubutions> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     bool _isInit = true;
     DashboardFineSummary dashboardFineSummary =
-    Provider.of<DashboardFineSummary>(context);
+        Provider.of<DashboardFineSummary>(context);
 
     Future<void> _getFineSummary(BuildContext context) async {
       try {
         await Provider.of<DashboardFineSummary>(context, listen: false)
             .getFinesSummary(_currentGroup.groupId);
-
 
         // await Provider.of<LoanDashboardSummary>(context, listen: false)
         //     .getDashboardLoanSummary(_currentGroup.groupId);
@@ -1892,7 +1888,7 @@ class _FinesState extends State<Fines> {
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
     bool _isInit = true;
     LoanDashboardSummary loanDashboardSummary =
-    Provider.of<LoanDashboardSummary>(context);
+        Provider.of<LoanDashboardSummary>(context);
     // LoanDashboardSummary _loanDashboardSummary =
     //     Provider.of<LoanDashboardSummary>(context);
 
@@ -1939,12 +1935,11 @@ class _FinesState extends State<Fines> {
       }
     }
 
-    if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) ==
-        null) {
+    if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
       _getFineSummary(context);
     } else {
-      if (!Provider.of<LoanDashboardSummary>(context, listen: false).grouploanExists
-          (_currentGroup.groupId)) {
+      if (!Provider.of<LoanDashboardSummary>(context, listen: false)
+          .grouploanExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
             setState(() {
@@ -2325,7 +2320,7 @@ class _BalancesState extends State<Balances> {
       }
     }*/
 
-   /* if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
+    /* if (loanDashboardSummary.grouploanExists(_currentGroup.groupId) == null) {
       _getLoanSummary(context);
     } else {
       if (!Provider.of<DashboardFineSummary>(context, listen: false)
@@ -2353,7 +2348,6 @@ class _BalancesState extends State<Balances> {
       }
       _getLoanSummary(context);
     }*/
-
 
     var nextInstallmentRepaymentDate = DateTime.fromMillisecondsSinceEpoch(
         loanDashboardSummary.nextInstalmentDate * 1000);
@@ -2777,9 +2771,9 @@ class _ExpensesState extends State<Expenses> {
         StatusHandler().handleStatus(
           context: context,
           error: error,
-          *//* callback: () {
+          */ /* callback: () {
               _getExpenseSummary(context);
-            }*//*
+            }*/ /*
         );
       }
     }
@@ -2811,7 +2805,7 @@ class _ExpensesState extends State<Expenses> {
     //   }
     // }
     //
-   /* if (!Provider.of<NewExpensesSummaries>(context, listen: false)
+    /* if (!Provider.of<NewExpensesSummaries>(context, listen: false)
         .expensesSummariesTotalExists(_currentGroup.groupId)) {
       if (this.mounted) {
         if (_isInit == false) {
@@ -2869,8 +2863,8 @@ class _ExpensesState extends State<Expenses> {
     }*/
 
     final sumOfThreeItems = (_expenseSummary.newExpensesSummariesList.length > 2
-        ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
-        : 0) +
+            ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
+            : 0) +
         (_expenseSummary.newExpensesSummariesList.length > 1
             ? _expenseSummary.newExpensesSummariesList[1].expenseAmount
             : 0) +
@@ -2878,7 +2872,8 @@ class _ExpensesState extends State<Expenses> {
             ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
             : 0);
 
-    final newOtherExpenses = _expenseSummary.totalExpensesSummaries - sumOfThreeItems;
+    final newOtherExpenses =
+        _expenseSummary.totalExpensesSummaries - sumOfThreeItems;
 
     final otherExpenses = _expenseSummary.totalExpensesSummaries -
         (_expenseSummary.newExpensesSummariesList.length > 2
@@ -2890,7 +2885,6 @@ class _ExpensesState extends State<Expenses> {
         (_expenseSummary.newExpensesSummariesList.length > 0
             ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
             : 0);
-
 
     // (_expenseSummary.newExpensesSummariesList[2].expenseAmount)
     //     (_expenseSummary.newExpensesSummariesList.length> 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0) +
@@ -2906,20 +2900,16 @@ class _ExpensesState extends State<Expenses> {
     //     _expenseRows[0].paid ?? 0*/
     //     );
 
-
     print("Total Expenses will be ${_expenseSummary.totalExpensesSummaries}");
     print("Some of the three items will be $sumOfThreeItems");
     print("object Other Expenses will be $otherExpenses");
     print("new other Expenses amount will be $newOtherExpenses");
-    print("Item1 will be ${(_expenseSummary.newExpensesSummariesList.length > 0
-        ? _expenseSummary.newExpensesSummariesList[0].expenseAmount
-        : 0)}");
-    print("Item2 will be ${(_expenseSummary.newExpensesSummariesList.length > 1
-        ? _expenseSummary.newExpensesSummariesList[1].expenseAmount
-        : 0)}");
-    print("Item3 will be ${(_expenseSummary.newExpensesSummariesList.length > 2
-        ? _expenseSummary.newExpensesSummariesList[2].expenseAmount
-        : 0)}");
+    print(
+        "Item1 will be ${(_expenseSummary.newExpensesSummariesList.length > 0 ? _expenseSummary.newExpensesSummariesList[0].expenseAmount : 0)}");
+    print(
+        "Item2 will be ${(_expenseSummary.newExpensesSummariesList.length > 1 ? _expenseSummary.newExpensesSummariesList[1].expenseAmount : 0)}");
+    print(
+        "Item3 will be ${(_expenseSummary.newExpensesSummariesList.length > 2 ? _expenseSummary.newExpensesSummariesList[2].expenseAmount : 0)}");
 
     /*Map<String, double> dataMaptest = {
       "Item1": (_expenseRows?.length > 0 ? _expenseRows[0].paid : 0),

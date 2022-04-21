@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 import 'dart:io';
 
@@ -14,11 +13,12 @@ Future<String> getDirPath() async {
   return dir.path;
 }
 
-Future<void> writeData(String url, String newrequestDate, String newResponseDate, String apiResponseTimeinSeconds) async {
-  final _dirPath = await  getDirPath();
+Future<void> writeData(String url, String groupId, String userId,
+    String newrequestDate, String newResponseDate) async {
+  final _dirPath = await getDirPath();
   final _myFile = File('$_dirPath/data.txt');
   // If data.txt doesn't exist, it will be created automatically
-  var datatoSave = ("(endpoint)$url, (request time)$newrequestDate, (response time)$newResponseDate, (duration)$apiResponseTimeinSeconds\n"  );
+  var datatoSave = ("$url $groupId $userId $newrequestDate $newResponseDate\n");
   for (int i = 0; i < 1; i++) {
     await _myFile.writeAsString(datatoSave, mode: FileMode.append);
   }
