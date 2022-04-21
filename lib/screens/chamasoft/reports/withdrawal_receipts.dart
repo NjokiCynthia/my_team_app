@@ -24,6 +24,8 @@ import 'filter_container.dart';
 import 'package:get/get.dart';
 
 class WithdrawalReceipts extends StatefulWidget {
+  final int requestId;
+  const WithdrawalReceipts({Key key, this.requestId}) : super(key: key);
   @override
   _WithdrawalReceiptsState createState() => _WithdrawalReceiptsState();
 }
@@ -39,6 +41,8 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
   int selectedRadioTile;
   List<int> _filterList = [];
   List<String> _memberList = [];
+  int count = 0;
+  // Navigator.of(context).popUntil((_) => count++ >= 3);
 
   bool _hasMoreData = false;
 
@@ -147,7 +151,7 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
         appBar: secondaryPageAppbar(
             context: context,
             title: "Withdrawals Receipts",
-            action: () => /*Navigator.of(context).pop()*/ /*Navigator.of(context).popUntil((route) => route.isFirst)*/ Get.to(ChamasoftReports()),
+            action: () => widget.requestId == WITHDRAWAL_REQUEST ? Navigator.of(context).popUntil((_) => count++ >= 4): Navigator.of(context).pop() ,
             elevation: 1,
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,

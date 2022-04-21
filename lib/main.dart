@@ -8,6 +8,7 @@ import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
+import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/create-bank-account.dart';
 import 'package:chamasoft/screens/chamasoft/settings/accounts/list-institutions.dart';
 import 'package:chamasoft/screens/chamasoft/settings/group-setup/add-contribution-dialog.dart';
@@ -261,7 +262,8 @@ class _MyAppState extends State<MyApp> {
             ListInstitutions.namedRoute: (ctx) => ListInstitutions(),
             ChamasoftDashboard.namedRoute: (ctx) => ChamasoftDashboard(),
             ChamasoftTransactions.namedRoute: (ctx) => ChamasoftTransactions(),
-            PinLogin.namedRoute: (ctx) => PinLogin()
+            PinLogin.namedRoute: (ctx) => PinLogin(),
+            '/reports': (ctx) => ChamasoftReports(),
           },
           onGenerateRoute: (settings) {
             return MaterialPageRoute(builder: (context) => IntroScreen());

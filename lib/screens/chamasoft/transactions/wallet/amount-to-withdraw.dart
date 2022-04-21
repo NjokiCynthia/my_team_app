@@ -11,6 +11,7 @@ import 'package:chamasoft/widgets/textstyles.dart';
 import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:chamasoft/helpers/common.dart';
 
 class AmountToWithdraw extends StatefulWidget {
   final Map<String, String> formData;
@@ -48,31 +49,47 @@ class _AmountToWithdrawState extends State<AmountToWithdraw> {
     });
 
     try {
+
+    /*  String message = "Withdrawal request has been submitted";
+      final requestId = await Provider.of<Groups>(context, listen: false)
+          .createWithdrawalRequest(widget.formData);
+      StatusHandler().showSuccessSnackBar(context, message);
+
+      Future.delayed(const Duration(milliseconds: 2500), () {
+        *//*Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => WithdrawalReceipts(),
+          ),
+              (route) => false,
+        );*//*
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (BuildContext context) => WithdrawalReceipts(),
+            settings: RouteSettings(arguments: 0)));
+        *//*Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts()));*//*
+      });*/
       final requestId = await Provider.of<Groups>(context, listen: false)
           .createWithdrawalRequest(widget.formData);
 
       alertDialogWithAction(context, "Withdrawal request has been submitted",
           () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
-            );
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts(requestId: WITHDRAWAL_REQUEST)));
 
         // Navigator.of(context).pop();
         if (requestId == "-1") {
           //request is duplicate
           int count = 0;
-          // Navigator.of(context).popUntil((_) => count++ >= 3);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
-          );
+          Navigator.of(context).popUntil((_) => count++ >= 3);
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
+          // );
         } else
           // Navigator.of(context).pop(requestId);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => WithdrawalReceipts()),
-          );
+          Navigator.of(context)
+              .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => WithdrawalReceipts(requestId: WITHDRAWAL_REQUEST)));
       }, false);
       setState(() {
         _isLoading = false;

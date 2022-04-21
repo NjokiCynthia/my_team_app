@@ -160,7 +160,6 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
 
   static Future<dynamic> post(String jsonObject, String url) async {
     try {
-
       final result = await InternetAddress.lookup("example.com")
           .timeout(const Duration(seconds: 10), onTimeout: () {
         throw CustomException(
@@ -199,15 +198,13 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             try {
               var newResponseDate = DateTime.now();
               final responseBody = await generateResponse(response.body);
-              print(" $newResponseDate Server Response >>>>>>>> $responseBody");
-              var apiResponseTime = newResponseDate.difference(newrequestDate).inSeconds;
-              var apiResponseTimeinSeconds = "$apiResponseTime seconds";
-              print("Response time of $url is $apiResponseTime seconds");
               String message = responseBody["message"].toString();
+              String groupId = json.decode(jsonObject)['groupId'] ?? 'null';
+              String userId = json.decode(jsonObject)['userId'] ?? 'null';
+              await writeData(url, groupId, userId, newrequestDate.toString(),
+                  newResponseDate.toString());
 
-              await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
-
-             /* final _dirPath = await getDirPath();
+              /* final _dirPath = await getDirPath();
 
               final _myFile = File('$_dirPath/data.txt');
 
@@ -229,13 +226,13 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
 
               // readFileData();
 
-
               switch (responseBody['status']) {
                 case 0:
                   //handle validation and other generic errors
                   //display error(s)
                   // writeData();
-                await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   if (responseBody["validation_errors"] != null) {
                     message = "";
                     Map<String, dynamic> validationErrors =
@@ -249,27 +246,31 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                       status: ErrorStatusCode.statusFormValidationError,
                     );
                   }
-                await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
 
                   throw CustomException(message: message);
                   break;
                 case 1:
                   //request successful
-                  await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   return responseBody;
                   break;
                 case 2:
                 case 3:
                   //generic error
                   //display error
-                await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: message);
                   break;
                 case 4:
                 case 8:
                 case 9:
                   //reset app
-                await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(
                       message: message,
                       status: ErrorStatusCode.statusRequireLogout);
@@ -279,7 +280,8 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                 case 10:
                   //clear current group loaded to preferences
                   //clear screens and restart app from splash screen
-                await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(
                       message: message,
                       status: ErrorStatusCode.statusRequireRestart);
@@ -287,25 +289,29 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                 case 7:
                   //generic error
                   //display error
-                  await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: message);
                   break;
                 case 11:
                 case 13:
                   //invalid request id or format
-                await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: message);
                   break;
                 case 12:
                   //duplicate request submitted
                   //treat as case 1
                   //notify user of duplicates
-                  await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   return responseBody;
                   break;
                 case 400:
                   //log out user
-                  await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(
                       message: ERROR_MESSAGE_LOGIN,
                       status: ErrorStatusCode.statusRequireLogout);
@@ -313,13 +319,15 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
                 case 404:
                   //generic error
                   //display error
-                  await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: ERROR_MESSAGE);
                   break;
                 default:
                   //generic error
                   //display error
-                  await writeData(url,newrequestDate.toString(), newResponseDate.toString(), apiResponseTimeinSeconds);
+                  await writeData(url, groupId, userId,
+                      newrequestDate.toString(), newResponseDate.toString());
                   throw CustomException(message: ERROR_MESSAGE);
               }
             } catch (error) {

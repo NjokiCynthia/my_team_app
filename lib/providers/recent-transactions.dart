@@ -115,7 +115,7 @@ class MemberRecentTransaction with ChangeNotifier {
         "request_id": _requestId,
         "user_id": _userId,
         "group_id": groupId,
-        "limit": "5"
+        "limit": "10"
       });
       try {
         final response = await PostToServer.post(postRequest, url);
