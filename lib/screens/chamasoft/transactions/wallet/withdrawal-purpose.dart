@@ -213,7 +213,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
       formData['recipient'] = "1";
       final result = await  Navigator.of(context).push(MaterialPageRoute(
           builder: (BuildContext context) =>
-              ListMemberContacts(formData: formData, groupId: groupId)));
+              ListMemberContacts(formLoadData:_formLoadData, formData: formData, groupId: groupId)));
       if (result != null) {
         print("result: $result");
         final id = int.tryParse(result) ?? 0;

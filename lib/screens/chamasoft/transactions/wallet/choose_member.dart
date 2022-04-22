@@ -6,6 +6,7 @@ import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
+import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/amount-to-withdraw.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/contact_list.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/member_phone.dart';
@@ -19,14 +20,14 @@ import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-
 import 'amount-to-withdraw.dart';
 
 class ListMemberContacts extends StatefulWidget {
   final Map<String, String> formData;
   final String groupId;
-
-  const ListMemberContacts({Key key, this.formData, this.groupId})
+  final Map<String, dynamic> formLoadData;
+  const ListMemberContacts(
+      {Key key, this.formLoadData, this.formData, this.groupId})
       : super(key: key);
 
   @override
@@ -60,6 +61,8 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   ScrollController _scrollController;
   bool _isInit = true;
 
+
+
   // _ListMemberContactsState({
   //   this.floatingButtonLabel,
   //   this.icon,
@@ -89,37 +92,37 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
     }
   }
 
-  Future<void> _fetchMembers(BuildContext context) async {
-    try {
-      await Provider.of<Groups>(context, listen: false)
-          .getGroupMembersDetails(widget.groupId);
-    } on CustomException catch (error) {
-      StatusHandler().handleStatus(
-          context: context,
-          error: error,
-          callback: () {
-            _fetchMembers(context);
-          },
-          scaffoldState: _scaffoldKey.currentState);
-    }
-  }
+  // Future<void> _fetchMembers(BuildContext context) async {
+  //   try {
+  //     await Provider.of<Groups>(context, listen: false)
+  //         .getGroupMembersDetails(widget.groupId);
+  //   } on CustomException catch (error) {
+  //     StatusHandler().handleStatus(
+  //         context: context,
+  //         error: error,
+  //         callback: () {
+  //           _fetchMembers(context);
+  //         },
+  //         scaffoldState: _scaffoldKey.currentState);
+  //   }
+  // }
 
   Future<bool> _fetchData() async {
     setState(() {
       _isLoading = true;
     });
 
-    _fetchMembers(context).then((_) {
-      if (context != null) {
-        setState(() {
-          if (_member.length < 20) {
-            _hasMoreData = false;
-          } else
-            _hasMoreData = true;
-          _isLoading = false;
-        });
-      }
-    });
+    // _fetchMembers(context).then((_) {
+    //   if (context != null) {
+    //     setState(() {
+    //       if (_member.length < 20) {
+    //         _hasMoreData = false;
+    //       } else
+    //         _hasMoreData = true;
+    //       _isLoading = false;
+    //     });
+    //   }
+    // });
 
     _isInit = false;
     return true;
@@ -153,6 +156,16 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
     contactSubscriber.cancel();
     controller.dispose();
     super.dispose();
+  }
+
+   String _getOptionName(int id, List<NamesListItem> list) {
+    var name = '';
+    for (final item in list) {
+      if (id == item.id) {
+        name = item.name;
+      }
+    }
+    return name;
   }
 
   // ignore: unused_element
@@ -213,6 +226,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   @override
   Widget build(BuildContext context) {
     _member = Provider.of<Groups>(context, listen: true).groupMembersDetails;
+    List<NamesListItem> list = widget.formLoadData["memberOptions"];
     return Scaffold(
       appBar: tertiaryPageAppbar(
         context: context,
@@ -357,7 +371,8 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
                       // padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
                       scrollDirection: Axis.vertical,
                       itemBuilder: (context, index) {
-                        GroupMemberDetail member = _member[index];
+                        //GroupMemberDetail member = _member[index];
+                        NamesListItem member = widget.formLoadData[];
 
                         return filter == null || filter == ""
                             ? _memberList(member, widget.formData)
@@ -508,7 +523,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
     });
   }
 
-  _memberList(GroupMemberDetail member, Map<String, String> formData) {
+  _memberList(NamesListItem member, Map<String, String> formData) {
     // widget.formData["name"] = member.name;
     return ListTile(
       leading: CircleAvatar(
@@ -516,7 +531,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
           child: Text(member.name[0].toUpperCase(),
               style: TextStyle(color: Colors.white, fontSize: 24))),
       onTap: () async {
-        widget.formData['phone'] = member.phone;
+        widget.formData['phone'] = member.identity;
 
         await Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => AmountToWithdraw(
@@ -525,7 +540,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
                 )));
       },
       title: subtitle1(text: member.name ?? "", textAlign: TextAlign.start),
-      subtitle: subtitle1(text: member.phone, textAlign: TextAlign.start),
+      subtitle: subtitle1(text: member.identity, textAlign: TextAlign.start),
     );
   }
 }
