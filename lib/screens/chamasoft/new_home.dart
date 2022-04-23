@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -152,7 +153,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     return null;
   }
 
- /* Future<void> readFileData() async {
+  /* Future<void> readFileData() async {
     // Map<String, dynamic> _formData = {};
     // BuildContext context;
     final _dirPath = await getDirPath();
@@ -202,12 +203,12 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     try {
       if (hardRefresh) {
         _currentIndex = 0;
+        readFileData();
         // Provider.of<Dashboard>(context, listen: false)
         //     .resetMemberDashboardData(_currentGroup.groupId);
         //
         // Provider.of<Dashboard>(context, listen: false)
         //     .resetGroupDashboardData(_currentGroup.groupId);
-
 
         Provider.of<DashboardContributionSummary>(context, listen: false)
             .resetMemberContributionSummary(_currentGroup.groupId);
@@ -433,7 +434,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
       // await Provider.of<Dashboard>(context, listen: false)
       //     .getMemberDashboardData(_currentGroup.groupId);
 
-    /*  if (!Provider.of<BalancesDashboardSummary>(context, listen: false)
+      /*  if (!Provider.of<BalancesDashboardSummary>(context, listen: false)
           .totalBankBalanceSummaryExists(_currentGroup.groupId)) {
         if (this.mounted) {
           if (_isInit == false) {
@@ -486,7 +487,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getDashboardLoanSummary(_currentGroup.groupId);
       }*/
       // await Provider.of<Groups>(context, listen: false).fetchExpenseSummary();
-
+      readFileData();
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -504,43 +505,45 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
     }
   }
 
-
-  /*Future <void>  readFileData() async {
+  Future<void> readFileData() async {
     // Map<String, dynamic> _formData = {};
     // BuildContext context;
     final _dirPath = await getDirPath();
     final logfilePath = File('$_dirPath/data.txt');
     final logDataSaved = await logfilePath.readAsString(encoding: utf8);
     print("saved data on the file is $logDataSaved");
+    log(logDataSaved);
 
     final _myFile = File('$_dirPath/data.txt');
 
-    print("File size is : ${ await _myFile.length()}");
+    print("File size is : ${await _myFile.length()}");
+    print("File size is using plan 11 : ${logfilePath.length()}");
 
-    if(await _myFile.length() >= 1000){
+
+    if (await logfilePath.length() >= 1000) {
       print("Hello, its more than 10kb");
 
       // _formData['data'] = logDataSaved;
       try {
-        await Provider.of<Groups>(context, listen: false).recordLogAPIs(logdata: logDataSaved);
+        await Provider.of<Groups>(context, listen: false)
+            .recordLogAPIs(logdata: logDataSaved);
       } on CustomException catch (error) {
         StatusHandler().handleStatus(
-            context:context,
-            error:error,
+            context: context,
+            error: error,
             callback: () {
               readFileData();
             });
       }
       print("Data saved to the server");
-      await _myFile.delete();
+      // await _myFile.delete();
       // readFileData();
 
-    }
-    else{
+    } else {
       print("Hello, its less than 10kb");
       // readFileData();
     }
-  }*/
+  }
 
 /* 
   void _scrollChartToEnd() {
@@ -1390,7 +1393,7 @@ class _ContrubutionsState extends State<Contrubutions> {
     DashboardFineSummary dashboardFineSummary =
         Provider.of<DashboardFineSummary>(context);
 
-    Future<void> _getFineSummary(BuildContext context) async {
+    /* Future<void> _getFineSummary(BuildContext context) async {
       try {
         await Provider.of<DashboardFineSummary>(context, listen: false)
             .getFinesSummary(_currentGroup.groupId);
@@ -1425,7 +1428,7 @@ class _ContrubutionsState extends State<Contrubutions> {
         _getFineSummary(context);
       }
     }
-
+ */
     /*Future<void> _getContributionSummary(BuildContext context) async {
       try {
         await Provider.of<DashboardContributionSummary>(context, listen: false)
@@ -2018,7 +2021,10 @@ class _FinesState extends State<Fines> {
 
       [Color(0xFF00ABF2), Color(0xFF00ABF2)],
     ];
-    return dashboardFineSummary.totalGroupFinePaid > 0
+    return dashboardFineSummary.totalGroupFinePaid >
+            0 /* ||
+            dashboardFineSummary.memberFinePaid > 0 ||
+            dashboardFineSummary.memberFineArrears > 0 */
         ? Container(
             color: Theme.of(context).backgroundColor,
             child: Column(children: [
@@ -2268,7 +2274,7 @@ class _FinesState extends State<Fines> {
                     ]),
               )
             ]))
-       /* : dashboardFineSummary.groupFineSummaryExists == null
+        /* : dashboardFineSummary.groupFineSummaryExists == null
             ? Container(
                 child: Container(
                     width: double.infinity,
@@ -2296,33 +2302,33 @@ class _FinesState extends State<Fines> {
                       ],
                     )),
               )*/
-            : Container(
-                child: Container(
-                    width: double.infinity,
-                    padding: EdgeInsets.all(16.0),
-                    decoration: flatGradient(context),
-                    child: Column(
-                      children: [
-                        SvgPicture.asset(
-                          customIcons['no-data'],
-                          semanticsLabel: 'icon',
-                          height: 120.0,
-                        ),
-                        customTitleWithWrap(
-                            text: "Nothing to display!",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14.0,
-                            textAlign: TextAlign.center,
-                            color: Colors.blueGrey[400]),
-                        customTitleWithWrap(
-                            text: "Sorry, There are no Fines available",
-                            //fontWeight: FontWeight.w500,
-                            fontSize: 12.0,
-                            textAlign: TextAlign.center,
-                            color: Colors.blueGrey[400])
-                      ],
-                    )),
-              );
+        : Container(
+            child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(16.0),
+                decoration: flatGradient(context),
+                child: Column(
+                  children: [
+                    SvgPicture.asset(
+                      customIcons['no-data'],
+                      semanticsLabel: 'icon',
+                      height: 120.0,
+                    ),
+                    customTitleWithWrap(
+                        text: "Nothing to display!",
+                        fontWeight: FontWeight.w700,
+                        fontSize: 14.0,
+                        textAlign: TextAlign.center,
+                        color: Colors.blueGrey[400]),
+                    customTitleWithWrap(
+                        text: "Sorry, There are no Fines available",
+                        //fontWeight: FontWeight.w500,
+                        fontSize: 12.0,
+                        textAlign: TextAlign.center,
+                        color: Colors.blueGrey[400])
+                  ],
+                )),
+          );
   }
 }
 
@@ -2346,11 +2352,11 @@ class _BalancesState extends State<Balances> {
 
     Group _currentGroup =
         Provider.of<Groups>(context, listen: false).getCurrentGroup();
-
+/* 
     bool _isInit = true;
     ExpenseSummaryList _expenseSummaryList;
     double _totalExpenses = 0;
-    List<SummaryRow> _expenseRows = [];
+    List<SummaryRow> _expenseRows = []; */
 
     /*Future<void> _getLoanSummary(BuildContext context) async {
       try {
@@ -2398,6 +2404,9 @@ class _BalancesState extends State<Balances> {
       _getLoanSummary(context);
     }*/
 
+    print(
+        "Total Loan Balance ${loanDashboardSummary.totalGroupLoanBalanceDouble.abs()}");
+
     var nextInstallmentRepaymentDate = DateTime.fromMillisecondsSinceEpoch(
         loanDashboardSummary.nextInstalmentDate * 1000);
 
@@ -2412,8 +2421,8 @@ class _BalancesState extends State<Balances> {
           (/* dashboardData.memberTotalLoanBalance.abs() */ loanDashboardSummary
               .totalLoanAmount
               .abs()),
-      "Group Loan Balances": /* dashboardData.groupPendingLoanBalance. */ double
-          .tryParse(loanDashboardSummary.totalGroupLoanBalance.abs().toString())
+      "Group Loan Balances":
+          (loanDashboardSummary.totalGroupLoanBalanceDouble.abs())
     };
     final gradientList = <List<Color>>[
       // [Colors.red[200], Colors.red[200]],
@@ -2422,7 +2431,9 @@ class _BalancesState extends State<Balances> {
       [Color(0xFF00ABF2), Color(0xFF00ABF2)],
     ];
 
-    return loanDashboardSummary.totalGroupLoanBalance > 0
+    return /* loanDashboardSummary.totalGroupLoanBalance?? */ loanDashboardSummary
+                .totalGroupLoanBalanceDouble >
+            0
         ? Container(
             color: Theme.of(context).backgroundColor,
             child: Column(children: [
@@ -2554,7 +2565,7 @@ class _BalancesState extends State<Balances> {
                       ),
 
                       /* dashboardData.groupLoanedAmount */
-                      loanDashboardSummary.totalGroupLoanBalance > 0
+                      loanDashboardSummary.totalGroupLoanBalanceDouble > 0
                           ? Row(
                               children: [
                                 circleButton(
@@ -2578,7 +2589,7 @@ class _BalancesState extends State<Balances> {
                                       currencyFormat.format(
                                           /* dashboardData.groupLoanedAmount */
                                           loanDashboardSummary
-                                              .totalGroupLoanBalance),
+                                              .totalGroupLoanBalanceDouble),
                                   textAlign: TextAlign.start,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600,
@@ -2702,7 +2713,7 @@ class _BalancesState extends State<Balances> {
                                             .nextInstalmentAmount
                                             .abs() ??
                                         loanDashboardSummary
-                                            .nextInstalmentAmountInt
+                                            .nextInstalmentAmount
                                             .abs()),
                                 // "${dashboardData.nextcontributionDate} (${(dashboardData.contributionDateDaysleft == "0 days" ? "today" : dashboardData.contributionDateDaysleft != null ? '${dashboardData.contributionDateDaysleft} left' : "--")})",
                                 color: Theme.of(context)
@@ -2752,7 +2763,7 @@ class _BalancesState extends State<Balances> {
                     ]),
               )
             ]))
-       /* : loanDashboardSummary.grouploanExists != null
+        /* : loanDashboardSummary.grouploanExists != null
         ? Container(
       child: Container(
           width: double.infinity,
@@ -2781,7 +2792,7 @@ class _BalancesState extends State<Balances> {
           )),
     )*/
 
-    : Container(
+        : Container(
             child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),
@@ -3379,7 +3390,7 @@ class _ExpensesState extends State<Expenses> {
                 ],
               ),
             ]))
-       /* : _expenseSummary.expensesSummariesTotalExists == null
+        /* : _expenseSummary.expensesSummariesTotalExists == null
         ? Container(
       child: Container(
           width: double.infinity,
@@ -3408,7 +3419,7 @@ class _ExpensesState extends State<Expenses> {
           )),
     )*/
 
-    : Container(
+        : Container(
             child: Container(
                 width: double.infinity,
                 padding: EdgeInsets.all(16.0),

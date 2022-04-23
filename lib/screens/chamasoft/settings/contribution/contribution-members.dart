@@ -50,6 +50,7 @@ class _ContributionMembersState extends State<ContributionMembers> {
               memberJson['last_name'].toString(),
           userId: memberJson['user_id'].toString(),
           identity: identity,
+          phone:identity ,
           avatar: memberJson['avatar'].toString());
       _members.add(member);
     }

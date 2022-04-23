@@ -52,7 +52,7 @@ class BalancesDashboardSummary with ChangeNotifier {
 
   //***************Bank****************/
 
-  int _totalBackBalanceAccount = 0;
+  double _totalBackBalanceAccount = 0.0;
 
   Map<String, Map<String, dynamic>> get accountData {
     return _accountData;
@@ -66,7 +66,7 @@ class BalancesDashboardSummary with ChangeNotifier {
     return _cashAccounBalance;
   }
 
-  int get totalBackBalanceAccount {
+  double get totalBackBalanceAccount {
     return _totalBackBalanceAccount;
   }
 
@@ -124,7 +124,8 @@ class BalancesDashboardSummary with ChangeNotifier {
     var groupFineDetail = totalBankBalanceObject["total_bank_balance"];
     var accountDetails =
         accountObject["account_balances"] as Map<String, dynamic>;
-    _totalBackBalanceAccount = int.tryParse(groupFineDetail.toString()) ?? 0;
+    _totalBackBalanceAccount =
+        double.tryParse(groupFineDetail.toString()) ?? 0.0;
     _bankAccountBalance =
         double.tryParse(accountDetails["bank_account_balance"].toString()) ??
             0.0;
