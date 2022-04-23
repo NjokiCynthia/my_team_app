@@ -64,7 +64,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
   Future<void> _fetchMembers(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false)
-          .getGroupMembersDetails(widget.groupId);
+          .fetchMembers(/*widget.groupId*/);
     } on CustomException catch (error) {
       StatusHandler().handleStatus(
           context: context,
@@ -258,7 +258,7 @@ class _WithdrawalPurposeState extends State<WithdrawalPurpose> {
     if (_isInit)
       WidgetsBinding.instance
           .addPostFrameCallback((_) => _fetchDefaultValues(context));
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) => _fetchMembers(context));
+    WidgetsBinding.instance.addPostFrameCallback((/*timeStamp*/_) => _fetchMembers(context));
     super.didChangeDependencies();
   }
 

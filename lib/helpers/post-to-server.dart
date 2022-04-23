@@ -198,6 +198,7 @@ QWdCjZcopnehZDPLyXc5fuC++4o6E6WfDoL/GCTMeQ/bCaavCKUX4oypMLUVN1Zd
             try {
               var newResponseDate = DateTime.now().millisecondsSinceEpoch;
               final responseBody = await generateResponse(response.body);
+              print("Server Response >>>>>>>> $responseBody");
               String message = responseBody["message"].toString();
               String groupId = json.decode(jsonObject)['group_id'] ?? 'null';
               String userId = json.decode(jsonObject)['user_id'] ?? 'null';

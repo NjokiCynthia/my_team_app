@@ -51,6 +51,7 @@ class LoanDashboardSummary with ChangeNotifier {
 
   //***************Total****************/
     int _totalGroupLoanBalance = 0;
+    double _totalGroupLoanBalanceDouble = 0.0;
 
     
   Map<String, Map<String, dynamic>> get loanData {
@@ -82,7 +83,11 @@ class LoanDashboardSummary with ChangeNotifier {
     return _totalGroupLoanBalance;
   }
 
-  //TODO figure out how to use it
+  double get totalGroupLoanBalanceDouble{
+    return _totalGroupLoanBalanceDouble;
+  }
+
+
   bool loanSummaryExists(String groupId) {
     if (_loanData.containsKey(groupId)) {
       if (_loanData[groupId].length <= 0) {
@@ -96,7 +101,6 @@ class LoanDashboardSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
   void resetloanSummary(String groupId) {
     if (_loanData.containsKey(groupId)) {
       print(_loanData);
@@ -104,7 +108,6 @@ class LoanDashboardSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
   bool grouploanExists(String groupId) {
     if (_totalLoanBankBalance.containsKey(groupId)) {
       if (_totalLoanBankBalance[groupId].length <= 0) {
@@ -118,7 +121,6 @@ class LoanDashboardSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
   void resetGroupLoanSummary(String groupId) {
     if (_totalLoanBankBalance.containsKey(groupId)) {
       print(_totalLoanBankBalance);
@@ -136,14 +138,15 @@ class LoanDashboardSummary with ChangeNotifier {
     //     groupLoanObject["total_group_loan_balance"];
     var memberDetails = loanObject["member_loans_summary"]
         as Map<String, dynamic>;
-    _totalGroupLoanBalance = int.tryParse(groupLoanObject["total_group_loan_balance"].toString()) ?? 0.0;
+    _totalGroupLoanBalance = int.tryParse(groupLoanObject["total_group_loan_balance"].toString()) ?? 0;
+    _totalGroupLoanBalanceDouble = double.tryParse(groupLoanObject["total_group_loan_balance"].toString()) ?? 0.0;
     _loanBalance =
         double.tryParse(memberDetails["loan_balances"].toString()) ?? 0.0;
     _totalLoanAmount =
         double.tryParse(memberDetails["total_loan_amount"].toString()) ??
             0.0;
     _nextInstalmentAmount =  double.tryParse(memberDetails["next_instalment_amount"].toString()) ?? 0.0;
-    _nextInstalmentAmountInt = int.tryParse(memberDetails["next_instalment_amount"].toString()) ?? 0.0;
+    // _nextInstalmentAmountInt = int.tryParse(memberDetails["next_instalment_amount"].toString()) ?? 0.0;
     _nextInstalmentDate =
         (memberDetails["next_instalment_date"]) ?? 0;
         _nexttoNextInstalmentDay =

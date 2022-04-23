@@ -53,7 +53,8 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   Contact selectedContact;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  List<GroupMemberDetail> _member = [];
+  // List<GroupMemberDetail> _member = [];
+  List<Member> _member = [];
   bool _hasMoreData = false;
   Member member;
   TextEditingController controller = new TextEditingController();
@@ -92,37 +93,37 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
     }
   }
 
-  // Future<void> _fetchMembers(BuildContext context) async {
-  //   try {
-  //     await Provider.of<Groups>(context, listen: false)
-  //         .getGroupMembersDetails(widget.groupId);
-  //   } on CustomException catch (error) {
-  //     StatusHandler().handleStatus(
-  //         context: context,
-  //         error: error,
-  //         callback: () {
-  //           _fetchMembers(context);
-  //         },
-  //         scaffoldState: _scaffoldKey.currentState);
-  //   }
-  // }
+  /*Future<void> _fetchMembers(BuildContext context) async {
+    try {
+      await Provider.of<Groups>(context, listen: false)
+          .getGroupMembersDetails(widget.groupId);
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchMembers(context);
+          },
+          scaffoldState: _scaffoldKey.currentState);
+    }
+  }*/
 
   Future<bool> _fetchData() async {
     setState(() {
       _isLoading = true;
     });
 
-    // _fetchMembers(context).then((_) {
-    //   if (context != null) {
-    //     setState(() {
-    //       if (_member.length < 20) {
-    //         _hasMoreData = false;
-    //       } else
-    //         _hasMoreData = true;
-    //       _isLoading = false;
-    //     });
-    //   }
-    // });
+    /*_fetchMembers(context).then((_) {
+      if (context != null) {
+        setState(() {
+          if (_member.length < 20) {
+            _hasMoreData = false;
+          } else
+            _hasMoreData = true;
+          _isLoading = false;
+        });
+      }
+    });*/
 
     _isInit = false;
     return true;
@@ -225,20 +226,20 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
 
   @override
   Widget build(BuildContext context) {
-    _member = Provider.of<Groups>(context, listen: true).groupMembersDetails;
-    List<NamesListItem> list = widget.formLoadData["memberOptions"];
+    _member = Provider.of<Groups>(context, listen: true)
+        .members /*groupMembersDetails*/;
     return Scaffold(
-      appBar: tertiaryPageAppbar(
-        context: context,
-        action: () => Navigator.of(context).pop(),
-        elevation: 2.5,
-        leadingIcon: LineAwesomeIcons.close,
-        title: "Select Recipient",
-        /*  trailingIcon: LineAwesomeIcons.user_plus,
+        appBar: tertiaryPageAppbar(
+          context: context,
+          action: () => Navigator.of(context).pop(),
+          elevation: 2.5,
+          leadingIcon: LineAwesomeIcons.close,
+          title: "Select Recipient",
+          /*  trailingIcon: LineAwesomeIcons.user_plus,
           trailingAction: () => _numberPrompt() */
-      ),
-      backgroundColor: Theme.of(context).backgroundColor,
-      /*  floatingActionButton: FloatingActionButton(
+        ),
+        backgroundColor: Theme.of(context).backgroundColor,
+        /*  floatingActionButton: FloatingActionButton(
           child: Icon(
             LineAwesomeIcons.user_plus,
             color: Colors.white,
@@ -248,145 +249,144 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
               builder: (BuildContext context) =>
                   NumberKeyBoard())) /* _numberPrompt() */
           ), */
-      body: !_isLoading
-          ? Container(
-              child: Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.only(
-                      top: 5.0,
+        body: /*!_isLoading
+          ?*/
+            Container(
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 5.0,
+                ),
+              ),
+              TextField(
+                decoration: InputDecoration(
+                  labelText: "Search Contact",
+                  prefixIcon: Icon(LineAwesomeIcons.search),
+                ),
+                controller: controller,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Enter Contact",
+                      style: TextStyle(
+                        color: Colors.blueGrey[400],
+                        fontFamily: 'SegoeUI',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
-                  ),
-                  TextField(
-                    decoration: InputDecoration(
-                      labelText: "Search Contact",
-                      prefixIcon: Icon(LineAwesomeIcons.search),
+                    IconButton(
+                      icon: Icon(
+                        Feather.more_horizontal,
+                        color: Colors.blueGrey,
+                      ),
+                      onPressed: () {},
                     ),
-                    controller: controller,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Enter Contact",
-                          style: TextStyle(
-                            color: Colors.blueGrey[400],
-                            fontFamily: 'SegoeUI',
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Feather.more_horizontal,
-                            color: Colors.blueGrey,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: primaryColor,
-                      child: Icon(Feather.phone, size: 15, color: Colors.white),
-                    ),
-                    onTap: () async {
-                      await Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              NumberKeyBoard(formData: widget.formData)));
-                    },
-                    title: subtitle1(
-                        text: 'ENTER PHONE NUMBER', textAlign: TextAlign.start),
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: primaryColor,
-                      child: Icon(Feather.list, size: 15, color: Colors.white),
-                    ),
-                    onTap: () async {
-                      await /* Navigator.of(context).push(MaterialPageRoute(
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: primaryColor,
+                  child: Icon(Feather.phone, size: 15, color: Colors.white),
+                ),
+                onTap: () async {
+                  await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) =>
+                          NumberKeyBoard(formData: widget.formData)));
+                },
+                title: subtitle1(
+                    text: 'ENTER PHONE NUMBER', textAlign: TextAlign.start),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              ListTile(
+                leading: CircleAvatar(
+                  backgroundColor: primaryColor,
+                  child: Icon(Feather.list, size: 15, color: Colors.white),
+                ),
+                onTap: () async {
+                  await /* Navigator.of(context).push(MaterialPageRoute(
                           builder: (BuildContext context) =>
                               NumberKeyBoard(formData: widget.formData)));
 
                                 */
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  ContactList(formData: widget.formData
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              ContactList(formData: widget.formData
 
-                                      // member: member,
-                                      )));
-                    },
-                    title: subtitle1(
-                        text: 'SELECT FROM CONTACT',
-                        textAlign: TextAlign.start),
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Text(
-                          "Select Member Contact",
-                          style: TextStyle(
-                            color: Colors.blueGrey[400],
-                            fontFamily: 'SegoeUI',
-                            fontSize: 12.0,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(
-                            Feather.more_horizontal,
-                            color: Colors.blueGrey,
-                          ),
-                          onPressed: () {},
-                        ),
-                      ],
+                                  // member: member,
+                                  )));
+                },
+                title: subtitle1(
+                    text: 'SELECT FROM CONTACT', textAlign: TextAlign.start),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Select Member Contact",
+                      style: TextStyle(
+                        color: Colors.blueGrey[400],
+                        fontFamily: 'SegoeUI',
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
-                  ),
-                  Expanded(
-                      child: NotificationListener<ScrollNotification>(
-                    onNotification: (ScrollNotification scrollInfo) {
-                      if (!_isLoading &&
-                          scrollInfo.metrics.pixels ==
-                              scrollInfo.metrics.maxScrollExtent &&
-                          _hasMoreData) {
-                        _fetchData();
-                      }
-                      return true;
-                    },
-                    child: ListView.builder(
-                      // padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (context, index) {
-                        //GroupMemberDetail member = _member[index];
-                        NamesListItem member = widget.formLoadData[];
+                    IconButton(
+                      icon: Icon(
+                        Feather.more_horizontal,
+                        color: Colors.blueGrey,
+                      ),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                  child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (!_isLoading &&
+                      scrollInfo.metrics.pixels ==
+                          scrollInfo.metrics.maxScrollExtent &&
+                      _hasMoreData) {
+                    _fetchData();
+                  }
+                  return true;
+                },
+                child: ListView.builder(
+                  // padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index) {
+                    Member member = _member[index];
 
-                        return filter == null || filter == ""
+                    return filter == null || filter == ""
+                        ? _memberList(member, widget.formData)
+                        : member.name
+                                .toLowerCase()
+                                .contains(filter.toLowerCase())
                             ? _memberList(member, widget.formData)
-                            : member.name
-                                    .toLowerCase()
-                                    .contains(filter.toLowerCase())
-                                ? _memberList(member, widget.formData)
-                                : Visibility(
-                                    visible: false, child: new Container());
-                      },
-                      itemCount: _member.length,
-                    ),
-                  )),
-                  /*   Padding(
+                            : Visibility(
+                                visible: false, child: new Container());
+                  },
+                  itemCount: _member.length,
+                ),
+              )),
+              /*   Padding(
                     padding: const EdgeInsets.only(left: 20.0, right: 20.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -410,7 +410,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
                       ],
                     ),
                   ), */
-                  /*   Expanded(
+              /*   Expanded(
                     child: ListView.builder(
                       itemCount: _contacts?.length,
                       itemBuilder: (context, index) {
@@ -444,10 +444,10 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
                       // },
                     ),
                   ), */
-                ],
-              ),
-            )
-          : Center(
+            ],
+          ),
+        )
+        /*: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -456,8 +456,8 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
                   subtitle1(text: "Retrieving Member list")
                 ],
               ),
-            ),
-    );
+            ),*/
+        );
   }
 
   Future<void> requestPermission() async {
@@ -523,7 +523,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
     });
   }
 
-  _memberList(NamesListItem member, Map<String, String> formData) {
+  _memberList(Member member, Map<String, String> formData) {
     // widget.formData["name"] = member.name;
     return ListTile(
       leading: CircleAvatar(
@@ -531,16 +531,14 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
           child: Text(member.name[0].toUpperCase(),
               style: TextStyle(color: Colors.white, fontSize: 24))),
       onTap: () async {
-        widget.formData['phone'] = member.identity;
-
+        widget.formData['phone'] = member.phone;
         await Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => AmountToWithdraw(
-                  formData: widget.formData,
                   // member: member,
                 )));
       },
       title: subtitle1(text: member.name ?? "", textAlign: TextAlign.start),
-      subtitle: subtitle1(text: member.identity, textAlign: TextAlign.start),
+      subtitle: subtitle1(text: member.phone ?? "", textAlign: TextAlign.start),
     );
   }
 }

@@ -349,6 +349,7 @@ class Member {
   final String name;
   final String userId;
   final String avatar;
+  final String phone;
   final String identity;
 
   Member({
@@ -356,6 +357,7 @@ class Member {
     @required this.name,
     @required this.userId,
     @required this.avatar,
+    @required this.phone,
     @required this.identity,
   });
 }
@@ -1281,7 +1283,9 @@ class Groups with ChangeNotifier {
               name: groupMembersJSON['name'].toString(),
               userId: groupMembersJSON['user_id'].toString(),
               identity: groupMembersJSON['identity'].toString(),
-              avatar: groupMembersJSON['avatar'].toString());
+              avatar: groupMembersJSON['avatar'].toString(),
+              phone: groupMembersJSON['phone'].toString());
+
           _members.add(newMember);
         }
       } else {
@@ -1291,7 +1295,8 @@ class Groups with ChangeNotifier {
               name: groupMembersJSON['name'].toString(),
               userId: groupMembersJSON['user_id'].toString(),
               identity: groupMembersJSON['identity'].toString(),
-              avatar: groupMembersJSON['avatar'].toString());
+              avatar: groupMembersJSON['avatar'].toString(),
+              phone: groupMembersJSON['phone'].toString());
           _members.add(newMember);
         }
       }
@@ -2638,6 +2643,7 @@ class Groups with ChangeNotifier {
           "name": m['name'],
           "avatar": (m['avatar'] != null) ? m['avatar'] : '',
           "identity": m['identity'],
+          "phone": m['phone'],
         });
       });
       _members = []; //clear
@@ -2679,6 +2685,7 @@ class Groups with ChangeNotifier {
             "name": m['name'],
             "avatar": (m['avatar'] != null) ? m['avatar'] : '',
             "identity": m['identity'],
+            "phone": m['phone'],
             "modified_on": DateTime.now().millisecondsSinceEpoch,
           });
         });
@@ -2691,20 +2698,20 @@ class Groups with ChangeNotifier {
         );
         // }
       } on CustomException catch (error) {
-        if (error.status == ErrorStatusCode.statusNoInternet) {
+        /*  if (error.status == ErrorStatusCode.statusNoInternet) {
           _fetchOfflineMembers();
-        } else {
-          throw CustomException(message: error.message, status: error.status);
-        }
+        } else { */
+        throw CustomException(message: error.message, status: error.status);
+        // }
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
     } on CustomException catch (error) {
-      if (error.status == ErrorStatusCode.statusNoInternet) {
+      /*  if (error.status == ErrorStatusCode.statusNoInternet) {
         _fetchOfflineMembers();
-      } else {
-        throw CustomException(message: error.message, status: error.status);
-      }
+      } else { */
+      throw CustomException(message: error.message, status: error.status);
+      // }
     } catch (error) {
       throw CustomException(message: ERROR_MESSAGE);
     }
@@ -4941,23 +4948,30 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> recordLogAPIs({String logdata}) async {
+    String logdataa =
+        "The overflowing RenderFlex has an orientation of Axis.vertical";
     try {
-      /*final url = EndpointUrl.POST_API_LOGS;
-      final _dirPath = await getDirPath();
-      final logfilePath = File('$_dirPath/data.txt');
-      final logDataSaved = await logfilePath.readAsString(encoding: utf8);
-      formData['data'] = logDataSaved;
-
-      log(formData.toString());*/
       final url = EndpointUrl.POST_API_LOGS;
-      final postRequest = json.encode({"data": logdata});
+      /*  final postRequest = json.encode(
+          {"user_id": _userId, "group_id": currentGroupId, "data": logdataa}); */
+      /* "user_id": _userId,
+        "group_id": currentGroupId, */
+      Map<String, String> formData = {
+        "user_id": _userId,
+        "group_id": currentGroupId,
+        "data": logdataa
+      };
+
+
 
       try {
-        await PostToServer.post(postRequest, url);
-        return PostToServer.post(postRequest, url).toString();
-        /*final postRequest = json.encode(formData);
+        final postRequest = json.encode(formData);
         final response = await PostToServer.post(postRequest, url);
-        return response["message"].toString();*/
+        /*  await PostToServer.post(postRequest, url); */
+        // final response = await PostToServer.post(postRequest, url);
+
+        String message = response["message"].toString();
+        return message;
       } on CustomException catch (error) {
         throw CustomException(message: error.toString(), status: error.status);
       } catch (error) {
