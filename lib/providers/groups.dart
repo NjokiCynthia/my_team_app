@@ -4948,21 +4948,19 @@ class Groups with ChangeNotifier {
   }
 
   Future<void> recordLogAPIs({String logdata}) async {
-    String logdataa =
-        "The overflowing RenderFlex has an orientation of Axis.vertical";
+    // String logdataa =
+    //     "The overflowing RenderFlex has an orientation of Axis.vertical";
     try {
       final url = EndpointUrl.POST_API_LOGS;
       /*  final postRequest = json.encode(
           {"user_id": _userId, "group_id": currentGroupId, "data": logdataa}); */
       /* "user_id": _userId,
         "group_id": currentGroupId, */
-      Map<String, String> formData = {
+      Map<String, dynamic> formData = {
         "user_id": _userId,
         "group_id": currentGroupId,
-        "data": logdataa
+        "data": logdata
       };
-
-
 
       try {
         final postRequest = json.encode(formData);
