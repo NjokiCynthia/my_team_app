@@ -35,6 +35,7 @@ class _ListMembersState extends State<ListMembers> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       GlobalKey<RefreshIndicatorState>();
   bool _isInit = true;
+  TextEditingController controller = new TextEditingController();
 
   void _showActions(BuildContext context) {
     showModalBottomSheet<void>(
@@ -110,7 +111,8 @@ class _ListMembersState extends State<ListMembers> {
     );
   }
 
-  void _showAction(BuildContext context, GroupMemberDetail member) {
+  void _showAction(
+      BuildContext context, /* GroupMemberDetail */ Member member) {
     showModalBottomSheet<void>(
       context: context,
       builder: (_) {
@@ -127,11 +129,11 @@ class _ListMembersState extends State<ListMembers> {
                   child: InkWell(
                     splashColor: Colors.blueGrey.withOpacity(0.2),
                     onTap: () async {
-                      Navigator.push(
+                      /*  Navigator.push(
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  new ViewMemberProfile(member: member)));
+                                  new ViewMemberProfile(member: member))); */
                     },
                     child: ListTile(
                       leading: Icon(
@@ -255,7 +257,7 @@ class _ListMembersState extends State<ListMembers> {
         });
   }
 
-  /* Future<void> _fetchMembers(BuildContext context) async {
+  Future<void> _fetchMembers(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false).fetchMembers();
     } on CustomException catch (error) {
@@ -266,9 +268,9 @@ class _ListMembersState extends State<ListMembers> {
             _fetchMembers(context);
           });
     }
-  } */
+  }
 
-  Future<void> _fetchMembers(BuildContext context) async {
+  /* Future<void> _fetchMembers(BuildContext context) async {
     try {
       await Provider.of<Groups>(context, listen: false)
           .getGroupMembersDetails(widget.groupId);
@@ -286,7 +288,7 @@ class _ListMembersState extends State<ListMembers> {
         });
       }
     }
-  }
+  } */
 
   // print('${_fetchMembers}');
 
@@ -388,17 +390,23 @@ class _ListMembersState extends State<ListMembers> {
                 width: MediaQuery.of(context).size.width,
                 decoration: primaryGradient(context),
                 child: Consumer<Groups>(builder: (context, groupData, child) {
-                  log(' Group Members Size is ${groupData.groupMembersDetails.length}');
-                  return groupData.groupMembersDetails.length > 0
+                  log(' Group Members Size is ${groupData.members /* groupMembersDetails */ .length}');
+                  return groupData.members /* groupMembersDetails */ .length > 0
                       ? ListView.separated(
                           padding: EdgeInsets.only(bottom: 100.0, top: 10.0),
-                          itemCount: groupData.groupMembersDetails.length,
+                          itemCount: groupData
+                              .members /* groupMembersDetails */ .length,
                           itemBuilder: (context, index) {
-                            GroupMemberDetail member =
-                                groupData.groupMembersDetails[index];
+                            /* GroupMemberDetail */ Member member = groupData
+                                .members /* groupMembersDetails */ [index];
                             return ListTile(
                               dense: true,
-                              leading: member.avatar != null
+                              leading: CircleAvatar(
+                                  backgroundColor: primaryColor,
+                                  child: Text(member.name[0].toUpperCase(),
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 24))),
+                              /* member.avatar != null
                                   ? Container(
                                       height: 50,
                                       width: 50,
@@ -427,7 +435,7 @@ class _ListMembersState extends State<ListMembers> {
                                   : const CircleAvatar(
                                       backgroundImage: const AssetImage(
                                           'assets/no-user.png'),
-                                    ),
+                                    ), */
                               title: Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
@@ -480,7 +488,7 @@ class _ListMembersState extends State<ListMembers> {
                                   ),
                                 ],
                               ),
-                              trailing: Padding(
+                              /*  trailing: Padding(
                                 padding: EdgeInsets.all(10.0),
                                 child: circleIconButton(
                                   icon: Icons.edit,
@@ -490,7 +498,7 @@ class _ListMembersState extends State<ListMembers> {
                                   padding: 0.0,
                                   onPressed: () => _showAction(context, member),
                                 ),
-                              ),
+                              ), */
                             );
                           },
                           separatorBuilder: (context, index) {

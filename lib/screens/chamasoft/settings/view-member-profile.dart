@@ -10,7 +10,7 @@ import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
 class ViewMemberProfile extends StatefulWidget {
-  final GroupMemberDetail member;
+  final GroupMemberDetail /* Member */ member;
   const ViewMemberProfile({Key key, this.member}) : super(key: key);
 
   @override
