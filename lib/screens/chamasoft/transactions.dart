@@ -171,6 +171,10 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         Provider.of<GroupNotifications>(context, listen: true)
             .isPartnerBankAccount;
 
+    print("Group Status is : $_isPartnerBankAccount");
+    print("Unreconciled Deposit Count is : $unreconciledDepositCount");
+    print("Unreconciled Withdrawal Count is : $unreconciledWithdrawalCount");
+
     return ShowCaseWidget(builder: Builder(
       builder: (context) {
         transactionsContext = context;

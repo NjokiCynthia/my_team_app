@@ -11,7 +11,7 @@ class GroupNotifications with ChangeNotifier {
   String _currentGroupId;
   String _requestId = DateTime.now().microsecondsSinceEpoch.toString();
 
-  Map<String, dynamic> _notifications;
+  Map<String, Map<String, dynamic>> _notifications;
 
   int _notificationCount = 0;
   int _unreconciledDepositCount = 0;
@@ -20,7 +20,7 @@ class GroupNotifications with ChangeNotifier {
   bool _isPartnerBankAccount = false;
 
   GroupNotifications(String _userId, String _currentGroupId,
-      Map<String, dynamic> _notifications) {
+      Map<String, Map<String, dynamic>> _notifications) {
     this._userId = _userId;
     this._currentGroupId = _currentGroupId;
     this._notifications = _notifications;
@@ -32,7 +32,7 @@ class GroupNotifications with ChangeNotifier {
     }
   }
 
-  Map<String, dynamic> get notifications {
+  Map<String, Map<String, dynamic>> get notifications {
     return _notifications;
   }
 
@@ -54,16 +54,21 @@ class GroupNotifications with ChangeNotifier {
 
   void _updateGroupNotificationsSummary(String groupId) async {
     var groupNotificationObject = _notifications[groupId];
+    var notificationObject =
+        groupNotificationObject['notification_summary'] as Map<String, dynamic>;
     _notificationCount =
-        int.tryParse(groupNotificationObject["notification_count"]) ?? 0;
-    _unreconciledDepositCount =
-        int.tryParse(groupNotificationObject["unreconciled_deposits_count"]) ??
-            0;
-    _unreconciledWithdrwalCount = int.tryParse(
-            groupNotificationObject["unreconciled_withdrawals_count"]) ??
+        int.tryParse(notificationObject["notification_count"].toString()) ?? 0;
+    _unreconciledDepositCount = int.tryParse(
+            notificationObject["unreconciled_deposits_count"].toString()) ??
         0;
-    _isPartnerBankAccount =
-        (int.tryParse(["has_partner_bank"].toString())) == 1 ? true : false;
+    _unreconciledWithdrwalCount = int.tryParse(
+            notificationObject["unreconciled_withdrawals_count"].toString()) ??
+        0;
+    _isPartnerBankAccount = (int.tryParse(
+                groupNotificationObject["has_partner_bank"].toString())) ==
+            1
+        ? true
+        : false;
   }
 
   // /*********** Group Notification Summary APIs *********/
