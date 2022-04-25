@@ -87,7 +87,7 @@ class DashboardContributionSummary with ChangeNotifier {
     return _groupContributionAmount;
   }
 
-//TODO figure out how to use it
+
   bool memberContributionSummaryExists(String groupId) {
     if (_memberData.containsKey(groupId)) {
       if (_memberData[groupId].length <= 0) {
@@ -101,7 +101,7 @@ class DashboardContributionSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
+
   void resetMemberContributionSummary(String groupId) {
     if (_memberData.containsKey(groupId)) {
       print(_memberData);
@@ -109,7 +109,7 @@ class DashboardContributionSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
+
   bool groupContributionSummaryExists(String groupId) {
     if (_totalGroupContributionAmount.containsKey(groupId)) {
       if (_totalGroupContributionAmount[groupId].length <= 0) {
@@ -123,7 +123,6 @@ class DashboardContributionSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
   void resetGroupContributionSummary(String groupId) {
     if (_totalGroupContributionAmount.containsKey(groupId)) {
       print(_totalGroupContributionAmount);

@@ -74,7 +74,7 @@ class BalancesDashboardSummary with ChangeNotifier {
     return _totalBankBalance;
   }
 
-  //TODO figure out how to use it
+ 
   bool accountBalanceSummaryExists(String groupId) {
     if (_accountData.containsKey(groupId)) {
       if (_accountData[groupId].length <= 0) {
@@ -88,7 +88,7 @@ class BalancesDashboardSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
+
   void resetAccountBalanceSummary(String groupId) {
     if (_accountData.containsKey(groupId)) {
       print(_accountData);
@@ -96,7 +96,7 @@ class BalancesDashboardSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
+
   bool totalBankBalanceSummaryExists(String groupId) {
     if (_totalBankBalance.containsKey(groupId)) {
       if (_totalBankBalance[groupId].length <= 0) {
@@ -110,7 +110,7 @@ class BalancesDashboardSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
+
   void resetTotalBankBalanceSummary(String groupId) {
     if (_totalBankBalance.containsKey(groupId)) {
       print(_totalBankBalance);

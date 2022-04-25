@@ -1,5 +1,6 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
@@ -150,15 +151,25 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
       recentTransactions.length = 10;
     }
 
-    final int unreconciledDepositCount =
+    /*  final int unreconciledDepositCount =
         Provider.of<Dashboard>(context, listen: true).unreconciledDepositCount;
 
     final int unreconciledWithdrawalCount =
         Provider.of<Dashboard>(context, listen: true)
-            .unreconciledWithdrawalCount;
+            .unreconciledWithdrawalCount; */
+
+    /* final bool _isPartnerBankAccount =
+        Provider.of<Dashboard>(context, listen: true).isPartnerBankAccount; */
+    final int unreconciledDepositCount =
+        Provider.of<GroupNotifications>(context, listen: true)
+            .unreconciledDepositCount;
+    final int unreconciledWithdrawalCount =
+        Provider.of<GroupNotifications>(context, listen: true)
+            .unreconciledWithdrwalCount;
 
     final bool _isPartnerBankAccount =
-        Provider.of<Dashboard>(context, listen: true).isPartnerBankAccount;
+        Provider.of<GroupNotifications>(context, listen: true)
+            .isPartnerBankAccount;
 
     return ShowCaseWidget(builder: Builder(
       builder: (context) {
@@ -181,7 +192,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                     color: Colors.blue[400],
                     isHighlighted: false,
                     action: () => Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) => WithdrawalPurpose(groupId:group.groupId ),
+                        builder: (BuildContext context) =>
+                            WithdrawalPurpose(groupId: group.groupId),
                         settings: RouteSettings(arguments: 0))),
                     margin: 0,
                     imageHeight: 100.0)),

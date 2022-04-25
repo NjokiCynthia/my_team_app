@@ -18,7 +18,9 @@ class StatusHandler {
       ScaffoldState scaffoldState}) {
     switch (error.status) {
       case ErrorStatusCode.statusNormal:
-        showErrorDialog(context, error.message);
+        // showErrorDialog(context, error.message);
+        showRetrySnackBar(context, error.message, callback);
+
         break;
       case ErrorStatusCode.statusRequireLogout:
         logout(context);

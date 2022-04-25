@@ -5,6 +5,7 @@ import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/expenses-summaries.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
 import 'package:chamasoft/providers/loan-summaries.dart';
+import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
@@ -55,7 +56,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   void getCurrentAppTheme() async {
     themeChangeProvider.darkTheme =
         await themeChangeProvider.darkThemePreference.getTheme();
@@ -68,9 +68,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-
-
-
     super.initState();
     getCurrentAppTheme();
     initDB();
@@ -93,18 +90,10 @@ class _MyAppState extends State<MyApp> {
       print("message here $messageBody");
     }
 
-
-
     FirebaseMessaging.instance.subscribeToTopic('chamasoft');
     NotificationManager.listenTokenChange(context);
     super.didChangeDependencies();
   }
-
-
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -212,22 +201,28 @@ class _MyAppState extends State<MyApp> {
           create: (BuildContext context) {},
         ),
         ChangeNotifierProxyProvider<Groups, NewExpensesSummaries>(
-          update: (ctx, groups, newExpensesSummaries) =>
-              NewExpensesSummaries(
-                groups.userId,
-                groups.currentGroupId,
-                newExpensesSummaries == null
-                    ? {}
-                    : newExpensesSummaries.expensesSummariesData,
-                newExpensesSummaries == null
-                    ? {}
-                    : newExpensesSummaries.expensesSummariesTotalData,
-              ),
+          update: (ctx, groups, newExpensesSummaries) => NewExpensesSummaries(
+            groups.userId,
+            groups.currentGroupId,
+            newExpensesSummaries == null
+                ? {}
+                : newExpensesSummaries.expensesSummariesData,
+            newExpensesSummaries == null
+                ? {}
+                : newExpensesSummaries.expensesSummariesTotalData,
+          ),
           // ignore: missing_return
           create: (BuildContext context) {},
         ),
-
-
+        ChangeNotifierProxyProvider<Groups, GroupNotifications>(
+          update: (ctx, groups, groupNotifications) => GroupNotifications(
+            groups.userId,
+            groups.currentGroupId,
+            groupNotifications == null ? {} : groupNotifications.notifications,
+          ),
+          // ignore: missing_return
+          create: (BuildContext context) {},
+        ),
       ],
       child: Consumer<DarkThemeProvider>(
           builder: (BuildContext context, value, Widget child) {

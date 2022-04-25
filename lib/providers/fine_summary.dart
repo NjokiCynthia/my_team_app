@@ -69,7 +69,7 @@ class DashboardFineSummary with ChangeNotifier {
     return _totalGroupFineAmount;
   }
 
-  //TODO figure out how to use it
+
   bool memberFineSummaryExists(String groupId) {
     if (_memberData.containsKey(groupId)) {
       if (_memberData[groupId].length <= 0) {
@@ -83,7 +83,7 @@ class DashboardFineSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
+
   void resetMemberFineSummary(String groupId) {
     if (_memberData.containsKey(groupId)) {
       print(_memberData);
@@ -91,7 +91,7 @@ class DashboardFineSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
+
   bool groupFineSummaryExists(String groupId) {
     if (_totalGroupFineAmount.containsKey(groupId)) {
       if (_totalGroupFineAmount[groupId].length <= 0) {
@@ -105,7 +105,7 @@ class DashboardFineSummary with ChangeNotifier {
     }
   }
 
-//TODO figure out how to use it
+
   void resetGroupFineSummary(String groupId) {
     if (_totalGroupFineAmount.containsKey(groupId)) {
       print(_totalGroupFineAmount);

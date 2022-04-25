@@ -408,7 +408,7 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
                     ),
                   ),
                   Visibility(
-                    visible: /*(_notificationCount)*/ false,
+                    visible: (_notificationCount) /* false */,
                     child: Positioned(
                       top: 12,
                       right: 6,

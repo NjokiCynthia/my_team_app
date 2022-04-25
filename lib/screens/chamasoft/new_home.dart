@@ -15,6 +15,7 @@ import 'package:chamasoft/providers/expenses-summaries.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/loan-summaries.dart';
+import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/account_balances.dart';
@@ -358,6 +359,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         await Provider.of<BalancesDashboardSummary>(context, listen: false)
             .getAccountBalancesSummary(_currentGroup.groupId);
       }
+
+      await Provider.of<GroupNotifications>(context, listen: false)
+          .getGroupNotificationsSummary(_currentGroup.groupId);
 
       if (!Provider.of<DashboardContributionSummary>(context, listen: false)
           .groupContributionSummaryExists(_currentGroup.groupId)) {

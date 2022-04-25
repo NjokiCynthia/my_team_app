@@ -739,4 +739,9 @@ class EndpointUrl {
   // ignore: non_constant_identifier_names
   static final String POST_API_LOGS =
       CustomHelper.baseUrl + "/mobile/save_activity_log";
+
+  //Notification APIs
+  // ignore: non_constant_identifier_names
+  static final String GET_GROUP_NOTIFICATIONS_SUMMARY =
+      CustomHelper.baseUrl + "/mobile/get_group_member_notifications_summary";
 }
