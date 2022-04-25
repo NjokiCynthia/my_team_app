@@ -403,7 +403,7 @@ class _ListMembersState extends State<ListMembers> {
                               dense: true,
                               leading: CircleAvatar(
                                   backgroundColor: primaryColor,
-                                  child: Text(member.name[0].toUpperCase(),
+                                  child: Text(member.name[01].toUpperCase(),
                                       style: TextStyle(
                                           color: Colors.white, fontSize: 24))),
                               /* member.avatar != null

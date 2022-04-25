@@ -192,7 +192,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
           customShowCase(
             key: reviewWithdrawalKey,
             description:
-                "View all withdrawaals made from your e-wallet to your members",
+                "View all withdrawals made from your e-wallet to your members",
             child: Container(
                 width: 132.0,
                 child: svgGridButton(
