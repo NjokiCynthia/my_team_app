@@ -147,13 +147,9 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
-          action: () =>   widget.requestId == WITHDRAWAL_RECONSILE
-                  ? Navigator.of(context).popUntil((_) => count++ >= 2)
-                  : Navigator.of(context)
-                      .pop() /* Navigator.popUntil(
-              context,
-              (Route<dynamic> route) =>
-                  route.isFirst) /* Navigator.of(context).pop() */ */,
+          action:
+              () =>  Navigator.popUntil(
+              context, (Route<dynamic> route) => route.isFirst),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: "Reconcile Withdrawals",

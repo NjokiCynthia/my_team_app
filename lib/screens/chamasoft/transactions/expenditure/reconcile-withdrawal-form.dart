@@ -70,19 +70,23 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
         String response = await Provider.of<Groups>(_bodyContext, listen: false)
             .reconcileWithdrawalTransactionAlert(_reconciledWithdrawals,
                 withdrawal.transactionAlertId, position);
+                Navigator.of(_bodyContext).pop();
         StatusHandler()
             .showSuccessSnackBar(_bodyContext, "Good news: $response");
         Future.delayed(const Duration(milliseconds: 2500), () {
-          //   Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
-          //       builder: (BuildContext context) => ReconcileWithdrawalList(isInit: false,formData:widget.formLoadData)));
+          Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
+              builder: (BuildContext context) => ReconcileWithdrawalList(
+                  requestId: requestId,
+                  isInit: false,
+                  formData: widget.formLoadData)));
 
-          Navigator.of(_bodyContext).pushAndRemoveUntil(
+          /* Navigator.of(_bodyContext).pushAndRemoveUntil(
               MaterialPageRoute(
                   builder: (BuildContext context) => ReconcileWithdrawalList(requestId:requestId,
                         isInit: false,
                         formData: widget.formLoadData,
                       )),
-              (Route<dynamic> route) => false);
+              (Route<dynamic> route) => false); */
         });
       } on CustomException catch (error) {
         StatusHandler().showDialogWithAction(
@@ -90,8 +94,10 @@ class _ReconcileWithdrawalState extends State<ReconcileWithdrawal> {
             message: error.toString(),
             function: () => Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
-                    builder: (_) => ReconcileWithdrawalList(requestId:requestId,
-                        isInit: false, formData: widget.formLoadData))),
+                    builder: (_) => ReconcileWithdrawalList(
+                        requestId: requestId,
+                        isInit: false,
+                        formData: widget.formLoadData))),
             dismissible: true);
       }
     } else {

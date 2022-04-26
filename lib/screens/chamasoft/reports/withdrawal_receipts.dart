@@ -150,7 +150,9 @@ class _WithdrawalReceiptsState extends State<WithdrawalReceipts> {
         appBar: secondaryPageAppbar(
             context: context,
             title: "Withdrawals Receipts",
-            action: () => widget.requestId == WITHDRAWAL_REQUEST ? Navigator.of(context).popUntil((_) => count++ >= 4): Navigator.of(context).pop() ,
+            action: () => widget.requestId == WITHDRAWAL_REQUEST
+                ? Navigator.of(context).popUntil((_) => count++ >= 4)
+                : Navigator.of(context).pop(),
             elevation: 1,
             leadingIcon: LineAwesomeIcons.arrow_left),
         backgroundColor: Theme.of(context).backgroundColor,
@@ -323,6 +325,7 @@ class WithdrawalCard extends StatelessWidget {
     try {
       await Provider.of<Groups>(bodyContext, listen: false)
           .voidWithdrawlTransaction(id, position, bodyContext);
+      Navigator.of(bodyContext).pop();
       StatusHandler().showSuccessSnackBar(
           bodyContext, "Good news: Transaction successfully voided");
     } on CustomException catch (error) {
