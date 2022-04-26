@@ -18,18 +18,15 @@ import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/providers/summaries.dart';
-import 'package:chamasoft/screens/chamasoft/account_balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/expense-category.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/summary-row.dart';
-import 'package:chamasoft/screens/chamasoft/recent_transaction_reciept.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/account-balances.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/contribution-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/expense-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/group/group-loans-summary.dart';
 import 'package:chamasoft/screens/chamasoft/reports/member/contribution-statement.dart';
-import 'package:chamasoft/screens/chamasoft/total_account_balance.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/wallet/pay-now-sheet.dart';
 import 'package:chamasoft/screens/my-groups.dart';
 import 'package:chamasoft/widgets/annimationSlider.dart';
@@ -360,8 +357,22 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
             .getAccountBalancesSummary(_currentGroup.groupId);
       }
 
-      await Provider.of<GroupNotifications>(context, listen: false)
+      if (!Provider.of<GroupNotifications>(context, listen: false)
+          .isPartnerBankAccount) {
+        if (this.mounted) {
+          if (_isInit == false) {
+            setState(() {
+              _isInit = true;
+            });
+          }
+        }
+       await Provider.of<GroupNotifications>(context, listen: false)
           .getGroupNotificationsSummary(_currentGroup.groupId);
+
+      }
+
+   /*    await Provider.of<GroupNotifications>(context, listen: false)
+          .getGroupNotificationsSummary(_currentGroup.groupId); */
 
       if (!Provider.of<DashboardContributionSummary>(context, listen: false)
           .groupContributionSummaryExists(_currentGroup.groupId)) {

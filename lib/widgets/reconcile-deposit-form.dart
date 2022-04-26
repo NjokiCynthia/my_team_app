@@ -1,3 +1,4 @@
+import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/helpers/theme.dart';
@@ -61,7 +62,7 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       return;
     }
 
-      var object = {
+    var object = {
       "description": description,
       "amount": amount,
       "amount_payable": amountPayable,
@@ -81,16 +82,36 @@ class _ReconcileDepositFormState extends State<ReconcileDepositForm> {
       "number_of_share_sold": numberOfSharesSold
     };
 
-    if(depositTypeId==2){
-      object.addAll({
-      "fine_category_id": "fine_category-"+(fineCategoryId.toString())});
+    if (depositTypeId == 2) {
+      object.addAll(
+          {"fine_category_id": "fine_category-" + (fineCategoryId.toString())});
     }
 
     widget._addReconciledDeposit(object);
 
+    /*  Future.delayed(const Duration(milliseconds: 2500), () {
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (BuildContext context) => Chamasof()));
+      }); */
     // pop out the dialog
+    /* _fetchNotifications(); */
     Navigator.of(context).pop();
   }
+
+ /*  Future<void> _fetchNotifications() async {
+    try {
+      await Provider.of<GroupNotifications>(context, listen: false)
+          .getGroupNotificationsSummary(_currentGroup.groupId);
+      // _scrollChartToEnd();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchNotifications();
+          });
+    }
+  } */
 
   Future<void> _fetchDefaultValues() async {
     groupMembers = widget.formLoadData.containsKey("memberOptions")

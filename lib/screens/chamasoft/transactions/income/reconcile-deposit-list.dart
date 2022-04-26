@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, duplicate_ignore
 
 import 'package:chamasoft/providers/groups.dart';
+import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-form.dart';
 import 'package:chamasoft/helpers/common.dart';
@@ -125,12 +126,32 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
     _unreconciledDeposits =
         Provider.of<Groups>(context, listen: true).getUnreconciledDeposits;
 
+    final int unreconciledDepositCountfromDepositList =
+        Provider.of<GroupNotifications>(context, listen: true)
+            .unreconciledDepositCount;
+    final int unreconciledWithdrawalCountDepositList =
+        Provider.of<GroupNotifications>(context, listen: true)
+            .unreconciledWithdrwalCount;
+
+    final bool _isPartnerBankAccountDepositList =
+        Provider.of<GroupNotifications>(context, listen: true)
+            .isPartnerBankAccount;
+
+    print("Group Status is : $_isPartnerBankAccountDepositList");
+    print(
+        "Unreconciled Deposit Count is : $unreconciledDepositCountfromDepositList");
+    print(
+        "Unreconciled Withdrawal Count is : $unreconciledWithdrawalCountDepositList");
+
     return Scaffold(
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
-          action: () => Navigator.popUntil(
-              context, (Route<dynamic> route) => route.isFirst),
+          action:
+              () => Navigator.popUntil(
+              context, (Route<dynamic> route) => route.isFirst), 
+                 /*  Navigator.pop(
+                      context, unreconciledDepositCountfromDepositList), */
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: "Reconcile deposits",

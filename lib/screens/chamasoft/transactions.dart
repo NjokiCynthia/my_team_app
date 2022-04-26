@@ -37,7 +37,10 @@ class ChamasoftTransactions extends StatefulWidget {
   static const PREFERENCES_IS_FIRST_LAUNCH_STRING_TRANSACTION =
       "PREFERENCES_IS_FIRST_LAUNCH_STRING_TRANSACTION";
 
+  final int unreconciledDepositCountfromDepositList;
+
   ChamasoftTransactions({
+    this.unreconciledDepositCountfromDepositList,
     this.appBarElevation,
   });
 
@@ -62,6 +65,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   final bankLoanRepaymentKey = GlobalKey();
   final fineMemberKey = GlobalKey();
   final accountTransferKey = GlobalKey();
+  int _information = 0;
 
   BuildContext transactionsContext;
 
@@ -141,6 +145,17 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
     return null;
   }
 
+  void updateInformation(int unreconciledDepositCountfromDepositList) {
+    setState(() => _information = unreconciledDepositCountfromDepositList);
+  }
+
+  void _toUnreconciledDepositList(BuildContext context) async {
+    final unreconciledDepositCountfromDepositList = Navigator.of(context).push(
+        MaterialPageRoute(
+            builder: (BuildContext ctx) => ReconcileDepositList()));
+    updateInformation(await unreconciledDepositCountfromDepositList);
+  }
+
   @override
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
@@ -162,7 +177,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         Provider.of<Dashboard>(context, listen: true).isPartnerBankAccount; */
     final int unreconciledDepositCount =
         Provider.of<GroupNotifications>(context, listen: true)
-            .unreconciledDepositCount;
+                .unreconciledDepositCount;
     final int unreconciledWithdrawalCount =
         Provider.of<GroupNotifications>(context, listen: true)
             .unreconciledWithdrwalCount;
@@ -458,10 +473,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                         subtitle: 'DEPOSITS',
                         color: Colors.blue[400],
                         isHighlighted: false,
-                        action: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (BuildContext ctx) =>
-                                    ReconcileDepositList())),
+                        action: () => _toUnreconciledDepositList(context),
                         margin: 0,
                         imageHeight: 100.0,
                         notifications: unreconciledDepositCount)),

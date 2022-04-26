@@ -4,6 +4,7 @@ import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/helpers/status-handler.dart';
+import 'package:chamasoft/providers/notification_summary.dart';
 import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/income/reconcile-deposit-list.dart';
 import 'package:chamasoft/widgets/appbars.dart';
@@ -28,6 +29,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
   ScrollController _scrollController;
   List _reconciledDeposits = [];
   BuildContext _bodyContext;
+  Group _currentGroup;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBBarElevation : 0;
@@ -71,13 +73,15 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
 
       try {
         String response = await Provider.of<Groups>(_bodyContext, listen: false)
-            .reconcileDepositTransactionAlert(
-                _reconciledDeposits, deposit.transactionAlertId, position,_bodyContext);
+            .reconcileDepositTransactionAlert(_reconciledDeposits,
+                deposit.transactionAlertId, position, _bodyContext);
 
         StatusHandler()
             .showSuccessSnackBar(_bodyContext, "Good news: $response");
 
-        Future.delayed(const Duration(milliseconds: 2500), () {
+        Future.delayed(const Duration(milliseconds: 2500), () async {
+          await Provider.of<GroupNotifications>(context, listen: false)
+              .getGroupNotificationsSummary(groupObject.groupId);
           Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
               builder: (_) => ReconcileDepositList(
                   isInit: false, formLoadData: widget.formLoadData)));
@@ -95,6 +99,21 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
     } else {
       alertDialog(context,
           "You have reconciled ${groupObject.groupCurrency} ${currencyFormat.format(total)} out of ${groupObject.groupCurrency} ${currencyFormat.format(deposit.amount)} transacted.");
+    }
+  }
+
+  Future<void> _fetchNotifications() async {
+    try {
+      await Provider.of<GroupNotifications>(context, listen: false)
+          .getGroupNotificationsSummary(_currentGroup.groupId);
+      // _scrollChartToEnd();
+    } on CustomException catch (error) {
+      StatusHandler().handleStatus(
+          context: context,
+          error: error,
+          callback: () {
+            _fetchNotifications();
+          });
     }
   }
 

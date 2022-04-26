@@ -105,7 +105,8 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         groupStocks: true,
         member: true,
         loanTypes: true,
-      ).then((value) {
+      )
+          .then((value) {
         Provider.of<Groups>(context, listen: false)
             .fetchGroupUnreconciledWithdrawals()
             .then((_) {
@@ -144,7 +145,9 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         appBar: secondaryPageAppbar(
           context: context,
           action: () => Navigator.popUntil(
-              context, (Route<dynamic> route) => route.isFirst),
+              context,
+              (Route<dynamic> route) =>
+                  route.isFirst) /* Navigator.of(context).pop() */,
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: "Reconcile Withdrawals",
@@ -247,7 +250,7 @@ class _UnreconciledWithdrawalCardState
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            customTitle(  
+                            customTitle(
                               text: "${widget.groupObject.groupCurrency} ",
                               fontSize: 18.0,
                               // ignore: deprecated_member_use
