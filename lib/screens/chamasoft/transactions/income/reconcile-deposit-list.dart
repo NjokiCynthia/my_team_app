@@ -19,8 +19,9 @@ import 'package:provider/provider.dart';
 class ReconcileDepositList extends StatefulWidget {
   final bool isInit;
   final Map<String, dynamic> formLoadData;
+  final int requestId;
 
-  ReconcileDepositList({this.isInit = true, this.formLoadData});
+  ReconcileDepositList({this.requestId, this.isInit = true, this.formLoadData});
   @override
   _ReconcileDepositListState createState() => _ReconcileDepositListState();
 }
@@ -34,6 +35,7 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
   Map<String, dynamic> _formLoadData;
   ScrollController _scrollController;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  int count = 0;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? appBarElevation : 0;
@@ -147,10 +149,15 @@ class _ReconcileDepositListState extends State<ReconcileDepositList> {
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
-          action:
-              () => Navigator.popUntil(
-              context, (Route<dynamic> route) => route.isFirst), 
-                 /*  Navigator.pop(
+          action: () => /* Navigator.of(context)
+              .pop() */
+              widget.requestId == DEPOSIT_RECONSILE
+                  ? Navigator.of(context).popUntil((_) => count++ >= 2)
+                  : Navigator.of(context)
+                      .pop() /*  Navigator.popUntil(
+              context, (Route<dynamic> route) => route.isFirst) */
+          ,
+          /*  Navigator.pop(
                       context, unreconciledDepositCountfromDepositList), */
           elevation: 1,
           leadingIcon: LineAwesomeIcons.arrow_left,

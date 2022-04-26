@@ -18,9 +18,11 @@ class ReconcileWithdrawalList extends StatefulWidget {
   final String reconciledWithdrawalTransactionAlertId;
   final bool isInit;
   final Map<String, dynamic> formData;
+  final int requestId;
 
   ReconcileWithdrawalList(
       {this.reconciledWithdrawalTransactionAlertId,
+      this.requestId,
       this.isInit = true,
       this.formData});
   @override
@@ -37,6 +39,7 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
   bool _isInit = true;
   bool _isLoading = true;
   Map<String, dynamic> _formLoadData = {};
+  int count = 0;
 
   @override
   void initState() {
@@ -144,10 +147,13 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         key: _scaffoldKey,
         appBar: secondaryPageAppbar(
           context: context,
-          action: () => Navigator.popUntil(
+          action: () =>   widget.requestId == WITHDRAWAL_RECONSILE
+                  ? Navigator.of(context).popUntil((_) => count++ >= 2)
+                  : Navigator.of(context)
+                      .pop() /* Navigator.popUntil(
               context,
               (Route<dynamic> route) =>
-                  route.isFirst) /* Navigator.of(context).pop() */,
+                  route.isFirst) /* Navigator.of(context).pop() */ */,
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: "Reconcile Withdrawals",

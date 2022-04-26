@@ -122,6 +122,8 @@ const int FINE_STATEMENT = 2;
 const int REVIEW_LOAN = 1;
 const int VIEW_APPLICATION_STATUS = 2;
 const int WITHDRAWAL_REQUEST = 1;
+const int DEPOSIT_RECONSILE = 1;
+const int WITHDRAWAL_RECONSILE = 1;
 
 //Error messages and codes
 const String ERROR_MESSAGE =

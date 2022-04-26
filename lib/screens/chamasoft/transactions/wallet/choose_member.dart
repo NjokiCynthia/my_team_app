@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/helpers/theme.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/models/custom-contact.dart';
@@ -61,8 +60,6 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   double _appBarElevation = 0;
   ScrollController _scrollController;
   bool _isInit = true;
-
-
 
   // _ListMemberContactsState({
   //   this.floatingButtonLabel,
@@ -159,7 +156,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
     super.dispose();
   }
 
-   String _getOptionName(int id, List<NamesListItem> list) {
+  String _getOptionName(int id, List<NamesListItem> list) {
     var name = '';
     for (final item in list) {
       if (id == item.id) {
@@ -524,7 +521,6 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   }
 
   _memberList(Member member, Map<String, String> formData) {
-    // widget.formData["name"] = member.name;
     return ListTile(
       leading: CircleAvatar(
           backgroundColor: primaryColor,
@@ -535,6 +531,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
         await Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) => AmountToWithdraw(
                   // member: member,
+                  formData: widget.formData,
                 )));
       },
       title: subtitle1(text: member.name ?? "", textAlign: TextAlign.start),

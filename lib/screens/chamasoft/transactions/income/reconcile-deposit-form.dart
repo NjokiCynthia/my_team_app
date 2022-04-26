@@ -30,6 +30,7 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
   List _reconciledDeposits = [];
   BuildContext _bodyContext;
   Group _currentGroup;
+  int requestId = DEPOSIT_RECONSILE;
 
   void _scrollListener() {
     double newElevation = _scrollController.offset > 1 ? _appBBarElevation : 0;
@@ -84,7 +85,10 @@ class _ReconcileDepositState extends State<ReconcileDeposit>
               .getGroupNotificationsSummary(groupObject.groupId);
           Navigator.of(_bodyContext).pushReplacement(MaterialPageRoute(
               builder: (_) => ReconcileDepositList(
-                  isInit: false, formLoadData: widget.formLoadData)));
+                  requestId: requestId,
+                  isInit: false,
+                  formLoadData: widget.formLoadData)));
+          // Navigator.of(_bodyContext).pop();
         });
       } on CustomException catch (error) {
         StatusHandler().showDialogWithAction(

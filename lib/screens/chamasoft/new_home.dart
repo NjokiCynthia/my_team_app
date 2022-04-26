@@ -847,9 +847,9 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
           memberRecentTransaction.recentTransactions;
       // _iteratableData = dashboardData.bankAccountDashboardSummary;
       // _itableContributionSummary = dashboardData.memberContributionSummary;
-      // WidgetsBinding.instance.addPostFrameCallback((_) => () {
-      //       widget.notificationCount(dashboardData.notificationCount);
-      //     });
+      WidgetsBinding.instance.addPostFrameCallback((_) => () {
+            widget.notificationCount(dashboardData.notificationCount);
+          });
     });
     return WillPopScope(
         onWillPop: _onWillPop,
