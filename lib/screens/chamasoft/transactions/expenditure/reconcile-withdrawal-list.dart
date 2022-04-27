@@ -148,8 +148,11 @@ class _ReconcileWithdrawalListState extends State<ReconcileWithdrawalList> {
         appBar: secondaryPageAppbar(
           context: context,
           action:
-              () =>  Navigator.popUntil(
-              context, (Route<dynamic> route) => route.isFirst),
+              () => /*Navigator.popUntil(
+              context, (Route<dynamic> route) => route.isFirst)*/
+                  widget.requestId == DEPOSIT_RECONSILE
+                      ? Navigator.of(context).popUntil((_) => count++ >= 2)
+                      : Navigator.of(context).pop(),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left,
           title: "Reconcile Withdrawals",

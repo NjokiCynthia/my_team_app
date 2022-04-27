@@ -1,6 +1,7 @@
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/notification_summary.dart';
+import 'package:chamasoft/providers/recent-transactions.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/bank-loan-repayments.dart';
 import 'package:chamasoft/screens/chamasoft/transactions/expenditure/record-contribution-refund.dart';
@@ -160,8 +161,11 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
   Widget build(BuildContext context) {
     final group = Provider.of<Groups>(context, listen: false).getCurrentGroup();
 
-    final List<RecentTransactionSummary> recentTransactions =
-        Provider.of<Dashboard>(context, listen: false).recentMemberTransactions;
+    /*  final List<RecentTransactionSummary> recentTransactions =
+        Provider.of<Dashboard>(context, listen: false).recentMemberTransactions; */
+    final List<NewRecentTransactionSummary> recentTransactions =
+        Provider.of<MemberRecentTransaction>(context, listen: false)
+            .recentTransactions;
     if (recentTransactions.length > 10) {
       recentTransactions.length = 10;
     }
@@ -177,7 +181,7 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
         Provider.of<Dashboard>(context, listen: true).isPartnerBankAccount; */
     final int unreconciledDepositCount =
         Provider.of<GroupNotifications>(context, listen: true)
-                .unreconciledDepositCount;
+            .unreconciledDepositCount;
     final int unreconciledWithdrawalCount =
         Provider.of<GroupNotifications>(context, listen: true)
             .unreconciledWithdrwalCount;
@@ -945,7 +949,8 @@ class _ChamasoftTransactionsState extends State<ChamasoftTransactions> {
                                     controller: _scrollController,
                                     shrinkWrap: true,
                                     itemBuilder: (context, index) {
-                                      RecentTransactionSummary transaction =
+                                      /* RecentTransactionSummary */ NewRecentTransactionSummary
+                                          transaction =
                                           recentTransactions[index];
                                       return Padding(
                                         padding: EdgeInsets.fromLTRB(
