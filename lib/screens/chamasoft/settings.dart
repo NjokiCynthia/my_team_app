@@ -38,7 +38,7 @@ class _ChamasoftSettingsState extends State<ChamasoftSettings> {
         return AlertDialog(
           backgroundColor: Theme.of(context).backgroundColor,
           title: heading2(
-              text: "Post a feedback",
+              text: "Post feedback",
               textAlign: TextAlign.start,
               // ignore: deprecated_member_use
               color: Theme.of(context).textSelectionHandleColor),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
+import 'package:chamasoft/helpers/status-handler.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
@@ -31,6 +32,7 @@ class _FeedBackFormState extends State<FeedBackForm> {
   final feedbackController = TextEditingController();
   double _appBarElevation = 0;
   ScrollController _scrollController;
+  VoidCallback callback;
   // String info = CustomHelper.getApplicationBuildNumber() as String;
 
   void _submit(BuildContext context, Auth auth, String groupName) async {
@@ -53,17 +55,30 @@ class _FeedBackFormState extends State<FeedBackForm> {
           );
 
       if (response == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        /* Navigator.of(context).pop();
+ */
+        StatusHandler().showSuccessSnackBar(
+            context, "Good news: Your message has been sent!");
+
+        Future.delayed(const Duration(milliseconds: 2500), () async {
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (_) => ChamasoftSettings()));
+          // Navigator.of(_bodyContext).pop();
+        });
+
+        /*   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Message Sent!'), backgroundColor: Colors.green));
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (BuildContext context) => ChamasoftSettings(),
           ),
-        );
+        ); */
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        /*  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text('Failed to send Email!'),
-            backgroundColor: Colors.green));
+            backgroundColor: Colors.green)); */
+        StatusHandler()
+            .showRetrySnackBar(context, "Failed to send Email!", callback);
       }
 
       nameController.clear();
@@ -121,13 +136,16 @@ class _FeedBackFormState extends State<FeedBackForm> {
 
     final auth = Provider.of<Auth>(context, listen: false);
 
+    int count = 0;
+
     //final currentMember = Provider.of<Groups>(context, listen: true).members;
     return Scaffold(
       key: _scaffoldKey,
       appBar: secondaryPageAppbar(
           context: context,
           title: "Feedback",
-          action: () => Navigator.of(context).pop(),
+          action: () => /* Navigator.of(context).pop() */ Navigator.of(context)
+              .popUntil((_) => count++ >= 2),
           elevation: _appBarElevation,
           leadingIcon: LineAwesomeIcons.arrow_left),
       backgroundColor: Theme.of(context).backgroundColor,
