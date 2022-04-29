@@ -3,12 +3,8 @@ import 'package:chamasoft/config.dart';
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/groups.dart';
 // import 'package:chamasoft/providers/helpers/notifications.dart';
-import 'package:chamasoft/screens/chamasoft/group.dart';
-import 'package:chamasoft/screens/chamasoft/meetings/meetings.dart';
-import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/new_home.dart';
 import 'package:chamasoft/screens/chamasoft/notifications/notification-alert.dart';
-import 'package:chamasoft/screens/chamasoft/notifications/notifications.dart';
 import 'package:chamasoft/screens/chamasoft/reports.dart';
 import 'package:chamasoft/screens/chamasoft/settings.dart';
 import 'package:chamasoft/screens/chamasoft/transactions.dart';
@@ -27,7 +23,6 @@ import 'package:rate_my_app/rate_my_app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:showcaseview/showcaseview.dart';
 
-import 'home.dart';
 
 // ignore: must_be_immutable
 class ChamasoftDashboard extends StatefulWidget {
@@ -256,7 +251,6 @@ class _ChamasoftDashboardState extends State<ChamasoftDashboard> {
   @override
   Widget build(BuildContext context) {
     final auth = Provider.of<Auth>(context);
-    Group _group = Provider.of<Groups>(context).getCurrentGroup();
 
     // RateAppInitWidget(
     //               builder: (rateMyApp) =>

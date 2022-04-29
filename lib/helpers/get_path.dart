@@ -1,12 +1,6 @@
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:chamasoft/helpers/custom-helper.dart';
-import 'package:chamasoft/helpers/status-handler.dart';
-import 'package:chamasoft/providers/groups.dart';
-import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
 
 Future<String> getDirPath() async {
   final dir = await getApplicationDocumentsDirectory();

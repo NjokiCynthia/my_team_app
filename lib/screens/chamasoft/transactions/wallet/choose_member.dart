@@ -1,3 +1,5 @@
+// ignore_for_file: unused_element, duplicate_ignore
+
 import 'dart:async';
 
 import 'package:chamasoft/helpers/common.dart';
@@ -51,6 +53,7 @@ class _ListMemberContactsState extends State<ListMemberContacts> {
   IconData icon;
   Contact selectedContact;
 
+  // ignore: unused_field
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   // List<GroupMemberDetail> _member = [];
   List<Member> _member = [];

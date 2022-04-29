@@ -1,9 +1,10 @@
+// ignore_for_file: unused_element
+
 import 'dart:convert';
 import 'dart:developer';
 // import 'dart:developer';
 import 'dart:io' as io;
 import 'dart:io';
-import 'package:chamasoft/helpers/get_path.dart';
 import 'package:chamasoft/screens/chamasoft/models/accounts-and-balances.dart';
 import 'package:chamasoft/screens/chamasoft/models/active-loan.dart';
 import 'package:chamasoft/screens/chamasoft/models/deposit.dart';
@@ -557,6 +558,7 @@ class Groups with ChangeNotifier {
   List<Group> _groups = [];
   String _currentGroupId;
   // String _currentMemberId;
+  // ignore: unused_field
   String _requestId;
 
   List<dynamic> _meetings = [];

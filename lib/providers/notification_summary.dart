@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:convert';
 
 import 'package:chamasoft/helpers/common.dart';
@@ -84,6 +86,7 @@ class GroupNotifications with ChangeNotifier {
         final response = await PostToServer.post(postRequest, url);
         _notifications[groupId] = response;
         _updateGroupNotificationsSummary(groupId);
+      // ignore: unused_catch_clause
       } on CustomException catch (error) {
         throw CustomException(
             message:
@@ -92,6 +95,7 @@ class GroupNotifications with ChangeNotifier {
       } catch (error) {
         throw CustomException(message: ERROR_MESSAGE);
       }
+    // ignore: unused_catch_clause
     } on CustomException catch (error) {
       // throw CustomException(message: "Error: ${error.message}");
       // throw CustomException(message: error.message, status: error.status);

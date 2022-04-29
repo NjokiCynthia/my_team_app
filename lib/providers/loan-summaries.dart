@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 
 class LoanDashboardSummary with ChangeNotifier {
   String _userId;
+  // ignore: unused_field
   String _currentGroupId;
   String _requestId = DateTime.now().microsecondsSinceEpoch.toString();
   Map<String, Map<String, dynamic>> _loanData;

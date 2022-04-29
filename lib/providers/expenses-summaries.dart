@@ -19,6 +19,7 @@ class NewExpensesSummariesList {
 class NewExpensesSummaries with ChangeNotifier {
   List<NewExpensesSummariesList> _newExpensesSummariesList;
   String _userId;
+  // ignore: unused_field
   String _currentGroupId;
   Map<String, Map<String, dynamic>> _expensesSummariesData;
   Map<String, Map<String, dynamic>> _expensesSummariesTotalData;

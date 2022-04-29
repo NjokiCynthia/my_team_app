@@ -2,16 +2,13 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:chamasoft/helpers/get_path.dart';
 import 'package:chamasoft/providers/auth.dart';
-import 'package:chamasoft/providers/groups.dart';
 import 'package:encrypt/encrypt.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 
 import '../helpers/custom-helper.dart';
 import 'common.dart';
+// ignore: duplicate_import
 import 'dart:io';
-import 'package:path_provider/path_provider.dart';
 
 class PostToServer {
   static const String _defaultAuthenticationToken =

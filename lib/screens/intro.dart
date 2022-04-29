@@ -1,9 +1,10 @@
+// ignore_for_file: unused_import
+
 import 'package:chamasoft/providers/auth.dart';
 import 'package:chamasoft/providers/bankBalancesSummary.dart';
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/fine_summary.dart';
 import 'package:chamasoft/providers/groups.dart';
-import 'package:chamasoft/providers/loan-summaries.dart';
 import 'package:chamasoft/providers/summaries.dart';
 import 'package:chamasoft/screens/chamasoft/dashboard.dart';
 import 'package:chamasoft/screens/login.dart';
@@ -31,6 +32,7 @@ class IntroScreenState extends State<IntroScreen> {
   _dashNav() async {
     String currentGroupId = await getPreference("selectedGroupId");
     dynamic groups = Provider.of<Groups>(context, listen: false);
+    // ignore: unused_local_variable
     dynamic groupData = Provider.of<Dashboard>(context, listen: false);
     await groups.fetchAndSetUserGroups();
     await groups.setSelectedGroupId(currentGroupId);

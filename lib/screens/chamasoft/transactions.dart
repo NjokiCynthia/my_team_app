@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import, unused_field
+
 import 'package:chamasoft/providers/dashboard.dart';
 import 'package:chamasoft/providers/groups.dart';
 import 'package:chamasoft/providers/notification_summary.dart';

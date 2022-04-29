@@ -1,13 +1,12 @@
+// ignore_for_file: unused_field
+
 import 'dart:convert';
-import 'dart:developer';
-import 'dart:ffi';
 
 import 'package:chamasoft/helpers/common.dart';
 import 'package:chamasoft/helpers/custom-helper.dart';
 import 'package:chamasoft/helpers/endpoint-url.dart';
 import 'package:chamasoft/helpers/post-to-server.dart';
 import 'package:chamasoft/providers/dashboard.dart';
-import 'package:date_time_picker/date_time_picker.dart';
 import 'package:flutter/cupertino.dart';
 
 class DashboardContributionSummary with ChangeNotifier {
@@ -154,7 +153,6 @@ class DashboardContributionSummary with ChangeNotifier {
   // /*********** New Contributions APIs *********/
   Future<void> getContributionsSummary(String groupId) async {
     final url = EndpointUrl.GET_MEMBER_CONTRIBUTION_SUMMARY;
-    var dt = DateTime.now();
     try {
       final postRequest = json.encode({
         "request_id": _requestId,

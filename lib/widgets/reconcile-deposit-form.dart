@@ -1,4 +1,3 @@
-import 'package:chamasoft/screens/chamasoft/models/group-model.dart';
 import 'package:chamasoft/screens/chamasoft/models/named-list-item.dart';
 import 'package:chamasoft/helpers/setting_helper.dart';
 import 'package:chamasoft/helpers/theme.dart';

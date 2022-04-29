@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:convert';
 
 import 'package:chamasoft/helpers/common.dart';
@@ -109,7 +111,6 @@ class MemberRecentTransaction with ChangeNotifier {
   // /*********** New  RecentTransactions APIs *********/
   Future<void> getRecentTransactionsSummary(String groupId) async {
     final url = EndpointUrl.GET_RECENT_MEMBER_TRANSACTIONS;
-    var dt = DateTime.now();
     try {
       final postRequest = json.encode({
         "request_id": _requestId,

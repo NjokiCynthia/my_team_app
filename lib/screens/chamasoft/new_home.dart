@@ -1,5 +1,6 @@
+// ignore_for_file: unused_field, null_aware_before_operator, deprecated_member_use, duplicate_ignore, unused_local_variable
+
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -374,6 +375,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
 
       /*    await Provider.of<GroupNotifications>(context, listen: false)
           .getGroupNotificationsSummary(_currentGroup.groupId); */
+// ignore: todo
 //TODO
       /*   if (!Provider.of<DashboardContributionSummary>(context, listen: false)
           .groupContributionSummaryExists(_currentGroup.groupId)) {
@@ -462,6 +464,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
         await Provider.of<BalancesDashboardSummary>(context, listen: false)
             .getAccountBalancesSummary(_currentGroup.groupId);
       }*/
+// ignore: todo
 //TODO
       /*  if (!Provider.of<LoanDashboardSummary>(context, listen: false)
           .grouploanExists(_currentGroup.groupId)) {
@@ -1070,6 +1073,7 @@ class _ChamasoftHomeState extends State<ChamasoftHome> {
                                 child: CarouselSlider(
                                   options: CarouselOptions(
                                     height: 195.0,
+                                    // ignore: todo
                                     //TODO enable autoplay
                                     autoPlay: true,
                                     autoPlayInterval: Duration(seconds: 10),

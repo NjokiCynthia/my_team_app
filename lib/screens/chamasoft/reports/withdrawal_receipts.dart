@@ -18,8 +18,6 @@ import 'package:flutter/material.dart';
 import 'package:line_awesome_icons/line_awesome_icons.dart';
 import 'package:provider/provider.dart';
 
-import '../new_home.dart';
-import '../reports.dart';
 import 'filter_container.dart';
 
 class WithdrawalReceipts extends StatefulWidget {
